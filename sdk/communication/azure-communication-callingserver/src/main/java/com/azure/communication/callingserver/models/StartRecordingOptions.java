@@ -10,67 +10,67 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class StartRecordingOptions {
 
-    private RecordingContentType recordingContentType = null;
-    private RecordingChannelType recordingChannelType = null; 
-    private RecordingFormatType recordingFormatType = null;
+    private RecordingContent recordingContent = null;
+    private RecordingChannel recordingChannel = null; 
+    private RecordingFormat recordingFormat = null;
 
     /**
-     * Get the recordingContentType property: Optional, audioVideo by default.
+     * Get the recordingContent property: Optional, audioVideo by default.
      *
-     * @return the recordingContentType value.
+     * @return the recordingContent value.
      */
-    public RecordingContentType getRecordingContentType() {
-        return this.recordingContentType;
+    public RecordingContent getRecordingContent() {
+        return this.recordingContent;
     }
 
     /**
-     * Set the recordingContentType property: Optional, audioVideo by default.
+     * Set the recordingContent property: Optional, audioVideo by default.
      *
-     * @param recordingContentType the recordingContentType value to set.
+     * @param recordingContent the recordingContent value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public StartRecordingOptions setRecordingContentType(RecordingContentType recordingContentType) {
-        this.recordingContentType = recordingContentType;
+    public StartRecordingOptions setRecordingContent(RecordingContent recordingContent) {
+        this.recordingContent = recordingContent;
         return this;
     }
 
     /**
-     * Get the recordingChannelType property: Optional, mixed by default.
+     * Get the recordingChannel property: Optional, mixed by default.
      *
-     * @return the recordingChannelType value.
+     * @return the recordingChannel value.
      */
-    public RecordingChannelType getRecordingChannelType() {
-        return this.recordingChannelType;
+    public RecordingChannel getRecordingChannel() {
+        return this.recordingChannel;
     }
 
     /**
-     * Set the recordingChannelType property: Optional, mixed by default.
+     * Set the recordingChannel property: Optional, mixed by default.
      *
-     * @param recordingChannelType the recordingChannelType value to set.
+     * @param recordingChannel the recordingChannel value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public StartRecordingOptions setRecordingChannelType(RecordingChannelType recordingChannelType) {
-        this.recordingChannelType = recordingChannelType;
+    public StartRecordingOptions setRecordingChannel(RecordingChannel recordingChannel) {
+        this.recordingChannel = recordingChannel;
         return this;
     }
 
     /**
-     * Get the recordingFormatType property: Optional, mp4 by default.
+     * Get the recordingFormat property: Optional, mp4 by default.
      *
-     * @return the recordingFormatType value.
+     * @return the recordingFormat value.
      */
-    public RecordingFormatType getRecordingFormatType() {
-        return this.recordingFormatType;
+    public RecordingFormat getRecordingFormat() {
+        return this.recordingFormat;
     }
 
     /**
-     * Set the recordingFormatType property: Optional, mp4 by default.
+     * Set the recordingFormat property: Optional, mp4 by default.
      *
-     * @param recordingFormatType the recordingFormatType value to set.
+     * @param recordingFormat the recordingFormat value to set.
      * @return the StartCallRecordingRequest object itself.
      */
-    public StartRecordingOptions setRecordingFormatType(RecordingFormatType recordingFormatType) {
-        this.recordingFormatType = recordingFormatType;
+    public StartRecordingOptions setRecordingFormat(RecordingFormat recordingFormat) {
+        this.recordingFormat = recordingFormat;
         return this;
     }
 

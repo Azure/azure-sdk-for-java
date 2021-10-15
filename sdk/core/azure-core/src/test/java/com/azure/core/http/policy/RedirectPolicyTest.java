@@ -296,9 +296,34 @@ public class RedirectPolicyTest {
             new URL("http://localhost/"))).block();
 
         assertEquals(4, httpClient.getCount());
-        // Both requests successfully redirected for same request redirect lcoation
+        // Both requests successfully redirected for same request redirect location
         assertEquals(200, response1.getStatusCode());
         assertEquals(200, response2.getStatusCode());
+    }
+
+    @Test
+    public void nonRedirectRequest() throws MalformedURLException {
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient() {
+
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    if (request.getUrl().toString().equals("http://localhost/")) {
+                        Map<String, String> headers = new HashMap<>();
+                        HttpHeaders httpHeader = new HttpHeaders(headers);
+                        return Mono.just(new MockHttpResponse(request, 401, httpHeader));
+                    } else {
+                        return Mono.just(new MockHttpResponse(request, 200));
+                    }
+                }
+            })
+            .policies(new RedirectPolicy())
+            .build();
+
+        HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
+            new URL("http://localhost/"))).block();
+
+        assertEquals(401, response.getStatusCode());
     }
 
     static class RecordingHttpClient implements HttpClient {

@@ -3,15 +3,15 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
-import com.azure.ai.formrecognizer.models.DocumentAnalysisException;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeDocumentRequest;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResultOperation;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.implementation.util.Transforms;
+import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.models.DocumentAnalysisException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -19,6 +19,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -80,7 +81,7 @@ public final class DocumentAnalysisAsyncClient {
      * or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}..
-     * @throws NullPointerException If {@code documentUrl} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentOperationResult, AnalyzeResult>
@@ -106,7 +107,7 @@ public final class DocumentAnalysisAsyncClient {
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code documentUrl} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentOperationResult, AnalyzeResult>
@@ -120,16 +121,21 @@ public final class DocumentAnalysisAsyncClient {
                                    AnalyzeDocumentOptions analyzeDocumentOptions,
                                    Context context) {
         try {
-            Objects.requireNonNull(documentUrl, "'documentUrl' is required and cannot be null.");
-            Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-
+            if (CoreUtils.isNullOrEmpty(documentUrl)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
+                    + " be null or empty"));
+            }            if (CoreUtils.isNullOrEmpty(modelId)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                    + " be null or empty"));
+            }
             final AnalyzeDocumentOptions finalAnalyzeDocumentOptions
                 = getAnalyzeDocumentOptions(analyzeDocumentOptions);
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL,
                 activationOperation(() ->
                         service.analyzeDocumentWithResponseAsync(modelId,
-                                finalAnalyzeDocumentOptions.getPages(),
+                                CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
+                                    ? null : String.join(",", finalAnalyzeDocumentOptions.getPages()),
                                 finalAnalyzeDocumentOptions.getLocale() == null ? null
                                     : finalAnalyzeDocumentOptions.getLocale(),
                                 StringIndexType.UTF16CODE_UNIT,
@@ -178,7 +184,7 @@ public final class DocumentAnalysisAsyncClient {
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
-     * @throws NullPointerException If {@code document} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentOperationResult, AnalyzeResult>
@@ -209,7 +215,7 @@ public final class DocumentAnalysisAsyncClient {
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
      * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}..
-     * @throws NullPointerException If {@code document} or {@code modelId} is null.
+     * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DocumentOperationResult, AnalyzeResult>
@@ -223,7 +229,10 @@ public final class DocumentAnalysisAsyncClient {
                              AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
         try {
             Objects.requireNonNull(document, "'document' is required and cannot be null.");
-            Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
+            if (CoreUtils.isNullOrEmpty(modelId)) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
+                    + " be null or empty"));
+            }
 
             final AnalyzeDocumentOptions finalAnalyzeDocumentOptions
                 = getAnalyzeDocumentOptions(analyzeDocumentOptions);
@@ -233,7 +242,8 @@ public final class DocumentAnalysisAsyncClient {
                 activationOperation(() ->
                     service.analyzeDocumentWithResponseAsync(modelId,
                             null,
-                            finalAnalyzeDocumentOptions.getPages(),
+                            CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
+                                ? null : String.join(",", finalAnalyzeDocumentOptions.getPages()),
                             finalAnalyzeDocumentOptions.getLocale() == null ? null
                                 : finalAnalyzeDocumentOptions.getLocale(),
                             StringIndexType.UTF16CODE_UNIT,

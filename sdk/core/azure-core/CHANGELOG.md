@@ -1,15 +1,47 @@
 # Release History
 
-## 1.21.0-beta.1 (Unreleased)
+## 1.22.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added `setTenantId` and `getTenantId` methods to `TokenRequestContext` class that allows to configure TenantId Challenges.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.22.0-beta.1 (2021-10-12)
+
+### Features Added
+
+- Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
+
+### Other Changes
+
+- Fixed a bug where `BinaryData.getLength` returns `null` when it should return valid length.
+
+## 1.21.0 (2021-10-01)
+
+### Features Added
+
+- Added `ResponseError` which represents a general error response.
+- Added `HttpResponse.getBodyAsInputStream` to retrieve the `HttpResponse` body as an `InputStream`.
+- Added `HttpHeaders.add` to add an individual header to the `HttpHeaders`.
+- Added `setTenantId` and `getTenantId` methods to `TokenRequestContext` class that allows to configure TenantId Challenges.
+- Added additional logging when an `HttpClientProvider` is loaded from the classpath.
+
+### Breaking Changes
+
+- Deprecated annotation `ResumeOperation` as it was no longer used.
+- Deprecated `JacksonAdapter.simpleMapper` and `JacksonAdapter.serializer` as they should no longer be used.
+- Deprecated `CoreUtils.extractAndFetch` as it was no longer used.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.12.4` to `2.12.5`.
+- Upgraded Reactor from `3.4.9` to `3.4.10`.
 
 ## 1.20.0 (2021-09-07)
 

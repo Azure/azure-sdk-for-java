@@ -44,8 +44,8 @@ public final class MetricsQueryClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricsQueryResult query(String resourceUri, List<String> metricsNames) {
-        return queryWithResponse(resourceUri, metricsNames, new MetricsQueryOptions(), Context.NONE).getValue();
+    public MetricsQueryResult queryResource(String resourceUri, List<String> metricsNames) {
+        return queryResourceWithResponse(resourceUri, metricsNames, new MetricsQueryOptions(), Context.NONE).getValue();
     }
 
     /**
@@ -58,9 +58,9 @@ public final class MetricsQueryClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricsQueryResult> queryWithResponse(String resourceUri, List<String> metricsNames,
-                                                          MetricsQueryOptions options, Context context) {
-        return asyncClient.queryWithResponse(resourceUri, metricsNames, options, context).block();
+    public Response<MetricsQueryResult> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
+                                                                  MetricsQueryOptions options, Context context) {
+        return asyncClient.queryResourceWithResponse(resourceUri, metricsNames, options, context).block();
     }
 
     /**

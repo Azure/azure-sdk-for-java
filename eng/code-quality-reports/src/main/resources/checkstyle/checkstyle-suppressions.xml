@@ -18,6 +18,7 @@
   <suppress checks="MissingJavadocMethod" files=".*[/\\]samples[/\\].*\.java"/>
   <suppress checks="MissingJavadocType" files=".*[/\\]samples[/\\].*\.java"/>
   <suppress checks="MissingJavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
+  <suppress checks="MissingJavadocPackage" files=".*[/\\]samples[/\\].*\.java"/>
 
   <!-- Code was taken from Netty and uses its license instead of our usual one. -->
   <suppress checks="Header" files="com.azure.core.http.netty.implementation.HttpProxyHandler"/>
@@ -43,6 +44,9 @@
 
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
+
+  <!-- We should move KeyVaultPrivateKey into implementation. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.security.keyvault.jca.KeyVaultPrivateKey"/>
 
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
@@ -294,10 +298,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy" files="com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy.java"/>
 
 
@@ -540,7 +540,7 @@ the main ServiceBusClientBuilder. -->
   <!-- The clients don't end with 'Client' but instead with 'Sender' -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
             files="com.azure.search.documents.SearchClientBuilder"
-            lines="376,408,420"/>
+            lines="392,424,436"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
             files="com.azure.search.documents.SearchIndexingBufferedAsyncSender"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
@@ -605,7 +605,7 @@ the main ServiceBusClientBuilder. -->
   <!-- Checkstyle suppressions to keep HttpPipelinePolicy in implementation folder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
             files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
-            
+
   <!-- Suppress VisibilityModifier in MemberConverterImplTests.-->
   <suppress checks="VisibilityModifier"
             files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java"/>

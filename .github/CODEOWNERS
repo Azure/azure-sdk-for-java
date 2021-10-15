@@ -34,7 +34,7 @@
 
 # PRLabel: %Communication
 /sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
-/sdk/communication/azure-communication-identity/    @petrsvihlik @martinbarnas-ms
+/sdk/communication/azure-communication-identity/    @Azure/acs-identity-sdk
 
 # PRLabel: %Container Registry
 /sdk/containerregistry/                             @pallavit @alzimmermsft
@@ -59,7 +59,7 @@
 /sdk/digitaltwins/                                  @drwill-ms @azabbasi @johngallardo
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun
+/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andykwong-ms
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                     @srnagar @lmolkova @mssfang
@@ -93,7 +93,7 @@
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divyajay @alongafni
 
 # PRLabel:  %Monitor - Exporter
-/sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @lmolkova @srnagar @samvaity
+/sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @kryalama @ramthi @heyams
 
 # PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query                    @srnagar @pallavit
@@ -137,8 +137,8 @@
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/sdk/resourcemanager/                               @weidongxu-microsoft @qwordy @haolingdong-msft
-/sdk/**/azure-resourcemanager-*                     @weidongxu-microsoft @qwordy @haolingdong-msft
+/sdk/resourcemanager/                               @weidongxu-microsoft @haolingdong-msft
+/sdk/**/azure-resourcemanager-*                     @weidongxu-microsoft @haolingdong-msft
 
 # Quantum
 # PRLabel: %Azure Quantum

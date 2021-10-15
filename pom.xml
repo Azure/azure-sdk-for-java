@@ -100,7 +100,7 @@
 
         <!-- Schema Registry -->
         <module>sdk/schemaregistry/azure-data-schemaregistry</module>
-        <module>sdk/schemaregistry/azure-data-schemaregistry-avro</module>
+        <module>sdk/schemaregistry/azure-data-schemaregistry-apacheavro</module>
 
         <!-- Cognitive Search -->
         <module>sdk/search/azure-search-documents</module>
@@ -160,7 +160,7 @@
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-javadoc-plugin</artifactId>
-              <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+              <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
               <configuration>
                 <source>1.8</source>
                 <doctitle>Azure SDK for Java Reference Documentation</doctitle>
@@ -586,7 +586,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
             <reportSets>
               <reportSet>
                 <id>non-aggregate</id>
@@ -781,6 +781,7 @@
         <module>sdk/labservices</module>
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
+        <module>sdk/logz</module>
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/managedapplications</module>
@@ -825,6 +826,7 @@
         <module>sdk/storage</module>
         <module>sdk/storagecache</module>
         <module>sdk/storageimportexport</module>
+        <module>sdk/storagepool</module>
         <module>sdk/streamanalytics</module>
         <module>sdk/subscription</module>
         <module>sdk/support</module>

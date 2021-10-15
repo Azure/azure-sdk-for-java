@@ -124,6 +124,36 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-boot-starter-active-directory
                 version: 3.2.0
+- name: Active Directory B2C
+  content:
+    - name: Active Directory B2C
+      description: Azure Active Directory B2C provides business-to-customer identity as a service. Your customers use their preferred social, enterprise, or local account identities to get single sign-on access to your applications and APIs.
+      msdocs: https://docs.microsoft.com/azure/active-directory-b2c/
+      artifacts:
+        - artifactId: azure-spring-boot-starter-active-directory-b2c
+          groupId: com.azure.spring
+          versionGA: 3.9.0
+          versionPreview: 3.0.0-beta.1
+          description: Microsoft's Spring Boot Starter provides auto-configuration of Azure Active Directory B2C, which allows you to manage customer, consumer, and citizen access to your business-to-consumer (B2C) applications.
+          type: spring
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-active-directory-b2c
+            msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory-b2c-oidc
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-active-directory-b2c
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/azure-spring-boot-starter-active-directory-b2c
+          springProperties:
+            starter: true
+            bom: azure-spring-boot-bom
+            compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+            mappings:
+              - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
+                groupId: com.microsoft.azure
+                artifactId: azure-active-directory-b2c-spring-boot-starter
+                version: 2.2.4
+              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
+                groupId: com.azure.spring
+                artifactId: azure-spring-boot-starter-active-directory-b2c
+                version: 3.2.0
 - name: Cosmos DB
   content:
     - name: Spring Data Cosmos
@@ -168,24 +198,24 @@
       artifacts:
         - artifactId: azure-security-keyvault-jca
           groupId: com.azure
-          versionGA: 2.0.0
+          versionGA: 2.1.0
           versionPreview: 1.0.0-beta.7
           type: client
           links:
             repopath: https://search.maven.org/artifact/com.azure/azure-security-keyvault-jca
             msdocs: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca/README.md
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/2.0.0/index.html
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/2.1.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca
         - artifactId: azure-spring-boot-starter-keyvault-certificates
           groupId: com.azure.spring
-          versionGA: 3.1.0
+          versionGA: 3.2.0
           versionPreview: 3.0.0-beta.7
           description: Microsoft's Spring Boot Starter provides a secure and frictionless way to enable TLS with help from Azure Key Vault and managed identity for Azure resources.
           type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-certificates
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault-certificates
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-boot-starter-keyvault-certificates/3.1.0/index.html
+            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-spring-boot-starter-keyvault-certificates/3.2.0/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-boot-starter-keyvault-certificates
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/keyvault/azure-spring-boot-starter-keyvault-certificates
           springProperties:

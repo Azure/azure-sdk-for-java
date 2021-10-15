@@ -481,7 +481,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return database restore points.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -508,7 +508,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return database restore points.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -536,7 +536,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return database restore points.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
@@ -558,7 +558,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return database restore points.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
         String resourceGroupName,
         String workspaceName,
