@@ -51,10 +51,10 @@ stages:
           Location: canadacentral
         UsGov:
           SubscriptionConfiguration: $(sub-config-gov-test-resources)
-          Location: usgovvirginia
+          Location: usgovarizona
         China:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
-          Location: chianeast2
+          Location: chinaeast2
       SupportedClouds: 'Public,UsGov,China'
       TestStepMavenInputs:
         options: '$(DefaultTestOptions) $(AdditionalOptions) -T 1C'
