@@ -21,7 +21,11 @@
             "metadata": {
                 "description": "The principal to assign the role to. This is application object id."
             }
-        }
+        },
+        "keyVaultEndpointSuffix": {
+          "type": "string",
+          "defaultValue": ".vault.azure.net"
+       }
     },
     "variables": {
         "storageApiVersion": "2019-06-01",
@@ -39,7 +43,7 @@
         "dataLakeSoftDeleteAccountName": "[concat('dtlksd', parameters('baseName'))]",
         "premiumFileAccountName": "[concat('premf', parameters('baseName'))]",
         "keyvaultName": "[concat(parameters('baseName'), 'kvlt')]",
-        "azureKeyVaultUrl": "[format('https://{0}.vault.azure.net', variables('keyvaultName'))]",
+        "azureKeyVaultUrl": "[format(concat('https://{0}', parameters('keyVaultEndpointSuffix')), variables('keyvaultName'))]",
         "location": "[resourceGroup().location]",
         "resourceGroupName": "[resourceGroup().name]",
         "subscriptionId": "[subscription().subscriptionId]"
@@ -124,7 +128,7 @@
               }
         },
         "dependsOn": [
-          "[variables('primaryAccountName')]"
+          "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
         ]
         },
         {
@@ -138,7 +142,7 @@
             }
             },
             "dependsOn": [
-                "[variables('primaryAccountName')]"
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
             ]
         },
         {
@@ -148,7 +152,7 @@
           "properties": {
           },
           "dependsOn": [
-            "[variables('primaryAccountName')]"
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
           ]
         },
         {
@@ -158,7 +162,7 @@
           "properties": {
           },
           "dependsOn": [
-            "[variables('primaryAccountName')]"
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
           ]
         },
         {
@@ -240,7 +244,7 @@
             }
           },
           "dependsOn": [
-            "[variables('softDeleteAccountName')]"
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('softDeleteAccountName'))]"
           ]
         },
         {
@@ -254,7 +258,7 @@
             }
           },
           "dependsOn": [
-            "[variables('softDeleteAccountName')]"
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('softDeleteAccountName'))]"
           ]
         },
         {
@@ -329,7 +333,7 @@
             "isVersioningEnabled": true
           },
           "dependsOn": [
-            "[variables('versionedAccountName')]"
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('versionedAccountName'))]"
           ]
         },
         {
@@ -376,7 +380,7 @@
             }
             },
             "dependsOn": [
-                "[variables('dataLakeAccountName')]"
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName'))]"
             ]
         },
         {
@@ -423,7 +427,7 @@
             }
           },
           "dependsOn": [
-            "[variables('dataLakeSoftDeleteAccountName')]"
+            "[resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeSoftDeleteAccountName'))]"
           ]
         },
         {
