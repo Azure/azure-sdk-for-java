@@ -27,8 +27,12 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   val objectMapper = new ObjectMapper()
   private[this] val defaultRowConverter =
     CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.Always))
-  private[this] val rowConverterExcludingNullAndEmptyAndDefaults =
+  private[this] val rowConverterInclusionNonNull =
+    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonNull))
+  private[this] val rowConverterInclusionNonDefault =
     CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonDefault))
+  private[this] val rowConverterInclusionNonEmpty =
+    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonEmpty))
 
   "basic spark row" should "translate to ObjectNode" in {
 
@@ -64,7 +68,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode.toString shouldEqual s"""{"testCol1":null,"testCol2":"strVal"}"""
   }
 
-  "null type in spark row" should "translate to property being skipped in ObjectNode" in {
+  "null type in spark row" should "translate to property being skipped if InclusionMode is not Always" in {
     val colName1 = "testCol1"
     val colName2 = "testCol2"
     val colVal1 = null
@@ -74,59 +78,218 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       Array(colVal1, colVal2),
       StructType(Seq(StructField(colName1, NullType), StructField(colName2, StringType))))
 
-    val objectNode = rowConverterExcludingNullAndEmptyAndDefaults.fromRowToObjectNode(row)
-    objectNode.get(colName1) shouldBe null
-    objectNode.get(colName2).asText() shouldEqual colVal2
+    val testCases = Array(
+      ("NonDefault", rowConverterInclusionNonDefault.fromRowToObjectNode(row)),
+      ("NonEmpty", rowConverterInclusionNonEmpty.fromRowToObjectNode(row)),
+      ("NonNull", rowConverterInclusionNonNull.fromRowToObjectNode(row))
+    )
 
-    objectNode.toString shouldEqual s"""{"testCol2":"strVal"}"""
+    for (testCaseAndObjectNodeTuple <- testCases) {
+      val testCaseName = testCaseAndObjectNodeTuple._1
+      val objectNode = testCaseAndObjectNodeTuple._2
+      print(s"TEST CASE: $testCaseName")
+      objectNode.get(colName1) shouldBe null
+      objectNode.get(colName2).asText() shouldEqual colVal2
+
+      objectNode.toString shouldEqual s"""{"testCol2":"strVal"}"""
+    }
   }
 
-  "default value in spark row" should "translate to property being skipped InclusionModes.NonEmpty" in {
+  "empty values in spark row" should "translate to property being serialized if InclusionMode is NonNull/Always" in {
     val colName1 = "testCol1"
     val colName2 = "testCol2"
     val colName3 = "testCol3"
-    val colVal1 = 1
-    val colVal2 = 0
-    val colVal3 = ""
+    val colVal1 = "strVal1"
+    val colVal2 = ""
+    val colVal3 = Array[Byte]()
 
     val row = new GenericRowWithSchema(
       Array(colVal1, colVal2, colVal3),
-      StructType(Seq(StructField(colName1, IntegerType), StructField(colName2, IntegerType), StructField(colName3, StringType))))
+      StructType(Seq(
+        StructField(colName1, StringType),
+        StructField(colName2, StringType),
+        StructField(colName3, BinaryType))))
 
-    val objectNode = rowConverterExcludingNullAndEmptyAndDefaults.fromRowToObjectNode(row)
+    val testCases = Array(
+      ("Always", defaultRowConverter.fromRowToObjectNode(row)),
+      ("NonNull", rowConverterInclusionNonNull.fromRowToObjectNode(row))
+    )
+
+    for (testCaseAndObjectNodeTuple <- testCases) {
+      val testCaseName = testCaseAndObjectNodeTuple._1
+      val objectNode = testCaseAndObjectNodeTuple._2
+      print(s"TEST CASE: $testCaseName")
+      objectNode.get(colName1).asText() shouldEqual colVal1
+      objectNode.get(colName2).asText() shouldEqual colVal2
+      objectNode.get(colName3).asText() shouldEqual ""
+
+      objectNode.toString shouldEqual s"""{"testCol1":"strVal1","testCol2":"","testCol3":""}"""
+    }
+  }
+
+  "empty values in spark row" should "translate to property being skipped if InclusionMode is NonDefault/NonEmpty" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colVal1 = "strVal1"
+    val colVal2 = ""
+    val colVal3 = Array[Byte]()
+
+    val row = new GenericRowWithSchema(
+      Array(colVal1, colVal2, colVal3),
+      StructType(Seq(
+        StructField(colName1, StringType),
+        StructField(colName2, StringType),
+        StructField(colName3, BinaryType))))
+
+    val testCases = Array(
+      ("NonEmpty", rowConverterInclusionNonEmpty.fromRowToObjectNode(row)),
+      ("NonDefault", rowConverterInclusionNonDefault.fromRowToObjectNode(row))
+    )
+
+    for (testCaseAndObjectNodeTuple <- testCases) {
+      val testCaseName = testCaseAndObjectNodeTuple._1
+      val objectNode = testCaseAndObjectNodeTuple._2
+      print(s"TEST CASE: $testCaseName")
+      objectNode.get(colName1).asText() shouldEqual colVal1
+      objectNode.get(colName2) shouldEqual null
+      objectNode.get(colName3) shouldEqual null
+
+      objectNode.toString shouldEqual s"""{"testCol1":"strVal1"}"""
+    }
+  }
+
+  "default value in spark row" should "translate to property being skipped for InclusionModes.NonDefault" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colName4 = "testCol4"
+    val colVal1 = 1
+    val colVal2 = 0
+    val colVal3 = ""
+    val colVal4 = Array[Byte]()
+
+    val row = new GenericRowWithSchema(
+      Array(colVal1, colVal2, colVal3, colVal4),
+      StructType(Seq(
+        StructField(colName1, IntegerType),
+        StructField(colName2, IntegerType),
+        StructField(colName3, StringType),
+        StructField(colName4, BinaryType))))
+
+    val objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
     objectNode.get(colName1).asInt() shouldEqual colVal1
     objectNode.get(colName2) shouldBe null
     objectNode.get(colName3) shouldBe null
+    objectNode.get(colName4) shouldBe null
 
     objectNode.toString shouldEqual s"""{"testCol1":1}"""
+  }
+
+  "default value in spark row" should "translate to only empty valuesbeing skipped for InclusionModes.NonEmpty" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colName4 = "testCol4"
+    val colVal1 = 1
+    val colVal2 = 0
+    val colVal3 = ""
+    val colVal4 = Array[Byte]()
+
+    val row = new GenericRowWithSchema(
+      Array(colVal1, colVal2, colVal3, colVal4),
+      StructType(Seq(
+        StructField(colName1, IntegerType),
+        StructField(colName2, IntegerType),
+        StructField(colName3, StringType),
+        StructField(colName4, BinaryType)
+      )))
+
+    val objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInt() shouldEqual colVal1
+    objectNode.get(colName2).asInt() shouldEqual colVal2
+    objectNode.get(colName3) shouldBe null
+    objectNode.get(colName4) shouldBe null
+
+    objectNode.toString shouldEqual s"""{"testCol1":1,"testCol2":0}"""
   }
 
   "array in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
     val colName2 = "testCol2"
     val colName3 = "testCol3"
+    val colName4 = "testCol4"
+    val colName5 = "testCol5"
     val colVal1 = "strVal"
 
     val row = new GenericRowWithSchema(
       Array(
         Seq("arrayElement1", "arrayElement2"),
         ArrayData.toArrayData(Array(1, 2)),
-        colVal1),
+        colVal1,
+        Seq(),
+        ArrayData.toArrayData(Array[Int]())),
       StructType(Seq(
         StructField(colName1, ArrayType(StringType, containsNull = false)),
         StructField(colName2, ArrayType(IntegerType, containsNull = false)),
-        StructField(colName3, StringType))))
+        StructField(colName3, StringType),
+        StructField(colName4, ArrayType(StringType, containsNull = false)),
+        StructField(colName5, ArrayType(StringType, containsNull = false))
+      ))
+    )
 
-    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).isArray shouldBe true
     objectNode.get(colName1).asInstanceOf[ArrayNode] should have size 2
     objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText shouldEqual "arrayElement1"
     objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText shouldEqual "arrayElement2"
+
     objectNode.get(colName2).isArray shouldBe true
     objectNode.get(colName2).asInstanceOf[ArrayNode] should have size 2
     objectNode.get(colName2).asInstanceOf[ArrayNode].get(0).asInt shouldEqual 1
     objectNode.get(colName2).asInstanceOf[ArrayNode].get(1).asInt shouldEqual 2
+
     objectNode.get(colName3).asText shouldEqual colVal1
+
+    objectNode.get(colName4).isArray shouldBe true
+    objectNode.get(colName4).asInstanceOf[ArrayNode] should have size 0
+
+    objectNode.get(colName5).isArray shouldBe true
+    objectNode.get(colName5).asInstanceOf[ArrayNode] should have size 0
+
+    objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    objectNode.get(colName1).isArray shouldBe true
+    objectNode.get(colName1).asInstanceOf[ArrayNode] should have size 2
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText shouldEqual "arrayElement1"
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText shouldEqual "arrayElement2"
+
+    objectNode.get(colName2).isArray shouldBe true
+    objectNode.get(colName2).asInstanceOf[ArrayNode] should have size 2
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(0).asInt shouldEqual 1
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(1).asInt shouldEqual 2
+
+    objectNode.get(colName3).asText shouldEqual colVal1
+
+    objectNode.get(colName4) shouldBe null
+
+    objectNode.get(colName5) shouldBe null
+
+    objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
+    objectNode.get(colName1).isArray shouldBe true
+    objectNode.get(colName1).asInstanceOf[ArrayNode] should have size 2
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText shouldEqual "arrayElement1"
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText shouldEqual "arrayElement2"
+
+    objectNode.get(colName2).isArray shouldBe true
+    objectNode.get(colName2).asInstanceOf[ArrayNode] should have size 2
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(0).asInt shouldEqual 1
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(1).asInt shouldEqual 2
+
+    objectNode.get(colName3).asText shouldEqual colVal1
+
+    objectNode.get(colName4) shouldBe null
+
+    objectNode.get(colName5) shouldBe null
   }
 
   "binary in spark row" should "translate to ObjectNode" in {
@@ -156,22 +319,48 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
         StructField(colName1, StringType),
         StructField(colName2, NullType))))
 
-    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).isNull shouldBe true
     objectNode.get(colName2).isNull shouldBe true
+
+    objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    objectNode.get(colName1) shouldBe null
+    objectNode.get(colName2) shouldBe null
+
+    objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
+    objectNode.get(colName1) shouldBe null
+    objectNode.get(colName2) shouldBe null
+
+    objectNode = rowConverterInclusionNonNull.fromRowToObjectNode(row)
+    objectNode.get(colName1) shouldBe null
+    objectNode.get(colName2) shouldBe null
   }
 
   "boolean in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
+    val colName2 = "testCol2"
     val colVal1 = true
+    val colVal2 = false
 
     val row = new GenericRowWithSchema(
-      Array(colVal1),
-      StructType(Seq(StructField(colName1, BooleanType))))
+      Array(colVal1, colVal2),
+      StructType(Seq(StructField(colName1, BooleanType), StructField(colName2, BooleanType))))
 
-    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
-    val nodeAsBoolean = objectNode.get(colName1).asInstanceOf[BooleanNode].asBoolean()
-    nodeAsBoolean shouldEqual colVal1
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal1
+    objectNode.get(colName2).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal2
+
+    objectNode = rowConverterInclusionNonNull.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal1
+    objectNode.get(colName2).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal2
+
+    objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal1
+    objectNode.get(colName2).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal2
+
+    objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal1
+    objectNode.get(colName2) shouldEqual null
   }
 
   "date and time in spark row" should "translate to ObjectNode" in {
@@ -195,44 +384,132 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val colName2 = "testCol2"
     val colName3 = "testCol3"
     val colName4 = "testCol4"
+    val colName5 = "testCol5"
+    val colName6 = "testCol6"
+    val colName7 = "testCol7"
+    val colName8 = "testCol8"
 
     val colVal1: Double = 3.5
     val colVal2: Float = 1e14f
     val colVal3: Long = 1000000000
     val colVal4: Decimal = Decimal(4.6)
+    val colVal5: Double = 0
+    val colVal6: Float = 0
+    val colVal7: Long = 0
+    val colVal8: Decimal = Decimal(0)
 
     val row = new GenericRowWithSchema(
-      Array(colVal1, colVal2, colVal3, colVal4),
-      StructType(Seq(StructField(colName1, DoubleType), StructField(colName2, FloatType),
-        StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2)))))
+      Array(colVal1, colVal2, colVal3, colVal4, colVal5, colVal6, colVal7, colVal8),
+      StructType(Seq(
+        StructField(colName1, DoubleType),
+        StructField(colName2, FloatType),
+        StructField(colName3, LongType),
+        StructField(colName4, DecimalType(precision = 2, scale = 2)),
+        StructField(colName5, DoubleType),
+        StructField(colName6, FloatType),
+        StructField(colName7, LongType),
+        StructField(colName8, DecimalType(precision = 2, scale = 2)))))
 
-    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).asDouble() shouldEqual colVal1
     objectNode.get(colName2).asDouble() shouldEqual colVal2
     objectNode.get(colName3).asLong() shouldEqual colVal3
-    val col4AsDecimal = Decimal(objectNode.get(colName4).asDouble())
-    col4AsDecimal.compareTo(colVal4) shouldEqual 0
+    Decimal(objectNode.get(colName4).asDouble()).compareTo(colVal4) shouldEqual 0
+    objectNode.get(colName5).asDouble() shouldEqual colVal5
+    objectNode.get(colName6).asDouble() shouldEqual colVal6
+    objectNode.get(colName7).asLong() shouldEqual colVal7
+    Decimal(objectNode.get(colName8).asDouble()).compareTo(colVal8) shouldEqual 0
+
+    objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    objectNode.get(colName1).asDouble() shouldEqual colVal1
+    objectNode.get(colName2).asDouble() shouldEqual colVal2
+    objectNode.get(colName3).asLong() shouldEqual colVal3
+    Decimal(objectNode.get(colName4).asDouble()).compareTo(colVal4) shouldEqual 0
+    objectNode.get(colName5).asDouble() shouldEqual colVal5
+    objectNode.get(colName6).asDouble() shouldEqual colVal6
+    objectNode.get(colName7).asLong() shouldEqual colVal7
+    Decimal(objectNode.get(colName8).asDouble()).compareTo(colVal8) shouldEqual 0
+
+    objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
+    objectNode.get(colName1).asDouble() shouldEqual colVal1
+    objectNode.get(colName2).asDouble() shouldEqual colVal2
+    objectNode.get(colName3).asLong() shouldEqual colVal3
+    Decimal(objectNode.get(colName4).asDouble()).compareTo(colVal4) shouldEqual 0
+    objectNode.get(colName5) shouldEqual null
+    objectNode.get(colName6) shouldEqual null
+    objectNode.get(colName7) shouldEqual null
+    objectNode.get(colName8) shouldEqual null
   }
 
   "map in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
     val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colName4 = "testCol4"
     val colVal1: Map[String, String] = Map("x" -> "a", "y" -> null)
     val colVal2: Map[String, Int] = Map("x" -> 20, "y" -> 10)
+    val colVal3: Map[String, String] = Map()
+    val colVal4: Map[String, Int] = Map()
 
     val row = new GenericRowWithSchema(
-      Array(colVal1, colVal2),
+      Array(colVal1, colVal2, colVal3, colVal4),
       StructType(Seq(
         StructField(colName1, MapType(keyType = StringType, valueType = StringType, valueContainsNull = true)),
-        StructField(colName2, MapType(keyType = StringType, valueType = IntegerType, valueContainsNull = false)))))
+        StructField(colName2, MapType(keyType = StringType, valueType = IntegerType, valueContainsNull = false)),
+        StructField(colName3, MapType(keyType = StringType, valueType = StringType, valueContainsNull = true)),
+        StructField(colName4, MapType(keyType = StringType, valueType = IntegerType, valueContainsNull = false)))))
 
-    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
-    val node1 = objectNode.get(colName1)
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
+    var node1 = objectNode.get(colName1)
+    node1.size() shouldEqual 2
     node1.get("x").asText() shouldEqual colVal1("x")
     node1.get("y").isNull shouldBe true
-    val node2 = objectNode.get(colName2)
+    var node2 = objectNode.get(colName2)
+    node2.size() shouldEqual 2
     node2.get("x").asInt() shouldEqual colVal2("x")
     node2.get("y").asInt() shouldEqual colVal2("y")
+    var node3 = objectNode.get(colName3)
+    node3.size() shouldEqual 0
+    var node4 = objectNode.get(colName4)
+    node4.size() shouldEqual 0
+
+    objectNode = rowConverterInclusionNonNull.fromRowToObjectNode(row)
+    node1 = objectNode.get(colName1)
+    node1.size() shouldEqual 1
+    node1.get("x").asText() shouldEqual colVal1("x")
+    node1.get("y") shouldBe null
+    node2 = objectNode.get(colName2)
+    node2.size() shouldEqual 2
+    node2.get("x").asInt() shouldEqual colVal2("x")
+    node2.get("y").asInt() shouldEqual colVal2("y")
+    node3 = objectNode.get(colName3)
+    node3.size() shouldEqual 0
+    node4 = objectNode.get(colName4)
+    node4.size() shouldEqual 0
+
+    objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    node1 = objectNode.get(colName1)
+    node1.size() shouldEqual 1
+    node1.get("x").asText() shouldEqual colVal1("x")
+    node1.get("y") shouldBe null
+    node2 = objectNode.get(colName2)
+    node2.size() shouldEqual 2
+    node2.get("x").asInt() shouldEqual colVal2("x")
+    node2.get("y").asInt() shouldEqual colVal2("y")
+    objectNode.get(colName3) shouldEqual null
+    objectNode.get(colName4) shouldEqual null
+
+    objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
+    node1 = objectNode.get(colName1)
+    node1.size() shouldEqual 1
+    node1.get("x").asText() shouldEqual colVal1("x")
+    node1.get("y") shouldBe null
+    node2 = objectNode.get(colName2)
+    node2.size() shouldEqual 2
+    node2.get("x").asInt() shouldEqual colVal2("x")
+    node2.get("y").asInt() shouldEqual colVal2("y")
+    objectNode.get(colName3) shouldEqual null
+    objectNode.get(colName4) shouldEqual null
   }
 
   "struct in spark row" should "translate to ObjectNode" in {

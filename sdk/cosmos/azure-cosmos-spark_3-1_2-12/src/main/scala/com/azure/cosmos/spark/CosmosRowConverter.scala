@@ -218,8 +218,20 @@ private class CosmosRowConverter(
     ) : Option[JsonNode] = {
 
       fieldType match {
-        case StringType => convertToJsonNodeConditionally(convertRowDataToString(rowData))
-        case BinaryType => convertToJsonNodeConditionally(rowData.asInstanceOf[Array[Byte]])
+        case StringType =>
+          val stringValue = convertRowDataToString(rowData)
+          if (isDefaultValue(stringValue)) {
+            None
+          } else {
+            Some(objectMapper.convertValue(stringValue, classOf[JsonNode]))
+          }
+        case BinaryType =>
+          val blobValue = rowData.asInstanceOf[Array[Byte]]
+          if (isDefaultValue(blobValue)) {
+            None
+          } else {
+            Some(objectMapper.convertValue(blobValue, classOf[JsonNode]))
+          }
         case BooleanType => convertToJsonNodeConditionally(rowData.asInstanceOf[Boolean])
         case DoubleType => convertToJsonNodeConditionally(rowData.asInstanceOf[Double])
         case IntegerType => convertToJsonNodeConditionally(rowData.asInstanceOf[Int])
