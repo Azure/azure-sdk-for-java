@@ -59,8 +59,8 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
     }
 
     @Override
-    protected void configureApplicationId(T builder) {
-        this.clientOptions.setApplicationId(getApplicationId());
+    protected BiConsumer<T, String> consumeApplicationId() {
+        return (builder, id) -> this.clientOptions.setApplicationId(id);
     }
 
     @Override
