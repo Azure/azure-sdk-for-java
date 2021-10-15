@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added support for the 2020-12-06 service version.
+- Added support for setting an encryption scope on a BlobServiceSas and an AccountSas.
+
 ### Breaking Changes
 
 ### Bugs Fixed

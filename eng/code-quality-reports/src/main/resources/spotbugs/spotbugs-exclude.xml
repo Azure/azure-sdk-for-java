@@ -2415,7 +2415,7 @@
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
   <Match>
-    <Class name="com.azure.security.keyvault.jca.KeyVaultPrivateKey"/>
+    <Class name="com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
