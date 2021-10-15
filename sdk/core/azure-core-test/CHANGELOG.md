@@ -1,5 +1,11 @@
 # Release History
 
+## 1.7.3 (2021-10-15)
+
+### Fixed
+
+- Fixed a bug where an exception may be thrown when attempting to record a test run.
+
 ## 1.7.2 (2021-10-01)
 
 ### Other Changes
