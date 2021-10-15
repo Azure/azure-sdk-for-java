@@ -67,6 +67,20 @@ public interface KustoManagementClient {
     DatabasesClient getDatabases();
 
     /**
+     * Gets the AttachedDatabaseConfigurationsClient object to access its operations.
+     *
+     * @return the AttachedDatabaseConfigurationsClient object.
+     */
+    AttachedDatabaseConfigurationsClient getAttachedDatabaseConfigurations();
+
+    /**
+     * Gets the ManagedPrivateEndpointsClient object to access its operations.
+     *
+     * @return the ManagedPrivateEndpointsClient object.
+     */
+    ManagedPrivateEndpointsClient getManagedPrivateEndpoints();
+
+    /**
      * Gets the DatabasePrincipalAssignmentsClient object to access its operations.
      *
      * @return the DatabasePrincipalAssignmentsClient object.
@@ -81,11 +95,18 @@ public interface KustoManagementClient {
     ScriptsClient getScripts();
 
     /**
-     * Gets the AttachedDatabaseConfigurationsClient object to access its operations.
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
      *
-     * @return the AttachedDatabaseConfigurationsClient object.
+     * @return the PrivateEndpointConnectionsClient object.
      */
-    AttachedDatabaseConfigurationsClient getAttachedDatabaseConfigurations();
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
      * Gets the DataConnectionsClient object to access its operations.

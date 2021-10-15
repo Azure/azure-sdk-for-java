@@ -38,6 +38,75 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
     }
 
     /**
+     * Get the key size in bits.
+     *
+     * @return The key size in bits.
+     */
+    public Integer getKeySize() {
+        return this.keySize;
+    }
+
+    /**
+     * Set the key size in bits.
+     *
+     * @param keySize The key size in bits to set.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
+     */
+    public CreateRsaKeyOptions setKeySize(Integer keySize) {
+        this.keySize = keySize;
+
+        return this;
+    }
+
+    /**
+     * Get the HSM value of the key being created.
+     *
+     * @return The HSM value.
+     */
+    public Boolean isHardwareProtected() {
+        return this.hardwareProtected;
+    }
+
+    /**
+     * Set whether the key being created is of HSM type or not.
+     *
+     * @param hardwareProtected The HSM value to set.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
+     */
+    public CreateRsaKeyOptions setHardwareProtected(Boolean hardwareProtected) {
+        this.hardwareProtected = hardwareProtected;
+        KeyType keyType = hardwareProtected ? KeyType.RSA_HSM : KeyType.RSA;
+
+        setKeyType(keyType);
+
+        return this;
+    }
+
+    /**
+     * Get the public exponent for the key.
+     *
+     * @return The public exponent.
+     */
+    public Integer getPublicExponent() {
+        return publicExponent;
+    }
+
+    /**
+     * Set the public exponent for the key.
+     *
+     * @param publicExponent The public exponent to set.
+     *
+     * @return The updated {@link CreateRsaKeyOptions} object.
+     */
+    public CreateRsaKeyOptions setPublicExponent(Integer publicExponent) {
+        this.publicExponent = publicExponent;
+
+        return this;
+    }
+
+    /**
      * Set the key operations.
      *
      * @param keyOperations The key operations to set.
@@ -107,70 +176,27 @@ public class CreateRsaKeyOptions extends CreateKeyOptions {
     }
 
     /**
-     * Set the key size.
+     * Set a flag that indicates if the private key can be exported.
      *
-     * @param keySize The key size to set.
+     * @param exportable A flag that indicates if the private key can be exported.
      *
      * @return The updated {@link CreateRsaKeyOptions} object.
      */
-    public CreateRsaKeyOptions setKeySize(Integer keySize) {
-        this.keySize = keySize;
+    public CreateRsaKeyOptions setExportable(Boolean exportable) {
+        super.setExportable(exportable);
 
         return this;
     }
 
     /**
-     * Get the key size in bits.
+     * Set the policy rules under which the key can be exported.
      *
-     * @return The key size in bits.
-     */
-    public Integer getKeySize() {
-        return this.keySize;
-    }
-
-    /**
-     * Set whether the key being created is of HSM type or not.
-     *
-     * @param hardwareProtected The HSM value to set.
+     * @param releasePolicy The policy rules to set.
      *
      * @return The updated {@link CreateRsaKeyOptions} object.
      */
-    public CreateRsaKeyOptions setHardwareProtected(Boolean hardwareProtected) {
-        this.hardwareProtected = hardwareProtected;
-        KeyType keyType = hardwareProtected ? KeyType.RSA_HSM : KeyType.RSA;
-
-        setKeyType(keyType);
-
-        return this;
-    }
-
-    /**
-     * Get the HSM value of the key being created.
-     *
-     * @return The HSM value.
-     */
-    public Boolean isHardwareProtected() {
-        return this.hardwareProtected;
-    }
-
-    /**
-     * Get the public exponent for the key.
-     *
-     * @return The public exponent.
-     */
-    public Integer getPublicExponent() {
-        return publicExponent;
-    }
-
-    /**
-     * Set the public exponent for the key.
-     *
-     * @param publicExponent The public exponent to set.
-     *
-     * @return The updated {@link CreateRsaKeyOptions} object.
-     */
-    public CreateRsaKeyOptions setPublicExponent(Integer publicExponent) {
-        this.publicExponent = publicExponent;
+    public CreateRsaKeyOptions setReleasePolicy(KeyReleasePolicy releasePolicy) {
+        super.setReleasePolicy(releasePolicy);
 
         return this;
     }

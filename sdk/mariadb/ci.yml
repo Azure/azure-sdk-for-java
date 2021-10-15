@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/mariadb/
+      - sdk/mariadb/ci.yml
+      - sdk/mariadb/azure-resourcemanager-mariadb/
+    exclude:
+      - sdk/mariadb/pom.xml
+      - sdk/mariadb/azure-resourcemanager-mariadb/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/mariadb/
+      - sdk/mariadb/ci.yml
+      - sdk/mariadb/azure-resourcemanager-mariadb/
+    exclude:
+      - sdk/mariadb/pom.xml
+      - sdk/mariadb/azure-resourcemanager-mariadb/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

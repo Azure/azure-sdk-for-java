@@ -3,6 +3,7 @@
 
 package com.azure.containers.containerregistry.implementation.authentication;
 
+import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -17,17 +18,16 @@ public class ContainerRegistryRefreshTokenCredential {
     private final TokenCredential aadTokenCredential;
     private final TokenServiceImpl tokenService;
     private final String authenticationScope;
-    public static final String AAD_DEFAULT_SCOPE = "https://management.azure.com/.default";
 
     /**
      * Creates an instance of RefreshTokenCredential with default scheme "Bearer".
      * @param tokenService the container registry token service that calls the token rest APIs.
      * @param aadTokenCredential the ARM access token.
      */
-    ContainerRegistryRefreshTokenCredential(TokenServiceImpl tokenService, TokenCredential aadTokenCredential, String authenticationScope) {
+    ContainerRegistryRefreshTokenCredential(TokenServiceImpl tokenService, TokenCredential aadTokenCredential, ContainerRegistryAudience audience) {
         this.tokenService = tokenService;
         this.aadTokenCredential = aadTokenCredential;
-        this.authenticationScope = authenticationScope == null ? AAD_DEFAULT_SCOPE : authenticationScope;
+        this.authenticationScope = audience + "/.default";
     }
 
     /**

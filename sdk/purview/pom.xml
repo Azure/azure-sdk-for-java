@@ -34,7 +34,7 @@
           <plugin>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
+            <version>0.8.7</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>report-aggregate</id>
@@ -59,6 +59,7 @@
       <modules>
         <module>azure-analytics-purview-catalog</module>
         <module>azure-analytics-purview-scanning</module>
+        <module>azure-resourcemanager-purview</module>
       </modules>
     </profile>
   </profiles>

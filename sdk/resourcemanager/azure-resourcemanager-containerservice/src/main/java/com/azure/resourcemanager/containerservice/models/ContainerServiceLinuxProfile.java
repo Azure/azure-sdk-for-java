@@ -21,7 +21,7 @@ public final class ContainerServiceLinuxProfile {
     private String adminUsername;
 
     /*
-     * SSH configuration for Linux-based VMs running on Azure.
+     * The SSH configuration for Linux-based VMs running on Azure.
      */
     @JsonProperty(value = "ssh", required = true)
     private ContainerServiceSshConfiguration ssh;
@@ -47,7 +47,7 @@ public final class ContainerServiceLinuxProfile {
     }
 
     /**
-     * Get the ssh property: SSH configuration for Linux-based VMs running on Azure.
+     * Get the ssh property: The SSH configuration for Linux-based VMs running on Azure.
      *
      * @return the ssh value.
      */
@@ -56,7 +56,7 @@ public final class ContainerServiceLinuxProfile {
     }
 
     /**
-     * Set the ssh property: SSH configuration for Linux-based VMs running on Azure.
+     * Set the ssh property: The SSH configuration for Linux-based VMs running on Azure.
      *
      * @param ssh the ssh value to set.
      * @return the ContainerServiceLinuxProfile object itself.

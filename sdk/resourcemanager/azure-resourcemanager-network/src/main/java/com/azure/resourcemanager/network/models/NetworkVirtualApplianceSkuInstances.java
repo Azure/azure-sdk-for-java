@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** List of available Sku and instances. */
+/** Network Virtual Appliance Sku Instances List of available Sku and instances. */
 @Immutable
 public final class NetworkVirtualApplianceSkuInstances {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkVirtualApplianceSkuInstances.class);

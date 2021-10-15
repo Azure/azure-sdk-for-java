@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/batch/
+      - sdk/batch/ci.yml
+      - sdk/batch/azure-resourcemanager-batch/
+    exclude:
+      - sdk/batch/pom.xml
+      - sdk/batch/azure-resourcemanager-batch/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/batch/
+      - sdk/batch/ci.yml
+      - sdk/batch/azure-resourcemanager-batch/
+    exclude:
+      - sdk/batch/pom.xml
+      - sdk/batch/azure-resourcemanager-batch/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

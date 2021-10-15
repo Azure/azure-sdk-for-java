@@ -35,6 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersClient;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateOrderInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificatePatchResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.CertificateEmailInner;
 import com.azure.resourcemanager.appservice.fluent.models.CertificateOrderActionInner;
@@ -43,7 +44,6 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteSealInner;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateCollection;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderCollection;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderPatchResource;
-import com.azure.resourcemanager.appservice.models.AppServiceCertificatePatchResource;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
 import com.azure.resourcemanager.appservice.models.ReissueCertificateOrderRequest;
 import com.azure.resourcemanager.appservice.models.RenewCertificateOrderRequest;
@@ -179,7 +179,7 @@ public final class AppServiceCertificateOrdersClientImpl
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceCertificateOrderInner>> update(
             @HostParam("$host") String endpoint,
@@ -259,7 +259,7 @@ public final class AppServiceCertificateOrdersClientImpl
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
                 + "/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AppServiceCertificateResourceInner>> updateCertificate(
             @HostParam("$host") String endpoint,
@@ -268,7 +268,7 @@ public final class AppServiceCertificateOrdersClientImpl
             @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AppServiceCertificatePatchResource keyVaultCertificate,
+            @BodyParam("application/json") AppServiceCertificatePatchResourceInner keyVaultCertificate,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -2525,7 +2525,7 @@ public final class AppServiceCertificateOrdersClientImpl
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate) {
+        AppServiceCertificatePatchResourceInner keyVaultCertificate) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2591,7 +2591,7 @@ public final class AppServiceCertificateOrdersClientImpl
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate,
+        AppServiceCertificatePatchResourceInner keyVaultCertificate,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -2654,7 +2654,7 @@ public final class AppServiceCertificateOrdersClientImpl
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate) {
+        AppServiceCertificatePatchResourceInner keyVaultCertificate) {
         return updateCertificateWithResponseAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate)
             .flatMap(
                 (Response<AppServiceCertificateResourceInner> res) -> {
@@ -2683,7 +2683,7 @@ public final class AppServiceCertificateOrdersClientImpl
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate) {
+        AppServiceCertificatePatchResourceInner keyVaultCertificate) {
         return updateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate).block();
     }
 
@@ -2705,7 +2705,7 @@ public final class AppServiceCertificateOrdersClientImpl
         String resourceGroupName,
         String certificateOrderName,
         String name,
-        AppServiceCertificatePatchResource keyVaultCertificate,
+        AppServiceCertificatePatchResourceInner keyVaultCertificate,
         Context context) {
         return updateCertificateWithResponseAsync(
                 resourceGroupName, certificateOrderName, name, keyVaultCertificate, context)
@@ -3218,11 +3218,12 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the object.
+     * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3230,7 +3231,7 @@ public final class AppServiceCertificateOrdersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resendRequestEmailsWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, String name) {
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3251,9 +3252,12 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (nameIdentifier == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nameIdentifier is required and cannot be null."));
+        } else {
+            nameIdentifier.validate();
+        }
         final String accept = "application/json";
-        NameIdentifierInner nameIdentifier = new NameIdentifierInner();
-        nameIdentifier.withName(name);
         return FluxUtil
             .withContext(
                 context ->
@@ -3271,11 +3275,12 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the object.
+     * @param nameIdentifier Email address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3284,7 +3289,7 @@ public final class AppServiceCertificateOrdersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resendRequestEmailsWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, String name, Context context) {
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3305,9 +3310,12 @@ public final class AppServiceCertificateOrdersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (nameIdentifier == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nameIdentifier is required and cannot be null."));
+        } else {
+            nameIdentifier.validate();
+        }
         final String accept = "application/json";
-        NameIdentifierInner nameIdentifier = new NameIdentifierInner();
-        nameIdentifier.withName(name);
         context = this.client.mergeContext(context);
         return service
             .resendRequestEmails(
@@ -3322,60 +3330,48 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the object.
+     * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resendRequestEmailsAsync(String resourceGroupName, String certificateOrderName, String name) {
-        return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, name)
+    public Mono<Void> resendRequestEmailsAsync(
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier) {
+        return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, nameIdentifier)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resendRequestEmailsAsync(String resourceGroupName, String certificateOrderName) {
-        final String name = null;
-        return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, name)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Description for Verify domain ownership for this certificate order.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName Name of the certificate order.
+     * @param nameIdentifier Email address.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resendRequestEmails(String resourceGroupName, String certificateOrderName) {
-        final String name = null;
-        resendRequestEmailsAsync(resourceGroupName, certificateOrderName, name).block();
+    public void resendRequestEmails(
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier) {
+        resendRequestEmailsAsync(resourceGroupName, certificateOrderName, nameIdentifier).block();
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * Resend domain verification ownership email containing steps on how to verify a domain for a given certificate
+     * order.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
-     * @param name Name of the object.
+     * @param nameIdentifier Email address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -3384,12 +3380,19 @@ public final class AppServiceCertificateOrdersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resendRequestEmailsWithResponse(
-        String resourceGroupName, String certificateOrderName, String name, Context context) {
-        return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, name, context).block();
+        String resourceGroupName, String certificateOrderName, NameIdentifierInner nameIdentifier, Context context) {
+        return resendRequestEmailsWithResponseAsync(resourceGroupName, certificateOrderName, nameIdentifier, context)
+            .block();
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -3446,7 +3449,13 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -3501,7 +3510,13 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -3526,7 +3541,13 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.
@@ -3543,7 +3564,13 @@ public final class AppServiceCertificateOrdersClientImpl
     }
 
     /**
-     * Description for Verify domain ownership for this certificate order.
+     * This method is used to obtain the site seal information for an issued certificate. A site seal is a graphic that
+     * the certificate purchaser can embed on their web site to show their visitors information about their SSL
+     * certificate. If a web site visitor clicks on the site seal image, a pop-up page is displayed that contains
+     * detailed information about the SSL certificate. The site seal token is used to link the site seal graphic image
+     * to the appropriate certificate details pop-up page display when a user clicks on the site seal. The site seal
+     * images are expected to be static images and hosted by the reseller, to minimize delays for customer page load
+     * times.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName Name of the certificate order.

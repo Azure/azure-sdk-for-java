@@ -8,12 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/servicebus/
+      - sdk/servicebus/ci.data.yml
+      - sdk/servicebus/microsoft-azure-servicebus/
     exclude:
-      - sdk/servicebus/mgmt-v2015_08_01
-      - sdk/servicebus/mgmt-v2017_04_01
-      - sdk/servicebus/mgmt-v2018_01_01_preview
-      - sdk/servicebus/azure-messaging-servicebus
+      - sdk/servicebus/pom.xml
+      - sdk/servicebus/microsoft-azure-servicebus/pom.xml
 
 pr:
   branches:
@@ -24,12 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/servicebus/
+      - sdk/servicebus/ci.data.yml
+      - sdk/servicebus/microsoft-azure-servicebus/
     exclude:
-      - sdk/servicebus/mgmt-v2015_08_01
-      - sdk/servicebus/mgmt-v2017_04_01
-      - sdk/servicebus/mgmt-v2018_01_01_preview
-      - sdk/servicebus/azure-messaging-servicebus
+      - sdk/servicebus/pom.xml
+      - sdk/servicebus/microsoft-azure-servicebus/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -96,7 +96,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                                     if (((ManagementException) error).getResponse().getStatusCode() == 404) {
                                         return blobContainers
                                             .defineContainer(containerName)
-                                            .withExistingBlobService(
+                                            .withExistingStorageAccount(
                                                 parent().resourceGroupName(), storageAccount.name())
                                             .withPublicAccess(PublicAccess.NONE)
                                             .createAsync();

@@ -11,11 +11,12 @@ import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
 import com.azure.security.keyvault.jca.implementation.model.CertificateListResult;
 import com.azure.security.keyvault.jca.implementation.model.CertificatePolicy;
 import com.azure.security.keyvault.jca.implementation.model.KeyProperties;
+import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import com.azure.security.keyvault.jca.implementation.model.SecretBundle;
+import com.azure.security.keyvault.jca.implementation.model.SignResult;
 import com.azure.security.keyvault.jca.implementation.utils.AccessTokenUtil;
 import com.azure.security.keyvault.jca.implementation.utils.HttpUtil;
 import com.azure.security.keyvault.jca.implementation.utils.JsonConverterUtil;
-import com.azure.security.keyvault.jca.implementation.model.SignResult;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -117,6 +118,11 @@ public class KeyVaultClient {
     private String managedIdentity;
 
     /**
+     * Stores the token.
+     */
+    private AccessToken accessToken;
+
+    /**
      * Constructor for authentication with user-assigned managed identity.
      *
      * @param keyVaultUri the Azure Key Vault URI.
@@ -183,8 +189,21 @@ public class KeyVaultClient {
      * @return the access token.
      */
     private String getAccessToken() {
+        if (accessToken != null && !accessToken.isExpired()) {
+            return accessToken.getAccessToken();
+        }
+        accessToken = getAccessTokenByHttpRequest();
+        return accessToken.getAccessToken();
+    }
+
+    /**
+     * Get the access token.
+     *
+     * @return the access token.
+     */
+    private AccessToken getAccessTokenByHttpRequest() {
         LOGGER.entering("KeyVaultClient", "getAccessToken");
-        String accessToken = null;
+        AccessToken accessToken = null;
         try {
             String resource = URLEncoder.encode(keyVaultBaseUri, "UTF-8");
             if (managedIdentity != null) {
@@ -221,18 +240,17 @@ public class KeyVaultClient {
             if (response != null) {
                 certificateListResult = (CertificateListResult) JsonConverterUtil.fromJson(response,
                     CertificateListResult.class);
-            } else {
-                url = null;
             }
-            if (certificateListResult != null && certificateListResult.getValue().size() > 0) {
+            if (certificateListResult != null) {
+                url = certificateListResult.getNextLink();
                 for (CertificateItem certificateItem : certificateListResult.getValue()) {
                     String id = certificateItem.getId();
                     String alias = id.substring(id.indexOf("certificates") + "certificates".length() + 1);
                     result.add(alias);
                 }
-                url = certificateListResult.getNextLink();
+            } else {
+                url = null;
             }
-
         }
         return result;
     }
@@ -310,7 +328,10 @@ public class KeyVaultClient {
             // and we can't access private key(which is not exportable), we will use
             // the Azure Key Vault Secrets API to obtain the private key (keyless).
             LOGGER.exiting("KeyVaultClient", "getKey", null);
-            return new KeyVaultPrivateKey(keyType, certificateBundle.getKid());
+            return Optional.ofNullable(certificateBundle)
+                           .map(CertificateBundle::getKid)
+                           .map(kid -> new KeyVaultPrivateKey(keyType, kid, this))
+                           .orElse(null);
         }
         String certificateSecretUri = certificateBundle.getSid();
         HashMap<String, String> headers = new HashMap<>();

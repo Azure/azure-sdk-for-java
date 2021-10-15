@@ -5,74 +5,64 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.MSDeployProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** MSDeploy ARM PUT information. */
-@JsonFlatten
 @Fluent
-public class MSDeploy extends ProxyOnlyResource {
+public final class MSDeploy extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeploy.class);
 
     /*
-     * Package URI
+     * Core resource properties
      */
-    @JsonProperty(value = "properties.packageUri")
-    private String packageUri;
+    @JsonProperty(value = "properties")
+    private MSDeployProperties innerProperties;
 
-    /*
-     * SQL Connection String
+    /**
+     * Get the innerProperties property: Core resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.connectionString")
-    private String connectionString;
+    private MSDeployProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Database Type
-     */
-    @JsonProperty(value = "properties.dbType")
-    private String dbType;
+    /** {@inheritDoc} */
+    @Override
+    public MSDeploy withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
-    /*
-     * URI of MSDeploy Parameters file. Must not be set if SetParameters is
-     * used.
+    /**
+     * Get the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
+     * MSDeploy rule.
+     *
+     * @return the addOnPackages value.
      */
-    @JsonProperty(value = "properties.setParametersXmlFileUri")
-    private String setParametersXmlFileUri;
+    public List<MSDeployCore> addOnPackages() {
+        return this.innerProperties() == null ? null : this.innerProperties().addOnPackages();
+    }
 
-    /*
-     * MSDeploy Parameters. Must not be set if SetParametersXmlFileUri is used.
+    /**
+     * Set the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
+     * MSDeploy rule.
+     *
+     * @param addOnPackages the addOnPackages value to set.
+     * @return the MSDeploy object itself.
      */
-    @JsonProperty(value = "properties.setParameters")
-    private Map<String, String> setParameters;
-
-    /*
-     * Controls whether the MSDeploy operation skips the App_Data directory.
-     * If set to <code>true</code>, the existing App_Data directory on the
-     * destination
-     * will not be deleted, and any App_Data directory in the source will be
-     * ignored.
-     * Setting is <code>false</code> by default.
-     */
-    @JsonProperty(value = "properties.skipAppData")
-    private Boolean skipAppData;
-
-    /*
-     * Sets the AppOffline rule while the MSDeploy operation executes.
-     * Setting is <code>false</code> by default.
-     */
-    @JsonProperty(value = "properties.appOffline")
-    private Boolean appOffline;
-
-    /*
-     * List of Add-On packages. Add-On packages implicitly enable the Do Not
-     * Delete MSDeploy rule.
-     */
-    @JsonProperty(value = "properties.addOnPackages")
-    private List<MSDeployCore> addOnPackages;
+    public MSDeploy withAddOnPackages(List<MSDeployCore> addOnPackages) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MSDeployProperties();
+        }
+        this.innerProperties().withAddOnPackages(addOnPackages);
+        return this;
+    }
 
     /**
      * Get the packageUri property: Package URI.
@@ -80,7 +70,7 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the packageUri value.
      */
     public String packageUri() {
-        return this.packageUri;
+        return this.innerProperties() == null ? null : this.innerProperties().packageUri();
     }
 
     /**
@@ -90,7 +80,10 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the MSDeploy object itself.
      */
     public MSDeploy withPackageUri(String packageUri) {
-        this.packageUri = packageUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MSDeployProperties();
+        }
+        this.innerProperties().withPackageUri(packageUri);
         return this;
     }
 
@@ -100,7 +93,7 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the connectionString value.
      */
     public String connectionString() {
-        return this.connectionString;
+        return this.innerProperties() == null ? null : this.innerProperties().connectionString();
     }
 
     /**
@@ -110,7 +103,10 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the MSDeploy object itself.
      */
     public MSDeploy withConnectionString(String connectionString) {
-        this.connectionString = connectionString;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MSDeployProperties();
+        }
+        this.innerProperties().withConnectionString(connectionString);
         return this;
     }
 
@@ -120,7 +116,7 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the dbType value.
      */
     public String dbType() {
-        return this.dbType;
+        return this.innerProperties() == null ? null : this.innerProperties().dbType();
     }
 
     /**
@@ -130,7 +126,10 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the MSDeploy object itself.
      */
     public MSDeploy withDbType(String dbType) {
-        this.dbType = dbType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MSDeployProperties();
+        }
+        this.innerProperties().withDbType(dbType);
         return this;
     }
 
@@ -141,7 +140,7 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the setParametersXmlFileUri value.
      */
     public String setParametersXmlFileUri() {
-        return this.setParametersXmlFileUri;
+        return this.innerProperties() == null ? null : this.innerProperties().setParametersXmlFileUri();
     }
 
     /**
@@ -152,7 +151,10 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the MSDeploy object itself.
      */
     public MSDeploy withSetParametersXmlFileUri(String setParametersXmlFileUri) {
-        this.setParametersXmlFileUri = setParametersXmlFileUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MSDeployProperties();
+        }
+        this.innerProperties().withSetParametersXmlFileUri(setParametersXmlFileUri);
         return this;
     }
 
@@ -162,7 +164,7 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the setParameters value.
      */
     public Map<String, String> setParameters() {
-        return this.setParameters;
+        return this.innerProperties() == null ? null : this.innerProperties().setParameters();
     }
 
     /**
@@ -172,7 +174,10 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the MSDeploy object itself.
      */
     public MSDeploy withSetParameters(Map<String, String> setParameters) {
-        this.setParameters = setParameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MSDeployProperties();
+        }
+        this.innerProperties().withSetParameters(setParameters);
         return this;
     }
 
@@ -184,7 +189,7 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the skipAppData value.
      */
     public Boolean skipAppData() {
-        return this.skipAppData;
+        return this.innerProperties() == null ? null : this.innerProperties().skipAppData();
     }
 
     /**
@@ -196,7 +201,10 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the MSDeploy object itself.
      */
     public MSDeploy withSkipAppData(Boolean skipAppData) {
-        this.skipAppData = skipAppData;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MSDeployProperties();
+        }
+        this.innerProperties().withSkipAppData(skipAppData);
         return this;
     }
 
@@ -207,7 +215,7 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the appOffline value.
      */
     public Boolean appOffline() {
-        return this.appOffline;
+        return this.innerProperties() == null ? null : this.innerProperties().appOffline();
     }
 
     /**
@@ -218,36 +226,10 @@ public class MSDeploy extends ProxyOnlyResource {
      * @return the MSDeploy object itself.
      */
     public MSDeploy withAppOffline(Boolean appOffline) {
-        this.appOffline = appOffline;
-        return this;
-    }
-
-    /**
-     * Get the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
-     * MSDeploy rule.
-     *
-     * @return the addOnPackages value.
-     */
-    public List<MSDeployCore> addOnPackages() {
-        return this.addOnPackages;
-    }
-
-    /**
-     * Set the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
-     * MSDeploy rule.
-     *
-     * @param addOnPackages the addOnPackages value to set.
-     * @return the MSDeploy object itself.
-     */
-    public MSDeploy withAddOnPackages(List<MSDeployCore> addOnPackages) {
-        this.addOnPackages = addOnPackages;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public MSDeploy withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MSDeployProperties();
+        }
+        this.innerProperties().withAppOffline(appOffline);
         return this;
     }
 
@@ -259,8 +241,8 @@ public class MSDeploy extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (addOnPackages() != null) {
-            addOnPackages().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

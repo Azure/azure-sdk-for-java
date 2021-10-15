@@ -63,7 +63,7 @@ public class AnalyzeActions {
                     .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
                     .setExtractKeyPhrasesActions(
                         new ExtractKeyPhrasesAction().setModelVersion("latest")),
-                new AnalyzeActionsOptions().setIncludeStatistics(false),
+                new AnalyzeActionsOptions(),
                 Context.NONE);
 
         // Task operation statistics details

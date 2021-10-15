@@ -149,8 +149,12 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         logger
             .warn("shouldRetryQueryPlanAndAddress() Retrying on endpoint {}, operationType = {}, count = {}, " +
-                      "isAddressRefresh = {}",
-                  this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount, this.request.isAddressRefresh());
+                      "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
+                      "shouldForceCollectionRoutingMapRefresh = {}",
+                  this.locationEndpoint, this.request.getOperationType(), this.queryPlanAddressRefreshCount,
+                this.request.isAddressRefresh(),
+                this.request.shouldForceAddressRefresh(),
+                this.request.forceCollectionRoutingMapRefresh);
 
         Duration retryDelay = Duration.ZERO;
         return Mono.just(ShouldRetryResult.retryAfter(retryDelay));

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections?api-version=2021-06-15-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e6a3f395-a275-4e5b-8366-f4067cc2424c",
@@ -16,13 +16,13 @@
       "X-Microsoft-Skype-Chain-ID" : "db8807ff-a257-4954-9d33-d7c41b656bab",
       "Body" : "{\"callLegId\":\"28201300-cb09-4fa2-83af-4a5047999d33\",\"callConnectionId\":\"28201300-cb09-4fa2-83af-4a5047999d33\"}",
       "x-ms-client-request-id" : "e6a3f395-a275-4e5b-8366-f4067cc2424c",
-      "Date" : "Wed, 16 Jun 2021 01:55:42 GMT",
+      "Date" : "Wed, 01 Sep 2021 01:55:42 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/serverCalls/aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L0pndHZNTW5mYUU2N3ViU3FKb19ndFE_aT0xJmU9NjM3NTg0MzkzMzg3ODg3MDI3/participants?api-version=2021-06-15-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/serverCalls/aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L0pndHZNTW5mYUU2N3ViU3FKb19ndFE_aT0xJmU9NjM3NTg0MzkzMzg3ODg3MDI3/participants?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "399296a2-a96a-4993-8fc0-3d048c0f2d32",
@@ -37,13 +37,13 @@
       "X-Microsoft-Skype-Chain-ID" : "988677f8-d2c6-487a-8da4-3ec63bb74f5a",
       "Body" : "{\"participantId\":\"4d10b38c-5a66-4bd2-9324-dae6b9c2a5f0\"}",
       "x-ms-client-request-id" : "399296a2-a96a-4993-8fc0-3d048c0f2d32",
-      "Date" : "Wed, 16 Jun 2021 01:56:21 GMT",
+      "Date" : "Wed, 01 Sep 2021 01:56:21 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/serverCalls/aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L0pndHZNTW5mYUU2N3ViU3FKb19ndFE_aT0xJmU9NjM3NTg0MzkzMzg3ODg3MDI3/participants/4d10b38c-5a66-4bd2-9324-dae6b9c2a5f0?api-version=2021-06-15-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/serverCalls/aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L0pndHZNTW5mYUU2N3ViU3FKb19ndFE_aT0xJmU9NjM3NTg0MzkzMzg3ODg3MDI3/participants/4d10b38c-5a66-4bd2-9324-dae6b9c2a5f0?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b4f50ae7-7837-4ae9-ae9d-4b4e9866aa74"
@@ -56,12 +56,12 @@
       "StatusCode" : "202",
       "X-Microsoft-Skype-Chain-ID" : "fc4160a1-3188-4333-8f5e-1054f4519fd8",
       "x-ms-client-request-id" : "b4f50ae7-7837-4ae9-ae9d-4b4e9866aa74",
-      "Date" : "Wed, 16 Jun 2021 01:56:39 GMT"
+      "Date" : "Wed, 01 Sep 2021 01:56:39 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/28201300-cb09-4fa2-83af-4a5047999d33/:hangup?api-version=2021-06-15-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/28201300-cb09-4fa2-83af-4a5047999d33/:hangup?api-version=2021-08-30-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.1 (16.0.1; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c37951e7-4cfe-47da-ae09-eef1bd63f564"
@@ -74,7 +74,7 @@
       "StatusCode" : "202",
       "X-Microsoft-Skype-Chain-ID" : "84e2f1a2-d90b-48c8-aa5f-56acd9fdf818",
       "x-ms-client-request-id" : "c37951e7-4cfe-47da-ae09-eef1bd63f564",
-      "Date" : "Wed, 16 Jun 2021 01:57:02 GMT"
+      "Date" : "Wed, 01 Sep 2021 01:57:02 GMT"
     },
     "Exception" : null
   } ],

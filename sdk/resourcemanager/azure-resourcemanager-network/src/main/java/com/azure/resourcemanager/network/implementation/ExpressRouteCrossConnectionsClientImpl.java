@@ -43,7 +43,6 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -246,7 +245,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -288,7 +287,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -385,7 +384,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -439,7 +438,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -558,7 +557,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -609,7 +608,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -718,7 +717,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -779,7 +778,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -978,7 +977,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
-     * @param tags Resource tags.
+     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -986,7 +985,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ExpressRouteCrossConnectionInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, Map<String, String> tags) {
+        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1007,10 +1006,16 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (crossConnectionParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter crossConnectionParameters is required and cannot be null."));
+        } else {
+            crossConnectionParameters.validate();
+        }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        TagsObject crossConnectionParameters = new TagsObject();
-        crossConnectionParameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -1032,7 +1037,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
-     * @param tags Resource tags.
+     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1041,7 +1046,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExpressRouteCrossConnectionInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1062,10 +1067,16 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (crossConnectionParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter crossConnectionParameters is required and cannot be null."));
+        } else {
+            crossConnectionParameters.validate();
+        }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        TagsObject crossConnectionParameters = new TagsObject();
-        crossConnectionParameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -1084,7 +1095,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
-     * @param tags Resource tags.
+     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1092,8 +1103,8 @@ public final class ExpressRouteCrossConnectionsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRouteCrossConnectionInner> updateTagsAsync(
-        String resourceGroupName, String crossConnectionName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, crossConnectionName, tags)
+        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, crossConnectionName, crossConnectionParameters)
             .flatMap(
                 (Response<ExpressRouteCrossConnectionInner> res) -> {
                     if (res.getValue() != null) {
@@ -1109,24 +1120,16 @@ public final class ExpressRouteCrossConnectionsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
+     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExpressRouteCrossConnectionInner> updateTagsAsync(
-        String resourceGroupName, String crossConnectionName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, crossConnectionName, tags)
-            .flatMap(
-                (Response<ExpressRouteCrossConnectionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public ExpressRouteCrossConnectionInner updateTags(
+        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters) {
+        return updateTagsAsync(resourceGroupName, crossConnectionName, crossConnectionParameters).block();
     }
 
     /**
@@ -1134,23 +1137,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the cross connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRouteCrossConnectionInner updateTags(String resourceGroupName, String crossConnectionName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, crossConnectionName, tags).block();
-    }
-
-    /**
-     * Updates an express route cross connection tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param crossConnectionName The name of the cross connection.
-     * @param tags Resource tags.
+     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1159,8 +1146,9 @@ public final class ExpressRouteCrossConnectionsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExpressRouteCrossConnectionInner> updateTagsWithResponse(
-        String resourceGroupName, String crossConnectionName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, crossConnectionName, tags, context).block();
+        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, crossConnectionName, crossConnectionParameters, context)
+            .block();
     }
 
     /**
@@ -1205,7 +1193,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1267,7 +1255,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1519,7 +1507,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1580,7 +1568,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1840,7 +1828,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1903,7 +1891,7 @@ public final class ExpressRouteCrossConnectionsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

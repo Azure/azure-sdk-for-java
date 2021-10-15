@@ -3,16 +3,21 @@
 
 package com.azure.resourcemanager.containerservice;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.Code;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
+import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import org.junit.jupiter.api.Assertions;
@@ -36,6 +41,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
     @Test
     public void canCRUDKubernetesCluster() throws Exception {
+        // enable preview feature of ACR Teleport for AKS
+        Context context = new Context(
+            AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
+            new HttpHeaders().set("EnableACRTeleport", "true"));
+
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
         String agentPoolName = generateRandomResourceName("ap0", 10);
@@ -59,6 +69,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             servicePrincipalSecret = credentialsMap.get("clientSecret");
         }
 
+        /*
+        KubeletDiskType requires registering following preview feature:
+            azure.features().register("Microsoft.ContainerService", "KubeletDisk");
+         */
+
         // create
         KubernetesCluster kubernetesCluster =
             containerServiceManager
@@ -72,8 +87,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withServicePrincipalClientId(servicePrincipalClientId)
                 .withServicePrincipalSecret(servicePrincipalSecret)
                 .defineAgentPool(agentPoolName)
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
                     .withAgentPoolVirtualMachineCount(1)
+                    .withOSDiskSizeInGB(30)
+                    .withOSDiskType(OSDiskType.EPHEMERAL)
+                    .withKubeletDiskType(KubeletDiskType.TEMPORARY)
                     .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
                     .withAgentPoolMode(AgentPoolMode.SYSTEM)
                     .attach()
@@ -83,7 +101,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                     .attach()
                 .withDnsPrefix("mp1" + dnsPrefix)
                 .withTag("tag1", "value1")
-                .create();
+                .create(context);
 
         Assertions.assertNotNull(kubernetesCluster.id());
         Assertions.assertEquals(Region.US_CENTRAL, kubernetesCluster.region());
@@ -93,9 +111,12 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         KubernetesClusterAgentPool agentPool = kubernetesCluster.agentPools().get(agentPoolName);
         Assertions.assertNotNull(agentPool);
         Assertions.assertEquals(1, agentPool.count());
-        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_D2_V2, agentPool.vmSize());
+        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_F4S_V2, agentPool.vmSize());
         Assertions.assertEquals(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS, agentPool.type());
         Assertions.assertEquals(AgentPoolMode.SYSTEM, agentPool.mode());
+        Assertions.assertEquals(OSDiskType.EPHEMERAL, agentPool.osDiskType());
+        Assertions.assertEquals(30, agentPool.osDiskSizeInGB());
+        Assertions.assertEquals(KubeletDiskType.TEMPORARY, agentPool.kubeletDiskType());
 
         agentPool = kubernetesCluster.agentPools().get(agentPoolName1);
         Assertions.assertNotNull(agentPool);
@@ -121,7 +142,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .update()
                 .updateAgentPool(agentPoolName1)
                     .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                    .withAgentPoolVirtualMachineCount(5)
+                    .withAgentPoolVirtualMachineCount(2)
+                    .withKubeletDiskType(KubeletDiskType.OS)
                     .parent()
                 .defineAgentPool(agentPoolName2)
                     .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
@@ -130,13 +152,14 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
-                .apply();
+                .apply(context);
 
         Assertions.assertEquals(3, kubernetesCluster.agentPools().size());
 
         agentPool = kubernetesCluster.agentPools().get(agentPoolName1);
-        Assertions.assertEquals(5, agentPool.count());
+        Assertions.assertEquals(2, agentPool.count());
         Assertions.assertEquals(AgentPoolMode.SYSTEM, agentPool.mode());
+        Assertions.assertEquals(KubeletDiskType.OS, agentPool.kubeletDiskType());
 
         agentPool = kubernetesCluster.agentPools().get(agentPoolName2);
         Assertions.assertNotNull(agentPool);

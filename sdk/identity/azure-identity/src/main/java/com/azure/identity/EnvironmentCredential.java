@@ -47,7 +47,8 @@ public class EnvironmentCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     EnvironmentCredential(IdentityClientOptions identityClientOptions) {
-        this.configuration = Configuration.getGlobalConfiguration().clone();
+        this.configuration = identityClientOptions.getConfiguration() == null
+            ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
         TokenCredential targetCredential = null;
 
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
@@ -122,7 +123,9 @@ public class EnvironmentCredential implements TokenCredential {
         if (tokenCredential == null) {
             return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException(
                     "EnvironmentCredential authentication unavailable."
-                            + " Environment variables are not fully configured.")));
+                        + " Environment variables are not fully configured."
+                        + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
+                        + " https://aka.ms/azsdk/net/identity/environmentcredential/troubleshoot")));
         } else {
             return tokenCredential.getToken(request);
         }

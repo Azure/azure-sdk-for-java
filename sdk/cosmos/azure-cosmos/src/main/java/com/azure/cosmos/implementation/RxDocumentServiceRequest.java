@@ -50,6 +50,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     private volatile Integer defaultReplicaIndex;
 
     private boolean isAddressRefresh;
+    private boolean isForcedAddressRefresh;
 
     public DocumentServiceRequestContext requestContext;
 
@@ -1097,12 +1098,22 @@ public class RxDocumentServiceRequest implements Cloneable {
     }
 
     /**
+     * Getter for property 'addressRefresh'.
+     *
+     * @return Value for property 'addressRefresh'.
+     */
+    public boolean shouldForceAddressRefresh() {
+        return isForcedAddressRefresh;
+    }
+
+    /**
      * Setter for property 'addressRefresh'.
      *
      * @param addressRefresh Value to set for property 'addressRefresh'.
      */
-    public void setAddressRefresh(final boolean addressRefresh) {
+    public void setAddressRefresh(final boolean addressRefresh, final boolean shouldForceAddressRefresh) {
         isAddressRefresh = addressRefresh;
+        isForcedAddressRefresh = shouldForceAddressRefresh;
     }
 
     public String getThroughputControlGroupName() { return this.throughputControlGroupName; }

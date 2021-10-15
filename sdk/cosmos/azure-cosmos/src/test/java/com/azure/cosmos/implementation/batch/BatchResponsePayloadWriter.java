@@ -3,18 +3,18 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.TransactionalBatchOperationResult;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
 
 class BatchResponsePayloadWriter {
 
-    private List<TransactionalBatchOperationResult> results;
+    private List<CosmosBatchOperationResult> results;
 
-    BatchResponsePayloadWriter(List<TransactionalBatchOperationResult> results) {
+    BatchResponsePayloadWriter(List<CosmosBatchOperationResult> results) {
         this.results = results;
     }
 
@@ -25,7 +25,7 @@ class BatchResponsePayloadWriter {
     private ArrayNode writeOperationResult() {
         ArrayNode arrayNode =  Utils.getSimpleObjectMapper().createArrayNode();
 
-        for(TransactionalBatchOperationResult result : results) {
+        for(CosmosBatchOperationResult result : results) {
             JsonSerializable operationJsonSerializable = writeResult(result);
 
             arrayNode.add(operationJsonSerializable.getPropertyBag());
@@ -33,7 +33,7 @@ class BatchResponsePayloadWriter {
         return arrayNode;
     }
 
-    private JsonSerializable writeResult(TransactionalBatchOperationResult result) {
+    private JsonSerializable writeResult(CosmosBatchOperationResult result) {
 
         JsonSerializable jsonSerializable = new JsonSerializable();
         jsonSerializable.set(BatchRequestResponseConstants.FIELD_STATUS_CODE, result.getStatusCode());

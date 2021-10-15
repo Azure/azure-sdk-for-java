@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,35 +12,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** ApiRelease details. */
-@JsonFlatten
 @Fluent
-public class ApiReleaseContractInner extends ProxyResource {
+public final class ApiReleaseContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiReleaseContractInner.class);
 
     /*
-     * Identifier of the API the release belongs to.
+     * ApiRelease entity contract properties.
      */
-    @JsonProperty(value = "properties.apiId")
-    private String apiId;
+    @JsonProperty(value = "properties")
+    private ApiReleaseContractProperties innerProperties;
 
-    /*
-     * The time the API was released. The date conforms to the following
-     * format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
+    /**
+     * Get the innerProperties property: ApiRelease entity contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDateTime;
-
-    /*
-     * The time the API release was updated.
-     */
-    @JsonProperty(value = "properties.updatedDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedDateTime;
-
-    /*
-     * Release Notes
-     */
-    @JsonProperty(value = "properties.notes")
-    private String notes;
+    private ApiReleaseContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the apiId property: Identifier of the API the release belongs to.
@@ -49,7 +37,7 @@ public class ApiReleaseContractInner extends ProxyResource {
      * @return the apiId value.
      */
     public String apiId() {
-        return this.apiId;
+        return this.innerProperties() == null ? null : this.innerProperties().apiId();
     }
 
     /**
@@ -59,7 +47,10 @@ public class ApiReleaseContractInner extends ProxyResource {
      * @return the ApiReleaseContractInner object itself.
      */
     public ApiReleaseContractInner withApiId(String apiId) {
-        this.apiId = apiId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiReleaseContractProperties();
+        }
+        this.innerProperties().withApiId(apiId);
         return this;
     }
 
@@ -70,7 +61,7 @@ public class ApiReleaseContractInner extends ProxyResource {
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
-        return this.createdDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().createdDateTime();
     }
 
     /**
@@ -79,7 +70,7 @@ public class ApiReleaseContractInner extends ProxyResource {
      * @return the updatedDateTime value.
      */
     public OffsetDateTime updatedDateTime() {
-        return this.updatedDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().updatedDateTime();
     }
 
     /**
@@ -88,7 +79,7 @@ public class ApiReleaseContractInner extends ProxyResource {
      * @return the notes value.
      */
     public String notes() {
-        return this.notes;
+        return this.innerProperties() == null ? null : this.innerProperties().notes();
     }
 
     /**
@@ -98,7 +89,10 @@ public class ApiReleaseContractInner extends ProxyResource {
      * @return the ApiReleaseContractInner object itself.
      */
     public ApiReleaseContractInner withNotes(String notes) {
-        this.notes = notes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiReleaseContractProperties();
+        }
+        this.innerProperties().withNotes(notes);
         return this;
     }
 
@@ -108,5 +102,8 @@ public class ApiReleaseContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

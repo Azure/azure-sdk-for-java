@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/resourcegraph/
+      - sdk/resourcegraph/ci.yml
+      - sdk/resourcegraph/azure-resourcemanager-resourcegraph/
+    exclude:
+      - sdk/resourcegraph/pom.xml
+      - sdk/resourcegraph/azure-resourcemanager-resourcegraph/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/resourcegraph/
+      - sdk/resourcegraph/ci.yml
+      - sdk/resourcegraph/azure-resourcemanager-resourcegraph/
+    exclude:
+      - sdk/resourcegraph/pom.xml
+      - sdk/resourcegraph/azure-resourcemanager-resourcegraph/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

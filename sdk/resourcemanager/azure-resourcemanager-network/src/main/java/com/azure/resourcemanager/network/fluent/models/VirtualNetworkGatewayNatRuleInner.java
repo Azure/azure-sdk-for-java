@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -17,10 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VirtualNetworkGatewayNatRule Resource. */
-@JsonFlatten
 @Fluent
-public class VirtualNetworkGatewayNatRuleInner extends SubResource {
+public final class VirtualNetworkGatewayNatRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayNatRuleInner.class);
+
+    /*
+     * Properties of the Virtual Network Gateway NAT rule.
+     */
+    @JsonProperty(value = "properties")
+    private VirtualNetworkGatewayNatRuleProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -41,41 +45,14 @@ public class VirtualNetworkGatewayNatRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The provisioning state of the NAT Rule resource.
+    /**
+     * Get the innerProperties property: Properties of the Virtual Network Gateway NAT rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The type of NAT rule for VPN NAT.
-     */
-    @JsonProperty(value = "properties.type")
-    private VpnNatRuleType typePropertiesType;
-
-    /*
-     * The Source NAT direction of a VPN NAT.
-     */
-    @JsonProperty(value = "properties.mode")
-    private VpnNatRuleMode mode;
-
-    /*
-     * The private IP address internal mapping for NAT.
-     */
-    @JsonProperty(value = "properties.internalMappings")
-    private List<VpnNatRuleMapping> internalMappings;
-
-    /*
-     * The private IP address external mapping for NAT.
-     */
-    @JsonProperty(value = "properties.externalMappings")
-    private List<VpnNatRuleMapping> externalMappings;
-
-    /*
-     * The IP Configuration ID this NAT rule applies to.
-     */
-    @JsonProperty(value = "properties.ipConfigurationId")
-    private String ipConfigurationId;
+    private VirtualNetworkGatewayNatRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
@@ -117,32 +94,42 @@ public class VirtualNetworkGatewayNatRuleInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkGatewayNatRuleInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the NAT Rule resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the typePropertiesType property: The type of NAT rule for VPN NAT.
+     * Get the type property: The type of NAT rule for VPN NAT.
      *
-     * @return the typePropertiesType value.
+     * @return the type value.
      */
     public VpnNatRuleType typePropertiesType() {
-        return this.typePropertiesType;
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
-     * Set the typePropertiesType property: The type of NAT rule for VPN NAT.
+     * Set the type property: The type of NAT rule for VPN NAT.
      *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param type the type value to set.
      * @return the VirtualNetworkGatewayNatRuleInner object itself.
      */
-    public VirtualNetworkGatewayNatRuleInner withTypePropertiesType(VpnNatRuleType typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
+    public VirtualNetworkGatewayNatRuleInner withTypePropertiesType(VpnNatRuleType type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayNatRuleProperties();
+        }
+        this.innerProperties().withType(type);
         return this;
     }
 
@@ -152,7 +139,7 @@ public class VirtualNetworkGatewayNatRuleInner extends SubResource {
      * @return the mode value.
      */
     public VpnNatRuleMode mode() {
-        return this.mode;
+        return this.innerProperties() == null ? null : this.innerProperties().mode();
     }
 
     /**
@@ -162,7 +149,10 @@ public class VirtualNetworkGatewayNatRuleInner extends SubResource {
      * @return the VirtualNetworkGatewayNatRuleInner object itself.
      */
     public VirtualNetworkGatewayNatRuleInner withMode(VpnNatRuleMode mode) {
-        this.mode = mode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayNatRuleProperties();
+        }
+        this.innerProperties().withMode(mode);
         return this;
     }
 
@@ -172,7 +162,7 @@ public class VirtualNetworkGatewayNatRuleInner extends SubResource {
      * @return the internalMappings value.
      */
     public List<VpnNatRuleMapping> internalMappings() {
-        return this.internalMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().internalMappings();
     }
 
     /**
@@ -182,7 +172,10 @@ public class VirtualNetworkGatewayNatRuleInner extends SubResource {
      * @return the VirtualNetworkGatewayNatRuleInner object itself.
      */
     public VirtualNetworkGatewayNatRuleInner withInternalMappings(List<VpnNatRuleMapping> internalMappings) {
-        this.internalMappings = internalMappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayNatRuleProperties();
+        }
+        this.innerProperties().withInternalMappings(internalMappings);
         return this;
     }
 
@@ -192,7 +185,7 @@ public class VirtualNetworkGatewayNatRuleInner extends SubResource {
      * @return the externalMappings value.
      */
     public List<VpnNatRuleMapping> externalMappings() {
-        return this.externalMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().externalMappings();
     }
 
     /**
@@ -202,7 +195,10 @@ public class VirtualNetworkGatewayNatRuleInner extends SubResource {
      * @return the VirtualNetworkGatewayNatRuleInner object itself.
      */
     public VirtualNetworkGatewayNatRuleInner withExternalMappings(List<VpnNatRuleMapping> externalMappings) {
-        this.externalMappings = externalMappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayNatRuleProperties();
+        }
+        this.innerProperties().withExternalMappings(externalMappings);
         return this;
     }
 
@@ -212,7 +208,7 @@ public class VirtualNetworkGatewayNatRuleInner extends SubResource {
      * @return the ipConfigurationId value.
      */
     public String ipConfigurationId() {
-        return this.ipConfigurationId;
+        return this.innerProperties() == null ? null : this.innerProperties().ipConfigurationId();
     }
 
     /**
@@ -222,14 +218,10 @@ public class VirtualNetworkGatewayNatRuleInner extends SubResource {
      * @return the VirtualNetworkGatewayNatRuleInner object itself.
      */
     public VirtualNetworkGatewayNatRuleInner withIpConfigurationId(String ipConfigurationId) {
-        this.ipConfigurationId = ipConfigurationId;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualNetworkGatewayNatRuleInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayNatRuleProperties();
+        }
+        this.innerProperties().withIpConfigurationId(ipConfigurationId);
         return this;
     }
 
@@ -239,11 +231,8 @@ public class VirtualNetworkGatewayNatRuleInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (internalMappings() != null) {
-            internalMappings().forEach(e -> e.validate());
-        }
-        if (externalMappings() != null) {
-            externalMappings().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

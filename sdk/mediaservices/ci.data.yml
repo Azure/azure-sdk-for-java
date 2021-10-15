@@ -8,13 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/mediaservices/
+      - sdk/mediaservices/ci.data.yml
+      - sdk/mediaservices/microsoft-azure-media/
     exclude:
-      - sdk/mediaservices/mgmt-v2015_10_01
-      - sdk/mediaservices/mgmt-v2018_03_30_preview
-      - sdk/mediaservices/mgmt-v2018_06_01_preview
-      - sdk/mediaservices/mgmt-v2018_07_01
-      - sdk/mediaservices/mgmt-v2019_05_01_preview
+      - sdk/mediaservices/pom.xml
+      - sdk/mediaservices/microsoft-azure-media/pom.xml
 
 pr:
   branches:
@@ -25,13 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/mediaservices/
+      - sdk/mediaservices/ci.data.yml
+      - sdk/mediaservices/microsoft-azure-media/
     exclude:
-      - sdk/mediaservices/mgmt-v2015_10_01
-      - sdk/mediaservices/mgmt-v2018_03_30_preview
-      - sdk/mediaservices/mgmt-v2018_06_01_preview
-      - sdk/mediaservices/mgmt-v2018_07_01
-      - sdk/mediaservices/mgmt-v2019_05_01_preview
+      - sdk/mediaservices/pom.xml
+      - sdk/mediaservices/microsoft-azure-media/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

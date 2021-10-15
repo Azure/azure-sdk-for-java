@@ -5,25 +5,19 @@ package com.azure.cosmos.encryption;
 
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDatabase;
-import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
-import com.azure.cosmos.encryption.models.CosmosEncryptionType;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientHelper.CosmosClientAccessor;
-import com.azure.cosmos.models.ClientEncryptionIncludedPath;
-import com.azure.cosmos.models.ClientEncryptionPolicy;
-import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -38,14 +32,8 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class EncryptionSyncApiCrudTest extends TestSuiteBase {
     private CosmosClient client;
-    private CosmosDatabase cosmosDatabase;
-    private static final int TIMEOUT = 6000_000;
     private CosmosEncryptionClient cosmosEncryptionClient;
-    private CosmosEncryptionDatabase cosmosEncryptionDatabase;
     private CosmosEncryptionContainer cosmosEncryptionContainer;
-    private EncryptionKeyWrapMetadata metadata1;
-    private EncryptionKeyWrapMetadata metadata2;
-    private CosmosClientAccessor cosmosClientAccessor;
 
     @Factory(dataProvider = "clientBuilders")
     public EncryptionSyncApiCrudTest(CosmosClientBuilder clientBuilder) {
@@ -55,30 +43,12 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
     @BeforeClass(groups = {"encryption"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.cosmosClientAccessor = CosmosClientHelper.geCosmosClientAccessor();
         this.client = getClientBuilder().buildClient();
-        this.cosmosDatabase =
-            this.client.getDatabase(getSharedCosmosDatabase(this.cosmosClientAccessor.getCosmosAsyncClient(this.client)).getId());
         EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider encryptionKeyStoreProvider =
             new EncryptionAsyncApiCrudTest.TestEncryptionKeyStoreProvider();
         this.cosmosEncryptionClient = CosmosEncryptionClient.createCosmosEncryptionClient(this.client,
             encryptionKeyStoreProvider);
-        this.cosmosEncryptionDatabase =
-            cosmosEncryptionClient.getCosmosEncryptionDatabase(this.cosmosDatabase);
-
-        metadata1 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key1", "tempmetadata1");
-        metadata2 = new EncryptionKeyWrapMetadata(encryptionKeyStoreProvider.getProviderName(), "key2", "tempmetadata2");
-        this.cosmosEncryptionDatabase.createClientEncryptionKey("key3",
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata1);
-        this.cosmosEncryptionDatabase.createClientEncryptionKey("key4",
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata2);
-
-        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(getPaths());
-        String containerId = UUID.randomUUID().toString();
-        CosmosContainerProperties properties = new CosmosContainerProperties(containerId, "/mypk");
-        properties.setClientEncryptionPolicy(clientEncryptionPolicy);
-        this.cosmosEncryptionDatabase.getCosmosDatabase().createContainer(properties);
-        this.cosmosEncryptionContainer = this.cosmosEncryptionDatabase.getCosmosEncryptionAsyncContainer(containerId);
+        this.cosmosEncryptionContainer = getSharedSyncEncryptionContainer(this.cosmosEncryptionClient);
     }
 
     @AfterClass(groups = {"encryption"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -276,100 +246,57 @@ public class EncryptionSyncApiCrudTest extends TestSuiteBase {
         assertThat(finalDocumentCount).isEqualTo(initialDocumentCount);
     }
 
-    private List<ClientEncryptionIncludedPath> getPaths() {
-        ClientEncryptionIncludedPath includedPath1 = new ClientEncryptionIncludedPath();
-        includedPath1.setClientEncryptionKeyId("key3");
-        includedPath1.setPath("/sensitiveString");
-        includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void batchExecution() {
+        String itemId= UUID.randomUUID().toString();
+        EncryptionPojo createPojo = getItem(itemId);
+        EncryptionPojo replacePojo =  getItem(itemId);
+        replacePojo.setSensitiveString("ReplacedSensitiveString");
+        CosmosBatch cosmosBatch = CosmosBatch.createCosmosBatch(new PartitionKey(itemId));
+        cosmosBatch.createItemOperation(createPojo);
+        cosmosBatch.replaceItemOperation(itemId, replacePojo);
+        cosmosBatch.upsertItemOperation(createPojo);
+        cosmosBatch.readItemOperation(itemId);
+        cosmosBatch.deleteItemOperation(itemId);
 
-        ClientEncryptionIncludedPath includedPath2 = new ClientEncryptionIncludedPath();
-        includedPath2.setClientEncryptionKeyId("key4");
-        includedPath2.setPath("/nonValidPath");
-        includedPath2.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath2.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        CosmosBatchResponse batchResponse = this.cosmosEncryptionContainer.executeCosmosBatch(cosmosBatch);
+        assertThat(batchResponse.getResults().size()).isEqualTo(5);
+        assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(3).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(4).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+        validateResponse(batchResponse.getResults().get(0).getItem(EncryptionPojo.class), createPojo);
+        validateResponse(batchResponse.getResults().get(1).getItem(EncryptionPojo.class), replacePojo);
+        validateResponse(batchResponse.getResults().get(2).getItem(EncryptionPojo.class), createPojo);
+        validateResponse(batchResponse.getResults().get(3).getItem(EncryptionPojo.class), createPojo);
+    }
 
-        ClientEncryptionIncludedPath includedPath3 = new ClientEncryptionIncludedPath();
-        includedPath3.setClientEncryptionKeyId("key3");
-        includedPath3.setPath("/sensitiveInt");
-        includedPath3.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath3.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void batchExecutionWithOptionsApi() {
+        String itemId= UUID.randomUUID().toString();
+        EncryptionPojo createPojo = getItem(itemId);
+        EncryptionPojo replacePojo =  getItem(itemId);
+        replacePojo.setSensitiveString("ReplacedSensitiveString");
+        CosmosBatch cosmosBatch = CosmosBatch.createCosmosBatch(new PartitionKey(itemId));
+        CosmosBatchItemRequestOptions cosmosBatchItemRequestOptions = new CosmosBatchItemRequestOptions();
 
-        ClientEncryptionIncludedPath includedPath4 = new ClientEncryptionIncludedPath();
-        includedPath4.setClientEncryptionKeyId("key4");
-        includedPath4.setPath("/sensitiveFloat");
-        includedPath4.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath4.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        cosmosBatch.createItemOperation(createPojo, cosmosBatchItemRequestOptions);
+        cosmosBatch.replaceItemOperation(itemId, replacePojo,cosmosBatchItemRequestOptions);
+        cosmosBatch.upsertItemOperation(createPojo, cosmosBatchItemRequestOptions);
+        cosmosBatch.readItemOperation(itemId, cosmosBatchItemRequestOptions);
+        cosmosBatch.deleteItemOperation(itemId, cosmosBatchItemRequestOptions);
 
-        ClientEncryptionIncludedPath includedPath5 = new ClientEncryptionIncludedPath();
-        includedPath5.setClientEncryptionKeyId("key3");
-        includedPath5.setPath("/sensitiveLong");
-        includedPath5.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath5.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
-
-        ClientEncryptionIncludedPath includedPath6 = new ClientEncryptionIncludedPath();
-        includedPath6.setClientEncryptionKeyId("key4");
-        includedPath6.setPath("/sensitiveDouble");
-        includedPath6.setEncryptionType(CosmosEncryptionType.RANDOMIZED);
-        includedPath6.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
-
-        ClientEncryptionIncludedPath includedPath7 = new ClientEncryptionIncludedPath();
-        includedPath7.setClientEncryptionKeyId("key3");
-        includedPath7.setPath("/sensitiveBoolean");
-        includedPath7.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath7.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
-
-        ClientEncryptionIncludedPath includedPath8 = new ClientEncryptionIncludedPath();
-        includedPath8.setClientEncryptionKeyId("key3");
-        includedPath8.setPath("/sensitiveNestedPojo");
-        includedPath8.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath8.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
-
-        ClientEncryptionIncludedPath includedPath9 = new ClientEncryptionIncludedPath();
-        includedPath9.setClientEncryptionKeyId("key3");
-        includedPath9.setPath("/sensitiveIntArray");
-        includedPath9.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath9.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
-
-        ClientEncryptionIncludedPath includedPath10 = new ClientEncryptionIncludedPath();
-        includedPath10.setClientEncryptionKeyId("key4");
-        includedPath10.setPath("/sensitiveString3DArray");
-        includedPath10.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath10.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
-
-        ClientEncryptionIncludedPath includedPath11 = new ClientEncryptionIncludedPath();
-        includedPath11.setClientEncryptionKeyId("key3");
-        includedPath11.setPath("/sensitiveStringArray");
-        includedPath11.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath11.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
-
-        ClientEncryptionIncludedPath includedPath12 = new ClientEncryptionIncludedPath();
-        includedPath12.setClientEncryptionKeyId("key3");
-        includedPath12.setPath("/sensitiveChildPojoList");
-        includedPath12.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath12.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
-
-        ClientEncryptionIncludedPath includedPath13 = new ClientEncryptionIncludedPath();
-        includedPath13.setClientEncryptionKeyId("key3");
-        includedPath13.setPath("/sensitiveChildPojo2DArray");
-        includedPath13.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath13.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
-
-        List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
-        paths.add(includedPath1);
-        paths.add(includedPath2);
-        paths.add(includedPath3);
-        paths.add(includedPath4);
-        paths.add(includedPath5);
-        paths.add(includedPath6);
-        paths.add(includedPath7);
-        paths.add(includedPath8);
-        paths.add(includedPath9);
-        paths.add(includedPath10);
-        paths.add(includedPath11);
-        paths.add(includedPath12);
-        paths.add(includedPath13);
-
-        return paths;
+        CosmosBatchResponse batchResponse = this.cosmosEncryptionContainer.executeCosmosBatch(cosmosBatch);
+        assertThat(batchResponse.getResults().size()).isEqualTo(5);
+        assertThat(batchResponse.getResults().get(0).getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+        assertThat(batchResponse.getResults().get(1).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(2).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(3).getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(batchResponse.getResults().get(4).getStatusCode()).isEqualTo(HttpResponseStatus.NO_CONTENT.code());
+        validateResponse(batchResponse.getResults().get(0).getItem(EncryptionPojo.class), createPojo);
+        validateResponse(batchResponse.getResults().get(1).getItem(EncryptionPojo.class), replacePojo);
+        validateResponse(batchResponse.getResults().get(2).getItem(EncryptionPojo.class), createPojo);
+        validateResponse(batchResponse.getResults().get(3).getItem(EncryptionPojo.class), createPojo);
     }
 }

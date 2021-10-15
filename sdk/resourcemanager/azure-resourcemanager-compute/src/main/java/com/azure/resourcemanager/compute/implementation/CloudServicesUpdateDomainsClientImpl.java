@@ -134,6 +134,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
      *     with a zero-based index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+     * @param parameters The update domain object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -141,7 +142,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> walkUpdateDomainWithResponseAsync(
-        String resourceGroupName, String cloudServiceName, int updateDomain) {
+        String resourceGroupName, String cloudServiceName, int updateDomain, UpdateDomainInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -162,9 +163,11 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        UpdateDomainInner parameters = null;
         return FluxUtil
             .withContext(
                 context ->
@@ -189,6 +192,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
      *     with a zero-based index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+     * @param parameters The update domain object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -197,7 +201,11 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> walkUpdateDomainWithResponseAsync(
-        String resourceGroupName, String cloudServiceName, int updateDomain, Context context) {
+        String resourceGroupName,
+        String cloudServiceName,
+        int updateDomain,
+        UpdateDomainInner parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -218,9 +226,11 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (parameters != null) {
+            parameters.validate();
+        }
         final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        UpdateDomainInner parameters = null;
         context = this.client.mergeContext(context);
         return service
             .walkUpdateDomain(
@@ -242,6 +252,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
      *     with a zero-based index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+     * @param parameters The update domain object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -249,9 +260,9 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginWalkUpdateDomainAsync(
-        String resourceGroupName, String cloudServiceName, int updateDomain) {
+        String resourceGroupName, String cloudServiceName, int updateDomain, UpdateDomainInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            walkUpdateDomainWithResponseAsync(resourceGroupName, cloudServiceName, updateDomain);
+            walkUpdateDomainWithResponseAsync(resourceGroupName, cloudServiceName, updateDomain, parameters);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
@@ -264,6 +275,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
      *     with a zero-based index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+     * @param parameters The update domain object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -272,10 +284,14 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginWalkUpdateDomainAsync(
-        String resourceGroupName, String cloudServiceName, int updateDomain, Context context) {
+        String resourceGroupName,
+        String cloudServiceName,
+        int updateDomain,
+        UpdateDomainInner parameters,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            walkUpdateDomainWithResponseAsync(resourceGroupName, cloudServiceName, updateDomain, context);
+            walkUpdateDomainWithResponseAsync(resourceGroupName, cloudServiceName, updateDomain, parameters, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -288,6 +304,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
      *     with a zero-based index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+     * @param parameters The update domain object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -295,8 +312,9 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginWalkUpdateDomain(
-        String resourceGroupName, String cloudServiceName, int updateDomain) {
-        return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain).getSyncPoller();
+        String resourceGroupName, String cloudServiceName, int updateDomain, UpdateDomainInner parameters) {
+        return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -306,6 +324,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
      *     with a zero-based index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+     * @param parameters The update domain object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -314,8 +333,34 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginWalkUpdateDomain(
-        String resourceGroupName, String cloudServiceName, int updateDomain, Context context) {
-        return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, context).getSyncPoller();
+        String resourceGroupName,
+        String cloudServiceName,
+        int updateDomain,
+        UpdateDomainInner parameters,
+        Context context) {
+        return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates the role instances in the specified update domain.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
+     * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
+     *     with a zero-based index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+     * @param parameters The update domain object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> walkUpdateDomainAsync(
+        String resourceGroupName, String cloudServiceName, int updateDomain, UpdateDomainInner parameters) {
+        return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -332,7 +377,8 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> walkUpdateDomainAsync(String resourceGroupName, String cloudServiceName, int updateDomain) {
-        return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain)
+        final UpdateDomainInner parameters = null;
+        return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -344,6 +390,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
      *     with a zero-based index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+     * @param parameters The update domain object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -352,10 +399,32 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> walkUpdateDomainAsync(
-        String resourceGroupName, String cloudServiceName, int updateDomain, Context context) {
-        return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, context)
+        String resourceGroupName,
+        String cloudServiceName,
+        int updateDomain,
+        UpdateDomainInner parameters,
+        Context context) {
+        return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates the role instances in the specified update domain.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param cloudServiceName Name of the cloud service.
+     * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
+     *     with a zero-based index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+     * @param parameters The update domain object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void walkUpdateDomain(
+        String resourceGroupName, String cloudServiceName, int updateDomain, UpdateDomainInner parameters) {
+        walkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters).block();
     }
 
     /**
@@ -371,7 +440,8 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void walkUpdateDomain(String resourceGroupName, String cloudServiceName, int updateDomain) {
-        walkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain).block();
+        final UpdateDomainInner parameters = null;
+        walkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters).block();
     }
 
     /**
@@ -381,14 +451,20 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @param cloudServiceName Name of the cloud service.
      * @param updateDomain Specifies an integer value that identifies the update domain. Update domains are identified
      *     with a zero-based index: the first update domain has an ID of 0, the second has an ID of 1, and so on.
+     * @param parameters The update domain object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void walkUpdateDomain(String resourceGroupName, String cloudServiceName, int updateDomain, Context context) {
-        walkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, context).block();
+    public void walkUpdateDomain(
+        String resourceGroupName,
+        String cloudServiceName,
+        int updateDomain,
+        UpdateDomainInner parameters,
+        Context context) {
+        walkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters, context).block();
     }
 
     /**

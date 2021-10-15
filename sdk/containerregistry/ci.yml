@@ -8,11 +8,13 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/containerregistry/pom.xml
       - sdk/containerregistry/ci.yml
-      - sdk/containerregistry/test-resources.json
-      - sdk/containerregistry/tests.yml
-      - sdk/containerregistry/azure-containers-containerregistry
+      - sdk/containerregistry/azure-containers-containerregistry/
+      - sdk/containerregistry/azure-containers-containerregistry-perf/
+    exclude:
+      - sdk/containerregistry/pom.xml
+      - sdk/containerregistry/azure-containers-containerregistry/pom.xml
+      - sdk/containerregistry/azure-containers-containerregistry-perf/pom.xml
 
 pr:
   branches:
@@ -23,11 +25,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/containerregistry/pom.xml
       - sdk/containerregistry/ci.yml
-      - sdk/containerregistry/test-resources.json
-      - sdk/containerregistry/tests.yml
-      - sdk/containerregistry/azure-containers-containerregistry
+      - sdk/containerregistry/azure-containers-containerregistry/
+      - sdk/containerregistry/azure-containers-containerregistry-perf/
+    exclude:
+      - sdk/containerregistry/pom.xml
+      - sdk/containerregistry/azure-containers-containerregistry/pom.xml
+      - sdk/containerregistry/azure-containers-containerregistry-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -5,46 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteZipDeployment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Static site zip deployment ARM resource. */
-@JsonFlatten
 @Fluent
-public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
+public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteZipDeploymentArmResource.class);
 
     /*
-     * URL for the zipped app content
+     * Core resource properties
      */
-    @JsonProperty(value = "properties.appZipUrl")
-    private String appZipUrl;
+    @JsonProperty(value = "properties")
+    private StaticSiteZipDeployment innerProperties;
 
-    /*
-     * URL for the zipped api content
+    /**
+     * Get the innerProperties property: Core resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.apiZipUrl")
-    private String apiZipUrl;
+    private StaticSiteZipDeployment innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * A title to label the deployment
-     */
-    @JsonProperty(value = "properties.deploymentTitle")
-    private String deploymentTitle;
-
-    /*
-     * The provider submitting this deployment
-     */
-    @JsonProperty(value = "properties.provider")
-    private String provider;
-
-    /*
-     * The language of the api content, if it exists
-     */
-    @JsonProperty(value = "properties.functionLanguage")
-    private String functionLanguage;
+    /** {@inheritDoc} */
+    @Override
+    public StaticSiteZipDeploymentArmResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the appZipUrl property: URL for the zipped app content.
@@ -52,7 +43,7 @@ public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
      * @return the appZipUrl value.
      */
     public String appZipUrl() {
-        return this.appZipUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().appZipUrl();
     }
 
     /**
@@ -62,7 +53,10 @@ public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
     public StaticSiteZipDeploymentArmResource withAppZipUrl(String appZipUrl) {
-        this.appZipUrl = appZipUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteZipDeployment();
+        }
+        this.innerProperties().withAppZipUrl(appZipUrl);
         return this;
     }
 
@@ -72,7 +66,7 @@ public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
      * @return the apiZipUrl value.
      */
     public String apiZipUrl() {
-        return this.apiZipUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().apiZipUrl();
     }
 
     /**
@@ -82,7 +76,10 @@ public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
     public StaticSiteZipDeploymentArmResource withApiZipUrl(String apiZipUrl) {
-        this.apiZipUrl = apiZipUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteZipDeployment();
+        }
+        this.innerProperties().withApiZipUrl(apiZipUrl);
         return this;
     }
 
@@ -92,7 +89,7 @@ public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
      * @return the deploymentTitle value.
      */
     public String deploymentTitle() {
-        return this.deploymentTitle;
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentTitle();
     }
 
     /**
@@ -102,7 +99,10 @@ public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
     public StaticSiteZipDeploymentArmResource withDeploymentTitle(String deploymentTitle) {
-        this.deploymentTitle = deploymentTitle;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteZipDeployment();
+        }
+        this.innerProperties().withDeploymentTitle(deploymentTitle);
         return this;
     }
 
@@ -112,7 +112,7 @@ public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
      * @return the provider value.
      */
     public String provider() {
-        return this.provider;
+        return this.innerProperties() == null ? null : this.innerProperties().provider();
     }
 
     /**
@@ -122,7 +122,10 @@ public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
     public StaticSiteZipDeploymentArmResource withProvider(String provider) {
-        this.provider = provider;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteZipDeployment();
+        }
+        this.innerProperties().withProvider(provider);
         return this;
     }
 
@@ -132,7 +135,7 @@ public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
      * @return the functionLanguage value.
      */
     public String functionLanguage() {
-        return this.functionLanguage;
+        return this.innerProperties() == null ? null : this.innerProperties().functionLanguage();
     }
 
     /**
@@ -142,14 +145,10 @@ public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
     public StaticSiteZipDeploymentArmResource withFunctionLanguage(String functionLanguage) {
-        this.functionLanguage = functionLanguage;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public StaticSiteZipDeploymentArmResource withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteZipDeployment();
+        }
+        this.innerProperties().withFunctionLanguage(functionLanguage);
         return this;
     }
 
@@ -161,5 +160,8 @@ public class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -56,7 +56,7 @@ public class AnalyzeActionsAsync {
             new TextAnalyticsActions()
                 .setDisplayName("{tasks_display_name}")
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setModelVersion("latest")),
-            new AnalyzeActionsOptions().setIncludeStatistics(false))
+            new AnalyzeActionsOptions())
             .flatMap(result -> {
                 AnalyzeActionsOperationDetail operationDetail = result.getValue();
                 System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"

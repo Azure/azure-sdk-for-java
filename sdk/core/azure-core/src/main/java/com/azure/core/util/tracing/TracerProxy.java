@@ -14,6 +14,10 @@ import java.util.ServiceLoader;
  * @see Tracer
  */
 public final class TracerProxy {
+    /*
+     * AutoCloseable implementation which performs a no-op when close() is called.
+     */
+    static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> { };
 
     private static Tracer tracer;
 
@@ -89,7 +93,7 @@ public final class TracerProxy {
     /**
      * For the plugged in {@link Tracer tracer}, its current tracing span is marked as completed.
      *
-     * @param responseCode Response status code if the span is in a HTTP call context.
+     * @param responseCode Response status code if the span is in an HTTP call context.
      * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
      */

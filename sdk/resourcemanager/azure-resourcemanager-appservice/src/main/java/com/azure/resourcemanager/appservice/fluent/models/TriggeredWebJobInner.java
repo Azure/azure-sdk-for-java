@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.TriggeredJobRun;
@@ -15,70 +14,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Triggered Web Job Information. */
-@JsonFlatten
 @Fluent
-public class TriggeredWebJobInner extends ProxyOnlyResource {
+public final class TriggeredWebJobInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredWebJobInner.class);
 
     /*
-     * Latest job run information.
+     * TriggeredWebJob resource specific properties
      */
-    @JsonProperty(value = "properties.latest_run")
-    private TriggeredJobRun latestRun;
+    @JsonProperty(value = "properties")
+    private TriggeredWebJobProperties innerProperties;
 
-    /*
-     * History URL.
+    /**
+     * Get the innerProperties property: TriggeredWebJob resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.history_url")
-    private String historyUrl;
+    private TriggeredWebJobProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Scheduler Logs URL.
-     */
-    @JsonProperty(value = "properties.scheduler_logs_url")
-    private String schedulerLogsUrl;
-
-    /*
-     * Run command.
-     */
-    @JsonProperty(value = "properties.run_command")
-    private String runCommand;
-
-    /*
-     * Job URL.
-     */
-    @JsonProperty(value = "properties.url")
-    private String url;
-
-    /*
-     * Extra Info URL.
-     */
-    @JsonProperty(value = "properties.extra_info_url")
-    private String extraInfoUrl;
-
-    /*
-     * Job type.
-     */
-    @JsonProperty(value = "properties.web_job_type")
-    private WebJobType webJobType;
-
-    /*
-     * Error information.
-     */
-    @JsonProperty(value = "properties.error")
-    private String error;
-
-    /*
-     * Using SDK?
-     */
-    @JsonProperty(value = "properties.using_sdk")
-    private Boolean usingSdk;
-
-    /*
-     * Job settings.
-     */
-    @JsonProperty(value = "properties.settings")
-    private Map<String, Object> settings;
+    /** {@inheritDoc} */
+    @Override
+    public TriggeredWebJobInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the latestRun property: Latest job run information.
@@ -86,7 +46,7 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the latestRun value.
      */
     public TriggeredJobRun latestRun() {
-        return this.latestRun;
+        return this.innerProperties() == null ? null : this.innerProperties().latestRun();
     }
 
     /**
@@ -96,7 +56,10 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the TriggeredWebJobInner object itself.
      */
     public TriggeredWebJobInner withLatestRun(TriggeredJobRun latestRun) {
-        this.latestRun = latestRun;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withLatestRun(latestRun);
         return this;
     }
 
@@ -106,7 +69,7 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the historyUrl value.
      */
     public String historyUrl() {
-        return this.historyUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().historyUrl();
     }
 
     /**
@@ -116,7 +79,10 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the TriggeredWebJobInner object itself.
      */
     public TriggeredWebJobInner withHistoryUrl(String historyUrl) {
-        this.historyUrl = historyUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withHistoryUrl(historyUrl);
         return this;
     }
 
@@ -126,7 +92,7 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the schedulerLogsUrl value.
      */
     public String schedulerLogsUrl() {
-        return this.schedulerLogsUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().schedulerLogsUrl();
     }
 
     /**
@@ -136,7 +102,10 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the TriggeredWebJobInner object itself.
      */
     public TriggeredWebJobInner withSchedulerLogsUrl(String schedulerLogsUrl) {
-        this.schedulerLogsUrl = schedulerLogsUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withSchedulerLogsUrl(schedulerLogsUrl);
         return this;
     }
 
@@ -146,7 +115,7 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the runCommand value.
      */
     public String runCommand() {
-        return this.runCommand;
+        return this.innerProperties() == null ? null : this.innerProperties().runCommand();
     }
 
     /**
@@ -156,7 +125,10 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the TriggeredWebJobInner object itself.
      */
     public TriggeredWebJobInner withRunCommand(String runCommand) {
-        this.runCommand = runCommand;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withRunCommand(runCommand);
         return this;
     }
 
@@ -166,7 +138,7 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the url value.
      */
     public String url() {
-        return this.url;
+        return this.innerProperties() == null ? null : this.innerProperties().url();
     }
 
     /**
@@ -176,7 +148,10 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the TriggeredWebJobInner object itself.
      */
     public TriggeredWebJobInner withUrl(String url) {
-        this.url = url;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withUrl(url);
         return this;
     }
 
@@ -186,7 +161,7 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the extraInfoUrl value.
      */
     public String extraInfoUrl() {
-        return this.extraInfoUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().extraInfoUrl();
     }
 
     /**
@@ -196,7 +171,10 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the TriggeredWebJobInner object itself.
      */
     public TriggeredWebJobInner withExtraInfoUrl(String extraInfoUrl) {
-        this.extraInfoUrl = extraInfoUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withExtraInfoUrl(extraInfoUrl);
         return this;
     }
 
@@ -206,7 +184,7 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the webJobType value.
      */
     public WebJobType webJobType() {
-        return this.webJobType;
+        return this.innerProperties() == null ? null : this.innerProperties().webJobType();
     }
 
     /**
@@ -216,7 +194,10 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the TriggeredWebJobInner object itself.
      */
     public TriggeredWebJobInner withWebJobType(WebJobType webJobType) {
-        this.webJobType = webJobType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withWebJobType(webJobType);
         return this;
     }
 
@@ -226,7 +207,7 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the error value.
      */
     public String error() {
-        return this.error;
+        return this.innerProperties() == null ? null : this.innerProperties().error();
     }
 
     /**
@@ -236,7 +217,10 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the TriggeredWebJobInner object itself.
      */
     public TriggeredWebJobInner withError(String error) {
-        this.error = error;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withError(error);
         return this;
     }
 
@@ -246,7 +230,7 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the usingSdk value.
      */
     public Boolean usingSdk() {
-        return this.usingSdk;
+        return this.innerProperties() == null ? null : this.innerProperties().usingSdk();
     }
 
     /**
@@ -256,7 +240,10 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the TriggeredWebJobInner object itself.
      */
     public TriggeredWebJobInner withUsingSdk(Boolean usingSdk) {
-        this.usingSdk = usingSdk;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withUsingSdk(usingSdk);
         return this;
     }
 
@@ -266,7 +253,7 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the settings value.
      */
     public Map<String, Object> settings() {
-        return this.settings;
+        return this.innerProperties() == null ? null : this.innerProperties().settings();
     }
 
     /**
@@ -276,14 +263,10 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
      * @return the TriggeredWebJobInner object itself.
      */
     public TriggeredWebJobInner withSettings(Map<String, Object> settings) {
-        this.settings = settings;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public TriggeredWebJobInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withSettings(settings);
         return this;
     }
 
@@ -295,8 +278,8 @@ public class TriggeredWebJobInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (latestRun() != null) {
-            latestRun().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

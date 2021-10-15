@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Recipient User details. */
-@JsonFlatten
 @Fluent
-public class RecipientUserContractInner extends ProxyResource {
+public final class RecipientUserContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RecipientUserContractInner.class);
 
     /*
-     * API Management UserId subscribed to notification.
+     * Recipient User entity contract properties.
      */
-    @JsonProperty(value = "properties.userId")
-    private String userId;
+    @JsonProperty(value = "properties")
+    private RecipientUsersContractProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Recipient User entity contract properties.
+     *
+     * @return the innerProperties value.
+     */
+    private RecipientUsersContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the userId property: API Management UserId subscribed to notification.
@@ -29,7 +36,7 @@ public class RecipientUserContractInner extends ProxyResource {
      * @return the userId value.
      */
     public String userId() {
-        return this.userId;
+        return this.innerProperties() == null ? null : this.innerProperties().userId();
     }
 
     /**
@@ -39,7 +46,10 @@ public class RecipientUserContractInner extends ProxyResource {
      * @return the RecipientUserContractInner object itself.
      */
     public RecipientUserContractInner withUserId(String userId) {
-        this.userId = userId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecipientUsersContractProperties();
+        }
+        this.innerProperties().withUserId(userId);
         return this;
     }
 
@@ -49,5 +59,8 @@ public class RecipientUserContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

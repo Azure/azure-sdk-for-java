@@ -1,91 +1,91 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/38e44085038e44085874277058161f834f8124851b9a?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/38e44085038e4408509731278c9f5a405e628415b9cf?restype=container",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3db86cb4-9068-4db2-9a27-8ea6221180af"
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.14.0-beta.2 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c3b48e55-f35d-4f6a-b6de-9e110eeac8cb"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2020-06-12",
+      "x-ms-version" : "2020-10-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8D9109C7DB43EC3",
-      "Last-Modified" : "Thu, 06 May 2021 14:37:35 GMT",
+      "eTag" : "0x8D9561550F1BF39",
+      "Last-Modified" : "Tue, 03 Aug 2021 00:26:20 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "19119314-301e-0020-5085-42b116000000",
-      "x-ms-client-request-id" : "3db86cb4-9068-4db2-9a27-8ea6221180af",
-      "Date" : "Thu, 06 May 2021 14:37:35 GMT"
+      "x-ms-request-id" : "49d362b1-001e-007d-37fe-87eece000000",
+      "x-ms-client-request-id" : "c3b48e55-f35d-4f6a-b6de-9e110eeac8cb",
+      "Date" : "Tue, 03 Aug 2021 00:26:20 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/38e44085038e44085874277058161f834f8124851b9a/38e44085138e44085874326707e1de533662540e5a86",
+    "Uri" : "https://REDACTED.blob.core.windows.net/38e44085038e4408509731278c9f5a405e628415b9cf/38e44085138e44085097087503d81287967b346a4a71",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "75ca29b4-3093-4778-b910-aaa6bd1c1a43",
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.14.0-beta.2 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d8423019-9fdb-49e2-a9e1-a4ce7942d4ff",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2020-06-12",
+      "x-ms-version" : "2020-10-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-content-crc64" : "6RYQPwaVsyQ=",
-      "Last-Modified" : "Thu, 06 May 2021 14:37:36 GMT",
+      "Last-Modified" : "Tue, 03 Aug 2021 00:26:20 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Thu, 06 May 2021 14:37:36 GMT",
+      "Date" : "Tue, 03 Aug 2021 00:26:20 GMT",
       "Content-MD5" : "wh+Wm18D0z1D4E+PE252gg==",
-      "eTag" : "0x8D9109C7DEBD2CD",
-      "x-ms-request-id" : "ddd8c614-801e-0025-2385-4263cd000000",
-      "x-ms-client-request-id" : "75ca29b4-3093-4778-b910-aaa6bd1c1a43"
+      "eTag" : "0x8D95615512A66A3",
+      "x-ms-request-id" : "7b8ca32e-501e-0012-6efe-87e43d000000",
+      "x-ms-client-request-id" : "d8423019-9fdb-49e2-a9e1-a4ce7942d4ff"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
     "Uri" : "https://REDACTED.blob.core.windows.net?comp=batch",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 azsdk-java-azure-storage-blob-batch/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0ca0acd9-2197-4e50-9c1e-25a2c3a22d8e",
-      "Content-Type" : "multipart/mixed; boundary=batch_3495a237-e9b6-4c67-969f-64b54999393f"
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.14.0-beta.2 azsdk-java-azure-storage-blob-batch/12.11.0-beta.2 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "431b0901-04d7-4832-9b90-8f94c26948fb",
+      "Content-Type" : "multipart/mixed; boundary=batch_3473227d-f7cc-4aab-9192-f127cfeb53db"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2020-06-12",
+      "x-ms-version" : "2020-10-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "31a0b6dc-601e-0070-1185-427346000000",
-      "Body" : "--batchresponse_a5e11cab-9ba6-4f0b-b7b0-c60acb5021d1\r\nContent-Type: application/http\r\nContent-ID: 0\r\n\r\nHTTP/1.1 412 The condition specified using HTTP conditional header(s) is not met.\r\nx-ms-error-code: ConditionNotMet\r\nx-ms-request-id: 31a0b6dc-601e-0070-1185-4273461e219b\r\nx-ms-version: 2020-06-12\r\nx-ms-client-request-id: bea6dbb7-d01d-4bdf-97f3-e8c19e92a2ac\r\nContent-Length: 253\r\nContent-Type: application/xml\r\nServer: Windows-Azure-Blob/1.0\r\n\r\n﻿<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:31a0b6dc-601e-0070-1185-4273461e219b\nTime:2021-05-06T14:37:36.4135855Z</Message></Error>\r\n--batchresponse_a5e11cab-9ba6-4f0b-b7b0-c60acb5021d1--",
-      "x-ms-client-request-id" : "0ca0acd9-2197-4e50-9c1e-25a2c3a22d8e",
-      "Date" : "Thu, 06 May 2021 14:37:35 GMT",
-      "Content-Type" : "multipart/mixed; boundary=batchresponse_a5e11cab-9ba6-4f0b-b7b0-c60acb5021d1"
+      "x-ms-request-id" : "113f1ea1-e01e-004a-16fe-873c62000000",
+      "Body" : "--batchresponse_a8cf4bb7-4c87-427e-a795-5039b7352fc1\r\nContent-Type: application/http\r\nContent-ID: 0\r\n\r\nHTTP/1.1 412 The condition specified using HTTP conditional header(s) is not met.\r\nx-ms-error-code: ConditionNotMet\r\nx-ms-request-id: 113f1ea1-e01e-004a-16fe-873c621e522f\r\nx-ms-version: 2020-10-02\r\nx-ms-client-request-id: 7c0498e9-1334-433b-95bf-9d7c228e95b4\r\nContent-Length: 253\r\nContent-Type: application/xml\r\nServer: Windows-Azure-Blob/1.0\r\n\r\n﻿<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Error><Code>ConditionNotMet</Code><Message>The condition specified using HTTP conditional header(s) is not met.\nRequestId:113f1ea1-e01e-004a-16fe-873c621e522f\nTime:2021-08-03T00:26:20.8691480Z</Message></Error>\r\n--batchresponse_a8cf4bb7-4c87-427e-a795-5039b7352fc1--",
+      "x-ms-client-request-id" : "431b0901-04d7-4832-9b90-8f94c26948fb",
+      "Date" : "Tue, 03 Aug 2021 00:26:20 GMT",
+      "Content-Type" : "multipart/mixed; boundary=batchresponse_a8cf4bb7-4c87-427e-a795-5039b7352fc1"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/38e44085038e44085874277058161f834f8124851b9a?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/38e44085038e4408509731278c9f5a405e628415b9cf?restype=container",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.12.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "50061617-2c54-4bb9-bf87-cc7c004e24cd"
+      "x-ms-version" : "2020-10-02",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.14.0-beta.2 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d239733e-95c3-44df-a013-aff83da4881a"
     },
     "Response" : {
       "content-length" : "0",
-      "x-ms-version" : "2020-06-12",
+      "x-ms-version" : "2020-10-02",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "33f0ccc1-401e-0077-3885-421f25000000",
-      "x-ms-client-request-id" : "50061617-2c54-4bb9-bf87-cc7c004e24cd",
-      "Date" : "Thu, 06 May 2021 14:37:37 GMT"
+      "x-ms-request-id" : "b3eb2fd7-801e-002e-47fe-87cdfa000000",
+      "x-ms-client-request-id" : "d239733e-95c3-44df-a013-aff83da4881a",
+      "Date" : "Tue, 03 Aug 2021 00:26:20 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "38e44085038e44085874277058161f834f8124851b9a", "38e44085138e44085874326707e1de533662540e5a86" ]
+  "variables" : [ "38e44085038e4408509731278c9f5a405e628415b9cf", "38e44085138e44085097087503d81287967b346a4a71" ]
 }

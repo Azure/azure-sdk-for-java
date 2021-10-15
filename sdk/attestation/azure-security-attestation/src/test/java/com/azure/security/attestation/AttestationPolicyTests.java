@@ -18,6 +18,7 @@ import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
@@ -41,17 +42,19 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     @MethodSource("getPolicyClients")
     void testGetAttestationPolicy(HttpClient client, String clientUri, AttestationType attestationType) {
 
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(client, clientUri);
 
         PolicyResponse policyResponse = attestationBuilder.buildPolicyClient().get(attestationType);
 
-        verifyBasicGetAttestationPolicyResponse(client, clientUri, attestationType, policyResponse);
+        StepVerifier.create(verifyBasicGetAttestationPolicyResponse(client, clientUri, attestationType, policyResponse))
+            .expectComplete()
+            .verify();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
     void testGetAttestationPolicyAsync(HttpClient client, String clientUri, AttestationType attestationType) {
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
+        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(client, clientUri);
 
         StepVerifier.create(attestationBuilder.buildPolicyAsyncClient().get(attestationType))
             .assertNext(response -> assertDoesNotThrow(() -> verifyBasicGetAttestationPolicyResponse(client, clientUri, attestationType, response)))
@@ -82,7 +85,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
         PolicyClient client = attestationBuilder.buildPolicyClient();
 
         String signingCertificateBase64 = getIsolatedSigningCertificate();
@@ -130,7 +133,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
         PolicyAsyncClient client = attestationBuilder.buildPolicyAsyncClient();
 
         String signingCertificateBase64 = getIsolatedSigningCertificate();
@@ -178,12 +181,12 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
      * @param attestationType attestation type - policy results vary by attestation type.
      * @param policyResponse response from the getPolicy API.
      */
-    private void verifyBasicGetAttestationPolicyResponse(HttpClient client, String clientUri, AttestationType attestationType, PolicyResponse policyResponse) {
+    private Mono<Void> verifyBasicGetAttestationPolicyResponse(HttpClient client, String clientUri, AttestationType attestationType, PolicyResponse policyResponse) {
         assertNotNull(policyResponse);
         assertNotNull(policyResponse.getToken());
 
-        verifyAttestationToken(client, clientUri, policyResponse.getToken())
-            .subscribe(claims -> {
+        return verifyAttestationToken(client, clientUri, policyResponse.getToken())
+            .flatMap(claims -> {
                 if (claims != null) {
 
                     String policyDocument = claims.getClaims().get("x-ms-policy").toString();
@@ -212,6 +215,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                     // TPM is allowed to have an empty attestation policy, all the other AttestationTypes have policies.
                     assertEquals("Tpm", attestationType.toString());
                 }
+                return Mono.empty();
             });
     }
 

@@ -5,6 +5,7 @@ package com.azure.identity.implementation;
 
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.function.Supplier;
 
 /**
@@ -17,6 +18,10 @@ public class SynchronizedAccessor<T> {
 
     public SynchronizedAccessor(Supplier<Mono<T>> supplier) {
         monoCache = supplier.get().cache();
+    }
+
+    public SynchronizedAccessor(Supplier<Mono<T>> supplier, Duration cacheTimeout) {
+        monoCache = supplier.get().cache(cacheTimeout);
     }
 
     /**

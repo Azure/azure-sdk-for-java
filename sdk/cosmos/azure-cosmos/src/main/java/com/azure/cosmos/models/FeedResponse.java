@@ -9,6 +9,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
@@ -484,5 +485,19 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     void setQueryPlanDiagnosticsContext(QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext) {
         this.queryPlanDiagnosticsContext = queryPlanDiagnosticsContext;
         BridgeInternal.setQueryPlanDiagnosticsContext(cosmosDiagnostics, queryPlanDiagnosticsContext);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        ImplementationBridgeHelpers.FeedResponseHelper.setFeedResponseAccessor(
+            new ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor() {
+                @Override
+                public <T> boolean getNoChanges(FeedResponse<T> feedResponse) {
+                    return feedResponse.getNoChanges();
+                }
+            });
     }
 }

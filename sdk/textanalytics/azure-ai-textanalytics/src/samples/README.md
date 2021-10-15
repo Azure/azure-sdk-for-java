@@ -71,6 +71,8 @@ Batch Samples:
 - [Cancel analyze healthcare entities with asynchronous client][async_sample_cancel_healthcare_task]
 - [Execute multiple actions][sample_execute_multiple_actions]
 - [Execute multiple actions with asynchronous client][async_sample_execute_multiple_actions]
+- [Execute an extractive text summarization action][sample_execute_extractive_summarization_action]
+- [Execute an extractive text summarization action with asynchronous client][async_sample_execute_extractive_summarization_action]
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -113,6 +115,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [async_sample_healthcare_batch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeHealthcareEntitiesAsync.java
 [async_sample_cancel_healthcare_task]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/CancelAnalyzeHealthcareEntitiesAsync.java
 [async_sample_execute_multiple_actions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeActionsAsync.java
+[async_sample_execute_extractive_summarization_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeExtractiveSummarizationAsync.java
 
 [sample_detect_language]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/DetectLanguage.java
 [sample_detect_language_batch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
@@ -137,5 +140,6 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_healthcare_batch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeHealthcareEntities.java
 [sample_cancel_healthcare_task]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/CancelAnalyzeHealthcareEntities.java
 [sample_execute_multiple_actions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeActions.java
+[sample_execute_extractive_summarization_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeExtractiveSummarization.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

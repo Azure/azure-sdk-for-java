@@ -12,8 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
@@ -30,14 +30,32 @@ import java.util.Optional;
 /**
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
  * context propagation. Singleton OpenTelemetry tracer capable of starting and exporting spans.
- *
  * <p>
  * This helper class supports W3C distributed tracing protocol and injects SpanContext into the outgoing HTTP and AMQP
  * requests.
  */
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
-    private final Tracer tracer = GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry");
+    private final Tracer tracer;
+
+    /**
+     * Creates new {@link OpenTelemetryTracer} using default global tracer -
+     * {@link GlobalOpenTelemetry#getTracer(String)}
+     *
+     */
+    public OpenTelemetryTracer() {
+        this(GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry"));
+    }
+
+    /**
+     * Creates new {@link OpenTelemetryTracer} that wraps {@link io.opentelemetry.api.trace.Tracer}.
+     * Use it for tests.
+     *
+     * @param tracer {@link io.opentelemetry.api.trace.Tracer} instance.
+     */
+    OpenTelemetryTracer(Tracer tracer) {
+        this.tracer = tracer;
+    }
 
     static final String AZ_NAMESPACE_KEY = "az.namespace";
 
@@ -46,11 +64,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     static final String PEER_ENDPOINT = "peer.address";
 
     private final ClientLogger logger = new ClientLogger(OpenTelemetryTracer.class);
-    private static final AutoCloseable NOOP_CLOSEABLE = new AutoCloseable() {
-        @Override
-        public void close() {
-        }
-    };
+    private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
 
     /**
      * {@inheritDoc}
@@ -58,12 +72,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @Override
     public Context start(String spanName, Context context) {
         Objects.requireNonNull(spanName, "'spanName' cannot be null.");
-        SpanBuilder spanBuilder = createSpanBuilder(
-            spanName,
-            null,
-            SpanKind.INTERNAL,
-            null,
-            context);
+        SpanBuilder spanBuilder = createSpanBuilder(spanName, null, SpanKind.INTERNAL, null, context);
 
         return startSpanInternal(spanBuilder, null, context);
     }
@@ -74,12 +83,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @Override
     public Context start(String spanName, StartSpanOptions options, Context context) {
         Objects.requireNonNull(options, "'options' cannot be null.");
-        SpanBuilder spanBuilder = createSpanBuilder(
-            spanName,
-            null,
-            convertToOtelKind(options.getSpanKind()),
-            options.getAttributes(),
-            context);
+        SpanBuilder spanBuilder = createSpanBuilder(spanName, null, convertToOtelKind(options.getSpanKind()),
+            options.getAttributes(), context);
 
         return startSpanInternal(spanBuilder, null, context);
     }
@@ -111,8 +116,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 spanBuilder = createSpanBuilder(spanName, remoteParentContext, SpanKind.CONSUMER, null, context);
                 context = startSpanInternal(spanBuilder, this::addMessagingAttributes, context);
 
-                // TODO (limolkova) we should do this in the EventHub/ServiceBus SDK instead to make sure scope is closed in the
-                // same thread where it was started to prevent leaking the context.
+                // TODO (limolkova) we should do this in the EventHub/ServiceBus SDK instead to make sure scope is
+                //  closed in the same thread where it was started to prevent leaking the context.
                 return context.addData(SCOPE_KEY, makeSpanCurrent(context));
             default:
                 return context;
@@ -244,7 +249,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp,
-                         Context context) {
+        Context context) {
         Objects.requireNonNull(eventName, "'eventName' cannot be null.");
 
         Span currentSpan = getOrDefault(context, PARENT_SPAN_KEY, null, Span.class);
@@ -267,17 +272,16 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Returns a {@link SpanBuilder} to create and start a new child {@link Span} with parent
-     * being the designated {@link Span}.
+     * Returns a {@link SpanBuilder} to create and start a new child {@link Span} with parent being the designated
+     * {@link Span}.
      *
      * @param spanBuilder SpanBuilder for the span. Must be created before calling this method
      * @param setAttributes Callback to populate attributes for the span.
-     *
      * @return A {@link Context} with created {@link Span}.
      */
     private Context startSpanInternal(SpanBuilder spanBuilder,
-                                      java.util.function.BiConsumer<Span, Context> setAttributes,
-                                      Context context) {
+        java.util.function.BiConsumer<Span, Context> setAttributes,
+        Context context) {
         Objects.requireNonNull(spanBuilder, "'spanBuilder' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
 
@@ -299,22 +303,22 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Returns a {@link SpanBuilder} to create and start a new child {@link Span} with parent
-     * being the designated {@code Span}.
+     * Returns a {@link SpanBuilder} to create and start a new child {@link Span} with parent being the designated
+     * {@link Span}.
      *
      * @param spanName The name of the returned Span.
      * @param remoteParentContext Remote parent context if any, or {@code null} otherwise.
      * @param spanKind Kind of the span to create.
      * @param beforeSaplingAttributes Optional attributes available when span starts and important for sampling.
      * @param context The context containing the span and the span name.
-     * @return A {@code Span.SpanBuilder} to create and start a new {@code Span}.
+     * @return A {@link SpanBuilder} to create and start a new {@link Span}.
      */
     @SuppressWarnings("unchecked")
     private SpanBuilder createSpanBuilder(String spanName,
-                                          SpanContext remoteParentContext,
-                                          SpanKind spanKind,
-                                          Map<String, Object> beforeSaplingAttributes,
-                                          Context context) {
+        SpanContext remoteParentContext,
+        SpanKind spanKind,
+        Map<String, Object> beforeSaplingAttributes,
+        Context context) {
         String spanNameKey = getOrDefault(context, USER_SPAN_NAME_KEY, null, String.class);
 
         if (spanNameKey == null) {
@@ -348,6 +352,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
     /**
      * Ends current scope on the context.
+     *
      * @param context Context instance with the scope to end.
      */
     private void endScope(Context context) {
@@ -360,15 +365,30 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     /*
      * Converts our SpanKind to OpenTelemetry SpanKind.
      */
-    private SpanKind convertToOtelKind(StartSpanOptions.Kind kind) {
-        return kind == StartSpanOptions.Kind.CLIENT ? SpanKind.CLIENT : SpanKind.INTERNAL;
+    private SpanKind convertToOtelKind(com.azure.core.util.tracing.SpanKind kind) {
+        switch (kind) {
+            case CLIENT:
+                return SpanKind.CLIENT;
+
+            case SERVER:
+                return SpanKind.SERVER;
+
+            case CONSUMER:
+                return SpanKind.CONSUMER;
+
+            case PRODUCER:
+                return SpanKind.PRODUCER;
+
+            default:
+                return SpanKind.INTERNAL;
+        }
     }
 
     /**
      * Maps span/event properties to OpenTelemetry attributes.
      *
      * @param attributes the attributes provided by the client SDK's.
-     * @return the OpenTelemetry typed {@Link Attributes}.
+     * @return the OpenTelemetry typed {@link Attributes}.
      */
     private Attributes convertToOtelAttributes(Map<String, Object> attributes) {
         AttributesBuilder attributesBuilder = Attributes.builder();
@@ -418,7 +438,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Extracts request attributes from the given {@code context} and adds it to the started span.
+     * Extracts request attributes from the given {@link Context} and adds it to the started span.
      *
      * @param span The span to which request attributes are to be added.
      * @param context The context containing the request attributes.
@@ -444,7 +464,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     /**
      * Returns the value of the specified key from the context.
      *
-     * @param key The name of the attribute that needs to be extracted from the {@code Context}.
+     * @param key The name of the attribute that needs to be extracted from the {@link Context}.
      * @param defaultValue the value to return in data not found.
      * @param clazz clazz the type of raw class to find data for.
      * @param context The context containing the specified key.

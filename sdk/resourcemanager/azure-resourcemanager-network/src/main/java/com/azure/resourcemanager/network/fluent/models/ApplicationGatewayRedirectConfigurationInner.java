@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectType;
@@ -14,11 +13,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Redirect configuration of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
+public final class ApplicationGatewayRedirectConfigurationInner extends SubResource {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(ApplicationGatewayRedirectConfigurationInner.class);
+
+    /*
+     * Properties of the application gateway redirect configuration.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayRedirectConfigurationPropertiesFormat innerProperties;
 
     /*
      * Name of the redirect configuration that is unique within an Application
@@ -39,53 +43,14 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * HTTP redirection type.
+    /**
+     * Get the innerProperties property: Properties of the application gateway redirect configuration.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.redirectType")
-    private ApplicationGatewayRedirectType redirectType;
-
-    /*
-     * Reference to a listener to redirect the request to.
-     */
-    @JsonProperty(value = "properties.targetListener")
-    private SubResource targetListener;
-
-    /*
-     * Url to redirect the request to.
-     */
-    @JsonProperty(value = "properties.targetUrl")
-    private String targetUrl;
-
-    /*
-     * Include path in the redirected url.
-     */
-    @JsonProperty(value = "properties.includePath")
-    private Boolean includePath;
-
-    /*
-     * Include query string in the redirected url.
-     */
-    @JsonProperty(value = "properties.includeQueryString")
-    private Boolean includeQueryString;
-
-    /*
-     * Request routing specifying redirect configuration.
-     */
-    @JsonProperty(value = "properties.requestRoutingRules")
-    private List<SubResource> requestRoutingRules;
-
-    /*
-     * Url path maps specifying default redirect configuration.
-     */
-    @JsonProperty(value = "properties.urlPathMaps")
-    private List<SubResource> urlPathMaps;
-
-    /*
-     * Path rules specifying redirect configuration.
-     */
-    @JsonProperty(value = "properties.pathRules")
-    private List<SubResource> pathRules;
+    private ApplicationGatewayRedirectConfigurationPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the redirect configuration that is unique within an Application Gateway.
@@ -125,13 +90,20 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayRedirectConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the redirectType property: HTTP redirection type.
      *
      * @return the redirectType value.
      */
     public ApplicationGatewayRedirectType redirectType() {
-        return this.redirectType;
+        return this.innerProperties() == null ? null : this.innerProperties().redirectType();
     }
 
     /**
@@ -141,7 +113,10 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
     public ApplicationGatewayRedirectConfigurationInner withRedirectType(ApplicationGatewayRedirectType redirectType) {
-        this.redirectType = redirectType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRedirectConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withRedirectType(redirectType);
         return this;
     }
 
@@ -151,7 +126,7 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the targetListener value.
      */
     public SubResource targetListener() {
-        return this.targetListener;
+        return this.innerProperties() == null ? null : this.innerProperties().targetListener();
     }
 
     /**
@@ -161,7 +136,10 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
     public ApplicationGatewayRedirectConfigurationInner withTargetListener(SubResource targetListener) {
-        this.targetListener = targetListener;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRedirectConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withTargetListener(targetListener);
         return this;
     }
 
@@ -171,7 +149,7 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the targetUrl value.
      */
     public String targetUrl() {
-        return this.targetUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().targetUrl();
     }
 
     /**
@@ -181,7 +159,10 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
     public ApplicationGatewayRedirectConfigurationInner withTargetUrl(String targetUrl) {
-        this.targetUrl = targetUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRedirectConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withTargetUrl(targetUrl);
         return this;
     }
 
@@ -191,7 +172,7 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the includePath value.
      */
     public Boolean includePath() {
-        return this.includePath;
+        return this.innerProperties() == null ? null : this.innerProperties().includePath();
     }
 
     /**
@@ -201,7 +182,10 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
     public ApplicationGatewayRedirectConfigurationInner withIncludePath(Boolean includePath) {
-        this.includePath = includePath;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRedirectConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withIncludePath(includePath);
         return this;
     }
 
@@ -211,7 +195,7 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the includeQueryString value.
      */
     public Boolean includeQueryString() {
-        return this.includeQueryString;
+        return this.innerProperties() == null ? null : this.innerProperties().includeQueryString();
     }
 
     /**
@@ -221,7 +205,10 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
     public ApplicationGatewayRedirectConfigurationInner withIncludeQueryString(Boolean includeQueryString) {
-        this.includeQueryString = includeQueryString;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRedirectConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withIncludeQueryString(includeQueryString);
         return this;
     }
 
@@ -231,7 +218,7 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the requestRoutingRules value.
      */
     public List<SubResource> requestRoutingRules() {
-        return this.requestRoutingRules;
+        return this.innerProperties() == null ? null : this.innerProperties().requestRoutingRules();
     }
 
     /**
@@ -241,7 +228,10 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
     public ApplicationGatewayRedirectConfigurationInner withRequestRoutingRules(List<SubResource> requestRoutingRules) {
-        this.requestRoutingRules = requestRoutingRules;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRedirectConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withRequestRoutingRules(requestRoutingRules);
         return this;
     }
 
@@ -251,7 +241,7 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the urlPathMaps value.
      */
     public List<SubResource> urlPathMaps() {
-        return this.urlPathMaps;
+        return this.innerProperties() == null ? null : this.innerProperties().urlPathMaps();
     }
 
     /**
@@ -261,7 +251,10 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
     public ApplicationGatewayRedirectConfigurationInner withUrlPathMaps(List<SubResource> urlPathMaps) {
-        this.urlPathMaps = urlPathMaps;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRedirectConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withUrlPathMaps(urlPathMaps);
         return this;
     }
 
@@ -271,7 +264,7 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the pathRules value.
      */
     public List<SubResource> pathRules() {
-        return this.pathRules;
+        return this.innerProperties() == null ? null : this.innerProperties().pathRules();
     }
 
     /**
@@ -281,14 +274,10 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.
      */
     public ApplicationGatewayRedirectConfigurationInner withPathRules(List<SubResource> pathRules) {
-        this.pathRules = pathRules;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayRedirectConfigurationInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayRedirectConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withPathRules(pathRules);
         return this;
     }
 
@@ -298,5 +287,8 @@ public class ApplicationGatewayRedirectConfigurationInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

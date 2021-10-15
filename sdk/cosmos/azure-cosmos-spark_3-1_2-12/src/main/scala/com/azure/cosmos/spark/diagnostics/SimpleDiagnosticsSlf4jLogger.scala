@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.{HttpConstants, OperationType, RxDocument
 
 // scalastyle:off multiple.string.literals
 
-private[spark] final class SimpleDiagnosticsSlf4jLogger(classType: Class[_])
+private[spark] class SimpleDiagnosticsSlf4jLogger(classType: Class[_])
   extends DefaultMinimalSlf4jLogger(classType: Class[_]) {
 
   override def logItemWriteCompletion(writeOperation: WriteOperation): Unit = {

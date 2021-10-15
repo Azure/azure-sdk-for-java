@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.RegistrationDelegationSettingsProperties;
@@ -14,35 +13,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Delegation settings for a developer portal. */
-@JsonFlatten
 @Fluent
-public class PortalDelegationSettingsInner extends ProxyResource {
+public final class PortalDelegationSettingsInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalDelegationSettingsInner.class);
 
     /*
-     * A delegation Url.
+     * Delegation settings contract properties.
      */
-    @JsonProperty(value = "properties.url")
-    private String url;
+    @JsonProperty(value = "properties")
+    private PortalDelegationSettingsProperties innerProperties;
 
-    /*
-     * A base64-encoded validation key to validate, that a request is coming
-     * from Azure API Management.
+    /**
+     * Get the innerProperties property: Delegation settings contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.validationKey")
-    private String validationKey;
-
-    /*
-     * Subscriptions delegation settings.
-     */
-    @JsonProperty(value = "properties.subscriptions")
-    private SubscriptionsDelegationSettingsProperties subscriptions;
-
-    /*
-     * User registration delegation settings.
-     */
-    @JsonProperty(value = "properties.userRegistration")
-    private RegistrationDelegationSettingsProperties userRegistration;
+    private PortalDelegationSettingsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the url property: A delegation Url.
@@ -50,7 +38,7 @@ public class PortalDelegationSettingsInner extends ProxyResource {
      * @return the url value.
      */
     public String url() {
-        return this.url;
+        return this.innerProperties() == null ? null : this.innerProperties().url();
     }
 
     /**
@@ -60,7 +48,10 @@ public class PortalDelegationSettingsInner extends ProxyResource {
      * @return the PortalDelegationSettingsInner object itself.
      */
     public PortalDelegationSettingsInner withUrl(String url) {
-        this.url = url;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalDelegationSettingsProperties();
+        }
+        this.innerProperties().withUrl(url);
         return this;
     }
 
@@ -71,7 +62,7 @@ public class PortalDelegationSettingsInner extends ProxyResource {
      * @return the validationKey value.
      */
     public String validationKey() {
-        return this.validationKey;
+        return this.innerProperties() == null ? null : this.innerProperties().validationKey();
     }
 
     /**
@@ -82,7 +73,10 @@ public class PortalDelegationSettingsInner extends ProxyResource {
      * @return the PortalDelegationSettingsInner object itself.
      */
     public PortalDelegationSettingsInner withValidationKey(String validationKey) {
-        this.validationKey = validationKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalDelegationSettingsProperties();
+        }
+        this.innerProperties().withValidationKey(validationKey);
         return this;
     }
 
@@ -92,7 +86,7 @@ public class PortalDelegationSettingsInner extends ProxyResource {
      * @return the subscriptions value.
      */
     public SubscriptionsDelegationSettingsProperties subscriptions() {
-        return this.subscriptions;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptions();
     }
 
     /**
@@ -102,7 +96,10 @@ public class PortalDelegationSettingsInner extends ProxyResource {
      * @return the PortalDelegationSettingsInner object itself.
      */
     public PortalDelegationSettingsInner withSubscriptions(SubscriptionsDelegationSettingsProperties subscriptions) {
-        this.subscriptions = subscriptions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalDelegationSettingsProperties();
+        }
+        this.innerProperties().withSubscriptions(subscriptions);
         return this;
     }
 
@@ -112,7 +109,7 @@ public class PortalDelegationSettingsInner extends ProxyResource {
      * @return the userRegistration value.
      */
     public RegistrationDelegationSettingsProperties userRegistration() {
-        return this.userRegistration;
+        return this.innerProperties() == null ? null : this.innerProperties().userRegistration();
     }
 
     /**
@@ -123,7 +120,10 @@ public class PortalDelegationSettingsInner extends ProxyResource {
      */
     public PortalDelegationSettingsInner withUserRegistration(
         RegistrationDelegationSettingsProperties userRegistration) {
-        this.userRegistration = userRegistration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PortalDelegationSettingsProperties();
+        }
+        this.innerProperties().withUserRegistration(userRegistration);
         return this;
     }
 
@@ -133,11 +133,8 @@ public class PortalDelegationSettingsInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (subscriptions() != null) {
-            subscriptions().validate();
-        }
-        if (userRegistration() != null) {
-            userRegistration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

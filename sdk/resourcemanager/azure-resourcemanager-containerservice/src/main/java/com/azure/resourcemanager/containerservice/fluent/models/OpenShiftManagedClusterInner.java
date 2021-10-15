@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.NetworkProfile;
@@ -20,9 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 /** OpenShift Managed cluster. */
-@JsonFlatten
 @Fluent
-public class OpenShiftManagedClusterInner extends Resource {
+public final class OpenShiftManagedClusterInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterInner.class);
 
     /*
@@ -32,66 +30,10 @@ public class OpenShiftManagedClusterInner extends Resource {
     private PurchasePlan plan;
 
     /*
-     * The current deployment or provisioning state, which only appears in the
-     * response.
+     * Properties of a OpenShift managed cluster.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Version of OpenShift specified when creating the cluster.
-     */
-    @JsonProperty(value = "properties.openShiftVersion")
-    private String openShiftVersion;
-
-    /*
-     * Version of OpenShift specified when creating the cluster.
-     */
-    @JsonProperty(value = "properties.clusterVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String clusterVersion;
-
-    /*
-     * Service generated FQDN for OpenShift API server.
-     */
-    @JsonProperty(value = "properties.publicHostname", access = JsonProperty.Access.WRITE_ONLY)
-    private String publicHostname;
-
-    /*
-     * Service generated FQDN for OpenShift API server loadbalancer internal
-     * hostname.
-     */
-    @JsonProperty(value = "properties.fqdn", access = JsonProperty.Access.WRITE_ONLY)
-    private String fqdn;
-
-    /*
-     * Configuration for OpenShift networking.
-     */
-    @JsonProperty(value = "properties.networkProfile")
-    private NetworkProfile networkProfile;
-
-    /*
-     * Configuration for OpenShift router(s).
-     */
-    @JsonProperty(value = "properties.routerProfiles")
-    private List<OpenShiftRouterProfile> routerProfiles;
-
-    /*
-     * Configuration for OpenShift master VMs.
-     */
-    @JsonProperty(value = "properties.masterPoolProfile")
-    private OpenShiftManagedClusterMasterPoolProfile masterPoolProfile;
-
-    /*
-     * Configuration of OpenShift cluster VMs.
-     */
-    @JsonProperty(value = "properties.agentPoolProfiles")
-    private List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles;
-
-    /*
-     * Configures OpenShift authentication.
-     */
-    @JsonProperty(value = "properties.authProfile")
-    private OpenShiftManagedClusterAuthProfile authProfile;
+    @JsonProperty(value = "properties")
+    private OpenShiftManagedClusterProperties innerProperties;
 
     /**
      * Get the plan property: Define the resource plan as required by ARM for billing purposes.
@@ -114,162 +56,12 @@ public class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
-     * response.
+     * Get the innerProperties property: Properties of a OpenShift managed cluster.
      *
-     * @return the provisioningState value.
+     * @return the innerProperties value.
      */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the openShiftVersion property: Version of OpenShift specified when creating the cluster.
-     *
-     * @return the openShiftVersion value.
-     */
-    public String openShiftVersion() {
-        return this.openShiftVersion;
-    }
-
-    /**
-     * Set the openShiftVersion property: Version of OpenShift specified when creating the cluster.
-     *
-     * @param openShiftVersion the openShiftVersion value to set.
-     * @return the OpenShiftManagedClusterInner object itself.
-     */
-    public OpenShiftManagedClusterInner withOpenShiftVersion(String openShiftVersion) {
-        this.openShiftVersion = openShiftVersion;
-        return this;
-    }
-
-    /**
-     * Get the clusterVersion property: Version of OpenShift specified when creating the cluster.
-     *
-     * @return the clusterVersion value.
-     */
-    public String clusterVersion() {
-        return this.clusterVersion;
-    }
-
-    /**
-     * Get the publicHostname property: Service generated FQDN for OpenShift API server.
-     *
-     * @return the publicHostname value.
-     */
-    public String publicHostname() {
-        return this.publicHostname;
-    }
-
-    /**
-     * Get the fqdn property: Service generated FQDN for OpenShift API server loadbalancer internal hostname.
-     *
-     * @return the fqdn value.
-     */
-    public String fqdn() {
-        return this.fqdn;
-    }
-
-    /**
-     * Get the networkProfile property: Configuration for OpenShift networking.
-     *
-     * @return the networkProfile value.
-     */
-    public NetworkProfile networkProfile() {
-        return this.networkProfile;
-    }
-
-    /**
-     * Set the networkProfile property: Configuration for OpenShift networking.
-     *
-     * @param networkProfile the networkProfile value to set.
-     * @return the OpenShiftManagedClusterInner object itself.
-     */
-    public OpenShiftManagedClusterInner withNetworkProfile(NetworkProfile networkProfile) {
-        this.networkProfile = networkProfile;
-        return this;
-    }
-
-    /**
-     * Get the routerProfiles property: Configuration for OpenShift router(s).
-     *
-     * @return the routerProfiles value.
-     */
-    public List<OpenShiftRouterProfile> routerProfiles() {
-        return this.routerProfiles;
-    }
-
-    /**
-     * Set the routerProfiles property: Configuration for OpenShift router(s).
-     *
-     * @param routerProfiles the routerProfiles value to set.
-     * @return the OpenShiftManagedClusterInner object itself.
-     */
-    public OpenShiftManagedClusterInner withRouterProfiles(List<OpenShiftRouterProfile> routerProfiles) {
-        this.routerProfiles = routerProfiles;
-        return this;
-    }
-
-    /**
-     * Get the masterPoolProfile property: Configuration for OpenShift master VMs.
-     *
-     * @return the masterPoolProfile value.
-     */
-    public OpenShiftManagedClusterMasterPoolProfile masterPoolProfile() {
-        return this.masterPoolProfile;
-    }
-
-    /**
-     * Set the masterPoolProfile property: Configuration for OpenShift master VMs.
-     *
-     * @param masterPoolProfile the masterPoolProfile value to set.
-     * @return the OpenShiftManagedClusterInner object itself.
-     */
-    public OpenShiftManagedClusterInner withMasterPoolProfile(
-        OpenShiftManagedClusterMasterPoolProfile masterPoolProfile) {
-        this.masterPoolProfile = masterPoolProfile;
-        return this;
-    }
-
-    /**
-     * Get the agentPoolProfiles property: Configuration of OpenShift cluster VMs.
-     *
-     * @return the agentPoolProfiles value.
-     */
-    public List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles() {
-        return this.agentPoolProfiles;
-    }
-
-    /**
-     * Set the agentPoolProfiles property: Configuration of OpenShift cluster VMs.
-     *
-     * @param agentPoolProfiles the agentPoolProfiles value to set.
-     * @return the OpenShiftManagedClusterInner object itself.
-     */
-    public OpenShiftManagedClusterInner withAgentPoolProfiles(
-        List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles) {
-        this.agentPoolProfiles = agentPoolProfiles;
-        return this;
-    }
-
-    /**
-     * Get the authProfile property: Configures OpenShift authentication.
-     *
-     * @return the authProfile value.
-     */
-    public OpenShiftManagedClusterAuthProfile authProfile() {
-        return this.authProfile;
-    }
-
-    /**
-     * Set the authProfile property: Configures OpenShift authentication.
-     *
-     * @param authProfile the authProfile value to set.
-     * @return the OpenShiftManagedClusterInner object itself.
-     */
-    public OpenShiftManagedClusterInner withAuthProfile(OpenShiftManagedClusterAuthProfile authProfile) {
-        this.authProfile = authProfile;
-        return this;
+    private OpenShiftManagedClusterProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -287,6 +79,183 @@ public class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the openShiftVersion property: Version of OpenShift specified when creating the cluster.
+     *
+     * @return the openShiftVersion value.
+     */
+    public String openShiftVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().openShiftVersion();
+    }
+
+    /**
+     * Set the openShiftVersion property: Version of OpenShift specified when creating the cluster.
+     *
+     * @param openShiftVersion the openShiftVersion value to set.
+     * @return the OpenShiftManagedClusterInner object itself.
+     */
+    public OpenShiftManagedClusterInner withOpenShiftVersion(String openShiftVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenShiftManagedClusterProperties();
+        }
+        this.innerProperties().withOpenShiftVersion(openShiftVersion);
+        return this;
+    }
+
+    /**
+     * Get the clusterVersion property: Version of OpenShift specified when creating the cluster.
+     *
+     * @return the clusterVersion value.
+     */
+    public String clusterVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().clusterVersion();
+    }
+
+    /**
+     * Get the publicHostname property: Service generated FQDN for OpenShift API server.
+     *
+     * @return the publicHostname value.
+     */
+    public String publicHostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicHostname();
+    }
+
+    /**
+     * Get the fqdn property: Service generated FQDN for OpenShift API server loadbalancer internal hostname.
+     *
+     * @return the fqdn value.
+     */
+    public String fqdn() {
+        return this.innerProperties() == null ? null : this.innerProperties().fqdn();
+    }
+
+    /**
+     * Get the networkProfile property: Configuration for OpenShift networking.
+     *
+     * @return the networkProfile value.
+     */
+    public NetworkProfile networkProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
+    }
+
+    /**
+     * Set the networkProfile property: Configuration for OpenShift networking.
+     *
+     * @param networkProfile the networkProfile value to set.
+     * @return the OpenShiftManagedClusterInner object itself.
+     */
+    public OpenShiftManagedClusterInner withNetworkProfile(NetworkProfile networkProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenShiftManagedClusterProperties();
+        }
+        this.innerProperties().withNetworkProfile(networkProfile);
+        return this;
+    }
+
+    /**
+     * Get the routerProfiles property: Configuration for OpenShift router(s).
+     *
+     * @return the routerProfiles value.
+     */
+    public List<OpenShiftRouterProfile> routerProfiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().routerProfiles();
+    }
+
+    /**
+     * Set the routerProfiles property: Configuration for OpenShift router(s).
+     *
+     * @param routerProfiles the routerProfiles value to set.
+     * @return the OpenShiftManagedClusterInner object itself.
+     */
+    public OpenShiftManagedClusterInner withRouterProfiles(List<OpenShiftRouterProfile> routerProfiles) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenShiftManagedClusterProperties();
+        }
+        this.innerProperties().withRouterProfiles(routerProfiles);
+        return this;
+    }
+
+    /**
+     * Get the masterPoolProfile property: Configuration for OpenShift master VMs.
+     *
+     * @return the masterPoolProfile value.
+     */
+    public OpenShiftManagedClusterMasterPoolProfile masterPoolProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().masterPoolProfile();
+    }
+
+    /**
+     * Set the masterPoolProfile property: Configuration for OpenShift master VMs.
+     *
+     * @param masterPoolProfile the masterPoolProfile value to set.
+     * @return the OpenShiftManagedClusterInner object itself.
+     */
+    public OpenShiftManagedClusterInner withMasterPoolProfile(
+        OpenShiftManagedClusterMasterPoolProfile masterPoolProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenShiftManagedClusterProperties();
+        }
+        this.innerProperties().withMasterPoolProfile(masterPoolProfile);
+        return this;
+    }
+
+    /**
+     * Get the agentPoolProfiles property: Configuration of OpenShift cluster VMs.
+     *
+     * @return the agentPoolProfiles value.
+     */
+    public List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().agentPoolProfiles();
+    }
+
+    /**
+     * Set the agentPoolProfiles property: Configuration of OpenShift cluster VMs.
+     *
+     * @param agentPoolProfiles the agentPoolProfiles value to set.
+     * @return the OpenShiftManagedClusterInner object itself.
+     */
+    public OpenShiftManagedClusterInner withAgentPoolProfiles(
+        List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenShiftManagedClusterProperties();
+        }
+        this.innerProperties().withAgentPoolProfiles(agentPoolProfiles);
+        return this;
+    }
+
+    /**
+     * Get the authProfile property: Configures OpenShift authentication.
+     *
+     * @return the authProfile value.
+     */
+    public OpenShiftManagedClusterAuthProfile authProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().authProfile();
+    }
+
+    /**
+     * Set the authProfile property: Configures OpenShift authentication.
+     *
+     * @param authProfile the authProfile value to set.
+     * @return the OpenShiftManagedClusterInner object itself.
+     */
+    public OpenShiftManagedClusterInner withAuthProfile(OpenShiftManagedClusterAuthProfile authProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OpenShiftManagedClusterProperties();
+        }
+        this.innerProperties().withAuthProfile(authProfile);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -295,20 +264,8 @@ public class OpenShiftManagedClusterInner extends Resource {
         if (plan() != null) {
             plan().validate();
         }
-        if (networkProfile() != null) {
-            networkProfile().validate();
-        }
-        if (routerProfiles() != null) {
-            routerProfiles().forEach(e -> e.validate());
-        }
-        if (masterPoolProfile() != null) {
-            masterPoolProfile().validate();
-        }
-        if (agentPoolProfiles() != null) {
-            agentPoolProfiles().forEach(e -> e.validate());
-        }
-        if (authProfile() != null) {
-            authProfile().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

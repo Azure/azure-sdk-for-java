@@ -5,82 +5,80 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Triggered Web Job Run Information. */
-@JsonFlatten
 @Fluent
-public class TriggeredJobRun extends ProxyOnlyResource {
+public final class TriggeredJobRun {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredJobRun.class);
 
     /*
      * Job ID.
      */
-    @JsonProperty(value = "properties.web_job_id")
+    @JsonProperty(value = "web_job_id")
     private String webJobId;
 
     /*
      * Job name.
      */
-    @JsonProperty(value = "properties.web_job_name")
+    @JsonProperty(value = "web_job_name")
     private String webJobName;
 
     /*
      * Job status.
      */
-    @JsonProperty(value = "properties.status")
+    @JsonProperty(value = "status")
     private TriggeredWebJobStatus status;
 
     /*
      * Start time.
      */
-    @JsonProperty(value = "properties.start_time")
+    @JsonProperty(value = "start_time")
     private OffsetDateTime startTime;
 
     /*
      * End time.
      */
-    @JsonProperty(value = "properties.end_time")
+    @JsonProperty(value = "end_time")
     private OffsetDateTime endTime;
 
     /*
      * Job duration.
      */
-    @JsonProperty(value = "properties.duration")
+    @JsonProperty(value = "duration")
     private String duration;
 
     /*
      * Output URL.
      */
-    @JsonProperty(value = "properties.output_url")
+    @JsonProperty(value = "output_url")
     private String outputUrl;
 
     /*
      * Error URL.
      */
-    @JsonProperty(value = "properties.error_url")
+    @JsonProperty(value = "error_url")
     private String errorUrl;
 
     /*
      * Job URL.
      */
-    @JsonProperty(value = "properties.url")
+    @JsonProperty(value = "url")
     private String url;
 
     /*
      * Job name.
      */
-    @JsonProperty(value = "properties.job_name")
+    @JsonProperty(value = "job_name")
     private String jobName;
 
     /*
      * Job trigger.
      */
-    @JsonProperty(value = "properties.trigger")
+    @JsonProperty(value = "trigger")
     private String trigger;
 
     /**
@@ -303,20 +301,11 @@ public class TriggeredJobRun extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public TriggeredJobRun withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
     }
 }

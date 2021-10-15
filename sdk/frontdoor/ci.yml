@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/frontdoor/
+      - sdk/frontdoor/ci.yml
+      - sdk/frontdoor/azure-resourcemanager-frontdoor/
+    exclude:
+      - sdk/frontdoor/pom.xml
+      - sdk/frontdoor/azure-resourcemanager-frontdoor/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/frontdoor/
+      - sdk/frontdoor/ci.yml
+      - sdk/frontdoor/azure-resourcemanager-frontdoor/
+    exclude:
+      - sdk/frontdoor/pom.xml
+      - sdk/frontdoor/azure-resourcemanager-frontdoor/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

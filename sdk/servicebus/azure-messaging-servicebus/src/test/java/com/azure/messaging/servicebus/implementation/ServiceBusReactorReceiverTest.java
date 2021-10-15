@@ -120,7 +120,7 @@ class ServiceBusReactorReceiverTest {
     void teardown(TestInfo testInfo) {
         logger.info("[{}] Tearing down.", testInfo.getDisplayName());
 
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     /**

@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -294,7 +294,7 @@ public interface ApplicationSecurityGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update application security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -302,14 +302,14 @@ public interface ApplicationSecurityGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ApplicationSecurityGroupInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String applicationSecurityGroupName, Map<String, String> tags);
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
 
     /**
      * Updates an application security group's tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update application security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -317,40 +317,29 @@ public interface ApplicationSecurityGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ApplicationSecurityGroupInner> updateTagsAsync(
-        String resourceGroupName, String applicationSecurityGroupName, Map<String, String> tags);
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
 
     /**
      * Updates an application security group's tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationSecurityGroupInner> updateTagsAsync(String resourceGroupName, String applicationSecurityGroupName);
+    ApplicationSecurityGroupInner updateTags(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
 
     /**
      * Updates an application security group's tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationSecurityGroupInner updateTags(String resourceGroupName, String applicationSecurityGroupName);
-
-    /**
-     * Updates an application security group's tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update application security group tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -359,7 +348,7 @@ public interface ApplicationSecurityGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationSecurityGroupInner> updateTagsWithResponse(
-        String resourceGroupName, String applicationSecurityGroupName, Map<String, String> tags, Context context);
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context);
 
     /**
      * Gets all application security groups in a subscription.

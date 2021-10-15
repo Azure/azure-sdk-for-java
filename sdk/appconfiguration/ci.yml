@@ -9,20 +9,36 @@ trigger:
   paths:
     include:
       - sdk/appconfiguration/ci.yml
+      - sdk/appconfiguration/azure-data-appconfiguration/
+      - sdk/appconfiguration/azure-data-appconfiguration-perf/
+      - sdk/appconfiguration/azure-resourcemanager-appconfiguration/
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/
+      - sdk/appconfiguration/azure-spring-cloud-feature-management/
+      - sdk/appconfiguration/azure-spring-cloud-feature-management-web/
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/
+      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/
+      - sdk/appconfiguration/spring-cloud-azure-feature-management/
+      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/
+      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/
+    exclude:
       - sdk/appconfiguration/pom.xml
-      - sdk/appconfiguration/azure-data-appconfiguration
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web
-      - sdk/appconfiguration/spring-cloud-azure-feature-management
-      - sdk/appconfiguration/spring-cloud-azure-feature-management-web
-      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
-      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
-      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config
-      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web
-      - sdk/appconfiguration/azure-spring-cloud-feature-management
-      - sdk/appconfiguration/azure-spring-cloud-feature-management-web
-      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config
-      - sdk/appconfiguration/azure-resourcemanager-appconfiguration
+      - sdk/appconfiguration/azure-data-appconfiguration/pom.xml
+      - sdk/appconfiguration/azure-data-appconfiguration-perf/pom.xml
+      - sdk/appconfiguration/azure-resourcemanager-appconfiguration/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-feature-management/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-feature-management-web/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-feature-management/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/pom.xml
+      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/pom.xml
 
 pr:
   branches:
@@ -34,23 +50,36 @@ pr:
   paths:
     include:
       - sdk/appconfiguration/ci.yml
+      - sdk/appconfiguration/azure-data-appconfiguration/
+      - sdk/appconfiguration/azure-data-appconfiguration-perf/
+      - sdk/appconfiguration/azure-resourcemanager-appconfiguration/
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/
+      - sdk/appconfiguration/azure-spring-cloud-feature-management/
+      - sdk/appconfiguration/azure-spring-cloud-feature-management-web/
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/
+      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/
+      - sdk/appconfiguration/spring-cloud-azure-feature-management/
+      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/
+      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/
+    exclude:
       - sdk/appconfiguration/pom.xml
-      - sdk/appconfiguration/test-resources.json
-      - sdk/appconfiguration/tests.yml
-      - sdk/appconfiguration/azure-data-appconfiguration
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config
-      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web
-      - sdk/appconfiguration/spring-cloud-azure-feature-management
-      - sdk/appconfiguration/spring-cloud-azure-feature-management-web
-      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config
-      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
-      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config
-      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config
-      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web
-      - sdk/appconfiguration/azure-spring-cloud-feature-management
-      - sdk/appconfiguration/azure-spring-cloud-feature-management-web
-      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config
-      - sdk/appconfiguration/azure-resourcemanager-appconfiguration
+      - sdk/appconfiguration/azure-data-appconfiguration/pom.xml
+      - sdk/appconfiguration/azure-data-appconfiguration-perf/pom.xml
+      - sdk/appconfiguration/azure-resourcemanager-appconfiguration/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-appconfiguration-config-web/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-feature-management/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-feature-management-web/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-starter-appconfiguration-config/pom.xml
+      - sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-appconfiguration-config-web/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-feature-management/pom.xml
+      - sdk/appconfiguration/spring-cloud-azure-feature-management-web/pom.xml
+      - sdk/appconfiguration/spring-cloud-starter-azure-appconfiguration-config/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

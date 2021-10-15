@@ -35,6 +35,8 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -56,6 +58,7 @@ public class ReactorSession implements AmqpSession {
     private final ConcurrentMap<String, LinkSubscription<AmqpSendLink>> openSendLinks = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, LinkSubscription<AmqpReceiveLink>> openReceiveLinks = new ConcurrentHashMap<>();
 
+    private final Scheduler timeoutScheduler = Schedulers.parallel();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final Object closeLock = new Object();
 
@@ -258,9 +261,15 @@ public class ReactorSession implements AmqpSession {
         return Mono.fromRunnable(() -> {
             try {
                 provider.getReactorDispatcher().invoke(() -> disposeWork(errorCondition, disposeLinks));
-            } catch (IOException | RejectedExecutionException e) {
+            } catch (IOException e) {
                 logger.info("connectionId[{}] sessionName[{}] Error while scheduling work. Manually disposing.",
                     sessionHandler.getConnectionId(), sessionName, e);
+
+                disposeWork(errorCondition, disposeLinks);
+            } catch (RejectedExecutionException e) {
+                logger.info("connectionId[{}] sessionName[{}] RejectedExecutionException when scheduling work.",
+                    sessionHandler.getConnectionId(), sessionName);
+
                 disposeWork(errorCondition, disposeLinks);
             }
         }).then(isClosedMono.asMono());
@@ -363,7 +372,7 @@ public class ReactorSession implements AmqpSession {
 
                     sink.success(computed.getLink());
                 });
-            } catch (IOException e) {
+            } catch (IOException | RejectedExecutionException e) {
                 sink.error(e);
             }
         }));
@@ -460,7 +469,7 @@ public class ReactorSession implements AmqpSession {
 
                     sink.success(computed.getLink());
                 });
-            } catch (IOException e) {
+            } catch (IOException | RejectedExecutionException e) {
                 sink.error(e);
             }
         }));
@@ -491,7 +500,7 @@ public class ReactorSession implements AmqpSession {
         sender.open();
 
         final ReactorSender reactorSender = new ReactorSender(amqpConnection, entityPath, sender, sendLinkHandler,
-            provider, tokenManager, messageSerializer, options);
+            provider, tokenManager, messageSerializer, options, timeoutScheduler);
 
         //@formatter:off
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {

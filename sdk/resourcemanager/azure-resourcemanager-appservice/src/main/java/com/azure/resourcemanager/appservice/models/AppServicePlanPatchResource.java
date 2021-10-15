@@ -5,148 +5,38 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.AppServicePlanPatchResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** ARM resource for a app service plan. */
-@JsonFlatten
 @Fluent
-public class AppServicePlanPatchResource extends ProxyOnlyResource {
+public final class AppServicePlanPatchResource extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServicePlanPatchResource.class);
 
     /*
-     * Target worker tier assigned to the App Service plan.
+     * AppServicePlanPatchResource resource specific properties
      */
-    @JsonProperty(value = "properties.workerTierName")
-    private String workerTierName;
+    @JsonProperty(value = "properties")
+    private AppServicePlanPatchResourceProperties innerProperties;
 
-    /*
-     * App Service plan status.
+    /**
+     * Get the innerProperties property: AppServicePlanPatchResource resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private StatusOptions status;
+    private AppServicePlanPatchResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * App Service plan subscription.
-     */
-    @JsonProperty(value = "properties.subscription", access = JsonProperty.Access.WRITE_ONLY)
-    private String subscription;
-
-    /*
-     * Specification for the App Service Environment to use for the App Service
-     * plan.
-     */
-    @JsonProperty(value = "properties.hostingEnvironmentProfile")
-    private HostingEnvironmentProfile hostingEnvironmentProfile;
-
-    /*
-     * Maximum number of instances that can be assigned to this App Service
-     * plan.
-     */
-    @JsonProperty(value = "properties.maximumNumberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer maximumNumberOfWorkers;
-
-    /*
-     * Geographical location for the App Service plan.
-     */
-    @JsonProperty(value = "properties.geoRegion", access = JsonProperty.Access.WRITE_ONLY)
-    private String geoRegion;
-
-    /*
-     * If <code>true</code>, apps assigned to this App Service plan can be
-     * scaled independently.
-     * If <code>false</code>, apps assigned to this App Service plan will scale
-     * to all instances of the plan.
-     */
-    @JsonProperty(value = "properties.perSiteScaling")
-    private Boolean perSiteScaling;
-
-    /*
-     * Maximum number of total workers allowed for this ElasticScaleEnabled App
-     * Service Plan
-     */
-    @JsonProperty(value = "properties.maximumElasticWorkerCount")
-    private Integer maximumElasticWorkerCount;
-
-    /*
-     * Number of apps assigned to this App Service plan.
-     */
-    @JsonProperty(value = "properties.numberOfSites", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer numberOfSites;
-
-    /*
-     * If <code>true</code>, this App Service Plan owns spot instances.
-     */
-    @JsonProperty(value = "properties.isSpot")
-    private Boolean isSpot;
-
-    /*
-     * The time when the server farm expires. Valid only if it is a spot server
-     * farm.
-     */
-    @JsonProperty(value = "properties.spotExpirationTime")
-    private OffsetDateTime spotExpirationTime;
-
-    /*
-     * The time when the server farm free offer expires.
-     */
-    @JsonProperty(value = "properties.freeOfferExpirationTime")
-    private OffsetDateTime freeOfferExpirationTime;
-
-    /*
-     * Resource group of the App Service plan.
-     */
-    @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceGroup;
-
-    /*
-     * If Linux app service plan <code>true</code>, <code>false</code>
-     * otherwise.
-     */
-    @JsonProperty(value = "properties.reserved")
-    private Boolean reserved;
-
-    /*
-     * Obsolete: If Hyper-V container app service plan <code>true</code>,
-     * <code>false</code> otherwise.
-     */
-    @JsonProperty(value = "properties.isXenon")
-    private Boolean isXenon;
-
-    /*
-     * If Hyper-V container app service plan <code>true</code>,
-     * <code>false</code> otherwise.
-     */
-    @JsonProperty(value = "properties.hyperV")
-    private Boolean hyperV;
-
-    /*
-     * Scaling worker count.
-     */
-    @JsonProperty(value = "properties.targetWorkerCount")
-    private Integer targetWorkerCount;
-
-    /*
-     * Scaling worker size ID.
-     */
-    @JsonProperty(value = "properties.targetWorkerSizeId")
-    private Integer targetWorkerSizeId;
-
-    /*
-     * Provisioning state of the App Service Plan.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Specification for the Kubernetes Environment to use for the App Service
-     * plan.
-     */
-    @JsonProperty(value = "properties.kubeEnvironmentProfile")
-    private KubeEnvironmentProfile kubeEnvironmentProfile;
+    /** {@inheritDoc} */
+    @Override
+    public AppServicePlanPatchResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the workerTierName property: Target worker tier assigned to the App Service plan.
@@ -154,7 +44,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the workerTierName value.
      */
     public String workerTierName() {
-        return this.workerTierName;
+        return this.innerProperties() == null ? null : this.innerProperties().workerTierName();
     }
 
     /**
@@ -164,7 +54,10 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withWorkerTierName(String workerTierName) {
-        this.workerTierName = workerTierName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withWorkerTierName(workerTierName);
         return this;
     }
 
@@ -174,7 +67,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the status value.
      */
     public StatusOptions status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -183,7 +76,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the subscription value.
      */
     public String subscription() {
-        return this.subscription;
+        return this.innerProperties() == null ? null : this.innerProperties().subscription();
     }
 
     /**
@@ -193,7 +86,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the hostingEnvironmentProfile value.
      */
     public HostingEnvironmentProfile hostingEnvironmentProfile() {
-        return this.hostingEnvironmentProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().hostingEnvironmentProfile();
     }
 
     /**
@@ -205,7 +98,10 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      */
     public AppServicePlanPatchResource withHostingEnvironmentProfile(
         HostingEnvironmentProfile hostingEnvironmentProfile) {
-        this.hostingEnvironmentProfile = hostingEnvironmentProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withHostingEnvironmentProfile(hostingEnvironmentProfile);
         return this;
     }
 
@@ -216,7 +112,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the maximumNumberOfWorkers value.
      */
     public Integer maximumNumberOfWorkers() {
-        return this.maximumNumberOfWorkers;
+        return this.innerProperties() == null ? null : this.innerProperties().maximumNumberOfWorkers();
     }
 
     /**
@@ -225,7 +121,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the geoRegion value.
      */
     public String geoRegion() {
-        return this.geoRegion;
+        return this.innerProperties() == null ? null : this.innerProperties().geoRegion();
     }
 
     /**
@@ -236,7 +132,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the perSiteScaling value.
      */
     public Boolean perSiteScaling() {
-        return this.perSiteScaling;
+        return this.innerProperties() == null ? null : this.innerProperties().perSiteScaling();
     }
 
     /**
@@ -248,7 +144,35 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withPerSiteScaling(Boolean perSiteScaling) {
-        this.perSiteScaling = perSiteScaling;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withPerSiteScaling(perSiteScaling);
+        return this;
+    }
+
+    /**
+     * Get the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
+     * ServerFarm was ElasticPremium sku.
+     *
+     * @return the elasticScaleEnabled value.
+     */
+    public Boolean elasticScaleEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().elasticScaleEnabled();
+    }
+
+    /**
+     * Set the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
+     * ServerFarm was ElasticPremium sku.
+     *
+     * @param elasticScaleEnabled the elasticScaleEnabled value to set.
+     * @return the AppServicePlanPatchResource object itself.
+     */
+    public AppServicePlanPatchResource withElasticScaleEnabled(Boolean elasticScaleEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withElasticScaleEnabled(elasticScaleEnabled);
         return this;
     }
 
@@ -259,7 +183,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the maximumElasticWorkerCount value.
      */
     public Integer maximumElasticWorkerCount() {
-        return this.maximumElasticWorkerCount;
+        return this.innerProperties() == null ? null : this.innerProperties().maximumElasticWorkerCount();
     }
 
     /**
@@ -270,7 +194,10 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withMaximumElasticWorkerCount(Integer maximumElasticWorkerCount) {
-        this.maximumElasticWorkerCount = maximumElasticWorkerCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withMaximumElasticWorkerCount(maximumElasticWorkerCount);
         return this;
     }
 
@@ -280,7 +207,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the numberOfSites value.
      */
     public Integer numberOfSites() {
-        return this.numberOfSites;
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfSites();
     }
 
     /**
@@ -289,7 +216,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the isSpot value.
      */
     public Boolean isSpot() {
-        return this.isSpot;
+        return this.innerProperties() == null ? null : this.innerProperties().isSpot();
     }
 
     /**
@@ -299,7 +226,10 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withIsSpot(Boolean isSpot) {
-        this.isSpot = isSpot;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withIsSpot(isSpot);
         return this;
     }
 
@@ -310,7 +240,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the spotExpirationTime value.
      */
     public OffsetDateTime spotExpirationTime() {
-        return this.spotExpirationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().spotExpirationTime();
     }
 
     /**
@@ -321,7 +251,10 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withSpotExpirationTime(OffsetDateTime spotExpirationTime) {
-        this.spotExpirationTime = spotExpirationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withSpotExpirationTime(spotExpirationTime);
         return this;
     }
 
@@ -331,7 +264,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the freeOfferExpirationTime value.
      */
     public OffsetDateTime freeOfferExpirationTime() {
-        return this.freeOfferExpirationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().freeOfferExpirationTime();
     }
 
     /**
@@ -341,7 +274,10 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withFreeOfferExpirationTime(OffsetDateTime freeOfferExpirationTime) {
-        this.freeOfferExpirationTime = freeOfferExpirationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withFreeOfferExpirationTime(freeOfferExpirationTime);
         return this;
     }
 
@@ -351,7 +287,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
-        return this.resourceGroup;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGroup();
     }
 
     /**
@@ -361,7 +297,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the reserved value.
      */
     public Boolean reserved() {
-        return this.reserved;
+        return this.innerProperties() == null ? null : this.innerProperties().reserved();
     }
 
     /**
@@ -372,7 +308,10 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withReserved(Boolean reserved) {
-        this.reserved = reserved;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withReserved(reserved);
         return this;
     }
 
@@ -383,7 +322,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the isXenon value.
      */
     public Boolean isXenon() {
-        return this.isXenon;
+        return this.innerProperties() == null ? null : this.innerProperties().isXenon();
     }
 
     /**
@@ -394,7 +333,10 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withIsXenon(Boolean isXenon) {
-        this.isXenon = isXenon;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withIsXenon(isXenon);
         return this;
     }
 
@@ -405,7 +347,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the hyperV value.
      */
     public Boolean hyperV() {
-        return this.hyperV;
+        return this.innerProperties() == null ? null : this.innerProperties().hyperV();
     }
 
     /**
@@ -416,7 +358,10 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withHyperV(Boolean hyperV) {
-        this.hyperV = hyperV;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withHyperV(hyperV);
         return this;
     }
 
@@ -426,7 +371,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the targetWorkerCount value.
      */
     public Integer targetWorkerCount() {
-        return this.targetWorkerCount;
+        return this.innerProperties() == null ? null : this.innerProperties().targetWorkerCount();
     }
 
     /**
@@ -436,7 +381,10 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withTargetWorkerCount(Integer targetWorkerCount) {
-        this.targetWorkerCount = targetWorkerCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withTargetWorkerCount(targetWorkerCount);
         return this;
     }
 
@@ -446,7 +394,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the targetWorkerSizeId value.
      */
     public Integer targetWorkerSizeId() {
-        return this.targetWorkerSizeId;
+        return this.innerProperties() == null ? null : this.innerProperties().targetWorkerSizeId();
     }
 
     /**
@@ -456,7 +404,10 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withTargetWorkerSizeId(Integer targetWorkerSizeId) {
-        this.targetWorkerSizeId = targetWorkerSizeId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withTargetWorkerSizeId(targetWorkerSizeId);
         return this;
     }
 
@@ -466,7 +417,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -476,7 +427,7 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the kubeEnvironmentProfile value.
      */
     public KubeEnvironmentProfile kubeEnvironmentProfile() {
-        return this.kubeEnvironmentProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().kubeEnvironmentProfile();
     }
 
     /**
@@ -487,14 +438,37 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      * @return the AppServicePlanPatchResource object itself.
      */
     public AppServicePlanPatchResource withKubeEnvironmentProfile(KubeEnvironmentProfile kubeEnvironmentProfile) {
-        this.kubeEnvironmentProfile = kubeEnvironmentProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withKubeEnvironmentProfile(kubeEnvironmentProfile);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public AppServicePlanPatchResource withKind(String kind) {
-        super.withKind(kind);
+    /**
+     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
+     * zone balancing. If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone
+     * balancing.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
+    }
+
+    /**
+     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
+     * zone balancing. If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone
+     * balancing.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the AppServicePlanPatchResource object itself.
+     */
+    public AppServicePlanPatchResource withZoneRedundant(Boolean zoneRedundant) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanPatchResourceProperties();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
         return this;
     }
 
@@ -506,11 +480,8 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (hostingEnvironmentProfile() != null) {
-            hostingEnvironmentProfile().validate();
-        }
-        if (kubeEnvironmentProfile() != null) {
-            kubeEnvironmentProfile().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -8,7 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/notificationhubs/
+      - sdk/notificationhubs/ci.yml
+      - sdk/notificationhubs/azure-resourcemanager-notificationhubs/
+    exclude:
+      - sdk/notificationhubs/pom.xml
+      - sdk/notificationhubs/azure-resourcemanager-notificationhubs/pom.xml
 
 pr:
   branches:
@@ -19,7 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/notificationhubs/
+      - sdk/notificationhubs/ci.yml
+      - sdk/notificationhubs/azure-resourcemanager-notificationhubs/
+    exclude:
+      - sdk/notificationhubs/pom.xml
+      - sdk/notificationhubs/azure-resourcemanager-notificationhubs/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

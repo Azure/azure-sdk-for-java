@@ -78,6 +78,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final RntbdRequestTimer requestTimer;
     private final Tag tag;
     private final int maxConcurrentRequests;
+    private final boolean channelAcquisitionContextEnabled;
 
     private final RntbdConnectionStateListener connectionStateListener;
 
@@ -128,6 +129,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
             ? new RntbdConnectionStateListener(this.provider.addressResolver, this)
             : null;
+
+        this.channelAcquisitionContextEnabled = config.isChannelAcquisitionContextEnabled();
     }
 
     // endregion
@@ -353,8 +356,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
 
         final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
+        requestRecord.channelAcquisitionContextEnabled(this.channelAcquisitionContextEnabled);
         requestRecord.stage(RntbdRequestRecord.Stage.CHANNEL_ACQUISITION_STARTED);
-        final Future<Channel> connectedChannel = this.channelPool.acquire();
+        final Future<Channel> connectedChannel = this.channelPool.acquire(requestRecord.getChannelAcquisitionTimeline());
 
         logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);
 
@@ -465,7 +469,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             checkNotNull(options, "expected non-null options");
             checkNotNull(sslContext, "expected non-null sslContext");
 
-            final DefaultThreadFactory threadFactory = new DefaultThreadFactory("cosmos-rntbd-nio", true);
+            final DefaultThreadFactory threadFactory =
+                new DefaultThreadFactory(
+                    "cosmos-rntbd-nio",
+                    true,
+                    options.ioThreadPriority());
             final LogLevel wireLogLevel;
 
             if (logger.isDebugEnabled()) {

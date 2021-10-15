@@ -5,92 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.NamedValueUpdateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NamedValue update Parameters. */
-@JsonFlatten
 @Fluent
-public class NamedValueUpdateParameters {
+public final class NamedValueUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NamedValueUpdateParameters.class);
 
     /*
-     * Optional tags that when provided can be used to filter the NamedValue
-     * list.
+     * NamedValue entity Update contract properties.
      */
-    @JsonProperty(value = "properties.tags")
-    private List<String> tags;
-
-    /*
-     * Determines whether the value is a secret and should be encrypted or not.
-     * Default value is false.
-     */
-    @JsonProperty(value = "properties.secret")
-    private Boolean secret;
-
-    /*
-     * Unique name of NamedValue. It may contain only letters, digits, period,
-     * dash, and underscore characters.
-     */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
-
-    /*
-     * Value of the NamedValue. Can contain policy expressions. It may not be
-     * empty or consist only of whitespace.
-     */
-    @JsonProperty(value = "properties.value")
-    private String value;
-
-    /*
-     * KeyVault location details of the namedValue.
-     */
-    @JsonProperty(value = "properties.keyVault")
-    private KeyVaultContractCreateProperties keyVault;
+    @JsonProperty(value = "properties")
+    private NamedValueUpdateParameterProperties innerProperties;
 
     /**
-     * Get the tags property: Optional tags that when provided can be used to filter the NamedValue list.
+     * Get the innerProperties property: NamedValue entity Update contract properties.
      *
-     * @return the tags value.
+     * @return the innerProperties value.
      */
-    public List<String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags property: Optional tags that when provided can be used to filter the NamedValue list.
-     *
-     * @param tags the tags value to set.
-     * @return the NamedValueUpdateParameters object itself.
-     */
-    public NamedValueUpdateParameters withTags(List<String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
-     * is false.
-     *
-     * @return the secret value.
-     */
-    public Boolean secret() {
-        return this.secret;
-    }
-
-    /**
-     * Set the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
-     * is false.
-     *
-     * @param secret the secret value to set.
-     * @return the NamedValueUpdateParameters object itself.
-     */
-    public NamedValueUpdateParameters withSecret(Boolean secret) {
-        this.secret = secret;
-        return this;
+    private NamedValueUpdateParameterProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -100,7 +38,7 @@ public class NamedValueUpdateParameters {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -111,7 +49,10 @@ public class NamedValueUpdateParameters {
      * @return the NamedValueUpdateParameters object itself.
      */
     public NamedValueUpdateParameters withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamedValueUpdateParameterProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -122,7 +63,7 @@ public class NamedValueUpdateParameters {
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
@@ -133,7 +74,10 @@ public class NamedValueUpdateParameters {
      * @return the NamedValueUpdateParameters object itself.
      */
     public NamedValueUpdateParameters withValue(String value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamedValueUpdateParameterProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
@@ -143,7 +87,7 @@ public class NamedValueUpdateParameters {
      * @return the keyVault value.
      */
     public KeyVaultContractCreateProperties keyVault() {
-        return this.keyVault;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVault();
     }
 
     /**
@@ -153,7 +97,58 @@ public class NamedValueUpdateParameters {
      * @return the NamedValueUpdateParameters object itself.
      */
     public NamedValueUpdateParameters withKeyVault(KeyVaultContractCreateProperties keyVault) {
-        this.keyVault = keyVault;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamedValueUpdateParameterProperties();
+        }
+        this.innerProperties().withKeyVault(keyVault);
+        return this;
+    }
+
+    /**
+     * Get the tags property: Optional tags that when provided can be used to filter the NamedValue list.
+     *
+     * @return the tags value.
+     */
+    public List<String> tags() {
+        return this.innerProperties() == null ? null : this.innerProperties().tags();
+    }
+
+    /**
+     * Set the tags property: Optional tags that when provided can be used to filter the NamedValue list.
+     *
+     * @param tags the tags value to set.
+     * @return the NamedValueUpdateParameters object itself.
+     */
+    public NamedValueUpdateParameters withTags(List<String> tags) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamedValueUpdateParameterProperties();
+        }
+        this.innerProperties().withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
+     * is false.
+     *
+     * @return the secret value.
+     */
+    public Boolean secret() {
+        return this.innerProperties() == null ? null : this.innerProperties().secret();
+    }
+
+    /**
+     * Set the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
+     * is false.
+     *
+     * @param secret the secret value to set.
+     * @return the NamedValueUpdateParameters object itself.
+     */
+    public NamedValueUpdateParameters withSecret(Boolean secret) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NamedValueUpdateParameterProperties();
+        }
+        this.innerProperties().withSecret(secret);
         return this;
     }
 
@@ -163,8 +158,8 @@ public class NamedValueUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (keyVault() != null) {
-            keyVault().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

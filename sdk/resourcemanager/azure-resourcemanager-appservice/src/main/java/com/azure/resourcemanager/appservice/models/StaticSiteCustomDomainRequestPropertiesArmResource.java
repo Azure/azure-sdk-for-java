@@ -5,23 +5,40 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainRequestPropertiesArmResourceProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Static Site Custom Domain Request Properties ARM resource. */
-@JsonFlatten
 @Fluent
-public class StaticSiteCustomDomainRequestPropertiesArmResource extends ProxyOnlyResource {
+public final class StaticSiteCustomDomainRequestPropertiesArmResource extends ProxyOnlyResource {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(StaticSiteCustomDomainRequestPropertiesArmResource.class);
 
     /*
-     * Validation method for adding a custom domain
+     * StaticSiteCustomDomainRequestPropertiesARMResource resource specific
+     * properties
      */
-    @JsonProperty(value = "properties.validationMethod")
-    private String validationMethod;
+    @JsonProperty(value = "properties")
+    private StaticSiteCustomDomainRequestPropertiesArmResourceProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: StaticSiteCustomDomainRequestPropertiesARMResource resource specific
+     * properties.
+     *
+     * @return the innerProperties value.
+     */
+    private StaticSiteCustomDomainRequestPropertiesArmResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public StaticSiteCustomDomainRequestPropertiesArmResource withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the validationMethod property: Validation method for adding a custom domain.
@@ -29,7 +46,7 @@ public class StaticSiteCustomDomainRequestPropertiesArmResource extends ProxyOnl
      * @return the validationMethod value.
      */
     public String validationMethod() {
-        return this.validationMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().validationMethod();
     }
 
     /**
@@ -39,14 +56,10 @@ public class StaticSiteCustomDomainRequestPropertiesArmResource extends ProxyOnl
      * @return the StaticSiteCustomDomainRequestPropertiesArmResource object itself.
      */
     public StaticSiteCustomDomainRequestPropertiesArmResource withValidationMethod(String validationMethod) {
-        this.validationMethod = validationMethod;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public StaticSiteCustomDomainRequestPropertiesArmResource withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSiteCustomDomainRequestPropertiesArmResourceProperties();
+        }
+        this.innerProperties().withValidationMethod(validationMethod);
         return this;
     }
 
@@ -58,5 +71,8 @@ public class StaticSiteCustomDomainRequestPropertiesArmResource extends ProxyOnl
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

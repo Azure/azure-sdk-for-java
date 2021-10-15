@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.StackPreferredOs;
@@ -15,9 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Web App stack. */
-@JsonFlatten
-@Immutable
-public class WebAppStackInner extends ProxyOnlyResource {
+@Fluent
+public final class WebAppStackInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebAppStackInner.class);
 
     /*
@@ -27,28 +25,10 @@ public class WebAppStackInner extends ProxyOnlyResource {
     private String location;
 
     /*
-     * Web App stack (display only).
+     * WebAppStack resource specific properties
      */
-    @JsonProperty(value = "properties.displayText", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayText;
-
-    /*
-     * Web App stack name.
-     */
-    @JsonProperty(value = "properties.value", access = JsonProperty.Access.WRITE_ONLY)
-    private String value;
-
-    /*
-     * List of major versions available.
-     */
-    @JsonProperty(value = "properties.majorVersions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<WebAppMajorVersion> majorVersions;
-
-    /*
-     * Web App stack preferred OS.
-     */
-    @JsonProperty(value = "properties.preferredOs", access = JsonProperty.Access.WRITE_ONLY)
-    private StackPreferredOs preferredOs;
+    @JsonProperty(value = "properties")
+    private WebAppStackProperties innerProperties;
 
     /**
      * Get the location property: Web App stack location.
@@ -60,39 +40,12 @@ public class WebAppStackInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the displayText property: Web App stack (display only).
+     * Get the innerProperties property: WebAppStack resource specific properties.
      *
-     * @return the displayText value.
+     * @return the innerProperties value.
      */
-    public String displayText() {
-        return this.displayText;
-    }
-
-    /**
-     * Get the value property: Web App stack name.
-     *
-     * @return the value value.
-     */
-    public String value() {
-        return this.value;
-    }
-
-    /**
-     * Get the majorVersions property: List of major versions available.
-     *
-     * @return the majorVersions value.
-     */
-    public List<WebAppMajorVersion> majorVersions() {
-        return this.majorVersions;
-    }
-
-    /**
-     * Get the preferredOs property: Web App stack preferred OS.
-     *
-     * @return the preferredOs value.
-     */
-    public StackPreferredOs preferredOs() {
-        return this.preferredOs;
+    private WebAppStackProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -103,6 +56,42 @@ public class WebAppStackInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the displayText property: Web App stack (display only).
+     *
+     * @return the displayText value.
+     */
+    public String displayText() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayText();
+    }
+
+    /**
+     * Get the value property: Web App stack name.
+     *
+     * @return the value value.
+     */
+    public String value() {
+        return this.innerProperties() == null ? null : this.innerProperties().value();
+    }
+
+    /**
+     * Get the majorVersions property: List of major versions available.
+     *
+     * @return the majorVersions value.
+     */
+    public List<WebAppMajorVersion> majorVersions() {
+        return this.innerProperties() == null ? null : this.innerProperties().majorVersions();
+    }
+
+    /**
+     * Get the preferredOs property: Web App stack preferred OS.
+     *
+     * @return the preferredOs value.
+     */
+    public StackPreferredOs preferredOs() {
+        return this.innerProperties() == null ? null : this.innerProperties().preferredOs();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -110,8 +99,8 @@ public class WebAppStackInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (majorVersions() != null) {
-            majorVersions().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

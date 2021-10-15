@@ -13,43 +13,43 @@ public final class KeyVaultCertificateExpiredEventData {
     /*
      * The id of the object that triggered this event.
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "Id")
     private String id;
 
     /*
      * Key vault name of the object that triggered this event.
      */
-    @JsonProperty(value = "vaultName")
+    @JsonProperty(value = "VaultName")
     private String vaultName;
 
     /*
      * The type of the object that triggered this event
      */
-    @JsonProperty(value = "objectType")
+    @JsonProperty(value = "ObjectType")
     private String objectType;
 
     /*
      * The name of the object that triggered this event
      */
-    @JsonProperty(value = "objectName")
+    @JsonProperty(value = "ObjectName")
     private String objectName;
 
     /*
      * The version of the object that triggered this event
      */
-    @JsonProperty(value = "version")
+    @JsonProperty(value = "Version")
     private String version;
 
     /*
      * Not before date of the object that triggered this event
      */
-    @JsonProperty(value = "nbf")
+    @JsonProperty(value = "NBF")
     private Float nbf;
 
     /*
      * The expiration date of the object that triggered this event
      */
-    @JsonProperty(value = "exp")
+    @JsonProperty(value = "EXP")
     private Float exp;
 
     /**

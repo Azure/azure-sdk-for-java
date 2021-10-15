@@ -9,10 +9,10 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -47,8 +47,6 @@ public class TracerProvider {
     public final static String DB_INSTANCE = "db.instance";
     public final static String DB_URL = "db.url";
     public static final String DB_STATEMENT = "db.statement";
-    public static final String ERROR_MSG = "error.msg";
-    public static final String ERROR_TYPE = "error.type";
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String COSMOS_CALL_DEPTH_VAL = "nested";
     public static final int ERROR_CODE = 0;
@@ -149,15 +147,15 @@ public class TracerProvider {
             (T response) -> response.getStatusCode(), (T response) -> response.getDiagnostics(), null);
     }
 
-    public Mono<TransactionalBatchResponse> traceEnabledBatchResponsePublisher(Mono<TransactionalBatchResponse> resultPublisher,
-                                                                               Context context,
-                                                                               String spanName,
-                                                                               String containerId,
-                                                                               String databaseId,
-                                                                               CosmosAsyncClient client,
-                                                                               ConsistencyLevel consistencyLevel,
-                                                                               OperationType operationType,
-                                                                               ResourceType resourceType) {
+    public Mono<CosmosBatchResponse> traceEnabledBatchResponsePublisher(Mono<CosmosBatchResponse> resultPublisher,
+                                                                        Context context,
+                                                                        String spanName,
+                                                                        String containerId,
+                                                                        String databaseId,
+                                                                        CosmosAsyncClient client,
+                                                                        ConsistencyLevel consistencyLevel,
+                                                                        OperationType operationType,
+                                                                        ResourceType resourceType) {
 
         return publisherWithClientTelemetry(resultPublisher, context, spanName, containerId, databaseId,
             BridgeInternal.getServiceEndpoint(client),
@@ -165,8 +163,8 @@ public class TracerProvider {
             consistencyLevel,
             operationType,
             resourceType,
-            TransactionalBatchResponse::getStatusCode,
-            TransactionalBatchResponse::getDiagnostics,
+            CosmosBatchResponse::getStatusCode,
+            CosmosBatchResponse::getDiagnostics,
             null);
     }
 
@@ -230,16 +228,8 @@ public class TracerProvider {
                 }
             }).doOnError(throwable -> {
                 if (isEnabled() && !isNestedCall) {
-                    Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
-                    if (unwrappedException instanceof CosmosException) {
-                        CosmosException dce = (CosmosException) unwrappedException;
-                        try {
-                            addDiagnosticsOnTracerEvent(dce.getDiagnostics(), parentContext.get());
-                        } catch (JsonProcessingException ex) {
-                            LOGGER.warn("Error while serializing diagnostics for tracer", ex.getMessage());
-                        }
-                    }
-
+                    // not adding diagnostics on trace event for exception as this information is already there as
+                    // part of exception message
                     this.endSpan(parentContext.get(), Signal.error(throwable), ERROR_CODE);
                 }
             });
@@ -268,13 +258,13 @@ public class TracerProvider {
                         ModelBridgeInternal.getPayloadLength(itemResponse), containerId,
                         databaseId, operationType, resourceType, consistencyLevel,
                         (float) itemResponse.getRequestCharge());
-                } else if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof TransactionalBatchResponse) {
+                } else if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof CosmosBatchResponse) {
                     @SuppressWarnings("unchecked")
-                    TransactionalBatchResponse transactionalBatchResponse = (TransactionalBatchResponse) response;
-                    fillClientTelemetry(client, transactionalBatchResponse.getDiagnostics(), transactionalBatchResponse.getStatusCode(),
-                        BridgeInternal.getPayloadLength(transactionalBatchResponse), containerId,
+                    CosmosBatchResponse cosmosBatchResponse = (CosmosBatchResponse) response;
+                    fillClientTelemetry(client, cosmosBatchResponse.getDiagnostics(), cosmosBatchResponse.getStatusCode(),
+                        ModelBridgeInternal.getPayloadLength(cosmosBatchResponse), containerId,
                         databaseId, operationType, resourceType, consistencyLevel,
-                        (float) transactionalBatchResponse.getRequestCharge());
+                        (float) cosmosBatchResponse.getRequestCharge());
                 }
             }).doOnError(throwable -> {
                 if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && throwable instanceof CosmosException) {
@@ -289,8 +279,13 @@ public class TracerProvider {
 
     private void end(int statusCode, Throwable throwable, Context context) {
         if (throwable != null) {
-            tracer.setAttribute(TracerProvider.ERROR_MSG, throwable.getMessage(), context);
-            tracer.setAttribute(TracerProvider.ERROR_TYPE, throwable.getClass().getName(), context);
+            if (throwable instanceof CosmosException) {
+                CosmosException cosmosException = (CosmosException) throwable;
+                if (statusCode == HttpConstants.StatusCodes.NOTFOUND && cosmosException.getSubStatusCode() == 0) {
+                    tracer.end(statusCode, null, context);
+                    return;
+                }
+            }
         }
         tracer.end(statusCode, throwable, context);
     }

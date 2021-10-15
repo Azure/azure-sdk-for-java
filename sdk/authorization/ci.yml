@@ -8,13 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/authorization/
+      - sdk/authorization/ci.yml
+      - sdk/authorization/microsoft-azure-authentication-msi-token-provider/
     exclude:
-      - sdk/authorization/mgmt
-      - sdk/authorization/mgmt-v2015_06_01
-      - sdk/authorization/mgmt-v2015_07_01
-      - sdk/authorization/mgmt-v2018_07_01_preview
-      - sdk/authorization/mgmt-v2018_09_01_preview
+      - sdk/authorization/pom.xml
+      - sdk/authorization/microsoft-azure-authentication-msi-token-provider/pom.xml
 
 pr:
   branches:
@@ -25,13 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/authorization/
+      - sdk/authorization/ci.yml
+      - sdk/authorization/microsoft-azure-authentication-msi-token-provider/
     exclude:
-      - sdk/authorization/mgmt
-      - sdk/authorization/mgmt-v2015_06_01
-      - sdk/authorization/mgmt-v2015_07_01
-      - sdk/authorization/mgmt-v2018_07_01_preview
-      - sdk/authorization/mgmt-v2018_09_01_preview
+      - sdk/authorization/pom.xml
+      - sdk/authorization/microsoft-azure-authentication-msi-token-provider/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

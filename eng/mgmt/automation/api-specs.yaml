@@ -43,6 +43,8 @@ monitor:
   suffix: generated
 msi:
   suffix: generated
+mysql:
+  service: mysqlflexibleserver
 network:
   suffix: generated
 operationalinsights:

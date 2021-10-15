@@ -4,12 +4,12 @@
 
 package com.azure.resourcemanager.containerservice.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** Information of user assigned identity used by this add-on. */
-@Immutable
+@Fluent
 public class ManagedClusterAddonProfileIdentity extends UserAssignedIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAddonProfileIdentity.class);
 

@@ -3,7 +3,9 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,9 +14,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -32,6 +38,8 @@ public class CoreUtilsTests {
     private static final byte[] UTF_16LE_BOM = {(byte) 0xFF, (byte) 0xFE};
     private static final byte[] UTF_32BE_BOM = {(byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF};
     private static final byte[] UTF_32LE_BOM = {(byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00};
+
+    private static final String TIMEOUT_PROPERTY_NAME = "TIMEOUT_PROPERTY_NAME";
 
     @Test
     public void findFirstOfTypeEmptyArgs() {
@@ -193,6 +201,79 @@ public class CoreUtilsTests {
             Arguments.of(null, logOptionsWithApplicationId, logOptionsApplicationId),
             Arguments.of(null, logOptionsWithoutApplicationId, null),
             Arguments.of(null, null, null)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpHeadersFromClientOptionsSupplier")
+    public void createHttpHeadersFromClientOptions(ClientOptions clientOptions, HttpHeaders expected) {
+        HttpHeaders actual = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (expected == null) {
+            assertNull(actual);
+        } else {
+            assertEquals(expected.toMap(), actual.toMap());
+        }
+    }
+
+    private static Stream<Arguments> createHttpHeadersFromClientOptionsSupplier() {
+        List<Header> multipleHeadersList = new ArrayList<>();
+        multipleHeadersList.add(new Header("a", "header"));
+        multipleHeadersList.add(new Header("another", "headerValue"));
+
+        Map<String, String> multipleHeadersMap = new HashMap<>();
+        multipleHeadersMap.put("a", "header");
+        multipleHeadersMap.put("another", "headerValue");
+
+        return Stream.of(
+            // ClientOptions is null, null is returned.
+            Arguments.of(null, null),
+
+            // ClientOptions doesn't contain Header values, null is returned.
+            Arguments.of(new ClientOptions(), null),
+
+            // ClientOptions contains a single header value, a single header HttpHeaders is returned.
+            Arguments.of(new ClientOptions().setHeaders(Collections.singletonList(new Header("a", "header"))),
+                new HttpHeaders(Collections.singletonMap("a", "header"))),
+
+            // ClientOptions contains multiple header values, a multi-header HttpHeaders is returned.
+            Arguments.of(new ClientOptions().setHeaders(multipleHeadersList), new HttpHeaders(multipleHeadersMap))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getDefaultTimeoutFromEnvironmentSupplier")
+    public void getDefaultTimeoutFromEnvironmentTests(Configuration configuration, Duration defaultTimeout,
+        ClientLogger logger, Duration expectedTimeout) {
+        assertEquals(expectedTimeout, CoreUtils.getDefaultTimeoutFromEnvironment(configuration, TIMEOUT_PROPERTY_NAME,
+            defaultTimeout, logger));
+    }
+
+    private static Stream<Arguments> getDefaultTimeoutFromEnvironmentSupplier() {
+        ClientLogger logger = new ClientLogger(CoreUtilsTests.class);
+
+        return Stream.of(
+            // Configuration doesn't have the timeout property configured.
+            Arguments.of(Configuration.NONE, Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
+
+            // Configuration has an empty string timeout property configured.
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, ""), Duration.ofMillis(10000), logger,
+                Duration.ofMillis(10000)),
+
+            // Configuration has a value that isn't a valid number.
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "ten"), Duration.ofMillis(10000), logger,
+                Duration.ofMillis(10000)),
+
+            // Configuration has a negative value.
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "-10"), Duration.ofMillis(10000), logger,
+                Duration.ZERO),
+
+            // Configuration has a zero value.
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "0"), Duration.ofMillis(10000), logger,
+                Duration.ZERO),
+
+            // Configuration has a positive value.
+            Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "42"), Duration.ofMillis(10000), logger,
+                Duration.ofMillis(42))
         );
     }
 }

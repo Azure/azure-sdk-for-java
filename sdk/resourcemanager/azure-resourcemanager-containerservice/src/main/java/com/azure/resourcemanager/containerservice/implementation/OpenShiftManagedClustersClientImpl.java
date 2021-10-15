@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -926,7 +925,7 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -934,7 +933,7 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String resourceName, Map<String, String> tags) {
+        String resourceGroupName, String resourceName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -954,10 +953,13 @@ public final class OpenShiftManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-04-30";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -979,7 +981,7 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -988,7 +990,7 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String resourceName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1008,10 +1010,13 @@ public final class OpenShiftManagedClustersClientImpl
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-04-30";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -1030,7 +1035,7 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1038,8 +1043,9 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginUpdateTagsAsync(
-        String resourceGroupName, String resourceName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, resourceName, tags);
+        String resourceGroupName, String resourceName, TagsObject parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, resourceName, parameters);
         return this
             .client
             .<OpenShiftManagedClusterInner, OpenShiftManagedClusterInner>getLroResult(
@@ -1055,7 +1061,7 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1064,10 +1070,10 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginUpdateTagsAsync(
-        String resourceGroupName, String resourceName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, resourceName, tags, context);
+            updateTagsWithResponseAsync(resourceGroupName, resourceName, parameters, context);
         return this
             .client
             .<OpenShiftManagedClusterInner, OpenShiftManagedClusterInner>getLroResult(
@@ -1083,7 +1089,7 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1091,8 +1097,8 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginUpdateTags(
-        String resourceGroupName, String resourceName, Map<String, String> tags) {
-        return beginUpdateTagsAsync(resourceGroupName, resourceName, tags).getSyncPoller();
+        String resourceGroupName, String resourceName, TagsObject parameters) {
+        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1100,7 +1106,7 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1109,8 +1115,8 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginUpdateTags(
-        String resourceGroupName, String resourceName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, resourceName, tags, context).getSyncPoller();
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1118,7 +1124,7 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1126,8 +1132,8 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OpenShiftManagedClusterInner> updateTagsAsync(
-        String resourceGroupName, String resourceName, Map<String, String> tags) {
-        return beginUpdateTagsAsync(resourceGroupName, resourceName, tags)
+        String resourceGroupName, String resourceName, TagsObject parameters) {
+        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1137,25 +1143,7 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShift Managed cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenShiftManagedClusterInner> updateTagsAsync(String resourceGroupName, String resourceName) {
-        final Map<String, String> tags = null;
-        return beginUpdateTagsAsync(resourceGroupName, resourceName, tags)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates an OpenShift managed cluster with the specified tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1164,8 +1152,8 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OpenShiftManagedClusterInner> updateTagsAsync(
-        String resourceGroupName, String resourceName, Map<String, String> tags, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, resourceName, tags, context)
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1175,7 +1163,7 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1183,8 +1171,8 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenShiftManagedClusterInner updateTags(
-        String resourceGroupName, String resourceName, Map<String, String> tags) {
-        return updateTagsAsync(resourceGroupName, resourceName, tags).block();
+        String resourceGroupName, String resourceName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
@@ -1192,23 +1180,7 @@ public final class OpenShiftManagedClustersClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openShift Managed cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenShiftManagedClusterInner updateTags(String resourceGroupName, String resourceName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, resourceName, tags).block();
-    }
-
-    /**
-     * Updates an OpenShift managed cluster with the specified tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The name of the OpenShift managed cluster resource.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update OpenShift Managed Cluster Tags operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1217,8 +1189,8 @@ public final class OpenShiftManagedClustersClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenShiftManagedClusterInner updateTags(
-        String resourceGroupName, String resourceName, Map<String, String> tags, Context context) {
-        return updateTagsAsync(resourceGroupName, resourceName, tags, context).block();
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
+        return updateTagsAsync(resourceGroupName, resourceName, parameters, context).block();
     }
 
     /**

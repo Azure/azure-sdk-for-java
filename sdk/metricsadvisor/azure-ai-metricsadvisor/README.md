@@ -13,14 +13,14 @@ of business dataFeedMetrics.
 - [Cognitive Services or Metrics Advisor account][metrics_advisor_account] to use this package.
 
 ### Include the Package
-**Note:** This beta version targets Azure Metrics Advisor service API version v1.0.
+**Note:** This version targets Azure Metrics Advisor service API version v1.0.
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-metricsadvisor;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-metricsadvisor</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -81,7 +81,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.3</version>
+    <version>1.3.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

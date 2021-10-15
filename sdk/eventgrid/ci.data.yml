@@ -7,16 +7,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/eventgrid/
+      - sdk/eventgrid/ci.data.yml
+      - sdk/eventgrid/microsoft-azure-eventgrid/
     exclude:
-      - sdk/eventgrid/mgmt-v2018_01_01
-      - sdk/eventgrid/mgmt-v2018_05_01_preview
-      - sdk/eventgrid/mgmt-v2018_09_15_preview
-      - sdk/eventgrid/mgmt-v2019_01_01
-      - sdk/eventgrid/mgmt-v2019_06_01
-      - sdk/eventgrid/mgmt-v2020_01_01_preview
-      - sdk/eventgrid/mgmt-v2020_04_01_preview
-      - sdk/eventgrid/azure-messaging-eventgrid
+      - sdk/eventgrid/pom.xml
+      - sdk/eventgrid/microsoft-azure-eventgrid/pom.xml
 
 pr:
   branches:
@@ -27,16 +22,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/eventgrid/
+      - sdk/eventgrid/ci.data.yml
+      - sdk/eventgrid/microsoft-azure-eventgrid/
     exclude:
-      - sdk/eventgrid/mgmt-v2018_01_01
-      - sdk/eventgrid/mgmt-v2018_05_01_preview
-      - sdk/eventgrid/mgmt-v2018_09_15_preview
-      - sdk/eventgrid/mgmt-v2019_01_01
-      - sdk/eventgrid/mgmt-v2019_06_01
-      - sdk/eventgrid/mgmt-v2020_01_01_preview
-      - sdk/eventgrid/mgmt-v2020_04_01_preview
-      - sdk/eventgrid/azure-messaging-eventgrid
+      - sdk/eventgrid/pom.xml
+      - sdk/eventgrid/microsoft-azure-eventgrid/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -65,6 +65,12 @@ public final class TasksStateTasks {
     @JsonProperty(value = "sentimentAnalysisTasks")
     private List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks;
 
+    /*
+     * The extractiveSummarizationTasks property.
+     */
+    @JsonProperty(value = "extractiveSummarizationTasks")
+    private List<TasksStateTasksExtractiveSummarizationTasksItem> extractiveSummarizationTasks;
+
     /**
      * Get the completed property: The completed property.
      *
@@ -246,6 +252,27 @@ public final class TasksStateTasks {
     public TasksStateTasks setSentimentAnalysisTasks(
             List<TasksStateTasksSentimentAnalysisTasksItem> sentimentAnalysisTasks) {
         this.sentimentAnalysisTasks = sentimentAnalysisTasks;
+        return this;
+    }
+
+    /**
+     * Get the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
+     *
+     * @return the extractiveSummarizationTasks value.
+     */
+    public List<TasksStateTasksExtractiveSummarizationTasksItem> getExtractiveSummarizationTasks() {
+        return this.extractiveSummarizationTasks;
+    }
+
+    /**
+     * Set the extractiveSummarizationTasks property: The extractiveSummarizationTasks property.
+     *
+     * @param extractiveSummarizationTasks the extractiveSummarizationTasks value to set.
+     * @return the TasksStateTasks object itself.
+     */
+    public TasksStateTasks setExtractiveSummarizationTasks(
+            List<TasksStateTasksExtractiveSummarizationTasksItem> extractiveSummarizationTasks) {
+        this.extractiveSummarizationTasks = extractiveSummarizationTasks;
         return this;
     }
 }

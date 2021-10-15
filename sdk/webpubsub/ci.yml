@@ -9,6 +9,10 @@ trigger:
   paths:
     include:
       - sdk/webpubsub/
+    exclude:
+      - sdk/webpubsub/pom.xml
+      - sdk/webpubsub/azure-messaging-webpubsub/pom.xml
+      - sdk/webpubsub/azure-resourcemanager-webpubsub/pom.xml
 
 pr:
   branches:
@@ -20,6 +24,10 @@ pr:
   paths:
     include:
       - sdk/webpubsub/
+    exclude:
+      - sdk/webpubsub/pom.xml
+      - sdk/webpubsub/azure-messaging-webpubsub/pom.xml
+      - sdk/webpubsub/azure-resourcemanager-webpubsub/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

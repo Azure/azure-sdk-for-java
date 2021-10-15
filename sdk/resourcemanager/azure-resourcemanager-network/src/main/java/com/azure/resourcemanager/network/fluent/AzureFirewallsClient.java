@@ -14,11 +14,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallInner;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -283,7 +283,7 @@ public interface AzureFirewallsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update azure firewall tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -291,14 +291,14 @@ public interface AzureFirewallsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags);
+        String resourceGroupName, String azureFirewallName, TagsObject parameters);
 
     /**
      * Updates tags of an Azure Firewall resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update azure firewall tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -306,14 +306,14 @@ public interface AzureFirewallsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PollerFlux<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTagsAsync(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags);
+        String resourceGroupName, String azureFirewallName, TagsObject parameters);
 
     /**
      * Updates tags of an Azure Firewall resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update azure firewall tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -321,14 +321,14 @@ public interface AzureFirewallsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags);
+        String resourceGroupName, String azureFirewallName, TagsObject parameters);
 
     /**
      * Updates tags of an Azure Firewall resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update azure firewall tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -337,69 +337,42 @@ public interface AzureFirewallsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<AzureFirewallInner>, AzureFirewallInner> beginUpdateTags(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context);
+        String resourceGroupName, String azureFirewallName, TagsObject parameters, Context context);
 
     /**
      * Updates tags of an Azure Firewall resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update azure firewall tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AzureFirewallInner> updateTagsAsync(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags);
+    Mono<AzureFirewallInner> updateTagsAsync(String resourceGroupName, String azureFirewallName, TagsObject parameters);
 
     /**
      * Updates tags of an Azure Firewall resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
+     * @param parameters Parameters supplied to update azure firewall tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Firewall resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AzureFirewallInner> updateTagsAsync(String resourceGroupName, String azureFirewallName);
+    AzureFirewallInner updateTags(String resourceGroupName, String azureFirewallName, TagsObject parameters);
 
     /**
      * Updates tags of an Azure Firewall resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureFirewallInner updateTags(String resourceGroupName, String azureFirewallName, Map<String, String> tags);
-
-    /**
-     * Updates tags of an Azure Firewall resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureFirewallInner updateTags(String resourceGroupName, String azureFirewallName);
-
-    /**
-     * Updates tags of an Azure Firewall resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update azure firewall tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -408,7 +381,7 @@ public interface AzureFirewallsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AzureFirewallInner updateTags(
-        String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context);
+        String resourceGroupName, String azureFirewallName, TagsObject parameters, Context context);
 
     /**
      * Lists all Azure Firewalls in a resource group.

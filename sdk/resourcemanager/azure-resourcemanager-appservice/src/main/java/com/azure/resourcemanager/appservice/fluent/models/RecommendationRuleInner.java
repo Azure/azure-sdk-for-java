@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.Channels;
 import com.azure.resourcemanager.appservice.models.NotificationLevel;
@@ -16,91 +15,31 @@ import java.util.List;
 import java.util.UUID;
 
 /** Represents a recommendation rule that the recommendation engine can perform. */
-@JsonFlatten
 @Fluent
-public class RecommendationRuleInner extends ProxyOnlyResource {
+public final class RecommendationRuleInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationRuleInner.class);
 
     /*
-     * Unique name of the rule.
+     * RecommendationRule resource specific properties
      */
-    @JsonProperty(value = "properties.recommendationName")
-    private String recommendationName;
+    @JsonProperty(value = "properties")
+    private RecommendationRuleProperties innerProperties;
 
-    /*
-     * UI friendly name of the rule.
+    /**
+     * Get the innerProperties property: RecommendationRule resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    private RecommendationRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Localized name of the rule (Good for UI).
-     */
-    @JsonProperty(value = "properties.message")
-    private String message;
-
-    /*
-     * Recommendation ID of an associated recommendation object tied to the
-     * rule, if exists.
-     * If such an object doesn't exist, it is set to null.
-     */
-    @JsonProperty(value = "properties.recommendationId")
-    private UUID recommendationId;
-
-    /*
-     * Localized detailed description of the rule.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Name of action that is recommended by this rule in string.
-     */
-    @JsonProperty(value = "properties.actionName")
-    private String actionName;
-
-    /*
-     * Level of impact indicating how critical this rule is.
-     */
-    @JsonProperty(value = "properties.level")
-    private NotificationLevel level;
-
-    /*
-     * List of available channels that this rule applies.
-     */
-    @JsonProperty(value = "properties.channels")
-    private Channels channels;
-
-    /*
-     * The list of category tags that this recommendation rule belongs to.
-     */
-    @JsonProperty(value = "properties.categoryTags", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> categoryTags;
-
-    /*
-     * True if this is associated with a dynamically added rule
-     */
-    @JsonProperty(value = "properties.isDynamic")
-    private Boolean isDynamic;
-
-    /*
-     * Extension name of the portal if exists. Applicable to dynamic rule only.
-     */
-    @JsonProperty(value = "properties.extensionName")
-    private String extensionName;
-
-    /*
-     * Deep link to a blade on the portal. Applicable to dynamic rule only.
-     */
-    @JsonProperty(value = "properties.bladeName")
-    private String bladeName;
-
-    /*
-     * Forward link to an external document associated with the rule.
-     * Applicable to dynamic rule only.
-     */
-    @JsonProperty(value = "properties.forwardLink")
-    private String forwardLink;
+    /** {@inheritDoc} */
+    @Override
+    public RecommendationRuleInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the recommendationName property: Unique name of the rule.
@@ -108,7 +47,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the recommendationName value.
      */
     public String recommendationName() {
-        return this.recommendationName;
+        return this.innerProperties() == null ? null : this.innerProperties().recommendationName();
     }
 
     /**
@@ -118,7 +57,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withRecommendationName(String recommendationName) {
-        this.recommendationName = recommendationName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withRecommendationName(recommendationName);
         return this;
     }
 
@@ -128,7 +70,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -138,7 +80,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -148,7 +93,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the message value.
      */
     public String message() {
-        return this.message;
+        return this.innerProperties() == null ? null : this.innerProperties().message();
     }
 
     /**
@@ -158,7 +103,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withMessage(String message) {
-        this.message = message;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withMessage(message);
         return this;
     }
 
@@ -169,7 +117,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the recommendationId value.
      */
     public UUID recommendationId() {
-        return this.recommendationId;
+        return this.innerProperties() == null ? null : this.innerProperties().recommendationId();
     }
 
     /**
@@ -180,7 +128,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withRecommendationId(UUID recommendationId) {
-        this.recommendationId = recommendationId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withRecommendationId(recommendationId);
         return this;
     }
 
@@ -190,7 +141,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -200,7 +151,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -210,7 +164,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the actionName value.
      */
     public String actionName() {
-        return this.actionName;
+        return this.innerProperties() == null ? null : this.innerProperties().actionName();
     }
 
     /**
@@ -220,7 +174,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withActionName(String actionName) {
-        this.actionName = actionName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withActionName(actionName);
         return this;
     }
 
@@ -230,7 +187,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the level value.
      */
     public NotificationLevel level() {
-        return this.level;
+        return this.innerProperties() == null ? null : this.innerProperties().level();
     }
 
     /**
@@ -240,7 +197,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withLevel(NotificationLevel level) {
-        this.level = level;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withLevel(level);
         return this;
     }
 
@@ -250,7 +210,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the channels value.
      */
     public Channels channels() {
-        return this.channels;
+        return this.innerProperties() == null ? null : this.innerProperties().channels();
     }
 
     /**
@@ -260,7 +220,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withChannels(Channels channels) {
-        this.channels = channels;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withChannels(channels);
         return this;
     }
 
@@ -270,7 +233,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the categoryTags value.
      */
     public List<String> categoryTags() {
-        return this.categoryTags;
+        return this.innerProperties() == null ? null : this.innerProperties().categoryTags();
     }
 
     /**
@@ -279,7 +242,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the isDynamic value.
      */
     public Boolean isDynamic() {
-        return this.isDynamic;
+        return this.innerProperties() == null ? null : this.innerProperties().isDynamic();
     }
 
     /**
@@ -289,7 +252,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withIsDynamic(Boolean isDynamic) {
-        this.isDynamic = isDynamic;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withIsDynamic(isDynamic);
         return this;
     }
 
@@ -299,7 +265,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the extensionName value.
      */
     public String extensionName() {
-        return this.extensionName;
+        return this.innerProperties() == null ? null : this.innerProperties().extensionName();
     }
 
     /**
@@ -309,7 +275,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withExtensionName(String extensionName) {
-        this.extensionName = extensionName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withExtensionName(extensionName);
         return this;
     }
 
@@ -319,7 +288,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the bladeName value.
      */
     public String bladeName() {
-        return this.bladeName;
+        return this.innerProperties() == null ? null : this.innerProperties().bladeName();
     }
 
     /**
@@ -329,7 +298,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withBladeName(String bladeName) {
-        this.bladeName = bladeName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withBladeName(bladeName);
         return this;
     }
 
@@ -340,7 +312,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the forwardLink value.
      */
     public String forwardLink() {
-        return this.forwardLink;
+        return this.innerProperties() == null ? null : this.innerProperties().forwardLink();
     }
 
     /**
@@ -351,14 +323,10 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
      * @return the RecommendationRuleInner object itself.
      */
     public RecommendationRuleInner withForwardLink(String forwardLink) {
-        this.forwardLink = forwardLink;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RecommendationRuleInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RecommendationRuleProperties();
+        }
+        this.innerProperties().withForwardLink(forwardLink);
         return this;
     }
 
@@ -370,5 +338,8 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

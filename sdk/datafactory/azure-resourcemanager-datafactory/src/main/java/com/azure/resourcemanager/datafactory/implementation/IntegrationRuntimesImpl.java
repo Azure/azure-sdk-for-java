@@ -13,12 +13,14 @@ import com.azure.resourcemanager.datafactory.fluent.IntegrationRuntimesClient;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeAuthKeysInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeConnectionInfoInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeMonitoringDataInner;
+import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeResourceInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeStatusResponseInner;
 import com.azure.resourcemanager.datafactory.models.CreateLinkedIntegrationRuntimeRequest;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeAuthKeys;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeConnectionInfo;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeMonitoringData;
+import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeRegenerateKeyParameters;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeResource;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeStatusResponse;
@@ -114,6 +116,39 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IntegrationRuntimeStatusResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner inner =
+            this
+                .serviceClient()
+                .listOutboundNetworkDependenciesEndpoints(resourceGroupName, factoryName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse>
+        listOutboundNetworkDependenciesEndpointsWithResponse(
+            String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
+        Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner> inner =
+            this
+                .serviceClient()
+                .listOutboundNetworkDependenciesEndpointsWithResponse(
+                    resourceGroupName, factoryName, integrationRuntimeName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(
+                    inner.getValue(), this.manager()));
         } else {
             return null;
         }

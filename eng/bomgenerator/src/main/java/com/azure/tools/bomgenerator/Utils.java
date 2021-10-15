@@ -5,11 +5,23 @@ package com.azure.tools.bomgenerator;
 
 import com.azure.tools.bomgenerator.models.BomDependency;
 import com.azure.tools.bomgenerator.models.BomDependencyNoVersion;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenFormatStage;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystemBase;
+import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
+import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
+import org.jboss.shrinkwrap.resolver.api.maven.PomlessResolveStage;
+import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
+import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,14 +42,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Utils {
-    public static final String COMMANDLINE_INPUTFILE = "inputfile";
-    public static final String COMMANDLINE_OUTPUTFILE = "outputfile";
-    public static final String COMMANDLINE_POMFILE = "pomfile";
+    public static final String COMMANDLINE_INPUTDIRECTORY = "inputdir";
+    public static final String COMMANDLINE_OUTPUTDIRECTORY = "outputdir";
     public static final String COMMANDLINE_MODE = "mode";
     public static final String ANALYZE_MODE = "analyze";
     public static final String GENERATE_MODE = "generate";
-    public static final String COMMANDLINE_EXTERNALDEPENDENCIES = "externalDependencies";
-    public static final String COMMANDLINE_GROUPID = "groupid";
     public  static final Pattern COMMANDLINE_REGEX = Pattern.compile("-(.*)=(.*)");
     public static final List<String> EXCLUSION_LIST = Arrays.asList("azure-spring-data-cosmos", "azure-spring-data-cosmos-test", "azure-core-test", "azure-sdk-all", "azure-sdk-parent", "azure-client-sdk-parent");
     public static final Pattern SDK_DEPENDENCY_PATTERN = Pattern.compile("com.azure:(.+);(.+);(.+)");
@@ -46,15 +55,17 @@ public class Utils {
     public static final String AZURE_PERF_LIBRARY_IDENTIFIER = "-perf";
     public static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
     public static final Pattern STRING_SPLIT_BY_DOT = Pattern.compile("[.]");
+    public static final Pattern STRING_SPLIT_BY_COLON = Pattern.compile("[:]");
+    public static final Pattern INPUT_DEPENDENCY_PATTERN = Pattern.compile("(.+);(.*)");
     public static final String PROJECT_VERSION = "project.version";
 
     public static final HashSet<String> RESOLVED_EXCLUSION_LIST = new HashSet<>(Arrays.asList(
        "junit-jupiter-api"
     ));
 
-    public static final HashSet<String> IGNORE_CONFLICT_LIST = new HashSet<>(Arrays.asList(
+    public static final HashSet<String> IGNORE_CONFLICT_LIST = new HashSet<>(/*Arrays.asList(
         "slf4j-api" // slf4j is compatible across versions.
-    ));
+    )*/);
 
     public static final String POM_TYPE = "pom";
     private static Logger logger = LoggerFactory.getLogger(Utils.class);
@@ -63,6 +74,37 @@ public class Utils {
         if(argValue == null || argValue.isEmpty()) {
             throw new NullPointerException(String.format("%s can't be null", argName));
         }
+    }
+
+    static void validateNotNullOrEmpty(String[] argValue, String argName) {
+        if(Arrays.stream(argValue).anyMatch(value -> value == null || value.isEmpty())) {
+            throw new IllegalArgumentException(String.format("%s can't be null", argName));
+        }
+    }
+
+    static MavenResolverSystemBase<PomEquippedResolveStage, PomlessResolveStage, MavenStrategyStage, MavenFormatStage> getMavenResolver() {
+        return Maven.configureResolver().withMavenCentralRepo(true);
+    }
+
+    static boolean isPublishedArtifact(BomDependency dependency) {
+        try {
+            return getResolvedArtifact(dependency) != null;
+        } catch (Exception ex) {
+            logger.error(ex.toString());
+        }
+        return false;
+    }
+
+    static MavenResolvedArtifact getResolvedArtifact(MavenDependency dependency) {
+        MavenResolvedArtifact mavenResolvedArtifact = null;
+
+        mavenResolvedArtifact = getMavenResolver()
+            .addDependency(dependency)
+            .resolve()
+            .withoutTransitivity()
+            .asSingleResolvedArtifact();
+
+        return mavenResolvedArtifact;
     }
 
     static void validateNull(String argValue, String argName) {
@@ -141,43 +183,42 @@ public class Utils {
     }
 
     static List<BomDependency> parsePomFileContent(Reader responseStream) {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
+        List<BomDependency> bomDependencies = new ArrayList<>();
+        List<Dependency> dependencies;
+
+        ObjectMapper mapper = new XmlMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         try {
-            Model model = reader.read(responseStream);
-            DependencyManagement management = model.getDependencyManagement();
+            Model value = mapper.readValue(responseStream, Model.class);
+            if(value.getPackaging().equalsIgnoreCase("pom")) {
+               // This is a bom file.
+                dependencies = value.getDependencyManagement().getDependencies();
+            }
+            else {
+                dependencies = value.getDependencies();
+            }
 
-            return management.getDependencies().stream().map(dep -> {
-                String version = getPropertyName(dep.getVersion());
+            if(dependencies == null) {
+                return bomDependencies;
+            }
 
-                while(model.getProperties().getProperty(version) != null) {
-                    version = getPropertyName(model.getProperties().getProperty(version));
+            for(Dependency dependency : dependencies) {
+                ScopeType scopeType = ScopeType.COMPILE;
 
-                    if(version.equals(PROJECT_VERSION)) {
-                        version = model.getVersion();
-                    }
+                if("test".equals(dependency.getScope())) {
+                    scopeType = ScopeType.TEST;
                 }
 
-                if(version == null) {
-                    version = dep.getVersion();
-                }
-
-                BomDependency bomDependency = new BomDependency(dep.getGroupId(), dep.getArtifactId(), version);
-                return bomDependency;
-            }).collect(Collectors.toList());
+                bomDependencies.add(new BomDependency(
+                    dependency.getGroupId(),
+                    dependency.getArtifactId(),
+                    dependency.getVersion(),
+                    scopeType));
+            }
         } catch (IOException exception) {
             exception.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
         }
 
-        return null;
-    }
-
-    private static String getPropertyName(String propertyValue) {
-        if(propertyValue.startsWith("${")) {
-            return propertyValue.substring(2, propertyValue.length() - 1);
-        }
-
-        return propertyValue;
+        return bomDependencies.stream().distinct().collect(Collectors.toList());
     }
 }

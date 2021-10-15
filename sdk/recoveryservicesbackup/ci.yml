@@ -9,6 +9,9 @@ trigger:
   paths:
     include:
       - sdk/recoveryservicesbackup/
+    exclude:
+      - sdk/recoveryservicesbackup/pom.xml
+      - sdk/recoveryservicesbackup/azure-resourcemanager-recoveryservicesbackup/pom.xml
 
 pr:
   branches:
@@ -20,6 +23,9 @@ pr:
   paths:
     include:
       - sdk/recoveryservicesbackup/
+    exclude:
+      - sdk/recoveryservicesbackup/pom.xml
+      - sdk/recoveryservicesbackup/azure-resourcemanager-recoveryservicesbackup/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

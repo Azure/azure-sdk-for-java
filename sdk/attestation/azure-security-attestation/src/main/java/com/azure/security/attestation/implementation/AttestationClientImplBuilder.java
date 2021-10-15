@@ -30,8 +30,6 @@ public final class AttestationClientImplBuilder {
 
     private static final String SDK_VERSION = "version";
 
-    static final String[] DEFAULT_SCOPES = new String[] {"https://attest.azure.net/.default"};
-
     private final Map<String, String> properties = new HashMap<>();
 
     /** Create an instance of the AttestationClientImplBuilder. */

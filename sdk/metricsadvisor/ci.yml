@@ -10,6 +10,10 @@ trigger:
   paths:
     include:
       - sdk/metricsadvisor/
+    exclude:
+      - sdk/metricsadvisor/pom.xml
+      - sdk/metricsadvisor/azure-ai-metricsadvisor/pom.xml
+      - sdk/metricsadvisor/azure-ai-metricsadvisor-perf/pom.xml
 
 
 pr:
@@ -22,6 +26,10 @@ pr:
   paths:
     include:
       - sdk/metricsadvisor/
+    exclude:
+      - sdk/metricsadvisor/pom.xml
+      - sdk/metricsadvisor/azure-ai-metricsadvisor/pom.xml
+      - sdk/metricsadvisor/azure-ai-metricsadvisor-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

@@ -8,6 +8,10 @@ trigger:
   paths:
     include:
       - sdk/schemaregistry/
+    exclude:
+      - sdk/schemaregistry/pom.xml
+      - sdk/schemaregistry/azure-data-schemaregistry/pom.xml
+      - sdk/schemaregistry/azure-data-schemaregistry-apacheavro/pom.xml
 
 pr:
   branches:
@@ -19,6 +23,10 @@ pr:
   paths:
     include:
       - sdk/schemaregistry/
+    exclude:
+      - sdk/schemaregistry/pom.xml
+      - sdk/schemaregistry/azure-data-schemaregistry/pom.xml
+      - sdk/schemaregistry/azure-data-schemaregistry-apacheavro/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -28,6 +36,6 @@ extends:
       - name: azure-data-schemaregistry
         groupId: com.azure
         safeName: azuredataschemaregistry
-      - name: azure-data-schemaregistry-avro
+      - name: azure-data-schemaregistry-apacheavro
         groupId: com.azure
-        safeName: azuredataschemaregistryavro
+        safeName: azuredataschemaregistryapacheavro

@@ -4,22 +4,24 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.BulkProcessingOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
-import com.azure.cosmos.CosmosBulkItemResponse;
-import com.azure.cosmos.CosmosBulkOperationResponse;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.TransactionalBatchOperationResult;
-import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkItemResponse;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosItemOperationType;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -36,6 +38,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -67,7 +70,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *    For our use case, Sinks.many().unicast() will work.
  */
 public final class BulkExecutor<TContext> {
-
     private final static Logger logger = LoggerFactory.getLogger(BulkExecutor.class);
     private final static AtomicLong instanceCount = new AtomicLong(0);
 
@@ -76,13 +78,13 @@ public final class BulkExecutor<TContext> {
     private final String operationContextText;
     private final OperationContextAndListenerTuple operationListener;
     private final ThrottlingRetryOptions throttlingRetryOptions;
-    private final Flux<CosmosItemOperation> inputOperations;
+    private final Flux<com.azure.cosmos.models.CosmosItemOperation> inputOperations;
 
     // Options for bulk execution.
     private final Long maxMicroBatchIntervalInMs;
     private final TContext batchContext;
-    private final ConcurrentMap<String, PartitionScopeThresholds<TContext>> partitionScopeThresholds;
-    private final BulkProcessingOptions<TContext> bulkOptions;
+    private final ConcurrentMap<String, PartitionScopeThresholds> partitionScopeThresholds;
+    private final CosmosBulkExecutionOptions cosmosBulkExecutionOptions;
 
     // Handle gone error:
     private final AtomicBoolean mainSourceCompleted;
@@ -94,13 +96,13 @@ public final class BulkExecutor<TContext> {
 
     public BulkExecutor(CosmosAsyncContainer container,
                         Flux<CosmosItemOperation> inputOperations,
-                        BulkProcessingOptions<TContext> bulkOptions) {
+                        CosmosBulkExecutionOptions cosmosBulkOptions) {
 
         checkNotNull(container, "expected non-null container");
         checkNotNull(inputOperations, "expected non-null inputOperations");
-        checkNotNull(bulkOptions, "expected non-null bulkOptions");
+        checkNotNull(cosmosBulkOptions, "expected non-null bulkOptions");
 
-        this.bulkOptions = bulkOptions;
+        this.cosmosBulkExecutionOptions = cosmosBulkOptions;
         this.container = container;
         this.inputOperations = inputOperations;
         this.docClientWrapper = CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase());
@@ -108,14 +110,19 @@ public final class BulkExecutor<TContext> {
 
         // Fill the option first, to make the BulkProcessingOptions immutable, as if accessed directly, we might get
         // different values when a new group is created.
-        maxMicroBatchIntervalInMs = bulkOptions.getMaxMicroBatchInterval().toMillis();
-        batchContext = bulkOptions.getBatchContext();
-        this.partitionScopeThresholds = ImplementationBridgeHelpers.BulkProcessingThresholdsHelper
-            .getBulkProcessingThresholdsAccessor()
-            .getPartitionScopeThresholds(bulkOptions.getThresholds());
-        operationListener = ImplementationBridgeHelpers.CosmosBulkProcessingOptionsHelper
-            .getCosmosBulkProcessingOptionAccessor()
-            .getOperationContext(bulkOptions);
+        maxMicroBatchIntervalInMs = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getMaxMicroBatchInterval(cosmosBulkExecutionOptions)
+            .toMillis();
+        batchContext = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getLegacyBatchScopedContext(cosmosBulkExecutionOptions);
+        this.partitionScopeThresholds = ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper
+            .getBulkExecutionThresholdsAccessor()
+            .getPartitionScopeThresholds(cosmosBulkExecutionOptions.getThresholdsState());
+        operationListener = ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getOperationContext(cosmosBulkExecutionOptions);
         if (operationListener != null &&
             operationListener.getOperationContext() != null) {
             operationContextText = operationListener.getOperationContext().toString();
@@ -128,7 +135,7 @@ public final class BulkExecutor<TContext> {
         totalCount = new AtomicInteger(0);
         mainFluxProcessor = UnicastProcessor.<CosmosItemOperation>create().serialize();
         mainSink = mainFluxProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-        groupSinks = new ArrayList<>();
+        groupSinks = new CopyOnWriteArrayList<>();
 
         // The evaluation whether a micro batch should be flushed to the backend happens whenever
         // a new ItemOperation arrives. If the batch size is exceeded or the oldest buffered ItemOperation
@@ -189,10 +196,10 @@ public final class BulkExecutor<TContext> {
                 // resolve partition key range id again for operations which comes in main sink due to gone retry.
                 return BulkExecutorUtil.resolvePartitionKeyRangeId(this.docClientWrapper, this.container, operation)
                     .map((String pkRangeId) -> {
-                        PartitionScopeThresholds<TContext> partitionScopeThresholds =
+                        PartitionScopeThresholds partitionScopeThresholds =
                             this.partitionScopeThresholds.computeIfAbsent(
                                 pkRangeId,
-                                (newPkRangeId) -> new PartitionScopeThresholds<>(newPkRangeId, this.bulkOptions));
+                                (newPkRangeId) -> new PartitionScopeThresholds(newPkRangeId, this.cosmosBulkExecutionOptions));
                         return Pair.of(partitionScopeThresholds, operation);
                     });
             })
@@ -234,9 +241,9 @@ public final class BulkExecutor<TContext> {
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executePartitionedGroup(
-        GroupedFlux<PartitionScopeThresholds<TContext>, CosmosItemOperation> partitionedGroupFluxOfInputOperations) {
+        GroupedFlux<PartitionScopeThresholds, CosmosItemOperation> partitionedGroupFluxOfInputOperations) {
 
-        final PartitionScopeThresholds<TContext> thresholds = partitionedGroupFluxOfInputOperations.key();
+        final PartitionScopeThresholds thresholds = partitionedGroupFluxOfInputOperations.key();
 
         final FluxProcessor<CosmosItemOperation, CosmosItemOperation> groupFluxProcessor =
             UnicastProcessor.<CosmosItemOperation>create().serialize();
@@ -260,6 +267,10 @@ public final class BulkExecutor<TContext> {
                             "Flushing PKRange {} due to FlushItemOperation, Context: {}",
                             thresholds.getPartitionKeyRangeId(),
                             this.operationContextText);
+
+                        firstRecordTimeStamp.set(-1);
+                        currentMicroBatchSize.set(0);
+
                         return true;
                     }
 
@@ -301,12 +312,14 @@ public final class BulkExecutor<TContext> {
 
                     return executeOperations(operations, thresholds, groupSink);
                 },
-                this.bulkOptions.getMaxMicroBatchConcurrency());
+                ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                    .getCosmosBulkExecutionOptionsAccessor()
+                    .getMaxMicroBatchConcurrency(this.cosmosBulkExecutionOptions));
     }
 
     private Flux<CosmosBulkOperationResponse<TContext>> executeOperations(
         List<CosmosItemOperation> operations,
-        PartitionScopeThresholds<TContext> thresholds,
+        PartitionScopeThresholds thresholds,
         FluxSink<CosmosItemOperation> groupSink) {
 
         if (operations.size() == 0) {
@@ -330,11 +343,11 @@ public final class BulkExecutor<TContext> {
     private Flux<CosmosBulkOperationResponse<TContext>> executePartitionKeyRangeServerBatchRequest(
         PartitionKeyRangeServerBatchRequest serverRequest,
         FluxSink<CosmosItemOperation> groupSink,
-        PartitionScopeThresholds<TContext> thresholds) {
+        PartitionScopeThresholds thresholds) {
 
         return this.executeBatchRequest(serverRequest)
             .flatMapMany(response ->
-                Flux.fromIterable(response.getResults()).flatMap((TransactionalBatchOperationResult result) ->
+                Flux.fromIterable(response.getResults()).flatMap((CosmosBatchOperationResult result) ->
                     handleTransactionalBatchOperationResult(response, result, groupSink, thresholds)))
             .onErrorResume((Throwable throwable) -> {
 
@@ -351,25 +364,27 @@ public final class BulkExecutor<TContext> {
 
     // Helper functions
     private Mono<CosmosBulkOperationResponse<TContext>> handleTransactionalBatchOperationResult(
-        TransactionalBatchResponse response,
-        TransactionalBatchOperationResult operationResult,
+        CosmosBatchResponse response,
+        CosmosBatchOperationResult operationResult,
         FluxSink<CosmosItemOperation> groupSink,
-        PartitionScopeThresholds<TContext> thresholds) {
+        PartitionScopeThresholds thresholds) {
 
-        CosmosBulkItemResponse cosmosBulkItemResponse = BridgeInternal.createCosmosBulkItemResponse(operationResult, response);
+        CosmosBulkItemResponse cosmosBulkItemResponse = ModelBridgeInternal.createCosmosBulkItemResponse(operationResult, response);
         CosmosItemOperation itemOperation = operationResult.getOperation();
+        TContext actualContext = this.getActualContext(itemOperation);
 
         if (!operationResult.isSuccessStatusCode()) {
 
-            if (itemOperation instanceof ItemBulkOperation<?>) {
+            if (itemOperation instanceof ItemBulkOperation<?, ?>) {
 
-                return ((ItemBulkOperation<?>) itemOperation).getRetryPolicy().shouldRetry(operationResult).flatMap(
+                ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
+                return itemBulkOperation.getRetryPolicy().shouldRetry(operationResult).flatMap(
                     result -> {
                         if (result.shouldRetry) {
                             return this.enqueueForRetry(result.backOffTime, groupSink, itemOperation, thresholds);
                         } else {
-                            return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
-                                itemOperation, cosmosBulkItemResponse, this.batchContext));
+                            return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
+                                itemOperation, cosmosBulkItemResponse, actualContext));
                         }
                     });
 
@@ -379,21 +394,40 @@ public final class BulkExecutor<TContext> {
         }
 
         thresholds.recordSuccessfulOperation();
-        return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
+        return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
             itemOperation,
             cosmosBulkItemResponse,
-            this.batchContext));
+            actualContext));
+    }
+
+    private TContext getActualContext(CosmosItemOperation itemOperation) {
+        ItemBulkOperation<?, ?> itemBulkOperation = null;
+
+        if (itemOperation instanceof ItemBulkOperation<?, ?>) {
+            itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
+        }
+
+        if (itemBulkOperation == null) {
+            return this.batchContext;
+        }
+
+        TContext operationContext = itemBulkOperation.getContext();
+        if (operationContext != null) {
+            return operationContext;
+        }
+
+        return this.batchContext;
     }
 
     private Mono<CosmosBulkOperationResponse<TContext>> handleTransactionalBatchExecutionException(
         CosmosItemOperation itemOperation,
         Exception exception,
         FluxSink<CosmosItemOperation> groupSink,
-        PartitionScopeThresholds<TContext> thresholds) {
+        PartitionScopeThresholds thresholds) {
 
-        if (exception instanceof CosmosException && itemOperation instanceof ItemBulkOperation<?>) {
+        if (exception instanceof CosmosException && itemOperation instanceof ItemBulkOperation<?, ?>) {
             CosmosException cosmosException = (CosmosException) exception;
-            ItemBulkOperation<?> itemBulkOperation = (ItemBulkOperation<?>) itemOperation;
+            ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
 
             // First check if it failed due to split, so the operations need to go in a different pk range group. So
             // add it in the mainSink.
@@ -417,14 +451,15 @@ public final class BulkExecutor<TContext> {
                 });
         }
 
-        return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, this.batchContext));
+        TContext actualContext = this.getActualContext(itemOperation);
+        return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(itemOperation, exception, actualContext));
     }
 
     private Mono<CosmosBulkOperationResponse<TContext>> enqueueForRetry(
         Duration backOffTime,
         FluxSink<CosmosItemOperation> groupSink,
         CosmosItemOperation itemOperation,
-        PartitionScopeThresholds<TContext> thresholds) {
+        PartitionScopeThresholds thresholds) {
 
         thresholds.recordEnqueuedRetry();
         if (backOffTime == null || backOffTime.isZero()) {
@@ -445,22 +480,49 @@ public final class BulkExecutor<TContext> {
         Exception exception,
         FluxSink<CosmosItemOperation> groupSink,
         CosmosException cosmosException,
-        ItemBulkOperation<?> itemBulkOperation,
-        PartitionScopeThresholds<TContext> thresholds) {
+        ItemBulkOperation<?, ?> itemBulkOperation,
+        PartitionScopeThresholds thresholds) {
 
+        TContext actualContext = this.getActualContext(itemOperation);
         return itemBulkOperation.getRetryPolicy().shouldRetry(cosmosException).flatMap(result -> {
             if (result.shouldRetry) {
                 return this.enqueueForRetry(result.backOffTime, groupSink, itemBulkOperation, thresholds);
             } else {
-                return Mono.just(BridgeInternal.createCosmosBulkOperationResponse(
-                    itemOperation, exception, this.batchContext));
+                return Mono.just(ModelBridgeInternal.createCosmosBulkOperationResponse(
+                    itemOperation, exception, actualContext));
             }
         });
     }
 
-    private Mono<TransactionalBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
+    private Mono<CosmosBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
         RequestOptions options = new RequestOptions();
         options.setOperationContextAndListenerTuple(operationListener);
+
+        // The request options here are used for the BulkRequest exchanged with the service
+        // If contentResponseOnWrite is not enabled here (or at the client level) the
+        // service will not even send a bulk response payload - so all the
+        // CosmosBulItemRequestOptions are irrelevant - all payloads will be null
+        // Instead we should automatically enforce contentResponseOnWrite for all
+        // bulk requests whenever at least one of the item operations requires a content response (either
+        // because it is a read operation or because contentResponseOnWrite was enabled explicitly)
+        if (!this.docClientWrapper.isContentResponseOnWriteEnabled() &&
+            serverRequest.getOperations().size() > 0) {
+
+            for (CosmosItemOperation itemOperation : serverRequest.getOperations()) {
+                if (itemOperation instanceof ItemBulkOperation<?, ?>) {
+
+                    ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
+                    if (itemBulkOperation.getOperationType() == CosmosItemOperationType.READ ||
+                        (itemBulkOperation.getRequestOptions() != null &&
+                            itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled() != null &&
+                            itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled().booleanValue())) {
+
+                        options.setContentResponseOnWriteEnabled(true);
+                        break;
+                    }
+                }
+            }
+        }
 
         return this.docClientWrapper.executeBatchRequest(
             BridgeInternal.getLink(this.container), serverRequest, options, false);
@@ -478,6 +540,10 @@ public final class BulkExecutor<TContext> {
     }
 
     private void onFlush() {
-        this.groupSinks.forEach(sink -> sink.next(FlushBuffersItemOperation.singleton()));
+        try {
+            this.groupSinks.forEach(sink -> sink.next(FlushBuffersItemOperation.singleton()));
+        } catch(Throwable t) {
+            logger.error("Callback invocation 'onFlush' failed.", t);
+        }
     }
 }

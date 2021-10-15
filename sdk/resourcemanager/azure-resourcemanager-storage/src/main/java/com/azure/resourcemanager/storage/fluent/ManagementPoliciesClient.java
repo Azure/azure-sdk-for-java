@@ -10,7 +10,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.ManagementPolicyInner;
 import com.azure.resourcemanager.storage.models.ManagementPolicyName;
-import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagementPoliciesClient. */
@@ -91,8 +90,7 @@ public interface ManagementPoliciesClient {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
-     *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * @param properties The ManagementPolicy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -103,7 +101,7 @@ public interface ManagementPoliciesClient {
         String resourceGroupName,
         String accountName,
         ManagementPolicyName managementPolicyName,
-        ManagementPolicySchema policy);
+        ManagementPolicyInner properties);
 
     /**
      * Sets the managementpolicy to the specified storage account.
@@ -113,8 +111,7 @@ public interface ManagementPoliciesClient {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
-     *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * @param properties The ManagementPolicy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -125,7 +122,7 @@ public interface ManagementPoliciesClient {
         String resourceGroupName,
         String accountName,
         ManagementPolicyName managementPolicyName,
-        ManagementPolicySchema policy);
+        ManagementPolicyInner properties);
 
     /**
      * Sets the managementpolicy to the specified storage account.
@@ -135,23 +132,7 @@ public interface ManagementPoliciesClient {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Get Storage Account ManagementPolicies operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagementPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName);
-
-    /**
-     * Sets the managementpolicy to the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
+     * @param properties The ManagementPolicy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -159,7 +140,10 @@ public interface ManagementPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ManagementPolicyInner createOrUpdate(
-        String resourceGroupName, String accountName, ManagementPolicyName managementPolicyName);
+        String resourceGroupName,
+        String accountName,
+        ManagementPolicyName managementPolicyName,
+        ManagementPolicyInner properties);
 
     /**
      * Sets the managementpolicy to the specified storage account.
@@ -169,8 +153,7 @@ public interface ManagementPoliciesClient {
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param managementPolicyName The name of the Storage Account Management Policy. It should always be 'default'.
-     * @param policy The Storage Account ManagementPolicy, in JSON format. See more details in:
-     *     https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * @param properties The ManagementPolicy set to a storage account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -182,7 +165,7 @@ public interface ManagementPoliciesClient {
         String resourceGroupName,
         String accountName,
         ManagementPolicyName managementPolicyName,
-        ManagementPolicySchema policy,
+        ManagementPolicyInner properties,
         Context context);
 
     /**

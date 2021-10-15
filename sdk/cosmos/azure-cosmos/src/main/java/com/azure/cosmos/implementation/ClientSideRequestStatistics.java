@@ -157,13 +157,18 @@ public class ClientSideRequestStatistics {
         return this.gatewayRequestTimeline;
     }
 
-    public String recordAddressResolutionStart(URI targetEndpoint) {
+    public String recordAddressResolutionStart(
+        URI targetEndpoint,
+        boolean forceRefresh,
+        boolean forceCollectionRoutingMapRefresh) {
         String identifier = Utils.randomUUID().toString();
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
         resolutionStatistics.startTimeUTC = Instant.now();
         resolutionStatistics.endTimeUTC = null;
         resolutionStatistics.targetEndpoint = targetEndpoint == null ? "<NULL>" : targetEndpoint.toString();
+        resolutionStatistics.forceRefresh = forceRefresh;
+        resolutionStatistics.forceCollectionRoutingMapRefresh = forceCollectionRoutingMapRefresh;
 
         synchronized (this) {
             this.addressResolutionStatistics.put(identifier, resolutionStatistics);
@@ -362,6 +367,10 @@ public class ClientSideRequestStatistics {
         private String targetEndpoint;
         @JsonSerialize
         private String errorMessage;
+        @JsonSerialize
+        private boolean forceRefresh;
+        @JsonSerialize
+        private boolean forceCollectionRoutingMapRefresh;
 
         // If one replica return error we start address call in parallel,
         // on other replica  valid response, we end the current user request,
@@ -388,6 +397,12 @@ public class ClientSideRequestStatistics {
         public boolean isInflightRequest() {
             return inflightRequest;
         }
+
+        public boolean isForceRefresh() {
+            return forceRefresh;
+        }
+
+        public boolean isForceCollectionRoutingMapRefresh() { return forceCollectionRoutingMapRefresh; }
     }
 
     public static class GatewayStatistics {

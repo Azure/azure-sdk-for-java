@@ -1,7 +1,34 @@
 # Release History
 
-## 2.7.0-beta.1 (Unreleased)
+## 2.9.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.8.0 (2021-09-15)
+
+### Dependency Updates
+
+- Updated `api-version` to `2021-02-01`.
+
+### Features Added
+
+- Supported `NODEJS_14_LTS` and `PHP_7_4` in `RuntimeStack`.
+
+### Breaking Changes
+
+- Renamed `ManagedServiceIdentityUserAssignedIdentities` class to `UserAssignedIdentity`.
+
+## 2.7.0 (2021-08-12)
+
+### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.6.0 (2021-06-18)
 

@@ -5,13 +5,14 @@ package com.azure.spring.aad;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 
 /**
- * Defines grant types: client_credentials, authorization_code, on_behalf_of.
+ * Defines grant types: client_credentials, authorization_code, on_behalf_of, azure_delegated.
  */
 public enum AADAuthorizationGrantType {
 
     CLIENT_CREDENTIALS("client_credentials"),
     AUTHORIZATION_CODE("authorization_code"),
-    ON_BEHALF_OF("on_behalf_of");
+    ON_BEHALF_OF("on_behalf_of"),
+    AZURE_DELEGATED("azure_delegated");
 
     private final String authorizationGrantType;
 

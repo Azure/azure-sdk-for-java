@@ -32,7 +32,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.BlobInventoryPoliciesClient;
 import com.azure.resourcemanager.storage.fluent.models.BlobInventoryPolicyInner;
 import com.azure.resourcemanager.storage.models.BlobInventoryPolicyName;
-import com.azure.resourcemanager.storage.models.BlobInventoryPolicySchema;
 import com.azure.resourcemanager.storage.models.ListBlobInventoryPolicy;
 import reactor.core.publisher.Mono;
 
@@ -328,7 +327,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
      *     'default'.
-     * @param policy The storage account blob inventory policy object. It is composed of policy rules.
+     * @param properties The blob inventory policy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -339,7 +338,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
         String resourceGroupName,
         String accountName,
         BlobInventoryPolicyName blobInventoryPolicyName,
-        BlobInventoryPolicySchema policy) {
+        BlobInventoryPolicyInner properties) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -364,12 +363,12 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
                 .error(
                     new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
         }
-        if (policy != null) {
-            policy.validate();
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
         }
         final String accept = "application/json";
-        BlobInventoryPolicyInner properties = new BlobInventoryPolicyInner();
-        properties.withPolicy(policy);
         return FluxUtil
             .withContext(
                 context ->
@@ -396,7 +395,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
      *     'default'.
-     * @param policy The storage account blob inventory policy object. It is composed of policy rules.
+     * @param properties The blob inventory policy set to a storage account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -408,7 +407,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
         String resourceGroupName,
         String accountName,
         BlobInventoryPolicyName blobInventoryPolicyName,
-        BlobInventoryPolicySchema policy,
+        BlobInventoryPolicyInner properties,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -434,12 +433,12 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
                 .error(
                     new IllegalArgumentException("Parameter blobInventoryPolicyName is required and cannot be null."));
         }
-        if (policy != null) {
-            policy.validate();
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
         }
         final String accept = "application/json";
-        BlobInventoryPolicyInner properties = new BlobInventoryPolicyInner();
-        properties.withPolicy(policy);
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -463,7 +462,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
      *     'default'.
-     * @param policy The storage account blob inventory policy object. It is composed of policy rules.
+     * @param properties The blob inventory policy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -474,8 +473,8 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
         String resourceGroupName,
         String accountName,
         BlobInventoryPolicyName blobInventoryPolicyName,
-        BlobInventoryPolicySchema policy) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName, policy)
+        BlobInventoryPolicyInner properties) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName, properties)
             .flatMap(
                 (Response<BlobInventoryPolicyInner> res) -> {
                     if (res.getValue() != null) {
@@ -495,35 +494,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
      *     'default'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account blob inventory policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobInventoryPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, BlobInventoryPolicyName blobInventoryPolicyName) {
-        final BlobInventoryPolicySchema policy = null;
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName, policy)
-            .flatMap(
-                (Response<BlobInventoryPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Sets the blob inventory policy to the specified storage account.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names
-     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
-     *     'default'.
+     * @param properties The blob inventory policy set to a storage account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -531,9 +502,11 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BlobInventoryPolicyInner createOrUpdate(
-        String resourceGroupName, String accountName, BlobInventoryPolicyName blobInventoryPolicyName) {
-        final BlobInventoryPolicySchema policy = null;
-        return createOrUpdateAsync(resourceGroupName, accountName, blobInventoryPolicyName, policy).block();
+        String resourceGroupName,
+        String accountName,
+        BlobInventoryPolicyName blobInventoryPolicyName,
+        BlobInventoryPolicyInner properties) {
+        return createOrUpdateAsync(resourceGroupName, accountName, blobInventoryPolicyName, properties).block();
     }
 
     /**
@@ -545,7 +518,7 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param blobInventoryPolicyName The name of the storage account blob inventory policy. It should always be
      *     'default'.
-     * @param policy The storage account blob inventory policy object. It is composed of policy rules.
+     * @param properties The blob inventory policy set to a storage account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -557,9 +530,10 @@ public final class BlobInventoryPoliciesClientImpl implements BlobInventoryPolic
         String resourceGroupName,
         String accountName,
         BlobInventoryPolicyName blobInventoryPolicyName,
-        BlobInventoryPolicySchema policy,
+        BlobInventoryPolicyInner properties,
         Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, blobInventoryPolicyName, policy, context)
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, accountName, blobInventoryPolicyName, properties, context)
             .block();
     }
 

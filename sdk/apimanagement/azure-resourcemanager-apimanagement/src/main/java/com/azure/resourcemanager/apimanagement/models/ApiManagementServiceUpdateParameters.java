@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.ApiManagementServiceUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -14,10 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 /** Parameter supplied to Update Api Management Service. */
-@JsonFlatten
 @Fluent
-public class ApiManagementServiceUpdateParameters extends ApimResource {
+public final class ApiManagementServiceUpdateParameters extends ApimResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiManagementServiceUpdateParameters.class);
+
+    /*
+     * Properties of the API Management service.
+     */
+    @JsonProperty(value = "properties")
+    private ApiManagementServiceUpdateProperties innerProperties;
 
     /*
      * SKU properties of the API Management service.
@@ -37,203 +42,14 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * Email address from which the notification will be sent.
+    /**
+     * Get the innerProperties property: Properties of the API Management service.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.notificationSenderEmail")
-    private String notificationSenderEmail;
-
-    /*
-     * The current provisioning state of the API Management service which can
-     * be one of the following:
-     * Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The provisioning state of the API Management service, which is targeted
-     * by the long running operation started on the service.
-     */
-    @JsonProperty(value = "properties.targetProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String targetProvisioningState;
-
-    /*
-     * Creation UTC date of the API Management service.The date conforms to the
-     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
-     * standard.
-     */
-    @JsonProperty(value = "properties.createdAtUtc", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAtUtc;
-
-    /*
-     * Gateway URL of the API Management service.
-     */
-    @JsonProperty(value = "properties.gatewayUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String gatewayUrl;
-
-    /*
-     * Gateway URL of the API Management service in the Default Region.
-     */
-    @JsonProperty(value = "properties.gatewayRegionalUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String gatewayRegionalUrl;
-
-    /*
-     * Publisher portal endpoint Url of the API Management service.
-     */
-    @JsonProperty(value = "properties.portalUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String portalUrl;
-
-    /*
-     * Management API endpoint URL of the API Management service.
-     */
-    @JsonProperty(value = "properties.managementApiUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String managementApiUrl;
-
-    /*
-     * SCM endpoint URL of the API Management service.
-     */
-    @JsonProperty(value = "properties.scmUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String scmUrl;
-
-    /*
-     * DEveloper Portal endpoint URL of the API Management service.
-     */
-    @JsonProperty(value = "properties.developerPortalUrl", access = JsonProperty.Access.WRITE_ONLY)
-    private String developerPortalUrl;
-
-    /*
-     * Custom hostname configuration of the API Management service.
-     */
-    @JsonProperty(value = "properties.hostnameConfigurations")
-    private List<HostnameConfiguration> hostnameConfigurations;
-
-    /*
-     * Public Static Load Balanced IP addresses of the API Management service
-     * in Primary region. Available only for Basic, Standard, Premium and
-     * Isolated SKU.
-     */
-    @JsonProperty(value = "properties.publicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> publicIpAddresses;
-
-    /*
-     * Private Static Load Balanced IP addresses of the API Management service
-     * in Primary region which is deployed in an Internal Virtual Network.
-     * Available only for Basic, Standard, Premium and Isolated SKU.
-     */
-    @JsonProperty(value = "properties.privateIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> privateIpAddresses;
-
-    /*
-     * Virtual network configuration of the API Management service.
-     */
-    @JsonProperty(value = "properties.virtualNetworkConfiguration")
-    private VirtualNetworkConfiguration virtualNetworkConfiguration;
-
-    /*
-     * Additional datacenter locations of the API Management service.
-     */
-    @JsonProperty(value = "properties.additionalLocations")
-    private List<AdditionalLocation> additionalLocations;
-
-    /*
-     * Custom properties of the API Management service.</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168`
-     * will disable the cipher TLS_RSA_WITH_3DES_EDE_CBC_SHA for all TLS(1.0,
-     * 1.1 and 1.2).</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls11`
-     * can be used to disable just TLS 1.1.</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Protocols.Tls10`
-     * can be used to disable TLS 1.0 on an API Management service.</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls11`
-     * can be used to disable just TLS 1.1 for communications with
-     * backends.</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Backend.Protocols.Tls10`
-     * can be used to disable TLS 1.0 for communications with
-     * backends.</br>Setting
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Protocols.Server.Http2`
-     * can be used to enable HTTP2 protocol on an API Management
-     * service.</br>Not specifying any of these properties on PATCH operation
-     * will reset omitted properties' values to their defaults. For all the
-     * settings except Http2 the default value is `True` if the service was
-     * created on or before April 1st 2018 and `False` otherwise. Http2
-     * setting's default value is `False`.</br></br>You can disable any of next
-     * ciphers by using settings
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.[cipher_name]`:
-     * TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
-     * TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
-     * TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA,
-     * TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256,
-     * TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA,
-     * TLS_RSA_WITH_AES_128_CBC_SHA. For example,
-     * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`.
-     * The default value is `true` for them.  Note: next ciphers can't be
-     * disabled since they are required by Azure CloudService internal
-     * components:
-     * TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384
-     */
-    @JsonProperty(value = "properties.customProperties")
-    private Map<String, String> customProperties;
-
-    /*
-     * List of Certificates that need to be installed in the API Management
-     * service. Max supported certificates that can be installed is 10.
-     */
-    @JsonProperty(value = "properties.certificates")
-    private List<CertificateConfiguration> certificates;
-
-    /*
-     * Property only meant to be used for Consumption SKU Service. This
-     * enforces a client certificate to be presented on each request to the
-     * gateway. This also enables the ability to authenticate the certificate
-     * in the policy on the gateway.
-     */
-    @JsonProperty(value = "properties.enableClientCertificate")
-    private Boolean enableClientCertificate;
-
-    /*
-     * Property only valid for an Api Management service deployed in multiple
-     * locations. This can be used to disable the gateway in master region.
-     */
-    @JsonProperty(value = "properties.disableGateway")
-    private Boolean disableGateway;
-
-    /*
-     * The type of VPN in which API Management service needs to be configured
-     * in. None (Default Value) means the API Management service is not part of
-     * any Virtual Network, External means the API Management deployment is set
-     * up inside a Virtual Network having an Internet Facing Endpoint, and
-     * Internal means that API Management deployment is setup inside a Virtual
-     * Network having an Intranet Facing Endpoint only.
-     */
-    @JsonProperty(value = "properties.virtualNetworkType")
-    private VirtualNetworkType virtualNetworkType;
-
-    /*
-     * Control Plane Apis version constraint for the API Management service.
-     */
-    @JsonProperty(value = "properties.apiVersionConstraint")
-    private ApiVersionConstraint apiVersionConstraint;
-
-    /*
-     * Undelete Api Management Service if it was previously soft-deleted. If
-     * this flag is specified and set to True all other properties will be
-     * ignored.
-     */
-    @JsonProperty(value = "properties.restore")
-    private Boolean restore;
-
-    /*
-     * Publisher email.
-     */
-    @JsonProperty(value = "properties.publisherEmail")
-    private String publisherEmail;
-
-    /*
-     * Publisher name.
-     */
-    @JsonProperty(value = "properties.publisherName")
-    private String publisherName;
+    private ApiManagementServiceUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the sku property: SKU properties of the API Management service.
@@ -284,13 +100,66 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
         return this.etag;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApiManagementServiceUpdateParameters withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the publisherEmail property: Publisher email.
+     *
+     * @return the publisherEmail value.
+     */
+    public String publisherEmail() {
+        return this.innerProperties() == null ? null : this.innerProperties().publisherEmail();
+    }
+
+    /**
+     * Set the publisherEmail property: Publisher email.
+     *
+     * @param publisherEmail the publisherEmail value to set.
+     * @return the ApiManagementServiceUpdateParameters object itself.
+     */
+    public ApiManagementServiceUpdateParameters withPublisherEmail(String publisherEmail) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withPublisherEmail(publisherEmail);
+        return this;
+    }
+
+    /**
+     * Get the publisherName property: Publisher name.
+     *
+     * @return the publisherName value.
+     */
+    public String publisherName() {
+        return this.innerProperties() == null ? null : this.innerProperties().publisherName();
+    }
+
+    /**
+     * Set the publisherName property: Publisher name.
+     *
+     * @param publisherName the publisherName value to set.
+     * @return the ApiManagementServiceUpdateParameters object itself.
+     */
+    public ApiManagementServiceUpdateParameters withPublisherName(String publisherName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withPublisherName(publisherName);
+        return this;
+    }
+
     /**
      * Get the notificationSenderEmail property: Email address from which the notification will be sent.
      *
      * @return the notificationSenderEmail value.
      */
     public String notificationSenderEmail() {
-        return this.notificationSenderEmail;
+        return this.innerProperties() == null ? null : this.innerProperties().notificationSenderEmail();
     }
 
     /**
@@ -300,7 +169,10 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
     public ApiManagementServiceUpdateParameters withNotificationSenderEmail(String notificationSenderEmail) {
-        this.notificationSenderEmail = notificationSenderEmail;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withNotificationSenderEmail(notificationSenderEmail);
         return this;
     }
 
@@ -311,7 +183,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -321,7 +193,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the targetProvisioningState value.
      */
     public String targetProvisioningState() {
-        return this.targetProvisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().targetProvisioningState();
     }
 
     /**
@@ -331,7 +203,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the createdAtUtc value.
      */
     public OffsetDateTime createdAtUtc() {
-        return this.createdAtUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().createdAtUtc();
     }
 
     /**
@@ -340,7 +212,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the gatewayUrl value.
      */
     public String gatewayUrl() {
-        return this.gatewayUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().gatewayUrl();
     }
 
     /**
@@ -349,7 +221,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the gatewayRegionalUrl value.
      */
     public String gatewayRegionalUrl() {
-        return this.gatewayRegionalUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().gatewayRegionalUrl();
     }
 
     /**
@@ -358,7 +230,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the portalUrl value.
      */
     public String portalUrl() {
-        return this.portalUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().portalUrl();
     }
 
     /**
@@ -367,7 +239,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the managementApiUrl value.
      */
     public String managementApiUrl() {
-        return this.managementApiUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().managementApiUrl();
     }
 
     /**
@@ -376,7 +248,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the scmUrl value.
      */
     public String scmUrl() {
-        return this.scmUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().scmUrl();
     }
 
     /**
@@ -385,7 +257,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the developerPortalUrl value.
      */
     public String developerPortalUrl() {
-        return this.developerPortalUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().developerPortalUrl();
     }
 
     /**
@@ -394,7 +266,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the hostnameConfigurations value.
      */
     public List<HostnameConfiguration> hostnameConfigurations() {
-        return this.hostnameConfigurations;
+        return this.innerProperties() == null ? null : this.innerProperties().hostnameConfigurations();
     }
 
     /**
@@ -405,7 +277,10 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      */
     public ApiManagementServiceUpdateParameters withHostnameConfigurations(
         List<HostnameConfiguration> hostnameConfigurations) {
-        this.hostnameConfigurations = hostnameConfigurations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withHostnameConfigurations(hostnameConfigurations);
         return this;
     }
 
@@ -416,7 +291,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the publicIpAddresses value.
      */
     public List<String> publicIpAddresses() {
-        return this.publicIpAddresses;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddresses();
     }
 
     /**
@@ -427,7 +302,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the privateIpAddresses value.
      */
     public List<String> privateIpAddresses() {
-        return this.privateIpAddresses;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddresses();
     }
 
     /**
@@ -436,7 +311,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the virtualNetworkConfiguration value.
      */
     public VirtualNetworkConfiguration virtualNetworkConfiguration() {
-        return this.virtualNetworkConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkConfiguration();
     }
 
     /**
@@ -447,7 +322,10 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      */
     public ApiManagementServiceUpdateParameters withVirtualNetworkConfiguration(
         VirtualNetworkConfiguration virtualNetworkConfiguration) {
-        this.virtualNetworkConfiguration = virtualNetworkConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withVirtualNetworkConfiguration(virtualNetworkConfiguration);
         return this;
     }
 
@@ -457,7 +335,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the additionalLocations value.
      */
     public List<AdditionalLocation> additionalLocations() {
-        return this.additionalLocations;
+        return this.innerProperties() == null ? null : this.innerProperties().additionalLocations();
     }
 
     /**
@@ -467,7 +345,10 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
     public ApiManagementServiceUpdateParameters withAdditionalLocations(List<AdditionalLocation> additionalLocations) {
-        this.additionalLocations = additionalLocations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withAdditionalLocations(additionalLocations);
         return this;
     }
 
@@ -499,7 +380,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the customProperties value.
      */
     public Map<String, String> customProperties() {
-        return this.customProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().customProperties();
     }
 
     /**
@@ -531,7 +412,10 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
     public ApiManagementServiceUpdateParameters withCustomProperties(Map<String, String> customProperties) {
-        this.customProperties = customProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withCustomProperties(customProperties);
         return this;
     }
 
@@ -542,7 +426,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the certificates value.
      */
     public List<CertificateConfiguration> certificates() {
-        return this.certificates;
+        return this.innerProperties() == null ? null : this.innerProperties().certificates();
     }
 
     /**
@@ -553,7 +437,10 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
     public ApiManagementServiceUpdateParameters withCertificates(List<CertificateConfiguration> certificates) {
-        this.certificates = certificates;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withCertificates(certificates);
         return this;
     }
 
@@ -565,7 +452,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the enableClientCertificate value.
      */
     public Boolean enableClientCertificate() {
-        return this.enableClientCertificate;
+        return this.innerProperties() == null ? null : this.innerProperties().enableClientCertificate();
     }
 
     /**
@@ -577,7 +464,10 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
     public ApiManagementServiceUpdateParameters withEnableClientCertificate(Boolean enableClientCertificate) {
-        this.enableClientCertificate = enableClientCertificate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withEnableClientCertificate(enableClientCertificate);
         return this;
     }
 
@@ -588,7 +478,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the disableGateway value.
      */
     public Boolean disableGateway() {
-        return this.disableGateway;
+        return this.innerProperties() == null ? null : this.innerProperties().disableGateway();
     }
 
     /**
@@ -599,7 +489,10 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
     public ApiManagementServiceUpdateParameters withDisableGateway(Boolean disableGateway) {
-        this.disableGateway = disableGateway;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withDisableGateway(disableGateway);
         return this;
     }
 
@@ -612,7 +505,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the virtualNetworkType value.
      */
     public VirtualNetworkType virtualNetworkType() {
-        return this.virtualNetworkType;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkType();
     }
 
     /**
@@ -625,7 +518,10 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
     public ApiManagementServiceUpdateParameters withVirtualNetworkType(VirtualNetworkType virtualNetworkType) {
-        this.virtualNetworkType = virtualNetworkType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withVirtualNetworkType(virtualNetworkType);
         return this;
     }
 
@@ -635,7 +531,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the apiVersionConstraint value.
      */
     public ApiVersionConstraint apiVersionConstraint() {
-        return this.apiVersionConstraint;
+        return this.innerProperties() == null ? null : this.innerProperties().apiVersionConstraint();
     }
 
     /**
@@ -645,7 +541,10 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
     public ApiManagementServiceUpdateParameters withApiVersionConstraint(ApiVersionConstraint apiVersionConstraint) {
-        this.apiVersionConstraint = apiVersionConstraint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withApiVersionConstraint(apiVersionConstraint);
         return this;
     }
 
@@ -656,7 +555,7 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the restore value.
      */
     public Boolean restore() {
-        return this.restore;
+        return this.innerProperties() == null ? null : this.innerProperties().restore();
     }
 
     /**
@@ -667,54 +566,10 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
     public ApiManagementServiceUpdateParameters withRestore(Boolean restore) {
-        this.restore = restore;
-        return this;
-    }
-
-    /**
-     * Get the publisherEmail property: Publisher email.
-     *
-     * @return the publisherEmail value.
-     */
-    public String publisherEmail() {
-        return this.publisherEmail;
-    }
-
-    /**
-     * Set the publisherEmail property: Publisher email.
-     *
-     * @param publisherEmail the publisherEmail value to set.
-     * @return the ApiManagementServiceUpdateParameters object itself.
-     */
-    public ApiManagementServiceUpdateParameters withPublisherEmail(String publisherEmail) {
-        this.publisherEmail = publisherEmail;
-        return this;
-    }
-
-    /**
-     * Get the publisherName property: Publisher name.
-     *
-     * @return the publisherName value.
-     */
-    public String publisherName() {
-        return this.publisherName;
-    }
-
-    /**
-     * Set the publisherName property: Publisher name.
-     *
-     * @param publisherName the publisherName value to set.
-     * @return the ApiManagementServiceUpdateParameters object itself.
-     */
-    public ApiManagementServiceUpdateParameters withPublisherName(String publisherName) {
-        this.publisherName = publisherName;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApiManagementServiceUpdateParameters withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withRestore(restore);
         return this;
     }
 
@@ -726,26 +581,14 @@ public class ApiManagementServiceUpdateParameters extends ApimResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }
         if (identity() != null) {
             identity().validate();
-        }
-        if (hostnameConfigurations() != null) {
-            hostnameConfigurations().forEach(e -> e.validate());
-        }
-        if (virtualNetworkConfiguration() != null) {
-            virtualNetworkConfiguration().validate();
-        }
-        if (additionalLocations() != null) {
-            additionalLocations().forEach(e -> e.validate());
-        }
-        if (certificates() != null) {
-            certificates().forEach(e -> e.validate());
-        }
-        if (apiVersionConstraint() != null) {
-            apiVersionConstraint().validate();
         }
     }
 }

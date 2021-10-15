@@ -229,6 +229,7 @@ public class RntbdTransportClient extends TransportClient {
                 response.setRequestPayloadLength(request.getContentLength());
                 response.setRntbdChannelTaskQueueSize(record.channelTaskQueueLength());
                 response.setRntbdPendingRequestSize(record.pendingRequestQueueSize());
+                response.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
 
         })).onErrorMap(throwable -> {
@@ -262,6 +263,7 @@ public class RntbdTransportClient extends TransportClient {
             BridgeInternal.setRntbdPendingRequestQueueSize(cosmosException, record.pendingRequestQueueSize());
             BridgeInternal.setChannelTaskQueueSize(cosmosException, record.channelTaskQueueLength());
             BridgeInternal.setSendingRequestStarted(cosmosException, record.hasSendingRequestStarted());
+            BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
 
             return cosmosException;
         });
@@ -417,6 +419,12 @@ public class RntbdTransportClient extends TransportClient {
         @JsonIgnore()
         private final UserAgentContainer userAgent;
 
+        @JsonProperty()
+        private final boolean channelAcquisitionContextEnabled;
+
+        @JsonProperty()
+        private final int ioThreadPriority;
+
         // endregion
 
         // region Constructors
@@ -445,6 +453,8 @@ public class RntbdTransportClient extends TransportClient {
             this.shutdownTimeout = builder.shutdownTimeout;
             this.threadCount = builder.threadCount;
             this.userAgent = builder.userAgent;
+            this.channelAcquisitionContextEnabled = builder.channelAcquisitionContextEnabled;
+            this.ioThreadPriority = builder.ioThreadPriority;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.requestTimeout
@@ -472,6 +482,8 @@ public class RntbdTransportClient extends TransportClient {
             this.shutdownTimeout = Duration.ofSeconds(15L);
             this.threadCount = 2 * Runtime.getRuntime().availableProcessors();
             this.userAgent = new UserAgentContainer();
+            this.channelAcquisitionContextEnabled = false;
+            this.ioThreadPriority = Thread.NORM_PRIORITY;
         }
 
         // endregion
@@ -552,6 +564,18 @@ public class RntbdTransportClient extends TransportClient {
 
         public UserAgentContainer userAgent() {
             return this.userAgent;
+        }
+
+        public boolean isChannelAcquisitionContextEnabled() { return this.channelAcquisitionContextEnabled; }
+
+        public int ioThreadPriority() {
+            checkArgument(
+                this.ioThreadPriority >= Thread.MIN_PRIORITY && this.ioThreadPriority <= Thread.MAX_PRIORITY,
+                "Expect ioThread priority between [%s, %s]",
+                Thread.MIN_PRIORITY,
+                Thread.MAX_PRIORITY);
+
+            return this.ioThreadPriority;
         }
 
         // endregion
@@ -695,6 +719,8 @@ public class RntbdTransportClient extends TransportClient {
             private Duration shutdownTimeout;
             private int threadCount;
             private UserAgentContainer userAgent;
+            private boolean channelAcquisitionContextEnabled;
+            private int ioThreadPriority;
 
             // endregion
 
@@ -723,6 +749,8 @@ public class RntbdTransportClient extends TransportClient {
                 this.shutdownTimeout = DEFAULT_OPTIONS.shutdownTimeout;
                 this.threadCount = DEFAULT_OPTIONS.threadCount;
                 this.userAgent = DEFAULT_OPTIONS.userAgent;
+                this.channelAcquisitionContextEnabled = DEFAULT_OPTIONS.channelAcquisitionContextEnabled;
+                this.ioThreadPriority = DEFAULT_OPTIONS.ioThreadPriority;
             }
 
             // endregion

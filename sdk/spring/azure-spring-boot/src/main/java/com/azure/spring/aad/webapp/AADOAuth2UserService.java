@@ -3,10 +3,11 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.implementation.constants.AADTokenClaim;
+import com.azure.spring.aad.implementation.constants.AuthorityPrefix;
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
-import com.azure.spring.autoconfigure.aad.AADTokenClaim;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,9 +37,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.spring.autoconfigure.aad.Constants.APPROLE_PREFIX;
 import static com.azure.spring.autoconfigure.aad.Constants.DEFAULT_AUTHORITY_SET;
-import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 
 /**
  * This implementation will retrieve group info of user from Microsoft Graph. Then map group to {@link
@@ -124,7 +123,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                        .map(Collection::stream)
                        .orElseGet(Stream::empty)
                        .filter(s -> StringUtils.hasText(s.toString()))
-                       .map(role -> APPROLE_PREFIX + role)
+                       .map(role -> AuthorityPrefix.APP_ROLE + role)
                        .collect(Collectors.toSet());
     }
 
@@ -151,7 +150,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
                     .forEach(roles::add);
         }
         return roles.stream()
-                    .map(roleStr -> ROLE_PREFIX + roleStr)
+                    .map(roleStr -> AuthorityPrefix.ROLE + roleStr)
                     .collect(Collectors.toSet());
     }
 
