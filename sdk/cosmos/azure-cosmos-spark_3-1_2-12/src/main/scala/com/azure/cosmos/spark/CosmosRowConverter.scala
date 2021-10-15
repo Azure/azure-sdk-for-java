@@ -236,9 +236,6 @@ private class CosmosRowConverter(
         case IntegerType => convertToJsonNodeConditionally(rowData.asInstanceOf[Int])
         case LongType => convertToJsonNodeConditionally(rowData.asInstanceOf[Long])
         case FloatType => convertToJsonNodeConditionally(rowData.asInstanceOf[Float])
-        case IntegerType => convertToJsonNodeConditionally(rowData.asInstanceOf[Int])
-
-
         case DecimalType() if rowData.isInstanceOf[Decimal] =>
           convertToJsonNodeConditionally(rowData.asInstanceOf[Decimal].toJavaBigDecimal)
         case DecimalType() if rowData.isInstanceOf[Long] =>
