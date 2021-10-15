@@ -463,7 +463,7 @@
             "properties": {
                 "sku": {
                     "family": "A",
-                    "name": "Standard"
+                    "name": "[if(equals(parameters('storageEndpointSuffix'), 'core.chinacloudapi.cn'), 'Standard', 'Premium')]"
                 },
                 "tenantId": "[parameters('tenantId')]",
                 "accessPolicies": [
