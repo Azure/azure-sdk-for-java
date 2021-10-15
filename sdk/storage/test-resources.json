@@ -46,7 +46,30 @@
         "azureKeyVaultUrl": "[format(concat('https://{0}', parameters('keyVaultEndpointSuffix')), variables('keyvaultName'))]",
         "location": "[resourceGroup().location]",
         "resourceGroupName": "[resourceGroup().name]",
-        "subscriptionId": "[subscription().subscriptionId]"
+        "subscriptionId": "[subscription().subscriptionId]",
+        "emptyBlobServicesProperties": {},
+        "publicBlobServicesProperties": {
+          "containerDeleteRetentionPolicy": {
+            "enabled": true,
+            "days": 1
+          }
+        },
+        "defaultSoftDeleteAccountNameProperties": {
+          "deleteRetentionPolicy": {
+            "enabled": true,
+            "days": 1
+          }
+        },
+        "publicSoftDeleteAccountNameProperties": {
+          "deleteRetentionPolicy": {
+            "enabled": true,
+            "days": 1
+          },
+          "containerDeleteRetentionPolicy": {
+            "enabled": true,
+            "days": 1
+          }
+        }
     },
     "resources": [
         {
@@ -54,7 +77,7 @@
             "apiVersion": "[variables('authorizationApiVersion')]",
             "name": "[guid(concat('dataContributorRoleId', variables('primaryAccountName')))]",
             "dependsOn": [
-                "[variables('primaryAccountName')]"
+              "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
             ],
             "properties": {
                 "roleDefinitionId": "[variables('blobDataContributorRoleId')]",
@@ -66,7 +89,7 @@
             "apiVersion": "[variables('authorizationApiVersion')]",
             "name": "[guid(concat('contributorRoleId', variables('primaryAccountName')))]",
             "dependsOn": [
-                "[variables('primaryAccountName')]"
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
             ],
             "properties": {
                 "roleDefinitionId": "[variables('contributorRoleId')]",
@@ -78,7 +101,7 @@
             "apiVersion": "[variables('authorizationApiVersion')]",
             "name": "[guid(concat('blobDataOwnerRoleId', variables('primaryAccountName')))]",
             "dependsOn": [
-                "[variables('primaryAccountName')]"
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
             ],
             "properties": {
                 "roleDefinitionId": "[variables('blobDataOwnerRoleId')]",
@@ -121,25 +144,20 @@
             "type": "Microsoft.Storage/storageAccounts/blobServices",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[concat(variables('primaryAccountName'), '/default')]",
-            "properties": {
-            "containerDeleteRetentionPolicy": {
-                "enabled": true,
-                "days": 1
-              }
-        },
-        "dependsOn": [
-          "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
-        ]
+            "properties": "[if(equals(parameters('storageEndpointSuffix'), 'core.windows.net'), variables('publicBlobServicesProperties'), variables('emptyBlobServicesProperties'))]",
+            "dependsOn": [
+              "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
+            ]
         },
         {
             "type": "Microsoft.Storage/storageAccounts/fileServices",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[concat(variables('primaryAccountName'), '/default')]",
             "properties": {
-            "shareDeleteRetentionPolicy": {
+              "shareDeleteRetentionPolicy": {
                 "enabled": true,
                 "days": 1
-            }
+              }
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
@@ -149,8 +167,7 @@
           "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('primaryAccountName'), '/testscope1')]",
-          "properties": {
-          },
+          "properties": {},
           "dependsOn": [
             "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
           ]
@@ -159,8 +176,7 @@
           "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('primaryAccountName'), '/testscope2')]",
-          "properties": {
-          },
+          "properties": {},
           "dependsOn": [
             "[resourceId('Microsoft.Storage/storageAccounts', variables('primaryAccountName'))]"
           ]
@@ -233,16 +249,7 @@
           "type": "Microsoft.Storage/storageAccounts/blobServices",
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('softDeleteAccountName'), '/default')]",
-          "properties": {
-            "deleteRetentionPolicy": {
-              "enabled": true,
-              "days": 1
-            },
-            "containerDeleteRetentionPolicy": {
-              "enabled": true,
-              "days": 1
-            }
-          },
+          "properties": "[if(equals(parameters('storageEndpointSuffix'), 'core.windows.net'), variables('publicSoftDeleteAccountNameProperties'), variables('defaultSoftDeleteAccountNameProperties'))]",
           "dependsOn": [
             "[resourceId('Microsoft.Storage/storageAccounts', variables('softDeleteAccountName'))]"
           ]
@@ -373,12 +380,7 @@
             "type": "Microsoft.Storage/storageAccounts/blobServices",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[concat(variables('dataLakeAccountName'), '/default')]",
-            "properties": {
-            "containerDeleteRetentionPolicy": {
-                "enabled": true,
-                "days": 1
-            }
-            },
+            "properties": "[if(equals(parameters('storageEndpointSuffix'), 'core.windows.net'), variables('publicBlobServicesProperties'), variables('emptyBlobServicesProperties'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeAccountName'))]"
             ]
@@ -420,12 +422,7 @@
           "type": "Microsoft.Storage/storageAccounts/blobServices",
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('dataLakeSoftDeleteAccountName'), '/default')]",
-          "properties": {
-            "containerDeleteRetentionPolicy": {
-              "enabled": true,
-              "days": 1
-            }
-          },
+          "properties": "[if(equals(parameters('storageEndpointSuffix'), 'core.windows.net'), variables('publicBlobServicesProperties'), variables('emptyBlobServicesProperties'))]",
           "dependsOn": [
             "[resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeSoftDeleteAccountName'))]"
           ]
