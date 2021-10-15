@@ -301,13 +301,14 @@ class AnalyzeActionsAsyncClient {
             if (action == null) {
                 entityLinkingTasks.add(null);
             } else {
-                new EntityLinkingTask()
-                    .setTaskName(action.getActionName())
-                    .setParameters(
-                        new EntityLinkingTaskParameters()
-                            .setModelVersion(action.getModelVersion())
-                            .setLoggingOptOut(action.isServiceLogsDisabled())
-                            .setStringIndexType(StringIndexType.UTF16CODE_UNIT));
+                entityLinkingTasks.add(
+                    new EntityLinkingTask()
+                        .setTaskName(action.getActionName())
+                        .setParameters(
+                            new EntityLinkingTaskParameters()
+                                .setModelVersion(action.getModelVersion())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)));
             }
         }
         return entityLinkingTasks;
