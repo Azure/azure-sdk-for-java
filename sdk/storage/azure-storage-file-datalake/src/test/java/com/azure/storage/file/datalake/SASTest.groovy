@@ -670,7 +670,7 @@ class SASTest extends APISpec {
      values are handled correctly. We will validate the whole SAS with service calls as well as correct serialization of
      individual parts later.
      */
-
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     @Unroll
     def "sas impl util string to sign"() {
         when:
@@ -731,7 +731,7 @@ class SASTest extends APISpec {
         null                                                      | null       | null             | null                   | null         | null          | null       | null       | "type" || "r\n\n" + Constants.ISO_8601_UTC_DATE_FORMATTER.format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) + "\n/blob/%s/fileSystemName/pathName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\ntype"
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_02_10")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     @Unroll
     def "sas impl util string to sign user delegation key"() {
         when:
