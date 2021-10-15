@@ -194,7 +194,7 @@ class BlobServiceSasModelsTest extends Specification {
         def e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
         def p = new BlobSasPermission().setReadPermission(true)
         def v = new BlobServiceSasSignatureValues(e, p)
-        def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", null, null)
+        def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", null, null, null)
 
         when:
         implUtil.generateSas(null, Context.NONE)
@@ -234,7 +234,7 @@ class BlobServiceSasModelsTest extends Specification {
         def expiryTime = OffsetDateTime.now().plusDays(1)
 
         expect:
-        BlobSasImplUtil implUtil = new BlobSasImplUtil(new BlobServiceSasSignatureValues(expiryTime, permission), container, blob, snapshot, versionId)
+        BlobSasImplUtil implUtil = new BlobSasImplUtil(new BlobServiceSasSignatureValues(expiryTime, permission), container, blob, snapshot, versionId, null)
         implUtil.ensureState()
         implUtil.resource == resource
         implUtil.permissions ==  permissionString
