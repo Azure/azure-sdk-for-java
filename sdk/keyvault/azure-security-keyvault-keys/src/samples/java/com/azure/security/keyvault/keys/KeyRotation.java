@@ -37,29 +37,31 @@ public class KeyRotation {
             .buildClient();
 
         // Let's create an RSA key.
-        KeyVaultKey originalKey = keyClient.createRsaKey(new CreateRsaKeyOptions("MyRsaKey").setKeySize(2048));
+        String keyName = "MyKey";
+        KeyVaultKey originalKey = keyClient.createRsaKey(new CreateRsaKeyOptions(keyName).setKeySize(2048));
 
         System.out.printf("Key created with name %s and type %s%n", originalKey.getName(), originalKey.getKeyType());
 
-        // You can manually rotate said key by calling the following method.
-        KeyVaultKey manuallyRotatedKey = keyClient.rotateKey("MyRsaKey");
-
-        System.out.printf("Rotated key with name %s%n", manuallyRotatedKey.getName());
-
-        // You can also configure its key rotation policy to allow Azure Key Vault to do it automatically under certain
-        // conditions. Newly created keys do not have a key rotation policy set.
+        // You can configure its key rotation policy to allow Azure Key Vault to do it automatically under certain
+        // conditions.
         List<KeyRotationLifetimeAction> keyRotationLifetimeActionList = new ArrayList<>();
         KeyRotationLifetimeAction rotateLifetimeAction = new KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE)
             .setTimeAfterCreate("P90D"); // Rotate the key after 90 days of its creation.
         keyRotationLifetimeActionList.add(rotateLifetimeAction);
         KeyRotationPolicyProperties keyRotationPolicyProperties = new KeyRotationPolicyProperties()
             .setLifetimeActions(keyRotationLifetimeActionList)
-            .setExpiryTime("P6M"); // Make the key rotation policy expire in 6 months.
+            .setExpiryTime("P6M"); // Make any new versions of the key expire 6 months after creation.
 
-        // An object containing the details of the recently key rotation policy will be return by the update method.
+        // An object containing the details of the recently updated key rotation policy will be returned by the update
+        // method.
         KeyRotationPolicy keyRotationPolicy =
-            keyClient.updateKeyRotationPolicy("MyRsaKey", keyRotationPolicyProperties);
+            keyClient.updateKeyRotationPolicy(keyName, keyRotationPolicyProperties);
 
         System.out.printf("Updated key rotation policy with id: %s%n", keyRotationPolicy.getId());
+
+        // You can also manually rotate a key by calling the following method.
+        KeyVaultKey manuallyRotatedKey = keyClient.rotateKey(keyName);
+
+        System.out.printf("Rotated key with name %s%n", manuallyRotatedKey.getName());
     }
 }
