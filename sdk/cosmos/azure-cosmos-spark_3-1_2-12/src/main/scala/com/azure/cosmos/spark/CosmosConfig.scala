@@ -513,7 +513,7 @@ private object CosmosSerializationConfig {
     mandatory = false,
     defaultValue = Some(SerializationInclusionModes.Always),
     parseFromStringFunction = value => CosmosConfigEntry.parseEnumeration(value, SerializationInclusionModes),
-    helpMessage = "The serialization inclusion mode (`Always`, `NonEmpty` or `NonNull`)." +
+    helpMessage = "The serialization inclusion mode (`Always`, `NonNull`, `NonEmpty` or `NonDefault`)." +
       " When serializing json documents this setting determines whether json properties will be emitted" +
       " for columns in the RDD that are null/empty. The default value is `Always`.")
 
