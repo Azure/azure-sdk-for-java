@@ -627,6 +627,10 @@
         "STORAGE_SUBSCRIPTION_ID": {
             "type": "string",
             "value": "[variables('subscriptionId')]"
+        },
+        "STORAGE_ENDPOINT_SUFFIX" : {
+          "type": "string",
+          "value": "[parameters('storageEndpointSuffix')]"
         }
     }
 }
