@@ -300,7 +300,6 @@ private class CosmosRowConverter(
       }
     }
 
-    // scalastyle:off
     private def convertSparkDataTypeToJsonNodeNonNull(fieldType: DataType, rowData: Any) : JsonNode = {
         fieldType match {
             case StringType => objectMapper.convertValue(convertRowDataToString(rowData), classOf[JsonNode])
@@ -341,7 +340,6 @@ private class CosmosRowConverter(
                 throw new Exception(s"Cannot cast $rowData into a Json value. $fieldType has no matching Json value.")
         }
     }
-    // scalastyle:on
 
     private def putNullConditionally(objectNode: ObjectNode, fieldName: String) = {
       if (serializationConfig.serializationInclusionMode == SerializationInclusionModes.Always) {
@@ -560,7 +558,6 @@ private class CosmosRowConverter(
                 Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _, schemaConversionMode)).orNull
         }
 
-    // scalastyle:off
     private def convertToSparkDataType(dataType: DataType,
                                        value: JsonNode,
                                        schemaConversionMode: SchemaConversionMode): Any =
@@ -610,7 +607,6 @@ private class CosmosRowConverter(
               s"Unsupported datatype conversion [Value: $value] of ${value.getClass}] to $dataType]")
           }
     }
-    // scalastyle:on
 
     private def handleConversionErrors[A] = (conversion: () => A,
                                              schemaConversionMode: SchemaConversionMode) => {
@@ -683,3 +679,4 @@ private class CosmosRowConverter(
     }
 }
 // scalastyle:on
+
