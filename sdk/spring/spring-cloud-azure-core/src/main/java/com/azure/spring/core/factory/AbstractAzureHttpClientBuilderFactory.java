@@ -16,8 +16,6 @@ import com.azure.spring.core.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.client.HttpClientProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,8 +29,6 @@ import java.util.stream.Collectors;
  * @param <T> The type of the http client builder.
  */
 public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractAzureServiceClientBuilderFactory<T> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureHttpClientBuilderFactory.class);
 
     private final HttpClientOptions httpClientOptions = new HttpClientOptions();
     private HttpClientProvider httpClientProvider = new DefaultHttpProvider();
@@ -87,14 +83,8 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     protected void configureHttpLogOptions(T builder) {
         ClientProperties client = getAzureProperties().getClient();
-        if (client instanceof HttpClientProperties) {
-            HttpLogOptions logOptions = this.logOptionsConverter.convert(((HttpClientProperties) client).getLogging());
-
-            consumeHttpLogOptions().accept(builder, logOptions);
-        } else {
-            LOGGER.warn("{} is not a HttpClientProperties", client);
-        }
-
+        HttpLogOptions logOptions = this.logOptionsConverter.convert(client.getLogging());
+        consumeHttpLogOptions().accept(builder, logOptions);
     }
 
     protected void configureHttpTransportProperties(T builder) {
