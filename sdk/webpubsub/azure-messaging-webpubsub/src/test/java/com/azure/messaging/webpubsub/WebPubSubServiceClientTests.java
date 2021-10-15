@@ -10,14 +10,22 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
+import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
+import com.nimbusds.jwt.JWT;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.JWTParser;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -207,4 +215,21 @@ public class WebPubSubServiceClientTests extends TestBase {
                 Context.NONE), 202);
     }
 
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testGetAuthenticationToken() throws ParseException {
+        WebPubSubAuthenticationToken token = client.getAuthenticationToken(new GetAuthenticationTokenOptions());
+        Assertions.assertNotNull(token);
+        Assertions.assertNotNull(token.getAuthToken());
+
+        String authToken = token.getAuthToken();
+        JWT jwt = JWTParser.parse(authToken);
+        JWTClaimsSet claimsSet = jwt.getJWTClaimsSet();
+        Assertions.assertNotNull(claimsSet);
+        Assertions.assertNotNull(claimsSet.getAudience());
+        Assertions.assertFalse(claimsSet.getAudience().isEmpty());
+
+        String aud = claimsSet.getAudience().iterator().next();
+        Assertions.assertTrue(aud.contains(".webpubsub.azure.com/client/hubs/"));
+    }
 }
