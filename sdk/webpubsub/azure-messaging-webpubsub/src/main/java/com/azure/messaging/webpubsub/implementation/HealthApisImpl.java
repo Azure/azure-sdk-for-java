@@ -7,20 +7,17 @@ package com.azure.messaging.webpubsub.implementation;
 import com.azure.core.annotation.Head;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /** An instance of this class provides access to all the operations defined in HealthApis. */
 public final class HealthApisImpl {
@@ -45,81 +42,86 @@ public final class HealthApisImpl {
      * The interface defining all the services for AzureWebPubSubServiceRestAPIHealthApis to be used by the proxy
      * service to perform REST calls.
      */
-    @Host("{$host}")
+    @Host("{Endpoint}")
     @ServiceInterface(name = "AzureWebPubSubServic")
     public interface HealthApisService {
         @Head("/api/health")
         Mono<Response<Void>> getServiceStatus(
-                @HostParam("$host") String host, RequestOptions requestOptions, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
      * Get service health status.
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return service health status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getServiceStatusWithResponseAsync(RequestOptions requestOptions) {
-        if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
-        }
         return FluxUtil.withContext(
-                context -> service.getServiceStatus(this.client.getHost(), requestOptions, context));
+                context ->
+                        service.getServiceStatus(
+                                this.client.getEndpoint(),
+                                this.client.getServiceVersion().getVersion(),
+                                requestOptions,
+                                context));
     }
 
     /**
      * Get service health status.
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return service health status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getServiceStatusWithResponseAsync(RequestOptions requestOptions, Context context) {
-        if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
-        }
-        return service.getServiceStatus(this.client.getHost(), requestOptions, context);
+        return service.getServiceStatus(
+                this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), requestOptions, context);
     }
 
     /**
      * Get service health status.
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getServiceStatusAsync(RequestOptions requestOptions) {
-        return getServiceStatusWithResponseAsync(requestOptions).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Get service health status.
+     * <p><strong>Query Parameters</strong>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getServiceStatusAsync(RequestOptions requestOptions, Context context) {
-        return getServiceStatusWithResponseAsync(requestOptions, context).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Get service health status.
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * </table>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getServiceStatus(RequestOptions requestOptions) {
-        getServiceStatusAsync(requestOptions).block();
-    }
-
-    /**
-     * Get service health status.
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return service health status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getServiceStatusWithResponse(RequestOptions requestOptions, Context context) {
         return getServiceStatusWithResponseAsync(requestOptions, context).block();
     }
-
 }
