@@ -368,7 +368,7 @@ public final class EntitiesImpl {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertWithResponseAsync(
             BinaryData entity, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context -> service.createOrUpdate(this.client.getEndpoint(), entity, requestOptions, context));
@@ -536,7 +536,7 @@ public final class EntitiesImpl {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertWithResponseAsync(
             BinaryData entity, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(this.client.getEndpoint(), entity, requestOptions, context);
     }
@@ -703,9 +703,9 @@ public final class EntitiesImpl {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             BinaryData entity, RequestOptions requestOptions, Context context) {
-        return createOrUpdateWithResponseAsync(entity, requestOptions, context).block();
+        return upsertWithResponseAsync(entity, requestOptions, context).block();
     }
 
     /**

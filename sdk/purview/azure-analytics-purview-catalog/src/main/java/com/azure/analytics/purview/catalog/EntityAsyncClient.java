@@ -189,8 +189,8 @@ public final class EntityAsyncClient {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(BinaryData entity, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(entity, requestOptions);
+    public Mono<Response<BinaryData>> upsertWithResponse(BinaryData entity, RequestOptions requestOptions) {
+        return this.serviceClient.upsertWithResponseAsync(entity, requestOptions);
     }
 
     /**

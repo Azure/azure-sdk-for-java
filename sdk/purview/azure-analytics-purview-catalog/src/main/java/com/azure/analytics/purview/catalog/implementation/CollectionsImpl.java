@@ -246,7 +246,7 @@ public final class CollectionsImpl {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertWithResponseAsync(
             String collection, BinaryData entity, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -430,7 +430,7 @@ public final class CollectionsImpl {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertWithResponseAsync(
             String collection, BinaryData entity, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
                 this.client.getEndpoint(),
@@ -612,9 +612,9 @@ public final class CollectionsImpl {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             String collection, BinaryData entity, RequestOptions requestOptions, Context context) {
-        return createOrUpdateWithResponseAsync(collection, entity, requestOptions, context).block();
+        return upsertWithResponseAsync(collection, entity, requestOptions, context).block();
     }
 
     /**

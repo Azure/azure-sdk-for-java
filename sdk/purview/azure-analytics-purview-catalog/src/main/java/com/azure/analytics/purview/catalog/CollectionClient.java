@@ -199,9 +199,9 @@ public final class CollectionClient {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             String collection, BinaryData entity, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateWithResponse(collection, entity, requestOptions, context);
+        return this.serviceClient.upsertWithResponse(collection, entity, requestOptions, context);
     }
 
     /**

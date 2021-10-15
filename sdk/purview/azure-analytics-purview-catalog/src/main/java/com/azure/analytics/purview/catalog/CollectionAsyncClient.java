@@ -198,9 +198,9 @@ public final class CollectionAsyncClient {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
+    public Mono<Response<BinaryData>> upsertWithResponse(
             String collection, BinaryData entity, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(collection, entity, requestOptions);
+        return this.serviceClient.upsertWithResponseAsync(collection, entity, requestOptions);
     }
 
     /**
