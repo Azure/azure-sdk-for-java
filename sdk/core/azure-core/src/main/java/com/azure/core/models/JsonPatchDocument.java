@@ -3,13 +3,17 @@
 
 package com.azure.core.models;
 
+import com.azure.core.implementation.JsonPatchDocumentHelper;
+import com.azure.core.implementation.JsonPatchOperation;
+import com.azure.core.implementation.JsonPatchOperationKind;
 import com.azure.core.implementation.Option;
+import com.azure.core.implementation.jackson.JsonPatchDocumentSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,6 +25,7 @@ import java.util.Objects;
 /**
  * Represents a JSON Patch document.
  */
+@JsonSerialize(using = JsonPatchDocumentSerializer.class)
 public final class JsonPatchDocument {
     private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
     private static volatile JsonSerializer defaultSerializer;
@@ -31,8 +36,11 @@ public final class JsonPatchDocument {
     @JsonIgnore
     private final JsonSerializer serializer;
 
-    @JsonValue
     private final List<JsonPatchOperation> operations;
+
+    static {
+        JsonPatchDocumentHelper.setAccessor(JsonPatchDocument::getOperations);
+    }
 
     /**
      * Creates a new JSON Patch document.

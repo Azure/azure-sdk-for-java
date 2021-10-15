@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-public class FastBeanSerializerAccessor extends BeanSerializerModifier {
+public final class FastBeanSerializerAccessor extends BeanSerializerModifier {
     private static final Map<Member, BeanPropertyWriter> FAST_ACCESSOR_CACHE = new ConcurrentHashMap<>();
 
     @Override
@@ -46,7 +46,7 @@ public class FastBeanSerializerAccessor extends BeanSerializerModifier {
         return beanProperties;
     }
 
-    protected void findProperties(List<BeanPropertyWriter> beanProperties,
+    static void findProperties(List<BeanPropertyWriter> beanProperties,
         MethodHandles.Lookup lookup) {
 
         ListIterator<BeanPropertyWriter> it = beanProperties.listIterator();
@@ -73,7 +73,7 @@ public class FastBeanSerializerAccessor extends BeanSerializerModifier {
         }
     }
 
-    private BeanPropertyWriter createFastAccessor(MethodHandles.Lookup lookup, AnnotatedMember member,
+    static BeanPropertyWriter createFastAccessor(MethodHandles.Lookup lookup, AnnotatedMember member,
         BeanPropertyWriter bpw) {
         try {
             MethodHandle getter;

@@ -29,7 +29,7 @@ public class FastBeanModule extends Module {
 
     @Override
     public void setupModule(SetupContext context) {
-//        context.addBeanDeserializerModifier(new FastBeanSerializerAccessor());
+        context.addBeanDeserializerModifier(new FastBeanDeserializerAccessor());
         context.addBeanSerializerModifier(new FastBeanSerializerAccessor());
     }
 }
