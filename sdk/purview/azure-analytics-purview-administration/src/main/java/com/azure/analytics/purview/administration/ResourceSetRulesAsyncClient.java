@@ -371,9 +371,9 @@ public final class ResourceSetRulesAsyncClient {
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponse(
+    public Mono<Response<BinaryData>> upsertResourceSetRuleWithResponse(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions);
+        return this.serviceClient.upsertResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions);
     }
 
     /**

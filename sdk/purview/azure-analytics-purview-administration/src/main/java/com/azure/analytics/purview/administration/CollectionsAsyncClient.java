@@ -139,9 +139,9 @@ public final class CollectionsAsyncClient {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponse(
+    public Mono<Response<BinaryData>> upsertCollectionWithResponse(
             String collectionName, BinaryData collection, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateCollectionWithResponseAsync(collectionName, collection, requestOptions);
+        return this.serviceClient.upsertCollectionWithResponseAsync(collectionName, collection, requestOptions);
     }
 
     /**

@@ -373,9 +373,9 @@ public final class ResourceSetRulesClient {
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(
+    public Response<BinaryData> upsertResourceSetRuleWithResponse(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateResourceSetRuleWithResponse(
+        return this.serviceClient.upsertResourceSetRuleWithResponse(
                 resourceSetRuleConfig, requestOptions, context);
     }
 
