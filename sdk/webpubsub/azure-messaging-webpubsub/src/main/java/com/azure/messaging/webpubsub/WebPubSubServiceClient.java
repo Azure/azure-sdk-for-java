@@ -68,7 +68,7 @@ public final class WebPubSubServiceClient {
                         return WebPubSubUtil.createToken(token, endpoint, hub);
                     }).block();
         }
-        final String audience = endpoint + "client/hubs/" + hub;
+        final String audience = endpoint + (endpoint.endsWith("/") ? "" : "/") + "client/hubs/" + hub;
         final String token = WebPubSubAuthenticationPolicy.getAuthenticationToken(
                 audience, options, keyCredential);
         return WebPubSubUtil.createToken(token, endpoint, hub);
