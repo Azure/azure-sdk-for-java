@@ -4,6 +4,7 @@
 package com.azure.storage.queue
 
 import com.azure.core.util.BinaryData
+import com.azure.core.util.Configuration
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
@@ -28,8 +29,10 @@ class QueueAPITests extends APISpec {
     static def testMetadata = Collections.singletonMap("metadata", "value")
     static def createMetadata = Collections.singletonMap("metadata1", "value")
     String queueName
+    def storageEndpointSuffix;
 
     def setup() {
+        storageEndpointSuffix = Configuration.getGlobalConfiguration().get("STORAGE_ENDPOINT_SUFFIX")
         queueName = namer.getRandomName(60)
         primaryQueueServiceClient = queueServiceBuilderHelper().buildClient()
         queueClient = primaryQueueServiceClient.getQueueClient(queueName)
@@ -38,7 +41,7 @@ class QueueAPITests extends APISpec {
     def "Get queue URL"() {
         given:
         def accountName = StorageSharedKeyCredential.fromConnectionString(environment.primaryAccount.connectionString).getAccountName()
-        def expectURL = String.format("https://%s.queue.core.windows.net/%s", accountName, queueName)
+        def expectURL = String.format("https://%s.queue.%s/%s", accountName, storageEndpointSuffix, queueName)
 
         when:
         def queueURL = queueClient.getQueueUrl()
