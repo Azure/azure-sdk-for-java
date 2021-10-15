@@ -192,9 +192,12 @@
         <module>spring-cloud-azure-starter</module>
         <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
+        <module>spring-cloud-azure-starter-stream-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus-queue</module>
+        <module>spring-cloud-azure-starter-stream-servicebus-queue</module>
         <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
+        <module>spring-cloud-azure-starter-stream-servicebus-topic</module>
         <module>spring-cloud-azure-stream-binder-test</module>
         <module>spring-cloud-azure-test-eventhubs-kafka</module>
         <module>spring-cloud-azure-test-servicebus-binder</module>
@@ -235,9 +238,12 @@
         <module>spring-cloud-azure-starter</module>
         <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
+        <module>spring-cloud-azure-starter-stream-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus-queue</module>
+        <module>spring-cloud-azure-starter-stream-servicebus-queue</module>
         <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
+        <module>spring-cloud-azure-starter-stream-servicebus-topic</module>
         <module>spring-cloud-azure-stream-binder-test</module>
       </modules>
     </profile>

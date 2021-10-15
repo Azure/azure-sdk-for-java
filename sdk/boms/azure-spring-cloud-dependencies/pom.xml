@@ -147,8 +147,23 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-stream-servicebus-queue</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-stream-servicebus-topic</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>
         <version>${azure.spring.cloud.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-stream-eventhubs</artifactId>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>

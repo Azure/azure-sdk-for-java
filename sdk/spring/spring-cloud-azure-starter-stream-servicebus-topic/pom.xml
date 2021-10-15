@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-starter-stream-servicebus-topic</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-stream-servicebus-topic;current} -->
+
+  <name>Spring Cloud Azure Starter Stream Service Bus Topic</name>
+  <description>Spring Cloud Azure Starter Stream Service Bus Topic</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-stream-binder-servicebus-topic</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus-topic;current} -->
+    </dependency>
+  </dependencies>
+
+</project>
