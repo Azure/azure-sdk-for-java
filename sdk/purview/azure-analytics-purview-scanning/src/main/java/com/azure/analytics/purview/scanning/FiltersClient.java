@@ -124,8 +124,8 @@ public final class FiltersClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateWithResponse(dataSourceName, scanName, requestOptions, context);
+        return this.serviceClient.upsertWithResponse(dataSourceName, scanName, requestOptions, context);
     }
 }

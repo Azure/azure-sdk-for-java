@@ -159,9 +159,9 @@ public final class ScansAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
+    public Mono<Response<BinaryData>> upsertWithResponse(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(dataSourceName, scanName, body, requestOptions);
+        return this.serviceClient.upsertWithResponseAsync(dataSourceName, scanName, body, requestOptions);
     }
 
     /**

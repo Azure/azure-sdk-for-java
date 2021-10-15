@@ -267,7 +267,7 @@ public final class ClassificationRulesImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertWithResponseAsync(
             String classificationRuleName, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -316,7 +316,7 @@ public final class ClassificationRulesImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertWithResponseAsync(
             String classificationRuleName, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
                 this.client.getEndpoint(),
@@ -363,9 +363,9 @@ public final class ClassificationRulesImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             String classificationRuleName, RequestOptions requestOptions, Context context) {
-        return createOrUpdateWithResponseAsync(classificationRuleName, requestOptions, context).block();
+        return upsertWithResponseAsync(classificationRuleName, requestOptions, context).block();
     }
 
     /**

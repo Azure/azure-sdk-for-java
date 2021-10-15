@@ -96,9 +96,9 @@ public final class ClassificationRulesAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
+    public Mono<Response<BinaryData>> upsertWithResponse(
             String classificationRuleName, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(classificationRuleName, requestOptions);
+        return this.serviceClient.upsertWithResponseAsync(classificationRuleName, requestOptions);
     }
 
     /**

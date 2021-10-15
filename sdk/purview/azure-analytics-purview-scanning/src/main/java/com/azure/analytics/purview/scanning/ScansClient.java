@@ -160,9 +160,9 @@ public final class ScansClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateWithResponse(dataSourceName, scanName, body, requestOptions, context);
+        return this.serviceClient.upsertWithResponse(dataSourceName, scanName, body, requestOptions, context);
     }
 
     /**

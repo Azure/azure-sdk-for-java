@@ -108,9 +108,9 @@ public final class ScanRulesetsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             String scanRulesetName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateWithResponse(scanRulesetName, requestOptions, context);
+        return this.serviceClient.upsertWithResponse(scanRulesetName, requestOptions, context);
     }
 
     /**

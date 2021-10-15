@@ -122,8 +122,8 @@ public final class FiltersAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
+    public Mono<Response<BinaryData>> upsertWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(dataSourceName, scanName, requestOptions);
+        return this.serviceClient.upsertWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 }

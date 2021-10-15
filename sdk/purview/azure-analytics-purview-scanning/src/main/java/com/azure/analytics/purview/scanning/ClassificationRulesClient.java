@@ -99,9 +99,9 @@ public final class ClassificationRulesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             String classificationRuleName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateWithResponse(classificationRuleName, requestOptions, context);
+        return this.serviceClient.upsertWithResponse(classificationRuleName, requestOptions, context);
     }
 
     /**
