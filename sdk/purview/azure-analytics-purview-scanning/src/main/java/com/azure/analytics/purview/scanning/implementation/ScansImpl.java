@@ -230,7 +230,7 @@ public final class ScansImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertWithResponseAsync(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -375,7 +375,7 @@ public final class ScansImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertWithResponseAsync(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
                 this.client.getEndpoint(),
@@ -518,9 +518,9 @@ public final class ScansImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions, Context context) {
-        return createOrUpdateWithResponseAsync(dataSourceName, scanName, body, requestOptions, context).block();
+        return upsertWithResponseAsync(dataSourceName, scanName, body, requestOptions, context).block();
     }
 
     /**

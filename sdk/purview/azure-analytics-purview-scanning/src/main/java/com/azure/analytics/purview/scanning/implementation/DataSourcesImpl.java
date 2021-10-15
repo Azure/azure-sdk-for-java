@@ -235,7 +235,7 @@ public final class DataSourcesImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertWithResponseAsync(
             String dataSourceName, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -388,7 +388,7 @@ public final class DataSourcesImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertWithResponseAsync(
             String dataSourceName, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
                 this.client.getEndpoint(),
@@ -539,9 +539,9 @@ public final class DataSourcesImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             String dataSourceName, RequestOptions requestOptions, Context context) {
-        return createOrUpdateWithResponseAsync(dataSourceName, requestOptions, context).block();
+        return upsertWithResponseAsync(dataSourceName, requestOptions, context).block();
     }
 
     /**

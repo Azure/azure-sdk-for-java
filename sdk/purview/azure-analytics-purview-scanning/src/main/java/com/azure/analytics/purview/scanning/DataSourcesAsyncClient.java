@@ -169,8 +169,8 @@ public final class DataSourcesAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String dataSourceName, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(dataSourceName, requestOptions);
+    public Mono<Response<BinaryData>> upsertWithResponse(String dataSourceName, RequestOptions requestOptions) {
+        return this.serviceClient.upsertWithResponseAsync(dataSourceName, requestOptions);
     }
 
     /**

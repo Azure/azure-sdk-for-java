@@ -170,9 +170,9 @@ public final class DataSourcesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             String dataSourceName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateWithResponse(dataSourceName, requestOptions, context);
+        return this.serviceClient.upsertWithResponse(dataSourceName, requestOptions, context);
     }
 
     /**

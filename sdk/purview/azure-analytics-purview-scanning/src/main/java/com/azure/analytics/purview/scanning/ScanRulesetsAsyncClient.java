@@ -105,9 +105,9 @@ public final class ScanRulesetsAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
+    public Mono<Response<BinaryData>> upsertWithResponse(
             String scanRulesetName, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(scanRulesetName, requestOptions);
+        return this.serviceClient.upsertWithResponseAsync(scanRulesetName, requestOptions);
     }
 
     /**
