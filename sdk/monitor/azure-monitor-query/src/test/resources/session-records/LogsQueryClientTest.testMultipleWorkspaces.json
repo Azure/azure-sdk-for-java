@@ -1,25 +1,24 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.monitor.azure.com/v1/workspaces/d2d0e126-fa1e-4b0a-b647-250cdd471e68/query",
+    "Uri" : "https://REDACTED.loganalytics.io/v1/workspaces/d2d0e126-fa1e-4b0a-b647-250cdd471e68/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-monitor-query/1.0.0-beta.5 (14.0.2; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "221",
+      "content-length" : "222",
       "Access-Control-Allow-Origin" : "*",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 07 Jun 2021 04:58:05 GMT",
-      "via" : "1.1 draft-oms-bf5f655b7-nsm7k",
+      "Date" : "Mon, 04 Oct 2021 18:31:24 GMT",
+      "via" : "1.1 draft-oms-7fbfd9875f-vwjdq",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Access-Control-Expose-Headers" : "Retry-After,Age,WWW-Authenticate,x-resource-identities,x-ms-status-location",
       "Vary" : "Accept-Encoding",
-      "Body" : "{\"tables\":[{\"name\":\"PrimaryResult\",\"columns\":[{\"name\":\"TenantId\",\"type\":\"string\"},{\"name\":\"count_\",\"type\":\"long\"}],\"rows\":[[\"d2d0e126-fa1e-4b0a-b647-250cdd471e68\",12795606],[\"9dad0092-fd13-403a-b367-a189a090a541\",449]]}]}",
-      "Age" : "55",
+      "Body" : "{\"tables\":[{\"name\":\"PrimaryResult\",\"columns\":[{\"name\":\"TenantId\",\"type\":\"string\"},{\"name\":\"count_\",\"type\":\"long\"}],\"rows\":[[\"d2d0e126-fa1e-4b0a-b647-250cdd471e68\",30946102],[\"9dad0092-fd13-403a-b367-a189a090a541\",1860]]}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

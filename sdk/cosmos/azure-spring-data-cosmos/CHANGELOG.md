@@ -1,6 +1,6 @@
 ## Release History
 
-### 3.12.0-beta.1 (Unreleased)
+### 3.14.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,17 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 3.13.0 (2021-10-14)
+#### New Features
+* Added support for setting throughput on database creation.
+* Pagination improvement with slice query API.
+* Updated `azure-cosmos` to version `4.20.0`.
+
+### 3.12.0 (2021-09-24)
+#### New Features
+* Added support for UUID id type to spring data cosmos SDK.
+* Updated `azure-cosmos` to version 4.19.1.
 
 ### 3.11.0 (2021-09-09)
 #### New Features

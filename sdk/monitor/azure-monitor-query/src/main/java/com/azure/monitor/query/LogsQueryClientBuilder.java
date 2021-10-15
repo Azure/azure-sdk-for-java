@@ -116,7 +116,7 @@ public final class LogsQueryClientBuilder {
     /**
      * Set the {@link ClientOptions} used for creating the client.
      * @param clientOptions The {@link ClientOptions}.
-     * @return the {@link LogsQueryClientBuilder}
+     * @return the {@link LogsQueryClientBuilder}.
      */
     public LogsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
@@ -126,7 +126,7 @@ public final class LogsQueryClientBuilder {
     /**
      * The service version to use when creating the client.
      * @param serviceVersion The {@link LogsQueryServiceVersion}.
-     * @return the {@link LogsQueryClientBuilder}
+     * @return the {@link LogsQueryClientBuilder}.
      */
     public LogsQueryClientBuilder serviceVersion(LogsQueryServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
