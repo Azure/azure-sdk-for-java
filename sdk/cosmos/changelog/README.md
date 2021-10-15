@@ -1,5 +1,8 @@
 ## Changelog
 
+### 3.7.6
+- Fixed an issue with "NumberFormatException" happening on requests on large containers.
+
 ### 3.7.5
 - Added more diagnostics logging.
 
