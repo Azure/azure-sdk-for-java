@@ -221,6 +221,10 @@ public class WebPubSubServiceClientTests extends TestBase {
         WebPubSubAuthenticationToken token = client.getAuthenticationToken(new GetAuthenticationTokenOptions());
         Assertions.assertNotNull(token);
         Assertions.assertNotNull(token.getAuthToken());
+        Assertions.assertNotNull(token.getUrl());
+
+        Assertions.assertTrue(token.getUrl().startsWith("wss://"));
+        Assertions.assertTrue(token.getUrl().contains(".webpubsub.azure.com/client/hubs/"));
 
         String authToken = token.getAuthToken();
         JWT jwt = JWTParser.parse(authToken);
