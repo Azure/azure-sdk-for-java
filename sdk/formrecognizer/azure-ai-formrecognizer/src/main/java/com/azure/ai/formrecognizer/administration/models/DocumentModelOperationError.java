@@ -8,9 +8,9 @@ import com.azure.ai.formrecognizer.implementation.util.FormRecognizerErrorHelper
 import java.util.List;
 
 /**
- * Form Recognizer Error info.
+ * The Error information related to the document model creation or analysis operation.
  */
-public final class FormRecognizerError {
+public final class DocumentModelOperationError {
     /*
      * Error code.
      */
@@ -29,12 +29,12 @@ public final class FormRecognizerError {
     /*
      * List of detailed errors.
      */
-    private List<FormRecognizerError> details;
+    private List<DocumentModelOperationError> details;
 
     /*
      * Detailed error.
      */
-    private InnerError innerError;
+    private DocumentModelOperationInnerError innerError;
 
     /**
      * Get the code property: Error code.
@@ -98,7 +98,7 @@ public final class FormRecognizerError {
      *
      * @return the details value.
      */
-    public List<FormRecognizerError> getDetails() {
+    public List<DocumentModelOperationError> getDetails() {
         return this.details;
     }
 
@@ -108,7 +108,7 @@ public final class FormRecognizerError {
      * @param details the details value to set.
      * @return the Error object itself.
      */
-    void setDetails(List<FormRecognizerError> details) {
+    void setDetails(List<DocumentModelOperationError> details) {
         this.details = details;
     }
 
@@ -117,7 +117,7 @@ public final class FormRecognizerError {
      *
      * @return the innerError value.
      */
-    public InnerError getInnerError() {
+    public DocumentModelOperationInnerError getInnerError() {
         return this.innerError;
     }
 
@@ -127,35 +127,35 @@ public final class FormRecognizerError {
      * @param innerError the innerError value to set.
      * @return the Error object itself.
      */
-    void setInnerError(InnerError innerError) {
+    void setInnerError(DocumentModelOperationInnerError innerError) {
         this.innerError = innerError;
     }
 
     static {
         FormRecognizerErrorHelper.setAccessor(new FormRecognizerErrorHelper.FormRecognizerErrorAccessor() {
             @Override
-            public void setCode(FormRecognizerError formRecognizerError, String errorCode) {
-                formRecognizerError.setCode(errorCode);
+            public void setCode(DocumentModelOperationError documentModelOperationError, String errorCode) {
+                documentModelOperationError.setCode(errorCode);
             }
 
             @Override
-            public void setMessage(FormRecognizerError formRecognizerError, String message) {
-                formRecognizerError.setMessage(message);
+            public void setMessage(DocumentModelOperationError documentModelOperationError, String message) {
+                documentModelOperationError.setMessage(message);
             }
 
             @Override
-            public void setTarget(FormRecognizerError formRecognizerError, String target) {
-                formRecognizerError.setTarget(target);
+            public void setTarget(DocumentModelOperationError documentModelOperationError, String target) {
+                documentModelOperationError.setTarget(target);
             }
 
             @Override
-            public void setDetails(FormRecognizerError formRecognizerError, List<FormRecognizerError> details) {
-                formRecognizerError.setDetails(details);
+            public void setDetails(DocumentModelOperationError documentModelOperationError, List<DocumentModelOperationError> details) {
+                documentModelOperationError.setDetails(details);
             }
 
             @Override
-            public void setInnerError(FormRecognizerError formRecognizerError, InnerError innererror) {
-                formRecognizerError.setInnerError(innererror);
+            public void setInnerError(DocumentModelOperationError documentModelOperationError, DocumentModelOperationInnerError innererror) {
+                documentModelOperationError.setInnerError(innererror);
             }
         });
     }
