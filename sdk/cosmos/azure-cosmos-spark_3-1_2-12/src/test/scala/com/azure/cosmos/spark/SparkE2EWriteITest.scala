@@ -16,6 +16,7 @@ class SparkE2EWriteITest
 
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
+  //scalastyle:off null
 
   private case class UpsertParameterTest(bulkEnabled: Boolean, itemWriteStrategy: ItemWriteStrategy, hasId: Boolean = true)
 
@@ -319,4 +320,5 @@ class SparkE2EWriteITest
   }
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals
+  //scalastyle:on null
 }
