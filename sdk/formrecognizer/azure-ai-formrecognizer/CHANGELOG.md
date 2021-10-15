@@ -3,11 +3,8 @@
 ## 4.0.0-beta.2 (Unreleased)
 
 ### Features Added
-- Update `HttpResponseException` to use azure-core `ResponseError`.
 
 ### Breaking Changes
-- Rename `DocumentAnalysisException`, `FormRecognizerError`, `InnerError` to 
-`DocumentModelOperationException`, `DocumentModelOperationError`, `DocumentModelOperationInnerError` respectively. 
 
 ### Bugs Fixed
 

@@ -11,14 +11,13 @@ import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
+import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -80,8 +79,9 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
             client.getModel(NON_EXIST_MODEL_ID));
-        final ResponseError responseError = (ResponseError) exception.getValue();
-        assertEquals("ModelNotFound", responseError.getCode());
+        final FormRecognizerError errorInformation =
+            (FormRecognizerError) exception.getValue();
+        assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
     }
 
     /**
@@ -137,8 +137,9 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
             client.deleteModel(NON_EXIST_MODEL_ID));
-        final ResponseError responseError = (ResponseError) exception.getValue();
-        assertEquals("ModelNotFound", responseError.getCode());
+        final FormRecognizerError errorInformation =
+            (FormRecognizerError) exception.getValue();
+        assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -159,8 +160,9 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
             assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
             final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.getModelWithResponse(createdModel.getModelId(), Context.NONE));
-            final ResponseError responseError = (ResponseError) exception.getValue();
-            assertEquals("ModelNotFound", responseError.getCode());
+            final FormRecognizerError errorInformation =
+                (FormRecognizerError) exception.getValue();
+            assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
         });
     }
 
@@ -332,7 +334,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
 
             final FormRecognizerError errorInformation =
                 (FormRecognizerError) exception.getValue();
-            assertEquals("TrainingContentMissing", errorInformation.getInnerError().getCode());
+            assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
         });
     }
 

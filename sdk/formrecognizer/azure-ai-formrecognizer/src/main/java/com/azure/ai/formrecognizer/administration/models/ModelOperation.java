@@ -31,7 +31,7 @@ public final class ModelOperation extends ModelOperationInfo {
 
     private Map<String, DocTypeInfo> docTypes;
 
-    private DocumentModelOperationError error;
+    private FormRecognizerError error;
 
     /**
      * Get the Unique model identifier.
@@ -86,7 +86,7 @@ public final class ModelOperation extends ModelOperationInfo {
         this.docTypes = docTypes;
     }
 
-    void setError(DocumentModelOperationError error) {
+    void setError(FormRecognizerError error) {
         this.error = error;
     }
 
@@ -95,7 +95,7 @@ public final class ModelOperation extends ModelOperationInfo {
      *
      * @return the error value.
      */
-    public DocumentModelOperationError getError() {
+    public FormRecognizerError getError() {
         return error;
     }
 
@@ -182,7 +182,7 @@ public final class ModelOperation extends ModelOperationInfo {
             }
 
             @Override
-            public void setError(ModelOperation modelOperation, DocumentModelOperationError error) {
+            public void setError(ModelOperation modelOperation, FormRecognizerError error) {
                 modelOperation.setError(error);
             }
 

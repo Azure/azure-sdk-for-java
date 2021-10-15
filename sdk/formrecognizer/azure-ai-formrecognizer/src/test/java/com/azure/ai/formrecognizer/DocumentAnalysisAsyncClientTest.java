@@ -7,10 +7,9 @@ import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.models.ResponseError;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -190,8 +189,9 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 () -> client.beginAnalyzeDocument("prebuilt-receipt", Utility.toFluxByteBuffer(data), dataLength)
                     .setPollInterval(durationTestMode)
                     .getSyncPoller().getFinalResult());
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation =
+                (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", errorInformation.getCode());
         });
     }
 
@@ -248,8 +248,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .getSyncPoller()
                     .getFinalResult());
 
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation = (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", errorInformation.getCode());
         });
     }
 
@@ -389,8 +389,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 () -> client.beginAnalyzeDocument("prebuilt-layout", Utility.toFluxByteBuffer(data), dataLength)
                     .setPollInterval(durationTestMode)
                     .getSyncPoller().getFinalResult());
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation = (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", errorInformation.getCode());
         });
     }
 
@@ -522,8 +522,9 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginAnalyzeDocumentFromUrl("prebuilt-layout", invalidSourceUrl)
                     .setPollInterval(durationTestMode).getSyncPoller().getFinalResult());
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation =
+                (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", errorInformation.getCode());
         });
     }
 
@@ -685,8 +686,9 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .getSyncPoller()
                     .getFinalResult());
 
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation =
+                (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", errorInformation.getCode());
         });
     }
 
@@ -764,8 +766,9 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .getSyncPoller()
                     .getFinalResult());
 
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation =
+                (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", errorInformation.getCode());
         });
     }
 
@@ -931,8 +934,9 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .setPollInterval(durationTestMode)
                     .getSyncPoller()
                     .getFinalResult());
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation =
+                (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", errorInformation.getCode());
         });
     }
 
@@ -1140,8 +1144,8 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .getSyncPoller()
                     .getFinalResult());
 
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation = (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", errorInformation.getCode());
         });
     }
 
@@ -1178,8 +1182,9 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 = assertThrows(HttpResponseException.class,
                     () -> client.beginAnalyzeDocumentFromUrl("prebuilt-idDocument", invalidSourceUrl)
                         .setPollInterval(durationTestMode).getSyncPoller().getFinalResult());
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation =
+                (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidRequest", errorInformation.getCode());
         });
     }
 }

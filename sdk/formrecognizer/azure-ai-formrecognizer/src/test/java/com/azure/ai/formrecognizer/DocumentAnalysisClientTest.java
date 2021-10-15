@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
+import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
@@ -13,7 +13,6 @@ import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
@@ -192,9 +191,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     () -> client.beginAnalyzeDocument("prebuilt-receipt", data, dataLength)
                         .setPollInterval(durationTestMode)
                         .getFinalResult());
-            ResponseError responseError =
-                (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation
+                = (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
         });
     }
 
@@ -379,9 +378,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     () -> client.beginAnalyzeDocument("prebuilt-layout", data, dataLength)
                         .setPollInterval(durationTestMode)
                         .getFinalResult());
-            ResponseError responseError =
-                (ResponseError) errorResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation
+                = (FormRecognizerError) errorResponseException.getValue();
+            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
         });
     }
 
@@ -654,16 +653,22 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    @Disabled
     public void analyzeCustomDocumentWithEmptyModelId(HttpClient httpClient,
                                                       DocumentAnalysisServiceVersion serviceVersion) {
+        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
 
         dataRunner((data, dataLength) -> {
-            Assertions.assertThrows(IllegalArgumentException.class,
+            HttpResponseException errorResponseException = Assertions.assertThrows(HttpResponseException.class,
                 () -> client.beginAnalyzeDocument("",
                         data,
                         dataLength)
                     .setPollInterval(durationTestMode));
+            FormRecognizerError errorInformation
+                = (FormRecognizerError) errorResponseException.getValue();
+            Assertions.assertEquals(404, errorResponseException.getResponse().getStatusCode());
+            Assertions.assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
         }, INVOICE_6_PDF);
     }
 
@@ -837,12 +842,12 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                         INVALID_URL)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            final ResponseError responseError =
-                (ResponseError) httpResponseException.getValue();
+            final FormRecognizerError errorInformation
+                = (FormRecognizerError) httpResponseException.getValue();
 
             adminClient.deleteModel(createdModel.getModelId());
 
-            Assertions.assertEquals("InvalidContentSourceFormat", responseError.getCode());
+            Assertions.assertEquals("InvalidContentSourceFormat", errorInformation.getInnerError().getCode());
         });
     }
 
@@ -875,8 +880,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
             HttpResponseException errorResponseException = Assertions.assertThrows(HttpResponseException.class,
                 () -> client.beginAnalyzeDocumentFromUrl(NON_EXIST_MODEL_ID, fileUrl)
                     .setPollInterval(durationTestMode));
-            ResponseError responseError = (ResponseError) errorResponseException.getValue();
-            Assertions.assertEquals("ModelNotFound", responseError.getCode());
+            FormRecognizerError errorInformation
+                = (FormRecognizerError) errorResponseException.getValue();
+            Assertions.assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
         }, CONTENT_FORM_JPG);
     }
 
@@ -908,7 +914,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
                 FormRecognizerError errorInformation
                     = (FormRecognizerError) httpResponseException.getValue();
-                Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
+                Assertions.assertEquals("Invalid input file.", errorInformation.getMessage());
             })));
     }
 
@@ -1034,8 +1040,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 () -> client.beginAnalyzeDocument("prebuilt-businessCard", data, dataLength)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation
+                = (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
         });
     }
 
@@ -1207,8 +1214,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 () -> client.beginAnalyzeDocument("prebuilt-invoice", data, dataLength)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation
+                = (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
         });
     }
 
@@ -1415,8 +1423,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                         dataLength)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation
+                = (FormRecognizerError) httpResponseException.getValue();
+            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
         });
     }
 
@@ -1451,8 +1460,9 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 () -> client.beginAnalyzeDocumentFromUrl("prebuilt-idDocument", invalidSourceUrl)
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
-            ResponseError responseError = (ResponseError) errorResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            FormRecognizerError errorInformation
+                = (FormRecognizerError) errorResponseException.getValue();
+            Assertions.assertEquals("InvalidContent", errorInformation.getInnerError().getCode());
         });
     }
 }

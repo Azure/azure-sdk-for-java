@@ -8,7 +8,7 @@ import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
+import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
@@ -119,7 +119,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             StepVerifier.create(client.getModelWithResponse(createdModel.getModelId()))
                 .verifyErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
-                    final DocumentModelOperationError errorInformation = (DocumentModelOperationError)
+                    final FormRecognizerError errorInformation = (FormRecognizerError)
                         ((HttpResponseException) throwable).getValue();
                     assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
                 });

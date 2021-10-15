@@ -25,7 +25,7 @@ import com.azure.ai.formrecognizer.implementation.models.GetOperationResponse;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
+import com.azure.ai.formrecognizer.models.DocumentAnalysisException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -136,7 +136,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModel custom document analysis model}.
-     * @throws DocumentModelOperationException If building a model fails with {@link OperationStatus#FAILED} is created.
+     * @throws DocumentAnalysisException If building a model fails with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -166,7 +166,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModel custom document analysis model}.
-     * @throws DocumentModelOperationException If building a model fails with {@link OperationStatus#FAILED} is created.
+     * @throws DocumentAnalysisException If building a model fails with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -342,7 +342,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the created {@link DocumentModel composed model}.
-     * @throws DocumentModelOperationException If create composed model operation fails and model with
+     * @throws DocumentAnalysisException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code modelIDs} or {@code modelId} is null or empty.
      */
@@ -371,7 +371,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the copied model {@link DocumentModel}.
-     * @throws DocumentModelOperationException If create composed model operation fails and model with
+     * @throws DocumentAnalysisException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code modelIDs} is null or empty.
      */
@@ -401,7 +401,7 @@ public final class DocumentModelAdministrationAsyncClient {
             return new PollerFlux<DocumentOperationResult, DocumentModel>(
                 DEFAULT_POLL_INTERVAL,
                 Utility.activationOperation(() -> service.composeDocumentModelWithResponseAsync(composeRequest, context)
-                    .map(response -> Transforms.toDocumentOperationResult(
+                    .map(response -> Transforms.toFormRecognizerOperationResult(
                         response.getDeserializedHeaders().getOperationLocation())), logger),
                 createModelPollOperation(context),
                 (activationResponse, pollingContext)
@@ -432,7 +432,7 @@ public final class DocumentModelAdministrationAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the copy model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the copied model {@link DocumentModel}.
-     * @throws DocumentModelOperationException If copy operation fails and model with {@link OperationStatus#FAILED} is created.
+     * @throws DocumentAnalysisException If copy operation fails and model with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code modelId} or {@code target} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -664,7 +664,7 @@ public final class DocumentModelAdministrationAsyncClient {
 
                 return service.buildDocumentModelWithResponseAsync(buildDocumentModelRequest, context)
                     .map(response ->
-                        Transforms.toDocumentOperationResult(
+                        Transforms.toFormRecognizerOperationResult(
                             response.getDeserializedHeaders().getOperationLocation()))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
@@ -688,7 +688,7 @@ public final class DocumentModelAdministrationAsyncClient {
             case FAILED:
                 // TODO (Revisit error logic https://github.com/Azure/azure-sdk-for-java-pr/issues/1337)
                 throw logger.logExceptionAsError(
-                    Transforms.toDocumentModelOperationException(getOperationResponse.getError()));
+                    Transforms.toDocumentAnalysisException(getOperationResponse.getError()));
             case CANCELED:
             default:
                 status = LongRunningOperationStatus.fromString(
@@ -716,7 +716,7 @@ public final class DocumentModelAdministrationAsyncClient {
                     .setExpirationDateTime(target.getExpiresOn());
                 return service.copyDocumentModelToWithResponseAsync(modelId, copyRequest, context)
                     .map(response ->
-                        Transforms.toDocumentOperationResult(
+                        Transforms.toFormRecognizerOperationResult(
                             response.getDeserializedHeaders().getOperationLocation()))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {

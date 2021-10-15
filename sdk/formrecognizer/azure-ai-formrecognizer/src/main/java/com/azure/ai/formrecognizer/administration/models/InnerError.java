@@ -8,7 +8,7 @@ import com.azure.ai.formrecognizer.implementation.util.InnerErrorHelper;
 /**
  * Detailed error.
  */
-public final class DocumentModelOperationInnerError {
+public final class InnerError {
     /*
      * Error code.
      */
@@ -22,7 +22,7 @@ public final class DocumentModelOperationInnerError {
     /*
      * Detailed error.
      */
-    private DocumentModelOperationInnerError innerError;
+    private InnerError innerError;
 
     /**
      * Get the code property: Error code.
@@ -37,7 +37,7 @@ public final class DocumentModelOperationInnerError {
      * Set the code property: Error code.
      *
      * @param code the code value to set.
-     * @return the DocumentModelOperationInnerError object itself.
+     * @return the InnerError object itself.
      */
     void setCode(String code) {
         this.code = code;
@@ -56,7 +56,7 @@ public final class DocumentModelOperationInnerError {
      * Set the message property: Error message.
      *
      * @param message the message value to set.
-     * @return the DocumentModelOperationInnerError object itself.
+     * @return the InnerError object itself.
      */
     void setMessage(String message) {
         this.message = message;
@@ -67,7 +67,7 @@ public final class DocumentModelOperationInnerError {
      *
      * @return the innerError value.
      */
-    public DocumentModelOperationInnerError getInnerError() {
+    public InnerError getInnerError() {
         return this.innerError;
     }
 
@@ -75,26 +75,26 @@ public final class DocumentModelOperationInnerError {
      * Set the innerError property: Detailed error.
      *
      * @param innerError the innerError value to set.
-     * @return the DocumentModelOperationInnerError object itself.
+     * @return the InnerError object itself.
      */
-    void setInnerError(DocumentModelOperationInnerError innerError) {
+    void setInnerError(InnerError innerError) {
         this.innerError = innerError;
     }
 
     static {
         InnerErrorHelper.setAccessor(new InnerErrorHelper.InnerErrorAccessor() {
             @Override
-            public void setCode(DocumentModelOperationInnerError innerError, String errorCode) {
+            public void setCode(InnerError innerError, String errorCode) {
                 innerError.setCode(errorCode);
             }
 
             @Override
-            public void setMessage(DocumentModelOperationInnerError innerError, String message) {
+            public void setMessage(InnerError innerError, String message) {
                 innerError.setMessage(message);
             }
 
             @Override
-            public void setInnerError(DocumentModelOperationInnerError innerError, DocumentModelOperationInnerError innererror) {
+            public void setInnerError(InnerError innerError, InnerError innererror) {
                 innerError.setInnerError(innerError);
             }
         });

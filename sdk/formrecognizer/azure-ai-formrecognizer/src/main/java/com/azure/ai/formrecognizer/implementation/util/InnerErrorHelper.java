@@ -3,10 +3,10 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
-import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInnerError;
+import com.azure.ai.formrecognizer.administration.models.InnerError;
 
 /**
- * The helper class to set the non-public properties of an {@link DocumentModelOperationInnerError} instance.
+ * The helper class to set the non-public properties of an {@link InnerError} instance.
  */
 public final class InnerErrorHelper {
     private static InnerErrorAccessor accessor;
@@ -15,16 +15,16 @@ public final class InnerErrorHelper {
     }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link DocumentModelOperationInnerError} instance.
+     * Type defining the methods to set the non-public properties of an {@link InnerError} instance.
      */
     public interface InnerErrorAccessor {
-        void setCode(DocumentModelOperationInnerError innerError, String errorCode);
-        void setMessage(DocumentModelOperationInnerError innerError, String message);
-        void setInnerError(DocumentModelOperationInnerError innerError, DocumentModelOperationInnerError serviceInnerError);
+        void setCode(InnerError innerError, String errorCode);
+        void setMessage(InnerError innerError, String message);
+        void setInnerError(InnerError innerError, InnerError serviceInnerError);
     }
 
     /**
-     * The method called from {@link DocumentModelOperationInnerError} to set it's accessor.
+     * The method called from {@link InnerError} to set it's accessor.
      *
      * @param innerErrorAccessor The accessor.
      */
@@ -32,15 +32,15 @@ public final class InnerErrorHelper {
         accessor = innerErrorAccessor;
     }
 
-    static void setCode(DocumentModelOperationInnerError innerError, String errorCode) {
+    static void setCode(InnerError innerError, String errorCode) {
         accessor.setCode(innerError, errorCode);
     }
 
-    static void setMessage(DocumentModelOperationInnerError innerError, String message) {
+    static void setMessage(InnerError innerError, String message) {
         accessor.setMessage(innerError, message);
     }
 
-    static void setInnerError(DocumentModelOperationInnerError innerError, DocumentModelOperationInnerError serviceInnerError) {
+    static void setInnerError(InnerError innerError, InnerError serviceInnerError) {
         accessor.setInnerError(innerError, serviceInnerError);
     }
 }
