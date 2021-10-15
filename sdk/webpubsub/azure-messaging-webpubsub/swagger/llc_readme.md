@@ -19,7 +19,5 @@ low-level-client: true
 generate-sync-async-clients: true
 service-name: WebPubSubService
 service-versions:
-  - 2021-05-01-preview
-  - 2021-08-01-preview
   - '2021-10-01'
 ```

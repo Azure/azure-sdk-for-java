@@ -8,12 +8,6 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of WebPubSubService. */
 public enum WebPubSubServiceVersion implements ServiceVersion {
-    /** Enum value 2021-05-01-preview. */
-    V2021_05_01_PREVIEW("2021-05-01-preview"),
-
-    /** Enum value 2021-08-01-preview. */
-    V2021_08_01_PREVIEW("2021-08-01-preview"),
-
     /** Enum value 2021-10-01. */
     V2021_10_01("2021-10-01");
 
