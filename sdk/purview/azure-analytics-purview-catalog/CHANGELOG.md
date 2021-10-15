@@ -1,11 +1,11 @@
 # Release History
 
-## 1.0.0-beta.2 (unreleased)
-### Features Added
-- Adopt new API version 2021-09-01. It adds some new operations.
+## 1.0.0-beta.2 (2021-10-15)
 
 ### Breaking Changes
+
 This is a new version of LLC SDK. Changes are
+
 - A sync client and an async client for each operation group.
 - Add `RequestOptions` and `Context` to client method parameters.
 - Return type of client method is always `Response` except paging and long-running operations.
