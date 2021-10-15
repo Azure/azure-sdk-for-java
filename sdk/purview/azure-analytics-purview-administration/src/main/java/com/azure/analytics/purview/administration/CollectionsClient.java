@@ -142,9 +142,9 @@ public final class CollectionsClient {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateCollectionWithResponse(
+    public Response<BinaryData> upsertCollectionWithResponse(
             String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateCollectionWithResponse(
+        return this.serviceClient.upsertCollectionWithResponse(
                 collectionName, collection, requestOptions, context);
     }
 
