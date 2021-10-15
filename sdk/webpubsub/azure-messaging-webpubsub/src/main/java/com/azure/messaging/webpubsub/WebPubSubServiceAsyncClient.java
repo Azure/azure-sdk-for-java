@@ -127,6 +127,9 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendToAllWithResponse(
             BinaryData message, WebPubSubContentType contentType, long contentLength, RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
         requestOptions.addHeader("contentType", contentType.toString());
         requestOptions.addHeader("contentLength", String.valueOf(contentLength));
         return this.serviceClient.sendToAllWithResponseAsync(hub, message, requestOptions);
@@ -211,6 +214,9 @@ public final class WebPubSubServiceAsyncClient {
             WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
         requestOptions.addHeader("contentType", contentType.toString());
         requestOptions.addHeader("contentLength", String.valueOf(contentLength));
         return this.serviceClient.sendToConnectionWithResponseAsync(
@@ -284,6 +290,9 @@ public final class WebPubSubServiceAsyncClient {
             WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
         requestOptions.addHeader("contentType", contentType.toString());
         requestOptions.addHeader("contentLength", String.valueOf(contentLength));
         return this.serviceClient.sendToGroupWithResponseAsync(
@@ -388,6 +397,9 @@ public final class WebPubSubServiceAsyncClient {
             WebPubSubContentType contentType,
             long contentLength,
             RequestOptions requestOptions) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
         requestOptions.addHeader("contentType", contentType.toString());
         requestOptions.addHeader("contentLength", String.valueOf(contentLength));
         return this.serviceClient.sendToUserWithResponseAsync(

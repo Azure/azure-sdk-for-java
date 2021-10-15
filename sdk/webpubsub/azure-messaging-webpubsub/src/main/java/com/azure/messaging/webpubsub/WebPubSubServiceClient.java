@@ -128,6 +128,9 @@ public final class WebPubSubServiceClient {
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
         requestOptions.addHeader("contentType", contentType.toString());
         requestOptions.addHeader("contentLength", String.valueOf(contentLength));
         return this.serviceClient.sendToAllWithResponse(
@@ -218,6 +221,9 @@ public final class WebPubSubServiceClient {
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
         requestOptions.addHeader("contentType", contentType.toString());
         requestOptions.addHeader("contentLength", String.valueOf(contentLength));
         return this.serviceClient.sendToConnectionWithResponse(
@@ -295,6 +301,9 @@ public final class WebPubSubServiceClient {
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
         requestOptions.addHeader("contentType", contentType.toString());
         requestOptions.addHeader("contentLength", String.valueOf(contentLength));
         return this.serviceClient.sendToGroupWithResponse(
@@ -405,6 +414,9 @@ public final class WebPubSubServiceClient {
             long contentLength,
             RequestOptions requestOptions,
             Context context) {
+        if (requestOptions == null) {
+            requestOptions = new RequestOptions();
+        }
         requestOptions.addHeader("contentType", contentType.toString());
         requestOptions.addHeader("contentLength", String.valueOf(contentLength));
         return this.serviceClient.sendToUserWithResponse(
