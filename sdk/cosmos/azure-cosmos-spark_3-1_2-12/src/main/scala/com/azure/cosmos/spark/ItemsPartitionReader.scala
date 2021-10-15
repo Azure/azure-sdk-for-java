@@ -48,6 +48,9 @@ private case class ItemsPartitionReader
 
   private val queryOptions = new CosmosQueryRequestOptions()
 
+  private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
+  private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
+
   initializeDiagnosticsIfConfigured
 
   private def initializeDiagnosticsIfConfigured(): Unit = {
@@ -83,7 +86,7 @@ private case class ItemsPartitionReader
 
   override def get(): InternalRow = {
     val objectNode = iterator.next()
-    CosmosRowConverter.fromObjectNodeToInternalRow(
+    cosmosRowConverter.fromObjectNodeToInternalRow(
       readSchema,
       rowSerializer,
       objectNode,
