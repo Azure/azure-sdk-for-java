@@ -1389,7 +1389,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = executeWithResponseAsync(resourceGroupName, name);
         return this
@@ -1408,7 +1408,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(
         String resourceGroupName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1428,7 +1428,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String name) {
         return beginExecuteAsync(resourceGroupName, name).getSyncPoller();
     }
@@ -1444,7 +1444,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String name, Context context) {
         return beginExecuteAsync(resourceGroupName, name, context).getSyncPoller();
     }
@@ -1636,7 +1636,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRetargetAsync(
         String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1658,7 +1658,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRetargetAsync(
         String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties, Context context) {
         context = this.client.mergeContext(context);
@@ -1680,7 +1680,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRetarget(
         String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties) {
         return beginRetargetAsync(resourceGroupName, name, retargetScheduleProperties).getSyncPoller();
@@ -1698,7 +1698,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRetarget(
         String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties, Context context) {
         return beginRetargetAsync(resourceGroupName, name, retargetScheduleProperties, context).getSyncPoller();

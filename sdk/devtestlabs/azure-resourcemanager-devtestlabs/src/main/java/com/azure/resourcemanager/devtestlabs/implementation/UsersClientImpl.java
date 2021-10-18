@@ -741,7 +741,7 @@ public final class UsersClientImpl implements UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return profile of a lab user.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UserInner>, UserInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String name, UserInner user) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, labName, name, user);
@@ -764,7 +764,7 @@ public final class UsersClientImpl implements UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return profile of a lab user.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<UserInner>, UserInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String name, UserInner user, Context context) {
         context = this.client.mergeContext(context);
@@ -788,7 +788,7 @@ public final class UsersClientImpl implements UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return profile of a lab user.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, UserInner user) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, name, user).getSyncPoller();
@@ -807,7 +807,7 @@ public final class UsersClientImpl implements UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return profile of a lab user.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, UserInner user, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, name, user, context).getSyncPoller();
@@ -1004,7 +1004,7 @@ public final class UsersClientImpl implements UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String labName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, labName, name);
         return this
@@ -1024,7 +1024,7 @@ public final class UsersClientImpl implements UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String labName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1045,7 +1045,7 @@ public final class UsersClientImpl implements UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name) {
         return beginDeleteAsync(resourceGroupName, labName, name).getSyncPoller();
     }
@@ -1062,7 +1062,7 @@ public final class UsersClientImpl implements UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String name, Context context) {
         return beginDeleteAsync(resourceGroupName, labName, name, context).getSyncPoller();

@@ -742,7 +742,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a virtual network.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String name, VirtualNetworkInner virtualNetwork) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -770,7 +770,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a virtual network.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String name, VirtualNetworkInner virtualNetwork, Context context) {
         context = this.client.mergeContext(context);
@@ -794,7 +794,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a virtual network.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, VirtualNetworkInner virtualNetwork) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, name, virtualNetwork).getSyncPoller();
@@ -813,7 +813,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a virtual network.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, VirtualNetworkInner virtualNetwork, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, name, virtualNetwork, context).getSyncPoller();
@@ -1012,7 +1012,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String labName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, labName, name);
         return this
@@ -1032,7 +1032,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String labName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1053,7 +1053,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name) {
         return beginDeleteAsync(resourceGroupName, labName, name).getSyncPoller();
     }
@@ -1070,7 +1070,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String name, Context context) {
         return beginDeleteAsync(resourceGroupName, labName, name, context).getSyncPoller();

@@ -842,7 +842,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Disk.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String username, String name, DiskInner disk) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -867,7 +867,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Disk.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String username, String name, DiskInner disk, Context context) {
         context = this.client.mergeContext(context);
@@ -892,7 +892,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Disk.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String username, String name, DiskInner disk) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, disk).getSyncPoller();
@@ -912,7 +912,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Disk.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String username, String name, DiskInner disk, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, disk, context).getSyncPoller();
@@ -1126,7 +1126,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String labName, String username, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, labName, username, name);
@@ -1148,7 +1148,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String labName, String username, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1171,7 +1171,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name) {
         return beginDeleteAsync(resourceGroupName, labName, username, name).getSyncPoller();
@@ -1190,7 +1190,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name, Context context) {
         return beginDeleteAsync(resourceGroupName, labName, username, name, context).getSyncPoller();
@@ -1614,7 +1614,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginAttachAsync(
         String resourceGroupName,
         String labName,
@@ -1642,7 +1642,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginAttachAsync(
         String resourceGroupName,
         String labName,
@@ -1671,7 +1671,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAttach(
         String resourceGroupName,
         String labName,
@@ -1695,7 +1695,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginAttach(
         String resourceGroupName,
         String labName,
@@ -1960,7 +1960,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDetachAsync(
         String resourceGroupName,
         String labName,
@@ -1989,7 +1989,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDetachAsync(
         String resourceGroupName,
         String labName,
@@ -2019,7 +2019,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetach(
         String resourceGroupName,
         String labName,
@@ -2044,7 +2044,7 @@ public final class DisksClientImpl implements DisksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetach(
         String resourceGroupName,
         String labName,

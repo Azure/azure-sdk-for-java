@@ -97,7 +97,7 @@ public interface UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return profile of a lab user.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, UserInner user);
 
@@ -114,7 +114,7 @@ public interface UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return profile of a lab user.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, UserInner user, Context context);
 
@@ -160,7 +160,7 @@ public interface UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name);
 
     /**
@@ -175,7 +175,7 @@ public interface UsersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String name, Context context);
 

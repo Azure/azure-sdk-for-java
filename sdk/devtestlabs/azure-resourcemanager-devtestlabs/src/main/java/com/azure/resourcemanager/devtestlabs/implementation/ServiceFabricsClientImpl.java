@@ -862,7 +862,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServiceFabricInner>, ServiceFabricInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String username, String name, ServiceFabricInner serviceFabric) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -887,7 +887,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServiceFabricInner>, ServiceFabricInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String labName,
@@ -917,7 +917,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceFabricInner>, ServiceFabricInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String username, String name, ServiceFabricInner serviceFabric) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, serviceFabric).getSyncPoller();
@@ -937,7 +937,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceFabricInner>, ServiceFabricInner> beginCreateOrUpdate(
         String resourceGroupName,
         String labName,
@@ -1167,7 +1167,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String labName, String username, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, labName, username, name);
@@ -1189,7 +1189,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String labName, String username, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1212,7 +1212,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name) {
         return beginDeleteAsync(resourceGroupName, labName, username, name).getSyncPoller();
@@ -1231,7 +1231,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name, Context context) {
         return beginDeleteAsync(resourceGroupName, labName, username, name, context).getSyncPoller();
@@ -1817,7 +1817,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String labName, String username, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, labName, username, name);
@@ -1839,7 +1839,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String labName, String username, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1862,7 +1862,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String labName, String username, String name) {
         return beginStartAsync(resourceGroupName, labName, username, name).getSyncPoller();
@@ -1881,7 +1881,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String labName, String username, String name, Context context) {
         return beginStartAsync(resourceGroupName, labName, username, name, context).getSyncPoller();
@@ -2086,7 +2086,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String labName, String username, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, labName, username, name);
@@ -2108,7 +2108,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String labName, String username, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -2131,7 +2131,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String labName, String username, String name) {
         return beginStopAsync(resourceGroupName, labName, username, name).getSyncPoller();
@@ -2150,7 +2150,7 @@ public final class ServiceFabricsClientImpl implements ServiceFabricsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String labName, String username, String name, Context context) {
         return beginStopAsync(resourceGroupName, labName, username, name, context).getSyncPoller();

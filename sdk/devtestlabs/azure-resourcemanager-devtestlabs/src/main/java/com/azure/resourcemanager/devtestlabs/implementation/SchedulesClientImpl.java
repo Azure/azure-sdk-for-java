@@ -1281,7 +1281,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(
         String resourceGroupName, String labName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = executeWithResponseAsync(resourceGroupName, labName, name);
@@ -1302,7 +1302,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(
         String resourceGroupName, String labName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1323,7 +1323,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String labName, String name) {
         return beginExecuteAsync(resourceGroupName, labName, name).getSyncPoller();
     }
@@ -1340,7 +1340,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecute(
         String resourceGroupName, String labName, String name, Context context) {
         return beginExecuteAsync(resourceGroupName, labName, name, context).getSyncPoller();

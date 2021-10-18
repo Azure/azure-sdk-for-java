@@ -103,7 +103,7 @@ public interface EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String username, String name, DtlEnvironmentInner dtlEnvironment);
 
@@ -121,7 +121,7 @@ public interface EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String labName,
@@ -182,7 +182,7 @@ public interface EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name);
 
@@ -199,7 +199,7 @@ public interface EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name, Context context);
 

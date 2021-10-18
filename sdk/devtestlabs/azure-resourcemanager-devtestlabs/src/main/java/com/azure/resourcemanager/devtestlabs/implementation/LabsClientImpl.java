@@ -1010,7 +1010,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a lab.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LabInner>, LabInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, LabInner lab) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, name, lab);
@@ -1032,7 +1032,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a lab.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LabInner>, LabInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String name, LabInner lab, Context context) {
         context = this.client.mergeContext(context);
@@ -1054,7 +1054,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a lab.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(
         String resourceGroupName, String name, LabInner lab) {
         return beginCreateOrUpdateAsync(resourceGroupName, name, lab).getSyncPoller();
@@ -1072,7 +1072,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a lab.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(
         String resourceGroupName, String name, LabInner lab, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, name, lab, context).getSyncPoller();
@@ -1251,7 +1251,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
         return this
@@ -1270,7 +1270,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1290,7 +1290,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
         return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
@@ -1306,7 +1306,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
         return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
@@ -1639,7 +1639,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginClaimAnyVmAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = claimAnyVmWithResponseAsync(resourceGroupName, name);
         return this
@@ -1658,7 +1658,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginClaimAnyVmAsync(
         String resourceGroupName, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1678,7 +1678,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginClaimAnyVm(String resourceGroupName, String name) {
         return beginClaimAnyVmAsync(resourceGroupName, name).getSyncPoller();
     }
@@ -1694,7 +1694,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginClaimAnyVm(String resourceGroupName, String name, Context context) {
         return beginClaimAnyVmAsync(resourceGroupName, name, context).getSyncPoller();
     }
@@ -1889,7 +1889,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCreateEnvironmentAsync(
         String resourceGroupName, String name, LabVirtualMachineCreationParameter labVirtualMachineCreationParameter) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1911,7 +1911,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginCreateEnvironmentAsync(
         String resourceGroupName,
         String name,
@@ -1936,7 +1936,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(
         String resourceGroupName, String name, LabVirtualMachineCreationParameter labVirtualMachineCreationParameter) {
         return beginCreateEnvironmentAsync(resourceGroupName, name, labVirtualMachineCreationParameter).getSyncPoller();
@@ -1954,7 +1954,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(
         String resourceGroupName,
         String name,
@@ -2170,7 +2170,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginExportResourceUsageAsync(
         String resourceGroupName, String name, ExportResourceUsageParameters exportResourceUsageParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2192,7 +2192,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginExportResourceUsageAsync(
         String resourceGroupName,
         String name,
@@ -2217,7 +2217,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(
         String resourceGroupName, String name, ExportResourceUsageParameters exportResourceUsageParameters) {
         return beginExportResourceUsageAsync(resourceGroupName, name, exportResourceUsageParameters).getSyncPoller();
@@ -2235,7 +2235,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(
         String resourceGroupName,
         String name,
@@ -2628,7 +2628,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginImportVirtualMachineAsync(
         String resourceGroupName, String name, ImportLabVirtualMachineRequest importLabVirtualMachineRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2651,7 +2651,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginImportVirtualMachineAsync(
         String resourceGroupName,
         String name,
@@ -2677,7 +2677,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(
         String resourceGroupName, String name, ImportLabVirtualMachineRequest importLabVirtualMachineRequest) {
         return beginImportVirtualMachineAsync(resourceGroupName, name, importLabVirtualMachineRequest).getSyncPoller();
@@ -2696,7 +2696,7 @@ public final class LabsClientImpl implements LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(
         String resourceGroupName,
         String name,

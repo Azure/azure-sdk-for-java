@@ -809,7 +809,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String username, String name, DtlEnvironmentInner dtlEnvironment) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -838,7 +838,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String labName,
@@ -868,7 +868,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String username, String name, DtlEnvironmentInner dtlEnvironment) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, dtlEnvironment).getSyncPoller();
@@ -888,7 +888,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment, which is essentially an ARM template deployment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
         String resourceGroupName,
         String labName,
@@ -1118,7 +1118,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String labName, String username, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, labName, username, name);
@@ -1140,7 +1140,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String labName, String username, String name, Context context) {
         context = this.client.mergeContext(context);
@@ -1163,7 +1163,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name) {
         return beginDeleteAsync(resourceGroupName, labName, username, name).getSyncPoller();
@@ -1182,7 +1182,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String labName, String username, String name, Context context) {
         return beginDeleteAsync(resourceGroupName, labName, username, name, context).getSyncPoller();

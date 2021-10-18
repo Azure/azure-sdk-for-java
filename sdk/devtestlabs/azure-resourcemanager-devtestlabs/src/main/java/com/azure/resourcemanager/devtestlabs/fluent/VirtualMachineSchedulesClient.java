@@ -218,7 +218,7 @@ public interface VirtualMachineSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginExecute(
         String resourceGroupName, String labName, String virtualMachineName, String name);
 
@@ -235,7 +235,7 @@ public interface VirtualMachineSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginExecute(
         String resourceGroupName, String labName, String virtualMachineName, String name, Context context);
 

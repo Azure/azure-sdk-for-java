@@ -198,7 +198,7 @@ public interface GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String name);
 
     /**
@@ -212,7 +212,7 @@ public interface GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String name, Context context);
 
     /**
@@ -251,7 +251,7 @@ public interface GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRetarget(
         String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties);
 
@@ -267,7 +267,7 @@ public interface GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRetarget(
         String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties, Context context);
 

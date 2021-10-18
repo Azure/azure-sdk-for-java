@@ -741,7 +741,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String name, FormulaInner formula) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -765,7 +765,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String name, FormulaInner formula, Context context) {
         context = this.client.mergeContext(context);
@@ -789,7 +789,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, FormulaInner formula) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, name, formula).getSyncPoller();
@@ -808,7 +808,7 @@ public final class FormulasClientImpl implements FormulasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, FormulaInner formula, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, name, formula, context).getSyncPoller();

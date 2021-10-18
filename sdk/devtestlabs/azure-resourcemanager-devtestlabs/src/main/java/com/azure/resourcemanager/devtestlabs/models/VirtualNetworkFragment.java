@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.devtestlabs.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Map;
 
 /** A virtual network. */
-@Immutable
+@Fluent
 public final class VirtualNetworkFragment extends UpdateResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkFragment.class);
 

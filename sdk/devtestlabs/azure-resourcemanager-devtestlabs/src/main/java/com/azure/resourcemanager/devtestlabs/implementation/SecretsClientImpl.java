@@ -803,7 +803,7 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SecretInner>, SecretInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String username, String name, SecretInner secret) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -828,7 +828,7 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SecretInner>, SecretInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String labName, String username, String name, SecretInner secret, Context context) {
         context = this.client.mergeContext(context);
@@ -853,7 +853,7 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String username, String name, SecretInner secret) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, secret).getSyncPoller();
@@ -873,7 +873,7 @@ public final class SecretsClientImpl implements SecretsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecretInner>, SecretInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String username, String name, SecretInner secret, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, labName, username, name, secret, context).getSyncPoller();

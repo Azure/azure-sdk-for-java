@@ -97,7 +97,7 @@ public interface FormulasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, FormulaInner formula);
 
@@ -114,7 +114,7 @@ public interface FormulasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a formula for creating a VM, specifying an image base and other parameters.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(
         String resourceGroupName, String labName, String name, FormulaInner formula, Context context);
 
