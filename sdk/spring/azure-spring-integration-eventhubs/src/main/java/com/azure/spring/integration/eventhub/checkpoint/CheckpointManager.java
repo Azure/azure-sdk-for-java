@@ -56,7 +56,7 @@ public abstract class CheckpointManager {
         // no-op
     }
 
-    public void completeBatch(EventBatchContext context) {
+    public void completeBatch(EventContext context) {
         // no-op
     }
 

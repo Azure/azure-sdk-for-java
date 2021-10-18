@@ -37,15 +37,20 @@ public class BatchCheckpointManager extends CheckpointManager {
 
     @Override
     public void onMessage(EventContext context, EventData eventData) {
-        // no-op
-    }
-
-    public void onMessages(EventBatchContext context) {
-        completeBatch(context);
+        this.lastEventByPartition.put(context.getPartitionContext().getPartitionId(), eventData);
     }
 
     @Override
-    public void completeBatch(EventBatchContext context) {
+    public void completeBatch(EventContext context) {
+        EventData eventData = this.lastEventByPartition.get(context.getPartitionContext().getPartitionId());
+
+        context.updateCheckpointAsync()
+               .doOnError(t -> logCheckpointFail(context, eventData, t))
+               .doOnSuccess(v -> logCheckpointSuccess(context, eventData))
+               .subscribe();
+    }
+
+    public void onMessages(EventBatchContext context) {
         EventData lastEvent = getLastEnqueuedEvent(context);
         Long offset = context.getLastEnqueuedEventProperties().getOffset();
         context.updateCheckpointAsync()

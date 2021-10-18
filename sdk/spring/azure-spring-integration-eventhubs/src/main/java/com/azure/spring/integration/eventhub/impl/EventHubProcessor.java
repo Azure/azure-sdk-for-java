@@ -40,21 +40,6 @@ public class EventHubProcessor {
     protected final CheckpointManager checkpointManager;
     protected EventPosition eventPosition = EventPosition.latest();
 
-//    public EventHubProcessor(Consumer<Message<?>> consumer, Class<?> payloadType, CheckpointConfig checkpointConfig,
-//                             EventHubMessageConverter messageConverter) {
-//        this(consumer, null, payloadType, checkpointConfig, messageConverter);
-//    }
-//
-//    public EventHubProcessor(Consumer<Message<?>> consumer, Consumer<List<Message<?>>> batchConsumer, Class<?> payloadType, CheckpointConfig checkpointConfig,
-//                             EventHubMessageConverter messageConverter) {
-//        this.consumer = consumer;
-//        this.batchConsumer = batchConsumer;
-//        this.payloadType = payloadType;
-//        this.checkpointConfig = checkpointConfig;
-//        this.messageConverter = messageConverter;
-//        this.checkpointManager = CheckpointManager.of(checkpointConfig);
-//    }
-
     public EventHubProcessor(Consumer<Message<?>> consumer, Class<?> payloadType, CheckpointConfig checkpointConfig,
                              EventHubMessageConverter messageConverter) {
         this.consumer = consumer;
@@ -89,34 +74,11 @@ public class EventHubProcessor {
         this.consumer.accept(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType));
         this.checkpointManager.onMessage(context, context.getEventData());
 
-//        if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH) {
-//            this.checkpointManager.completeBatch(context);
-//        }
+        if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH) {
+            this.checkpointManager.completeBatch(context);
+        }
     }
 
-//    public void onEventBatch(EventBatchContext context) {
-//        PartitionContext partition = context.getPartitionContext();
-//
-//        Map<String, Object> headers = new HashMap<>();
-//        headers.put(AzureHeaders.RAW_PARTITION_ID, partition.getPartitionId());
-//
-//        final List<EventData> events = context.getEvents();
-//
-//        Checkpointer checkpointer = new AzureCheckpointer(context::updateCheckpointAsync);
-//        if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
-//            headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
-//        }
-//
-//        List<Message<?>> springMessageList = new ArrayList<>();
-//        for(EventData event: events) {
-//            springMessageList.add(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType))
-//        }
-//        this.batchConsumer.accept(springMessageList);
-//
-//        if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH) {
-//            ((BatchCheckpointManager) this.checkpointManager).onMessages(context);
-//        }
-//    }
     public void onEventBatch(EventBatchContext context) {
         PartitionContext partition = context.getPartitionContext();
 
