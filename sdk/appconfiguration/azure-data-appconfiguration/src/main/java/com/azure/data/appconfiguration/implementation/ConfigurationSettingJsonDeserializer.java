@@ -57,7 +57,7 @@ public final class ConfigurationSettingJsonDeserializer extends JsonDeserializer
     private static final JacksonAdapter MAPPER;
     private static final SimpleModule MODULE;
     static {
-        MAPPER = new JacksonAdapter();
+        MAPPER = (JacksonAdapter) JacksonAdapter.createDefaultSerializerAdapter();
         MODULE = new SimpleModule()
                      .addDeserializer(ConfigurationSetting.class, new ConfigurationSettingJsonDeserializer())
                      .addDeserializer(SecretReferenceConfigurationSetting.class,

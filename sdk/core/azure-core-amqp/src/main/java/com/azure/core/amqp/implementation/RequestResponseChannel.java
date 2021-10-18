@@ -114,6 +114,8 @@ public class RequestResponseChannel implements AsyncCloseable {
      * @param provider The reactor provider that the request will be sent with.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
+     *
+     * @throws RuntimeException if the send/receive links could not be locally scheduled to open.
      */
     protected RequestResponseChannel(AmqpConnection amqpConnection, String connectionId,
         String fullyQualifiedNamespace, String linkName, String entityPath, Session session,
@@ -167,8 +169,8 @@ public class RequestResponseChannel implements AsyncCloseable {
             receiveLinkHandler.getDeliveredMessages()
                 .map(this::decodeDelivery)
                 .subscribe(message -> {
-                    logger.verbose("connectionId[{}], linkName[{}]: Settling message: {}", connectionId, linkName,
-                        message.getCorrelationId());
+                    logger.verbose("connectionId[{}], linkName[{}] messageId[{}]: Settling message.", connectionId,
+                        linkName, message.getCorrelationId());
 
                     settleMessage(message);
                 }),
@@ -210,9 +212,9 @@ public class RequestResponseChannel implements AsyncCloseable {
                 this.sendLink.open();
                 this.receiveLink.open();
             });
-        } catch (IOException e) {
+        } catch (IOException | RejectedExecutionException e) {
             throw logger.logExceptionAsError(new RuntimeException(String.format(
-                "connectionId[%s], linkName[%s]: Unable to open send and receive link.", connectionId, linkName), e));
+                "connectionId[%s] linkName[%s]: Unable to open send and receive link.", connectionId, linkName), e));
         }
     }
 
@@ -233,7 +235,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                 return Mono.fromRunnable(() -> {
                     logger.info("connectionId[{}] linkName[{}] Timed out waiting for RequestResponseChannel to complete"
                             + " closing. Manually closing.",
-                        connectionId, linkName, error);
+                        connectionId, linkName);
 
                     onTerminalState("SendLinkHandler");
                     onTerminalState("ReceiveLinkHandler");
@@ -317,7 +319,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         return RetryUtil.withRetry(onActiveEndpoints, retryOptions, activeEndpointTimeoutMessage)
             .then(Mono.create(sink -> {
                 try {
-                    logger.verbose("connectionId[{}], linkName[{}]: Scheduling on dispatcher. MessageId[{}]",
+                    logger.verbose("connectionId[{}], linkName[{}] messageId[{}]: Scheduling on dispatcher. ",
                         connectionId, linkName, messageId);
                     unconfirmedSends.putIfAbsent(messageId, sink);
 
@@ -342,7 +344,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                         delivery.settle();
                         sendLink.advance();
                     });
-                } catch (IOException e) {
+                } catch (IOException | RejectedExecutionException e) {
                     sink.error(e);
                 }
             }));
@@ -379,9 +381,9 @@ public class RequestResponseChannel implements AsyncCloseable {
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
 
         if (sink == null) {
-            int size = unconfirmedSends.size();
-            logger.warning("connectionId[{}] linkName[{}] Received delivery without pending messageId[{}]. size[{}]",
-                connectionId, linkName, id, size);
+            logger.warning(
+                "connectionId[{}] linkName[{}] messageId[{}] Received delivery without pending message.",
+                connectionId, linkName, id);
             return;
         }
 
@@ -409,12 +411,12 @@ public class RequestResponseChannel implements AsyncCloseable {
 
     private void onTerminalState(String handlerName) {
         if (pendingLinkTerminations.get() <= 0) {
-            logger.verbose("connectionId[{}] linkName[{}]: Already disposed send/receive links.");
+            logger.verbose("connectionId[{}] linkName[{}] Already disposed send/receive links.");
             return;
         }
 
         final int remaining = pendingLinkTerminations.decrementAndGet();
-        logger.verbose("connectionId[{}] linkName[{}]: {} disposed. Remaining: {}",
+        logger.verbose("connectionId[{}] linkName[{}] {} disposed. Remaining: {}",
             connectionId, linkName, handlerName, remaining);
 
         if (remaining == 0) {

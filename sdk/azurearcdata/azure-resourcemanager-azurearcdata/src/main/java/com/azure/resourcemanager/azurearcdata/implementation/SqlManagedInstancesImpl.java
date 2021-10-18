@@ -79,8 +79,8 @@ public final class SqlManagedInstancesImpl implements SqlManagedInstances {
         this.serviceClient().delete(resourceGroupName, sqlManagedInstanceName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String sqlManagedInstanceName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, sqlManagedInstanceName, context);
+    public void delete(String resourceGroupName, String sqlManagedInstanceName, Context context) {
+        this.serviceClient().delete(resourceGroupName, sqlManagedInstanceName, context);
     }
 
     public SqlManagedInstance getById(String id) {
@@ -143,10 +143,10 @@ public final class SqlManagedInstancesImpl implements SqlManagedInstances {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'sqlManagedInstances'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, sqlManagedInstanceName, Context.NONE).getValue();
+        this.delete(resourceGroupName, sqlManagedInstanceName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -164,7 +164,7 @@ public final class SqlManagedInstancesImpl implements SqlManagedInstances {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'sqlManagedInstances'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, sqlManagedInstanceName, context);
+        this.delete(resourceGroupName, sqlManagedInstanceName, context);
     }
 
     private SqlManagedInstancesClient serviceClient() {

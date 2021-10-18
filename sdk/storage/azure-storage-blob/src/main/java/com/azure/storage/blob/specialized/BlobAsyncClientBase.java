@@ -1122,7 +1122,7 @@ public class BlobAsyncClientBase {
                     },
                     finalOptions.getMaxRetryRequests(),
                     finalRange.getOffset()
-                ).switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])));
+                ).switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
 
                 return new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), bufferFlux, blobDownloadHeaders);
@@ -2083,7 +2083,7 @@ public class BlobAsyncClientBase {
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey, String accountName, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
-            getSnapshotId(), getVersionId())
+            getSnapshotId(), getVersionId(), getEncryptionScope())
             .generateUserDelegationSas(userDelegationKey, accountName, context);
     }
 
@@ -2120,7 +2120,7 @@ public class BlobAsyncClientBase {
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getContainerName(), getBlobName(),
-            getSnapshotId(), getVersionId())
+            getSnapshotId(), getVersionId(), getEncryptionScope())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 

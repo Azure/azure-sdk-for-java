@@ -11,13 +11,9 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.MultiCategoryClassifyAction;
-import com.azure.ai.textanalytics.models.SingleCategoryClassifyAction;
-import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
-import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
-import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
@@ -31,6 +27,8 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyAction;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -45,6 +43,9 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyAction;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
 import com.azure.ai.textanalytics.models.SummarySentence;
 import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
@@ -87,6 +88,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ENTITIES_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_MULTI_CLASSIFICATION;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_SINGLE_CLASSIFICATION;
@@ -638,6 +640,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeActionsWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
+    abstract void analyzeActionsWithMultiSameKindActions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeActionsWithActionNames(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void analyzeActionsPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -1074,6 +1084,44 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction())
         );
     }
+
+    void analyzeActionsWithMultiSameKindActionsRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
+                new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
+            new TextAnalyticsActions()
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction().setActionName(CUSTOM_ACTION_NAME),
+                    new RecognizeEntitiesAction())
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction().setActionName(CUSTOM_ACTION_NAME),
+                    new RecognizePiiEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setActionName(CUSTOM_ACTION_NAME),
+                    new ExtractKeyPhrasesAction())
+                .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME),
+                    new ExtractSummaryAction())
+                .setRecognizeLinkedEntitiesActions(
+                    new RecognizeLinkedEntitiesAction().setActionName(CUSTOM_ACTION_NAME),
+                    new RecognizeLinkedEntitiesAction())
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME),
+                    new AnalyzeSentimentAction())
+        );
+    }
+
+    void analyzeActionsWithActionNamesRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0))),
+            new TextAnalyticsActions()
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setActionName(CUSTOM_ACTION_NAME))
+                .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME))
+                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME))
+        );
+    }
+
 
     void analyzeBatchActionsPaginationRunner(BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner,
         int documentsInTotal) {

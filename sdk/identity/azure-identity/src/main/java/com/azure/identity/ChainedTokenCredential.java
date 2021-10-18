@@ -73,8 +73,10 @@ public class ChainedTokenCredential implements TokenCredential {
                 CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
                 for (int z = exceptions.size() - 2; z >= 0; z--) {
                     CredentialUnavailableException current = exceptions.get(z);
-                    last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage(),
-                        last.getCause());
+                    last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage()
+                        + (z == 0 ? "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                            + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"
+                            : ""));
                 }
                 return Mono.error(last);
             }));

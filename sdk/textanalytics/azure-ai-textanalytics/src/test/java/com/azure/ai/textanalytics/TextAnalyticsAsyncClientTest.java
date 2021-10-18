@@ -50,6 +50,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
@@ -2279,20 +2280,71 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
             validateAnalyzeBatchActionsResultList(false, false,
                 Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-                    IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false,
+                    IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
-                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false,
+                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizeLinkedEntitiesResultCollectionForActions(), null))),
-                    IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
+                    IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                         TIME_NOW,
                         getRecognizePiiEntitiesResultCollection(), null))),
-                    IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false,
+                    IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
-                    IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
+                    IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null))),
                     IterableStream.of(Collections.emptyList())
                 )),
                 result.toStream().collect(Collectors.toList()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeActionsWithMultiSameKindActions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeActionsWithMultiSameKindActionsRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, null).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+            final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
+            actionsResults.forEach(actionsResult -> {
+                assertEquals(2, actionsResult.getRecognizeEntitiesResults().stream().count());
+                assertEquals(2, actionsResult.getRecognizePiiEntitiesResults().stream().count());
+                assertEquals(2, actionsResult.getRecognizeLinkedEntitiesResults().stream().count());
+                assertEquals(2, actionsResult.getAnalyzeSentimentResults().stream().count());
+                assertEquals(2, actionsResult.getExtractKeyPhrasesResults().stream().count());
+                assertEquals(2, actionsResult.getExtractSummaryResults().stream().count());
+            });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeActionsWithActionNames(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeActionsWithActionNamesRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                client.beginAnalyzeActions(documents, tasks, null).getSyncPoller();
+            syncPoller = setPollInterval(syncPoller);
+            syncPoller.waitForCompletion();
+            AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+            final List<AnalyzeActionsResult> actionsResults = result.toStream().collect(Collectors.toList());
+            actionsResults.forEach(actionsResult -> {
+                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getRecognizeEntitiesResults().stream()
+                                                     .collect(Collectors.toList()).get(0).getActionName());
+                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getRecognizePiiEntitiesResults().stream()
+                                                     .collect(Collectors.toList()).get(0).getActionName());
+                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getRecognizeLinkedEntitiesResults().stream()
+                                                     .collect(Collectors.toList()).get(0).getActionName());
+                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getAnalyzeSentimentResults().stream()
+                                                     .collect(Collectors.toList()).get(0).getActionName());
+                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getExtractKeyPhrasesResults().stream()
+                                                     .collect(Collectors.toList()).get(0).getActionName());
+                assertEquals(CUSTOM_ACTION_NAME, actionsResult.getExtractSummaryResults().stream()
+                                                     .collect(Collectors.toList()).get(0).getActionName());
+            });
         });
     }
 
@@ -2341,7 +2393,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
                 validateAnalyzeBatchActionsResultList(false, false,
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
-                        IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false,
+                        IterableStream.of(asList(getExpectedRecognizeEntitiesActionResult(false, null,
                             TIME_NOW, getRecognizeEntitiesResultCollection(), null))),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
@@ -2371,7 +2423,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
+                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                             TIME_NOW, getExpectedBatchPiiEntitiesForCategoriesFilter(), null))),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
@@ -2400,7 +2452,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     Arrays.asList(getExpectedAnalyzeBatchActionsResult(
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
-                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false,
+                        IterableStream.of(asList(getExpectedRecognizePiiEntitiesActionResult(false, null,
                             TIME_NOW, getExpectedBatchPiiEntitiesForDomainFilter(), null))),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
@@ -2427,7 +2479,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 false, false,
                 asList(getExpectedAnalyzeBatchActionsResult(
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false,
+                    IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizeLinkedEntitiesResultCollection(), null))),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
@@ -2455,7 +2507,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false,
+                    IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()))),
@@ -2480,7 +2532,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false,
+                    IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getExpectedBatchTextSentiment(), null))),
                     IterableStream.of(Collections.emptyList()))),
                 result.toStream().collect(Collectors.toList()));
@@ -2507,7 +2559,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExtractSummaryActionResult(false,
+                    IterableStream.of(asList(getExtractSummaryActionResult(false, null,
                         TIME_NOW,
                         getExpectedExtractSummaryResultCollection(getExpectedExtractSummaryResultSortByOffset()),
                         null))))),

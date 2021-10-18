@@ -5,6 +5,9 @@ package com.azure.tools.bomgenerator;
 
 import com.azure.tools.bomgenerator.models.BomDependency;
 import com.azure.tools.bomgenerator.models.BomDependencyNoVersion;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Model;
@@ -17,6 +20,7 @@ import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystemBase;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenStrategyStage;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
 import org.jboss.shrinkwrap.resolver.api.maven.PomlessResolveStage;
+import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenDependency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,18 +36,14 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Utils {
-    public static final String COMMANDLINE_INPUTFILE = "inputfile";
-    public static final String COMMANDLINE_OUTPUTFILE = "outputfile";
-    public static final String COMMANDLINE_POMFILE = "pomfile";
-    public static final String COMMANDLINE_OVERRIDDEN_INPUTDEPENDENCIES_FILE = "inputdependenciesfile";
-    public static final String COMMANDLINE_REPORTFILE = "reportfile";
+    public static final String COMMANDLINE_INPUTDIRECTORY = "inputdir";
+    public static final String COMMANDLINE_OUTPUTDIRECTORY = "outputdir";
     public static final String COMMANDLINE_MODE = "mode";
     public static final String ANALYZE_MODE = "analyze";
     public static final String GENERATE_MODE = "generate";
@@ -183,43 +183,42 @@ public class Utils {
     }
 
     static List<BomDependency> parsePomFileContent(Reader responseStream) {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
+        List<BomDependency> bomDependencies = new ArrayList<>();
+        List<Dependency> dependencies;
+
+        ObjectMapper mapper = new XmlMapper();
+        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         try {
-            Model model = reader.read(responseStream);
-            DependencyManagement management = model.getDependencyManagement();
+            Model value = mapper.readValue(responseStream, Model.class);
+            if(value.getPackaging().equalsIgnoreCase("pom")) {
+               // This is a bom file.
+                dependencies = value.getDependencyManagement().getDependencies();
+            }
+            else {
+                dependencies = value.getDependencies();
+            }
 
-            return management.getDependencies().stream().map(dep -> {
-                String version = getPropertyName(dep.getVersion());
+            if(dependencies == null) {
+                return bomDependencies;
+            }
 
-                while(model.getProperties().getProperty(version) != null) {
-                    version = getPropertyName(model.getProperties().getProperty(version));
+            for(Dependency dependency : dependencies) {
+                ScopeType scopeType = ScopeType.COMPILE;
 
-                    if(version.equals(PROJECT_VERSION)) {
-                        version = model.getVersion();
-                    }
+                if("test".equals(dependency.getScope())) {
+                    scopeType = ScopeType.TEST;
                 }
 
-                if(version == null) {
-                    version = dep.getVersion();
-                }
-
-                BomDependency bomDependency = new BomDependency(dep.getGroupId(), dep.getArtifactId(), version);
-                return bomDependency;
-            }).collect(Collectors.toList());
+                bomDependencies.add(new BomDependency(
+                    dependency.getGroupId(),
+                    dependency.getArtifactId(),
+                    dependency.getVersion(),
+                    scopeType));
+            }
         } catch (IOException exception) {
             exception.printStackTrace();
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
         }
 
-        return null;
-    }
-
-    private static String getPropertyName(String propertyValue) {
-        if(propertyValue.startsWith("${")) {
-            return propertyValue.substring(2, propertyValue.length() - 1);
-        }
-
-        return propertyValue;
+        return bomDependencies.stream().distinct().collect(Collectors.toList());
     }
 }

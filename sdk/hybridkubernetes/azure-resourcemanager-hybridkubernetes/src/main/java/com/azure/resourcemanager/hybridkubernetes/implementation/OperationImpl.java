@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hybridkubernetes.implementation;
 
-import com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.OperationInner;
 import com.azure.resourcemanager.hybridkubernetes.models.Operation;
 import com.azure.resourcemanager.hybridkubernetes.models.OperationDisplay;
@@ -12,9 +11,10 @@ import com.azure.resourcemanager.hybridkubernetes.models.OperationDisplay;
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
-    private final HybridKubernetesManager serviceManager;
+    private final com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager;
 
-    OperationImpl(OperationInner innerObject, HybridKubernetesManager serviceManager) {
+    OperationImpl(
+        OperationInner innerObject, com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -31,7 +31,7 @@ public final class OperationImpl implements Operation {
         return this.innerObject;
     }
 
-    private HybridKubernetesManager manager() {
+    private com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager() {
         return this.serviceManager;
     }
 }

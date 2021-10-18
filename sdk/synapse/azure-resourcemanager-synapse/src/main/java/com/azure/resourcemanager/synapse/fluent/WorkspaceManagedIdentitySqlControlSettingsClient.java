@@ -56,7 +56,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed Identity Sql Control Settings.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -75,7 +75,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed Identity Sql Control Settings.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
         beginCreateOrUpdate(
             String resourceGroupName,

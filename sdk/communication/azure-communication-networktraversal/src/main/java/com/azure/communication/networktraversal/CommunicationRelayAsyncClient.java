@@ -37,13 +37,23 @@ public final class CommunicationRelayAsyncClient {
 
     /**
      * Creates a new CommunicationRelayConfiguration.
-     * 
+     *
      * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
      * @return The created Communication Relay Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationRelayConfiguration> getRelayConfiguration(CommunicationUserIdentifier communicationUser) {
         return this.getRelayConfigurationWithResponse(communicationUser).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Creates a new CommunicationRelayConfiguration.
+     *
+     * @return The created Communication Relay Configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CommunicationRelayConfiguration> getRelayConfiguration() {
+        return this.getRelayConfigurationWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -56,7 +66,17 @@ public final class CommunicationRelayAsyncClient {
     public Mono<Response<CommunicationRelayConfiguration>> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser) {
         return withContext(context -> getRelayConfigurationWithResponse(communicationUser, context));
     }
-    
+
+    /**
+     * Creates a new CommunicationRelayConfiguration with response.
+     *
+     * @return The created Communication Relay Configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CommunicationRelayConfiguration>> getRelayConfigurationWithResponse() {
+        return withContext(context -> getRelayConfigurationWithResponse(null, context));
+    }
+
     /**
      * Creates a new CommunicationRelayConfiguration with response.
      *
@@ -68,7 +88,10 @@ public final class CommunicationRelayAsyncClient {
         context = context == null ? Context.NONE : context;
         try {
             CommunicationRelayConfigurationRequest body = new CommunicationRelayConfigurationRequest();
-            body.setId(communicationUser.getId());
+
+            if (communicationUser != null) {
+                body.setId(communicationUser.getId());
+            }
             return client.issueRelayConfigurationWithResponseAsync(body, context)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> e);
         } catch (RuntimeException ex) {

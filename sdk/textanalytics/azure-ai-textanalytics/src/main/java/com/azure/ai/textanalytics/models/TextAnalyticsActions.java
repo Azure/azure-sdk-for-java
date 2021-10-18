@@ -4,7 +4,6 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Arrays;
 
@@ -13,8 +12,6 @@ import java.util.Arrays;
  */
 @Fluent
 public final class TextAnalyticsActions {
-    private final ClientLogger logger = new ClientLogger(TextAnalyticsActions.class);
-
     private String displayName;
     private Iterable<RecognizeEntitiesAction> recognizeEntitiesActions;
     private Iterable<RecognizeLinkedEntitiesAction> recognizeLinkedEntitiesActions;
@@ -67,7 +64,6 @@ public final class TextAnalyticsActions {
      * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setRecognizeEntitiesActions(RecognizeEntitiesAction... recognizeEntitiesActions) {
-        validateActionsNumber(recognizeEntitiesActions, RecognizeEntitiesAction.class.getName());
         this.recognizeEntitiesActions = recognizeEntitiesActions == null ? null
             : Arrays.asList(recognizeEntitiesActions);
         return this;
@@ -94,7 +90,6 @@ public final class TextAnalyticsActions {
      */
     public TextAnalyticsActions setRecognizeLinkedEntitiesActions(
         RecognizeLinkedEntitiesAction... recognizeLinkedEntitiesActions) {
-        validateActionsNumber(recognizeLinkedEntitiesActions, RecognizeLinkedEntitiesAction.class.getName());
         this.recognizeLinkedEntitiesActions = recognizeLinkedEntitiesActions == null ? null
             : Arrays.asList(recognizeLinkedEntitiesActions);
         return this;
@@ -121,7 +116,6 @@ public final class TextAnalyticsActions {
      */
     public TextAnalyticsActions setRecognizePiiEntitiesActions(
         RecognizePiiEntitiesAction... recognizePiiEntitiesActions) {
-        validateActionsNumber(recognizePiiEntitiesActions, RecognizePiiEntitiesAction.class.getName());
         this.recognizePiiEntitiesActions = recognizePiiEntitiesActions == null ? null
             : Arrays.asList(recognizePiiEntitiesActions);
         return this;
@@ -147,7 +141,6 @@ public final class TextAnalyticsActions {
      * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setExtractKeyPhrasesActions(ExtractKeyPhrasesAction... extractKeyPhrasesActions) {
-        validateActionsNumber(extractKeyPhrasesActions, ExtractKeyPhrasesAction.class.getName());
         this.extractKeyPhrasesActions = extractKeyPhrasesActions == null ? null
             : Arrays.asList(extractKeyPhrasesActions);
         return this;
@@ -173,7 +166,6 @@ public final class TextAnalyticsActions {
      * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setAnalyzeSentimentActions(AnalyzeSentimentAction... analyzeSentimentActions) {
-        validateActionsNumber(analyzeSentimentActions, AnalyzeSentimentAction.class.getName());
         this.analyzeSentimentActions = analyzeSentimentActions == null ? null : Arrays.asList(analyzeSentimentActions);
         return this;
     }
@@ -198,7 +190,6 @@ public final class TextAnalyticsActions {
      * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
-        validateActionsNumber(extractSummaryActions, ExtractSummaryAction.class.getName());
         this.extractSummaryActions = extractSummaryActions == null ? null : Arrays.asList(extractSummaryActions);
         return this;
     }
@@ -224,7 +215,6 @@ public final class TextAnalyticsActions {
      */
     public TextAnalyticsActions setRecognizeCustomEntitiesActions(
         RecognizeCustomEntitiesAction... recognizeCustomEntitiesActions) {
-        validateActionsNumber(recognizeCustomEntitiesActions, RecognizeCustomEntitiesAction.class.getName());
         this.recognizeCustomEntitiesActions = recognizeCustomEntitiesActions == null ? null
                                                   : Arrays.asList(recognizeCustomEntitiesActions);
         return this;
@@ -253,10 +243,9 @@ public final class TextAnalyticsActions {
      */
     public TextAnalyticsActions setSingleCategoryClassifyActions(
         SingleCategoryClassifyAction... singleCategoryClassifyActions) {
-        validateActionsNumber(singleCategoryClassifyActions,
             SingleCategoryClassifyAction.class.getName());
         this.singleCategoryClassifyActions = singleCategoryClassifyActions == null
-            ? null : Arrays.asList(singleCategoryClassifyActions);
+                                                 ? null : Arrays.asList(singleCategoryClassifyActions);
         return this;
     }
 
@@ -282,18 +271,9 @@ public final class TextAnalyticsActions {
      */
     public TextAnalyticsActions setMultiCategoryClassifyActions(
         MultiCategoryClassifyAction... multiCategoryClassifyActions) {
-        validateActionsNumber(multiCategoryClassifyActions,
             MultiCategoryClassifyAction.class.getName());
         this.multiCategoryClassifyActions = multiCategoryClassifyActions == null
-            ? null : Arrays.asList(multiCategoryClassifyActions);
+                                                ? null : Arrays.asList(multiCategoryClassifyActions);
         return this;
-    }
-
-    private void validateActionsNumber(Object[] actions, String actionType) {
-        if (actions != null && actions.length > 1) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "Currently, the service can accept up to one %s. Multiple actions of the same type are not supported.",
-                actionType)));
-        }
     }
 }
