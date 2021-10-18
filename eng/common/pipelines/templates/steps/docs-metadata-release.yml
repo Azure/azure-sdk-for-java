@@ -62,7 +62,7 @@ parameters:
     default: null
   - name: PipelineRequestBy
     type: string
-    default:  $(Build.RequestedFor) 
+    default:  $(Build.RequestedForEmail) 
 steps:
 - pwsh: |
     if ($IsWindows) {
