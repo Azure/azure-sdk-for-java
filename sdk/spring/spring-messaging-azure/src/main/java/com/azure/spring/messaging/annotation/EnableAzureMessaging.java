@@ -19,6 +19,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(AzureBootstrapConfiguration.class )
+@Import(AzureBootstrapConfiguration.class)
 public @interface EnableAzureMessaging {
 }

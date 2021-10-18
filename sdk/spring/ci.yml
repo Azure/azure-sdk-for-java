@@ -174,12 +174,6 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-active-directory
-        groupId: com.azure.spring
-        safeName: springcloudazurestarteractivedirectory
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
-        skipUpdatePackageJson: true
       - name: spring-cloud-azure-starter-cosmos
         groupId: com.azure.spring
         safeName: springcloudazurestartercosmos
