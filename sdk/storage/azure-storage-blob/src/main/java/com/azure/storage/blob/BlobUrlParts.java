@@ -403,7 +403,7 @@ public final class BlobUrlParts {
         parts.setHost(url.getAuthority());
 
         String path = url.getPath();
-        if (path.charAt(0) == '/') {
+        if (!path.isEmpty() && path.charAt(0) == '/') {
             path = path.substring(1);
         }
 

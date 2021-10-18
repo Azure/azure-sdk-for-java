@@ -889,7 +889,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     private void traceOperation(final ChannelHandlerContext context, final String operationName, final Object... args) {
-        logger.debug("{}\n{}\n{}", operationName, context, args);
+        logger.trace("{}\n{}\n{}", operationName, context, args);
     }
 
     // endregion

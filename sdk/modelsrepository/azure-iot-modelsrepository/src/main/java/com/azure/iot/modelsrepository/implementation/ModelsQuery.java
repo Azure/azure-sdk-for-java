@@ -19,13 +19,12 @@ import java.util.Map;
  * via extends and component schemas.
  */
 public class ModelsQuery {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private static final String UTF8_BOM = "\uFEFF";
     private final String content;
-    private final ObjectMapper mapper;
 
     public ModelsQuery(String content) {
-        mapper = new ObjectMapper();
         if (content.startsWith(UTF8_BOM)) {
             this.content = content.substring(1);
         } else {
@@ -34,14 +33,14 @@ public class ModelsQuery {
     }
 
     public ModelMetadata parseModel() throws JsonProcessingException {
-        JsonNode rootElement = mapper.readValue(this.content, JsonNode.class);
+        JsonNode rootElement = MAPPER.readValue(this.content, JsonNode.class);
         return parseInterface(rootElement);
     }
 
     public Map<String, String> listToMap() throws JsonProcessingException {
         Map<String, String> result = new HashMap<>();
 
-        JsonNode root = mapper.readValue(this.content, JsonNode.class);
+        JsonNode root = MAPPER.readValue(this.content, JsonNode.class);
 
         if (root.isArray()) {
             for (JsonNode node : root) {

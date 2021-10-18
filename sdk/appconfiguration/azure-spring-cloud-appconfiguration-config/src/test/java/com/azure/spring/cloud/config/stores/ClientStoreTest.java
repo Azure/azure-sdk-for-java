@@ -83,7 +83,7 @@ public class ClientStoreTest {
 
         SettingSelector selector = new SettingSelector();
 
-        clientStore = new ClientStore(appProperties, pool, null, null);
+        clientStore = new ClientStore(appProperties, pool, null, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
@@ -105,7 +105,7 @@ public class ClientStoreTest {
 
         SettingSelector selector = new SettingSelector();
 
-        clientStore = new ClientStore(appProperties, pool, null, null);
+        clientStore = new ClientStore(appProperties, pool, null, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
@@ -127,7 +127,7 @@ public class ClientStoreTest {
 
         SettingSelector selector = new SettingSelector();
 
-        clientStore = new ClientStore(appProperties, pool, null, null);
+        clientStore = new ClientStore(appProperties, pool, null, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
@@ -162,7 +162,7 @@ public class ClientStoreTest {
             }
         };
 
-        clientStore = new ClientStore(appProperties, pool, provider, null);
+        clientStore = new ClientStore(appProperties, pool, provider, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
@@ -192,7 +192,7 @@ public class ClientStoreTest {
             }
         };
 
-        clientStore = new ClientStore(appProperties, pool, provider, null);
+        clientStore = new ClientStore(appProperties, pool, provider, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 
@@ -216,7 +216,7 @@ public class ClientStoreTest {
             }
         };
 
-        clientStore = new ClientStore(appProperties, pool, provider, null);
+        clientStore = new ClientStore(appProperties, pool, provider, null, false, false);
         ClientStore test = Mockito.spy(clientStore);
         Mockito.doReturn(builderMock).when(test).getBuilder();
 

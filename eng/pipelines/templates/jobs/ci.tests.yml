@@ -104,7 +104,7 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: $(TestGoals)
+          goals: $(TestGoals) $(AdditionalTestGoals)
         # we want to run this when TestFromSource isn't true
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
 
@@ -158,7 +158,7 @@ jobs:
           # as well as libraries which depend on them and not the other stages in the Maven
           # lifecycle that test or verify targets would execute. The libraries were already
           # compiled and installed in the previous task, this tasks only runs tests.
-          goals: $(TestGoals)
+          goals: $(TestGoals) $(AdditionalTestGoals)
         condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
       - template: ../steps/upload-repository-on-failure.yml
@@ -177,6 +177,6 @@ jobs:
         condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
         inputs:
           codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/jacoco.xml
-          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/
+          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/jacoco.xml
+          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/test-coverage/
           failIfCoverageEmpty: false

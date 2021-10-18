@@ -11,6 +11,7 @@ import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
@@ -21,6 +22,7 @@ import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeRevert;
+import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -106,6 +108,18 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public String subnetId() {
         return this.innerModel().subnetId();
+    }
+
+    public NetworkFeatures networkFeatures() {
+        return this.innerModel().networkFeatures();
+    }
+
+    public String networkSiblingSetId() {
+        return this.innerModel().networkSiblingSetId();
+    }
+
+    public VolumeStorageToNetworkProximity storageToNetworkProximity() {
+        return this.innerModel().storageToNetworkProximity();
     }
 
     public List<MountTargetProperties> mountTargets() {
@@ -426,6 +440,11 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withBackupId(String backupId) {
         this.innerModel().withBackupId(backupId);
+        return this;
+    }
+
+    public VolumeImpl withNetworkFeatures(NetworkFeatures networkFeatures) {
+        this.innerModel().withNetworkFeatures(networkFeatures);
         return this;
     }
 

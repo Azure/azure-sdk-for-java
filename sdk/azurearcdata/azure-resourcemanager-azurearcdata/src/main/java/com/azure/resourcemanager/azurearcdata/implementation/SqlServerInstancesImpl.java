@@ -79,8 +79,8 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
         this.serviceClient().delete(resourceGroupName, sqlServerInstanceName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String sqlServerInstanceName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, sqlServerInstanceName, context);
+    public void delete(String resourceGroupName, String sqlServerInstanceName, Context context) {
+        this.serviceClient().delete(resourceGroupName, sqlServerInstanceName, context);
     }
 
     public SqlServerInstance getById(String id) {
@@ -143,10 +143,10 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'sqlServerInstances'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, sqlServerInstanceName, Context.NONE).getValue();
+        this.delete(resourceGroupName, sqlServerInstanceName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw logger
@@ -164,7 +164,7 @@ public final class SqlServerInstancesImpl implements SqlServerInstances {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'sqlServerInstances'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, sqlServerInstanceName, context);
+        this.delete(resourceGroupName, sqlServerInstanceName, context);
     }
 
     private SqlServerInstancesClient serviceClient() {

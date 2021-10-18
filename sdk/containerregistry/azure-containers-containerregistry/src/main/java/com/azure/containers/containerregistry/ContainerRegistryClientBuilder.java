@@ -300,6 +300,7 @@ public final class ContainerRegistryClientBuilder {
             this.perRetryPolicies,
             this.httpClient,
             this.endpoint,
+            this.version,
             this.logger);
     }
 

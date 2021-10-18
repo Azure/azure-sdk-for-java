@@ -32,7 +32,7 @@ public class LogsQueryWithModels {
 
         // Sample to use a model type to read the results
         List<CustomModel> customModels  = logsQueryClient
-                .query("{workspace-id}", "AppRequests", QueryTimeInterval.ALL, CustomModel.class);
+                .queryWorkspace("{workspace-id}", "AppRequests", QueryTimeInterval.ALL, CustomModel.class);
 
         customModels.forEach(model -> System.out.println("Time generated " + model.getTimeGenerated()
                 + "; success = " + model.getSuccess() + "; operation name = " + model.getOperationName()));

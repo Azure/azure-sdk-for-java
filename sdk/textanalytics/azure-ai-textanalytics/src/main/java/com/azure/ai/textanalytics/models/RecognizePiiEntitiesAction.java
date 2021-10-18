@@ -13,10 +13,32 @@ import java.util.Arrays;
  */
 @Fluent
 public final class RecognizePiiEntitiesAction {
+    private String actionName;
     private String modelVersion;
     private Boolean disableServiceLogs;
     private PiiEntityDomain domainFilter;
     private Iterable<PiiEntityCategory> categoriesFilter;
+
+    /**
+     * Get the name of action.
+     *
+     * @return the name of action.
+     */
+    public String getActionName() {
+        return actionName;
+    }
+
+    /**
+     * Set the custom name for the action.
+     *
+     * @param actionName the custom name for the action.
+     *
+     * @return The {@link RecognizePiiEntitiesAction} object itself.
+     */
+    public RecognizePiiEntitiesAction setActionName(String actionName) {
+        this.actionName = actionName;
+        return this;
+    }
 
     /**
      * Gets the version of the text analytics model used by this operation.

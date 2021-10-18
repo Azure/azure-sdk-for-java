@@ -45,7 +45,7 @@ stages:
   # pipeline completes.
   - ${{if and(eq(variables['Build.Reason'], 'Manual'), eq(variables['System.TeamProject'], 'internal'))}}:
     - ${{ each artifact in parameters.Artifacts }}:
-      - stage: Release_${{artifact.safeName}}
+      - stage:
         displayName: 'Release: ${{artifact.name}}'
         dependsOn: Signing
         condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
@@ -118,7 +118,7 @@ stages:
                           RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
                           Target: JavaDevFeed
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java       
+                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
                       - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
                         parameters:
                           ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)

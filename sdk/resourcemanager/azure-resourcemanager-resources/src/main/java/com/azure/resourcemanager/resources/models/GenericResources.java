@@ -176,24 +176,47 @@ public interface GenericResources extends
             String resourceName);
 
     /**
+     * Validates move resources from one resource group to another.
+     * If validation fails, {@link com.azure.core.management.exception.ManagementException} is thrown.
+     *
+     * @param sourceResourceGroupName Source resource group name
+     * @param targetResourceGroup target resource group, can be in a different subscription
+     * @param resourceIds the list of IDs of the resources to move
+     */
+    void validateMoveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup,
+                               List<String> resourceIds);
+
+    /**
+     * Validates move resources from one resource group to another asynchronously.
+     * If validation fails, {@link com.azure.core.management.exception.ManagementException} is thrown.
+     *
+     * @param sourceResourceGroupName Source resource group name
+     * @param targetResourceGroup target resource group, can be in a different subscription
+     * @param resourceIds the list of IDs of the resources to move
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> validateMoveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup,
+                                          List<String> resourceIds);
+
+    /**
      * Move resources from one resource group to another.
      *
      * @param sourceResourceGroupName Source resource group name
      * @param targetResourceGroup target resource group, can be in a different subscription
-     * @param resources the list of IDs of the resources to move
+     * @param resourceIds the list of IDs of the resources to move
      */
-    void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources);
+    void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resourceIds);
 
     /**
      * Move resources from one resource group to another asynchronously.
      *
      * @param sourceResourceGroupName Source resource group name
      * @param targetResourceGroup target resource group, can be in a different subscription
-     * @param resources the list of IDs of the resources to move
+     * @param resourceIds the list of IDs of the resources to move
      * @return a representation of the deferred computation of this call
      */
-    Mono<Void> moveResourcesAsync(String sourceResourceGroupName,
-                                  ResourceGroup targetResourceGroup, List<String> resources);
+    Mono<Void> moveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup,
+                                  List<String> resourceIds);
 
     /**
      * Delete resource and all of its child resources.

@@ -3,8 +3,12 @@
 
 package com.azure.monitor.query;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.HttpClientOptions;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.LogsBatchQuery;
@@ -67,7 +71,7 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        LogsQueryResult queryResults = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+        LogsQueryResult queryResults = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
                 new QueryTimeInterval(Duration.ofDays(2)));
 
         for (LogsTableRow row : queryResults.getTable().getRows()) {
@@ -99,7 +103,7 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        List<CustomLogModel> customLogModels = logsQueryClient.query("{workspace-id}", "{kusto-query}",
+        List<CustomLogModel> customLogModels = logsQueryClient.queryWorkspace("{workspace-id}", "{kusto-query}",
                 new QueryTimeInterval(Duration.ofDays(2)), CustomLogModel.class);
 
         for (CustomLogModel customLogModel : customLogModels) {
@@ -116,9 +120,9 @@ public class ReadmeSamples {
                 .buildClient();
 
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
-        String query1 = logsBatchQuery.addQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
-        String query2 = logsBatchQuery.addQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
-        String query3 = logsBatchQuery.addQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
+        String query1 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-1}", new QueryTimeInterval(Duration.ofDays(2)));
+        String query2 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-2}", new QueryTimeInterval(Duration.ofDays(30)));
+        String query3 = logsBatchQuery.addWorkspaceQuery("{workspace-id}", "{query-3}", new QueryTimeInterval(Duration.ofDays(10)));
 
         LogsBatchQueryResultCollection batchResults = logsQueryClient
                 .queryBatchWithResponse(logsBatchQuery, Context.NONE).getValue();
@@ -152,7 +156,7 @@ public class ReadmeSamples {
         LogsQueryOptions options = new LogsQueryOptions()
             .setServerTimeout(Duration.ofMinutes(10));
 
-        Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}",
+        Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}",
                 "{kusto-query}", new QueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
     }
 
@@ -164,7 +168,7 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        Response<LogsQueryResult> response = logsQueryClient.queryWithResponse("{workspace-id}", "{kusto-query}",
+        Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}", "{kusto-query}",
                 new QueryTimeInterval(Duration.ofDays(2)), new LogsQueryOptions()
                         .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
                 Context.NONE);
@@ -180,7 +184,7 @@ public class ReadmeSamples {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
 
-        MetricsQueryResult metricsQueryResult = metricsQueryClient.query("{resource-uri}",
+        MetricsQueryResult metricsQueryResult = metricsQueryClient.queryResource("{resource-uri}",
                 Arrays.asList("SuccessfulCalls", "TotalCalls"));
 
         for (MetricResult metric : metricsQueryResult.getMetrics()) {
@@ -203,7 +207,7 @@ public class ReadmeSamples {
             .buildClient();
 
         Response<MetricsQueryResult> metricsResponse = metricsQueryClient
-            .queryWithResponse("{resource-id}", Arrays.asList("SuccessfulCalls", "TotalCalls"),
+            .queryResourceWithResponse("{resource-id}", Arrays.asList("SuccessfulCalls", "TotalCalls"),
                 new MetricsQueryOptions()
                     .setGranularity(Duration.ofHours(1))
                     .setAggregations(Arrays.asList(AggregationType.AVERAGE, AggregationType.COUNT)),
@@ -220,5 +224,60 @@ public class ReadmeSamples {
                 }
             }
         }
+    }
+
+    /**
+     * Enable HTTP request and response logging.
+     */
+    public void tsgEnableHttpLogging() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+                .credential(credential)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // or
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+                .credential(credential)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+    }
+
+    /**
+     * Sample to show how to set response timeout for http client.
+     */
+    public void tsgHttpResponseTimeout() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
+                .buildClient();
+    }
+
+    /**
+     * Sample to show how to set server timeout.
+     */
+    public void tsgSetServerTimeout() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .buildClient();
+
+        client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
+                new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
+    }
+
+    /**
+     * Sample to show how to allow partial errors for logs queries.
+     */
+    public void tsgAllowPartialErrors() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .buildClient();
+
+        client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
+                new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
     }
 }
