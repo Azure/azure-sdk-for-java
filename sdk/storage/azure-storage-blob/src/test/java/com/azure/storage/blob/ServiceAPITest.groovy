@@ -6,6 +6,7 @@ package com.azure.storage.blob
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.BinaryData
+import com.azure.core.util.Configuration
 import com.azure.core.util.Context
 import com.azure.core.util.paging.ContinuablePage
 import com.azure.identity.DefaultAzureCredentialBuilder
@@ -125,7 +126,7 @@ class ServiceAPITest extends APISpec {
 //        notThrown(Exception)
 
         when: "Connection string with SAS"
-        def connectionString = "AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).accountName + ";SharedAccessSignature=" + sas
+        def connectionString = "DefaultEndpointsProtocol=https;AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).accountName + ";SharedAccessSignature=" + sas + ";EndpointSuffix=" + Configuration.getGlobalConfiguration().get("STORAGE_ENDPOINT_SUFFIX")
         instrument(new BlobContainerClientBuilder()
             .connectionString(connectionString)
             .containerName(cc.getBlobContainerName()))
