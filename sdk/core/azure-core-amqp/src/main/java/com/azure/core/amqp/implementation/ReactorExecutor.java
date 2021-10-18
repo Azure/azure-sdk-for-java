@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Schedules the proton-j reactor to continuously run work.
  */
 class ReactorExecutor implements AsyncCloseable {
-    private static final String LOG_MESSAGE = "connectionId[{}], message[{}]";
+    private static final String LOG_MESSAGE = "connectionId[{}] message[{}]";
 
     private final ClientLogger logger = new ClientLogger(ReactorExecutor.class);
     private final AtomicBoolean hasStarted = new AtomicBoolean();
@@ -57,6 +57,11 @@ class ReactorExecutor implements AsyncCloseable {
      * #closeAsync()} is called.
      */
     void start() {
+        if (isDisposed.get()) {
+            logger.warning("Cannot start reactor when executor has been disposed.");
+            return;
+        }
+
         if (hasStarted.getAndSet(true)) {
             logger.warning("ReactorExecutor has already started.");
             return;
@@ -74,7 +79,8 @@ class ReactorExecutor implements AsyncCloseable {
     private void run() {
         // If this hasn't been disposed of, and we're trying to run work items on it, log a warning and return.
         if (!isDisposed.get() && !hasStarted.get()) {
-            logger.warning("Cannot run work items on ReactorExecutor if ReactorExecutor.start() has not been invoked.");
+            logger.warning(LOG_MESSAGE, connectionId,
+                "Cannot run work items on ReactorExecutor if ReactorExecutor.start() has not been invoked.");
             return;
         }
 
@@ -131,7 +137,7 @@ class ReactorExecutor implements AsyncCloseable {
         } finally {
             if (!rescheduledReactor) {
                 if (hasStarted.getAndSet(false)) {
-                    logger.verbose("Scheduling reactor to complete pending tasks.");
+                    logger.verbose(LOG_MESSAGE, connectionId, "Scheduling reactor to complete pending tasks.");
                     scheduleCompletePendingTasks();
                 } else {
                     final String reason =
@@ -139,7 +145,7 @@ class ReactorExecutor implements AsyncCloseable {
                             + "process.";
 
                     logger.info(LOG_MESSAGE, connectionId, reason);
-                    close(reason);
+                    close(reason, true);
                 }
             }
         }
@@ -149,11 +155,12 @@ class ReactorExecutor implements AsyncCloseable {
      * Schedules the release of the current reactor after operation timeout has elapsed.
      */
     private void scheduleCompletePendingTasks() {
-        this.scheduler.schedule(() -> {
+        final Runnable work = () -> {
             logger.info(LOG_MESSAGE, connectionId, "Processing all pending tasks and closing old reactor.");
             try {
                 if (reactor.process()) {
-                    logger.verbose("Had more tasks to process on reactor but it is shutting down.");
+                    logger.verbose(LOG_MESSAGE, connectionId,
+                        "Had more tasks to process on reactor but it is shutting down.");
                 }
 
                 reactor.stop();
@@ -169,20 +176,27 @@ class ReactorExecutor implements AsyncCloseable {
                     // session before we were able to schedule this work.
                 }
 
-                close("Finished processing pending tasks.");
+                close("Finished processing pending tasks.", false);
             }
-        }, timeout.toMillis(), TimeUnit.MILLISECONDS);
+        };
+
+        try {
+            this.scheduler.schedule(work, timeout.toMillis(), TimeUnit.MILLISECONDS);
+        } catch (RejectedExecutionException e) {
+            logger.warning(LOG_MESSAGE, connectionId, "Scheduler was already closed. Manually releasing reactor.");
+            work.run();
+        }
     }
 
-    private void close(String reason) {
-        logger.verbose("Completing close and disposing scheduler. {}", reason);
+    private void close(String reason, boolean initiatedByClient) {
+        logger.verbose(LOG_MESSAGE, connectionId, "Completing close and disposing scheduler. {}", reason);
         scheduler.dispose();
         isClosedMono.emitEmpty((signalType, emitResult) -> {
-            logger.verbose("signalType[{}] emitResult[{}]: Unable to emit close event on reactor", signalType,
-                emitResult);
+            logger.verbose("connectionId[{}] signalType[{}] emitResult[{}]: Unable to emit close event on reactor",
+                connectionId, signalType, emitResult);
             return false;
         });
-        exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, false, reason));
+        exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, initiatedByClient, reason));
     }
 
     @Override
@@ -191,8 +205,12 @@ class ReactorExecutor implements AsyncCloseable {
             return isClosedMono.asMono();
         }
 
+        // Pending tasks are scheduled to be invoked after the timeout period, which would complete this Mono.
         if (hasStarted.get()) {
             scheduleCompletePendingTasks();
+        } else {
+            // Rector never started, so just complete this Mono.
+            close("Closing based on user-invoked close operation.", true);
         }
 
         return isClosedMono.asMono();

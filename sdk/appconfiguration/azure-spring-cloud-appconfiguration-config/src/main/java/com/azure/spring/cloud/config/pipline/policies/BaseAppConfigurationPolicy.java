@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.pipline.policies;
 
+import static com.azure.spring.cloud.config.AppConfigurationConstants.DEV_ENV_TRACING;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.USER_AGENT_TYPE;
+
 import org.springframework.util.StringUtils;
 
 import com.azure.core.http.HttpPipelineCallContext;
@@ -14,7 +18,6 @@ import com.azure.spring.cloud.config.RequestTracingConstants;
 import com.azure.spring.cloud.config.RequestType;
 
 import reactor.core.publisher.Mono;
-
 /**
  * HttpPipelinePolicy for connecting to Azure App Configuration.
  */
@@ -24,30 +27,33 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
     public static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
         BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
-    
-    public static final String USER_AGENT_TYPE = "User-Agent";
 
     static Boolean watchRequests = false;
 
+    final boolean isDev;
+
+    final boolean isKeyVaultConfigured;
+    
+    public BaseAppConfigurationPolicy(Boolean isDev, Boolean isKeyVaultConfigured) {
+        this.isDev = isDev;
+        this.isKeyVaultConfigured = isKeyVaultConfigured;
+    }
+
     /**
+     * 
      * Checks if Azure App Configuration Tracing is disabled, and if not gets tracing information.
      *
      * @param request The http request that will be traced, used to check operation being run.
      * @return String of the value for the correlation-context header.
      */
-    private static String getTracingInfo(HttpRequest request) {
+    private String getTracingInfo(HttpRequest request) {
         String track = System.getenv(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
         if (track != null && track.equalsIgnoreCase("false")) {
             return "";
         }
-        String requestTypeValue = RequestType.WATCH.toString();
-        if (!watchRequests) {
-            requestTypeValue = request.getUrl().getPath().startsWith("/kv") ? RequestType.STARTUP.toString()
-                : RequestType.WATCH.toString();
-        }
-        if (requestTypeValue.equals(RequestType.WATCH.toString())) {
-            watchRequests = true;
-        }
+
+        RequestType requestTypeValue = watchRequests ? RequestType.WATCH : RequestType.STARTUP;
+
         String tracingInfo = RequestTracingConstants.REQUEST_TYPE_KEY.toString() + "=" + requestTypeValue;
         String hostType = getHostType();
 
@@ -55,8 +61,31 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
             tracingInfo += "," + RequestTracingConstants.HOST_TYPE_KEY + "=" + getHostType();
         }
 
+        if (isDev || isKeyVaultConfigured) {
+            tracingInfo += ",Env=" + getEnvInfo();
+        }
+
         return tracingInfo;
 
+    }
+
+    private String getEnvInfo() {
+        String envInfo = "";
+
+        envInfo = buildEnvTracingInfo(envInfo, isDev, DEV_ENV_TRACING);
+        envInfo = buildEnvTracingInfo(envInfo, isKeyVaultConfigured, KEY_VAULT_CONFIGURED_TRACING);
+
+        return envInfo;
+    }
+
+    private String buildEnvTracingInfo(String envInfo, Boolean check, String checkString) {
+        if (check) {
+            if (envInfo.length() > 0) {
+                envInfo += ",";
+            }
+            envInfo += checkString;
+        }
+        return envInfo;
     }
 
     /**
@@ -85,7 +114,15 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
         context.getHttpRequest().getHeaders().set(USER_AGENT_TYPE, USER_AGENT + " " + sdkUserAgent);
         context.getHttpRequest().getHeaders().set(RequestTracingConstants.CORRELATION_CONTEXT_HEADER.toString(),
             getTracingInfo(context.getHttpRequest()));
+
         return next.process();
+    }
+
+    /**
+     * @param watchRequests the watchRequests to set
+     */
+    public static void setWatchRequests(Boolean watchRequests) {
+        BaseAppConfigurationPolicy.watchRequests = watchRequests;
     }
 
 }

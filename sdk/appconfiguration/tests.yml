@@ -9,6 +9,7 @@ stages:
           groupId: com.azure.spring
           safeName: azurespringcloudtestappconfigurationconfig
       TimeoutInMinutes: 90
+      SupportedClouds: 'Public,UsGov,China'
       EnvVars:
         AZURE_APPCONFIG_CONNECTION_STRING: $(AZURE_APPCONFIG_CONNECTION_STRING)
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)

@@ -38,7 +38,7 @@ public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoin
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBusRefreshEndpoint.class);
 
-    private final ObjectMapper objectmapper = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private final AppConfigurationProperties appConfiguration;
 
@@ -60,10 +60,10 @@ public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoin
     /**
      * Checks a HttpServletRequest to see if it is a refresh event. Validates token information. If request is a
      * validation request returns validation code.
-     * 
+     *
      * @param request Request checked for refresh.
      * @param response Response for request.
-     * @param allRequestParams request parameters needs to contain validation token. 
+     * @param allRequestParams request parameters needs to contain validation token.
      * @return 200 if refresh event triggered. 500 if invalid for any reason. Validation response if requested.
      * @throws IOException Unable to parse request info for validation.
      */
@@ -73,7 +73,7 @@ public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoin
         @RequestParam Map<String, String> allRequestParams) throws IOException {
         String reference = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 
-        JsonNode kvReference = objectmapper.readTree(reference);
+        JsonNode kvReference = OBJECT_MAPPER.readTree(reference);
 
         AppConfigurationEndpoint validation;
         try {

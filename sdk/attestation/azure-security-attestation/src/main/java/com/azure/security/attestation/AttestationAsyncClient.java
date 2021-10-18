@@ -26,11 +26,13 @@ import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationToken;
+import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -148,17 +150,21 @@ public final class AttestationAsyncClient {
     private final MetadataConfigurationsImpl metadataImpl;
     private final SigningCertificatesImpl signerImpl;
     private final ClientLogger logger;
+    private final AttestationTokenValidationOptions tokenValidationOptions;
+    private final AtomicReference<List<AttestationSigner>> cachedSigners;
 
     /**
      * Initializes an instance of Attestations client.
      *
      * @param clientImpl the service client implementation.
      */
-    AttestationAsyncClient(AttestationClientImpl clientImpl) {
+    AttestationAsyncClient(AttestationClientImpl clientImpl, AttestationTokenValidationOptions tokenValidationOptions) {
         this.attestImpl = clientImpl.getAttestations();
         this.metadataImpl = clientImpl.getMetadataConfigurations();
         this.signerImpl = clientImpl.getSigningCertificates();
+        this.tokenValidationOptions = tokenValidationOptions;
         this.logger = new ClientLogger(AttestationAsyncClient.class);
+        this.cachedSigners = new AtomicReference<>(null);
     }
 
     /**
@@ -238,6 +244,24 @@ public final class AttestationAsyncClient {
 
 
     /**
+     * Return cached attestation signers, fetching from the internet if needed.
+     * @return cached signers.
+     */
+    Mono<List<AttestationSigner>> getCachedAttestationSigners() {
+        if (this.cachedSigners.get() != null) {
+            return Mono.just(this.cachedSigners.get());
+        } else {
+            return this.signerImpl.getAsync()
+                .map(AttestationSignerImpl::attestationSignersFromJwks)
+                .map(signers -> {
+                    this.cachedSigners.compareAndSet(null, signers);
+                    return this.cachedSigners.get();
+                });
+        }
+    }
+
+
+    /**
      * Processes an OpenEnclave report, producing an artifact. The type of artifact produced is dependent upon
      * attestation policy.
      *
@@ -270,17 +294,37 @@ public final class AttestationAsyncClient {
         return withContext(context -> attestOpenEnclaveWithResponse(options, context));
     }
 
+    /**
+     * Actually perform the OpenEnclave attestation.
+     * @param options - Options for the attestation.
+     * @param context - context for the operation.
+     * @return The result of the attestation operation.
+     */
     Mono<Response<AttestationResult>> attestOpenEnclaveWithResponse(AttestationOptions options, Context context) {
+        AttestationOptionsImpl optionsImpl = new AttestationOptionsImpl(options);
 
-        final AttestationOptionsImpl optionsImpl = new AttestationOptionsImpl(options);
+        AttestationTokenValidationOptions validationOptions = options.getValidationOptions();
+        if (validationOptions == null) {
+            validationOptions = this.tokenValidationOptions;
+        }
 
+        AttestationTokenValidationOptions finalValidationOptions = validationOptions;
         return this.attestImpl.attestOpenEnclaveWithResponseAsync(optionsImpl.getInternalAttestOpenEnclaveRequest(), context)
-            // Create an AttestationToken from the raw response from the service.
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
+            .flatMap(response -> {
+                if (finalValidationOptions.getValidateToken()) {
+                    return getCachedAttestationSigners()
+                        .map(signers -> {
+                            response.getValue().validate(signers, finalValidationOptions);
+                            return response;
+                        });
+                } else {
+                    return Mono.just(response);
+                }
+            })
             .map(response -> {
-                // Extract the AttestationResult from the AttestationToken.
-                com.azure.security.attestation.implementation.models.AttestationResult generated = response.getValue().getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
-                return Utilities.generateAttestationResponseFromModelType(response, response.getValue(), AttestationResultImpl.fromGeneratedAttestationResult(generated));
+                com.azure.security.attestation.implementation.models.AttestationResult generatedResult = response.getValue().getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
+                return Utilities.generateAttestationResponseFromModelType(response, response.getValue(), AttestationResultImpl.fromGeneratedAttestationResult(generatedResult));
             });
     }
 
@@ -366,11 +410,28 @@ public final class AttestationAsyncClient {
         // Ensure that the incoming request makes sense.
         AttestationOptionsImpl optionsImpl = new AttestationOptionsImpl(options);
 
-        return  this.attestImpl.attestSgxEnclaveWithResponseAsync(optionsImpl.getInternalAttestSgxRequest(), context)
+        AttestationTokenValidationOptions validationOptions = options.getValidationOptions();
+        if (validationOptions == null) {
+            validationOptions = this.tokenValidationOptions;
+        }
+
+        AttestationTokenValidationOptions finalValidationOptions = validationOptions;
+        return this.attestImpl.attestSgxEnclaveWithResponseAsync(optionsImpl.getInternalAttestSgxRequest(), context)
+            .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
+            .flatMap(response -> {
+                if (finalValidationOptions.getValidateToken()) {
+                    return getCachedAttestationSigners()
+                        .map(signers -> {
+                            response.getValue().validate(signers, finalValidationOptions);
+                            return response;
+                        });
+                } else {
+                    return Mono.just(response);
+                }
+            })
             .map(response -> {
-                AttestationToken token = new AttestationTokenImpl(response.getValue().getToken());
-                com.azure.security.attestation.implementation.models.AttestationResult generatedResult = token.getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
-                return Utilities.generateAttestationResponseFromModelType(response, token, AttestationResultImpl.fromGeneratedAttestationResult(generatedResult));
+                com.azure.security.attestation.implementation.models.AttestationResult generatedResult = response.getValue().getBody(com.azure.security.attestation.implementation.models.AttestationResult.class);
+                return Utilities.generateAttestationResponseFromModelType(response, response.getValue(), AttestationResultImpl.fromGeneratedAttestationResult(generatedResult));
             });
     }
 

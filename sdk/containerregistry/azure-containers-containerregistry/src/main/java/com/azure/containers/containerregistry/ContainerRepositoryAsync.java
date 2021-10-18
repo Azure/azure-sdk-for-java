@@ -5,8 +5,8 @@ package com.azure.containers.containerregistry;
 
 import com.azure.containers.containerregistry.implementation.ArtifactManifestPropertiesHelper;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
-import com.azure.containers.containerregistry.implementation.ContainerRegistryImpl;
-import com.azure.containers.containerregistry.implementation.ContainerRegistryImplBuilder;
+import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
+import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestOrderBy;
@@ -70,9 +70,11 @@ public final class ContainerRepositoryAsync {
             throw logger.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty."));
         }
 
-        ContainerRegistryImpl registryImpl = new ContainerRegistryImplBuilder()
+        AzureContainerRegistryImpl registryImpl = new AzureContainerRegistryImplBuilder()
             .pipeline(httpPipeline)
-            .url(endpoint).buildClient();
+            .url(endpoint)
+            .apiVersion(version)
+            .buildClient();
 
         this.endpoint = endpoint;
         this.repositoryName = repositoryName;
@@ -348,8 +350,8 @@ public final class ContainerRepositoryAsync {
                 .setDeleteEnabled(repositoryProperties.isDeleteEnabled())
                 .setListEnabled(repositoryProperties.isListEnabled())
                 .setWriteEnabled(repositoryProperties.isWriteEnabled())
-                .setReadEnabled(repositoryProperties.isReadEnabled())
-                .setTeleportEnabled(repositoryProperties.isTeleportEnabled());
+                .setReadEnabled(repositoryProperties.isReadEnabled());
+//                .setTeleportEnabled(repositoryProperties.isTeleportEnabled());
 
             return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context)
                 .onErrorMap(Utils::mapException);

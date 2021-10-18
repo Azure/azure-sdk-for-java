@@ -10,6 +10,7 @@ import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -65,6 +66,12 @@ public final class SnapshotUpdateProperties {
      */
     @JsonProperty(value = "supportsHibernation")
     private Boolean supportsHibernation;
+
+    /*
+     * Policy for controlling export on the disk.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /**
      * Get the osType property: the Operating System type.
@@ -214,6 +221,26 @@ public final class SnapshotUpdateProperties {
      */
     public SnapshotUpdateProperties withSupportsHibernation(Boolean supportsHibernation) {
         this.supportsHibernation = supportsHibernation;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Policy for controlling export on the disk.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Policy for controlling export on the disk.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SnapshotUpdateProperties object itself.
+     */
+    public SnapshotUpdateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 

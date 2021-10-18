@@ -237,10 +237,16 @@ public final class BulkExecutionOptions {
     CosmosBulkExecutionOptions toCosmosBulkExecutionOptions() {
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions(
             this.thresholds.toCosmosBulkExecutionThresholdsState());
-        cosmosBulkExecutionOptions.setMaxMicroBatchInterval(this.maxMicroBatchInterval);
-        cosmosBulkExecutionOptions.setMaxMicroBatchConcurrency(this.maxMicroBatchConcurrency);
-        cosmosBulkExecutionOptions.setMaxMicroBatchSize(this.maxMicroBatchSize);
-        cosmosBulkExecutionOptions.setTargetedMicroBatchRetryRate(this.minMicroBatchRetryRate, this.maxMicroBatchRetryRate);
+
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .setMaxMicroBatchSize(new CosmosBulkExecutionOptions(), this.maxMicroBatchSize);
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .setTargetedMicroBatchRetryRate(
+                cosmosBulkExecutionOptions,
+                this.minMicroBatchRetryRate,
+                this.maxMicroBatchRetryRate);
         ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
             .getCosmosBulkExecutionOptionsAccessor()
             .setOperationContext(cosmosBulkExecutionOptions, this.operationContextAndListenerTuple);

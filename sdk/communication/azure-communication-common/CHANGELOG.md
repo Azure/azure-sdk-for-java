@@ -1,6 +1,24 @@
 # Release History
 
-## 1.0.4 (2021-09-07)
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.5 (2021-10-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded azure-core to 1.21.0.
+
+## 1.0.4 (2021-09-09)
 ### Dependency updates
 - Added `azure-communication-networktraversal` package
 

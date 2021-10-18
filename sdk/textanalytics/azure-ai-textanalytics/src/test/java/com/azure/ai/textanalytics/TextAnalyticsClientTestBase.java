@@ -81,6 +81,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_INPUTS;
@@ -629,6 +630,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeActionsWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
+    abstract void analyzeActionsWithMultiSameKindActions(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeActionsWithActionNames(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void analyzeActionsPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -1054,6 +1063,44 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         );
     }
 
+    void analyzeActionsWithMultiSameKindActionsRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
+                new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
+            new TextAnalyticsActions()
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction().setActionName(CUSTOM_ACTION_NAME),
+                    new RecognizeEntitiesAction())
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction().setActionName(CUSTOM_ACTION_NAME),
+                    new RecognizePiiEntitiesAction())
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setActionName(CUSTOM_ACTION_NAME),
+                    new ExtractKeyPhrasesAction())
+                .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME),
+                    new ExtractSummaryAction())
+                .setRecognizeLinkedEntitiesActions(
+                    new RecognizeLinkedEntitiesAction().setActionName(CUSTOM_ACTION_NAME),
+                    new RecognizeLinkedEntitiesAction())
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME),
+                    new AnalyzeSentimentAction())
+        );
+    }
+
+    void analyzeActionsWithActionNamesRunner(
+        BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+            asList(new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0))),
+            new TextAnalyticsActions()
+                .setRecognizeEntitiesActions(new RecognizeEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
+                .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
+                .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setActionName(CUSTOM_ACTION_NAME))
+                .setExtractSummaryActions(new ExtractSummaryAction().setActionName(CUSTOM_ACTION_NAME))
+                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
+                .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME))
+        );
+    }
+
+
     void analyzeBatchActionsPaginationRunner(BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner,
         int documentsInTotal) {
         List<TextDocumentInput> documents = new ArrayList<>();
@@ -1299,7 +1346,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateCategorizedEntity(
         CategorizedEntity expectedCategorizedEntity, CategorizedEntity actualCategorizedEntity) {
         assertEquals(expectedCategorizedEntity.getSubcategory(), actualCategorizedEntity.getSubcategory());
-        assertEquals(expectedCategorizedEntity.getText(), actualCategorizedEntity.getText());
+        assertNotNull(actualCategorizedEntity.getText());
         assertEquals(expectedCategorizedEntity.getOffset(), actualCategorizedEntity.getOffset());
         assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
         assertNotNull(actualCategorizedEntity.getConfidenceScore());

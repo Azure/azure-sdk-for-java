@@ -7,8 +7,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.Instant;
 
 /** A Microsoft Azure Attestation response token body - the body of a response token issued by MAA. */
 
@@ -27,19 +26,19 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      * The time at which the token was issued, in the number of seconds since
      * 1970-01-0T00:00:00Z UTC
      */
-    private LocalDateTime iat;
+    private Instant iat;
 
     /*
      * The expiration time after which the token is no longer valid, in the
      * number of seconds since 1970-01-0T00:00:00Z UTC
      */
-    private LocalDateTime exp;
+    private Instant exp;
 
     /*
      * The not before time before which the token cannot be considered valid,
      * in the number of seconds since 1970-01-0T00:00:00Z UTC
      */
-    private LocalDateTime nbf;
+    private Instant nbf;
 
     /*
      * The Nonce input to the attestation request, if provided.
@@ -141,7 +140,7 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the iat value.
      */
-    @Override public LocalDateTime getIssuedAt() {
+    @Override public Instant getIssuedAt() {
         return this.iat;
     }
 
@@ -151,7 +150,7 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the exp value.
      */
-    @Override public LocalDateTime getExpiresOn() {
+    @Override public Instant getExpiresOn() {
         return this.exp;
     }
 
@@ -162,7 +161,7 @@ public final class AttestationResultImpl implements com.azure.security.attestati
      *
      * @return the nbf value.
      */
-    @Override public LocalDateTime getNotBefore() {
+    @Override public Instant getNotBefore() {
         return this.nbf;
     }
 
@@ -323,9 +322,9 @@ public final class AttestationResultImpl implements com.azure.security.attestati
         result.jti = generated.getJti();
 
         // RFC 7515 Claims
-        result.exp = LocalDateTime.ofEpochSecond(generated.getExp().longValue(), 0, ZoneOffset.UTC);
-        result.iat = LocalDateTime.ofEpochSecond(generated.getIat().longValue(), 0, ZoneOffset.UTC);
-        result.nbf  = LocalDateTime.ofEpochSecond(generated.getNbf().longValue(), 0, ZoneOffset.UTC);
+        result.exp = Instant.ofEpochSecond(generated.getExp().longValue());
+        result.iat = Instant.ofEpochSecond(generated.getIat().longValue());
+        result.nbf  = Instant.ofEpochSecond(generated.getNbf().longValue());
 
         // SGX properties.
         result.mrEnclave = generated.getMrEnclave();

@@ -44,25 +44,16 @@ public final class IdentityProviders {
     private Google google;
 
     /*
-     * The configuration settings of the Twitter provider.
-     */
-    @JsonProperty(value = "twitter")
-    private Twitter twitter;
-
-    /*
-     * The map of the name of the alias of each custom Open ID Connect provider
-     * to the
-     * configuration settings of the custom Open ID Connect provider.
-     */
-    @JsonProperty(value = "customOpenIdConnectProviders")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders;
-
-    /*
      * The configuration settings of the legacy Microsoft Account provider.
      */
     @JsonProperty(value = "legacyMicrosoftAccount")
     private LegacyMicrosoftAccount legacyMicrosoftAccount;
+
+    /*
+     * The configuration settings of the Twitter provider.
+     */
+    @JsonProperty(value = "twitter")
+    private Twitter twitter;
 
     /*
      * The configuration settings of the Apple provider.
@@ -75,6 +66,15 @@ public final class IdentityProviders {
      */
     @JsonProperty(value = "azureStaticWebApps")
     private AzureStaticWebApps azureStaticWebApps;
+
+    /*
+     * The map of the name of the alias of each custom Open ID Connect provider
+     * to the
+     * configuration settings of the custom Open ID Connect provider.
+     */
+    @JsonProperty(value = "customOpenIdConnectProviders")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders;
 
     /**
      * Get the azureActiveDirectory property: The configuration settings of the Azure Active directory provider.
@@ -157,49 +157,6 @@ public final class IdentityProviders {
     }
 
     /**
-     * Get the twitter property: The configuration settings of the Twitter provider.
-     *
-     * @return the twitter value.
-     */
-    public Twitter twitter() {
-        return this.twitter;
-    }
-
-    /**
-     * Set the twitter property: The configuration settings of the Twitter provider.
-     *
-     * @param twitter the twitter value to set.
-     * @return the IdentityProviders object itself.
-     */
-    public IdentityProviders withTwitter(Twitter twitter) {
-        this.twitter = twitter;
-        return this;
-    }
-
-    /**
-     * Get the customOpenIdConnectProviders property: The map of the name of the alias of each custom Open ID Connect
-     * provider to the configuration settings of the custom Open ID Connect provider.
-     *
-     * @return the customOpenIdConnectProviders value.
-     */
-    public Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders() {
-        return this.customOpenIdConnectProviders;
-    }
-
-    /**
-     * Set the customOpenIdConnectProviders property: The map of the name of the alias of each custom Open ID Connect
-     * provider to the configuration settings of the custom Open ID Connect provider.
-     *
-     * @param customOpenIdConnectProviders the customOpenIdConnectProviders value to set.
-     * @return the IdentityProviders object itself.
-     */
-    public IdentityProviders withCustomOpenIdConnectProviders(
-        Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders) {
-        this.customOpenIdConnectProviders = customOpenIdConnectProviders;
-        return this;
-    }
-
-    /**
      * Get the legacyMicrosoftAccount property: The configuration settings of the legacy Microsoft Account provider.
      *
      * @return the legacyMicrosoftAccount value.
@@ -216,6 +173,26 @@ public final class IdentityProviders {
      */
     public IdentityProviders withLegacyMicrosoftAccount(LegacyMicrosoftAccount legacyMicrosoftAccount) {
         this.legacyMicrosoftAccount = legacyMicrosoftAccount;
+        return this;
+    }
+
+    /**
+     * Get the twitter property: The configuration settings of the Twitter provider.
+     *
+     * @return the twitter value.
+     */
+    public Twitter twitter() {
+        return this.twitter;
+    }
+
+    /**
+     * Set the twitter property: The configuration settings of the Twitter provider.
+     *
+     * @param twitter the twitter value to set.
+     * @return the IdentityProviders object itself.
+     */
+    public IdentityProviders withTwitter(Twitter twitter) {
+        this.twitter = twitter;
         return this;
     }
 
@@ -260,6 +237,29 @@ public final class IdentityProviders {
     }
 
     /**
+     * Get the customOpenIdConnectProviders property: The map of the name of the alias of each custom Open ID Connect
+     * provider to the configuration settings of the custom Open ID Connect provider.
+     *
+     * @return the customOpenIdConnectProviders value.
+     */
+    public Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders() {
+        return this.customOpenIdConnectProviders;
+    }
+
+    /**
+     * Set the customOpenIdConnectProviders property: The map of the name of the alias of each custom Open ID Connect
+     * provider to the configuration settings of the custom Open ID Connect provider.
+     *
+     * @param customOpenIdConnectProviders the customOpenIdConnectProviders value to set.
+     * @return the IdentityProviders object itself.
+     */
+    public IdentityProviders withCustomOpenIdConnectProviders(
+        Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders) {
+        this.customOpenIdConnectProviders = customOpenIdConnectProviders;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -277,8 +277,17 @@ public final class IdentityProviders {
         if (google() != null) {
             google().validate();
         }
+        if (legacyMicrosoftAccount() != null) {
+            legacyMicrosoftAccount().validate();
+        }
         if (twitter() != null) {
             twitter().validate();
+        }
+        if (apple() != null) {
+            apple().validate();
+        }
+        if (azureStaticWebApps() != null) {
+            azureStaticWebApps().validate();
         }
         if (customOpenIdConnectProviders() != null) {
             customOpenIdConnectProviders()
@@ -289,15 +298,6 @@ public final class IdentityProviders {
                             e.validate();
                         }
                     });
-        }
-        if (legacyMicrosoftAccount() != null) {
-            legacyMicrosoftAccount().validate();
-        }
-        if (apple() != null) {
-            apple().validate();
-        }
-        if (azureStaticWebApps() != null) {
-            azureStaticWebApps().validate();
         }
     }
 }

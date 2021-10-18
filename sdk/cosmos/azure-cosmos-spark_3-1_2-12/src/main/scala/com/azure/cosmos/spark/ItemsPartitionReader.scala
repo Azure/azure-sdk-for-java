@@ -44,9 +44,12 @@ private case class ItemsPartitionReader
     Some(cosmosClientStateHandle))
 
   private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
-  cosmosAsyncContainer.openConnectionsAndInitCaches().block()
+  SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
   private val queryOptions = new CosmosQueryRequestOptions()
+
+  private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
+  private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
 
   initializeDiagnosticsIfConfigured
 
@@ -83,7 +86,7 @@ private case class ItemsPartitionReader
 
   override def get(): InternalRow = {
     val objectNode = iterator.next()
-    CosmosRowConverter.fromObjectNodeToInternalRow(
+    cosmosRowConverter.fromObjectNodeToInternalRow(
       readSchema,
       rowSerializer,
       objectNode,

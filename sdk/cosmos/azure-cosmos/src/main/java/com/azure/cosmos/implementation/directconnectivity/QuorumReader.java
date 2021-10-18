@@ -242,7 +242,9 @@ public class QuorumReader {
                     });
             }).repeat(maxNumberOfReadQuorumRetries)
                    .takeUntil(dummy -> !shouldRetryOnSecondary.v)
-                .concatWith(Flux.defer(() -> {
+                   //   In case there is an empty response from above flatMap, it means we could not complete read quorum
+                   //   So we will throw an error, which will be eventually retried.
+                   .switchIfEmpty(Flux.defer(() -> {
                        logger.warn("Could not complete read quorum with read quorum value of {}", readQuorumValue);
 
                     return Flux.error(new GoneException(
@@ -634,8 +636,10 @@ public class QuorumReader {
                            }
 
                             return Flux.empty();
-                       })).
-                       concatWith(
+                       }))
+                   //   In case the above flux returns empty (which it will after all the retries have been exhausted),
+                   //   We will just return false
+                   .switchIfEmpty(
                                 Flux.defer(() -> {
                                logger.debug("QuorumReader: waitForReadBarrierAsync - TargetGlobalCommittedLsn: {}, MaxGlobalCommittedLsn: {}.", targetGlobalCommittedLSN, maxGlobalCommittedLsn);
                                     return Flux.just(false);

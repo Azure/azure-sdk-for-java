@@ -422,6 +422,9 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final boolean channelAcquisitionContextEnabled;
 
+        @JsonProperty()
+        private final int ioThreadPriority;
+
         // endregion
 
         // region Constructors
@@ -451,6 +454,7 @@ public class RntbdTransportClient extends TransportClient {
             this.threadCount = builder.threadCount;
             this.userAgent = builder.userAgent;
             this.channelAcquisitionContextEnabled = builder.channelAcquisitionContextEnabled;
+            this.ioThreadPriority = builder.ioThreadPriority;
 
             this.connectTimeout = builder.connectTimeout == null
                 ? builder.requestTimeout
@@ -479,6 +483,7 @@ public class RntbdTransportClient extends TransportClient {
             this.threadCount = 2 * Runtime.getRuntime().availableProcessors();
             this.userAgent = new UserAgentContainer();
             this.channelAcquisitionContextEnabled = false;
+            this.ioThreadPriority = Thread.NORM_PRIORITY;
         }
 
         // endregion
@@ -562,6 +567,16 @@ public class RntbdTransportClient extends TransportClient {
         }
 
         public boolean isChannelAcquisitionContextEnabled() { return this.channelAcquisitionContextEnabled; }
+
+        public int ioThreadPriority() {
+            checkArgument(
+                this.ioThreadPriority >= Thread.MIN_PRIORITY && this.ioThreadPriority <= Thread.MAX_PRIORITY,
+                "Expect ioThread priority between [%s, %s]",
+                Thread.MIN_PRIORITY,
+                Thread.MAX_PRIORITY);
+
+            return this.ioThreadPriority;
+        }
 
         // endregion
 
@@ -705,6 +720,7 @@ public class RntbdTransportClient extends TransportClient {
             private int threadCount;
             private UserAgentContainer userAgent;
             private boolean channelAcquisitionContextEnabled;
+            private int ioThreadPriority;
 
             // endregion
 
@@ -734,6 +750,7 @@ public class RntbdTransportClient extends TransportClient {
                 this.threadCount = DEFAULT_OPTIONS.threadCount;
                 this.userAgent = DEFAULT_OPTIONS.userAgent;
                 this.channelAcquisitionContextEnabled = DEFAULT_OPTIONS.channelAcquisitionContextEnabled;
+                this.ioThreadPriority = DEFAULT_OPTIONS.ioThreadPriority;
             }
 
             // endregion
