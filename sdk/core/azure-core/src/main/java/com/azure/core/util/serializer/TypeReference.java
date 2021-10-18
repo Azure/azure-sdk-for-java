@@ -49,6 +49,7 @@ public abstract class TypeReference<T> {
      *
      * @throws IllegalArgumentException If the reference is constructed without type information.
      */
+    @SuppressWarnings("unchecked")
     public TypeReference() {
         Type superClass = this.getClass().getGenericSuperclass();
         if (superClass instanceof Class) {
