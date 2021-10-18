@@ -126,7 +126,7 @@ class ServiceAPITest extends APISpec {
 //        notThrown(Exception)
 
         when: "Connection string with SAS"
-        def connectionString = "DefaultEndpointsProtocol=https;AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).accountName + ";SharedAccessSignature=" + sas + ";EndpointSuffix=" + Configuration.getGlobalConfiguration().get("STORAGE_ENDPOINT_SUFFIX")
+        def connectionString = "DefaultEndpointsProtocol=https;AccountName=" + BlobUrlParts.parse(cc.getAccountUrl()).accountName + ";SharedAccessSignature=" + sas + ";EndpointSuffix=" + Configuration.getGlobalConfiguration().get("STORAGE_ENDPOINT_SUFFIX", "core.windows.net")
         instrument(new BlobContainerClientBuilder()
             .connectionString(connectionString)
             .containerName(cc.getBlobContainerName()))
@@ -265,10 +265,16 @@ class ServiceAPITest extends APISpec {
             null)
 
         then:
-        for (BlobContainerItem item : listResult) {
-            item.isDeleted()
+        if (Object.equals("core.windows.net",
+            Configuration.getGlobalConfiguration()
+                .get("STORAGE_ENDPOINT_SUFFIX", "core.windows.net"))) {
+            for (BlobContainerItem item : listResult) {
+                item.isDeleted()
+            }
+            listResult.size() == NUM_CONTAINERS
+        } else {
+            listResult.size() == 0
         }
-        listResult.size() == NUM_CONTAINERS
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -293,10 +299,16 @@ class ServiceAPITest extends APISpec {
             null)
 
         then:
-        for (BlobContainerItem item : listResult) {
-            item.isDeleted()
+        if (Object.equals("core.windows.net",
+            Configuration.getGlobalConfiguration()
+                .get("STORAGE_ENDPOINT_SUFFIX", "core.windows.net"))) {
+            for (BlobContainerItem item : listResult) {
+                item.isDeleted()
+            }
+            listResult.size() == NUM_CONTAINERS
+        } else {
+            listResult.size() == 0
         }
-        listResult.size() == NUM_CONTAINERS
     }
 
     def "List containers error"() {
@@ -884,184 +896,213 @@ class ServiceAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container"() {
-        given:
-        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc1.create()
-        def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
-        cc1.delete()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
+        if (Object.equals("core.windows.net",
+            Configuration.getGlobalConfiguration()
+                .get("STORAGE_ENDPOINT_SUFFIX", "core.windows.net"))) {
+            given:
+            def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+            cc1.create()
+            def blobName = generateBlobName()
+            cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
+            cc1.delete()
+            def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+                new ListBlobContainersOptions()
+                    .setPrefix(cc1.getBlobContainerName())
+                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
+                null).first()
 
-        sleepIfRecord(30000)
+            sleepIfRecord(30000)
 
-        when:
-        def restoredContainerClient = primaryBlobServiceClient
-            .undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion())
+            when:
+            def restoredContainerClient = primaryBlobServiceClient
+                .undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion())
 
-        then:
-        restoredContainerClient.listBlobs().size() == 1
-        restoredContainerClient.listBlobs().first().getName() == blobName
+            then:
+            restoredContainerClient.listBlobs().size() == 1
+            restoredContainerClient.listBlobs().first().getName() == blobName
+        }
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @PlaybackOnly
     def "Restore Container into other container"() {
-        given:
-        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc1.create()
-        def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
-        cc1.delete()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
+        if (Object.equals("core.windows.net",
+            Configuration.getGlobalConfiguration()
+                .get("STORAGE_ENDPOINT_SUFFIX", "core.windows.net"))) {
+            given:
+            def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+            cc1.create()
+            def blobName = generateBlobName()
+            cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
+            cc1.delete()
+            def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+                new ListBlobContainersOptions()
+                    .setPrefix(cc1.getBlobContainerName())
+                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
+                null).first()
 
-        sleepIfRecord(30000)
+            sleepIfRecord(30000)
 
-        when:
-        def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-                .setDestinationContainerName(generateContainerName()), null, Context.NONE)
-            .getValue()
+            when:
+            def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
+                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+                    .setDestinationContainerName(generateContainerName()), null, Context.NONE)
+                .getValue()
 
-        then:
-        restoredContainerClient.listBlobs().size() == 1
-        restoredContainerClient.listBlobs().first().getName() == blobName
+            then:
+            restoredContainerClient.listBlobs().size() == 1
+            restoredContainerClient.listBlobs().first().getName() == blobName
+        }
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container with response"() {
-        given:
-        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc1.create()
-        def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
-        cc1.delete()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
+        if (Object.equals("core.windows.net",
+            Configuration.getGlobalConfiguration()
+                .get("STORAGE_ENDPOINT_SUFFIX", "core.windows.net"))) {
+            given:
+            def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+            cc1.create()
+            def blobName = generateBlobName()
+            cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
+            cc1.delete()
+            def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+                new ListBlobContainersOptions()
+                    .setPrefix(cc1.getBlobContainerName())
+                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
+                null).first()
 
-        sleepIfRecord(30000)
+            sleepIfRecord(30000)
 
-        when:
-        def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()),
-            Duration.ofMinutes(1), Context.NONE)
-        def restoredContainerClient = response.getValue()
+            when:
+            def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
+                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()),
+                Duration.ofMinutes(1), Context.NONE)
+            def restoredContainerClient = response.getValue()
 
-        then:
-        response != null
-        response.getStatusCode() == 201
-        restoredContainerClient.listBlobs().size() == 1
-        restoredContainerClient.listBlobs().first().getName() == blobName
+            then:
+            response != null
+            response.getStatusCode() == 201
+            restoredContainerClient.listBlobs().size() == 1
+            restoredContainerClient.listBlobs().first().getName() == blobName
+        }
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container async"() {
-        given:
-        def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
-        def blobName = generateBlobName()
-        def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
+        if (Object.equals("core.windows.net",
+            Configuration.getGlobalConfiguration()
+                .get("STORAGE_ENDPOINT_SUFFIX", "core.windows.net"))) {
+            given:
+            def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
+            def blobName = generateBlobName()
+            def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
-        def blobContainerItemMono = cc1.create()
-        .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
-        .then(cc1.delete())
-        .then(Mono.delay(Duration.ofMillis(delay)))
-        .then(primaryBlobServiceAsyncClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
-        ).next())
+            def blobContainerItemMono = cc1.create()
+                .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
+                .then(cc1.delete())
+                .then(Mono.delay(Duration.ofMillis(delay)))
+                .then(primaryBlobServiceAsyncClient.listBlobContainers(
+                    new ListBlobContainersOptions()
+                        .setPrefix(cc1.getBlobContainerName())
+                        .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
+                ).next())
 
-        when:
-        def restoredContainerClientMono = blobContainerItemMono.flatMap {
-            blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion())
+            when:
+            def restoredContainerClientMono = blobContainerItemMono.flatMap {
+                blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion())
+            }
+
+            then:
+            StepVerifier.create(restoredContainerClientMono.flatMap { restoredContainerClient -> restoredContainerClient.listBlobs().collectList() })
+                .assertNext({
+                    assert it.size() == 1
+                    assert it.first().getName() == blobName
+                })
+                .verifyComplete()
         }
-
-        then:
-        StepVerifier.create(restoredContainerClientMono.flatMap {restoredContainerClient -> restoredContainerClient.listBlobs().collectList() })
-        .assertNext( {
-            assert it.size() == 1
-            assert it.first().getName() == blobName
-        })
-        .verifyComplete()
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container async with response"() {
-        given:
-        def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
-        def blobName = generateBlobName()
-        def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
+        if (Object.equals("core.windows.net",
+            Configuration.getGlobalConfiguration()
+                .get("STORAGE_ENDPOINT_SUFFIX", "core.windows.net"))) {
+            given:
+            def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
+            def blobName = generateBlobName()
+            def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
-        def blobContainerItemMono = cc1.create()
-            .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
-            .then(cc1.delete())
-            .then(Mono.delay(Duration.ofMillis(delay)))
-            .then(primaryBlobServiceAsyncClient.listBlobContainers(
-                new ListBlobContainersOptions()
-                    .setPrefix(cc1.getBlobContainerName())
-                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
-            ).next())
+            def blobContainerItemMono = cc1.create()
+                .then(cc1.getBlobAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
+                .then(cc1.delete())
+                .then(Mono.delay(Duration.ofMillis(delay)))
+                .then(primaryBlobServiceAsyncClient.listBlobContainers(
+                    new ListBlobContainersOptions()
+                        .setPrefix(cc1.getBlobContainerName())
+                        .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
+                ).next())
 
-        when:
-        def responseMono = blobContainerItemMono.flatMap {
-            blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
-                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()))
+            when:
+            def responseMono = blobContainerItemMono.flatMap {
+                blobContainerItem ->
+                    primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
+                        new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()))
+            }
+
+            then:
+            StepVerifier.create(responseMono)
+                .assertNext({
+                    assert it != null
+                    assert it.getStatusCode() == 201
+                    assert it.getValue() != null
+                    assert it.getValue().getBlobContainerName() == cc1.getBlobContainerName()
+                })
+                .verifyComplete()
         }
-
-        then:
-        StepVerifier.create(responseMono)
-        .assertNext({
-            assert it != null
-            assert it.getStatusCode() == 201
-            assert it.getValue() != null
-            assert it.getValue().getBlobContainerName() == cc1.getBlobContainerName()
-        })
-        .verifyComplete()
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container error"() {
-        when:
-        primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652")
+        if (Object.equals("core.windows.net",
+            Configuration.getGlobalConfiguration()
+                .get("STORAGE_ENDPOINT_SUFFIX", "core.windows.net"))) {
+            when:
+            primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652")
 
-        then:
-        thrown(BlobStorageException.class)
+            then:
+            thrown(BlobStorageException.class)
+        }
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     def "Restore Container into existing container error"() {
-        given:
-        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc1.create()
-        def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
-        cc1.delete()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
+        if (Object.equals("core.windows.net",
+            Configuration.getGlobalConfiguration()
+                .get("STORAGE_ENDPOINT_SUFFIX", "core.windows.net"))) {
+            given:
+            def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+            cc1.create()
+            def blobName = generateBlobName()
+            cc1.getBlobClient(blobName).upload(data.defaultInputStream, 7)
+            cc1.delete()
+            def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+                new ListBlobContainersOptions()
+                    .setPrefix(cc1.getBlobContainerName())
+                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
+                null).first()
 
-        sleepIfRecord(30000)
+            sleepIfRecord(30000)
 
-        when:
-        def cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName())
-        primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-                .setDestinationContainerName(cc2.getBlobContainerName()), null, Context.NONE)
+            when:
+            def cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+            primaryBlobServiceClient.undeleteBlobContainerWithResponse(
+                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+                    .setDestinationContainerName(cc2.getBlobContainerName()), null, Context.NONE)
 
-        then:
-        thrown(BlobStorageException.class)
+            then:
+            thrown(BlobStorageException.class)
+        }
     }
 
     def "OAuth on secondary"() {

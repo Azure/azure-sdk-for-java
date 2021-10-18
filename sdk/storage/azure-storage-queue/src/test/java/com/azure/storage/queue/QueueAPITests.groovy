@@ -32,7 +32,7 @@ class QueueAPITests extends APISpec {
     def storageEndpointSuffix;
 
     def setup() {
-        storageEndpointSuffix = Configuration.getGlobalConfiguration().get("STORAGE_ENDPOINT_SUFFIX")
+        storageEndpointSuffix = Configuration.getGlobalConfiguration().get("STORAGE_ENDPOINT_SUFFIX", "core.windows.net")
         queueName = namer.getRandomName(60)
         primaryQueueServiceClient = queueServiceBuilderHelper().buildClient()
         queueClient = primaryQueueServiceClient.getQueueClient(queueName)
