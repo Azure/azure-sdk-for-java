@@ -60,6 +60,7 @@ trigger:
       - sdk/spring/spring-cloud-azure-starter-stream-servicebus-topic/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
+      - sdk/spring/spring-security-azure-oauth2-client/pom.xml
 
 pr:
   branches:
@@ -121,6 +122,7 @@ pr:
       - sdk/spring/spring-cloud-azure-starter-stream-servicebus-topic/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
+      - sdk/spring/spring-security-azure-oauth2-client/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -300,4 +302,8 @@ extends:
       - name: spring-cloud-azure-stream-binder-eventhubs-core
         groupId: com.azure.spring
         safeName: springcloudazurestreambindereventhubscore
+        skipPublishDocMs: true
+      - name: spring-security-azure-oauth2-client
+        groupId: com.azure.spring
+        safeName: springsecurityazureoauth2client
         skipPublishDocMs: true

@@ -554,3 +554,28 @@
                 groupId: com.azure.spring
                 artifactId: azure-spring-cloud-starter-eventhubs-kafka
                 version: 2.2.0
+- name: Azure Active Directory
+  content:
+    - name: Azure Active Directory
+      description: Azure Active Directory (Azure AD) is Microsoft’s cloud-based identity and access management service, which helps your employees sign in and access resources.
+      msdocs: https://docs.microsoft.com/azure/active-directory/fundamentals/                       # Product documentation.
+      artifacts:
+        - artifactId: spring-security-azure-oauth2-client
+          groupId: com.azure.spring
+          versionGA: 4.0.0-beta.1
+          description: Extension of spring-security-oauth2-client. Provide some extra features like On-Behalf-Of flow.
+          type: spring
+          links:
+            repopath: https://search.maven.org/artifact/com.azure.spring/spring-security-azure-oauth2-client
+            msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-security-azure-oauth2-client           # Documentation url of repository azure-docs-for-java.
+            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-security-azure-oauth2-client
+            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/aad/spring-security-azure-oauth2-client             # Github Sample repo url.
+          springProperties:
+            starter: true
+            bom: spring-cloud-azure-dependencies                                                              # To map the bom package of each Spring library, we use this property to index the `artifactId` property of a library's bom.
+            compatibilityRange: "[2.5.5,2.5.5]"
+            mappings:
+              - compatibilityRange: "[2.5.5,2.5.5]"
+                groupId: com.azure.spring
+                artifactId: spring-security-azure-oauth2-client
+                version: 4.0.0-beta.1

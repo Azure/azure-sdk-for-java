@@ -33,6 +33,7 @@
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus-queue</module>
         <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
+        <module>spring-security-azure-oauth2-client</module>
       </modules>
       <dependencies>
         <dependency>
@@ -197,6 +198,7 @@
         <module>spring-cloud-azure-stream-binder-test</module>
         <module>spring-cloud-azure-test-eventhubs-kafka</module>
         <module>spring-cloud-azure-test-servicebus-binder</module>
+        <module>spring-security-azure-oauth2-client</module>
       </modules>
     </profile>
 
@@ -240,6 +242,7 @@
         <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
         <module>spring-cloud-azure-starter-stream-servicebus-topic</module>
         <module>spring-cloud-azure-stream-binder-test</module>
+        <module>spring-security-azure-oauth2-client</module>
       </modules>
     </profile>
   </profiles>
