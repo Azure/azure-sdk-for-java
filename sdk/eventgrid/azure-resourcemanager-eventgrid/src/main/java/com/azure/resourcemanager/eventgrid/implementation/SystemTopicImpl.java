@@ -45,12 +45,12 @@ public final class SystemTopicImpl implements SystemTopic, SystemTopic.Definitio
         }
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public IdentityInfo identity() {
         return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ResourceProvisioningState provisioningState() {
