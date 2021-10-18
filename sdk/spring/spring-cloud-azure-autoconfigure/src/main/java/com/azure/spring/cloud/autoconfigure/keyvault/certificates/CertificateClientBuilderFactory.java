@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.keyvault.certificates;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
@@ -48,6 +49,11 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
     @Override
     protected BiConsumer<CertificateClientBuilder, HttpPipeline> consumeHttpPipeline() {
         return CertificateClientBuilder::pipeline;
+    }
+
+    @Override
+    protected BiConsumer<CertificateClientBuilder, HttpLogOptions> consumeHttpLogOptions() {
+        return CertificateClientBuilder::httpLogOptions;
     }
 
     @Override

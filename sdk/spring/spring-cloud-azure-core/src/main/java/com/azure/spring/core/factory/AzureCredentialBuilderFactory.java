@@ -6,6 +6,7 @@ package com.azure.spring.core.factory;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.identity.CredentialBuilderBase;
@@ -42,6 +43,11 @@ public class AzureCredentialBuilderFactory<T extends CredentialBuilderBase<T>> e
     @Override
     protected BiConsumer<T, HttpPipeline> consumeHttpPipeline() {
         return T::httpPipeline;
+    }
+
+    @Override
+    protected BiConsumer<T, HttpLogOptions> consumeHttpLogOptions() {
+        return (a, b) -> { };
     }
 
     @Override
