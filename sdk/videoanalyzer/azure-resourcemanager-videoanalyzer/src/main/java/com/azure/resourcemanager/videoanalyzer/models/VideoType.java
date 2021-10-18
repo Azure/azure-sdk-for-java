@@ -13,6 +13,9 @@ public final class VideoType extends ExpandableStringEnum<VideoType> {
     /** Static value Archive for VideoType. */
     public static final VideoType ARCHIVE = fromString("Archive");
 
+    /** Static value File for VideoType. */
+    public static final VideoType FILE = fromString("File");
+
     /**
      * Creates or finds a VideoType from its string representation.
      *
