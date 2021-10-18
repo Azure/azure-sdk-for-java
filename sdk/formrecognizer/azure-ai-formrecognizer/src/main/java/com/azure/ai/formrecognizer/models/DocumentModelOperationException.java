@@ -35,7 +35,7 @@ public final class DocumentModelOperationException extends AzureException {
 
     static {
         DocumentAnalysisExceptionHelper.setAccessor(
-            (documentAnalysisException, formRecognizerError)
-                -> documentAnalysisException.setDocumentModelOperationError(formRecognizerError));
+            ((documentModelOperationException, documentModelOperationError)
+                -> documentModelOperationException.setDocumentModelOperationError(documentModelOperationError)));
     }
 }
