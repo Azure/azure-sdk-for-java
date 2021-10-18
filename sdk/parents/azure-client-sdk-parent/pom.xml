@@ -473,6 +473,7 @@
             <showWarnings>true</showWarnings>
             <failOnWarning>true</failOnWarning>
             <compilerArgs combine.children="append" combine.self="append">
+              <arg>-implicit:class</arg>
               <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
               <arg>-Xlint:cast</arg>
               <arg>-Xlint:classfile</arg>
