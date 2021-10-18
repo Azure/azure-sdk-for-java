@@ -12,7 +12,7 @@
 # PRLabel: %bom
 /sdk/boms/azure-sdk-bom/                            @pallavit @alzimmermsft @jonathangiles @srnagar @anuchandy
 # PRLabel: %azure-spring
-/sdk/boms/azure-spring-boot-bom/                    @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
+/sdk/boms/azure-spring-boot-bom/                    @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @zhichengliu12581 @moarychan
 
 ####
 # Service teams
@@ -20,8 +20,8 @@
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                              @mssfang @alzimmermsft
 # PRLabel: %azure-spring
-/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
-/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
+/sdk/appconfiguration/azure-spring-cloud-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @zhichengliu12581 @moarychan
+/sdk/appconfiguration/spring-cloud-azure-*/         @mrm9084 @zhenlan @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @zhichengliu12581 @moarychan
 
 
 # PRLabel: %Attestation
@@ -51,9 +51,9 @@
 # PRLabel: %Cosmos
 /sdk/cosmos/                                        @moderakh @kushagraThapar @FabianMeiswinkel @kirankumarkolli @mbhaskar @simplynaveen20 @xinlian12 @milismsft @aayush3011
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @mbhaskar @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
+/sdk/cosmos/azure-spring-data-cosmos/               @kushagraThapar @mbhaskar @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @zhichengliu12581 @moarychan
 # PRLabel: %azure-spring
-/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
+/sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @zhichengliu12581 @moarychan
 
 # PRLabel: %Digital Twins
 /sdk/digitaltwins/                                  @drwill-ms @azabbasi @johngallardo
@@ -88,7 +88,7 @@
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @vcolin7 @g2vinay @samvaity
 # PRLabel: %azure-spring
-/sdk/keyvault/azure-security-keyvault-jca           @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
+/sdk/keyvault/azure-security-keyvault-jca           @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @zhichengliu12581 @moarychan
 
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divyajay @alongafni
 
@@ -129,7 +129,7 @@
 /sdk/textanalytics/                                 @samvaity @mssfang
 
 # PRLabel: %azure-spring
-/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793
+/sdk/spring/                                        @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @zhichengliu12581 @moarychan
 
 # end to end tests
 # PRLabel: %Azure.Identity
@@ -153,7 +153,7 @@
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
 /eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @hallipr @weshaggard
 /eng/versioning/                                    @alzimmermsft @samvaity @g2vinay
-/eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @ZhuXiaoBing-cn @zhichengliu12581 @moarychan @michaelqi793 @jonathangiles
+/eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @zhichengliu12581 @moarychan @jonathangiles
 /eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar @jonathangiles
 /parent/                                            @alzimmermsft
 
