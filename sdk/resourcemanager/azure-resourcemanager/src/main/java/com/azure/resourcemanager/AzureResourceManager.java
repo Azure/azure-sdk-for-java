@@ -125,7 +125,7 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
 import java.util.Objects;
 
 /** The entry point for accessing resource management APIs in Azure. */
-public final class AzureResourceManager {
+public class AzureResourceManager {
     private final ResourceManager resourceManager;
     private final StorageManager storageManager;
     private final ComputeManager computeManager;
