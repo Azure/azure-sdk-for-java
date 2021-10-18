@@ -42,7 +42,7 @@ public abstract class TypeReference<T> {
     private static final Map<Class<?>, TypeReference<?>> CACHE = new ConcurrentHashMap<>();
 
     private final Type javaType;
-    private Class<T> clazz;
+    private final Class<T> clazz;
 
     /**
      * Constructs a new {@link TypeReference} which maintains generic information.
