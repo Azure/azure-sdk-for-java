@@ -1,6 +1,16 @@
 # Release History
 
-## 1.4.0-beta.2 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.4.0 (2021-10-14)
 
 ### Features Added
 - Added `tenantId` setter on `AzurePowerShellCredential` and `AzureCliCredential`
@@ -12,10 +22,6 @@ Note the breaking changes below don't apply if you're upgrading from a previous 
 - Removed 'regionalAuthority' setter on `ClientSecretCredentialBuilder` and `ClientCertificateCredentialBuilder`
 - Removed `RegionalAuthority` enum class.
 - Removed `allowMultiTenantAuthentication` method from Credential Builders. The Multi Tenant Authentication is enabled by default now.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.3.7 (2021-10-04)
 
