@@ -10,12 +10,6 @@ import java.util.Collection;
 
 /** Defines values for AppSku. */
 public final class AppSku extends ExpandableStringEnum<AppSku> {
-    /** Static value F1 for AppSku. */
-    public static final AppSku F1 = fromString("F1");
-
-    /** Static value S1 for AppSku. */
-    public static final AppSku S1 = fromString("S1");
-
     /** Static value ST0 for AppSku. */
     public static final AppSku ST0 = fromString("ST0");
 
