@@ -37,6 +37,13 @@
       <optional>true</optional>
     </dependency>
 
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>spring-cloud-azure-trace-sleuth</artifactId>
+      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-trace-sleuth;current} -->
+      <optional>true</optional>
+    </dependency>
+
     <!-- Azure Spring Integration   -->
 		<!-- Event Hub -->
     <dependency>
@@ -197,6 +204,13 @@
     </dependency>
 
     <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-sleuth-autoconfigure</artifactId>
+      <version>3.0.3</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-sleuth-autoconfigure;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
       <version>2.5.4</version> <!-- {x-version-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
@@ -272,6 +286,12 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-sleuth</artifactId>
+      <version>3.0.3</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-sleuth;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -295,6 +315,7 @@
                 <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-sleuth-autoconfigure:[3.0.3]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-sleuth-autoconfigure;external_dependency} -->
                 <include>org.springframework.data:spring-data-mongodb:[3.2.4]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
                 <include>org.springframework.data:spring-data-redis:[2.5.4]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
                 <include>org.springframework.kafka:spring-kafka:[2.7.6]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
