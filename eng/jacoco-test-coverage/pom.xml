@@ -583,11 +583,6 @@
       <version>3.14.0-beta.1</version> <!-- {x-version-update;com.azure:azure-spring-data-cosmos;current} -->
     </dependency>
     <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-messaging</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-messaging;current} -->
-    </dependency>
-    <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>spring-cloud-starter-azure-appconfiguration-config</artifactId>
       <version>1.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
