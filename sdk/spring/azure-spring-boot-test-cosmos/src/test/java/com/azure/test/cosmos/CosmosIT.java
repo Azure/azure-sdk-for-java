@@ -3,20 +3,15 @@
 
 package com.azure.test.cosmos;
 
-import com.azure.spring.autoconfigure.aad.AADAutoConfiguration;
 import com.azure.spring.test.AppRunner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CosmosIT {
 
@@ -24,23 +19,6 @@ public class CosmosIT {
     private static final String AZURE_COSMOS_ENDPOINT = System.getenv("AZURE_COSMOS_ENDPOINT");
     private static final String AZURE_COSMOS_ACCOUNT_KEY = System.getenv("AZURE_COSMOS_ACCOUNT_KEY");
     private static final String AZURE_COSMOS_DATABASE_NAME = System.getenv("AZURE_COSMOS_DATABASE_NAME");
-
-    @Disabled
-    @Test
-    public void testCosmosStarterIsolating() {
-        try (AppRunner app = new AppRunner(DummyApp.class)) {
-            //set properties
-            app.property("spring.cloud.azure.cosmos.endpoint", AZURE_COSMOS_ENDPOINT);
-            app.property("spring.cloud.azure.cosmos.key", AZURE_COSMOS_ACCOUNT_KEY);
-            app.property("spring.cloud.azure.cosmos.database", AZURE_COSMOS_DATABASE_NAME);
-            app.property("spring.cloud.azure.cosmos.populateQueryMetrics", String.valueOf(true));
-
-            //start app
-            app.start();
-            assertThrows(NoSuchBeanDefinitionException.class,
-                () -> app.getBean(AADAutoConfiguration.class));
-        }
-    }
 
     @Test
     public void testCosmosOperation() {
