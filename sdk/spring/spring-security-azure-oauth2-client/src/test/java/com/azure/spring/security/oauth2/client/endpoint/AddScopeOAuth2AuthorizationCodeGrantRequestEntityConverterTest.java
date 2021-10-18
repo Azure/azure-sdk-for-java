@@ -3,7 +3,6 @@
 
 package com.azure.spring.security.oauth2.client.endpoint;
 
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.RequestEntity;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
@@ -23,10 +22,9 @@ import static com.azure.spring.security.oauth2.client.utils.ClientRegistrations.
 import static com.azure.spring.security.oauth2.client.utils.ClientRegistrations.CLIENT_REGISTRATION_1;
 import static com.azure.spring.security.oauth2.client.utils.ClientRegistrations.CLIENT_REGISTRATION_2;
 import static com.azure.spring.security.oauth2.client.utils.ClientRegistrations.CLIENT_REGISTRATION_ID_1;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class AddScopeOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
@@ -57,7 +55,9 @@ public class AddScopeOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
         RequestEntity<?> requestEntity = CONVERTER.convert(request);
         assertNotNull(requestEntity);
         Set<Map.Entry<String, List<String>>> entrySet = requestEntity.getHeaders().entrySet();
-        assertThat(entrySet, (Matcher) hasItems(EXPECTED_HEADERS));
+        for (Object expected_header : EXPECTED_HEADERS) {
+            assertTrue(entrySet.contains((Map.Entry<String, List<String>>)expected_header));
+        }
     }
 
     @Test
@@ -76,7 +76,9 @@ public class AddScopeOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
         RequestEntity<?> requestEntity = CONVERTER.convert(request);
         assertNotNull(requestEntity);
         Set<Map.Entry<String, List<String>>> entrySet = requestEntity.getHeaders().entrySet();
-        assertThat(entrySet, (Matcher) hasItems(EXPECTED_HEADERS));
+        for (Object expected_header : EXPECTED_HEADERS) {
+            assertTrue(entrySet.contains((Map.Entry<String, List<String>>)expected_header));
+        }
     }
 
     private OAuth2AuthorizationCodeGrantRequest createCodeGrantRequest(ClientRegistration client) {

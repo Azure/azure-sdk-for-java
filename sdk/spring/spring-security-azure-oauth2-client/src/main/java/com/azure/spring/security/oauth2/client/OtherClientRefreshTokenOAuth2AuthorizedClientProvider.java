@@ -146,7 +146,7 @@ public class OtherClientRefreshTokenOAuth2AuthorizedClientProvider implements OA
 
     private boolean tokenNotExpired(OAuth2Token token) {
         return token.getExpiresAt() != null
-            && this.clock.instant().isAfter(token.getExpiresAt().minus(this.clockSkew));
+            && this.clock.instant().isBefore(token.getExpiresAt().minus(this.clockSkew));
     }
 
     private OAuth2AuthorizedClient createClientWithExpiredToken(OAuth2AuthorizedClient otherClient,
