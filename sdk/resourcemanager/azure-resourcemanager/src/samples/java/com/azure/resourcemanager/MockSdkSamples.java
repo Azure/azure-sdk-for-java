@@ -31,7 +31,7 @@ public class MockSdkSamples {
         Assertions.assertEquals(Code.RUNNING, mockAzure.kubernetesClusters().getById("mockId").powerState().code());
     }
 
-    @SuppressWarnings({"rawtypes"})
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Test
     public void mockCreate() {
         AzureResourceManager mockAzure = Mockito.mock(AzureResourceManager.class);
