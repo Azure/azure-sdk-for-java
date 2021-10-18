@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.storage.blob;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.autoconfigure.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
@@ -62,6 +63,11 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureHttpClientBuil
     @Override
     protected BiConsumer<BlobServiceClientBuilder, HttpPipeline> consumeHttpPipeline() {
         return BlobServiceClientBuilder::pipeline;
+    }
+
+    @Override
+    protected BiConsumer<BlobServiceClientBuilder, HttpLogOptions> consumeHttpLogOptions() {
+        return BlobServiceClientBuilder::httpLogOptions;
     }
 
     @Override

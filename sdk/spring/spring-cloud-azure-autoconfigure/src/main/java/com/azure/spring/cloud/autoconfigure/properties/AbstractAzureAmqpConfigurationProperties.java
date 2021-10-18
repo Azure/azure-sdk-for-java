@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.properties;
 
-import com.azure.spring.core.properties.client.AmqpClientProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
@@ -12,10 +11,10 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public abstract class AbstractAzureAmqpConfigurationProperties extends AbstractAzureServiceConfigurationProperties {
 
     @NestedConfigurationProperty
-    protected final AmqpClientProperties client = new AmqpClientProperties();
+    protected final AmqpClientConfigurationProperties client = new AmqpClientConfigurationProperties();
 
     @Override
-    public AmqpClientProperties getClient() {
+    public AmqpClientConfigurationProperties getClient() {
         return client;
     }
 }

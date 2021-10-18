@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.storage.fileshare;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.autoconfigure.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
@@ -49,6 +50,11 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureHttpClientBui
     @Override
     protected BiConsumer<ShareServiceClientBuilder, HttpPipeline> consumeHttpPipeline() {
         return ShareServiceClientBuilder::pipeline;
+    }
+
+    @Override
+    protected BiConsumer<ShareServiceClientBuilder, HttpLogOptions> consumeHttpLogOptions() {
+        return ShareServiceClientBuilder::httpLogOptions;
     }
 
     @Override

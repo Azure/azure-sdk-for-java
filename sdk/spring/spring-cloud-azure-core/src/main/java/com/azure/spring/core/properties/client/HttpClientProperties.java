@@ -37,4 +37,5 @@ public class HttpClientProperties extends ClientProperties {
     public void setReadTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
     }
+
 }

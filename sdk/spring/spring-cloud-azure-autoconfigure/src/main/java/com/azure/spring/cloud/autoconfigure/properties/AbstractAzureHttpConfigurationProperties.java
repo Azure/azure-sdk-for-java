@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.properties;
 
-import com.azure.spring.core.properties.client.HttpClientProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
@@ -12,10 +11,10 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public abstract class AbstractAzureHttpConfigurationProperties extends AbstractAzureServiceConfigurationProperties {
 
     @NestedConfigurationProperty
-    protected final HttpClientProperties client = new HttpClientProperties();
+    protected final HttpClientConfigurationProperties client = new HttpClientConfigurationProperties();
 
     @Override
-    public HttpClientProperties getClient() {
+    public HttpClientConfigurationProperties getClient() {
         return client;
     }
 }

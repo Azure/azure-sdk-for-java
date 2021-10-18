@@ -29,12 +29,9 @@ extends:
       - name: azure-sdk-bom
         groupId: com.azure
         safeName: azuresdkbom
-      - name: azure-spring-boot-bom
+      - name: spring-cloud-azure-dependencies
         groupID: com.azure.spring
-        safeName: azurespringbootbom
-      - name: azure-spring-cloud-dependencies
-        groupID: com.azure.spring
-        safeName: azurespringclouddependencies
+        safeName: springcloudazuredependencies
       - name: azure-sdk-template-bom
         groupID: com.azure
         safeName: azuresdktemplatebom

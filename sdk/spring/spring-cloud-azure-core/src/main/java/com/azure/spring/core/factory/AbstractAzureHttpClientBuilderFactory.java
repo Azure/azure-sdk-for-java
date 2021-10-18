@@ -6,9 +6,11 @@ package com.azure.spring.core.factory;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.spring.core.converter.AzureHttpLogOptionsConverter;
 import com.azure.spring.core.converter.AzureHttpProxyOptionsConverter;
 import com.azure.spring.core.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.client.ClientProperties;
@@ -33,6 +35,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private HttpPipeline httpPipeline;
     private final AzureHttpProxyOptionsConverter proxyOptionsConverter = new AzureHttpProxyOptionsConverter();
+    private final AzureHttpLogOptionsConverter logOptionsConverter = new AzureHttpLogOptionsConverter();
 
     protected abstract BiConsumer<T, HttpClient> consumeHttpClient();
 
@@ -40,10 +43,13 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     protected abstract BiConsumer<T, HttpPipeline> consumeHttpPipeline();
 
+    protected abstract BiConsumer<T, HttpLogOptions> consumeHttpLogOptions();
+
     @Override
     protected void configureCore(T builder) {
         super.configureCore(builder);
         configureHttpClient(builder);
+        configureHttpLogOptions(builder);
     }
 
     protected void configureHttpClient(T builder) {
@@ -73,6 +79,12 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     protected void configureHttpHeaders(T builder) {
         this.httpClientOptions.setHeaders(getHeaders());
+    }
+
+    protected void configureHttpLogOptions(T builder) {
+        ClientProperties client = getAzureProperties().getClient();
+        HttpLogOptions logOptions = this.logOptionsConverter.convert(client.getLogging());
+        consumeHttpLogOptions().accept(builder, logOptions);
     }
 
     protected void configureHttpTransportProperties(T builder) {

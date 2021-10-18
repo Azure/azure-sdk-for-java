@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpConfigurationProperties;
-import com.azure.spring.core.properties.client.AmqpClientProperties;
 
 /**
  *
@@ -18,8 +17,6 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
     protected String namespace;
 
     protected String connectionString;
-
-    private AmqpClientProperties client = new AmqpClientProperties();
 
     public String getFQDN() {
         return this.namespace + "." + this.domainName;
@@ -47,15 +44,6 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
 
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
-    }
-
-    @Override
-    public AmqpClientProperties getClient() {
-        return client;
-    }
-
-    public void setClient(AmqpClientProperties client) {
-        this.client = client;
     }
 
     // TODO (xiada) we removed these properties, and not mark them as deprecated, should we mention them in the migration docs?
