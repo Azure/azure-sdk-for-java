@@ -31,6 +31,7 @@ public class MockSdkSamples {
         Assertions.assertEquals(Code.RUNNING, mockAzure.kubernetesClusters().getById("mockId").powerState().code());
     }
 
+    @SuppressWarnings({"rawtypes"})
     @Test
     public void mockCreate() {
         AzureResourceManager mockAzure = Mockito.mock(AzureResourceManager.class);
@@ -53,7 +54,7 @@ public class MockSdkSamples {
         Mockito.when(mockAzure.kubernetesClusters()).thenReturn(mockClusters);
 
         Mockito.when(mockClusters.define(Mockito.anyString())).thenReturn(mockStage1);
-        Mockito.when(mockStage1.withRegion((Region) Mockito.any())).thenReturn(mockStage2);
+        Mockito.when(mockStage1.withRegion(Mockito.any(Region.class))).thenReturn(mockStage2);
         Mockito.when(mockStage2.withExistingResourceGroup(Mockito.anyString())).thenReturn(mockStage3);
         Mockito.when(mockStage3.withDefaultVersion()).thenReturn(mockStage4);
         Mockito.when(mockStage4.withRootUsername(Mockito.anyString())).thenReturn(mockStage5);
