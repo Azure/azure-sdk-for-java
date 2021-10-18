@@ -800,6 +800,7 @@
         <module>sdk/operationsmanagement</module>
         <module>sdk/peering</module>
         <module>sdk/policyinsights</module>
+        <module>sdk/portal</module>
         <module>sdk/postgresql</module>
         <module>sdk/postgresqlflexibleserver</module>
         <module>sdk/powerbidedicated</module>
