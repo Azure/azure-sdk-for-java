@@ -39,6 +39,7 @@ public class PremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMS
         String connectionString = azureServiceBusJMSProperties.getConnectionString();
         String clientId = azureServiceBusJMSProperties.getTopicClientId();
         int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
+        int prefetchPolicyAll = azureServiceBusJMSProperties.getPrefetchPolicyAll();
 
         ServiceBusJmsConnectionFactorySettings settings =
             new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
@@ -47,6 +48,9 @@ public class PremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMS
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
         springServiceBusJmsConnectionFactory.setClientId(clientId);
         springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS);
+        springServiceBusJmsConnectionFactory.getSettings()
+                                            .getConfigurationOptions()
+                                            .put("jms.prefetchPolicy.all", String.valueOf(prefetchPolicyAll));
 
         return springServiceBusJmsConnectionFactory;
     }

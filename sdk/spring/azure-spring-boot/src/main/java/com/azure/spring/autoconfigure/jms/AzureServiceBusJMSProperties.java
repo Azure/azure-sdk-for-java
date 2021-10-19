@@ -27,9 +27,19 @@ public class AzureServiceBusJMSProperties {
 
     private int idleTimeout = 1800000;
 
+    private int prefetchPolicyAll = 0;
+
     private String pricingTier;
 
     private final Listener listener = new Listener();
+
+    public int getPrefetchPolicyAll() {
+        return prefetchPolicyAll;
+    }
+
+    public void setPrefetchPolicyAll(int prefetchPolicyAll) {
+        this.prefetchPolicyAll = prefetchPolicyAll;
+    }
 
     public String getConnectionString() {
         return connectionString;

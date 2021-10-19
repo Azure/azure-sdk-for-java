@@ -4,6 +4,7 @@
 package com.azure.spring.autoconfigure.jms;
 
 import org.apache.qpid.jms.JmsConnectionFactory;
+import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -38,6 +39,7 @@ public class NonPremiumServiceBusJMSAutoConfiguration extends AbstractServiceBus
         String connectionString = azureServiceBusJMSProperties.getConnectionString();
         String clientId = azureServiceBusJMSProperties.getTopicClientId();
         int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
+        int prefetchPolicyAll = azureServiceBusJMSProperties.getPrefetchPolicyAll();
 
         ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);
         String host = serviceBusKey.getHost();
@@ -50,6 +52,9 @@ public class NonPremiumServiceBusJMSAutoConfiguration extends AbstractServiceBus
         jmsConnectionFactory.setClientID(clientId);
         jmsConnectionFactory.setUsername(sasKeyName);
         jmsConnectionFactory.setPassword(sasKey);
+        JmsDefaultPrefetchPolicy prefetchPolicy = (JmsDefaultPrefetchPolicy) jmsConnectionFactory.getPrefetchPolicy();
+        prefetchPolicy.setAll(prefetchPolicyAll);
+        jmsConnectionFactory.setPrefetchPolicy(prefetchPolicy);
         return jmsConnectionFactory;
     }
 
