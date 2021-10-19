@@ -43,6 +43,13 @@
 - Upgraded Jackson from `2.12.4` to `2.12.5`.
 - Upgraded Reactor from `3.4.9` to `3.4.10`.
 
+
+## 1.21.0-beta.1 (2021-09-08)
+
+### Features Added
+
+- Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
+
 ## 1.20.0 (2021-09-07)
 
 ### Features Added
@@ -102,8 +109,8 @@
 
 ### Features Added
 
- - Added `RequestOptions` for protocol methods
- - Added support for `BinaryData` type as the request body or response body in `RestProxy`
+- Added `RequestOptions` for protocol methods
+- Added support for `BinaryData` type as the request body or response body in `RestProxy`
 
 ## 1.18.0 (2021-07-01)
 
