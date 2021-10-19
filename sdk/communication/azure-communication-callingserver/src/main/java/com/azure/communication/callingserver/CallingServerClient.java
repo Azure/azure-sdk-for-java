@@ -5,7 +5,18 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.models.CallRejectReason;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.callingserver.models.*;
+import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.CallLocator;
+import com.azure.communication.callingserver.models.CallParticipant;
+import com.azure.communication.callingserver.models.CallRecordingProperties;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.callingserver.models.ParallelDownloadOptions;
+import com.azure.communication.callingserver.models.PlayAudioOptions;
+import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.StartRecordingOptions;
+import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -189,7 +200,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void removeParticipant(CallLocator callLocator, CommunicationIdentifier participant) {
-            return callingServerAsyncClient.removeParticipant(callLocator, participant).block();
+        return callingServerAsyncClient.removeParticipant(callLocator, participant).block();
     }
 
     /**
@@ -561,7 +572,6 @@ public final class CallingServerClient {
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response containing the http response information
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelParticipantMediaOperation(CallLocator callLocator, CommunicationIdentifier participant, String mediaOperationId) {

@@ -47,7 +47,18 @@ import com.azure.communication.callingserver.implementation.models.RedirectCallR
 import com.azure.communication.callingserver.implementation.models.RejectCallRequest;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingWithCallLocatorRequest;
-import com.azure.communication.callingserver.models.*;
+import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.CallLocator;
+import com.azure.communication.callingserver.models.CallParticipant;
+import com.azure.communication.callingserver.models.CallRecordingProperties;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.JoinCallOptions;
+import com.azure.communication.callingserver.models.ParallelDownloadOptions;
+import com.azure.communication.callingserver.models.PlayAudioOptions;
+import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.StartRecordingOptions;
+import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -65,19 +76,8 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * Asynchronous client that supports calling server operations.
@@ -346,11 +346,11 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
 
             AddParticipantWithCallLocatorRequest requestWithCallLocator = new AddParticipantWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setParticipant(CommunicationIdentifierConverter.convert(participant))
-            .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
-            .setOperationContext(operationContext)
-            .setCallbackUri(callBackUri.toString());
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setParticipant(CommunicationIdentifierConverter.convert(participant))
+                .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
+                .setOperationContext(operationContext)
+                .setCallbackUri(callBackUri.toString());
 
             return serverCallInternal.addParticipantAsync(requestWithCallLocator, Context.NONE)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
@@ -400,11 +400,11 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(participant, "'participant' cannot be null.");
 
             AddParticipantWithCallLocatorRequest requestWithCallLocator = new AddParticipantWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setParticipant(CommunicationIdentifierConverter.convert(participant))
-            .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
-            .setOperationContext(operationContext)
-            .setCallbackUri(callBackUri.toString());
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setParticipant(CommunicationIdentifierConverter.convert(participant))
+                .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
+                .setOperationContext(operationContext)
+                .setCallbackUri(callBackUri.toString());
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -472,8 +472,8 @@ public final class CallingServerAsyncClient {
     private RemoveParticipantWithCallLocatorRequest getRemoveParticipantWithCallLocatorRequest(CallLocator callLocator,
             CommunicationIdentifier participant) {
         RemoveParticipantWithCallLocatorRequest requestWithCallLocator = new RemoveParticipantWithCallLocatorRequest()
-        .setCallLocator(CallLocatorConverter.convert(callLocator))
-        .setIdentifier(CommunicationIdentifierConverter.convert(participant));
+            .setCallLocator(CallLocatorConverter.convert(callLocator))
+            .setIdentifier(CommunicationIdentifierConverter.convert(participant));
         return requestWithCallLocator;
     }
 
@@ -570,7 +570,7 @@ public final class CallingServerAsyncClient {
 
     /**
      * Get all participants of the call.
-     *
+     * @param callLocator the call locator.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get participants request.
@@ -635,8 +635,8 @@ public final class CallingServerAsyncClient {
     private StartCallRecordingWithCallLocatorRequest getStartCallRecordingWithCallLocatorRequest(CallLocator callLocator,
         URI recordingStateCallbackUri) {
         StartCallRecordingWithCallLocatorRequest requestWithCallLocator = new StartCallRecordingWithCallLocatorRequest()
-        .setCallLocator(CallLocatorConverter.convert(callLocator))
-        .setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
+            .setCallLocator(CallLocatorConverter.convert(callLocator))
+            .setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
         return requestWithCallLocator;
     }
 
@@ -1097,8 +1097,8 @@ public final class CallingServerAsyncClient {
             PlayAudioOptions playAudioOptions) {
 
         PlayAudioWithCallLocatorRequest requestWithCallLocator = new PlayAudioWithCallLocatorRequest()
-        .setCallLocator(CallLocatorConverter.convert(callLocator))
-        .setAudioFileUri(audioFileUri.toString());
+            .setCallLocator(CallLocatorConverter.convert(callLocator))
+            .setAudioFileUri(audioFileUri.toString());
 
         if (playAudioOptions != null) {
             requestWithCallLocator
@@ -1167,8 +1167,8 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(mediaOperationId, "'mediaOperationId' cannot be null.");
 
             CancelMediaOperationWithCallLocatorRequest requestWithCallLocator = new CancelMediaOperationWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setMediaOperationId(mediaOperationId);
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setMediaOperationId(mediaOperationId);
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -1227,9 +1227,9 @@ public final class CallingServerAsyncClient {
         try {
 
             CancelParticipantMediaOperationWithCallLocatorRequest requestWithCallLocator = new CancelParticipantMediaOperationWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setIdentifier(CommunicationIdentifierConverter.convert(participant))
-            .setMediaOperationId(mediaOperationId);
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setIdentifier(CommunicationIdentifierConverter.convert(participant))
+                .setMediaOperationId(mediaOperationId);
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -1269,10 +1269,10 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(participant, "'participant' cannot be null.");
             Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
 
-            PlayAudioToParticipantWithCallLocatorRequest requestWithCallLocator= new PlayAudioToParticipantWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setIdentifier(CommunicationIdentifierConverter.convert(participant))
-            .setAudioFileUri(audioFileUri.toString());
+            PlayAudioToParticipantWithCallLocatorRequest requestWithCallLocator = new PlayAudioToParticipantWithCallLocatorRequest()
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setIdentifier(CommunicationIdentifierConverter.convert(participant))
+                .setAudioFileUri(audioFileUri.toString());
 
             if (playAudioOptions != null) {
                 requestWithCallLocator
@@ -1324,9 +1324,9 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
 
             PlayAudioToParticipantWithCallLocatorRequest requestWithCallLocator = new PlayAudioToParticipantWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setIdentifier(CommunicationIdentifierConverter.convert(participant))
-            .setAudioFileUri(audioFileUri.toString());
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setIdentifier(CommunicationIdentifierConverter.convert(participant))
+                .setAudioFileUri(audioFileUri.toString());
 
             if (playAudioOptions != null) {
                 requestWithCallLocator
@@ -1471,7 +1471,7 @@ public final class CallingServerAsyncClient {
     }
 
     /**
-     * Delete the content located at {@code endpoint}.
+     * Delete the content located at the deleteEndpoint
      * @param deleteEndpoint - ACS URL where the content is located.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for successful delete request.
@@ -1486,7 +1486,7 @@ public final class CallingServerAsyncClient {
     }
 
     /**
-     * Delete the content located at {@code endpoint}.
+     * Delete the content located at the deleteEndpoint
      * Recording deletion will be done using parallel workers.
      * @param deleteEndpoint - ACS URL where the content is located.
      * @param context A {@link Context} representing the request context.
