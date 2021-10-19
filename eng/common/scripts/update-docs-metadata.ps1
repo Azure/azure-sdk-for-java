@@ -102,6 +102,7 @@ foreach ($config in $targets) {
   }
 
   if ($pkgsFiltered) {
+    Write-Host "Doc author name is $DocAuthor."
     Write-Host "Given the visible artifacts, $($config.mode) Readme updates against $($config.path_to_config) will be processed for the following packages."
     Write-Host ($pkgsFiltered | % { $_.PackageId + " " + $_.PackageVersion })
 
