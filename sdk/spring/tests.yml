@@ -1,59 +1,56 @@
-parameters:
-  TestName: 'LiveTestInAzureGlobal'
-  Clouds: 'Public'
-  TestResourceDirectories:
-    - spring/azure-spring-boot-test-cosmos
-    - spring/azure-spring-boot-test-keyvault
-    - spring/azure-spring-boot-test-keyvault-certificate
-    - spring/azure-spring-boot-test-servicebus-jms
-    - spring/azure-spring-boot-test-storage
-    - spring/spring-cloud-azure-stream-binder-eventhubs
-    - spring/spring-cloud-azure-test-eventhubs-kafka
-    - spring/spring-cloud-azure-test-servicebus-binder
-  Artifacts:
-    - name: azure-spring-boot-test-application
-      groupId: com.azure.spring
-      safeName: azurespringboottestapplication
-    - name: azure-spring-boot-test-core
-      groupId: com.azure.spring
-      safeName: azurespringboottestcore
-    - name: azure-spring-boot-test-cosmos
-      groupId: com.azure.spring
-      safeName: azurespringboottestcosmos
-    - name: azure-spring-boot-test-keyvault
-      groupId: com.azure.spring
-      safeName: azurespringboottestkeyvault
-    - name: azure-spring-boot-test-keyvault-certificate
-      groupId: com.azure.spring
-      safeName: azurespringboottestkeyvaultcertificate
-    - name: azure-spring-boot-test-keyvault-reactive
-      groupId: com.azure.spring
-      safeName: azurespringboottestkeyvaultreactive
-    - name: azure-spring-boot-test-parent
-      groupId: com.azure.spring
-      safeName: azurespringboottestparent
-    - name: azure-spring-boot-test-servicebus-jms
-      groupId: com.azure.spring
-      safeName: azurespringboottestservicebusjms
-    - name: spring-cloud-azure-test-eventhubs-kafka
-      groupId: com.azure.spring
-      safeName: springcloudazuretesteventhubskafka
-    - name: azure-spring-boot-test-storage
-      groupId: com.azure.spring
-      safeName: azurespringbootteststorage
-    - name: spring-cloud-azure-test-servicebus-binder
-      groupId: com.azure.spring
-      safeName: springcloudazuretestservicebusbinder
+triggers: none
 
 stages:
-    - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
-      parameters:
-        TimeoutInMinutes: 240
-        ServiceDirectory: spring
-        TestName: ${{ parameters.TestName }}
-        TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
-        Artifacts: ${{ parameters.Artifacts }}
-        TestStepMavenInputs:
-          options: '$(DefaultTestOptions) -DskipSpringITs=false'
-          mavenOptions: '$(DefaultTestMavenOptions)'
-          goals: "verify"
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    Clouds: 'Public'
+    TestResourceDirectories:
+      - spring/azure-spring-boot-test-cosmos
+      - spring/azure-spring-boot-test-keyvault
+      - spring/azure-spring-boot-test-keyvault-certificate
+      - spring/azure-spring-boot-test-servicebus-jms
+      - spring/azure-spring-boot-test-storage
+      - spring/spring-cloud-azure-stream-binder-eventhubs
+      - spring/spring-cloud-azure-test-eventhubs-kafka
+      - spring/spring-cloud-azure-test-servicebus-binder
+    Artifacts:
+      - name: azure-spring-boot-test-application
+        groupId: com.azure.spring
+        safeName: azurespringboottestapplication
+      - name: azure-spring-boot-test-core
+        groupId: com.azure.spring
+        safeName: azurespringboottestcore
+      - name: azure-spring-boot-test-cosmos
+        groupId: com.azure.spring
+        safeName: azurespringboottestcosmos
+      - name: azure-spring-boot-test-keyvault
+        groupId: com.azure.spring
+        safeName: azurespringboottestkeyvault
+      - name: azure-spring-boot-test-keyvault-certificate
+        groupId: com.azure.spring
+        safeName: azurespringboottestkeyvaultcertificate
+      - name: azure-spring-boot-test-keyvault-reactive
+        groupId: com.azure.spring
+        safeName: azurespringboottestkeyvaultreactive
+      - name: azure-spring-boot-test-parent
+        groupId: com.azure.spring
+        safeName: azurespringboottestparent
+      - name: azure-spring-boot-test-servicebus-jms
+        groupId: com.azure.spring
+        safeName: azurespringboottestservicebusjms
+      - name: spring-cloud-azure-test-eventhubs-kafka
+        groupId: com.azure.spring
+        safeName: springcloudazuretesteventhubskafka
+      - name: azure-spring-boot-test-storage
+        groupId: com.azure.spring
+        safeName: azurespringbootteststorage
+      - name: spring-cloud-azure-test-servicebus-binder
+        groupId: com.azure.spring
+        safeName: springcloudazuretestservicebusbinder
+    TimeoutInMinutes: 240
+    ServiceDirectory: spring
+    TestName: ${{ parameters.TestName }}
+    TestStepMavenInputs:
+      options: '$(DefaultTestOptions) -DskipSpringITs=false'
+      mavenOptions: '$(DefaultTestMavenOptions)'
+      goals: "verify"
