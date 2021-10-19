@@ -1278,16 +1278,6 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         Assertions.assertTrue(containerGroupOperations.size() > 0);
     }
 
-    @Disabled("Cannot run test due to unknown parameter")
-    @Test
-    public void testContainerInstanceWithPrivateIpAddress() throws Exception {
-        // LIVE ONLY TEST BECAUSE IT REQUIRES SUBSCRIPTION ID
-        if (!isPlaybackMode()) {
-            new TestContainerInstanceWithPrivateIpAddress()
-                .runTest(azureResourceManager.containerGroups(), azureResourceManager.resourceGroups(), azureResourceManager.subscriptionId());
-        }
-    }
-
     @Test
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry().runTest(azureResourceManager.containerRegistries(), azureResourceManager.resourceGroups());
