@@ -70,7 +70,7 @@ public class CallConnectionUnitTests {
     public void playAudioWithResponse() {
         CallConnection callConnection = getCallConnection();
 
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri"));
+        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri")).setLoop(true);
         Response<PlayAudioResult> playAudioResultResponse = callConnection.playAudioWithResponse(URI.create("https://audioFileUri"), playAudioOptions, Context.NONE);
         assertEquals(202, playAudioResultResponse.getStatusCode());
         PlayAudioResult playAudioResult = playAudioResultResponse.getValue();
@@ -81,7 +81,7 @@ public class CallConnectionUnitTests {
     public void playAudio() {
         CallConnection callConnection = getCallConnection();
 
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri"));
+        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri")).setLoop(true);
         PlayAudioResult playAudioResult = callConnection.playAudio(URI.create("https://audioFileUri"), playAudioOptions);
         assertEquals(OperationStatus.COMPLETED, playAudioResult.getStatus());
     }
