@@ -65,7 +65,7 @@ parameters:
     default:  $(Build.RequestedForEmail) 
   - name: PipelineRequestByName
     type: string
-    default:  $(Build.QueueBy) 
+    default:  $(Build.QueuedBy) 
 steps:
 - pwsh: |
     if ($IsWindows) {
