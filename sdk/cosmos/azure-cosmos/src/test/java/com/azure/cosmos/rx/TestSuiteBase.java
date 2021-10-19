@@ -1239,8 +1239,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     public Object[][] queryWithOrderBy() {
         return new Object[][]{
             // query wit orderby, matchedOrderByQuery
-            {"SELECT DISTINCT VALUE c.id from c ORDER BY c.id DESC", true},
-            {"SELECT DISTINCT VALUE c.id from c ORDER BY c._ts DESC", false}
+            { "SELECT DISTINCT VALUE c.id from c ORDER BY c.id DESC", true },
+            { "SELECT DISTINCT VALUE c.id from c ORDER BY c._ts DESC", false }
         };
     }
 
