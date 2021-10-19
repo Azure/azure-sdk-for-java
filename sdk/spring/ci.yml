@@ -12,16 +12,12 @@ trigger:
       - sdk/spring/
     exclude:
       - sdk/spring/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad/pom.xml
       - sdk/spring/azure-spring-boot-test-application/pom.xml
       - sdk/spring/azure-spring-boot-test-core/pom.xml
       - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
       - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
       - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
       - sdk/spring/azure-spring-boot-test-parent/pom.xml
-      - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
       - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
       - sdk/spring/azure-spring-boot-test-storage/pom.xml
       - sdk/spring/spring-messaging-azure/pom.xml
@@ -73,16 +69,12 @@ pr:
       - sdk/spring/
     exclude:
       - sdk/spring/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad/pom.xml
       - sdk/spring/azure-spring-boot-test-application/pom.xml
       - sdk/spring/azure-spring-boot-test-core/pom.xml
       - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
       - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
       - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
       - sdk/spring/azure-spring-boot-test-parent/pom.xml
-      - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
       - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
       - sdk/spring/azure-spring-boot-test-storage/pom.xml
       - sdk/spring/spring-messaging-azure/pom.xml
