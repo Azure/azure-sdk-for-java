@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Path rule of URL path map of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayPathRuleInner extends SubResource {
+public final class ApplicationGatewayPathRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayPathRuleInner.class);
+
+    /*
+     * Properties of the application gateway path rule.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayPathRulePropertiesFormat innerProperties;
 
     /*
      * Name of the path rule that is unique within an Application Gateway.
@@ -37,47 +41,14 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Path rules of URL path map.
+    /**
+     * Get the innerProperties property: Properties of the application gateway path rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.paths")
-    private List<String> paths;
-
-    /*
-     * Backend address pool resource of URL path map path rule.
-     */
-    @JsonProperty(value = "properties.backendAddressPool")
-    private SubResource backendAddressPool;
-
-    /*
-     * Backend http settings resource of URL path map path rule.
-     */
-    @JsonProperty(value = "properties.backendHttpSettings")
-    private SubResource backendHttpSettings;
-
-    /*
-     * Redirect configuration resource of URL path map path rule.
-     */
-    @JsonProperty(value = "properties.redirectConfiguration")
-    private SubResource redirectConfiguration;
-
-    /*
-     * Rewrite rule set resource of URL path map path rule.
-     */
-    @JsonProperty(value = "properties.rewriteRuleSet")
-    private SubResource rewriteRuleSet;
-
-    /*
-     * The provisioning state of the path rule resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Reference to the FirewallPolicy resource.
-     */
-    @JsonProperty(value = "properties.firewallPolicy")
-    private SubResource firewallPolicy;
+    private ApplicationGatewayPathRulePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the path rule that is unique within an Application Gateway.
@@ -117,13 +88,20 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayPathRuleInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the paths property: Path rules of URL path map.
      *
      * @return the paths value.
      */
     public List<String> paths() {
-        return this.paths;
+        return this.innerProperties() == null ? null : this.innerProperties().paths();
     }
 
     /**
@@ -133,7 +111,10 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
     public ApplicationGatewayPathRuleInner withPaths(List<String> paths) {
-        this.paths = paths;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPathRulePropertiesFormat();
+        }
+        this.innerProperties().withPaths(paths);
         return this;
     }
 
@@ -143,7 +124,7 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
-        return this.backendAddressPool;
+        return this.innerProperties() == null ? null : this.innerProperties().backendAddressPool();
     }
 
     /**
@@ -153,7 +134,10 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
     public ApplicationGatewayPathRuleInner withBackendAddressPool(SubResource backendAddressPool) {
-        this.backendAddressPool = backendAddressPool;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPathRulePropertiesFormat();
+        }
+        this.innerProperties().withBackendAddressPool(backendAddressPool);
         return this;
     }
 
@@ -163,7 +147,7 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the backendHttpSettings value.
      */
     public SubResource backendHttpSettings() {
-        return this.backendHttpSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().backendHttpSettings();
     }
 
     /**
@@ -173,7 +157,10 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
     public ApplicationGatewayPathRuleInner withBackendHttpSettings(SubResource backendHttpSettings) {
-        this.backendHttpSettings = backendHttpSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPathRulePropertiesFormat();
+        }
+        this.innerProperties().withBackendHttpSettings(backendHttpSettings);
         return this;
     }
 
@@ -183,7 +170,7 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the redirectConfiguration value.
      */
     public SubResource redirectConfiguration() {
-        return this.redirectConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().redirectConfiguration();
     }
 
     /**
@@ -193,7 +180,10 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
     public ApplicationGatewayPathRuleInner withRedirectConfiguration(SubResource redirectConfiguration) {
-        this.redirectConfiguration = redirectConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPathRulePropertiesFormat();
+        }
+        this.innerProperties().withRedirectConfiguration(redirectConfiguration);
         return this;
     }
 
@@ -203,7 +193,7 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the rewriteRuleSet value.
      */
     public SubResource rewriteRuleSet() {
-        return this.rewriteRuleSet;
+        return this.innerProperties() == null ? null : this.innerProperties().rewriteRuleSet();
     }
 
     /**
@@ -213,7 +203,33 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
     public ApplicationGatewayPathRuleInner withRewriteRuleSet(SubResource rewriteRuleSet) {
-        this.rewriteRuleSet = rewriteRuleSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPathRulePropertiesFormat();
+        }
+        this.innerProperties().withRewriteRuleSet(rewriteRuleSet);
+        return this;
+    }
+
+    /**
+     * Get the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
+     *
+     * @return the loadDistributionPolicy value.
+     */
+    public SubResource loadDistributionPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().loadDistributionPolicy();
+    }
+
+    /**
+     * Set the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
+     *
+     * @param loadDistributionPolicy the loadDistributionPolicy value to set.
+     * @return the ApplicationGatewayPathRuleInner object itself.
+     */
+    public ApplicationGatewayPathRuleInner withLoadDistributionPolicy(SubResource loadDistributionPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPathRulePropertiesFormat();
+        }
+        this.innerProperties().withLoadDistributionPolicy(loadDistributionPolicy);
         return this;
     }
 
@@ -223,7 +239,7 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -232,7 +248,7 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the firewallPolicy value.
      */
     public SubResource firewallPolicy() {
-        return this.firewallPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().firewallPolicy();
     }
 
     /**
@@ -242,14 +258,10 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
     public ApplicationGatewayPathRuleInner withFirewallPolicy(SubResource firewallPolicy) {
-        this.firewallPolicy = firewallPolicy;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayPathRuleInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPathRulePropertiesFormat();
+        }
+        this.innerProperties().withFirewallPolicy(firewallPolicy);
         return this;
     }
 
@@ -259,5 +271,8 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

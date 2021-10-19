@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ChangeFeed;
@@ -18,10 +17,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a storage account’s Blob service. */
-@JsonFlatten
 @Fluent
-public class BlobServicePropertiesInner extends ProxyResource {
+public final class BlobServicePropertiesInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobServicePropertiesInner.class);
+
+    /*
+     * The properties of a storage account’s Blob service.
+     */
+    @JsonProperty(value = "properties")
+    private BlobServicePropertiesProperties innerBlobServiceProperties;
 
     /*
      * Sku name and tier.
@@ -29,65 +33,14 @@ public class BlobServicePropertiesInner extends ProxyResource {
     @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
-    /*
-     * Specifies CORS rules for the Blob service. You can include up to five
-     * CorsRule elements in the request. If no CorsRule elements are included
-     * in the request body, all CORS rules will be deleted, and CORS will be
-     * disabled for the Blob service.
+    /**
+     * Get the innerBlobServiceProperties property: The properties of a storage account’s Blob service.
+     *
+     * @return the innerBlobServiceProperties value.
      */
-    @JsonProperty(value = "properties.cors")
-    private CorsRules cors;
-
-    /*
-     * DefaultServiceVersion indicates the default version to use for requests
-     * to the Blob service if an incoming request’s version is not specified.
-     * Possible values include version 2008-10-27 and all more recent versions.
-     */
-    @JsonProperty(value = "properties.defaultServiceVersion")
-    private String defaultServiceVersion;
-
-    /*
-     * The blob service properties for blob soft delete.
-     */
-    @JsonProperty(value = "properties.deleteRetentionPolicy")
-    private DeleteRetentionPolicy deleteRetentionPolicy;
-
-    /*
-     * Versioning is enabled if set to true.
-     */
-    @JsonProperty(value = "properties.isVersioningEnabled")
-    private Boolean isVersioningEnabled;
-
-    /*
-     * Deprecated in favor of isVersioningEnabled property.
-     */
-    @JsonProperty(value = "properties.automaticSnapshotPolicyEnabled")
-    private Boolean automaticSnapshotPolicyEnabled;
-
-    /*
-     * The blob service properties for change feed events.
-     */
-    @JsonProperty(value = "properties.changeFeed")
-    private ChangeFeed changeFeed;
-
-    /*
-     * The blob service properties for blob restore policy.
-     */
-    @JsonProperty(value = "properties.restorePolicy")
-    private RestorePolicyProperties restorePolicy;
-
-    /*
-     * The blob service properties for container soft delete.
-     */
-    @JsonProperty(value = "properties.containerDeleteRetentionPolicy")
-    private DeleteRetentionPolicy containerDeleteRetentionPolicy;
-
-    /*
-     * The blob service property to configure last access time based tracking
-     * policy.
-     */
-    @JsonProperty(value = "properties.lastAccessTimeTrackingPolicy")
-    private LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy;
+    private BlobServicePropertiesProperties innerBlobServiceProperties() {
+        return this.innerBlobServiceProperties;
+    }
 
     /**
      * Get the sku property: Sku name and tier.
@@ -106,7 +59,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the cors value.
      */
     public CorsRules cors() {
-        return this.cors;
+        return this.innerBlobServiceProperties() == null ? null : this.innerBlobServiceProperties().cors();
     }
 
     /**
@@ -118,7 +71,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the BlobServicePropertiesInner object itself.
      */
     public BlobServicePropertiesInner withCors(CorsRules cors) {
-        this.cors = cors;
+        if (this.innerBlobServiceProperties() == null) {
+            this.innerBlobServiceProperties = new BlobServicePropertiesProperties();
+        }
+        this.innerBlobServiceProperties().withCors(cors);
         return this;
     }
 
@@ -130,7 +86,9 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the defaultServiceVersion value.
      */
     public String defaultServiceVersion() {
-        return this.defaultServiceVersion;
+        return this.innerBlobServiceProperties() == null
+            ? null
+            : this.innerBlobServiceProperties().defaultServiceVersion();
     }
 
     /**
@@ -142,7 +100,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the BlobServicePropertiesInner object itself.
      */
     public BlobServicePropertiesInner withDefaultServiceVersion(String defaultServiceVersion) {
-        this.defaultServiceVersion = defaultServiceVersion;
+        if (this.innerBlobServiceProperties() == null) {
+            this.innerBlobServiceProperties = new BlobServicePropertiesProperties();
+        }
+        this.innerBlobServiceProperties().withDefaultServiceVersion(defaultServiceVersion);
         return this;
     }
 
@@ -152,7 +113,9 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the deleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy deleteRetentionPolicy() {
-        return this.deleteRetentionPolicy;
+        return this.innerBlobServiceProperties() == null
+            ? null
+            : this.innerBlobServiceProperties().deleteRetentionPolicy();
     }
 
     /**
@@ -162,7 +125,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the BlobServicePropertiesInner object itself.
      */
     public BlobServicePropertiesInner withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
-        this.deleteRetentionPolicy = deleteRetentionPolicy;
+        if (this.innerBlobServiceProperties() == null) {
+            this.innerBlobServiceProperties = new BlobServicePropertiesProperties();
+        }
+        this.innerBlobServiceProperties().withDeleteRetentionPolicy(deleteRetentionPolicy);
         return this;
     }
 
@@ -172,7 +138,9 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the isVersioningEnabled value.
      */
     public Boolean isVersioningEnabled() {
-        return this.isVersioningEnabled;
+        return this.innerBlobServiceProperties() == null
+            ? null
+            : this.innerBlobServiceProperties().isVersioningEnabled();
     }
 
     /**
@@ -182,7 +150,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the BlobServicePropertiesInner object itself.
      */
     public BlobServicePropertiesInner withIsVersioningEnabled(Boolean isVersioningEnabled) {
-        this.isVersioningEnabled = isVersioningEnabled;
+        if (this.innerBlobServiceProperties() == null) {
+            this.innerBlobServiceProperties = new BlobServicePropertiesProperties();
+        }
+        this.innerBlobServiceProperties().withIsVersioningEnabled(isVersioningEnabled);
         return this;
     }
 
@@ -192,7 +163,9 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the automaticSnapshotPolicyEnabled value.
      */
     public Boolean automaticSnapshotPolicyEnabled() {
-        return this.automaticSnapshotPolicyEnabled;
+        return this.innerBlobServiceProperties() == null
+            ? null
+            : this.innerBlobServiceProperties().automaticSnapshotPolicyEnabled();
     }
 
     /**
@@ -202,7 +175,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the BlobServicePropertiesInner object itself.
      */
     public BlobServicePropertiesInner withAutomaticSnapshotPolicyEnabled(Boolean automaticSnapshotPolicyEnabled) {
-        this.automaticSnapshotPolicyEnabled = automaticSnapshotPolicyEnabled;
+        if (this.innerBlobServiceProperties() == null) {
+            this.innerBlobServiceProperties = new BlobServicePropertiesProperties();
+        }
+        this.innerBlobServiceProperties().withAutomaticSnapshotPolicyEnabled(automaticSnapshotPolicyEnabled);
         return this;
     }
 
@@ -212,7 +188,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the changeFeed value.
      */
     public ChangeFeed changeFeed() {
-        return this.changeFeed;
+        return this.innerBlobServiceProperties() == null ? null : this.innerBlobServiceProperties().changeFeed();
     }
 
     /**
@@ -222,7 +198,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the BlobServicePropertiesInner object itself.
      */
     public BlobServicePropertiesInner withChangeFeed(ChangeFeed changeFeed) {
-        this.changeFeed = changeFeed;
+        if (this.innerBlobServiceProperties() == null) {
+            this.innerBlobServiceProperties = new BlobServicePropertiesProperties();
+        }
+        this.innerBlobServiceProperties().withChangeFeed(changeFeed);
         return this;
     }
 
@@ -232,7 +211,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the restorePolicy value.
      */
     public RestorePolicyProperties restorePolicy() {
-        return this.restorePolicy;
+        return this.innerBlobServiceProperties() == null ? null : this.innerBlobServiceProperties().restorePolicy();
     }
 
     /**
@@ -242,7 +221,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the BlobServicePropertiesInner object itself.
      */
     public BlobServicePropertiesInner withRestorePolicy(RestorePolicyProperties restorePolicy) {
-        this.restorePolicy = restorePolicy;
+        if (this.innerBlobServiceProperties() == null) {
+            this.innerBlobServiceProperties = new BlobServicePropertiesProperties();
+        }
+        this.innerBlobServiceProperties().withRestorePolicy(restorePolicy);
         return this;
     }
 
@@ -252,7 +234,9 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the containerDeleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy containerDeleteRetentionPolicy() {
-        return this.containerDeleteRetentionPolicy;
+        return this.innerBlobServiceProperties() == null
+            ? null
+            : this.innerBlobServiceProperties().containerDeleteRetentionPolicy();
     }
 
     /**
@@ -263,7 +247,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
      */
     public BlobServicePropertiesInner withContainerDeleteRetentionPolicy(
         DeleteRetentionPolicy containerDeleteRetentionPolicy) {
-        this.containerDeleteRetentionPolicy = containerDeleteRetentionPolicy;
+        if (this.innerBlobServiceProperties() == null) {
+            this.innerBlobServiceProperties = new BlobServicePropertiesProperties();
+        }
+        this.innerBlobServiceProperties().withContainerDeleteRetentionPolicy(containerDeleteRetentionPolicy);
         return this;
     }
 
@@ -274,7 +261,9 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @return the lastAccessTimeTrackingPolicy value.
      */
     public LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy() {
-        return this.lastAccessTimeTrackingPolicy;
+        return this.innerBlobServiceProperties() == null
+            ? null
+            : this.innerBlobServiceProperties().lastAccessTimeTrackingPolicy();
     }
 
     /**
@@ -286,7 +275,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
      */
     public BlobServicePropertiesInner withLastAccessTimeTrackingPolicy(
         LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy) {
-        this.lastAccessTimeTrackingPolicy = lastAccessTimeTrackingPolicy;
+        if (this.innerBlobServiceProperties() == null) {
+            this.innerBlobServiceProperties = new BlobServicePropertiesProperties();
+        }
+        this.innerBlobServiceProperties().withLastAccessTimeTrackingPolicy(lastAccessTimeTrackingPolicy);
         return this;
     }
 
@@ -296,26 +288,11 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerBlobServiceProperties() != null) {
+            innerBlobServiceProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
-        }
-        if (cors() != null) {
-            cors().validate();
-        }
-        if (deleteRetentionPolicy() != null) {
-            deleteRetentionPolicy().validate();
-        }
-        if (changeFeed() != null) {
-            changeFeed().validate();
-        }
-        if (restorePolicy() != null) {
-            restorePolicy().validate();
-        }
-        if (containerDeleteRetentionPolicy() != null) {
-            containerDeleteRetentionPolicy().validate();
-        }
-        if (lastAccessTimeTrackingPolicy() != null) {
-            lastAccessTimeTrackingPolicy().validate();
         }
     }
 }

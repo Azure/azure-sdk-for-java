@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,39 +12,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A snapshot of a web app configuration. */
-@JsonFlatten
-@Immutable
-public class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource {
+@Fluent
+public final class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteConfigurationSnapshotInfoInner.class);
 
     /*
-     * The time the snapshot was taken.
+     * SiteConfigurationSnapshotInfo resource specific properties
      */
-    @JsonProperty(value = "properties.time", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime time;
-
-    /*
-     * The id of the snapshot
-     */
-    @JsonProperty(value = "properties.snapshotId", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer snapshotId;
+    @JsonProperty(value = "properties")
+    private SiteConfigurationSnapshotInfoProperties innerProperties;
 
     /**
-     * Get the time property: The time the snapshot was taken.
+     * Get the innerProperties property: SiteConfigurationSnapshotInfo resource specific properties.
      *
-     * @return the time value.
+     * @return the innerProperties value.
      */
-    public OffsetDateTime time() {
-        return this.time;
-    }
-
-    /**
-     * Get the snapshotId property: The id of the snapshot.
-     *
-     * @return the snapshotId value.
-     */
-    public Integer snapshotId() {
-        return this.snapshotId;
+    private SiteConfigurationSnapshotInfoProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -56,6 +39,24 @@ public class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the time property: The time the snapshot was taken.
+     *
+     * @return the time value.
+     */
+    public OffsetDateTime time() {
+        return this.innerProperties() == null ? null : this.innerProperties().time();
+    }
+
+    /**
+     * Get the snapshotId property: The id of the snapshot.
+     *
+     * @return the snapshotId value.
+     */
+    public Integer snapshotId() {
+        return this.innerProperties() == null ? null : this.innerProperties().snapshotId();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -63,5 +64,8 @@ public class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

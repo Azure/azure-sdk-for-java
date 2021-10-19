@@ -4,7 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.experimental.http.HttpAuthorization;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -153,6 +153,7 @@ public class BlobCopyFromUrlOptions {
     /**
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
+     *
      * @param immutabilityPolicy {@link BlobImmutabilityPolicy}
      * @return The updated options.
      */
@@ -164,13 +165,14 @@ public class BlobCopyFromUrlOptions {
     /**
      * @return If a legal hold should be placed on the blob.
      */
-    public Boolean isLegalHold() {
+    public Boolean hasLegalHold() {
         return legalHold;
     }
 
     /**
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
+     *
      * @param legalHold Indicates if a legal hold should be placed on the blob.
      * @return The updated options.
      */

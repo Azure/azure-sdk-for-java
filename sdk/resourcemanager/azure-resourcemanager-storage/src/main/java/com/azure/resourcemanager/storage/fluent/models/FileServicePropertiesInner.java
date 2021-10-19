@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.CorsRules;
@@ -16,10 +15,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of File services in storage account. */
-@JsonFlatten
 @Fluent
-public class FileServicePropertiesInner extends ProxyResource {
+public final class FileServicePropertiesInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServicePropertiesInner.class);
+
+    /*
+     * The properties of File services in storage account.
+     */
+    @JsonProperty(value = "properties")
+    private FileServicePropertiesProperties innerFileServiceProperties;
 
     /*
      * Sku name and tier.
@@ -27,26 +31,14 @@ public class FileServicePropertiesInner extends ProxyResource {
     @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
-    /*
-     * Specifies CORS rules for the File service. You can include up to five
-     * CorsRule elements in the request. If no CorsRule elements are included
-     * in the request body, all CORS rules will be deleted, and CORS will be
-     * disabled for the File service.
+    /**
+     * Get the innerFileServiceProperties property: The properties of File services in storage account.
+     *
+     * @return the innerFileServiceProperties value.
      */
-    @JsonProperty(value = "properties.cors")
-    private CorsRules cors;
-
-    /*
-     * The file service properties for share soft delete.
-     */
-    @JsonProperty(value = "properties.shareDeleteRetentionPolicy")
-    private DeleteRetentionPolicy shareDeleteRetentionPolicy;
-
-    /*
-     * Protocol settings for file service
-     */
-    @JsonProperty(value = "properties.protocolSettings")
-    private ProtocolSettings protocolSettings;
+    private FileServicePropertiesProperties innerFileServiceProperties() {
+        return this.innerFileServiceProperties;
+    }
 
     /**
      * Get the sku property: Sku name and tier.
@@ -65,7 +57,7 @@ public class FileServicePropertiesInner extends ProxyResource {
      * @return the cors value.
      */
     public CorsRules cors() {
-        return this.cors;
+        return this.innerFileServiceProperties() == null ? null : this.innerFileServiceProperties().cors();
     }
 
     /**
@@ -77,7 +69,10 @@ public class FileServicePropertiesInner extends ProxyResource {
      * @return the FileServicePropertiesInner object itself.
      */
     public FileServicePropertiesInner withCors(CorsRules cors) {
-        this.cors = cors;
+        if (this.innerFileServiceProperties() == null) {
+            this.innerFileServiceProperties = new FileServicePropertiesProperties();
+        }
+        this.innerFileServiceProperties().withCors(cors);
         return this;
     }
 
@@ -87,7 +82,9 @@ public class FileServicePropertiesInner extends ProxyResource {
      * @return the shareDeleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy shareDeleteRetentionPolicy() {
-        return this.shareDeleteRetentionPolicy;
+        return this.innerFileServiceProperties() == null
+            ? null
+            : this.innerFileServiceProperties().shareDeleteRetentionPolicy();
     }
 
     /**
@@ -97,7 +94,10 @@ public class FileServicePropertiesInner extends ProxyResource {
      * @return the FileServicePropertiesInner object itself.
      */
     public FileServicePropertiesInner withShareDeleteRetentionPolicy(DeleteRetentionPolicy shareDeleteRetentionPolicy) {
-        this.shareDeleteRetentionPolicy = shareDeleteRetentionPolicy;
+        if (this.innerFileServiceProperties() == null) {
+            this.innerFileServiceProperties = new FileServicePropertiesProperties();
+        }
+        this.innerFileServiceProperties().withShareDeleteRetentionPolicy(shareDeleteRetentionPolicy);
         return this;
     }
 
@@ -107,7 +107,7 @@ public class FileServicePropertiesInner extends ProxyResource {
      * @return the protocolSettings value.
      */
     public ProtocolSettings protocolSettings() {
-        return this.protocolSettings;
+        return this.innerFileServiceProperties() == null ? null : this.innerFileServiceProperties().protocolSettings();
     }
 
     /**
@@ -117,7 +117,10 @@ public class FileServicePropertiesInner extends ProxyResource {
      * @return the FileServicePropertiesInner object itself.
      */
     public FileServicePropertiesInner withProtocolSettings(ProtocolSettings protocolSettings) {
-        this.protocolSettings = protocolSettings;
+        if (this.innerFileServiceProperties() == null) {
+            this.innerFileServiceProperties = new FileServicePropertiesProperties();
+        }
+        this.innerFileServiceProperties().withProtocolSettings(protocolSettings);
         return this;
     }
 
@@ -127,17 +130,11 @@ public class FileServicePropertiesInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerFileServiceProperties() != null) {
+            innerFileServiceProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
-        }
-        if (cors() != null) {
-            cors().validate();
-        }
-        if (shareDeleteRetentionPolicy() != null) {
-            shareDeleteRetentionPolicy().validate();
-        }
-        if (protocolSettings() != null) {
-            protocolSettings().validate();
         }
     }
 }

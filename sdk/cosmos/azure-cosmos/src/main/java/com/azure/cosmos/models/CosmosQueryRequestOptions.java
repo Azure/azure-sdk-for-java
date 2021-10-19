@@ -37,6 +37,7 @@ public class CosmosQueryRequestOptions {
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private Duration thresholdForDiagnosticsOnTracer;
     private Map<String, String> customOptions;
+    private boolean indexMetricsEnabled;
 
     /**
      * Instantiates a new query request options.
@@ -68,6 +69,7 @@ public class CosmosQueryRequestOptions {
         this.operationContextAndListenerTuple = options.operationContextAndListenerTuple;
         this.dedicatedGatewayRequestOptions = options.dedicatedGatewayRequestOptions;
         this.customOptions = options.customOptions;
+        this.indexMetricsEnabled = options.indexMetricsEnabled;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -480,6 +482,34 @@ public class CosmosQueryRequestOptions {
      */
     public CosmosQueryRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
         this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        return this;
+    }
+
+    /**
+     * Gets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
+     * indexes and could use potential new indexes.
+     * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
+     * enabled when debuging slow queries.
+     *
+     * @return indexMetricsEnabled (default: false)
+     */
+    public boolean isIndexMetricsEnabled() {
+        return indexMetricsEnabled;
+    }
+
+    /**
+     * Sets indexMetricsEnabled, which is used to obtain the index metrics to understand how the query engine used existing
+     * indexes and could use potential new indexes.
+     * The results will be displayed in QueryMetrics. Please note that this options will incurs overhead, so it should be
+     * enabled when debuging slow queries.
+     *
+     * By default the indexMetrics are disabled.
+     *
+     * @param indexMetricsEnabled a boolean used to obtain the index metrics
+     * @return indexMetricsEnabled
+     */
+    public CosmosQueryRequestOptions setIndexMetricsEnabled(boolean indexMetricsEnabled) {
+        this.indexMetricsEnabled = indexMetricsEnabled;
         return this;
     }
 

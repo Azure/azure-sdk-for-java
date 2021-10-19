@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
@@ -14,24 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The Get Storage Account ManagementPolicies operation response. */
-@JsonFlatten
 @Fluent
-public class ManagementPolicyInner extends ProxyResource {
+public final class ManagementPolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyInner.class);
 
     /*
-     * Returns the date and time the ManagementPolicies was last modified.
+     * Returns the Storage Account Data Policies Rules.
      */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
+    @JsonProperty(value = "properties")
+    private ManagementPolicyProperties innerProperties;
 
-    /*
-     * The Storage Account ManagementPolicy, in JSON format. See more details
-     * in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+    /**
+     * Get the innerProperties property: Returns the Storage Account Data Policies Rules.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.policy")
-    private ManagementPolicySchema policy;
+    private ManagementPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the lastModifiedTime property: Returns the date and time the ManagementPolicies was last modified.
@@ -39,7 +38,7 @@ public class ManagementPolicyInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -49,7 +48,7 @@ public class ManagementPolicyInner extends ProxyResource {
      * @return the policy value.
      */
     public ManagementPolicySchema policy() {
-        return this.policy;
+        return this.innerProperties() == null ? null : this.innerProperties().policy();
     }
 
     /**
@@ -60,7 +59,10 @@ public class ManagementPolicyInner extends ProxyResource {
      * @return the ManagementPolicyInner object itself.
      */
     public ManagementPolicyInner withPolicy(ManagementPolicySchema policy) {
-        this.policy = policy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementPolicyProperties();
+        }
+        this.innerProperties().withPolicy(policy);
         return this;
     }
 
@@ -70,8 +72,8 @@ public class ManagementPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (policy() != null) {
-            policy().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

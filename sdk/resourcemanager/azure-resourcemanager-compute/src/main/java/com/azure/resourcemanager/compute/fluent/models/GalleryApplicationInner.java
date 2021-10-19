@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
@@ -15,178 +14,23 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Specifies information about the gallery Application Definition that you want to create or update. */
-@JsonFlatten
 @Fluent
-public class GalleryApplicationInner extends Resource {
+public final class GalleryApplicationInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationInner.class);
 
     /*
-     * The description of this gallery Application Definition resource. This
-     * property is updatable.
+     * Describes the properties of a gallery Application Definition.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The Eula agreement for the gallery Application Definition.
-     */
-    @JsonProperty(value = "properties.eula")
-    private String eula;
-
-    /*
-     * The privacy statement uri.
-     */
-    @JsonProperty(value = "properties.privacyStatementUri")
-    private String privacyStatementUri;
-
-    /*
-     * The release note uri.
-     */
-    @JsonProperty(value = "properties.releaseNoteUri")
-    private String releaseNoteUri;
-
-    /*
-     * The end of life date of the gallery Application Definition. This
-     * property can be used for decommissioning purposes. This property is
-     * updatable.
-     */
-    @JsonProperty(value = "properties.endOfLifeDate")
-    private OffsetDateTime endOfLifeDate;
-
-    /*
-     * This property allows you to specify the supported type of the OS that
-     * application is built for. <br><br> Possible values are: <br><br>
-     * **Windows** <br><br> **Linux**
-     */
-    @JsonProperty(value = "properties.supportedOSType")
-    private OperatingSystemTypes supportedOSType;
+    @JsonProperty(value = "properties")
+    private GalleryApplicationProperties innerProperties;
 
     /**
-     * Get the description property: The description of this gallery Application Definition resource. This property is
-     * updatable.
+     * Get the innerProperties property: Describes the properties of a gallery Application Definition.
      *
-     * @return the description value.
+     * @return the innerProperties value.
      */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: The description of this gallery Application Definition resource. This property is
-     * updatable.
-     *
-     * @param description the description value to set.
-     * @return the GalleryApplicationInner object itself.
-     */
-    public GalleryApplicationInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the eula property: The Eula agreement for the gallery Application Definition.
-     *
-     * @return the eula value.
-     */
-    public String eula() {
-        return this.eula;
-    }
-
-    /**
-     * Set the eula property: The Eula agreement for the gallery Application Definition.
-     *
-     * @param eula the eula value to set.
-     * @return the GalleryApplicationInner object itself.
-     */
-    public GalleryApplicationInner withEula(String eula) {
-        this.eula = eula;
-        return this;
-    }
-
-    /**
-     * Get the privacyStatementUri property: The privacy statement uri.
-     *
-     * @return the privacyStatementUri value.
-     */
-    public String privacyStatementUri() {
-        return this.privacyStatementUri;
-    }
-
-    /**
-     * Set the privacyStatementUri property: The privacy statement uri.
-     *
-     * @param privacyStatementUri the privacyStatementUri value to set.
-     * @return the GalleryApplicationInner object itself.
-     */
-    public GalleryApplicationInner withPrivacyStatementUri(String privacyStatementUri) {
-        this.privacyStatementUri = privacyStatementUri;
-        return this;
-    }
-
-    /**
-     * Get the releaseNoteUri property: The release note uri.
-     *
-     * @return the releaseNoteUri value.
-     */
-    public String releaseNoteUri() {
-        return this.releaseNoteUri;
-    }
-
-    /**
-     * Set the releaseNoteUri property: The release note uri.
-     *
-     * @param releaseNoteUri the releaseNoteUri value to set.
-     * @return the GalleryApplicationInner object itself.
-     */
-    public GalleryApplicationInner withReleaseNoteUri(String releaseNoteUri) {
-        this.releaseNoteUri = releaseNoteUri;
-        return this;
-    }
-
-    /**
-     * Get the endOfLifeDate property: The end of life date of the gallery Application Definition. This property can be
-     * used for decommissioning purposes. This property is updatable.
-     *
-     * @return the endOfLifeDate value.
-     */
-    public OffsetDateTime endOfLifeDate() {
-        return this.endOfLifeDate;
-    }
-
-    /**
-     * Set the endOfLifeDate property: The end of life date of the gallery Application Definition. This property can be
-     * used for decommissioning purposes. This property is updatable.
-     *
-     * @param endOfLifeDate the endOfLifeDate value to set.
-     * @return the GalleryApplicationInner object itself.
-     */
-    public GalleryApplicationInner withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
-        this.endOfLifeDate = endOfLifeDate;
-        return this;
-    }
-
-    /**
-     * Get the supportedOSType property: This property allows you to specify the supported type of the OS that
-     * application is built for. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**
-     * &lt;br&gt;&lt;br&gt; **Linux**.
-     *
-     * @return the supportedOSType value.
-     */
-    public OperatingSystemTypes supportedOSType() {
-        return this.supportedOSType;
-    }
-
-    /**
-     * Set the supportedOSType property: This property allows you to specify the supported type of the OS that
-     * application is built for. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**
-     * &lt;br&gt;&lt;br&gt; **Linux**.
-     *
-     * @param supportedOSType the supportedOSType value to set.
-     * @return the GalleryApplicationInner object itself.
-     */
-    public GalleryApplicationInner withSupportedOSType(OperatingSystemTypes supportedOSType) {
-        this.supportedOSType = supportedOSType;
-        return this;
+    private GalleryApplicationProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -204,10 +48,159 @@ public class GalleryApplicationInner extends Resource {
     }
 
     /**
+     * Get the description property: The description of this gallery Application Definition resource. This property is
+     * updatable.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: The description of this gallery Application Definition resource. This property is
+     * updatable.
+     *
+     * @param description the description value to set.
+     * @return the GalleryApplicationInner object itself.
+     */
+    public GalleryApplicationInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the eula property: The Eula agreement for the gallery Application Definition.
+     *
+     * @return the eula value.
+     */
+    public String eula() {
+        return this.innerProperties() == null ? null : this.innerProperties().eula();
+    }
+
+    /**
+     * Set the eula property: The Eula agreement for the gallery Application Definition.
+     *
+     * @param eula the eula value to set.
+     * @return the GalleryApplicationInner object itself.
+     */
+    public GalleryApplicationInner withEula(String eula) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withEula(eula);
+        return this;
+    }
+
+    /**
+     * Get the privacyStatementUri property: The privacy statement uri.
+     *
+     * @return the privacyStatementUri value.
+     */
+    public String privacyStatementUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().privacyStatementUri();
+    }
+
+    /**
+     * Set the privacyStatementUri property: The privacy statement uri.
+     *
+     * @param privacyStatementUri the privacyStatementUri value to set.
+     * @return the GalleryApplicationInner object itself.
+     */
+    public GalleryApplicationInner withPrivacyStatementUri(String privacyStatementUri) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withPrivacyStatementUri(privacyStatementUri);
+        return this;
+    }
+
+    /**
+     * Get the releaseNoteUri property: The release note uri.
+     *
+     * @return the releaseNoteUri value.
+     */
+    public String releaseNoteUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().releaseNoteUri();
+    }
+
+    /**
+     * Set the releaseNoteUri property: The release note uri.
+     *
+     * @param releaseNoteUri the releaseNoteUri value to set.
+     * @return the GalleryApplicationInner object itself.
+     */
+    public GalleryApplicationInner withReleaseNoteUri(String releaseNoteUri) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withReleaseNoteUri(releaseNoteUri);
+        return this;
+    }
+
+    /**
+     * Get the endOfLifeDate property: The end of life date of the gallery Application Definition. This property can be
+     * used for decommissioning purposes. This property is updatable.
+     *
+     * @return the endOfLifeDate value.
+     */
+    public OffsetDateTime endOfLifeDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().endOfLifeDate();
+    }
+
+    /**
+     * Set the endOfLifeDate property: The end of life date of the gallery Application Definition. This property can be
+     * used for decommissioning purposes. This property is updatable.
+     *
+     * @param endOfLifeDate the endOfLifeDate value to set.
+     * @return the GalleryApplicationInner object itself.
+     */
+    public GalleryApplicationInner withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withEndOfLifeDate(endOfLifeDate);
+        return this;
+    }
+
+    /**
+     * Get the supportedOSType property: This property allows you to specify the supported type of the OS that
+     * application is built for. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**
+     * &lt;br&gt;&lt;br&gt; **Linux**.
+     *
+     * @return the supportedOSType value.
+     */
+    public OperatingSystemTypes supportedOSType() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportedOSType();
+    }
+
+    /**
+     * Set the supportedOSType property: This property allows you to specify the supported type of the OS that
+     * application is built for. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**
+     * &lt;br&gt;&lt;br&gt; **Linux**.
+     *
+     * @param supportedOSType the supportedOSType value to set.
+     * @return the GalleryApplicationInner object itself.
+     */
+    public GalleryApplicationInner withSupportedOSType(OperatingSystemTypes supportedOSType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryApplicationProperties();
+        }
+        this.innerProperties().withSupportedOSType(supportedOSType);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

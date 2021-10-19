@@ -41,7 +41,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -217,7 +216,7 @@ public final class IpGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -270,7 +269,7 @@ public final class IpGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -407,7 +406,7 @@ public final class IpGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -464,7 +463,7 @@ public final class IpGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -638,7 +637,7 @@ public final class IpGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the update ipGroups operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -646,7 +645,7 @@ public final class IpGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IpGroupInner>> updateGroupsWithResponseAsync(
-        String resourceGroupName, String ipGroupsName, Map<String, String> tags) {
+        String resourceGroupName, String ipGroupsName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -666,10 +665,13 @@ public final class IpGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -691,7 +693,7 @@ public final class IpGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the update ipGroups operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -700,7 +702,7 @@ public final class IpGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IpGroupInner>> updateGroupsWithResponseAsync(
-        String resourceGroupName, String ipGroupsName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String ipGroupsName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -720,10 +722,13 @@ public final class IpGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateGroups(
@@ -742,16 +747,15 @@ public final class IpGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the update ipGroups operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpGroupInner> updateGroupsAsync(
-        String resourceGroupName, String ipGroupsName, Map<String, String> tags) {
-        return updateGroupsWithResponseAsync(resourceGroupName, ipGroupsName, tags)
+    public Mono<IpGroupInner> updateGroupsAsync(String resourceGroupName, String ipGroupsName, TagsObject parameters) {
+        return updateGroupsWithResponseAsync(resourceGroupName, ipGroupsName, parameters)
             .flatMap(
                 (Response<IpGroupInner> res) -> {
                     if (res.getValue() != null) {
@@ -767,23 +771,15 @@ public final class IpGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
+     * @param parameters Parameters supplied to the update ipGroups operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IpGroupInner> updateGroupsAsync(String resourceGroupName, String ipGroupsName) {
-        final Map<String, String> tags = null;
-        return updateGroupsWithResponseAsync(resourceGroupName, ipGroupsName, tags)
-            .flatMap(
-                (Response<IpGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public IpGroupInner updateGroups(String resourceGroupName, String ipGroupsName, TagsObject parameters) {
+        return updateGroupsAsync(resourceGroupName, ipGroupsName, parameters).block();
     }
 
     /**
@@ -791,23 +787,7 @@ public final class IpGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param ipGroupsName The name of the ipGroups.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the IpGroups resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpGroupInner updateGroups(String resourceGroupName, String ipGroupsName) {
-        final Map<String, String> tags = null;
-        return updateGroupsAsync(resourceGroupName, ipGroupsName, tags).block();
-    }
-
-    /**
-     * Updates tags of an IpGroups resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param ipGroupsName The name of the ipGroups.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the update ipGroups operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -816,8 +796,8 @@ public final class IpGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IpGroupInner> updateGroupsWithResponse(
-        String resourceGroupName, String ipGroupsName, Map<String, String> tags, Context context) {
-        return updateGroupsWithResponseAsync(resourceGroupName, ipGroupsName, tags, context).block();
+        String resourceGroupName, String ipGroupsName, TagsObject parameters, Context context) {
+        return updateGroupsWithResponseAsync(resourceGroupName, ipGroupsName, parameters, context).block();
     }
 
     /**
@@ -851,7 +831,7 @@ public final class IpGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -901,7 +881,7 @@ public final class IpGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1075,7 +1055,7 @@ public final class IpGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1129,7 +1109,7 @@ public final class IpGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1234,7 +1214,7 @@ public final class IpGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1276,7 +1256,7 @@ public final class IpGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

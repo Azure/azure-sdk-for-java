@@ -25,7 +25,8 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a guest operating system version that can be specified in the XML service configuration (.
+     * @return properties of a guest operating system version that can be specified in the XML service configuration
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<OSVersionInner>> getOSVersionWithResponseAsync(String location, String osVersionName);
@@ -39,7 +40,8 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a guest operating system version that can be specified in the XML service configuration (.
+     * @return properties of a guest operating system version that can be specified in the XML service configuration
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<OSVersionInner> getOSVersionAsync(String location, String osVersionName);
@@ -53,7 +55,8 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a guest operating system version that can be specified in the XML service configuration (.
+     * @return properties of a guest operating system version that can be specified in the XML service configuration
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OSVersionInner getOSVersion(String location, String osVersionName);
@@ -68,7 +71,8 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a guest operating system version that can be specified in the XML service configuration (.
+     * @return properties of a guest operating system version that can be specified in the XML service configuration
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OSVersionInner> getOSVersionWithResponse(String location, String osVersionName, Context context);
@@ -83,7 +87,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system versions available to be specified in the XML service configuration
-     *     (.
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<OSVersionInner> listOSVersionsAsync(String location);
@@ -98,7 +102,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system versions available to be specified in the XML service configuration
-     *     (.
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OSVersionInner> listOSVersions(String location);
@@ -114,7 +118,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system versions available to be specified in the XML service configuration
-     *     (.
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OSVersionInner> listOSVersions(String location, Context context);
@@ -128,7 +132,8 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a guest operating system family that can be specified in the XML service configuration (.
+     * @return properties of a guest operating system family that can be specified in the XML service configuration
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<OSFamilyInner>> getOSFamilyWithResponseAsync(String location, String osFamilyName);
@@ -142,7 +147,8 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a guest operating system family that can be specified in the XML service configuration (.
+     * @return properties of a guest operating system family that can be specified in the XML service configuration
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<OSFamilyInner> getOSFamilyAsync(String location, String osFamilyName);
@@ -156,7 +162,8 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a guest operating system family that can be specified in the XML service configuration (.
+     * @return properties of a guest operating system family that can be specified in the XML service configuration
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OSFamilyInner getOSFamily(String location, String osFamilyName);
@@ -171,7 +178,8 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a guest operating system family that can be specified in the XML service configuration (.
+     * @return properties of a guest operating system family that can be specified in the XML service configuration
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OSFamilyInner> getOSFamilyWithResponse(String location, String osFamilyName, Context context);
@@ -186,7 +194,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system families available to be specified in the XML service configuration
-     *     (.
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<OSFamilyInner> listOSFamiliesAsync(String location);
@@ -201,7 +209,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system families available to be specified in the XML service configuration
-     *     (.
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OSFamilyInner> listOSFamilies(String location);
@@ -217,7 +225,7 @@ public interface CloudServiceOperatingSystemsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all guest operating system families available to be specified in the XML service configuration
-     *     (.
+     *     (.cscfg) for a cloud service.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OSFamilyInner> listOSFamilies(String location, Context context);

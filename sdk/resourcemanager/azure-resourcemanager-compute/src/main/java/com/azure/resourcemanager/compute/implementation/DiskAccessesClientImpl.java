@@ -41,12 +41,10 @@ import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.DiskAccessList;
 import com.azure.resourcemanager.compute.models.DiskAccessUpdate;
 import com.azure.resourcemanager.compute.models.PrivateEndpointConnectionListResult;
-import com.azure.resourcemanager.compute.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -284,7 +282,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -319,7 +317,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -342,7 +340,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
@@ -378,7 +376,7 @@ public final class DiskAccessesClientImpl
         } else {
             diskAccess.validate();
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -398,7 +396,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -422,7 +420,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
@@ -448,7 +446,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -467,7 +465,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
@@ -487,7 +485,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -508,7 +506,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
@@ -530,7 +528,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -548,7 +546,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param diskAccess disk access object supplied in the body of the Put disk access operation.
      * @param context The context to associate with this operation.
@@ -568,9 +566,9 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -578,7 +576,7 @@ public final class DiskAccessesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags) {
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -598,10 +596,13 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        if (diskAccess == null) {
+            return Mono.error(new IllegalArgumentException("Parameter diskAccess is required and cannot be null."));
+        } else {
+            diskAccess.validate();
+        }
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
-        DiskAccessUpdate diskAccess = new DiskAccessUpdate();
-        diskAccess.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -623,9 +624,9 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -634,7 +635,7 @@ public final class DiskAccessesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -654,10 +655,13 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        if (diskAccess == null) {
+            return Mono.error(new IllegalArgumentException("Parameter diskAccess is required and cannot be null."));
+        } else {
+            diskAccess.validate();
+        }
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
-        DiskAccessUpdate diskAccess = new DiskAccessUpdate();
-        diskAccess.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -676,9 +680,9 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -686,8 +690,8 @@ public final class DiskAccessesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdateAsync(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diskAccessName, tags);
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, diskAccessName, diskAccess);
         return this
             .client
             .<DiskAccessInner, DiskAccessInner>getLroResult(
@@ -699,9 +703,9 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -710,10 +714,10 @@ public final class DiskAccessesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdateAsync(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, diskAccessName, tags, context);
+            updateWithResponseAsync(resourceGroupName, diskAccessName, diskAccess, context);
         return this
             .client
             .<DiskAccessInner, DiskAccessInner>getLroResult(
@@ -725,9 +729,9 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -735,8 +739,8 @@ public final class DiskAccessesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdate(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags) {
-        return beginUpdateAsync(resourceGroupName, diskAccessName, tags).getSyncPoller();
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess) {
+        return beginUpdateAsync(resourceGroupName, diskAccessName, diskAccess).getSyncPoller();
     }
 
     /**
@@ -744,9 +748,9 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -755,8 +759,8 @@ public final class DiskAccessesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<DiskAccessInner>, DiskAccessInner> beginUpdate(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags, Context context) {
-        return beginUpdateAsync(resourceGroupName, diskAccessName, tags, context).getSyncPoller();
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess, Context context) {
+        return beginUpdateAsync(resourceGroupName, diskAccessName, diskAccess, context).getSyncPoller();
     }
 
     /**
@@ -764,9 +768,9 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -774,8 +778,8 @@ public final class DiskAccessesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiskAccessInner> updateAsync(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags) {
-        return beginUpdateAsync(resourceGroupName, diskAccessName, tags)
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess) {
+        return beginUpdateAsync(resourceGroupName, diskAccessName, diskAccess)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -785,29 +789,9 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiskAccessInner> updateAsync(String resourceGroupName, String diskAccessName) {
-        final Map<String, String> tags = null;
-        return beginUpdateAsync(resourceGroupName, diskAccessName, tags)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates (patches) a disk access resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
-     *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -816,8 +800,8 @@ public final class DiskAccessesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiskAccessInner> updateAsync(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags, Context context) {
-        return beginUpdateAsync(resourceGroupName, diskAccessName, tags, context)
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess, Context context) {
+        return beginUpdateAsync(resourceGroupName, diskAccessName, diskAccess, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -827,17 +811,17 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk access resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskAccessInner update(String resourceGroupName, String diskAccessName, Map<String, String> tags) {
-        return updateAsync(resourceGroupName, diskAccessName, tags).block();
+    public DiskAccessInner update(String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess) {
+        return updateAsync(resourceGroupName, diskAccessName, diskAccess).block();
     }
 
     /**
@@ -845,27 +829,9 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return disk access resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiskAccessInner update(String resourceGroupName, String diskAccessName) {
-        final Map<String, String> tags = null;
-        return updateAsync(resourceGroupName, diskAccessName, tags).block();
-    }
-
-    /**
-     * Updates (patches) a disk access resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
-     *     name length is 80 characters.
-     * @param tags Resource tags.
+     * @param diskAccess disk access object supplied in the body of the Patch disk access operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -874,8 +840,8 @@ public final class DiskAccessesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiskAccessInner update(
-        String resourceGroupName, String diskAccessName, Map<String, String> tags, Context context) {
-        return updateAsync(resourceGroupName, diskAccessName, tags, context).block();
+        String resourceGroupName, String diskAccessName, DiskAccessUpdate diskAccess, Context context) {
+        return updateAsync(resourceGroupName, diskAccessName, diskAccess, context).block();
     }
 
     /**
@@ -883,7 +849,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -912,7 +878,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -934,7 +900,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -964,7 +930,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -983,7 +949,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1008,7 +974,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1025,7 +991,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1044,7 +1010,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1072,7 +1038,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1094,7 +1060,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1124,7 +1090,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1143,7 +1109,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1163,7 +1129,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1186,7 +1152,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1203,7 +1169,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1222,7 +1188,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1241,7 +1207,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1261,7 +1227,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1277,7 +1243,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1316,7 +1282,7 @@ public final class DiskAccessesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1370,7 +1336,7 @@ public final class DiskAccessesClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1475,7 +1441,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1517,7 +1483,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1591,7 +1557,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1620,7 +1586,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1642,7 +1608,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1672,7 +1638,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1691,7 +1657,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1717,7 +1683,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1734,7 +1700,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1754,11 +1720,11 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1769,7 +1735,7 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+        PrivateEndpointConnectionInner privateEndpointConnection) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1795,13 +1761,16 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        if (privateLinkServiceConnectionState != null) {
-            privateLinkServiceConnectionState.validate();
+        if (privateEndpointConnection == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnection is required and cannot be null."));
+        } else {
+            privateEndpointConnection.validate();
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
-        PrivateEndpointConnectionInner privateEndpointConnection = new PrivateEndpointConnectionInner();
-        privateEndpointConnection.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return FluxUtil
             .withContext(
                 context ->
@@ -1825,11 +1794,11 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1841,7 +1810,7 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
+        PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1868,13 +1837,16 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        if (privateLinkServiceConnectionState != null) {
-            privateLinkServiceConnectionState.validate();
+        if (privateEndpointConnection == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter privateEndpointConnection is required and cannot be null."));
+        } else {
+            privateEndpointConnection.validate();
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
-        PrivateEndpointConnectionInner privateEndpointConnection = new PrivateEndpointConnectionInner();
-        privateEndpointConnection.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         context = this.client.mergeContext(context);
         return service
             .updateAPrivateEndpointConnection(
@@ -1895,11 +1867,11 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1911,10 +1883,10 @@ public final class DiskAccessesClientImpl
             String resourceGroupName,
             String diskAccessName,
             String privateEndpointConnectionName,
-            PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+            PrivateEndpointConnectionInner privateEndpointConnection) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateAPrivateEndpointConnectionWithResponseAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState);
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection);
         return this
             .client
             .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
@@ -1931,11 +1903,11 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1948,16 +1920,12 @@ public final class DiskAccessesClientImpl
             String resourceGroupName,
             String diskAccessName,
             String privateEndpointConnectionName,
-            PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
+            PrivateEndpointConnectionInner privateEndpointConnection,
             Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             updateAPrivateEndpointConnectionWithResponseAsync(
-                resourceGroupName,
-                diskAccessName,
-                privateEndpointConnectionName,
-                privateLinkServiceConnectionState,
-                context);
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context);
         return this
             .client
             .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
@@ -1974,11 +1942,11 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1990,9 +1958,9 @@ public final class DiskAccessesClientImpl
             String resourceGroupName,
             String diskAccessName,
             String privateEndpointConnectionName,
-            PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+            PrivateEndpointConnectionInner privateEndpointConnection) {
         return beginUpdateAPrivateEndpointConnectionAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState)
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection)
             .getSyncPoller();
     }
 
@@ -2002,11 +1970,11 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2019,14 +1987,10 @@ public final class DiskAccessesClientImpl
             String resourceGroupName,
             String diskAccessName,
             String privateEndpointConnectionName,
-            PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
+            PrivateEndpointConnectionInner privateEndpointConnection,
             Context context) {
         return beginUpdateAPrivateEndpointConnectionAsync(
-                resourceGroupName,
-                diskAccessName,
-                privateEndpointConnectionName,
-                privateLinkServiceConnectionState,
-                context)
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context)
             .getSyncPoller();
     }
 
@@ -2036,11 +2000,11 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2051,9 +2015,9 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+        PrivateEndpointConnectionInner privateEndpointConnection) {
         return beginUpdateAPrivateEndpointConnectionAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState)
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2064,35 +2028,11 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> updateAPrivateEndpointConnectionAsync(
-        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
-        final PrivateLinkServiceConnectionState privateLinkServiceConnectionState = null;
-        return beginUpdateAPrivateEndpointConnectionAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
-     * private endpoint connection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
-     *     name length is 80 characters.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2104,14 +2044,10 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
+        PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
         return beginUpdateAPrivateEndpointConnectionAsync(
-                resourceGroupName,
-                diskAccessName,
-                privateEndpointConnectionName,
-                privateLinkServiceConnectionState,
-                context)
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2122,11 +2058,11 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2137,9 +2073,9 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+        PrivateEndpointConnectionInner privateEndpointConnection) {
         return updateAPrivateEndpointConnectionAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState)
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection)
             .block();
     }
 
@@ -2149,34 +2085,11 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner updateAPrivateEndpointConnection(
-        String resourceGroupName, String diskAccessName, String privateEndpointConnectionName) {
-        final PrivateLinkServiceConnectionState privateLinkServiceConnectionState = null;
-        return updateAPrivateEndpointConnectionAsync(
-                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateLinkServiceConnectionState)
-            .block();
-    }
-
-    /**
-     * Approve or reject a private endpoint connection under disk access resource, this can't be used to create a new
-     * private endpoint connection.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
-     *     name length is 80 characters.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     DiskAccess and Virtual Network.
+     * @param privateEndpointConnection private endpoint connection object supplied in the body of the Put private
+     *     endpoint connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2188,14 +2101,10 @@ public final class DiskAccessesClientImpl
         String resourceGroupName,
         String diskAccessName,
         String privateEndpointConnectionName,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState,
+        PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
         return updateAPrivateEndpointConnectionAsync(
-                resourceGroupName,
-                diskAccessName,
-                privateEndpointConnectionName,
-                privateLinkServiceConnectionState,
-                context)
+                resourceGroupName, diskAccessName, privateEndpointConnectionName, privateEndpointConnection, context)
             .block();
     }
 
@@ -2204,7 +2113,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2240,7 +2149,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2263,7 +2172,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
@@ -2300,7 +2209,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2320,7 +2229,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2348,7 +2257,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2368,7 +2277,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
@@ -2390,7 +2299,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2426,7 +2335,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2449,7 +2358,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
@@ -2486,7 +2395,7 @@ public final class DiskAccessesClientImpl
                     new IllegalArgumentException(
                         "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2506,7 +2415,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2530,7 +2439,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
@@ -2556,7 +2465,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2577,7 +2486,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
@@ -2599,7 +2508,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2621,7 +2530,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
@@ -2644,7 +2553,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2662,7 +2571,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
@@ -2682,7 +2591,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2711,7 +2620,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2742,7 +2651,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2772,7 +2681,7 @@ public final class DiskAccessesClientImpl
         if (diskAccessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter diskAccessName is required and cannot be null."));
         }
-        final String apiVersion = "2020-12-01";
+        final String apiVersion = "2021-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2800,7 +2709,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2820,7 +2729,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2841,7 +2750,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -2859,7 +2768,7 @@ public final class DiskAccessesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param diskAccessName The name of the disk access resource that is being created. The name can't be changed after
-     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum
+     *     the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum
      *     name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

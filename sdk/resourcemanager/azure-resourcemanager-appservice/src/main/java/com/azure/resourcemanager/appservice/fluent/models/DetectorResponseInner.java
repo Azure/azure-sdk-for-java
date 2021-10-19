@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.DataProviderMetadata;
 import com.azure.resourcemanager.appservice.models.DetectorInfo;
@@ -18,41 +17,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class representing Response from Detector. */
-@JsonFlatten
 @Fluent
-public class DetectorResponseInner extends ProxyOnlyResource {
+public final class DetectorResponseInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DetectorResponseInner.class);
 
     /*
-     * metadata for the detector
+     * DetectorResponse resource specific properties
      */
-    @JsonProperty(value = "properties.metadata")
-    private DetectorInfo metadata;
+    @JsonProperty(value = "properties")
+    private DetectorResponseProperties innerProperties;
 
-    /*
-     * Data Set
+    /**
+     * Get the innerProperties property: DetectorResponse resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.dataset")
-    private List<DiagnosticData> dataset;
+    private DetectorResponseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Indicates status of the most severe insight.
-     */
-    @JsonProperty(value = "properties.status")
-    private Status status;
-
-    /*
-     * Additional configuration for different data providers to be used by the
-     * UI
-     */
-    @JsonProperty(value = "properties.dataProvidersMetadata")
-    private List<DataProviderMetadata> dataProvidersMetadata;
-
-    /*
-     * Suggested utterances where the detector can be applicable.
-     */
-    @JsonProperty(value = "properties.suggestedUtterances")
-    private QueryUtterancesResults suggestedUtterances;
+    /** {@inheritDoc} */
+    @Override
+    public DetectorResponseInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the metadata property: metadata for the detector.
@@ -60,7 +49,7 @@ public class DetectorResponseInner extends ProxyOnlyResource {
      * @return the metadata value.
      */
     public DetectorInfo metadata() {
-        return this.metadata;
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
     }
 
     /**
@@ -70,7 +59,10 @@ public class DetectorResponseInner extends ProxyOnlyResource {
      * @return the DetectorResponseInner object itself.
      */
     public DetectorResponseInner withMetadata(DetectorInfo metadata) {
-        this.metadata = metadata;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DetectorResponseProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
         return this;
     }
 
@@ -80,7 +72,7 @@ public class DetectorResponseInner extends ProxyOnlyResource {
      * @return the dataset value.
      */
     public List<DiagnosticData> dataset() {
-        return this.dataset;
+        return this.innerProperties() == null ? null : this.innerProperties().dataset();
     }
 
     /**
@@ -90,7 +82,10 @@ public class DetectorResponseInner extends ProxyOnlyResource {
      * @return the DetectorResponseInner object itself.
      */
     public DetectorResponseInner withDataset(List<DiagnosticData> dataset) {
-        this.dataset = dataset;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DetectorResponseProperties();
+        }
+        this.innerProperties().withDataset(dataset);
         return this;
     }
 
@@ -100,7 +95,7 @@ public class DetectorResponseInner extends ProxyOnlyResource {
      * @return the status value.
      */
     public Status status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -110,7 +105,10 @@ public class DetectorResponseInner extends ProxyOnlyResource {
      * @return the DetectorResponseInner object itself.
      */
     public DetectorResponseInner withStatus(Status status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DetectorResponseProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -121,7 +119,7 @@ public class DetectorResponseInner extends ProxyOnlyResource {
      * @return the dataProvidersMetadata value.
      */
     public List<DataProviderMetadata> dataProvidersMetadata() {
-        return this.dataProvidersMetadata;
+        return this.innerProperties() == null ? null : this.innerProperties().dataProvidersMetadata();
     }
 
     /**
@@ -132,7 +130,10 @@ public class DetectorResponseInner extends ProxyOnlyResource {
      * @return the DetectorResponseInner object itself.
      */
     public DetectorResponseInner withDataProvidersMetadata(List<DataProviderMetadata> dataProvidersMetadata) {
-        this.dataProvidersMetadata = dataProvidersMetadata;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DetectorResponseProperties();
+        }
+        this.innerProperties().withDataProvidersMetadata(dataProvidersMetadata);
         return this;
     }
 
@@ -142,7 +143,7 @@ public class DetectorResponseInner extends ProxyOnlyResource {
      * @return the suggestedUtterances value.
      */
     public QueryUtterancesResults suggestedUtterances() {
-        return this.suggestedUtterances;
+        return this.innerProperties() == null ? null : this.innerProperties().suggestedUtterances();
     }
 
     /**
@@ -152,14 +153,10 @@ public class DetectorResponseInner extends ProxyOnlyResource {
      * @return the DetectorResponseInner object itself.
      */
     public DetectorResponseInner withSuggestedUtterances(QueryUtterancesResults suggestedUtterances) {
-        this.suggestedUtterances = suggestedUtterances;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DetectorResponseInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DetectorResponseProperties();
+        }
+        this.innerProperties().withSuggestedUtterances(suggestedUtterances);
         return this;
     }
 
@@ -171,20 +168,8 @@ public class DetectorResponseInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (metadata() != null) {
-            metadata().validate();
-        }
-        if (dataset() != null) {
-            dataset().forEach(e -> e.validate());
-        }
-        if (status() != null) {
-            status().validate();
-        }
-        if (dataProvidersMetadata() != null) {
-            dataProvidersMetadata().forEach(e -> e.validate());
-        }
-        if (suggestedUtterances() != null) {
-            suggestedUtterances().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -47,17 +47,7 @@ import com.azure.communication.callingserver.implementation.models.RedirectCallR
 import com.azure.communication.callingserver.implementation.models.RejectCallRequest;
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.StartCallRecordingWithCallLocatorRequest;
-import com.azure.communication.callingserver.models.AddParticipantResult;
-import com.azure.communication.callingserver.models.CallLocator;
-import com.azure.communication.callingserver.models.CallParticipant;
-import com.azure.communication.callingserver.models.CallRecordingProperties;
-import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.JoinCallOptions;
-import com.azure.communication.callingserver.models.ParallelDownloadOptions;
-import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResult;
-import com.azure.communication.callingserver.models.StartCallRecordingResult;
+import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -635,19 +625,18 @@ public final class CallingServerAsyncClient {
      *
      * @param callLocator the call locator.
      * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @param startRecordingOptions StartRecordingOptions custom options.
+     * @param context A {@link Context} representing the request context.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(CallLocator callLocator, URI recordingStateCallbackUri) {
-        return startRecordingWithResponse(callLocator, recordingStateCallbackUri, null);
-    }
-
-    Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(
+    public Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(
         CallLocator callLocator,
         URI recordingStateCallbackUri,
+        StartRecordingOptions startRecordingOptions,
         Context context) {
         try {
             Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
@@ -1346,7 +1335,7 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext the incomingCallContext value to set.
      * @param targets the targets value to set.
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUrl value to set.
      * @param timeoutInSeconds the timeout value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1384,7 +1373,7 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext the incomingCallContext value to set.
      * @param targets the targets value to set.
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUrl value to set.
      * @param timeoutInSeconds the timeout value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1409,7 +1398,7 @@ public final class CallingServerAsyncClient {
      * Reject the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUrl value to set.
      * @param rejectReason the call reject reason value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1440,7 +1429,7 @@ public final class CallingServerAsyncClient {
      * Reject the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUrl value to set.
      * @param rejectReason the call reject reason value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.

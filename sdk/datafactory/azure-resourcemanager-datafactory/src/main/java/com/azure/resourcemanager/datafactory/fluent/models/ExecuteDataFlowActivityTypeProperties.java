@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Execute data flow activity properties. */
 @Fluent
-public final class ExecuteDataFlowActivityTypeProperties {
+public class ExecuteDataFlowActivityTypeProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecuteDataFlowActivityTypeProperties.class);
 
     /*

@@ -5,29 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.VnetValidationTestFailureProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class that describes a test that failed during NSG and UDR validation. */
-@JsonFlatten
 @Fluent
-public class VnetValidationTestFailure extends ProxyOnlyResource {
+public final class VnetValidationTestFailure extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetValidationTestFailure.class);
 
     /*
-     * The name of the test that failed.
+     * VnetValidationTestFailure resource specific properties
      */
-    @JsonProperty(value = "properties.testName")
-    private String testName;
+    @JsonProperty(value = "properties")
+    private VnetValidationTestFailureProperties innerProperties;
 
-    /*
-     * The details of what caused the failure, e.g. the blocking rule name,
-     * etc.
+    /**
+     * Get the innerProperties property: VnetValidationTestFailure resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.details")
-    private String details;
+    private VnetValidationTestFailureProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VnetValidationTestFailure withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the testName property: The name of the test that failed.
@@ -35,7 +43,7 @@ public class VnetValidationTestFailure extends ProxyOnlyResource {
      * @return the testName value.
      */
     public String testName() {
-        return this.testName;
+        return this.innerProperties() == null ? null : this.innerProperties().testName();
     }
 
     /**
@@ -45,7 +53,10 @@ public class VnetValidationTestFailure extends ProxyOnlyResource {
      * @return the VnetValidationTestFailure object itself.
      */
     public VnetValidationTestFailure withTestName(String testName) {
-        this.testName = testName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetValidationTestFailureProperties();
+        }
+        this.innerProperties().withTestName(testName);
         return this;
     }
 
@@ -55,7 +66,7 @@ public class VnetValidationTestFailure extends ProxyOnlyResource {
      * @return the details value.
      */
     public String details() {
-        return this.details;
+        return this.innerProperties() == null ? null : this.innerProperties().details();
     }
 
     /**
@@ -65,14 +76,10 @@ public class VnetValidationTestFailure extends ProxyOnlyResource {
      * @return the VnetValidationTestFailure object itself.
      */
     public VnetValidationTestFailure withDetails(String details) {
-        this.details = details;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VnetValidationTestFailure withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetValidationTestFailureProperties();
+        }
+        this.innerProperties().withDetails(details);
         return this;
     }
 
@@ -84,5 +91,8 @@ public class VnetValidationTestFailure extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

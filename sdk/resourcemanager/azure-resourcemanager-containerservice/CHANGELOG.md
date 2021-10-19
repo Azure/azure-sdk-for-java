@@ -1,5 +1,21 @@
 # Release History
 
+## 2.9.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.8.0 (2021-09-15)
+
+### Dependency Updates
+
+- Updated `api-version` to `2021-08-01`.
+
 ## 2.7.0 (2021-08-12)
 
 ### Dependency Updates

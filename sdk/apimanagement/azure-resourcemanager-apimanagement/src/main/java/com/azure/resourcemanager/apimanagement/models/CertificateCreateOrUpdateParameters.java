@@ -5,35 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.CertificateCreateOrUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Certificate create or update details. */
-@JsonFlatten
 @Fluent
-public class CertificateCreateOrUpdateParameters {
+public final class CertificateCreateOrUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateCreateOrUpdateParameters.class);
 
     /*
-     * Base 64 encoded certificate using the application/x-pkcs12
-     * representation.
+     * Certificate create or update properties details.
      */
-    @JsonProperty(value = "properties.data")
-    private String data;
+    @JsonProperty(value = "properties")
+    private CertificateCreateOrUpdateProperties innerProperties;
 
-    /*
-     * Password for the Certificate
+    /**
+     * Get the innerProperties property: Certificate create or update properties details.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.password")
-    private String password;
-
-    /*
-     * KeyVault location details of the certificate.
-     */
-    @JsonProperty(value = "properties.keyVault")
-    private KeyVaultContractCreateProperties keyVault;
+    private CertificateCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the data property: Base 64 encoded certificate using the application/x-pkcs12 representation.
@@ -41,7 +36,7 @@ public class CertificateCreateOrUpdateParameters {
      * @return the data value.
      */
     public String data() {
-        return this.data;
+        return this.innerProperties() == null ? null : this.innerProperties().data();
     }
 
     /**
@@ -51,7 +46,10 @@ public class CertificateCreateOrUpdateParameters {
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
     public CertificateCreateOrUpdateParameters withData(String data) {
-        this.data = data;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withData(data);
         return this;
     }
 
@@ -61,7 +59,7 @@ public class CertificateCreateOrUpdateParameters {
      * @return the password value.
      */
     public String password() {
-        return this.password;
+        return this.innerProperties() == null ? null : this.innerProperties().password();
     }
 
     /**
@@ -71,7 +69,10 @@ public class CertificateCreateOrUpdateParameters {
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
     public CertificateCreateOrUpdateParameters withPassword(String password) {
-        this.password = password;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withPassword(password);
         return this;
     }
 
@@ -81,7 +82,7 @@ public class CertificateCreateOrUpdateParameters {
      * @return the keyVault value.
      */
     public KeyVaultContractCreateProperties keyVault() {
-        return this.keyVault;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVault();
     }
 
     /**
@@ -91,7 +92,10 @@ public class CertificateCreateOrUpdateParameters {
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
     public CertificateCreateOrUpdateParameters withKeyVault(KeyVaultContractCreateProperties keyVault) {
-        this.keyVault = keyVault;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateCreateOrUpdateProperties();
+        }
+        this.innerProperties().withKeyVault(keyVault);
         return this;
     }
 
@@ -101,8 +105,8 @@ public class CertificateCreateOrUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (keyVault() != null) {
-            keyVault().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

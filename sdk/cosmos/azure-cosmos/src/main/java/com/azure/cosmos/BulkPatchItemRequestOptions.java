@@ -7,10 +7,14 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.util.Beta;
 
 /**
+ * @deprecated forRemoval = true, since = "4.19"
+ * This class is not necessary anymore and will be removed. Please use {@link com.azure.cosmos.models.CosmosBulkPatchItemRequestOptions}
+ *
  * Encapsulates options that can be specified for an patch operation used in Bulk execution. It can be passed while
  * creating bulk patch request using {@link BulkOperations}.
  */
 @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Deprecated() //forRemoval = true, since = "4.19"
 public final class BulkPatchItemRequestOptions
         extends BulkItemRequestOptionsBase {
     private String filterPredicate;
@@ -21,6 +25,7 @@ public final class BulkPatchItemRequestOptions
      * @return the FilterPredicate associated with the request.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public String getFilterPredicate() {
         return this.filterPredicate;
     }
@@ -32,6 +37,7 @@ public final class BulkPatchItemRequestOptions
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
         return this;
@@ -57,6 +63,7 @@ public final class BulkPatchItemRequestOptions
      * @return the current request options.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         super.setContentResponseOnWriteEnabledCore(contentResponseOnWriteEnabled);
         return this;
@@ -69,6 +76,7 @@ public final class BulkPatchItemRequestOptions
      * @return the current request options.
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         super.setIfNoneMatchETagCore(ifNoneMatchEtag);
         return this;
@@ -81,6 +89,7 @@ public final class BulkPatchItemRequestOptions
      * @return the current request options
      */
     @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Deprecated() //forRemoval = true, since = "4.19"
     public BulkPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         super.setIfMatchETagCore(ifMatchETag);
         return this;

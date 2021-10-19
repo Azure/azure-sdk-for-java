@@ -221,6 +221,7 @@ public final class VirtualMachinesClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("vmName") String vmName,
+            @QueryParam("hibernate") Boolean hibernate,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -515,7 +516,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -567,7 +568,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -684,7 +685,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -742,7 +743,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -967,7 +968,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1025,7 +1026,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1243,7 +1244,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1300,7 +1301,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1504,7 +1505,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -1554,7 +1555,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1782,7 +1783,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1837,7 +1838,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1973,7 +1974,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2023,7 +2024,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2125,7 +2126,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2174,7 +2175,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .convertToManagedDisks(
@@ -2336,13 +2337,15 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String vmName) {
+    public Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(
+        String resourceGroupName, String vmName, Boolean hibernate) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2362,7 +2365,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2371,6 +2374,7 @@ public final class VirtualMachinesClientImpl
                             this.client.getEndpoint(),
                             resourceGroupName,
                             vmName,
+                            hibernate,
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
@@ -2383,6 +2387,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2391,7 +2396,7 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(
-        String resourceGroupName, String vmName, Context context) {
+        String resourceGroupName, String vmName, Boolean hibernate, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2411,13 +2416,14 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .deallocate(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 vmName,
+                hibernate,
                 apiVersion,
                 this.client.getSubscriptionId(),
                 context);
@@ -2429,14 +2435,16 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deallocateWithResponseAsync(resourceGroupName, vmName);
+    public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
+        String resourceGroupName, String vmName, Boolean hibernate) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deallocateWithResponseAsync(resourceGroupName, vmName, hibernate);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
@@ -2448,6 +2456,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2456,9 +2465,10 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
-        String resourceGroupName, String vmName, Context context) {
+        String resourceGroupName, String vmName, Boolean hibernate, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deallocateWithResponseAsync(resourceGroupName, vmName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deallocateWithResponseAsync(resourceGroupName, vmName, hibernate, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -2470,14 +2480,16 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName) {
-        return beginDeallocateAsync(resourceGroupName, vmName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDeallocate(
+        String resourceGroupName, String vmName, Boolean hibernate) {
+        return beginDeallocateAsync(resourceGroupName, vmName, hibernate).getSyncPoller();
     }
 
     /**
@@ -2486,6 +2498,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2494,8 +2507,27 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(
-        String resourceGroupName, String vmName, Context context) {
-        return beginDeallocateAsync(resourceGroupName, vmName, context).getSyncPoller();
+        String resourceGroupName, String vmName, Boolean hibernate, Context context) {
+        return beginDeallocateAsync(resourceGroupName, vmName, hibernate, context).getSyncPoller();
+    }
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Boolean hibernate) {
+        return beginDeallocateAsync(resourceGroupName, vmName, hibernate)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2511,7 +2543,10 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deallocateAsync(String resourceGroupName, String vmName) {
-        return beginDeallocateAsync(resourceGroupName, vmName).last().flatMap(this.client::getLroFinalResultOrError);
+        final Boolean hibernate = null;
+        return beginDeallocateAsync(resourceGroupName, vmName, hibernate)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2520,6 +2555,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2527,10 +2563,26 @@ public final class VirtualMachinesClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Context context) {
-        return beginDeallocateAsync(resourceGroupName, vmName, context)
+    private Mono<Void> deallocateAsync(String resourceGroupName, String vmName, Boolean hibernate, Context context) {
+        return beginDeallocateAsync(resourceGroupName, vmName, hibernate, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deallocate(String resourceGroupName, String vmName, Boolean hibernate) {
+        deallocateAsync(resourceGroupName, vmName, hibernate).block();
     }
 
     /**
@@ -2545,7 +2597,8 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deallocate(String resourceGroupName, String vmName) {
-        deallocateAsync(resourceGroupName, vmName).block();
+        final Boolean hibernate = null;
+        deallocateAsync(resourceGroupName, vmName, hibernate).block();
     }
 
     /**
@@ -2554,14 +2607,15 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
+     * @param hibernate Optional parameter to hibernate a virtual machine. (Feature in Preview).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deallocate(String resourceGroupName, String vmName, Context context) {
-        deallocateAsync(resourceGroupName, vmName, context).block();
+    public void deallocate(String resourceGroupName, String vmName, Boolean hibernate, Context context) {
+        deallocateAsync(resourceGroupName, vmName, hibernate, context).block();
     }
 
     /**
@@ -2599,7 +2653,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -2650,7 +2704,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .generalize(
@@ -2747,7 +2801,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2802,7 +2856,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2913,7 +2967,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2963,7 +3017,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3087,7 +3141,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3141,7 +3195,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3259,7 +3313,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3312,7 +3366,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .powerOff(
@@ -3561,7 +3615,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3611,7 +3665,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3788,7 +3842,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -3836,7 +3890,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .restart(
@@ -4011,7 +4065,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4059,7 +4113,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .start(
@@ -4234,7 +4288,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4282,7 +4336,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .redeploy(
@@ -4431,8 +4485,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4440,7 +4493,7 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmName, Boolean tempDisk) {
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -4460,13 +4513,10 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
-        VirtualMachineReimageParameters parametersInternal = null;
-        if (tempDisk != null) {
-            parametersInternal = new VirtualMachineReimageParameters();
-            parametersInternal.withTempDisk(tempDisk);
+        if (parameters != null) {
+            parameters.validate();
         }
-        VirtualMachineReimageParameters parameters = parametersInternal;
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4487,8 +4537,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4497,7 +4546,7 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmName, Boolean tempDisk, Context context) {
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -4517,13 +4566,10 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
-        VirtualMachineReimageParameters parametersInternal = null;
-        if (tempDisk != null) {
-            parametersInternal = new VirtualMachineReimageParameters();
-            parametersInternal.withTempDisk(tempDisk);
+        if (parameters != null) {
+            parameters.validate();
         }
-        VirtualMachineReimageParameters parameters = parametersInternal;
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .reimage(
@@ -4541,8 +4587,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4550,8 +4595,8 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String resourceGroupName, String vmName, Boolean tempDisk) {
-        Mono<Response<Flux<ByteBuffer>>> mono = reimageWithResponseAsync(resourceGroupName, vmName, tempDisk);
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = reimageWithResponseAsync(resourceGroupName, vmName, parameters);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
@@ -4562,8 +4607,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4572,9 +4616,10 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String resourceGroupName, String vmName, Boolean tempDisk, Context context) {
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = reimageWithResponseAsync(resourceGroupName, vmName, tempDisk, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            reimageWithResponseAsync(resourceGroupName, vmName, parameters, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -4585,16 +4630,16 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmName, Boolean tempDisk) {
-        return beginReimageAsync(resourceGroupName, vmName, tempDisk).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginReimage(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters) {
+        return beginReimageAsync(resourceGroupName, vmName, parameters).getSyncPoller();
     }
 
     /**
@@ -4602,8 +4647,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4612,8 +4656,8 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmName, Boolean tempDisk, Context context) {
-        return beginReimageAsync(resourceGroupName, vmName, tempDisk, context).getSyncPoller();
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context) {
+        return beginReimageAsync(resourceGroupName, vmName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -4621,16 +4665,16 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> reimageAsync(String resourceGroupName, String vmName, Boolean tempDisk) {
-        return beginReimageAsync(resourceGroupName, vmName, tempDisk)
+    public Mono<Void> reimageAsync(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters) {
+        return beginReimageAsync(resourceGroupName, vmName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -4647,8 +4691,8 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> reimageAsync(String resourceGroupName, String vmName) {
-        final Boolean tempDisk = null;
-        return beginReimageAsync(resourceGroupName, vmName, tempDisk)
+        final VirtualMachineReimageParameters parameters = null;
+        return beginReimageAsync(resourceGroupName, vmName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -4658,8 +4702,7 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4667,8 +4710,9 @@ public final class VirtualMachinesClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> reimageAsync(String resourceGroupName, String vmName, Boolean tempDisk, Context context) {
-        return beginReimageAsync(resourceGroupName, vmName, tempDisk, context)
+    private Mono<Void> reimageAsync(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context) {
+        return beginReimageAsync(resourceGroupName, vmName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -4678,15 +4722,14 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(String resourceGroupName, String vmName, Boolean tempDisk) {
-        reimageAsync(resourceGroupName, vmName, tempDisk).block();
+    public void reimage(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters) {
+        reimageAsync(resourceGroupName, vmName, parameters).block();
     }
 
     /**
@@ -4700,8 +4743,8 @@ public final class VirtualMachinesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void reimage(String resourceGroupName, String vmName) {
-        final Boolean tempDisk = null;
-        reimageAsync(resourceGroupName, vmName, tempDisk).block();
+        final VirtualMachineReimageParameters parameters = null;
+        reimageAsync(resourceGroupName, vmName, parameters).block();
     }
 
     /**
@@ -4709,16 +4752,16 @@ public final class VirtualMachinesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reimage(String resourceGroupName, String vmName, Boolean tempDisk, Context context) {
-        reimageAsync(resourceGroupName, vmName, tempDisk, context).block();
+    public void reimage(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context) {
+        reimageAsync(resourceGroupName, vmName, parameters, context).block();
     }
 
     /**
@@ -4756,7 +4799,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4810,7 +4853,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4947,7 +4990,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -4995,7 +5038,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .performMaintenance(
@@ -5173,7 +5216,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -5221,7 +5264,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .simulateEviction(
@@ -5310,7 +5353,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -5360,7 +5403,7 @@ public final class VirtualMachinesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5562,7 +5605,7 @@ public final class VirtualMachinesClientImpl
         } else {
             installPatchesInput.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -5623,7 +5666,7 @@ public final class VirtualMachinesClientImpl
         } else {
             installPatchesInput.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5855,7 +5898,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
@@ -5912,7 +5955,7 @@ public final class VirtualMachinesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service

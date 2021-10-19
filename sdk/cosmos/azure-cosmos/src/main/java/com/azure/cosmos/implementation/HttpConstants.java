@@ -249,6 +249,8 @@ public class HttpConstants {
         public static final String USE_POLYGONS_SMALLER_THAN_AHEMISPHERE = "x-ms-documentdb-usepolygonssmallerthanahemisphere";
         public static final String API_TYPE = "x-ms-cosmos-apitype";
         public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
+        public static final String POPULATE_INDEX_METRICS = "x-ms-cosmos-populateindexmetrics";
+        public static final String INDEX_UTILIZATION = "x-ms-cosmos-index-utilization";
 
         // Batch operations
         public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";

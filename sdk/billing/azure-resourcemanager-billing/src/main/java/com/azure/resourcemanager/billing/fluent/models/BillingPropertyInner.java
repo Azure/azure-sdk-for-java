@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.BillingProfileSpendingLimit;
@@ -15,113 +14,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A billing property. */
-@JsonFlatten
 @Fluent
-public class BillingPropertyInner extends ProxyResource {
+public final class BillingPropertyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPropertyInner.class);
 
     /*
-     * The email address on which the account admin gets all Azure
-     * notifications.
+     * A billing property.
      */
-    @JsonProperty(value = "properties.accountAdminNotificationEmailAddress", access = JsonProperty.Access.WRITE_ONLY)
-    private String accountAdminNotificationEmailAddress;
+    @JsonProperty(value = "properties")
+    private BillingPropertyProperties innerProperties;
 
-    /*
-     * The Azure AD tenant ID of the billing account for the subscription.
+    /**
+     * Get the innerProperties property: A billing property.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.billingTenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingTenantId;
-
-    /*
-     * The ID of the billing account to which the subscription is billed.
-     */
-    @JsonProperty(value = "properties.billingAccountId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingAccountId;
-
-    /*
-     * The name of the billing account to which the subscription is billed.
-     */
-    @JsonProperty(value = "properties.billingAccountDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingAccountDisplayName;
-
-    /*
-     * The ID of the billing profile to which the subscription is billed.
-     */
-    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileId;
-
-    /*
-     * The name of the billing profile to which the subscription is billed.
-     */
-    @JsonProperty(value = "properties.billingProfileDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileDisplayName;
-
-    /*
-     * The status of the billing profile.
-     */
-    @JsonProperty(value = "properties.billingProfileStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private BillingProfileStatus billingProfileStatus;
-
-    /*
-     * Reason for the specified billing profile status.
-     */
-    @JsonProperty(value = "properties.billingProfileStatusReasonCode", access = JsonProperty.Access.WRITE_ONLY)
-    private BillingProfileStatusReasonCode billingProfileStatusReasonCode;
-
-    /*
-     * The billing profile spending limit.
-     */
-    @JsonProperty(value = "properties.billingProfileSpendingLimit", access = JsonProperty.Access.WRITE_ONLY)
-    private BillingProfileSpendingLimit billingProfileSpendingLimit;
-
-    /*
-     * The cost center applied to the subscription.
-     */
-    @JsonProperty(value = "properties.costCenter")
-    private String costCenter;
-
-    /*
-     * The ID of the invoice section to which the subscription is billed.
-     */
-    @JsonProperty(value = "properties.invoiceSectionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionId;
-
-    /*
-     * The name of the invoice section to which the subscription is billed.
-     */
-    @JsonProperty(value = "properties.invoiceSectionDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String invoiceSectionDisplayName;
-
-    /*
-     * Indicates whether user is the account admin.
-     */
-    @JsonProperty(value = "properties.isAccountAdmin", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isAccountAdmin;
-
-    /*
-     * The product ID of the Azure plan.
-     */
-    @JsonProperty(value = "properties.productId", access = JsonProperty.Access.WRITE_ONLY)
-    private String productId;
-
-    /*
-     * The product name of the Azure plan.
-     */
-    @JsonProperty(value = "properties.productName", access = JsonProperty.Access.WRITE_ONLY)
-    private String productName;
-
-    /*
-     * The sku ID of the Azure plan for the subscription.
-     */
-    @JsonProperty(value = "properties.skuId", access = JsonProperty.Access.WRITE_ONLY)
-    private String skuId;
-
-    /*
-     * The sku description of the Azure plan for the subscription.
-     */
-    @JsonProperty(value = "properties.skuDescription", access = JsonProperty.Access.WRITE_ONLY)
-    private String skuDescription;
+    private BillingPropertyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the accountAdminNotificationEmailAddress property: The email address on which the account admin gets all
@@ -130,7 +40,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the accountAdminNotificationEmailAddress value.
      */
     public String accountAdminNotificationEmailAddress() {
-        return this.accountAdminNotificationEmailAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().accountAdminNotificationEmailAddress();
     }
 
     /**
@@ -139,7 +49,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the billingTenantId value.
      */
     public String billingTenantId() {
-        return this.billingTenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingTenantId();
     }
 
     /**
@@ -148,7 +58,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the billingAccountId value.
      */
     public String billingAccountId() {
-        return this.billingAccountId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingAccountId();
     }
 
     /**
@@ -157,7 +67,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the billingAccountDisplayName value.
      */
     public String billingAccountDisplayName() {
-        return this.billingAccountDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().billingAccountDisplayName();
     }
 
     /**
@@ -166,7 +76,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
-        return this.billingProfileId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
     }
 
     /**
@@ -175,7 +85,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
-        return this.billingProfileDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileDisplayName();
     }
 
     /**
@@ -184,7 +94,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the billingProfileStatus value.
      */
     public BillingProfileStatus billingProfileStatus() {
-        return this.billingProfileStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileStatus();
     }
 
     /**
@@ -193,7 +103,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the billingProfileStatusReasonCode value.
      */
     public BillingProfileStatusReasonCode billingProfileStatusReasonCode() {
-        return this.billingProfileStatusReasonCode;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileStatusReasonCode();
     }
 
     /**
@@ -202,7 +112,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the billingProfileSpendingLimit value.
      */
     public BillingProfileSpendingLimit billingProfileSpendingLimit() {
-        return this.billingProfileSpendingLimit;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileSpendingLimit();
     }
 
     /**
@@ -211,7 +121,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the costCenter value.
      */
     public String costCenter() {
-        return this.costCenter;
+        return this.innerProperties() == null ? null : this.innerProperties().costCenter();
     }
 
     /**
@@ -221,7 +131,10 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the BillingPropertyInner object itself.
      */
     public BillingPropertyInner withCostCenter(String costCenter) {
-        this.costCenter = costCenter;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BillingPropertyProperties();
+        }
+        this.innerProperties().withCostCenter(costCenter);
         return this;
     }
 
@@ -231,7 +144,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the invoiceSectionId value.
      */
     public String invoiceSectionId() {
-        return this.invoiceSectionId;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionId();
     }
 
     /**
@@ -240,7 +153,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the invoiceSectionDisplayName value.
      */
     public String invoiceSectionDisplayName() {
-        return this.invoiceSectionDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceSectionDisplayName();
     }
 
     /**
@@ -249,7 +162,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the isAccountAdmin value.
      */
     public Boolean isAccountAdmin() {
-        return this.isAccountAdmin;
+        return this.innerProperties() == null ? null : this.innerProperties().isAccountAdmin();
     }
 
     /**
@@ -258,7 +171,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the productId value.
      */
     public String productId() {
-        return this.productId;
+        return this.innerProperties() == null ? null : this.innerProperties().productId();
     }
 
     /**
@@ -267,7 +180,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the productName value.
      */
     public String productName() {
-        return this.productName;
+        return this.innerProperties() == null ? null : this.innerProperties().productName();
     }
 
     /**
@@ -276,7 +189,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the skuId value.
      */
     public String skuId() {
-        return this.skuId;
+        return this.innerProperties() == null ? null : this.innerProperties().skuId();
     }
 
     /**
@@ -285,7 +198,7 @@ public class BillingPropertyInner extends ProxyResource {
      * @return the skuDescription value.
      */
     public String skuDescription() {
-        return this.skuDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().skuDescription();
     }
 
     /**
@@ -294,5 +207,8 @@ public class BillingPropertyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

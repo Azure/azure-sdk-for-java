@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.encryption.models.CosmosEncryptionAlgorithm;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -58,7 +57,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
 
         CosmosClientEncryptionKeyProperties clientEncryptionKey =
             cosmosEncryptionAsyncDatabase.createClientEncryptionKey("ClientEncryptionKeyTest1",
-                CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata).block().getProperties();
+                CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata).block().getProperties();
         assertThat(clientEncryptionKey.getEncryptionKeyWrapMetadata()).isEqualTo(metadata);
 
         clientEncryptionKey =
@@ -73,7 +72,7 @@ public class ClientEncryptionKeyTest extends TestSuiteBase {
 
         try {
             cosmosEncryptionAsyncDatabase.createClientEncryptionKey("ClientEncryptionKeyTest1",
-                CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, metadata).block().getProperties();
+                CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, metadata).block().getProperties();
             fail("createClientEncryptionKey should fail as it has wrong encryptionKeyWrapMetadata type");
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("The EncryptionKeyWrapMetadata Type value does not match with the " +

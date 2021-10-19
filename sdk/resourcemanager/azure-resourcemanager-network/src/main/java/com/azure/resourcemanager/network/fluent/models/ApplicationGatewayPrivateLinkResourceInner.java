@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,10 +12,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** PrivateLink Resource of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewayPrivateLinkResourceInner extends SubResource {
+public final class ApplicationGatewayPrivateLinkResourceInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayPrivateLinkResourceInner.class);
+
+    /*
+     * Properties of the application gateway private link resource.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewayPrivateLinkResourceProperties innerProperties;
 
     /*
      * Name of the private link resource that is unique within an Application
@@ -37,23 +41,14 @@ public class ApplicationGatewayPrivateLinkResourceInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Group identifier of private link resource.
+    /**
+     * Get the innerProperties property: Properties of the application gateway private link resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.groupId", access = JsonProperty.Access.WRITE_ONLY)
-    private String groupId;
-
-    /*
-     * Required member names of private link resource.
-     */
-    @JsonProperty(value = "properties.requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> requiredMembers;
-
-    /*
-     * Required DNS zone names of the the private link resource.
-     */
-    @JsonProperty(value = "properties.requiredZoneNames")
-    private List<String> requiredZoneNames;
+    private ApplicationGatewayPrivateLinkResourceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the private link resource that is unique within an Application Gateway.
@@ -93,13 +88,20 @@ public class ApplicationGatewayPrivateLinkResourceInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayPrivateLinkResourceInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the groupId property: Group identifier of private link resource.
      *
      * @return the groupId value.
      */
     public String groupId() {
-        return this.groupId;
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
     }
 
     /**
@@ -108,7 +110,7 @@ public class ApplicationGatewayPrivateLinkResourceInner extends SubResource {
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
-        return this.requiredMembers;
+        return this.innerProperties() == null ? null : this.innerProperties().requiredMembers();
     }
 
     /**
@@ -117,7 +119,7 @@ public class ApplicationGatewayPrivateLinkResourceInner extends SubResource {
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
-        return this.requiredZoneNames;
+        return this.innerProperties() == null ? null : this.innerProperties().requiredZoneNames();
     }
 
     /**
@@ -127,14 +129,10 @@ public class ApplicationGatewayPrivateLinkResourceInner extends SubResource {
      * @return the ApplicationGatewayPrivateLinkResourceInner object itself.
      */
     public ApplicationGatewayPrivateLinkResourceInner withRequiredZoneNames(List<String> requiredZoneNames) {
-        this.requiredZoneNames = requiredZoneNames;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewayPrivateLinkResourceInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayPrivateLinkResourceProperties();
+        }
+        this.innerProperties().withRequiredZoneNames(requiredZoneNames);
         return this;
     }
 
@@ -144,5 +142,8 @@ public class ApplicationGatewayPrivateLinkResourceInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -62,7 +62,6 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
     public DefaultEventHubClientFactory(@NonNull String eventHubConnectionString,
                                         String checkpointConnectionString,
                                         String checkpointStorageContainer) {
-        Assert.hasText(checkpointConnectionString, "checkpointConnectionString can't be null or empty");
         this.eventHubConnectionString = eventHubConnectionString;
         this.checkpointStorageConnectionString = checkpointConnectionString;
         this.checkpointStorageContainer = checkpointStorageContainer;
@@ -85,7 +84,8 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
 
     private EventProcessorClient createEventProcessorClientInternal(String eventHubName, String consumerGroup,
                                                                     EventHubProcessor eventHubProcessor) {
-
+        Assert.hasText(checkpointStorageConnectionString, "checkpointConnectionString can't be null or empty, check "
+            + "whether checkpoint-storage-account is configured in the configuration file.");
         // We set eventHubName as the container name when we use track1 library, and the EventHubProcessor will create
         // the container automatically if not exists
         String containerName = checkpointStorageContainer == null ? eventHubName : checkpointStorageContainer;

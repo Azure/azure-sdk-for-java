@@ -5,42 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.ReissueCertificateOrderRequestProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing certificate reissue request. */
-@JsonFlatten
 @Fluent
-public class ReissueCertificateOrderRequest extends ProxyOnlyResource {
+public final class ReissueCertificateOrderRequest extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ReissueCertificateOrderRequest.class);
 
     /*
-     * Certificate Key Size.
+     * ReissueCertificateOrderRequest resource specific properties
      */
-    @JsonProperty(value = "properties.keySize")
-    private Integer keySize;
+    @JsonProperty(value = "properties")
+    private ReissueCertificateOrderRequestProperties innerProperties;
 
-    /*
-     * Delay in hours to revoke existing certificate after the new certificate
-     * is issued.
+    /**
+     * Get the innerProperties property: ReissueCertificateOrderRequest resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.delayExistingRevokeInHours")
-    private Integer delayExistingRevokeInHours;
+    private ReissueCertificateOrderRequestProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Csr to be used for re-key operation.
-     */
-    @JsonProperty(value = "properties.csr")
-    private String csr;
-
-    /*
-     * Should we change the ASC type (from managed private key to external
-     * private key and vice versa).
-     */
-    @JsonProperty(value = "properties.isPrivateKeyExternal")
-    private Boolean isPrivateKeyExternal;
+    /** {@inheritDoc} */
+    @Override
+    public ReissueCertificateOrderRequest withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the keySize property: Certificate Key Size.
@@ -48,7 +43,7 @@ public class ReissueCertificateOrderRequest extends ProxyOnlyResource {
      * @return the keySize value.
      */
     public Integer keySize() {
-        return this.keySize;
+        return this.innerProperties() == null ? null : this.innerProperties().keySize();
     }
 
     /**
@@ -58,7 +53,10 @@ public class ReissueCertificateOrderRequest extends ProxyOnlyResource {
      * @return the ReissueCertificateOrderRequest object itself.
      */
     public ReissueCertificateOrderRequest withKeySize(Integer keySize) {
-        this.keySize = keySize;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReissueCertificateOrderRequestProperties();
+        }
+        this.innerProperties().withKeySize(keySize);
         return this;
     }
 
@@ -69,7 +67,7 @@ public class ReissueCertificateOrderRequest extends ProxyOnlyResource {
      * @return the delayExistingRevokeInHours value.
      */
     public Integer delayExistingRevokeInHours() {
-        return this.delayExistingRevokeInHours;
+        return this.innerProperties() == null ? null : this.innerProperties().delayExistingRevokeInHours();
     }
 
     /**
@@ -80,7 +78,10 @@ public class ReissueCertificateOrderRequest extends ProxyOnlyResource {
      * @return the ReissueCertificateOrderRequest object itself.
      */
     public ReissueCertificateOrderRequest withDelayExistingRevokeInHours(Integer delayExistingRevokeInHours) {
-        this.delayExistingRevokeInHours = delayExistingRevokeInHours;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReissueCertificateOrderRequestProperties();
+        }
+        this.innerProperties().withDelayExistingRevokeInHours(delayExistingRevokeInHours);
         return this;
     }
 
@@ -90,7 +91,7 @@ public class ReissueCertificateOrderRequest extends ProxyOnlyResource {
      * @return the csr value.
      */
     public String csr() {
-        return this.csr;
+        return this.innerProperties() == null ? null : this.innerProperties().csr();
     }
 
     /**
@@ -100,7 +101,10 @@ public class ReissueCertificateOrderRequest extends ProxyOnlyResource {
      * @return the ReissueCertificateOrderRequest object itself.
      */
     public ReissueCertificateOrderRequest withCsr(String csr) {
-        this.csr = csr;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReissueCertificateOrderRequestProperties();
+        }
+        this.innerProperties().withCsr(csr);
         return this;
     }
 
@@ -111,7 +115,7 @@ public class ReissueCertificateOrderRequest extends ProxyOnlyResource {
      * @return the isPrivateKeyExternal value.
      */
     public Boolean isPrivateKeyExternal() {
-        return this.isPrivateKeyExternal;
+        return this.innerProperties() == null ? null : this.innerProperties().isPrivateKeyExternal();
     }
 
     /**
@@ -122,14 +126,10 @@ public class ReissueCertificateOrderRequest extends ProxyOnlyResource {
      * @return the ReissueCertificateOrderRequest object itself.
      */
     public ReissueCertificateOrderRequest withIsPrivateKeyExternal(Boolean isPrivateKeyExternal) {
-        this.isPrivateKeyExternal = isPrivateKeyExternal;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ReissueCertificateOrderRequest withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReissueCertificateOrderRequestProperties();
+        }
+        this.innerProperties().withIsPrivateKeyExternal(isPrivateKeyExternal);
         return this;
     }
 
@@ -141,5 +141,8 @@ public class ReissueCertificateOrderRequest extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

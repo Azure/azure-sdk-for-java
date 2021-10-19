@@ -282,7 +282,7 @@ public final class ClustersClientImpl implements ClustersClient {
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters"
                 + "/{clusterName}/executeScriptActions")
-        @ExpectedResponses({200, 202, 404})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> executeScriptActions(
             @HostParam("$host") String endpoint,
@@ -434,7 +434,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HDInsight cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateAsync(
         String resourceGroupName, String clusterName, ClusterCreateParametersExtended parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, clusterName, parameters);
@@ -456,7 +456,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HDInsight cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ClusterInner>, ClusterInner> beginCreateAsync(
         String resourceGroupName, String clusterName, ClusterCreateParametersExtended parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -479,7 +479,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HDInsight cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
         String resourceGroupName, String clusterName, ClusterCreateParametersExtended parameters) {
         return beginCreateAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
@@ -497,7 +497,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HDInsight cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
         String resourceGroupName, String clusterName, ClusterCreateParametersExtended parameters, Context context) {
         return beginCreateAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
@@ -847,7 +847,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName);
         return this
@@ -866,7 +866,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, Context context) {
         context = this.client.mergeContext(context);
@@ -886,7 +886,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
         return beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
     }
@@ -902,7 +902,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, Context context) {
         return beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
@@ -1416,7 +1416,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginResizeAsync(
         String resourceGroupName, String clusterName, RoleName roleName, ClusterResizeParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1439,7 +1439,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginResizeAsync(
         String resourceGroupName,
         String clusterName,
@@ -1466,7 +1466,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResize(
         String resourceGroupName, String clusterName, RoleName roleName, ClusterResizeParameters parameters) {
         return beginResizeAsync(resourceGroupName, clusterName, roleName, parameters).getSyncPoller();
@@ -1485,7 +1485,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginResize(
         String resourceGroupName,
         String clusterName,
@@ -1716,7 +1716,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpdateAutoScaleConfigurationAsync(
         String resourceGroupName,
         String clusterName,
@@ -1742,7 +1742,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpdateAutoScaleConfigurationAsync(
         String resourceGroupName,
         String clusterName,
@@ -1770,7 +1770,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateAutoScaleConfiguration(
         String resourceGroupName,
         String clusterName,
@@ -1793,7 +1793,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateAutoScaleConfiguration(
         String resourceGroupName,
         String clusterName,
@@ -2153,7 +2153,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRotateDiskEncryptionKeyAsync(
         String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2175,7 +2175,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRotateDiskEncryptionKeyAsync(
         String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2197,7 +2197,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateDiskEncryptionKey(
         String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters) {
         return beginRotateDiskEncryptionKeyAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
@@ -2215,7 +2215,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRotateDiskEncryptionKey(
         String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters, Context context) {
         return beginRotateDiskEncryptionKeyAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
@@ -2561,7 +2561,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpdateGatewaySettingsAsync(
         String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2583,7 +2583,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpdateGatewaySettingsAsync(
         String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2605,7 +2605,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateGatewaySettings(
         String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters) {
         return beginUpdateGatewaySettingsAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
@@ -2623,7 +2623,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateGatewaySettings(
         String resourceGroupName, String clusterName, UpdateGatewaySettingsParameters parameters, Context context) {
         return beginUpdateGatewaySettingsAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();
@@ -2988,7 +2988,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpdateIdentityCertificateAsync(
         String resourceGroupName, String clusterName, UpdateClusterIdentityCertificateParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -3010,7 +3010,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpdateIdentityCertificateAsync(
         String resourceGroupName,
         String clusterName,
@@ -3035,7 +3035,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateIdentityCertificate(
         String resourceGroupName, String clusterName, UpdateClusterIdentityCertificateParameters parameters) {
         return beginUpdateIdentityCertificateAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
@@ -3053,7 +3053,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateIdentityCertificate(
         String resourceGroupName,
         String clusterName,
@@ -3259,7 +3259,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginExecuteScriptActionsAsync(
         String resourceGroupName, String clusterName, ExecuteScriptActionParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -3281,7 +3281,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginExecuteScriptActionsAsync(
         String resourceGroupName, String clusterName, ExecuteScriptActionParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -3303,7 +3303,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecuteScriptActions(
         String resourceGroupName, String clusterName, ExecuteScriptActionParameters parameters) {
         return beginExecuteScriptActionsAsync(resourceGroupName, clusterName, parameters).getSyncPoller();
@@ -3321,7 +3321,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExecuteScriptActions(
         String resourceGroupName, String clusterName, ExecuteScriptActionParameters parameters, Context context) {
         return beginExecuteScriptActionsAsync(resourceGroupName, clusterName, parameters, context).getSyncPoller();

@@ -37,7 +37,6 @@ import com.azure.resourcemanager.compute.models.ProximityPlacementGroupUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.util.Map;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ProximityPlacementGroupsClient. */
@@ -222,7 +221,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -285,7 +284,7 @@ public final class ProximityPlacementGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -369,7 +368,7 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -377,7 +376,7 @@ public final class ProximityPlacementGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProximityPlacementGroupInner>> updateWithResponseAsync(
-        String resourceGroupName, String proximityPlacementGroupName, Map<String, String> tags) {
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -400,10 +399,13 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
-        ProximityPlacementGroupUpdate parameters = new ProximityPlacementGroupUpdate();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -425,7 +427,7 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -434,7 +436,10 @@ public final class ProximityPlacementGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProximityPlacementGroupInner>> updateWithResponseAsync(
-        String resourceGroupName, String proximityPlacementGroupName, Map<String, String> tags, Context context) {
+        String resourceGroupName,
+        String proximityPlacementGroupName,
+        ProximityPlacementGroupUpdate parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -457,10 +462,13 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
-        ProximityPlacementGroupUpdate parameters = new ProximityPlacementGroupUpdate();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -479,7 +487,7 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -487,8 +495,8 @@ public final class ProximityPlacementGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProximityPlacementGroupInner> updateAsync(
-        String resourceGroupName, String proximityPlacementGroupName, Map<String, String> tags) {
-        return updateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, tags)
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters) {
+        return updateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, parameters)
             .flatMap(
                 (Response<ProximityPlacementGroupInner> res) -> {
                     if (res.getValue() != null) {
@@ -504,24 +512,16 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
+     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProximityPlacementGroupInner> updateAsync(
-        String resourceGroupName, String proximityPlacementGroupName) {
-        final Map<String, String> tags = null;
-        return updateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, tags)
-            .flatMap(
-                (Response<ProximityPlacementGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public ProximityPlacementGroupInner update(
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters) {
+        return updateAsync(resourceGroupName, proximityPlacementGroupName, parameters).block();
     }
 
     /**
@@ -529,23 +529,7 @@ public final class ProximityPlacementGroupsClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the proximity placement group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProximityPlacementGroupInner update(String resourceGroupName, String proximityPlacementGroupName) {
-        final Map<String, String> tags = null;
-        return updateAsync(resourceGroupName, proximityPlacementGroupName, tags).block();
-    }
-
-    /**
-     * Update a proximity placement group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -554,8 +538,11 @@ public final class ProximityPlacementGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProximityPlacementGroupInner> updateWithResponse(
-        String resourceGroupName, String proximityPlacementGroupName, Map<String, String> tags, Context context) {
-        return updateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, tags, context).block();
+        String resourceGroupName,
+        String proximityPlacementGroupName,
+        ProximityPlacementGroupUpdate parameters,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, proximityPlacementGroupName, parameters, context).block();
     }
 
     /**
@@ -592,7 +579,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -643,7 +630,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -739,7 +726,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -795,7 +782,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -922,7 +909,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -964,7 +951,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1062,7 +1049,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1116,7 +1103,7 @@ public final class ProximityPlacementGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

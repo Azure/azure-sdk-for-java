@@ -128,6 +128,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
 
     @Override
     public void close() {
+        this.unNamedSessionManager.close();
         this.onClientClose.run();
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -15,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The storage account blob inventory policy. */
-@JsonFlatten
 @Fluent
-public class BlobInventoryPolicyInner extends ProxyResource {
+public final class BlobInventoryPolicyInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyInner.class);
+
+    /*
+     * Returns the storage account blob inventory policy rules.
+     */
+    @JsonProperty(value = "properties")
+    private BlobInventoryPolicyProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
@@ -26,18 +30,14 @@ public class BlobInventoryPolicyInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * Returns the last modified date and time of the blob inventory policy.
+    /**
+     * Get the innerProperties property: Returns the storage account blob inventory policy rules.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * The storage account blob inventory policy object. It is composed of
-     * policy rules.
-     */
-    @JsonProperty(value = "properties.policy")
-    private BlobInventoryPolicySchema policy;
+    private BlobInventoryPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -54,7 +54,7 @@ public class BlobInventoryPolicyInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -63,7 +63,7 @@ public class BlobInventoryPolicyInner extends ProxyResource {
      * @return the policy value.
      */
     public BlobInventoryPolicySchema policy() {
-        return this.policy;
+        return this.innerProperties() == null ? null : this.innerProperties().policy();
     }
 
     /**
@@ -73,7 +73,10 @@ public class BlobInventoryPolicyInner extends ProxyResource {
      * @return the BlobInventoryPolicyInner object itself.
      */
     public BlobInventoryPolicyInner withPolicy(BlobInventoryPolicySchema policy) {
-        this.policy = policy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BlobInventoryPolicyProperties();
+        }
+        this.innerProperties().withPolicy(policy);
         return this;
     }
 
@@ -83,8 +86,8 @@ public class BlobInventoryPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (policy() != null) {
-            policy().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

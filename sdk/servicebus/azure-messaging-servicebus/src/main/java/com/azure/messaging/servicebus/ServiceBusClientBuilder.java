@@ -1267,7 +1267,7 @@ public final class ServiceBusClientBuilder {
 
         /**
          * Sets the prefetch count of the processor. For both {@link ServiceBusReceiveMode#PEEK_LOCK PEEK_LOCK} and
-         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 1.
+         * {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE RECEIVE_AND_DELETE} modes the default value is 0.
          *
          * Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when
          * and before the application starts the processor.

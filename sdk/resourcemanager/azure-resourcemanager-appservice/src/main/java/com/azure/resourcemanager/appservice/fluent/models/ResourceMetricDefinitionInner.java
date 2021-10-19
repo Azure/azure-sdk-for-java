@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.ResourceMetricAvailability;
@@ -15,86 +14,23 @@ import java.util.List;
 import java.util.Map;
 
 /** Metadata for the metrics. */
-@JsonFlatten
-@Immutable
-public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
+@Fluent
+public final class ResourceMetricDefinitionInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMetricDefinitionInner.class);
 
     /*
-     * Unit of the metric.
+     * ResourceMetricDefinition resource specific properties
      */
-    @JsonProperty(value = "properties.unit", access = JsonProperty.Access.WRITE_ONLY)
-    private String unit;
-
-    /*
-     * Primary aggregation type.
-     */
-    @JsonProperty(value = "properties.primaryAggregationType", access = JsonProperty.Access.WRITE_ONLY)
-    private String primaryAggregationType;
-
-    /*
-     * List of time grains supported for the metric together with retention
-     * period.
-     */
-    @JsonProperty(value = "properties.metricAvailabilities", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ResourceMetricAvailability> metricAvailabilities;
-
-    /*
-     * Resource URI.
-     */
-    @JsonProperty(value = "properties.resourceUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceUri;
-
-    /*
-     * Resource metric definition properties.
-     */
-    @JsonProperty(value = "properties.properties", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, String> properties;
+    @JsonProperty(value = "properties")
+    private ResourceMetricDefinitionProperties innerProperties;
 
     /**
-     * Get the unit property: Unit of the metric.
+     * Get the innerProperties property: ResourceMetricDefinition resource specific properties.
      *
-     * @return the unit value.
+     * @return the innerProperties value.
      */
-    public String unit() {
-        return this.unit;
-    }
-
-    /**
-     * Get the primaryAggregationType property: Primary aggregation type.
-     *
-     * @return the primaryAggregationType value.
-     */
-    public String primaryAggregationType() {
-        return this.primaryAggregationType;
-    }
-
-    /**
-     * Get the metricAvailabilities property: List of time grains supported for the metric together with retention
-     * period.
-     *
-     * @return the metricAvailabilities value.
-     */
-    public List<ResourceMetricAvailability> metricAvailabilities() {
-        return this.metricAvailabilities;
-    }
-
-    /**
-     * Get the resourceUri property: Resource URI.
-     *
-     * @return the resourceUri value.
-     */
-    public String resourceUri() {
-        return this.resourceUri;
-    }
-
-    /**
-     * Get the properties property: Resource metric definition properties.
-     *
-     * @return the properties value.
-     */
-    public Map<String, String> properties() {
-        return this.properties;
+    private ResourceMetricDefinitionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -105,6 +41,52 @@ public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the unit property: Unit of the metric.
+     *
+     * @return the unit value.
+     */
+    public String unit() {
+        return this.innerProperties() == null ? null : this.innerProperties().unit();
+    }
+
+    /**
+     * Get the primaryAggregationType property: Primary aggregation type.
+     *
+     * @return the primaryAggregationType value.
+     */
+    public String primaryAggregationType() {
+        return this.innerProperties() == null ? null : this.innerProperties().primaryAggregationType();
+    }
+
+    /**
+     * Get the metricAvailabilities property: List of time grains supported for the metric together with retention
+     * period.
+     *
+     * @return the metricAvailabilities value.
+     */
+    public List<ResourceMetricAvailability> metricAvailabilities() {
+        return this.innerProperties() == null ? null : this.innerProperties().metricAvailabilities();
+    }
+
+    /**
+     * Get the resourceUri property: Resource URI.
+     *
+     * @return the resourceUri value.
+     */
+    public String resourceUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceUri();
+    }
+
+    /**
+     * Get the properties property: Resource metric definition properties.
+     *
+     * @return the properties value.
+     */
+    public Map<String, String> properties() {
+        return this.innerProperties() == null ? null : this.innerProperties().properties();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -112,8 +94,8 @@ public class ResourceMetricDefinitionInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (metricAvailabilities() != null) {
-            metricAvailabilities().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -24,7 +24,7 @@ import com.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties
 @Validated
 @ConfigurationProperties(prefix = AppConfigurationProperties.CONFIG_PREFIX)
 @Import({ AppConfigurationProviderProperties.class })
-public class AppConfigurationProperties {
+public final class AppConfigurationProperties {
 
     public static final String CONFIG_PREFIX = "spring.cloud.azure.appconfiguration";
 
@@ -39,7 +39,6 @@ public class AppConfigurationProperties {
 
     // Alternative to Spring application name, if not configured, fallback to default
     // Spring application name
-    @Nullable
     private String name;
 
     @NestedConfigurationProperty

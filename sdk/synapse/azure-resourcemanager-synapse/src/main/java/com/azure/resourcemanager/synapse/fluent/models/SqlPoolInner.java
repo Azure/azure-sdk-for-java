@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.Sku;
@@ -15,80 +14,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** A SQL Analytics pool. */
-@JsonFlatten
+/** SQL pool A SQL Analytics pool. */
 @Fluent
-public class SqlPoolInner extends Resource {
+public final class SqlPoolInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolInner.class);
 
     /*
-     * SQL pool SKU
+     * Sku SQL pool SKU
      */
     @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
-     * Maximum size in bytes
+     * SQL pool properties
      */
-    @JsonProperty(value = "properties.maxSizeBytes")
-    private Long maxSizeBytes;
-
-    /*
-     * Collation mode
-     */
-    @JsonProperty(value = "properties.collation")
-    private String collation;
-
-    /*
-     * Source database to create from
-     */
-    @JsonProperty(value = "properties.sourceDatabaseId")
-    private String sourceDatabaseId;
-
-    /*
-     * Backup database to restore from
-     */
-    @JsonProperty(value = "properties.recoverableDatabaseId")
-    private String recoverableDatabaseId;
-
-    /*
-     * Resource state
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
-
-    /*
-     * Resource status
-     */
-    @JsonProperty(value = "properties.status")
-    private String status;
-
-    /*
-     * Snapshot time to restore
-     */
-    @JsonProperty(value = "properties.restorePointInTime")
-    private OffsetDateTime restorePointInTime;
-
-    /*
-     * What is this?
-     */
-    @JsonProperty(value = "properties.createMode")
-    private String createMode;
-
-    /*
-     * Date the SQL pool was created
-     */
-    @JsonProperty(value = "properties.creationDate")
-    private OffsetDateTime creationDate;
-
-    /*
-     * The storage account type used to store backups for this sql pool.
-     */
-    @JsonProperty(value = "properties.storageAccountType")
-    private StorageAccountType storageAccountType;
+    @JsonProperty(value = "properties")
+    private SqlPoolResourceProperties innerProperties;
 
     /**
-     * Get the sku property: SQL pool SKU.
+     * Get the sku property: Sku SQL pool SKU.
      *
      * @return the sku value.
      */
@@ -97,7 +41,7 @@ public class SqlPoolInner extends Resource {
     }
 
     /**
-     * Set the sku property: SQL pool SKU.
+     * Set the sku property: Sku SQL pool SKU.
      *
      * @param sku the sku value to set.
      * @return the SqlPoolInner object itself.
@@ -108,203 +52,12 @@ public class SqlPoolInner extends Resource {
     }
 
     /**
-     * Get the maxSizeBytes property: Maximum size in bytes.
+     * Get the innerProperties property: SQL pool properties.
      *
-     * @return the maxSizeBytes value.
+     * @return the innerProperties value.
      */
-    public Long maxSizeBytes() {
-        return this.maxSizeBytes;
-    }
-
-    /**
-     * Set the maxSizeBytes property: Maximum size in bytes.
-     *
-     * @param maxSizeBytes the maxSizeBytes value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withMaxSizeBytes(Long maxSizeBytes) {
-        this.maxSizeBytes = maxSizeBytes;
-        return this;
-    }
-
-    /**
-     * Get the collation property: Collation mode.
-     *
-     * @return the collation value.
-     */
-    public String collation() {
-        return this.collation;
-    }
-
-    /**
-     * Set the collation property: Collation mode.
-     *
-     * @param collation the collation value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withCollation(String collation) {
-        this.collation = collation;
-        return this;
-    }
-
-    /**
-     * Get the sourceDatabaseId property: Source database to create from.
-     *
-     * @return the sourceDatabaseId value.
-     */
-    public String sourceDatabaseId() {
-        return this.sourceDatabaseId;
-    }
-
-    /**
-     * Set the sourceDatabaseId property: Source database to create from.
-     *
-     * @param sourceDatabaseId the sourceDatabaseId value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withSourceDatabaseId(String sourceDatabaseId) {
-        this.sourceDatabaseId = sourceDatabaseId;
-        return this;
-    }
-
-    /**
-     * Get the recoverableDatabaseId property: Backup database to restore from.
-     *
-     * @return the recoverableDatabaseId value.
-     */
-    public String recoverableDatabaseId() {
-        return this.recoverableDatabaseId;
-    }
-
-    /**
-     * Set the recoverableDatabaseId property: Backup database to restore from.
-     *
-     * @param recoverableDatabaseId the recoverableDatabaseId value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withRecoverableDatabaseId(String recoverableDatabaseId) {
-        this.recoverableDatabaseId = recoverableDatabaseId;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Resource state.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: Resource state.
-     *
-     * @param provisioningState the provisioningState value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
-     * Get the status property: Resource status.
-     *
-     * @return the status value.
-     */
-    public String status() {
-        return this.status;
-    }
-
-    /**
-     * Set the status property: Resource status.
-     *
-     * @param status the status value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withStatus(String status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Get the restorePointInTime property: Snapshot time to restore.
-     *
-     * @return the restorePointInTime value.
-     */
-    public OffsetDateTime restorePointInTime() {
-        return this.restorePointInTime;
-    }
-
-    /**
-     * Set the restorePointInTime property: Snapshot time to restore.
-     *
-     * @param restorePointInTime the restorePointInTime value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withRestorePointInTime(OffsetDateTime restorePointInTime) {
-        this.restorePointInTime = restorePointInTime;
-        return this;
-    }
-
-    /**
-     * Get the createMode property: What is this?.
-     *
-     * @return the createMode value.
-     */
-    public String createMode() {
-        return this.createMode;
-    }
-
-    /**
-     * Set the createMode property: What is this?.
-     *
-     * @param createMode the createMode value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withCreateMode(String createMode) {
-        this.createMode = createMode;
-        return this;
-    }
-
-    /**
-     * Get the creationDate property: Date the SQL pool was created.
-     *
-     * @return the creationDate value.
-     */
-    public OffsetDateTime creationDate() {
-        return this.creationDate;
-    }
-
-    /**
-     * Set the creationDate property: Date the SQL pool was created.
-     *
-     * @param creationDate the creationDate value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withCreationDate(OffsetDateTime creationDate) {
-        this.creationDate = creationDate;
-        return this;
-    }
-
-    /**
-     * Get the storageAccountType property: The storage account type used to store backups for this sql pool.
-     *
-     * @return the storageAccountType value.
-     */
-    public StorageAccountType storageAccountType() {
-        return this.storageAccountType;
-    }
-
-    /**
-     * Set the storageAccountType property: The storage account type used to store backups for this sql pool.
-     *
-     * @param storageAccountType the storageAccountType value to set.
-     * @return the SqlPoolInner object itself.
-     */
-    public SqlPoolInner withStorageAccountType(StorageAccountType storageAccountType) {
-        this.storageAccountType = storageAccountType;
-        return this;
+    private SqlPoolResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -322,6 +75,259 @@ public class SqlPoolInner extends Resource {
     }
 
     /**
+     * Get the maxSizeBytes property: Maximum size in bytes.
+     *
+     * @return the maxSizeBytes value.
+     */
+    public Long maxSizeBytes() {
+        return this.innerProperties() == null ? null : this.innerProperties().maxSizeBytes();
+    }
+
+    /**
+     * Set the maxSizeBytes property: Maximum size in bytes.
+     *
+     * @param maxSizeBytes the maxSizeBytes value to set.
+     * @return the SqlPoolInner object itself.
+     */
+    public SqlPoolInner withMaxSizeBytes(Long maxSizeBytes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withMaxSizeBytes(maxSizeBytes);
+        return this;
+    }
+
+    /**
+     * Get the collation property: Collation mode.
+     *
+     * @return the collation value.
+     */
+    public String collation() {
+        return this.innerProperties() == null ? null : this.innerProperties().collation();
+    }
+
+    /**
+     * Set the collation property: Collation mode.
+     *
+     * @param collation the collation value to set.
+     * @return the SqlPoolInner object itself.
+     */
+    public SqlPoolInner withCollation(String collation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withCollation(collation);
+        return this;
+    }
+
+    /**
+     * Get the sourceDatabaseId property: Source database to create from.
+     *
+     * @return the sourceDatabaseId value.
+     */
+    public String sourceDatabaseId() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceDatabaseId();
+    }
+
+    /**
+     * Set the sourceDatabaseId property: Source database to create from.
+     *
+     * @param sourceDatabaseId the sourceDatabaseId value to set.
+     * @return the SqlPoolInner object itself.
+     */
+    public SqlPoolInner withSourceDatabaseId(String sourceDatabaseId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withSourceDatabaseId(sourceDatabaseId);
+        return this;
+    }
+
+    /**
+     * Get the recoverableDatabaseId property: Backup database to restore from.
+     *
+     * @return the recoverableDatabaseId value.
+     */
+    public String recoverableDatabaseId() {
+        return this.innerProperties() == null ? null : this.innerProperties().recoverableDatabaseId();
+    }
+
+    /**
+     * Set the recoverableDatabaseId property: Backup database to restore from.
+     *
+     * @param recoverableDatabaseId the recoverableDatabaseId value to set.
+     * @return the SqlPoolInner object itself.
+     */
+    public SqlPoolInner withRecoverableDatabaseId(String recoverableDatabaseId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withRecoverableDatabaseId(recoverableDatabaseId);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Resource state.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Resource state.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the SqlPoolInner object itself.
+     */
+    public SqlPoolInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    /**
+     * Get the status property: Resource status.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Set the status property: Resource status.
+     *
+     * @param status the status value to set.
+     * @return the SqlPoolInner object itself.
+     */
+    public SqlPoolInner withStatus(String status) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withStatus(status);
+        return this;
+    }
+
+    /**
+     * Get the restorePointInTime property: Snapshot time to restore.
+     *
+     * @return the restorePointInTime value.
+     */
+    public OffsetDateTime restorePointInTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().restorePointInTime();
+    }
+
+    /**
+     * Set the restorePointInTime property: Snapshot time to restore.
+     *
+     * @param restorePointInTime the restorePointInTime value to set.
+     * @return the SqlPoolInner object itself.
+     */
+    public SqlPoolInner withRestorePointInTime(OffsetDateTime restorePointInTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withRestorePointInTime(restorePointInTime);
+        return this;
+    }
+
+    /**
+     * Get the createMode property: What is this?.
+     *
+     * @return the createMode value.
+     */
+    public String createMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().createMode();
+    }
+
+    /**
+     * Set the createMode property: What is this?.
+     *
+     * @param createMode the createMode value to set.
+     * @return the SqlPoolInner object itself.
+     */
+    public SqlPoolInner withCreateMode(String createMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withCreateMode(createMode);
+        return this;
+    }
+
+    /**
+     * Get the creationDate property: Date the SQL pool was created.
+     *
+     * @return the creationDate value.
+     */
+    public OffsetDateTime creationDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
+    }
+
+    /**
+     * Set the creationDate property: Date the SQL pool was created.
+     *
+     * @param creationDate the creationDate value to set.
+     * @return the SqlPoolInner object itself.
+     */
+    public SqlPoolInner withCreationDate(OffsetDateTime creationDate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withCreationDate(creationDate);
+        return this;
+    }
+
+    /**
+     * Get the storageAccountType property: The storage account type used to store backups for this sql pool.
+     *
+     * @return the storageAccountType value.
+     */
+    public StorageAccountType storageAccountType() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountType();
+    }
+
+    /**
+     * Set the storageAccountType property: The storage account type used to store backups for this sql pool.
+     *
+     * @param storageAccountType the storageAccountType value to set.
+     * @return the SqlPoolInner object itself.
+     */
+    public SqlPoolInner withStorageAccountType(StorageAccountType storageAccountType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withStorageAccountType(storageAccountType);
+        return this;
+    }
+
+    /**
+     * Get the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
+     *
+     * @return the sourceDatabaseDeletionDate value.
+     */
+    public OffsetDateTime sourceDatabaseDeletionDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceDatabaseDeletionDate();
+    }
+
+    /**
+     * Set the sourceDatabaseDeletionDate property: Specifies the time that the sql pool was deleted.
+     *
+     * @param sourceDatabaseDeletionDate the sourceDatabaseDeletionDate value to set.
+     * @return the SqlPoolInner object itself.
+     */
+    public SqlPoolInner withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlPoolResourceProperties();
+        }
+        this.innerProperties().withSourceDatabaseDeletionDate(sourceDatabaseDeletionDate);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -329,6 +335,9 @@ public class SqlPoolInner extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -14,6 +14,10 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
 import java.util.List;
 
+import com.azure.communication.callingserver.models.RecordingChannel;
+import com.azure.communication.callingserver.models.RecordingContent;
+import com.azure.communication.callingserver.models.RecordingFormat;
+import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
 import com.azure.communication.callingserver.CallingServerAsyncClient;
 import com.azure.communication.callingserver.CallingServerClient;
@@ -41,10 +45,21 @@ public class ServerCallUnitTests {
     }
 
     @Test
+    public void startRecordingWithRecordingParamsRelativeUriFails() {
+        StartRecordingOptions startRecordingOptions = new StartRecordingOptions();
+        startRecordingOptions.setRecordingChannel(RecordingChannel.MIXED);
+        startRecordingOptions.setRecordingContent(RecordingContent.AUDIO_VIDEO);
+        startRecordingOptions.setRecordingFormat(RecordingFormat.MP4);
+        assertThrows(
+            InvalidParameterException.class,
+            () -> getCallingServerClient().startRecordingWithResponse(serverCallLocator, URI.create("/not/absolute/uri"), startRecordingOptions, null));
+    }
+
+    @Test
     public void startRecordingWithResponseRelativeUriFails() {
         assertThrows(
             InvalidParameterException.class,
-            () -> getCallingServerClient().startRecordingWithResponse(serverCallLocator, URI.create("/not/absolute/uri"), null));
+            () -> getCallingServerClient().startRecordingWithResponse(serverCallLocator, URI.create("/not/absolute/uri"), null, null));
     }
 
     @Test
@@ -59,6 +74,18 @@ public class ServerCallUnitTests {
         assertThrows(
             InvalidParameterException.class,
             () -> getCallingServerClient().startRecording(serverCallLocator, URI.create("/not/absolute/uri")));
+    }
+
+    @Test
+    public void startRecordingWithRecordingParamsAsyncFails() {
+        StartRecordingOptions startRecordingOptions = new StartRecordingOptions();
+        startRecordingOptions.setRecordingChannel(RecordingChannel.MIXED);
+        startRecordingOptions.setRecordingContent(RecordingContent.AUDIO_VIDEO);
+        startRecordingOptions.setRecordingFormat(RecordingFormat.MP4);
+
+        assertThrows(
+            InvalidParameterException.class,
+            () -> getCallingServerClient().startRecordingWithResponse(serverCallLocator, URI.create("/not/absolute/uri"), startRecordingOptions, null));
     }
 
     @Test

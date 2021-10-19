@@ -114,6 +114,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addSupportSpatialLegacyCoordinates(headers);
         this.addUsePolygonsSmallerThanAHemisphere(headers);
         this.addReturnPreference(headers);
+        this.addPopulateIndexMetrics(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -418,6 +419,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken getPopulateQueryMetrics() {
         return this.get(RntbdRequestHeader.PopulateQueryMetrics);
+    }
+
+    private RntbdToken getPopulateIndexMetrics() {
+        return this.get(RntbdRequestHeader.PopulateIndexMetrics);
     }
 
     private RntbdToken getPopulateQuotaInfo() {
@@ -963,6 +968,13 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final String value = headers.get(HttpHeaders.POPULATE_QUERY_METRICS);
         if (StringUtils.isNotEmpty(value)) {
             this.getPopulateQueryMetrics().setValue(Boolean.parseBoolean(value));
+        }
+    }
+
+    private void addPopulateIndexMetrics(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.POPULATE_INDEX_METRICS);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getPopulateIndexMetrics().setValue(Boolean.parseBoolean(value));
         }
     }
 

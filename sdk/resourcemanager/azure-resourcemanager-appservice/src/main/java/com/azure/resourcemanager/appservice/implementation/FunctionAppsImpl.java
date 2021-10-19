@@ -25,6 +25,8 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /** The implementation for WebApps. */
 public class FunctionAppsImpl
@@ -177,6 +179,13 @@ public class FunctionAppsImpl
     }
 
     private static boolean isFunctionApp(SiteInner inner) {
-        return inner.kind() != null && Arrays.asList(inner.kind().split(",")).contains("functionapp");
+        boolean ret = false;
+        if (inner.kind() != null) {
+            List<String> kinds = Arrays.asList(inner.kind().split(Pattern.quote(",")));
+            if (kinds.contains("functionapp") && !kinds.contains("kubernetes")) {
+                ret = true;
+            }
+        }
+        return ret;
     }
 }

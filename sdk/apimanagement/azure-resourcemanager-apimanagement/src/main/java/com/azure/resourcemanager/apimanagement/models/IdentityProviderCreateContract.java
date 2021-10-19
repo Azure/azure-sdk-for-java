@@ -5,245 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.IdentityProviderCreateContractProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Identity Provider details. */
-@JsonFlatten
 @Fluent
-public class IdentityProviderCreateContract extends ProxyResource {
+public final class IdentityProviderCreateContract extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProviderCreateContract.class);
 
     /*
-     * Identity Provider Type identifier.
+     * Identity Provider contract properties.
      */
-    @JsonProperty(value = "properties.type")
-    private IdentityProviderType typePropertiesType;
-
-    /*
-     * The TenantId to use instead of Common when logging into Active Directory
-     */
-    @JsonProperty(value = "properties.signinTenant")
-    private String signinTenant;
-
-    /*
-     * List of Allowed Tenants when configuring Azure Active Directory login.
-     */
-    @JsonProperty(value = "properties.allowedTenants")
-    private List<String> allowedTenants;
-
-    /*
-     * OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-     */
-    @JsonProperty(value = "properties.authority")
-    private String authority;
-
-    /*
-     * Signup Policy Name. Only applies to AAD B2C Identity Provider.
-     */
-    @JsonProperty(value = "properties.signupPolicyName")
-    private String signupPolicyName;
-
-    /*
-     * Signin Policy Name. Only applies to AAD B2C Identity Provider.
-     */
-    @JsonProperty(value = "properties.signinPolicyName")
-    private String signinPolicyName;
-
-    /*
-     * Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
-     */
-    @JsonProperty(value = "properties.profileEditingPolicyName")
-    private String profileEditingPolicyName;
-
-    /*
-     * Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
-     */
-    @JsonProperty(value = "properties.passwordResetPolicyName")
-    private String passwordResetPolicyName;
-
-    /*
-     * Client Id of the Application in the external Identity Provider. It is
-     * App ID for Facebook login, Client ID for Google login, App ID for
-     * Microsoft.
-     */
-    @JsonProperty(value = "properties.clientId")
-    private String clientId;
-
-    /*
-     * Client secret of the Application in external Identity Provider, used to
-     * authenticate login request. For example, it is App Secret for Facebook
-     * login, API Key for Google login, Public Key for Microsoft. This property
-     * will not be filled on 'GET' operations! Use '/listSecrets' POST request
-     * to get the value.
-     */
-    @JsonProperty(value = "properties.clientSecret")
-    private String clientSecret;
+    @JsonProperty(value = "properties")
+    private IdentityProviderCreateContractProperties innerProperties;
 
     /**
-     * Get the typePropertiesType property: Identity Provider Type identifier.
+     * Get the innerProperties property: Identity Provider contract properties.
      *
-     * @return the typePropertiesType value.
+     * @return the innerProperties value.
      */
-    public IdentityProviderType typePropertiesType() {
-        return this.typePropertiesType;
-    }
-
-    /**
-     * Set the typePropertiesType property: Identity Provider Type identifier.
-     *
-     * @param typePropertiesType the typePropertiesType value to set.
-     * @return the IdentityProviderCreateContract object itself.
-     */
-    public IdentityProviderCreateContract withTypePropertiesType(IdentityProviderType typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
-        return this;
-    }
-
-    /**
-     * Get the signinTenant property: The TenantId to use instead of Common when logging into Active Directory.
-     *
-     * @return the signinTenant value.
-     */
-    public String signinTenant() {
-        return this.signinTenant;
-    }
-
-    /**
-     * Set the signinTenant property: The TenantId to use instead of Common when logging into Active Directory.
-     *
-     * @param signinTenant the signinTenant value to set.
-     * @return the IdentityProviderCreateContract object itself.
-     */
-    public IdentityProviderCreateContract withSigninTenant(String signinTenant) {
-        this.signinTenant = signinTenant;
-        return this;
-    }
-
-    /**
-     * Get the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
-     *
-     * @return the allowedTenants value.
-     */
-    public List<String> allowedTenants() {
-        return this.allowedTenants;
-    }
-
-    /**
-     * Set the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
-     *
-     * @param allowedTenants the allowedTenants value to set.
-     * @return the IdentityProviderCreateContract object itself.
-     */
-    public IdentityProviderCreateContract withAllowedTenants(List<String> allowedTenants) {
-        this.allowedTenants = allowedTenants;
-        return this;
-    }
-
-    /**
-     * Get the authority property: OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-     *
-     * @return the authority value.
-     */
-    public String authority() {
-        return this.authority;
-    }
-
-    /**
-     * Set the authority property: OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-     *
-     * @param authority the authority value to set.
-     * @return the IdentityProviderCreateContract object itself.
-     */
-    public IdentityProviderCreateContract withAuthority(String authority) {
-        this.authority = authority;
-        return this;
-    }
-
-    /**
-     * Get the signupPolicyName property: Signup Policy Name. Only applies to AAD B2C Identity Provider.
-     *
-     * @return the signupPolicyName value.
-     */
-    public String signupPolicyName() {
-        return this.signupPolicyName;
-    }
-
-    /**
-     * Set the signupPolicyName property: Signup Policy Name. Only applies to AAD B2C Identity Provider.
-     *
-     * @param signupPolicyName the signupPolicyName value to set.
-     * @return the IdentityProviderCreateContract object itself.
-     */
-    public IdentityProviderCreateContract withSignupPolicyName(String signupPolicyName) {
-        this.signupPolicyName = signupPolicyName;
-        return this;
-    }
-
-    /**
-     * Get the signinPolicyName property: Signin Policy Name. Only applies to AAD B2C Identity Provider.
-     *
-     * @return the signinPolicyName value.
-     */
-    public String signinPolicyName() {
-        return this.signinPolicyName;
-    }
-
-    /**
-     * Set the signinPolicyName property: Signin Policy Name. Only applies to AAD B2C Identity Provider.
-     *
-     * @param signinPolicyName the signinPolicyName value to set.
-     * @return the IdentityProviderCreateContract object itself.
-     */
-    public IdentityProviderCreateContract withSigninPolicyName(String signinPolicyName) {
-        this.signinPolicyName = signinPolicyName;
-        return this;
-    }
-
-    /**
-     * Get the profileEditingPolicyName property: Profile Editing Policy Name. Only applies to AAD B2C Identity
-     * Provider.
-     *
-     * @return the profileEditingPolicyName value.
-     */
-    public String profileEditingPolicyName() {
-        return this.profileEditingPolicyName;
-    }
-
-    /**
-     * Set the profileEditingPolicyName property: Profile Editing Policy Name. Only applies to AAD B2C Identity
-     * Provider.
-     *
-     * @param profileEditingPolicyName the profileEditingPolicyName value to set.
-     * @return the IdentityProviderCreateContract object itself.
-     */
-    public IdentityProviderCreateContract withProfileEditingPolicyName(String profileEditingPolicyName) {
-        this.profileEditingPolicyName = profileEditingPolicyName;
-        return this;
-    }
-
-    /**
-     * Get the passwordResetPolicyName property: Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
-     *
-     * @return the passwordResetPolicyName value.
-     */
-    public String passwordResetPolicyName() {
-        return this.passwordResetPolicyName;
-    }
-
-    /**
-     * Set the passwordResetPolicyName property: Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
-     *
-     * @param passwordResetPolicyName the passwordResetPolicyName value to set.
-     * @return the IdentityProviderCreateContract object itself.
-     */
-    public IdentityProviderCreateContract withPasswordResetPolicyName(String passwordResetPolicyName) {
-        this.passwordResetPolicyName = passwordResetPolicyName;
-        return this;
+    private IdentityProviderCreateContractProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -253,7 +39,7 @@ public class IdentityProviderCreateContract extends ProxyResource {
      * @return the clientId value.
      */
     public String clientId() {
-        return this.clientId;
+        return this.innerProperties() == null ? null : this.innerProperties().clientId();
     }
 
     /**
@@ -264,7 +50,10 @@ public class IdentityProviderCreateContract extends ProxyResource {
      * @return the IdentityProviderCreateContract object itself.
      */
     public IdentityProviderCreateContract withClientId(String clientId) {
-        this.clientId = clientId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderCreateContractProperties();
+        }
+        this.innerProperties().withClientId(clientId);
         return this;
     }
 
@@ -277,7 +66,7 @@ public class IdentityProviderCreateContract extends ProxyResource {
      * @return the clientSecret value.
      */
     public String clientSecret() {
-        return this.clientSecret;
+        return this.innerProperties() == null ? null : this.innerProperties().clientSecret();
     }
 
     /**
@@ -290,7 +79,196 @@ public class IdentityProviderCreateContract extends ProxyResource {
      * @return the IdentityProviderCreateContract object itself.
      */
     public IdentityProviderCreateContract withClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderCreateContractProperties();
+        }
+        this.innerProperties().withClientSecret(clientSecret);
+        return this;
+    }
+
+    /**
+     * Get the type property: Identity Provider Type identifier.
+     *
+     * @return the type value.
+     */
+    public IdentityProviderType typePropertiesType() {
+        return this.innerProperties() == null ? null : this.innerProperties().type();
+    }
+
+    /**
+     * Set the type property: Identity Provider Type identifier.
+     *
+     * @param type the type value to set.
+     * @return the IdentityProviderCreateContract object itself.
+     */
+    public IdentityProviderCreateContract withTypePropertiesType(IdentityProviderType type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderCreateContractProperties();
+        }
+        this.innerProperties().withType(type);
+        return this;
+    }
+
+    /**
+     * Get the signinTenant property: The TenantId to use instead of Common when logging into Active Directory.
+     *
+     * @return the signinTenant value.
+     */
+    public String signinTenant() {
+        return this.innerProperties() == null ? null : this.innerProperties().signinTenant();
+    }
+
+    /**
+     * Set the signinTenant property: The TenantId to use instead of Common when logging into Active Directory.
+     *
+     * @param signinTenant the signinTenant value to set.
+     * @return the IdentityProviderCreateContract object itself.
+     */
+    public IdentityProviderCreateContract withSigninTenant(String signinTenant) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderCreateContractProperties();
+        }
+        this.innerProperties().withSigninTenant(signinTenant);
+        return this;
+    }
+
+    /**
+     * Get the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
+     *
+     * @return the allowedTenants value.
+     */
+    public List<String> allowedTenants() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowedTenants();
+    }
+
+    /**
+     * Set the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
+     *
+     * @param allowedTenants the allowedTenants value to set.
+     * @return the IdentityProviderCreateContract object itself.
+     */
+    public IdentityProviderCreateContract withAllowedTenants(List<String> allowedTenants) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderCreateContractProperties();
+        }
+        this.innerProperties().withAllowedTenants(allowedTenants);
+        return this;
+    }
+
+    /**
+     * Get the authority property: OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
+     *
+     * @return the authority value.
+     */
+    public String authority() {
+        return this.innerProperties() == null ? null : this.innerProperties().authority();
+    }
+
+    /**
+     * Set the authority property: OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
+     *
+     * @param authority the authority value to set.
+     * @return the IdentityProviderCreateContract object itself.
+     */
+    public IdentityProviderCreateContract withAuthority(String authority) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderCreateContractProperties();
+        }
+        this.innerProperties().withAuthority(authority);
+        return this;
+    }
+
+    /**
+     * Get the signupPolicyName property: Signup Policy Name. Only applies to AAD B2C Identity Provider.
+     *
+     * @return the signupPolicyName value.
+     */
+    public String signupPolicyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().signupPolicyName();
+    }
+
+    /**
+     * Set the signupPolicyName property: Signup Policy Name. Only applies to AAD B2C Identity Provider.
+     *
+     * @param signupPolicyName the signupPolicyName value to set.
+     * @return the IdentityProviderCreateContract object itself.
+     */
+    public IdentityProviderCreateContract withSignupPolicyName(String signupPolicyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderCreateContractProperties();
+        }
+        this.innerProperties().withSignupPolicyName(signupPolicyName);
+        return this;
+    }
+
+    /**
+     * Get the signinPolicyName property: Signin Policy Name. Only applies to AAD B2C Identity Provider.
+     *
+     * @return the signinPolicyName value.
+     */
+    public String signinPolicyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().signinPolicyName();
+    }
+
+    /**
+     * Set the signinPolicyName property: Signin Policy Name. Only applies to AAD B2C Identity Provider.
+     *
+     * @param signinPolicyName the signinPolicyName value to set.
+     * @return the IdentityProviderCreateContract object itself.
+     */
+    public IdentityProviderCreateContract withSigninPolicyName(String signinPolicyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderCreateContractProperties();
+        }
+        this.innerProperties().withSigninPolicyName(signinPolicyName);
+        return this;
+    }
+
+    /**
+     * Get the profileEditingPolicyName property: Profile Editing Policy Name. Only applies to AAD B2C Identity
+     * Provider.
+     *
+     * @return the profileEditingPolicyName value.
+     */
+    public String profileEditingPolicyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().profileEditingPolicyName();
+    }
+
+    /**
+     * Set the profileEditingPolicyName property: Profile Editing Policy Name. Only applies to AAD B2C Identity
+     * Provider.
+     *
+     * @param profileEditingPolicyName the profileEditingPolicyName value to set.
+     * @return the IdentityProviderCreateContract object itself.
+     */
+    public IdentityProviderCreateContract withProfileEditingPolicyName(String profileEditingPolicyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderCreateContractProperties();
+        }
+        this.innerProperties().withProfileEditingPolicyName(profileEditingPolicyName);
+        return this;
+    }
+
+    /**
+     * Get the passwordResetPolicyName property: Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
+     *
+     * @return the passwordResetPolicyName value.
+     */
+    public String passwordResetPolicyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().passwordResetPolicyName();
+    }
+
+    /**
+     * Set the passwordResetPolicyName property: Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
+     *
+     * @param passwordResetPolicyName the passwordResetPolicyName value to set.
+     * @return the IdentityProviderCreateContract object itself.
+     */
+    public IdentityProviderCreateContract withPasswordResetPolicyName(String passwordResetPolicyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IdentityProviderCreateContractProperties();
+        }
+        this.innerProperties().withPasswordResetPolicyName(passwordResetPolicyName);
         return this;
     }
 
@@ -300,5 +278,8 @@ public class IdentityProviderCreateContract extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

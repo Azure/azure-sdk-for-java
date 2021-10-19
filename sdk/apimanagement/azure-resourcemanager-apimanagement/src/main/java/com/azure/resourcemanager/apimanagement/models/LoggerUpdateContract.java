@@ -5,42 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.LoggerUpdateParameters;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Logger update contract. */
-@JsonFlatten
 @Fluent
-public class LoggerUpdateContract {
+public final class LoggerUpdateContract {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoggerUpdateContract.class);
 
     /*
-     * Logger type.
+     * Logger entity update contract properties.
      */
-    @JsonProperty(value = "properties.loggerType")
-    private LoggerType loggerType;
+    @JsonProperty(value = "properties")
+    private LoggerUpdateParameters innerProperties;
 
-    /*
-     * Logger description.
+    /**
+     * Get the innerProperties property: Logger entity update contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * Logger credentials.
-     */
-    @JsonProperty(value = "properties.credentials")
-    private Map<String, String> credentials;
-
-    /*
-     * Whether records are buffered in the logger before publishing. Default is
-     * assumed to be true.
-     */
-    @JsonProperty(value = "properties.isBuffered")
-    private Boolean isBuffered;
+    private LoggerUpdateParameters innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the loggerType property: Logger type.
@@ -48,7 +37,7 @@ public class LoggerUpdateContract {
      * @return the loggerType value.
      */
     public LoggerType loggerType() {
-        return this.loggerType;
+        return this.innerProperties() == null ? null : this.innerProperties().loggerType();
     }
 
     /**
@@ -58,7 +47,10 @@ public class LoggerUpdateContract {
      * @return the LoggerUpdateContract object itself.
      */
     public LoggerUpdateContract withLoggerType(LoggerType loggerType) {
-        this.loggerType = loggerType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoggerUpdateParameters();
+        }
+        this.innerProperties().withLoggerType(loggerType);
         return this;
     }
 
@@ -68,7 +60,7 @@ public class LoggerUpdateContract {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -78,7 +70,10 @@ public class LoggerUpdateContract {
      * @return the LoggerUpdateContract object itself.
      */
     public LoggerUpdateContract withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoggerUpdateParameters();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -88,7 +83,7 @@ public class LoggerUpdateContract {
      * @return the credentials value.
      */
     public Map<String, String> credentials() {
-        return this.credentials;
+        return this.innerProperties() == null ? null : this.innerProperties().credentials();
     }
 
     /**
@@ -98,7 +93,10 @@ public class LoggerUpdateContract {
      * @return the LoggerUpdateContract object itself.
      */
     public LoggerUpdateContract withCredentials(Map<String, String> credentials) {
-        this.credentials = credentials;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoggerUpdateParameters();
+        }
+        this.innerProperties().withCredentials(credentials);
         return this;
     }
 
@@ -109,7 +107,7 @@ public class LoggerUpdateContract {
      * @return the isBuffered value.
      */
     public Boolean isBuffered() {
-        return this.isBuffered;
+        return this.innerProperties() == null ? null : this.innerProperties().isBuffered();
     }
 
     /**
@@ -120,7 +118,10 @@ public class LoggerUpdateContract {
      * @return the LoggerUpdateContract object itself.
      */
     public LoggerUpdateContract withIsBuffered(Boolean isBuffered) {
-        this.isBuffered = isBuffered;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoggerUpdateParameters();
+        }
+        this.innerProperties().withIsBuffered(isBuffered);
         return this;
     }
 
@@ -130,5 +131,8 @@ public class LoggerUpdateContract {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

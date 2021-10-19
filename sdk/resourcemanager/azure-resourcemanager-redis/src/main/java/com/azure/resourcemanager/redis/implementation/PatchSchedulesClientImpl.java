@@ -33,8 +33,6 @@ import com.azure.resourcemanager.redis.fluent.PatchSchedulesClient;
 import com.azure.resourcemanager.redis.fluent.models.RedisPatchScheduleInner;
 import com.azure.resourcemanager.redis.models.DefaultName;
 import com.azure.resourcemanager.redis.models.RedisPatchScheduleListResult;
-import com.azure.resourcemanager.redis.models.ScheduleEntry;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PatchSchedulesClient. */
@@ -326,7 +324,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -334,7 +332,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RedisPatchScheduleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, DefaultName defaultParameter, List<ScheduleEntry> scheduleEntries) {
+        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -358,15 +356,12 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (scheduleEntries == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduleEntries is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            scheduleEntries.forEach(e -> e.validate());
+            parameters.validate();
         }
         final String accept = "application/json";
-        RedisPatchScheduleInner parameters = new RedisPatchScheduleInner();
-        parameters.withScheduleEntries(scheduleEntries);
         return FluxUtil
             .withContext(
                 context ->
@@ -390,7 +385,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -402,7 +397,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
         String resourceGroupName,
         String name,
         DefaultName defaultParameter,
-        List<ScheduleEntry> scheduleEntries,
+        RedisPatchScheduleInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -427,15 +422,12 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (scheduleEntries == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter scheduleEntries is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            scheduleEntries.forEach(e -> e.validate());
+            parameters.validate();
         }
         final String accept = "application/json";
-        RedisPatchScheduleInner parameters = new RedisPatchScheduleInner();
-        parameters.withScheduleEntries(scheduleEntries);
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -456,7 +448,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -464,8 +456,8 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RedisPatchScheduleInner> createOrUpdateAsync(
-        String resourceGroupName, String name, DefaultName defaultParameter, List<ScheduleEntry> scheduleEntries) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, name, defaultParameter, scheduleEntries)
+        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, name, defaultParameter, parameters)
             .flatMap(
                 (Response<RedisPatchScheduleInner> res) -> {
                     if (res.getValue() != null) {
@@ -482,7 +474,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -490,8 +482,8 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RedisPatchScheduleInner createOrUpdate(
-        String resourceGroupName, String name, DefaultName defaultParameter, List<ScheduleEntry> scheduleEntries) {
-        return createOrUpdateAsync(resourceGroupName, name, defaultParameter, scheduleEntries).block();
+        String resourceGroupName, String name, DefaultName defaultParameter, RedisPatchScheduleInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, name, defaultParameter, parameters).block();
     }
 
     /**
@@ -500,7 +492,7 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the Redis cache.
      * @param defaultParameter Default string modeled as parameter for auto generation to work correctly.
-     * @param scheduleEntries List of patch schedules for a Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -512,10 +504,9 @@ public final class PatchSchedulesClientImpl implements PatchSchedulesClient {
         String resourceGroupName,
         String name,
         DefaultName defaultParameter,
-        List<ScheduleEntry> scheduleEntries,
+        RedisPatchScheduleInner parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, name, defaultParameter, scheduleEntries, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, name, defaultParameter, parameters, context).block();
     }
 
     /**

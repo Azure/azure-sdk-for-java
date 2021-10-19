@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
+import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
@@ -21,6 +22,7 @@ import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleDownMode;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
+import com.azure.resourcemanager.containerservice.models.WorkloadRuntime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -215,6 +217,29 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withKubeletDiskType(kubeletDiskType);
+        return this;
+    }
+
+    /**
+     * Get the workloadRuntime property: Determines the type of workload a node can run.
+     *
+     * @return the workloadRuntime value.
+     */
+    public WorkloadRuntime workloadRuntime() {
+        return this.innerProperties() == null ? null : this.innerProperties().workloadRuntime();
+    }
+
+    /**
+     * Set the workloadRuntime property: Determines the type of workload a node can run.
+     *
+     * @param workloadRuntime the workloadRuntime value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withWorkloadRuntime(WorkloadRuntime workloadRuntime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withWorkloadRuntime(workloadRuntime);
         return this;
     }
 
@@ -979,6 +1004,31 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withGpuInstanceProfile(gpuInstanceProfile);
+        return this;
+    }
+
+    /**
+     * Get the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will be
+     * created/upgraded using a snapshot.
+     *
+     * @return the creationData value.
+     */
+    public CreationData creationData() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationData();
+    }
+
+    /**
+     * Set the creationData property: CreationData to be used to specify the source Snapshot ID if the node pool will be
+     * created/upgraded using a snapshot.
+     *
+     * @param creationData the creationData value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withCreationData(CreationData creationData) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withCreationData(creationData);
         return this;
     }
 

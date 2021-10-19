@@ -2,6 +2,39 @@
 
 ## 1.8.0-beta.1 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.7.3 (2021-10-15)
+
+### Bugs Fixed
+
+- Fixed a bug where an exception may be thrown when recording test runs.
+
+## 1.7.2 (2021-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.20.0` to `1.21.0`.
+
+## 1.7.1 (2021-09-07)
+
+### Fixed
+
+- Fixed a `NullPointerException` when loading test `HttpClient`. ([#23559](https://github.com/Azure/azure-sdk-for-java/pull/23559))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.19.0` to `1.20.0`.
 
 ## 1.7.0 (2021-08-06)
 

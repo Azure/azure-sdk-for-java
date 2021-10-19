@@ -21,6 +21,7 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -137,8 +138,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             List<String> uris = new ArrayList<>();
             doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
-                Uri uri = invocationOnMock.getArgument(0, Uri.class);
-                uris.add(uri.getURI().getHost());
+                RxDocumentServiceRequest serviceRequest = invocationOnMock.getArgument(1,
+                    RxDocumentServiceRequest.class);
+                uris.add(serviceRequest.requestContext.locationEndpointToRoute.toString());
                 CosmosException cosmosException = BridgeInternal.createCosmosException(404);
                 @SuppressWarnings("unchecked")
                 Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
@@ -233,8 +235,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             PartitionKey partitionKey = new PartitionKey("Test");
             List<String> uris = new ArrayList<>();
             doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
-                Uri uri = invocationOnMock.getArgument(0, Uri.class);
-                uris.add(uri.getURI().getHost());
+                RxDocumentServiceRequest serviceRequest = invocationOnMock.getArgument(1,
+                    RxDocumentServiceRequest.class);
+                uris.add(serviceRequest.requestContext.locationEndpointToRoute.toString());
                 CosmosException cosmosException = BridgeInternal.createCosmosException(404);
                 @SuppressWarnings("unchecked")
                 Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
@@ -347,8 +350,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             List<String> uris = new ArrayList<>();
             doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
-                Uri uri = invocationOnMock.getArgument(0, Uri.class);
-                uris.add(uri.getURI().getHost());
+                RxDocumentServiceRequest serviceRequest = invocationOnMock.getArgument(1,
+                    RxDocumentServiceRequest.class);
+                uris.add(serviceRequest.requestContext.locationEndpointToRoute.toString());
                 CosmosException cosmosException = BridgeInternal.createCosmosException(404);
                 @SuppressWarnings("unchecked")
                 Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
@@ -385,9 +389,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             // Verifying we are only retrying in masterOrHub region
             assertThat(uniqueHost.size()).isEqualTo(1);
 
-            String masterOrHubRegionSuffix =
-                getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
-                    TestConfigurations.HOST);
+            String masterOrHubRegion =databaseAccount.getWritableLocations().iterator().next().getEndpoint();
 
             // First regional retries in originating region , then retrying in master as per clientRetryPolicy and 1
             // retry in the
@@ -399,14 +401,20 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             int totalRetries = averageRetryBySessionRetryPolicyInOneRegion;
             // First regional retries should be in master region
-            assertThat(uris.get(totalRetries / 2)).contains(masterOrHubRegionSuffix);
+            if(!(uris.get(totalRetries / 2).equals(masterOrHubRegion) || uris.get(totalRetries / 2).equals(TestConfigurations.HOST))){
+                fail(String.format("%s is not equal to master region", uris.get(totalRetries / 2)));
+            }
 
             // Retrying again in master region
-            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
+            if(!(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2).equals(masterOrHubRegion) || uris.get(totalRetries / 2).equals(TestConfigurations.HOST))){
+                fail(String.format("%s is not equal to master region", uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)));
+            }
             totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
 
             // Last region retries should be master region
-            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
+            if(!(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2).equals(masterOrHubRegion) || uris.get(totalRetries / 2).equals(TestConfigurations.HOST))){
+                fail(String.format("%s is not equal to master region", uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)));
+            }
         } finally {
             safeClose(preferredListClient);
         }

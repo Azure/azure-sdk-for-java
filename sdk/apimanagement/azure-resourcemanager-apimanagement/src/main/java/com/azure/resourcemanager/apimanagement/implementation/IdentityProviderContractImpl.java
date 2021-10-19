@@ -33,6 +33,14 @@ public final class IdentityProviderContractImpl
         return this.innerModel().type();
     }
 
+    public String clientId() {
+        return this.innerModel().clientId();
+    }
+
+    public String clientSecret() {
+        return this.innerModel().clientSecret();
+    }
+
     public IdentityProviderType typePropertiesType() {
         return this.innerModel().typePropertiesType();
     }
@@ -68,14 +76,6 @@ public final class IdentityProviderContractImpl
 
     public String passwordResetPolicyName() {
         return this.innerModel().passwordResetPolicyName();
-    }
-
-    public String clientId() {
-        return this.innerModel().clientId();
-    }
-
-    public String clientSecret() {
-        return this.innerModel().clientSecret();
     }
 
     public IdentityProviderContractInner innerModel() {
@@ -206,6 +206,26 @@ public final class IdentityProviderContractImpl
             .listSecretsWithResponse(resourceGroupName, serviceName, identityProviderName, context);
     }
 
+    public IdentityProviderContractImpl withClientId(String clientId) {
+        if (isInCreateMode()) {
+            this.createParameters.withClientId(clientId);
+            return this;
+        } else {
+            this.updateParameters.withClientId(clientId);
+            return this;
+        }
+    }
+
+    public IdentityProviderContractImpl withClientSecret(String clientSecret) {
+        if (isInCreateMode()) {
+            this.createParameters.withClientSecret(clientSecret);
+            return this;
+        } else {
+            this.updateParameters.withClientSecret(clientSecret);
+            return this;
+        }
+    }
+
     public IdentityProviderContractImpl withTypePropertiesType(IdentityProviderType typePropertiesType) {
         this.createParameters.withTypePropertiesType(typePropertiesType);
         return this;
@@ -277,26 +297,6 @@ public final class IdentityProviderContractImpl
             return this;
         } else {
             this.updateParameters.withPasswordResetPolicyName(passwordResetPolicyName);
-            return this;
-        }
-    }
-
-    public IdentityProviderContractImpl withClientId(String clientId) {
-        if (isInCreateMode()) {
-            this.createParameters.withClientId(clientId);
-            return this;
-        } else {
-            this.updateParameters.withClientId(clientId);
-            return this;
-        }
-    }
-
-    public IdentityProviderContractImpl withClientSecret(String clientSecret) {
-        if (isInCreateMode()) {
-            this.createParameters.withClientSecret(clientSecret);
-            return this;
-        } else {
-            this.updateParameters.withClientSecret(clientSecret);
             return this;
         }
     }

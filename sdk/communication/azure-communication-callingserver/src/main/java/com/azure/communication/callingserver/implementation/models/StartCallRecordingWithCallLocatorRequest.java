@@ -26,19 +26,19 @@ public final class StartCallRecordingWithCallLocatorRequest {
      * Content type of call recording.
      */
     @JsonProperty(value = "recordingContentType")
-    private RecordingContentType recordingContentType;
+    private RecordingContent recordingContentType;
 
     /*
      * Channel type of call recording.
      */
     @JsonProperty(value = "recordingChannelType")
-    private RecordingChannelType recordingChannelType;
+    private RecordingChannel recordingChannelType;
 
     /*
      * Format type of call recording.
      */
     @JsonProperty(value = "recordingFormatType")
-    private RecordingFormatType recordingFormatType;
+    private RecordingFormat recordingFormatType;
 
     /**
      * Get the callLocator property: The call locator.
@@ -85,7 +85,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
      *
      * @return the recordingContentType value.
      */
-    public RecordingContentType getRecordingContentType() {
+    public RecordingContent getRecordingContentType() {
         return this.recordingContentType;
     }
 
@@ -95,7 +95,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
      * @param recordingContentType the recordingContentType value to set.
      * @return the StartCallRecordingWithCallLocatorRequest object itself.
      */
-    public StartCallRecordingWithCallLocatorRequest setRecordingContentType(RecordingContentType recordingContentType) {
+    public StartCallRecordingWithCallLocatorRequest setRecordingContentType(RecordingContent recordingContentType) {
         this.recordingContentType = recordingContentType;
         return this;
     }
@@ -105,7 +105,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
      *
      * @return the recordingChannelType value.
      */
-    public RecordingChannelType getRecordingChannelType() {
+    public RecordingChannel getRecordingChannelType() {
         return this.recordingChannelType;
     }
 
@@ -115,7 +115,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
      * @param recordingChannelType the recordingChannelType value to set.
      * @return the StartCallRecordingWithCallLocatorRequest object itself.
      */
-    public StartCallRecordingWithCallLocatorRequest setRecordingChannelType(RecordingChannelType recordingChannelType) {
+    public StartCallRecordingWithCallLocatorRequest setRecordingChannelType(RecordingChannel recordingChannelType) {
         this.recordingChannelType = recordingChannelType;
         return this;
     }
@@ -125,7 +125,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
      *
      * @return the recordingFormatType value.
      */
-    public RecordingFormatType getRecordingFormatType() {
+    public RecordingFormat getRecordingFormatType() {
         return this.recordingFormatType;
     }
 
@@ -135,7 +135,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
      * @param recordingFormatType the recordingFormatType value to set.
      * @return the StartCallRecordingWithCallLocatorRequest object itself.
      */
-    public StartCallRecordingWithCallLocatorRequest setRecordingFormatType(RecordingFormatType recordingFormatType) {
+    public StartCallRecordingWithCallLocatorRequest setRecordingFormatType(RecordingFormat recordingFormatType) {
         this.recordingFormatType = recordingFormatType;
         return this;
     }

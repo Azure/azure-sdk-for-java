@@ -5,71 +5,76 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.fluent.models.BackendUpdateParameterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Backend update parameters. */
-@JsonFlatten
 @Fluent
-public class BackendUpdateParameters {
+public final class BackendUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendUpdateParameters.class);
 
     /*
-     * Backend Title.
+     * Backend entity update contract properties.
      */
-    @JsonProperty(value = "properties.title")
-    private String title;
+    @JsonProperty(value = "properties")
+    private BackendUpdateParameterProperties innerProperties;
 
-    /*
-     * Backend Description.
+    /**
+     * Get the innerProperties property: Backend entity update contract properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private BackendUpdateParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Management Uri of the Resource in External System. This url can be the
-     * Arm Resource Id of Logic Apps, Function Apps or Api Apps.
+    /**
+     * Get the url property: Runtime Url of the Backend.
+     *
+     * @return the url value.
      */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
+    public String url() {
+        return this.innerProperties() == null ? null : this.innerProperties().url();
+    }
 
-    /*
-     * Backend Properties contract
+    /**
+     * Set the url property: Runtime Url of the Backend.
+     *
+     * @param url the url value to set.
+     * @return the BackendUpdateParameters object itself.
      */
-    @JsonProperty(value = "properties.properties")
-    private BackendProperties properties;
+    public BackendUpdateParameters withUrl(String url) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withUrl(url);
+        return this;
+    }
 
-    /*
-     * Backend Credentials Contract Properties
+    /**
+     * Get the protocol property: Backend communication protocol.
+     *
+     * @return the protocol value.
      */
-    @JsonProperty(value = "properties.credentials")
-    private BackendCredentialsContract credentials;
+    public BackendProtocol protocol() {
+        return this.innerProperties() == null ? null : this.innerProperties().protocol();
+    }
 
-    /*
-     * Backend Proxy Contract Properties
+    /**
+     * Set the protocol property: Backend communication protocol.
+     *
+     * @param protocol the protocol value to set.
+     * @return the BackendUpdateParameters object itself.
      */
-    @JsonProperty(value = "properties.proxy")
-    private BackendProxyContract proxy;
-
-    /*
-     * Backend TLS Properties
-     */
-    @JsonProperty(value = "properties.tls")
-    private BackendTlsProperties tls;
-
-    /*
-     * Runtime Url of the Backend.
-     */
-    @JsonProperty(value = "properties.url")
-    private String url;
-
-    /*
-     * Backend communication protocol.
-     */
-    @JsonProperty(value = "properties.protocol")
-    private BackendProtocol protocol;
+    public BackendUpdateParameters withProtocol(BackendProtocol protocol) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withProtocol(protocol);
+        return this;
+    }
 
     /**
      * Get the title property: Backend Title.
@@ -77,7 +82,7 @@ public class BackendUpdateParameters {
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
@@ -87,7 +92,10 @@ public class BackendUpdateParameters {
      * @return the BackendUpdateParameters object itself.
      */
     public BackendUpdateParameters withTitle(String title) {
-        this.title = title;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withTitle(title);
         return this;
     }
 
@@ -97,7 +105,7 @@ public class BackendUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -107,7 +115,10 @@ public class BackendUpdateParameters {
      * @return the BackendUpdateParameters object itself.
      */
     public BackendUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -118,7 +129,7 @@ public class BackendUpdateParameters {
      * @return the resourceId value.
      */
     public String resourceId() {
-        return this.resourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
     }
 
     /**
@@ -129,7 +140,10 @@ public class BackendUpdateParameters {
      * @return the BackendUpdateParameters object itself.
      */
     public BackendUpdateParameters withResourceId(String resourceId) {
-        this.resourceId = resourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
         return this;
     }
 
@@ -139,7 +153,7 @@ public class BackendUpdateParameters {
      * @return the properties value.
      */
     public BackendProperties properties() {
-        return this.properties;
+        return this.innerProperties() == null ? null : this.innerProperties().properties();
     }
 
     /**
@@ -149,7 +163,10 @@ public class BackendUpdateParameters {
      * @return the BackendUpdateParameters object itself.
      */
     public BackendUpdateParameters withProperties(BackendProperties properties) {
-        this.properties = properties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withProperties(properties);
         return this;
     }
 
@@ -159,7 +176,7 @@ public class BackendUpdateParameters {
      * @return the credentials value.
      */
     public BackendCredentialsContract credentials() {
-        return this.credentials;
+        return this.innerProperties() == null ? null : this.innerProperties().credentials();
     }
 
     /**
@@ -169,7 +186,10 @@ public class BackendUpdateParameters {
      * @return the BackendUpdateParameters object itself.
      */
     public BackendUpdateParameters withCredentials(BackendCredentialsContract credentials) {
-        this.credentials = credentials;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withCredentials(credentials);
         return this;
     }
 
@@ -179,7 +199,7 @@ public class BackendUpdateParameters {
      * @return the proxy value.
      */
     public BackendProxyContract proxy() {
-        return this.proxy;
+        return this.innerProperties() == null ? null : this.innerProperties().proxy();
     }
 
     /**
@@ -189,7 +209,10 @@ public class BackendUpdateParameters {
      * @return the BackendUpdateParameters object itself.
      */
     public BackendUpdateParameters withProxy(BackendProxyContract proxy) {
-        this.proxy = proxy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withProxy(proxy);
         return this;
     }
 
@@ -199,7 +222,7 @@ public class BackendUpdateParameters {
      * @return the tls value.
      */
     public BackendTlsProperties tls() {
-        return this.tls;
+        return this.innerProperties() == null ? null : this.innerProperties().tls();
     }
 
     /**
@@ -209,47 +232,10 @@ public class BackendUpdateParameters {
      * @return the BackendUpdateParameters object itself.
      */
     public BackendUpdateParameters withTls(BackendTlsProperties tls) {
-        this.tls = tls;
-        return this;
-    }
-
-    /**
-     * Get the url property: Runtime Url of the Backend.
-     *
-     * @return the url value.
-     */
-    public String url() {
-        return this.url;
-    }
-
-    /**
-     * Set the url property: Runtime Url of the Backend.
-     *
-     * @param url the url value to set.
-     * @return the BackendUpdateParameters object itself.
-     */
-    public BackendUpdateParameters withUrl(String url) {
-        this.url = url;
-        return this;
-    }
-
-    /**
-     * Get the protocol property: Backend communication protocol.
-     *
-     * @return the protocol value.
-     */
-    public BackendProtocol protocol() {
-        return this.protocol;
-    }
-
-    /**
-     * Set the protocol property: Backend communication protocol.
-     *
-     * @param protocol the protocol value to set.
-     * @return the BackendUpdateParameters object itself.
-     */
-    public BackendUpdateParameters withProtocol(BackendProtocol protocol) {
-        this.protocol = protocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withTls(tls);
         return this;
     }
 
@@ -259,17 +245,8 @@ public class BackendUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
-        if (credentials() != null) {
-            credentials().validate();
-        }
-        if (proxy() != null) {
-            proxy().validate();
-        }
-        if (tls() != null) {
-            tls().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

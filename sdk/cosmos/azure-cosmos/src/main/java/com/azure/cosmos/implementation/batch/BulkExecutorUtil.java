@@ -5,10 +5,7 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosItemOperation;
-import com.azure.cosmos.CosmosItemOperationType;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.TransactionalBatchOperationResult;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -17,6 +14,9 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -66,7 +66,7 @@ final class BulkExecutorUtil {
         }
     }
 
-    static Map<String, String> getResponseHeadersFromBatchOperationResult(TransactionalBatchOperationResult result) {
+    static Map<String, String> getResponseHeadersFromBatchOperationResult(CosmosBatchOperationResult result) {
         final Map<String, String> headers = new HashMap<>();
 
         headers.put(HttpConstants.HttpHeaders.SUB_STATUS, String.valueOf(result.getSubStatusCode()));

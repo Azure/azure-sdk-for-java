@@ -4,10 +4,14 @@
 
 package com.azure.resourcemanager.servicefabric.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterInner;
+import com.azure.resourcemanager.servicefabric.fluent.models.ClusterVersionDetails;
 import com.azure.resourcemanager.servicefabric.models.AddOnFeatures;
+import com.azure.resourcemanager.servicefabric.models.ApplicationTypeVersionsCleanupPolicy;
 import com.azure.resourcemanager.servicefabric.models.AzureActiveDirectory;
 import com.azure.resourcemanager.servicefabric.models.CertificateDescription;
 import com.azure.resourcemanager.servicefabric.models.ClientCertificateCommonName;
@@ -15,15 +19,21 @@ import com.azure.resourcemanager.servicefabric.models.ClientCertificateThumbprin
 import com.azure.resourcemanager.servicefabric.models.Cluster;
 import com.azure.resourcemanager.servicefabric.models.ClusterState;
 import com.azure.resourcemanager.servicefabric.models.ClusterUpdateParameters;
+import com.azure.resourcemanager.servicefabric.models.ClusterUpgradeCadence;
 import com.azure.resourcemanager.servicefabric.models.ClusterUpgradePolicy;
-import com.azure.resourcemanager.servicefabric.models.ClusterVersionDetails;
 import com.azure.resourcemanager.servicefabric.models.DiagnosticsStorageAccountConfig;
 import com.azure.resourcemanager.servicefabric.models.NodeTypeDescription;
+import com.azure.resourcemanager.servicefabric.models.Notification;
 import com.azure.resourcemanager.servicefabric.models.ProvisioningState;
 import com.azure.resourcemanager.servicefabric.models.ReliabilityLevel;
 import com.azure.resourcemanager.servicefabric.models.ServerCertificateCommonNames;
 import com.azure.resourcemanager.servicefabric.models.SettingsSectionDescription;
+import com.azure.resourcemanager.servicefabric.models.SfZonalUpgradeMode;
+import com.azure.resourcemanager.servicefabric.models.UpgradableVersionPathResult;
+import com.azure.resourcemanager.servicefabric.models.UpgradableVersionsDescription;
 import com.azure.resourcemanager.servicefabric.models.UpgradeMode;
+import com.azure.resourcemanager.servicefabric.models.VmssZonalUpgradeMode;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +66,14 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public List<AddOnFeatures> addOnFeatures() {
@@ -176,12 +194,49 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().upgradeMode();
     }
 
+    public ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy() {
+        return this.innerModel().applicationTypeVersionsCleanupPolicy();
+    }
+
     public String vmImage() {
         return this.innerModel().vmImage();
     }
 
-    public String etag() {
-        return this.innerModel().etag();
+    public SfZonalUpgradeMode sfZonalUpgradeMode() {
+        return this.innerModel().sfZonalUpgradeMode();
+    }
+
+    public VmssZonalUpgradeMode vmssZonalUpgradeMode() {
+        return this.innerModel().vmssZonalUpgradeMode();
+    }
+
+    public Boolean infrastructureServiceManager() {
+        return this.innerModel().infrastructureServiceManager();
+    }
+
+    public ClusterUpgradeCadence upgradeWave() {
+        return this.innerModel().upgradeWave();
+    }
+
+    public OffsetDateTime upgradePauseStartTimestampUtc() {
+        return this.innerModel().upgradePauseStartTimestampUtc();
+    }
+
+    public OffsetDateTime upgradePauseEndTimestampUtc() {
+        return this.innerModel().upgradePauseEndTimestampUtc();
+    }
+
+    public Boolean waveUpgradePaused() {
+        return this.innerModel().waveUpgradePaused();
+    }
+
+    public List<Notification> notifications() {
+        List<Notification> inner = this.innerModel().notifications();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -283,6 +338,17 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
                 .getByResourceGroupWithResponse(resourceGroupName, clusterName, context)
                 .getValue();
         return this;
+    }
+
+    public UpgradableVersionPathResult listUpgradableVersions() {
+        return serviceManager.clusters().listUpgradableVersions(resourceGroupName, clusterName);
+    }
+
+    public Response<UpgradableVersionPathResult> listUpgradableVersionsWithResponse(
+        UpgradableVersionsDescription versionsDescription, Context context) {
+        return serviceManager
+            .clusters()
+            .listUpgradableVersionsWithResponse(resourceGroupName, clusterName, versionsDescription, context);
     }
 
     public ClusterImpl withRegion(Region location) {
@@ -459,9 +525,100 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withApplicationTypeVersionsCleanupPolicy(
+        ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withApplicationTypeVersionsCleanupPolicy(applicationTypeVersionsCleanupPolicy);
+            return this;
+        } else {
+            this.updateParameters.withApplicationTypeVersionsCleanupPolicy(applicationTypeVersionsCleanupPolicy);
+            return this;
+        }
+    }
+
     public ClusterImpl withVmImage(String vmImage) {
         this.innerModel().withVmImage(vmImage);
         return this;
+    }
+
+    public ClusterImpl withSfZonalUpgradeMode(SfZonalUpgradeMode sfZonalUpgradeMode) {
+        if (isInCreateMode()) {
+            this.innerModel().withSfZonalUpgradeMode(sfZonalUpgradeMode);
+            return this;
+        } else {
+            this.updateParameters.withSfZonalUpgradeMode(sfZonalUpgradeMode);
+            return this;
+        }
+    }
+
+    public ClusterImpl withVmssZonalUpgradeMode(VmssZonalUpgradeMode vmssZonalUpgradeMode) {
+        if (isInCreateMode()) {
+            this.innerModel().withVmssZonalUpgradeMode(vmssZonalUpgradeMode);
+            return this;
+        } else {
+            this.updateParameters.withVmssZonalUpgradeMode(vmssZonalUpgradeMode);
+            return this;
+        }
+    }
+
+    public ClusterImpl withInfrastructureServiceManager(Boolean infrastructureServiceManager) {
+        if (isInCreateMode()) {
+            this.innerModel().withInfrastructureServiceManager(infrastructureServiceManager);
+            return this;
+        } else {
+            this.updateParameters.withInfrastructureServiceManager(infrastructureServiceManager);
+            return this;
+        }
+    }
+
+    public ClusterImpl withUpgradeWave(ClusterUpgradeCadence upgradeWave) {
+        if (isInCreateMode()) {
+            this.innerModel().withUpgradeWave(upgradeWave);
+            return this;
+        } else {
+            this.updateParameters.withUpgradeWave(upgradeWave);
+            return this;
+        }
+    }
+
+    public ClusterImpl withUpgradePauseStartTimestampUtc(OffsetDateTime upgradePauseStartTimestampUtc) {
+        if (isInCreateMode()) {
+            this.innerModel().withUpgradePauseStartTimestampUtc(upgradePauseStartTimestampUtc);
+            return this;
+        } else {
+            this.updateParameters.withUpgradePauseStartTimestampUtc(upgradePauseStartTimestampUtc);
+            return this;
+        }
+    }
+
+    public ClusterImpl withUpgradePauseEndTimestampUtc(OffsetDateTime upgradePauseEndTimestampUtc) {
+        if (isInCreateMode()) {
+            this.innerModel().withUpgradePauseEndTimestampUtc(upgradePauseEndTimestampUtc);
+            return this;
+        } else {
+            this.updateParameters.withUpgradePauseEndTimestampUtc(upgradePauseEndTimestampUtc);
+            return this;
+        }
+    }
+
+    public ClusterImpl withWaveUpgradePaused(Boolean waveUpgradePaused) {
+        if (isInCreateMode()) {
+            this.innerModel().withWaveUpgradePaused(waveUpgradePaused);
+            return this;
+        } else {
+            this.updateParameters.withWaveUpgradePaused(waveUpgradePaused);
+            return this;
+        }
+    }
+
+    public ClusterImpl withNotifications(List<Notification> notifications) {
+        if (isInCreateMode()) {
+            this.innerModel().withNotifications(notifications);
+            return this;
+        } else {
+            this.updateParameters.withNotifications(notifications);
+            return this;
+        }
     }
 
     private boolean isInCreateMode() {

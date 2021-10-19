@@ -11,6 +11,38 @@ import com.azure.core.util.Context;
 /** Resource collection API of AttachedDatabaseConfigurations. */
 public interface AttachedDatabaseConfigurations {
     /**
+     * Checks that the attached database configuration resource name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    CheckNameResult checkNameAvailability(
+        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName);
+
+    /**
+     * Checks that the attached database configuration resource name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param resourceName The name of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(
+        String resourceGroupName,
+        String clusterName,
+        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
+        Context context);
+
+    /**
      * Returns the list of attached database configurations of the given Kusto cluster.
      *
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.

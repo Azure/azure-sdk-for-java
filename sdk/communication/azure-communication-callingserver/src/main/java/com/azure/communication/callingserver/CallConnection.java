@@ -143,7 +143,7 @@ public final class CallConnection {
      * @param alternateCallerId Phone number to use when adding a phone number participant.
      * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @param callBackUri callBackUri to get notifications.
+     * @param callbackUri callBackUri to get notifications.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
@@ -164,7 +164,7 @@ public final class CallConnection {
      * @param alternateCallerId Phone number to use when adding a phone number participant.
      * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @param callBackUri callBackUri to get notifications.
+     * @param callbackUri callBackUri to get notifications.
      * @param context {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

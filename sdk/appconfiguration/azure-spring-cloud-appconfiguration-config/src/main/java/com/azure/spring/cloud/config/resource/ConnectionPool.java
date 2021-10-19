@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 /**
  * Container for connection string of stores
  */
-public class ConnectionPool {
+public final class ConnectionPool {
 
     private final Map<String, Connection> connectionStringMap = new ConcurrentHashMap<>();
 

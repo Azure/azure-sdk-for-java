@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ProvisioningState;
@@ -20,10 +19,15 @@ import java.util.List;
 import java.util.Map;
 
 /** A single Redis item in List or Get Operation. */
-@JsonFlatten
 @Fluent
-public class RedisResourceInner extends Resource {
+public final class RedisResourceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisResourceInner.class);
+
+    /*
+     * Redis cache properties.
+     */
+    @JsonProperty(value = "properties", required = true)
+    private RedisPropertiesInner innerProperties = new RedisPropertiesInner();
 
     /*
      * A list of availability zones denoting where the resource needs to come
@@ -32,130 +36,14 @@ public class RedisResourceInner extends Resource {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
-    /*
-     * All Redis Settings. Few possible keys:
-     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-     * etc.
+    /**
+     * Get the innerProperties property: Redis cache properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.redisConfiguration")
-    private Map<String, String> redisConfiguration;
-
-    /*
-     * Specifies whether the non-ssl Redis server port (6379) is enabled.
-     */
-    @JsonProperty(value = "properties.enableNonSslPort")
-    private Boolean enableNonSslPort;
-
-    /*
-     * The number of replicas to be created per master.
-     */
-    @JsonProperty(value = "properties.replicasPerMaster")
-    private Integer replicasPerMaster;
-
-    /*
-     * A dictionary of tenant settings
-     */
-    @JsonProperty(value = "properties.tenantSettings")
-    private Map<String, String> tenantSettings;
-
-    /*
-     * The number of shards to be created on a Premium Cluster Cache.
-     */
-    @JsonProperty(value = "properties.shardCount")
-    private Integer shardCount;
-
-    /*
-     * Optional: requires clients to use a specified TLS version (or higher) to
-     * connect (e,g, '1.0', '1.1', '1.2')
-     */
-    @JsonProperty(value = "properties.minimumTlsVersion")
-    private TlsVersion minimumTlsVersion;
-
-    /*
-     * Whether or not public endpoint access is allowed for this cache.  Value
-     * is optional but if passed in, must be 'Enabled' or 'Disabled'. If
-     * 'Disabled', private endpoints are the exclusive access method. Default
-     * value is 'Enabled'
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
-
-    /*
-     * The SKU of the Redis cache to deploy.
-     */
-    @JsonProperty(value = "properties.sku", required = true)
-    private Sku sku;
-
-    /*
-     * The full resource ID of a subnet in a virtual network to deploy the
-     * Redis cache in. Example format:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
-     */
-    @JsonProperty(value = "properties.subnetId")
-    private String subnetId;
-
-    /*
-     * Static IP address. Required when deploying a Redis cache inside an
-     * existing Azure Virtual Network.
-     */
-    @JsonProperty(value = "properties.staticIP")
-    private String staticIp;
-
-    /*
-     * Redis version.
-     */
-    @JsonProperty(value = "properties.redisVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String redisVersion;
-
-    /*
-     * Redis instance provisioning status.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Redis host name.
-     */
-    @JsonProperty(value = "properties.hostName", access = JsonProperty.Access.WRITE_ONLY)
-    private String hostname;
-
-    /*
-     * Redis non-SSL port.
-     */
-    @JsonProperty(value = "properties.port", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer port;
-
-    /*
-     * Redis SSL port.
-     */
-    @JsonProperty(value = "properties.sslPort", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer sslPort;
-
-    /*
-     * The keys of the Redis cache - not set if this object is not the response
-     * to Create or Update redis cache
-     */
-    @JsonProperty(value = "properties.accessKeys", access = JsonProperty.Access.WRITE_ONLY)
-    private RedisAccessKeysInner accessKeys;
-
-    /*
-     * List of the linked servers associated with the cache
-     */
-    @JsonProperty(value = "properties.linkedServers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RedisLinkedServer> linkedServers;
-
-    /*
-     * List of the Redis instances associated with the cache
-     */
-    @JsonProperty(value = "properties.instances", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RedisInstanceDetails> instances;
-
-    /*
-     * List of private endpoint connection associated with the specified redis
-     * cache
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+    private RedisPropertiesInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the zones property: A list of availability zones denoting where the resource needs to come from.
@@ -177,305 +65,6 @@ public class RedisResourceInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the redisConfiguration property: All Redis Settings. Few possible keys:
-     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-     * etc.
-     *
-     * @return the redisConfiguration value.
-     */
-    public Map<String, String> redisConfiguration() {
-        return this.redisConfiguration;
-    }
-
-    /**
-     * Set the redisConfiguration property: All Redis Settings. Few possible keys:
-     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
-     * etc.
-     *
-     * @param redisConfiguration the redisConfiguration value to set.
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withRedisConfiguration(Map<String, String> redisConfiguration) {
-        this.redisConfiguration = redisConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the enableNonSslPort property: Specifies whether the non-ssl Redis server port (6379) is enabled.
-     *
-     * @return the enableNonSslPort value.
-     */
-    public Boolean enableNonSslPort() {
-        return this.enableNonSslPort;
-    }
-
-    /**
-     * Set the enableNonSslPort property: Specifies whether the non-ssl Redis server port (6379) is enabled.
-     *
-     * @param enableNonSslPort the enableNonSslPort value to set.
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withEnableNonSslPort(Boolean enableNonSslPort) {
-        this.enableNonSslPort = enableNonSslPort;
-        return this;
-    }
-
-    /**
-     * Get the replicasPerMaster property: The number of replicas to be created per master.
-     *
-     * @return the replicasPerMaster value.
-     */
-    public Integer replicasPerMaster() {
-        return this.replicasPerMaster;
-    }
-
-    /**
-     * Set the replicasPerMaster property: The number of replicas to be created per master.
-     *
-     * @param replicasPerMaster the replicasPerMaster value to set.
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withReplicasPerMaster(Integer replicasPerMaster) {
-        this.replicasPerMaster = replicasPerMaster;
-        return this;
-    }
-
-    /**
-     * Get the tenantSettings property: A dictionary of tenant settings.
-     *
-     * @return the tenantSettings value.
-     */
-    public Map<String, String> tenantSettings() {
-        return this.tenantSettings;
-    }
-
-    /**
-     * Set the tenantSettings property: A dictionary of tenant settings.
-     *
-     * @param tenantSettings the tenantSettings value to set.
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withTenantSettings(Map<String, String> tenantSettings) {
-        this.tenantSettings = tenantSettings;
-        return this;
-    }
-
-    /**
-     * Get the shardCount property: The number of shards to be created on a Premium Cluster Cache.
-     *
-     * @return the shardCount value.
-     */
-    public Integer shardCount() {
-        return this.shardCount;
-    }
-
-    /**
-     * Set the shardCount property: The number of shards to be created on a Premium Cluster Cache.
-     *
-     * @param shardCount the shardCount value to set.
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withShardCount(Integer shardCount) {
-        this.shardCount = shardCount;
-        return this;
-    }
-
-    /**
-     * Get the minimumTlsVersion property: Optional: requires clients to use a specified TLS version (or higher) to
-     * connect (e,g, '1.0', '1.1', '1.2').
-     *
-     * @return the minimumTlsVersion value.
-     */
-    public TlsVersion minimumTlsVersion() {
-        return this.minimumTlsVersion;
-    }
-
-    /**
-     * Set the minimumTlsVersion property: Optional: requires clients to use a specified TLS version (or higher) to
-     * connect (e,g, '1.0', '1.1', '1.2').
-     *
-     * @param minimumTlsVersion the minimumTlsVersion value to set.
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
-        this.minimumTlsVersion = minimumTlsVersion;
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
-     * access method. Default value is 'Enabled'.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
-     * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
-     * access method. Default value is 'Enabled'.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
-    }
-
-    /**
-     * Get the sku property: The SKU of the Redis cache to deploy.
-     *
-     * @return the sku value.
-     */
-    public Sku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: The SKU of the Redis cache to deploy.
-     *
-     * @param sku the sku value to set.
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withSku(Sku sku) {
-        this.sku = sku;
-        return this;
-    }
-
-    /**
-     * Get the subnetId property: The full resource ID of a subnet in a virtual network to deploy the Redis cache in.
-     * Example format:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
-     *
-     * @return the subnetId value.
-     */
-    public String subnetId() {
-        return this.subnetId;
-    }
-
-    /**
-     * Set the subnetId property: The full resource ID of a subnet in a virtual network to deploy the Redis cache in.
-     * Example format:
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
-     *
-     * @param subnetId the subnetId value to set.
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withSubnetId(String subnetId) {
-        this.subnetId = subnetId;
-        return this;
-    }
-
-    /**
-     * Get the staticIp property: Static IP address. Required when deploying a Redis cache inside an existing Azure
-     * Virtual Network.
-     *
-     * @return the staticIp value.
-     */
-    public String staticIp() {
-        return this.staticIp;
-    }
-
-    /**
-     * Set the staticIp property: Static IP address. Required when deploying a Redis cache inside an existing Azure
-     * Virtual Network.
-     *
-     * @param staticIp the staticIp value to set.
-     * @return the RedisResourceInner object itself.
-     */
-    public RedisResourceInner withStaticIp(String staticIp) {
-        this.staticIp = staticIp;
-        return this;
-    }
-
-    /**
-     * Get the redisVersion property: Redis version.
-     *
-     * @return the redisVersion value.
-     */
-    public String redisVersion() {
-        return this.redisVersion;
-    }
-
-    /**
-     * Get the provisioningState property: Redis instance provisioning status.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the hostname property: Redis host name.
-     *
-     * @return the hostname value.
-     */
-    public String hostname() {
-        return this.hostname;
-    }
-
-    /**
-     * Get the port property: Redis non-SSL port.
-     *
-     * @return the port value.
-     */
-    public Integer port() {
-        return this.port;
-    }
-
-    /**
-     * Get the sslPort property: Redis SSL port.
-     *
-     * @return the sslPort value.
-     */
-    public Integer sslPort() {
-        return this.sslPort;
-    }
-
-    /**
-     * Get the accessKeys property: The keys of the Redis cache - not set if this object is not the response to Create
-     * or Update redis cache.
-     *
-     * @return the accessKeys value.
-     */
-    public RedisAccessKeysInner accessKeys() {
-        return this.accessKeys;
-    }
-
-    /**
-     * Get the linkedServers property: List of the linked servers associated with the cache.
-     *
-     * @return the linkedServers value.
-     */
-    public List<RedisLinkedServer> linkedServers() {
-        return this.linkedServers;
-    }
-
-    /**
-     * Get the instances property: List of the Redis instances associated with the cache.
-     *
-     * @return the instances value.
-     */
-    public List<RedisInstanceDetails> instances() {
-        return this.instances;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
-     * redis cache.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
     /** {@inheritDoc} */
     @Override
     public RedisResourceInner withLocation(String location) {
@@ -491,29 +80,386 @@ public class RedisResourceInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Redis instance provisioning status.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the hostname property: Redis host name.
+     *
+     * @return the hostname value.
+     */
+    public String hostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
+    }
+
+    /**
+     * Get the port property: Redis non-SSL port.
+     *
+     * @return the port value.
+     */
+    public Integer port() {
+        return this.innerProperties() == null ? null : this.innerProperties().port();
+    }
+
+    /**
+     * Get the sslPort property: Redis SSL port.
+     *
+     * @return the sslPort value.
+     */
+    public Integer sslPort() {
+        return this.innerProperties() == null ? null : this.innerProperties().sslPort();
+    }
+
+    /**
+     * Get the accessKeys property: The keys of the Redis cache - not set if this object is not the response to Create
+     * or Update redis cache.
+     *
+     * @return the accessKeys value.
+     */
+    public RedisAccessKeysInner accessKeys() {
+        return this.innerProperties() == null ? null : this.innerProperties().accessKeys();
+    }
+
+    /**
+     * Get the linkedServers property: List of the linked servers associated with the cache.
+     *
+     * @return the linkedServers value.
+     */
+    public List<RedisLinkedServer> linkedServers() {
+        return this.innerProperties() == null ? null : this.innerProperties().linkedServers();
+    }
+
+    /**
+     * Get the instances property: List of the Redis instances associated with the cache.
+     *
+     * @return the instances value.
+     */
+    public List<RedisInstanceDetails> instances() {
+        return this.innerProperties() == null ? null : this.innerProperties().instances();
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connection associated with the specified
+     * redis cache.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the sku property: The SKU of the Redis cache to deploy.
+     *
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.innerProperties() == null ? null : this.innerProperties().sku();
+    }
+
+    /**
+     * Set the sku property: The SKU of the Redis cache to deploy.
+     *
+     * @param sku the sku value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withSku(Sku sku) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withSku(sku);
+        return this;
+    }
+
+    /**
+     * Get the subnetId property: The full resource ID of a subnet in a virtual network to deploy the Redis cache in.
+     * Example format:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
+     *
+     * @return the subnetId value.
+     */
+    public String subnetId() {
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
+    }
+
+    /**
+     * Set the subnetId property: The full resource ID of a subnet in a virtual network to deploy the Redis cache in.
+     * Example format:
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
+     *
+     * @param subnetId the subnetId value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withSubnetId(String subnetId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withSubnetId(subnetId);
+        return this;
+    }
+
+    /**
+     * Get the staticIp property: Static IP address. Required when deploying a Redis cache inside an existing Azure
+     * Virtual Network.
+     *
+     * @return the staticIp value.
+     */
+    public String staticIp() {
+        return this.innerProperties() == null ? null : this.innerProperties().staticIp();
+    }
+
+    /**
+     * Set the staticIp property: Static IP address. Required when deploying a Redis cache inside an existing Azure
+     * Virtual Network.
+     *
+     * @param staticIp the staticIp value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withStaticIp(String staticIp) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withStaticIp(staticIp);
+        return this;
+    }
+
+    /**
+     * Get the redisConfiguration property: All Redis Settings. Few possible keys:
+     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
+     * etc.
+     *
+     * @return the redisConfiguration value.
+     */
+    public Map<String, String> redisConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().redisConfiguration();
+    }
+
+    /**
+     * Set the redisConfiguration property: All Redis Settings. Few possible keys:
+     * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
+     * etc.
+     *
+     * @param redisConfiguration the redisConfiguration value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withRedisConfiguration(Map<String, String> redisConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withRedisConfiguration(redisConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
+     * valid values: (4, 6).
+     *
+     * @return the redisVersion value.
+     */
+    public String redisVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().redisVersion();
+    }
+
+    /**
+     * Set the redisVersion property: Redis version. Only major version will be used in PUT/PATCH request with current
+     * valid values: (4, 6).
+     *
+     * @param redisVersion the redisVersion value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withRedisVersion(String redisVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withRedisVersion(redisVersion);
+        return this;
+    }
+
+    /**
+     * Get the enableNonSslPort property: Specifies whether the non-ssl Redis server port (6379) is enabled.
+     *
+     * @return the enableNonSslPort value.
+     */
+    public Boolean enableNonSslPort() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableNonSslPort();
+    }
+
+    /**
+     * Set the enableNonSslPort property: Specifies whether the non-ssl Redis server port (6379) is enabled.
+     *
+     * @param enableNonSslPort the enableNonSslPort value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withEnableNonSslPort(Boolean enableNonSslPort) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withEnableNonSslPort(enableNonSslPort);
+        return this;
+    }
+
+    /**
+     * Get the replicasPerMaster property: The number of replicas to be created per primary.
+     *
+     * @return the replicasPerMaster value.
+     */
+    public Integer replicasPerMaster() {
+        return this.innerProperties() == null ? null : this.innerProperties().replicasPerMaster();
+    }
+
+    /**
+     * Set the replicasPerMaster property: The number of replicas to be created per primary.
+     *
+     * @param replicasPerMaster the replicasPerMaster value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withReplicasPerMaster(Integer replicasPerMaster) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withReplicasPerMaster(replicasPerMaster);
+        return this;
+    }
+
+    /**
+     * Get the replicasPerPrimary property: The number of replicas to be created per primary.
+     *
+     * @return the replicasPerPrimary value.
+     */
+    public Integer replicasPerPrimary() {
+        return this.innerProperties() == null ? null : this.innerProperties().replicasPerPrimary();
+    }
+
+    /**
+     * Set the replicasPerPrimary property: The number of replicas to be created per primary.
+     *
+     * @param replicasPerPrimary the replicasPerPrimary value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withReplicasPerPrimary(Integer replicasPerPrimary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withReplicasPerPrimary(replicasPerPrimary);
+        return this;
+    }
+
+    /**
+     * Get the tenantSettings property: A dictionary of tenant settings.
+     *
+     * @return the tenantSettings value.
+     */
+    public Map<String, String> tenantSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantSettings();
+    }
+
+    /**
+     * Set the tenantSettings property: A dictionary of tenant settings.
+     *
+     * @param tenantSettings the tenantSettings value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withTenantSettings(Map<String, String> tenantSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withTenantSettings(tenantSettings);
+        return this;
+    }
+
+    /**
+     * Get the shardCount property: The number of shards to be created on a Premium Cluster Cache.
+     *
+     * @return the shardCount value.
+     */
+    public Integer shardCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().shardCount();
+    }
+
+    /**
+     * Set the shardCount property: The number of shards to be created on a Premium Cluster Cache.
+     *
+     * @param shardCount the shardCount value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withShardCount(Integer shardCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withShardCount(shardCount);
+        return this;
+    }
+
+    /**
+     * Get the minimumTlsVersion property: Optional: requires clients to use a specified TLS version (or higher) to
+     * connect (e,g, '1.0', '1.1', '1.2').
+     *
+     * @return the minimumTlsVersion value.
+     */
+    public TlsVersion minimumTlsVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersion();
+    }
+
+    /**
+     * Set the minimumTlsVersion property: Optional: requires clients to use a specified TLS version (or higher) to
+     * connect (e,g, '1.0', '1.1', '1.2').
+     *
+     * @param minimumTlsVersion the minimumTlsVersion value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withMinimumTlsVersion(minimumTlsVersion);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
+     * access method. Default value is 'Enabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this cache. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive
+     * access method. Default value is 'Enabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the RedisResourceInner object itself.
+     */
+    public RedisResourceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisPropertiesInner();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model RedisResourceInner"));
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model RedisResourceInner"));
         } else {
-            sku().validate();
-        }
-        if (accessKeys() != null) {
-            accessKeys().validate();
-        }
-        if (linkedServers() != null) {
-            linkedServers().forEach(e -> e.validate());
-        }
-        if (instances() != null) {
-            instances().forEach(e -> e.validate());
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
+            innerProperties().validate();
         }
     }
 }

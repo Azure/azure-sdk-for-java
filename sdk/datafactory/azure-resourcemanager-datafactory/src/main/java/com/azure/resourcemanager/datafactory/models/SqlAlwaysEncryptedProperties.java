@@ -36,6 +36,12 @@ public final class SqlAlwaysEncryptedProperties {
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
+    /*
+     * The credential reference containing authentication information.
+     */
+    @JsonProperty(value = "credential")
+    private CredentialReference credential;
+
     /**
      * Get the alwaysEncryptedAkvAuthType property: Sql always encrypted AKV authentication type. Type: string (or
      * Expression with resultType string).
@@ -104,6 +110,26 @@ public final class SqlAlwaysEncryptedProperties {
     }
 
     /**
+     * Get the credential property: The credential reference containing authentication information.
+     *
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     *
+     * @param credential the credential value to set.
+     * @return the SqlAlwaysEncryptedProperties object itself.
+     */
+    public SqlAlwaysEncryptedProperties withCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -117,6 +143,9 @@ public final class SqlAlwaysEncryptedProperties {
         }
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();
+        }
+        if (credential() != null) {
+            credential().validate();
         }
     }
 }

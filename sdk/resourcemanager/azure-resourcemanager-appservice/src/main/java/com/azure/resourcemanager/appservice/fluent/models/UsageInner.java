@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ComputeModeOptions;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -14,129 +13,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Usage of the quota resource. */
-@JsonFlatten
-@Immutable
-public class UsageInner extends ProxyOnlyResource {
+@Fluent
+public final class UsageInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
 
     /*
-     * Friendly name shown in the UI.
+     * Usage resource specific properties
      */
-    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
-
-    /*
-     * Name of the quota resource.
-     */
-    @JsonProperty(value = "properties.resourceName", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceName;
-
-    /*
-     * Units of measurement for the quota resource.
-     */
-    @JsonProperty(value = "properties.unit", access = JsonProperty.Access.WRITE_ONLY)
-    private String unit;
-
-    /*
-     * The current value of the resource counter.
-     */
-    @JsonProperty(value = "properties.currentValue", access = JsonProperty.Access.WRITE_ONLY)
-    private Long currentValue;
-
-    /*
-     * The resource limit.
-     */
-    @JsonProperty(value = "properties.limit", access = JsonProperty.Access.WRITE_ONLY)
-    private Long limit;
-
-    /*
-     * Next reset time for the resource counter.
-     */
-    @JsonProperty(value = "properties.nextResetTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime nextResetTime;
-
-    /*
-     * Compute mode used for this usage.
-     */
-    @JsonProperty(value = "properties.computeMode", access = JsonProperty.Access.WRITE_ONLY)
-    private ComputeModeOptions computeMode;
-
-    /*
-     * Site mode used for this usage.
-     */
-    @JsonProperty(value = "properties.siteMode", access = JsonProperty.Access.WRITE_ONLY)
-    private String siteMode;
+    @JsonProperty(value = "properties")
+    private UsageProperties innerProperties;
 
     /**
-     * Get the displayName property: Friendly name shown in the UI.
+     * Get the innerProperties property: Usage resource specific properties.
      *
-     * @return the displayName value.
+     * @return the innerProperties value.
      */
-    public String displayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Get the resourceName property: Name of the quota resource.
-     *
-     * @return the resourceName value.
-     */
-    public String resourceName() {
-        return this.resourceName;
-    }
-
-    /**
-     * Get the unit property: Units of measurement for the quota resource.
-     *
-     * @return the unit value.
-     */
-    public String unit() {
-        return this.unit;
-    }
-
-    /**
-     * Get the currentValue property: The current value of the resource counter.
-     *
-     * @return the currentValue value.
-     */
-    public Long currentValue() {
-        return this.currentValue;
-    }
-
-    /**
-     * Get the limit property: The resource limit.
-     *
-     * @return the limit value.
-     */
-    public Long limit() {
-        return this.limit;
-    }
-
-    /**
-     * Get the nextResetTime property: Next reset time for the resource counter.
-     *
-     * @return the nextResetTime value.
-     */
-    public OffsetDateTime nextResetTime() {
-        return this.nextResetTime;
-    }
-
-    /**
-     * Get the computeMode property: Compute mode used for this usage.
-     *
-     * @return the computeMode value.
-     */
-    public ComputeModeOptions computeMode() {
-        return this.computeMode;
-    }
-
-    /**
-     * Get the siteMode property: Site mode used for this usage.
-     *
-     * @return the siteMode value.
-     */
-    public String siteMode() {
-        return this.siteMode;
+    private UsageProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -147,6 +40,78 @@ public class UsageInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the displayName property: Friendly name shown in the UI.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Get the resourceName property: Name of the quota resource.
+     *
+     * @return the resourceName value.
+     */
+    public String resourceName() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceName();
+    }
+
+    /**
+     * Get the unit property: Units of measurement for the quota resource.
+     *
+     * @return the unit value.
+     */
+    public String unit() {
+        return this.innerProperties() == null ? null : this.innerProperties().unit();
+    }
+
+    /**
+     * Get the currentValue property: The current value of the resource counter.
+     *
+     * @return the currentValue value.
+     */
+    public Long currentValue() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentValue();
+    }
+
+    /**
+     * Get the limit property: The resource limit.
+     *
+     * @return the limit value.
+     */
+    public Long limit() {
+        return this.innerProperties() == null ? null : this.innerProperties().limit();
+    }
+
+    /**
+     * Get the nextResetTime property: Next reset time for the resource counter.
+     *
+     * @return the nextResetTime value.
+     */
+    public OffsetDateTime nextResetTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().nextResetTime();
+    }
+
+    /**
+     * Get the computeMode property: Compute mode used for this usage.
+     *
+     * @return the computeMode value.
+     */
+    public ComputeModeOptions computeMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().computeMode();
+    }
+
+    /**
+     * Get the siteMode property: Site mode used for this usage.
+     *
+     * @return the siteMode value.
+     */
+    public String siteMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().siteMode();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -154,5 +119,8 @@ public class UsageInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

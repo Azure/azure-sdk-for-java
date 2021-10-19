@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.ResourceLocationDataContract;
@@ -13,22 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Gateway details. */
-@JsonFlatten
 @Fluent
-public class GatewayContractInner extends ProxyResource {
+public final class GatewayContractInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayContractInner.class);
 
     /*
-     * Gateway location.
+     * Gateway details.
      */
-    @JsonProperty(value = "properties.locationData")
-    private ResourceLocationDataContract locationData;
+    @JsonProperty(value = "properties")
+    private GatewayContractProperties innerProperties;
 
-    /*
-     * Gateway description
+    /**
+     * Get the innerProperties property: Gateway details.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private GatewayContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the locationData property: Gateway location.
@@ -36,7 +37,7 @@ public class GatewayContractInner extends ProxyResource {
      * @return the locationData value.
      */
     public ResourceLocationDataContract locationData() {
-        return this.locationData;
+        return this.innerProperties() == null ? null : this.innerProperties().locationData();
     }
 
     /**
@@ -46,7 +47,10 @@ public class GatewayContractInner extends ProxyResource {
      * @return the GatewayContractInner object itself.
      */
     public GatewayContractInner withLocationData(ResourceLocationDataContract locationData) {
-        this.locationData = locationData;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GatewayContractProperties();
+        }
+        this.innerProperties().withLocationData(locationData);
         return this;
     }
 
@@ -56,7 +60,7 @@ public class GatewayContractInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -66,7 +70,10 @@ public class GatewayContractInner extends ProxyResource {
      * @return the GatewayContractInner object itself.
      */
     public GatewayContractInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GatewayContractProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -76,8 +83,8 @@ public class GatewayContractInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (locationData() != null) {
-            locationData().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

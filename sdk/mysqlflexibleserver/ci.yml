@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/mysqlflexibleserver/ci.yml
+      - sdk/mysqlflexibleserver/azure-resourcemanager-mysqlflexibleserver/
+    exclude:
+      - sdk/mysqlflexibleserver/pom.xml
+      - sdk/mysqlflexibleserver/azure-resourcemanager-mysqlflexibleserver/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/mysqlflexibleserver/ci.yml
+      - sdk/mysqlflexibleserver/azure-resourcemanager-mysqlflexibleserver/
+    exclude:
+      - sdk/mysqlflexibleserver/pom.xml
+      - sdk/mysqlflexibleserver/azure-resourcemanager-mysqlflexibleserver/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: mysqlflexibleserver
+    Artifacts:
+      - name: azure-resourcemanager-mysqlflexibleserver
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermysqlflexibleserver

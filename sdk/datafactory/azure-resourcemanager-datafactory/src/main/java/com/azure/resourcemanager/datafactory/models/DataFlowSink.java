@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Transformation for data flow sink. */
 @Fluent
-public final class DataFlowSink extends Transformation {
+public class DataFlowSink extends Transformation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowSink.class);
 
     /*

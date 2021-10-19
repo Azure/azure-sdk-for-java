@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabric.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.servicefabric.models.ArmServicePackageActivationMode;
@@ -34,6 +35,47 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String location() {
+        return this.innerModel().location();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public String serviceTypeName() {
+        return this.innerModel().serviceTypeName();
+    }
+
+    public PartitionSchemeDescription partitionDescription() {
+        return this.innerModel().partitionDescription();
+    }
+
+    public ArmServicePackageActivationMode servicePackageActivationMode() {
+        return this.innerModel().servicePackageActivationMode();
+    }
+
+    public String serviceDnsName() {
+        return this.innerModel().serviceDnsName();
     }
 
     public String placementConstraints() {
@@ -69,39 +111,6 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
 
     public MoveCost defaultMoveCost() {
         return this.innerModel().defaultMoveCost();
-    }
-
-    public String provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String serviceTypeName() {
-        return this.innerModel().serviceTypeName();
-    }
-
-    public PartitionSchemeDescription partitionDescription() {
-        return this.innerModel().partitionDescription();
-    }
-
-    public ArmServicePackageActivationMode servicePackageActivationMode() {
-        return this.innerModel().servicePackageActivationMode();
-    }
-
-    public String location() {
-        return this.innerModel().location();
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public Region region() {
@@ -228,64 +237,8 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResourceImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateParameters.withTags(tags);
-            return this;
-        }
-    }
-
-    public ServiceResourceImpl withPlacementConstraints(String placementConstraints) {
-        if (isInCreateMode()) {
-            this.innerModel().withPlacementConstraints(placementConstraints);
-            return this;
-        } else {
-            this.updateParameters.withPlacementConstraints(placementConstraints);
-            return this;
-        }
-    }
-
-    public ServiceResourceImpl withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
-        if (isInCreateMode()) {
-            this.innerModel().withCorrelationScheme(correlationScheme);
-            return this;
-        } else {
-            this.updateParameters.withCorrelationScheme(correlationScheme);
-            return this;
-        }
-    }
-
-    public ServiceResourceImpl withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
-        if (isInCreateMode()) {
-            this.innerModel().withServiceLoadMetrics(serviceLoadMetrics);
-            return this;
-        } else {
-            this.updateParameters.withServiceLoadMetrics(serviceLoadMetrics);
-            return this;
-        }
-    }
-
-    public ServiceResourceImpl withServicePlacementPolicies(
-        List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
-        if (isInCreateMode()) {
-            this.innerModel().withServicePlacementPolicies(servicePlacementPolicies);
-            return this;
-        } else {
-            this.updateParameters.withServicePlacementPolicies(servicePlacementPolicies);
-            return this;
-        }
-    }
-
-    public ServiceResourceImpl withDefaultMoveCost(MoveCost defaultMoveCost) {
-        if (isInCreateMode()) {
-            this.innerModel().withDefaultMoveCost(defaultMoveCost);
-            return this;
-        } else {
-            this.updateParameters.withDefaultMoveCost(defaultMoveCost);
-            return this;
-        }
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public ServiceResourceImpl withServiceTypeName(String serviceTypeName) {
@@ -304,7 +257,34 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         return this;
     }
 
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+    public ServiceResourceImpl withServiceDnsName(String serviceDnsName) {
+        this.innerModel().withServiceDnsName(serviceDnsName);
+        return this;
+    }
+
+    public ServiceResourceImpl withPlacementConstraints(String placementConstraints) {
+        this.innerModel().withPlacementConstraints(placementConstraints);
+        return this;
+    }
+
+    public ServiceResourceImpl withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
+        this.innerModel().withCorrelationScheme(correlationScheme);
+        return this;
+    }
+
+    public ServiceResourceImpl withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
+        this.innerModel().withServiceLoadMetrics(serviceLoadMetrics);
+        return this;
+    }
+
+    public ServiceResourceImpl withServicePlacementPolicies(
+        List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
+        this.innerModel().withServicePlacementPolicies(servicePlacementPolicies);
+        return this;
+    }
+
+    public ServiceResourceImpl withDefaultMoveCost(MoveCost defaultMoveCost) {
+        this.innerModel().withDefaultMoveCost(defaultMoveCost);
+        return this;
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
@@ -15,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A load balancer probe. */
-@JsonFlatten
 @Fluent
-public class ProbeInner extends SubResource {
+public final class ProbeInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProbeInner.class);
+
+    /*
+     * Properties of load balancer probe.
+     */
+    @JsonProperty(value = "properties")
+    private ProbePropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within the set of probes used by
@@ -39,60 +43,14 @@ public class ProbeInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The load balancer rules that use this probe.
+    /**
+     * Get the innerProperties property: Properties of load balancer probe.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> loadBalancingRules;
-
-    /*
-     * The protocol of the end point. If 'Tcp' is specified, a received ACK is
-     * required for the probe to be successful. If 'Http' or 'Https' is
-     * specified, a 200 OK response from the specifies URI is required for the
-     * probe to be successful.
-     */
-    @JsonProperty(value = "properties.protocol")
-    private ProbeProtocol protocol;
-
-    /*
-     * The port for communicating the probe. Possible values range from 1 to
-     * 65535, inclusive.
-     */
-    @JsonProperty(value = "properties.port")
-    private Integer port;
-
-    /*
-     * The interval, in seconds, for how frequently to probe the endpoint for
-     * health status. Typically, the interval is slightly less than half the
-     * allocated timeout period (in seconds) which allows two full probes
-     * before taking the instance out of rotation. The default value is 15, the
-     * minimum value is 5.
-     */
-    @JsonProperty(value = "properties.intervalInSeconds")
-    private Integer intervalInSeconds;
-
-    /*
-     * The number of probes where if no response, will result in stopping
-     * further traffic from being delivered to the endpoint. This values allows
-     * endpoints to be taken out of rotation faster or slower than the typical
-     * times used in Azure.
-     */
-    @JsonProperty(value = "properties.numberOfProbes")
-    private Integer numberOfProbes;
-
-    /*
-     * The URI used for requesting health status from the VM. Path is required
-     * if a protocol is set to http. Otherwise, it is not allowed. There is no
-     * default value.
-     */
-    @JsonProperty(value = "properties.requestPath")
-    private String requestPath;
-
-    /*
-     * The provisioning state of the probe resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ProbePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within the set of probes used by the load
@@ -134,13 +92,20 @@ public class ProbeInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ProbeInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the loadBalancingRules property: The load balancer rules that use this probe.
      *
      * @return the loadBalancingRules value.
      */
     public List<SubResource> loadBalancingRules() {
-        return this.loadBalancingRules;
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancingRules();
     }
 
     /**
@@ -151,7 +116,7 @@ public class ProbeInner extends SubResource {
      * @return the protocol value.
      */
     public ProbeProtocol protocol() {
-        return this.protocol;
+        return this.innerProperties() == null ? null : this.innerProperties().protocol();
     }
 
     /**
@@ -163,7 +128,10 @@ public class ProbeInner extends SubResource {
      * @return the ProbeInner object itself.
      */
     public ProbeInner withProtocol(ProbeProtocol protocol) {
-        this.protocol = protocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProbePropertiesFormat();
+        }
+        this.innerProperties().withProtocol(protocol);
         return this;
     }
 
@@ -173,7 +141,7 @@ public class ProbeInner extends SubResource {
      * @return the port value.
      */
     public Integer port() {
-        return this.port;
+        return this.innerProperties() == null ? null : this.innerProperties().port();
     }
 
     /**
@@ -183,7 +151,10 @@ public class ProbeInner extends SubResource {
      * @return the ProbeInner object itself.
      */
     public ProbeInner withPort(Integer port) {
-        this.port = port;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProbePropertiesFormat();
+        }
+        this.innerProperties().withPort(port);
         return this;
     }
 
@@ -195,7 +166,7 @@ public class ProbeInner extends SubResource {
      * @return the intervalInSeconds value.
      */
     public Integer intervalInSeconds() {
-        return this.intervalInSeconds;
+        return this.innerProperties() == null ? null : this.innerProperties().intervalInSeconds();
     }
 
     /**
@@ -207,7 +178,10 @@ public class ProbeInner extends SubResource {
      * @return the ProbeInner object itself.
      */
     public ProbeInner withIntervalInSeconds(Integer intervalInSeconds) {
-        this.intervalInSeconds = intervalInSeconds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProbePropertiesFormat();
+        }
+        this.innerProperties().withIntervalInSeconds(intervalInSeconds);
         return this;
     }
 
@@ -219,7 +193,7 @@ public class ProbeInner extends SubResource {
      * @return the numberOfProbes value.
      */
     public Integer numberOfProbes() {
-        return this.numberOfProbes;
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfProbes();
     }
 
     /**
@@ -231,7 +205,10 @@ public class ProbeInner extends SubResource {
      * @return the ProbeInner object itself.
      */
     public ProbeInner withNumberOfProbes(Integer numberOfProbes) {
-        this.numberOfProbes = numberOfProbes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProbePropertiesFormat();
+        }
+        this.innerProperties().withNumberOfProbes(numberOfProbes);
         return this;
     }
 
@@ -242,7 +219,7 @@ public class ProbeInner extends SubResource {
      * @return the requestPath value.
      */
     public String requestPath() {
-        return this.requestPath;
+        return this.innerProperties() == null ? null : this.innerProperties().requestPath();
     }
 
     /**
@@ -253,7 +230,10 @@ public class ProbeInner extends SubResource {
      * @return the ProbeInner object itself.
      */
     public ProbeInner withRequestPath(String requestPath) {
-        this.requestPath = requestPath;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProbePropertiesFormat();
+        }
+        this.innerProperties().withRequestPath(requestPath);
         return this;
     }
 
@@ -263,14 +243,7 @@ public class ProbeInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ProbeInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -279,5 +252,8 @@ public class ProbeInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

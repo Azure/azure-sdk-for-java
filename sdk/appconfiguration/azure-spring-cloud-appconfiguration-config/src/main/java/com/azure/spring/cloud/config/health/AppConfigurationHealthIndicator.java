@@ -10,7 +10,7 @@ import com.azure.spring.cloud.config.AppConfigurationRefresh;
 /**
  * Indicator class of App Configuration 
  */
-public class AppConfigurationHealthIndicator implements HealthIndicator {
+public final class AppConfigurationHealthIndicator implements HealthIndicator {
 
     private final AppConfigurationRefresh refresh;
 
