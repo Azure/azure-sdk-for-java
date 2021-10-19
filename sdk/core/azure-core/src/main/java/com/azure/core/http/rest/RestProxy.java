@@ -51,6 +51,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.shouldEagerlyReadResponse;
@@ -271,11 +272,19 @@ public final class RestProxy implements InvocationHandler {
     @SuppressWarnings("unchecked")
     private HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
         final Object[] args) throws IOException {
-        final Object bodyContentObject = methodParser.setBody(args);
+
+        final Object bodyContentObject;
+        if (methodParser.getBodyContentType().equals(ContentType.MULTIPART_FORM_DATA)) {
+            bodyContentObject = methodParser.setMultipartBody(args, UUID.randomUUID().toString());
+        } else {
+            bodyContentObject = methodParser.setBody(args);
+        }
+
         if (bodyContentObject == null) {
             request.getHeaders().set("Content-Length", "0");
         } else {
-            // We read the content type from the @BodyParam annotation
+            // We read the content type from the @BodyParam annotation. If working with @FormData, this should be equal
+            // to "multipart/form-data".
             String contentType = methodParser.getBodyContentType();
 
             // If this is null or empty, the service interface definition is incomplete and should
