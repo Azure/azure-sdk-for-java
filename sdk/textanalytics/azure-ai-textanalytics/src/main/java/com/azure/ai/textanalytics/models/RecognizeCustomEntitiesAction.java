@@ -11,6 +11,7 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class RecognizeCustomEntitiesAction {
+    private String actionName;
     private final String projectName;
     private final String deploymentName;
     private boolean disableServiceLogs;
@@ -27,7 +28,26 @@ public final class RecognizeCustomEntitiesAction {
         this.deploymentName = deploymentName;
     }
 
+    /**
+     * Get the name of action.
+     *
+     * @return the name of action.
+     */
+    public String getActionName() {
+        return actionName;
+    }
 
+    /**
+     * Set the custom name for the action.
+     *
+     * @param actionName the custom name for the action.
+     *
+     * @return The {@link RecognizeCustomEntitiesAction} object itself.
+     */
+    public RecognizeCustomEntitiesAction setActionName(String actionName) {
+        this.actionName = actionName;
+        return this;
+    }
 
     /**
      * Gets the name of the project which owns the model being consumed.

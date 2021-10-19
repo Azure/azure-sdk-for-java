@@ -243,7 +243,6 @@ public final class TextAnalyticsActions {
      */
     public TextAnalyticsActions setSingleCategoryClassifyActions(
         SingleCategoryClassifyAction... singleCategoryClassifyActions) {
-            SingleCategoryClassifyAction.class.getName());
         this.singleCategoryClassifyActions = singleCategoryClassifyActions == null
                                                  ? null : Arrays.asList(singleCategoryClassifyActions);
         return this;
@@ -271,7 +270,6 @@ public final class TextAnalyticsActions {
      */
     public TextAnalyticsActions setMultiCategoryClassifyActions(
         MultiCategoryClassifyAction... multiCategoryClassifyActions) {
-            MultiCategoryClassifyAction.class.getName());
         this.multiCategoryClassifyActions = multiCategoryClassifyActions == null
                                                 ? null : Arrays.asList(multiCategoryClassifyActions);
         return this;

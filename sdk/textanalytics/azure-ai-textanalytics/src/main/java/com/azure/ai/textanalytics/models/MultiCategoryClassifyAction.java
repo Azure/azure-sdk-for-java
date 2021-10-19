@@ -13,6 +13,7 @@ import com.azure.core.annotation.Fluent;
 public final class MultiCategoryClassifyAction {
     private final String projectName;
     private final String deploymentName;
+    private String actionName;
     private boolean disableServiceLogs;
 
     /**
@@ -25,6 +26,27 @@ public final class MultiCategoryClassifyAction {
     public MultiCategoryClassifyAction(String projectName, String deploymentName) {
         this.projectName = projectName;
         this.deploymentName = deploymentName;
+    }
+
+    /**
+     * Get the name of action.
+     *
+     * @return the name of action.
+     */
+    public String getActionName() {
+        return actionName;
+    }
+
+    /**
+     * Set the custom name for the action.
+     *
+     * @param actionName the custom name for the action.
+     *
+     * @return The {@link MultiCategoryClassifyAction} object itself.
+     */
+    public MultiCategoryClassifyAction setActionName(String actionName) {
+        this.actionName = actionName;
+        return this;
     }
 
     /**
