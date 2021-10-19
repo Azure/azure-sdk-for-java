@@ -49,7 +49,7 @@ stages:
           safeName: springcloudazuretestservicebusbinder
       TimeoutInMinutes: 240
       ServiceDirectory: spring
-      TestName: ${{ parameters.TestName }}
+      TestName: IntegrationTestInAzureGlobal
       TestStepMavenInputs:
         options: '$(DefaultTestOptions) -DskipSpringITs=false'
         mavenOptions: '$(DefaultTestMavenOptions)'
