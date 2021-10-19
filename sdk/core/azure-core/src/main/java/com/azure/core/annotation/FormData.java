@@ -32,5 +32,5 @@ public @interface FormData {
      *
      * @return The name of the file that {@link FormData#value()} represents.
      */
-    String filename();
+    String filename() default "";
 }
