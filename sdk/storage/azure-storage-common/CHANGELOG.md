@@ -1,6 +1,6 @@
 # Release History
 
-## 12.14.0-beta.1 (Unreleased)
+## 12.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.14.0 (2021-10-12)
+
+### Other Changes
+#### Dependency Updates
+- Updated to version `1.21.0` of `azure-core`
 
 ## 12.13.0 (2021-09-15)
 - GA release

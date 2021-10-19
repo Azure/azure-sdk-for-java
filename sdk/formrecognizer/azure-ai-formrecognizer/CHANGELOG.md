@@ -1,6 +1,16 @@
 # Release History
 
-## 4.0.0-beta.1 (2021-10-06)
+## 4.0.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.0.0-beta.1 (2021-10-07)
 This version of the SDK defaults to the latest supported API version, which currently is 2021-09-30-preview.
 
 > Note: Starting with version 2021-09-30-preview, a new set of clients were introduced to leverage the newest features 
@@ -28,12 +38,16 @@ To continue to use Form Recognizer API version 2.1, please use major version 3 o
 - `FormRecognizerClient` and `FormRecognizerAsyncClient` has been replaced by `DocumentAnalysisClient` and `DocumentAnalysisAsyncClient` respectively.
 - `FormTrainingClient` and `FormTrainingAsyncClient` has been replaced by `DocumentModelAdministrationClient` and `DocumentModelAdministrationAsyncClient` respectively.
 
-### Bugs Fixed
-
 ### Other Changes
 #### Dependency Updates
 - Upgraded `azure-core` dependency to 1.21.0
 - Upgraded `azure-identity` dependency to 1.3.7
+
+## 3.1.5 (2021-10-05)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.21.0`.
+- Updated `azure-core-http-netty` to `1.11.1`.
 
 ## 3.1.4 (2021-09-09)
 ### Other Changes

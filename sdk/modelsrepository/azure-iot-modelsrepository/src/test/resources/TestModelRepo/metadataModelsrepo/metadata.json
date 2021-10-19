@@ -1,0 +1,10 @@
+{
+  "commitId": "f49444d5deefa369300c7653b5958f9907da550a",
+  "features": {
+    "expanded": true,
+    "index": true
+  },
+  "publishDateUtc": "2021-09-16T23:01:01.885362+00:00",
+  "sourceRepo": "Azure/iot-plugandplay-models",
+  "totalModelCount": 19010
+}

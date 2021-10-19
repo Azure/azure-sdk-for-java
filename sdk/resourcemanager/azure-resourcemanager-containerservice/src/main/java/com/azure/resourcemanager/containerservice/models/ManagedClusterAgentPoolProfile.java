@@ -182,6 +182,13 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
+    public ManagedClusterAgentPoolProfile withPowerState(PowerState powerState) {
+        super.withPowerState(powerState);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public ManagedClusterAgentPoolProfile withAvailabilityZones(List<String> availabilityZones) {
         super.withAvailabilityZones(availabilityZones);
         return this;

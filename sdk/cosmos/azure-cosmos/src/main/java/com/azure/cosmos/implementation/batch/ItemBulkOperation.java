@@ -131,7 +131,7 @@ public final class ItemBulkOperation<TInternal, TContext> implements CosmosItemO
         return this.operationType;
     }
 
-    private RequestOptions getRequestOptions() {
+    public RequestOptions getRequestOptions() {
         return this.requestOptions;
     }
 

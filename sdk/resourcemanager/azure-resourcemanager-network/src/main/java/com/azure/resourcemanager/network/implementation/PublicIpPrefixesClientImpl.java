@@ -293,7 +293,7 @@ public final class PublicIpPrefixesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String publicIpPrefixName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, publicIpPrefixName);
         return this
@@ -312,7 +312,7 @@ public final class PublicIpPrefixesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String publicIpPrefixName, Context context) {
         context = this.client.mergeContext(context);
@@ -332,7 +332,7 @@ public final class PublicIpPrefixesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publicIpPrefixName) {
         return beginDeleteAsync(resourceGroupName, publicIpPrefixName).getSyncPoller();
     }
@@ -348,7 +348,7 @@ public final class PublicIpPrefixesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String publicIpPrefixName, Context context) {
         return beginDeleteAsync(resourceGroupName, publicIpPrefixName, context).getSyncPoller();
@@ -726,7 +726,7 @@ public final class PublicIpPrefixesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP prefix resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PublicIpPrefixInner>, PublicIpPrefixInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String publicIpPrefixName, PublicIpPrefixInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -753,7 +753,7 @@ public final class PublicIpPrefixesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP prefix resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PublicIpPrefixInner>, PublicIpPrefixInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String publicIpPrefixName, PublicIpPrefixInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -776,7 +776,7 @@ public final class PublicIpPrefixesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP prefix resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpPrefixInner>, PublicIpPrefixInner> beginCreateOrUpdate(
         String resourceGroupName, String publicIpPrefixName, PublicIpPrefixInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, publicIpPrefixName, parameters).getSyncPoller();
@@ -794,7 +794,7 @@ public final class PublicIpPrefixesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return public IP prefix resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PublicIpPrefixInner>, PublicIpPrefixInner> beginCreateOrUpdate(
         String resourceGroupName, String publicIpPrefixName, PublicIpPrefixInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, publicIpPrefixName, parameters, context).getSyncPoller();

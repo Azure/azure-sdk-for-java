@@ -34,7 +34,18 @@ public final class CommunicationRelayClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationRelayConfiguration getRelayConfiguration(CommunicationUserIdentifier communicationUser) {
         return client.getRelayConfiguration(communicationUser).block();
-       
+
+    }
+
+    /**
+     * Creates a new CommunicationRelayConfiguration.
+     *
+     * @return The obtained Communication Relay Configuration
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationRelayConfiguration getRelayConfiguration() {
+        return client.getRelayConfiguration().block();
+
     }
 
     /**
@@ -48,7 +59,21 @@ public final class CommunicationRelayClient {
     public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Response<CommunicationRelayConfiguration> response =
             client.getRelayConfigurationWithResponse(communicationUser, context).block();
-        
+
+        return response;
+    }
+
+    /**
+     * Creates a new CommunicationRelayConfiguration with response.
+     *
+     * @param context A {@link Context} representing the request context.
+     * @return The obtained Communication Relay Configuration
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(Context context) {
+        Response<CommunicationRelayConfiguration> response =
+            client.getRelayConfigurationWithResponse(null, context).block();
+
         return response;
     }
 }

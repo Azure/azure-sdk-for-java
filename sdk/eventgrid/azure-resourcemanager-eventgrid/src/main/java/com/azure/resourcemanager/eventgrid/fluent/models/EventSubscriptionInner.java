@@ -9,8 +9,6 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DeadLetterDestination;
-import com.azure.resourcemanager.eventgrid.models.DeadLetterWithResourceIdentity;
-import com.azure.resourcemanager.eventgrid.models.DeliveryWithResourceIdentity;
 import com.azure.resourcemanager.eventgrid.models.EventDeliverySchema;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
@@ -76,8 +74,7 @@ public final class EventSubscriptionInner extends ProxyResource {
 
     /**
      * Get the destination property: Information about the destination where events have to be delivered for the event
-     * subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
-     * dead-lettering.
+     * subscription.
      *
      * @return the destination value.
      */
@@ -87,8 +84,7 @@ public final class EventSubscriptionInner extends ProxyResource {
 
     /**
      * Set the destination property: Information about the destination where events have to be delivered for the event
-     * subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
-     * dead-lettering.
+     * subscription.
      *
      * @param destination the destination value to set.
      * @return the EventSubscriptionInner object itself.
@@ -98,34 +94,6 @@ public final class EventSubscriptionInner extends ProxyResource {
             this.innerProperties = new EventSubscriptionProperties();
         }
         this.innerProperties().withDestination(destination);
-        return this;
-    }
-
-    /**
-     * Get the deliveryWithResourceIdentity property: Information about the destination where events have to be
-     * delivered for the event subscription. Uses the managed identity setup on the parent resource (namely, topic or
-     * domain) to acquire the authentication tokens being used during delivery / dead-lettering.
-     *
-     * @return the deliveryWithResourceIdentity value.
-     */
-    public DeliveryWithResourceIdentity deliveryWithResourceIdentity() {
-        return this.innerProperties() == null ? null : this.innerProperties().deliveryWithResourceIdentity();
-    }
-
-    /**
-     * Set the deliveryWithResourceIdentity property: Information about the destination where events have to be
-     * delivered for the event subscription. Uses the managed identity setup on the parent resource (namely, topic or
-     * domain) to acquire the authentication tokens being used during delivery / dead-lettering.
-     *
-     * @param deliveryWithResourceIdentity the deliveryWithResourceIdentity value to set.
-     * @return the EventSubscriptionInner object itself.
-     */
-    public EventSubscriptionInner withDeliveryWithResourceIdentity(
-        DeliveryWithResourceIdentity deliveryWithResourceIdentity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EventSubscriptionProperties();
-        }
-        this.innerProperties().withDeliveryWithResourceIdentity(deliveryWithResourceIdentity);
         return this;
     }
 
@@ -247,9 +215,7 @@ public final class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the deadLetterDestination property: The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's identity
-     * to acquire the authentication tokens being used during delivery / dead-lettering.
+     * Get the deadLetterDestination property: The DeadLetter destination of the event subscription.
      *
      * @return the deadLetterDestination value.
      */
@@ -258,9 +224,7 @@ public final class EventSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Set the deadLetterDestination property: The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's identity
-     * to acquire the authentication tokens being used during delivery / dead-lettering.
+     * Set the deadLetterDestination property: The DeadLetter destination of the event subscription.
      *
      * @param deadLetterDestination the deadLetterDestination value to set.
      * @return the EventSubscriptionInner object itself.
@@ -270,36 +234,6 @@ public final class EventSubscriptionInner extends ProxyResource {
             this.innerProperties = new EventSubscriptionProperties();
         }
         this.innerProperties().withDeadLetterDestination(deadLetterDestination);
-        return this;
-    }
-
-    /**
-     * Get the deadLetterWithResourceIdentity property: The dead letter destination of the event subscription. Any event
-     * that cannot be delivered to its' destination is sent to the dead letter destination. Uses the managed identity
-     * setup on the parent resource (namely, topic or domain) to acquire the authentication tokens being used during
-     * delivery / dead-lettering.
-     *
-     * @return the deadLetterWithResourceIdentity value.
-     */
-    public DeadLetterWithResourceIdentity deadLetterWithResourceIdentity() {
-        return this.innerProperties() == null ? null : this.innerProperties().deadLetterWithResourceIdentity();
-    }
-
-    /**
-     * Set the deadLetterWithResourceIdentity property: The dead letter destination of the event subscription. Any event
-     * that cannot be delivered to its' destination is sent to the dead letter destination. Uses the managed identity
-     * setup on the parent resource (namely, topic or domain) to acquire the authentication tokens being used during
-     * delivery / dead-lettering.
-     *
-     * @param deadLetterWithResourceIdentity the deadLetterWithResourceIdentity value to set.
-     * @return the EventSubscriptionInner object itself.
-     */
-    public EventSubscriptionInner withDeadLetterWithResourceIdentity(
-        DeadLetterWithResourceIdentity deadLetterWithResourceIdentity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new EventSubscriptionProperties();
-        }
-        this.innerProperties().withDeadLetterWithResourceIdentity(deadLetterWithResourceIdentity);
         return this;
     }
 

@@ -6,7 +6,7 @@ $pomFileName = "pom.xml"
 $defaultVersionClientFilePath = Join-Path $inputDir $versionClientFileName
 $defaultPomFilePath = Join-Path $inputDir $pomFileName
 $versionClientFilePath = Join-Path $repoRoot "eng" "versioning" $versionClientFileName
-$bomPomFilePath = Join-Path $repoRoot "sdk" "containerregistry" "azure-containers-containerregistry" $pomFileName
+$bomPomFilePath = Join-Path $repoRoot "sdk" "boms" "azure-sdk-bom" $pomFileName
 
 if(! (Test-Path $inputDir)) { 
   New-Item -Path $PSScriptRoot -Name "inputDir" -ItemType "directory"
@@ -19,10 +19,6 @@ if(! (Test-Path $defaultVersionClientFilePath)) {
 if(! (Test-Path $defaultPomFilePath)) {
  Copy-Item $bomPomFilePath -Destination $inputDir
 }
-  
 
-"mvn exec:java -Dexec.args='-inputDir=$inputDir -outputDir=$outputDir -mode=analyze'"
-if($LASTEXITCODE -ne 0) {
-  LogError "Failed to generate the BOM."
-  exit 1
-}
+$mvnResults = mvn install
+$mvnResults = "mvn exec:java -Dexec.args=`"-inputDir=$inputDir -outputDir=$outputDir -mode=analyze`""

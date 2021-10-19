@@ -257,8 +257,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         }
 
         subscribers.add(subscriber);
-        logger.verbose("namespace[{}] entityPath[{}]: Added a subscriber {} to AMQP channel processor. Total "
-            + "subscribers = {}", fullyQualifiedNamespace, entityPath, subscriber, subscribers.size());
+        logger.verbose("namespace[{}] entityPath[{}] subscribers[{}]: Added a subscriber.",
+            fullyQualifiedNamespace, entityPath, subscribers.size());
 
         if (!isRetryPending.get()) {
             requestUpstream();

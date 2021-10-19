@@ -3,8 +3,15 @@
 ## 12.15.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for permanent delete permissions in blob and account level SAS.
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.14.1 (2021-10-12)
 
 ### Bugs Fixed
 
@@ -12,6 +19,9 @@
   empty component path, the parsing fails with StringIndexOutOfBoundsException
 
 ### Other Changes
+#### Dependency Updates
+- Updated to version `1.21.0` of `azure-core`
+- Updated to version `12.14.0` of `azure-storage-common`
 
 ## 12.14.0 (2021-09-15)
 - GA release

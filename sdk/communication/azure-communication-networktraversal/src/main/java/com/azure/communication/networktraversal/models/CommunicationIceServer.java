@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CommunicationIceServer model. */
+/** An instance of a STUN/TURN server with credentials to be used for ICE negotiation. */
 @Fluent
 public final class CommunicationIceServer {
     /*

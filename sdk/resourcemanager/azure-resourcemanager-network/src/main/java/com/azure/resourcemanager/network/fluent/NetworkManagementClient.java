@@ -880,7 +880,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
 
@@ -895,7 +895,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
 
@@ -911,7 +911,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context);
 
@@ -1235,7 +1235,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
             String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams);
@@ -1252,7 +1252,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofile(
             String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams);
@@ -1270,7 +1270,7 @@ public interface NetworkManagementClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofile(
             String resourceGroupName,

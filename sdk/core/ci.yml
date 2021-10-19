@@ -81,3 +81,5 @@ extends:
     AdditionalModules:
       - name: perf-test-core
         groupId: com.azure
+    MatrixReplace:
+      - AdditionalTestGoals=.*/failsafe:integration-test failsafe:verify
