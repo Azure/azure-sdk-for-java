@@ -872,8 +872,7 @@ public final class BlobServiceAsyncClient {
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
         throwOnAnonymousAccess();
-        return new AccountSasImplUtil(accountSasSignatureValues,
-            this.encryptionScope == null ? null : this.encryptionScope.getEncryptionScope())
+        return new AccountSasImplUtil(accountSasSignatureValues)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
