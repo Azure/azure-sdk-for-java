@@ -43,6 +43,12 @@ public final class ContainerGroupInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private ContainerGroupProperties innerProperties = new ContainerGroupProperties();
 
+    /*
+     * The zones for the container group.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
     /**
      * Get the identity property: The identity of the container group, if configured.
      *
@@ -70,6 +76,26 @@ public final class ContainerGroupInner extends Resource {
      */
     private ContainerGroupProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the zones property: The zones for the container group.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: The zones for the container group.
+     *
+     * @param zones the zones value to set.
+     * @return the ContainerGroupInner object itself.
+     */
+    public ContainerGroupInner withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
     }
 
     /** {@inheritDoc} */
