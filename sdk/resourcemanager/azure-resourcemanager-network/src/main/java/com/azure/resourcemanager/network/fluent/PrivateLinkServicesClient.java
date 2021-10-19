@@ -53,7 +53,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName);
 
     /**
@@ -66,7 +66,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName);
 
     /**
@@ -80,7 +80,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, Context context);
 
     /**
@@ -218,7 +218,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters);
 
@@ -233,7 +233,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters);
 
@@ -249,7 +249,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link service resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceInner>, PrivateLinkServiceInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, PrivateLinkServiceInner parameters, Context context);
 
@@ -551,7 +551,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeletePrivateEndpointConnectionAsync(
         String resourceGroupName, String serviceName, String peConnectionName);
 
@@ -566,7 +566,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String serviceName, String peConnectionName);
 
@@ -582,7 +582,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeletePrivateEndpointConnection(
         String resourceGroupName, String serviceName, String peConnectionName, Context context);
 
@@ -696,7 +696,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityAsync(
             String location, CheckPrivateLinkServiceVisibilityRequest parameters);
@@ -711,7 +711,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibility(String location, CheckPrivateLinkServiceVisibilityRequest parameters);
 
@@ -726,7 +726,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibility(
             String location, CheckPrivateLinkServiceVisibilityRequest parameters, Context context);
@@ -800,7 +800,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroupAsync(
             String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
@@ -816,7 +816,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroup(
             String location, String resourceGroupName, CheckPrivateLinkServiceVisibilityRequest parameters);
@@ -833,7 +833,7 @@ public interface PrivateLinkServicesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckPrivateLinkServiceVisibility API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateLinkServiceVisibilityInner>, PrivateLinkServiceVisibilityInner>
         beginCheckPrivateLinkServiceVisibilityByResourceGroup(
             String location,

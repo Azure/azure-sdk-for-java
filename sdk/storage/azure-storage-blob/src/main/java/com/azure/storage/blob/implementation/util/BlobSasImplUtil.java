@@ -91,8 +91,6 @@ public class BlobSasImplUtil {
 
     private String correlationId;
 
-    private String encryptionScope;
-
     /**
      * Creates a new {@link BlobSasImplUtil} with the specified parameters
      *
@@ -100,7 +98,7 @@ public class BlobSasImplUtil {
      * @param containerName The container name
      */
     public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName) {
-        this(sasValues, containerName, null, null, null, null);
+        this(sasValues, containerName, null, null, null);
     }
 
     /**
@@ -111,10 +109,9 @@ public class BlobSasImplUtil {
      * @param blobName The blob name
      * @param snapshotId The snapshot id
      * @param versionId The version id
-     * @param encryptionScope The encryption scope
      */
     public BlobSasImplUtil(BlobServiceSasSignatureValues sasValues, String containerName, String blobName,
-        String snapshotId, String versionId, String encryptionScope) {
+        String snapshotId, String versionId) {
         Objects.requireNonNull(sasValues);
         if (snapshotId != null && versionId != null) {
             throw LOGGER.logExceptionAsError(
@@ -137,7 +134,6 @@ public class BlobSasImplUtil {
         this.contentType = sasValues.getContentType();
         this.authorizedAadObjectId = sasValues.getPreauthorizedAgentObjectId();
         this.correlationId = sasValues.getCorrelationId();
-        this.encryptionScope = encryptionScope;
     }
 
     /**
@@ -224,7 +220,6 @@ public class BlobSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
-        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CACHE_CONTROL, this.cacheControl);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_DISPOSITION, this.contentDisposition);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
@@ -300,44 +295,23 @@ public class BlobSasImplUtil {
 
     private String stringToSign(String canonicalName) {
         String versionSegment = this.snapshotId == null ? this.versionId : this.snapshotId;
-        if (VERSION.compareTo(BlobServiceVersion.V2020_10_02.getVersion()) <= 0) {
-            return String.join("\n",
-                this.permissions == null ? "" : permissions,
-                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                canonicalName,
-                this.identifier == null ? "" : this.identifier,
-                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-                this.protocol == null ? "" : this.protocol.toString(),
-                VERSION,
-                resource,
-                versionSegment == null ? "" : versionSegment,
-                this.cacheControl == null ? "" : this.cacheControl,
-                this.contentDisposition == null ? "" : this.contentDisposition,
-                this.contentEncoding == null ? "" : this.contentEncoding,
-                this.contentLanguage == null ? "" : this.contentLanguage,
-                this.contentType == null ? "" : this.contentType
-            );
-        } else {
-            return String.join("\n",
-                this.permissions == null ? "" : permissions,
-                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                canonicalName,
-                this.identifier == null ? "" : this.identifier,
-                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-                this.protocol == null ? "" : this.protocol.toString(),
-                VERSION,
-                resource,
-                versionSegment == null ? "" : versionSegment,
-                this.encryptionScope == null ? "" : this.encryptionScope,
-                this.cacheControl == null ? "" : this.cacheControl,
-                this.contentDisposition == null ? "" : this.contentDisposition,
-                this.contentEncoding == null ? "" : this.contentEncoding,
-                this.contentLanguage == null ? "" : this.contentLanguage,
-                this.contentType == null ? "" : this.contentType
-            );
-        }
+        return String.join("\n",
+            this.permissions == null ? "" : permissions,
+            this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+            this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+            canonicalName,
+            this.identifier == null ? "" : this.identifier,
+            this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+            this.protocol == null ? "" : this.protocol.toString(),
+            VERSION,
+            resource,
+            versionSegment == null ? "" : versionSegment,
+            this.cacheControl == null ? "" : this.cacheControl,
+            this.contentDisposition == null ? "" : this.contentDisposition,
+            this.contentEncoding == null ? "" : this.contentEncoding,
+            this.contentLanguage == null ? "" : this.contentLanguage,
+            this.contentType == null ? "" : this.contentType
+        );
     }
 
     private String stringToSign(final UserDelegationKey key, String canonicalName) {
@@ -365,32 +339,6 @@ public class BlobSasImplUtil {
                 this.contentLanguage == null ? "" : this.contentLanguage,
                 this.contentType == null ? "" : this.contentType
             );
-        } else if (VERSION.compareTo(BlobServiceVersion.V2020_10_02.getVersion()) <= 0) {
-            return String.join("\n",
-                this.permissions == null ? "" : this.permissions,
-                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
-                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
-                canonicalName,
-                key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
-                key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
-                key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
-                key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
-                key.getSignedService() == null ? "" : key.getSignedService(),
-                key.getSignedVersion() == null ? "" : key.getSignedVersion(),
-                this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
-                "", /* suoid - empty since this applies to HNS only accounts. */
-                this.correlationId == null ? "" : this.correlationId,
-                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
-                this.protocol == null ? "" : this.protocol.toString(),
-                VERSION,
-                resource,
-                versionSegment == null ? "" : versionSegment,
-                this.cacheControl == null ? "" : this.cacheControl,
-                this.contentDisposition == null ? "" : this.contentDisposition,
-                this.contentEncoding == null ? "" : this.contentEncoding,
-                this.contentLanguage == null ? "" : this.contentLanguage,
-                this.contentType == null ? "" : this.contentType
-            );
         } else {
             return String.join("\n",
                 this.permissions == null ? "" : this.permissions,
@@ -411,7 +359,6 @@ public class BlobSasImplUtil {
                 VERSION,
                 resource,
                 versionSegment == null ? "" : versionSegment,
-                this.encryptionScope == null ? "" : this.encryptionScope,
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,

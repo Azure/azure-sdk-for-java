@@ -48,7 +48,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String authorizationName);
 
@@ -63,7 +63,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String authorizationName);
 
@@ -79,7 +79,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String authorizationName, Context context);
 
@@ -217,7 +217,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -238,7 +238,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -260,7 +260,7 @@ public interface ExpressRouteCircuitAuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitAuthorizationInner>, ExpressRouteCircuitAuthorizationInner>
         beginCreateOrUpdate(
             String resourceGroupName,

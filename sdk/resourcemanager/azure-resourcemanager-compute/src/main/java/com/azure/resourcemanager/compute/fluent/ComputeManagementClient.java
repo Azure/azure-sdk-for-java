@@ -326,6 +326,27 @@ public interface ComputeManagementClient {
     SharedGalleryImageVersionsClient getSharedGalleryImageVersions();
 
     /**
+     * Gets the CommunityGalleriesClient object to access its operations.
+     *
+     * @return the CommunityGalleriesClient object.
+     */
+    CommunityGalleriesClient getCommunityGalleries();
+
+    /**
+     * Gets the CommunityGalleryImagesClient object to access its operations.
+     *
+     * @return the CommunityGalleryImagesClient object.
+     */
+    CommunityGalleryImagesClient getCommunityGalleryImages();
+
+    /**
+     * Gets the CommunityGalleryImageVersionsClient object to access its operations.
+     *
+     * @return the CommunityGalleryImageVersionsClient object.
+     */
+    CommunityGalleryImageVersionsClient getCommunityGalleryImageVersions();
+
+    /**
      * Gets the CloudServiceRoleInstancesClient object to access its operations.
      *
      * @return the CloudServiceRoleInstancesClient object.

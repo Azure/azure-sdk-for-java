@@ -275,7 +275,7 @@ public final class VirtualRoutersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualRouterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualRouterName);
         return this
@@ -294,7 +294,7 @@ public final class VirtualRoutersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualRouterName, Context context) {
         context = this.client.mergeContext(context);
@@ -314,7 +314,7 @@ public final class VirtualRoutersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualRouterName) {
         return beginDeleteAsync(resourceGroupName, virtualRouterName).getSyncPoller();
     }
@@ -330,7 +330,7 @@ public final class VirtualRoutersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualRouterName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualRouterName, context).getSyncPoller();
@@ -708,7 +708,7 @@ public final class VirtualRoutersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualRouter Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualRouterInner>, VirtualRouterInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -731,7 +731,7 @@ public final class VirtualRoutersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualRouter Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualRouterInner>, VirtualRouterInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -754,7 +754,7 @@ public final class VirtualRoutersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualRouter Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualRouterInner>, VirtualRouterInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, parameters).getSyncPoller();
@@ -772,7 +772,7 @@ public final class VirtualRoutersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualRouter Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualRouterInner>, VirtualRouterInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualRouterName, VirtualRouterInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualRouterName, parameters, context).getSyncPoller();
