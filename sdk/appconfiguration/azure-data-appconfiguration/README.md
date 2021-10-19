@@ -292,6 +292,17 @@ PagedIterable<ConfigurationSetting> settings = configurationClient.listConfigura
 List all revisions of a configuration setting by calling `listRevisions`.
 
 ```java readme-sample-listRevisions
+String key = "revisionKey";
+configurationClient.setConfigurationSetting(key, "some_label", "some_value");
+configurationClient.setConfigurationSetting(key, "new_label", "new_value");
+SettingSelector selector = new SettingSelector().setKeyFilter(key);
+PagedIterable<ConfigurationSetting> settings = configurationClient.listRevisions(selector);
+```
+
+### Set a Configuration Setting to read only
+
+Set a configuration setting to read-only status.
+
 ```java readme-sample-setReadOnly
 configurationClient.setConfigurationSetting("some_key", "some_label", "some_value");
 ConfigurationSetting setting = configurationClient.setReadOnly("some_key", "some_label", true);
