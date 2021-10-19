@@ -48,25 +48,26 @@ steps:
     Paths: ${{ parameters.SparseCheckoutPaths }}
 
 # Pull the information from Github user
+- task: DotNetCoreCLI@2
+  displayName: 'Install Identity Resolver'
+  inputs:
+    command: custom
+    custom: 'tool'
+    arguments: 'install --global --add-source "${parameters.DevOpsFeed}" --version "1.0.0-dev.20211018.1" "Azure.Sdk.Tools.IdentityResolver"'
+    workingDirectory: '$(Agent.BuildDirectory)'
 - pwsh: |
-    git clone https://github.com/Azure/azure-sdk-tools.git $(Build.SourcesDirectory)/tools_repo
-    cd $(Build.SourcesDirectory)/tools_repo
-    git checkout azure-sdk-tools_20210114.1
-  displayName: Setup Identity Resolver
-
-- pwsh: |
-    dotnet run -v q -- `
+    identity-resolver `
       --aad-app-id-var APP_ID `
       --aad-app-secret-var APP_SECRET `
       --aad-tenant-var AAD_TENANT `
       --kusto-url-var KUSTO_URL `
       --kusto-database-var KUSTO_DB `
       --kusto-table-var KUSTO_TABLE `
-      --identity "$(Build.QueuedBy)" `
+      --identity-name "$(Build.QueuedBy)" `
+      --identity-email "$(Build.RequestedForEmail)" `
       --targetvar "${{ coalesce(parameters.TargetVariable, parameters.TargetUserVariable) }}"
   displayName: 'Resolving Queuing User'
   continueOnError: true
-  workingDirectory: $(Build.SourcesDirectory)/tools_repo/tools/notification-configuration/identity-resolver
   env:
     APP_ID: $(notification-aad-app-id)
     APP_SECRET: $(notification-aad-secret)

@@ -50,9 +50,11 @@ function GetAdjustedReadmeContent($pkgInfo){
       $metadata = GetMetaData
 
       $service = $metadata | ? { $_.Package -eq $pkgId }
-
+      Write-Host "1. Service name is $service."
       if ($service) {
+        Write-Host "2. Service name is $($service.ServiceName)."
         $service = "$($service.ServiceName)".ToLower().Replace(" ", "")
+        Write-Host "2. Service name is $service."
       }
     }
     catch {
@@ -72,10 +74,10 @@ function GetAdjustedReadmeContent($pkgInfo){
     # Replace github main link with release tag.
     $ReplacementPattern = "`${1}$($pkgInfo.Tag)"
     $fileContent = $fileContent -replace $releaseReplaceRegex, $ReplacementPattern
-    Write-Host "Service name is $service."
+    Write-Host "3. Service name is $service."
     if ($VsoVariable) {
       $alreadyPresent = [System.Environment]::GetEnvironmentVariable($VsoVariable)
-  
+      Write-Host $alreadyPresent
       if ($alreadyPresent) { 
         $authorMetadataJson = $alreadyPresent | ConvertFrom-Json
       }
