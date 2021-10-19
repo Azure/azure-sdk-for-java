@@ -33,7 +33,6 @@
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus-queue</module>
         <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
-        <module>spring-security-azure-oauth2-client</module>
       </modules>
       <dependencies>
         <dependency>
