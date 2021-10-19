@@ -6,6 +6,7 @@ package com.azure.spring.core.factory;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Header;
@@ -16,6 +17,8 @@ import com.azure.spring.core.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.client.HttpClientProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +33,7 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractAzureServiceClientBuilderFactory<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureHttpClientBuilderFactory.class);
     private final HttpClientOptions httpClientOptions = new HttpClientOptions();
     private HttpClientProvider httpClientProvider = new DefaultHttpProvider();
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
@@ -66,9 +70,14 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureProxy(T builder) {
-        final ProxyProperties proxy = getAzureProperties().getProxy();
-        if (proxy != null) {
-            this.httpClientOptions.setProxyOptions(proxyOptionsConverter.convert(proxy));
+        final ProxyProperties proxyProperties = getAzureProperties().getProxy();
+        if (proxyProperties != null) {
+            ProxyOptions proxyOptions = proxyOptionsConverter.convert(proxyProperties);
+            if (proxyOptions != null) {
+                this.httpClientOptions.setProxyOptions(proxyOptionsConverter.convert(proxyProperties));
+            } else {
+                LOGGER.warn("Invalid http proxyProperties configuration properties.");
+            }
         }
     }
 

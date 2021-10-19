@@ -3,6 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.blob;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.spring.cloud.autoconfigure.AzureServiceClientBuilderFactoryTestBase;
@@ -10,14 +13,19 @@ import com.azure.spring.cloud.autoconfigure.core.TestHttpClient;
 import com.azure.spring.cloud.autoconfigure.core.TestHttpClientProvider;
 import com.azure.spring.cloud.autoconfigure.core.TestPerCallHttpPipelinePolicy;
 import com.azure.spring.cloud.autoconfigure.core.TestPerRetryHttpPipelinePolicy;
+import com.azure.spring.core.http.DefaultHttpProvider;
+import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Xiaolu Dai, 2021/8/25.
@@ -25,6 +33,7 @@ import static org.mockito.Mockito.verify;
 class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactoryTestBase<BlobServiceClientBuilder,
                                                                                                 AzureStorageBlobProperties, BlobServiceClientBuilderFactory> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureBlobClientBuilderFactoryTest.class);
     private static final String ENDPOINT = "https://abc.blob.core.windows.net/";
 
     @Test
@@ -93,6 +102,22 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
         verify(builder, times(1)).addPolicy(any(TestPerRetryHttpPipelinePolicy.class));
     }
 
+    @Test
+    void testProxyPropertiesConfigured() {
+        AzureStorageBlobProperties properties = createMinimalServiceProperties();
+        ProxyProperties proxyProperties = properties.getProxy();
+        proxyProperties.setHostname("localhost");
+        proxyProperties.setPort(8080);
+
+        final BlobServiceClientBuilderFactoryExt builderFactory = new BlobServiceClientBuilderFactoryExt(properties);
+        HttpClientProvider defaultHttpClientProvider = builderFactory.getDefaultHttpClientProvider();
+        final BlobServiceClientBuilder builder = builderFactory.build();
+        final BlobServiceClient client = builder.buildClient();
+
+        verify(builder, times(1)).httpClient(any(HttpClient.class));
+        verify(defaultHttpClientProvider, times(1)).createInstance(any(HttpClientOptions.class));
+    }
+
     @Override
     protected AzureStorageBlobProperties createMinimalServiceProperties() {
         AzureStorageBlobProperties properties = new AzureStorageBlobProperties();
@@ -102,13 +127,27 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
 
     static class BlobServiceClientBuilderFactoryExt extends BlobServiceClientBuilderFactory {
 
+        private HttpClientProvider httpClientProvider = mock(DefaultHttpProvider.class);
+
         BlobServiceClientBuilderFactoryExt(AzureStorageBlobProperties blobProperties) {
             super(blobProperties);
+
+            HttpClient httpClient = mock(HttpClient.class);
+            when(this.httpClientProvider.createInstance(any(HttpClientOptions.class))).thenReturn(httpClient);
         }
 
         @Override
         public BlobServiceClientBuilder createBuilderInstance() {
             return mock(BlobServiceClientBuilder.class);
+        }
+
+        @Override
+        protected HttpClientProvider getHttpClientProvider() {
+            return httpClientProvider;
+        }
+
+        public HttpClientProvider getDefaultHttpClientProvider() {
+            return getHttpClientProvider();
         }
     }
 

@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.properties;
 
+import com.azure.spring.core.properties.proxy.HttpProxyProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
@@ -13,8 +14,16 @@ public abstract class AbstractAzureHttpConfigurationProperties extends AbstractA
     @NestedConfigurationProperty
     protected final HttpClientConfigurationProperties client = new HttpClientConfigurationProperties();
 
+    @NestedConfigurationProperty
+    protected final HttpProxyProperties proxy = new HttpProxyProperties();
+
     @Override
     public HttpClientConfigurationProperties getClient() {
         return client;
+    }
+
+    @Override
+    public HttpProxyProperties getProxy() {
+        return proxy;
     }
 }

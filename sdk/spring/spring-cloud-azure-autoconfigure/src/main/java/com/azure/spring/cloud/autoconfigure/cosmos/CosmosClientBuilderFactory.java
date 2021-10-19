@@ -88,10 +88,10 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         map.from(this.cosmosProperties.getResourceToken()).to(builder::resourceToken);
         map.from(this.cosmosProperties.getPermissions()).whenNot(List::isEmpty).to(builder::permissions);
 
-        if (ConnectionMode.GATEWAY.equals(this.cosmosProperties.getConnectionMode())) {
+        if (this.cosmosProperties.getGatewayConnection() != null) {
             builder.gatewayMode(this.cosmosProperties.getGatewayConnection());
-        } else if (ConnectionMode.DIRECT.equals(this.cosmosProperties.getConnectionMode())) {
-            // TODO (xiada): public CosmosClientBuilder directMode(DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
+        }
+        if (ConnectionMode.DIRECT.equals(this.cosmosProperties.getConnectionMode())) {
             builder.directMode(this.cosmosProperties.getDirectConnection());
         }
     }

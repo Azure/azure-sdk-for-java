@@ -12,6 +12,9 @@ import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.core.properties.aware.credential.KeyAware;
 import com.azure.spring.core.properties.client.ClientProperties;
+import com.azure.spring.core.properties.proxy.HttpProxyProperties;
+import com.azure.spring.core.properties.proxy.ProxyProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
@@ -26,6 +29,9 @@ import java.util.List;
 public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties implements KeyAware {
 
     public static final String PREFIX = "spring.cloud.azure.cosmos";
+
+    @NestedConfigurationProperty
+    private final ProxyProperties proxy = new HttpProxyProperties();
 
     @NotEmpty
     @Pattern(regexp = "http[s]{0,1}://.*.documents.azure.com.*")
@@ -64,6 +70,10 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
      */
     private boolean populateQueryMetrics;
 
+    @Override
+    public ProxyProperties getProxy() {
+        return proxy;
+    }
 
     @Override
     public ClientProperties getClient() {

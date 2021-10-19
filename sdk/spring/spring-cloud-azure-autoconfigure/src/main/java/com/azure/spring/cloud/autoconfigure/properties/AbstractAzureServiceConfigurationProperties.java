@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure.properties;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.credential.TokenCredentialProperties;
 import com.azure.spring.core.properties.profile.AzureProfile;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.properties.retry.RetryProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -17,9 +16,6 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public abstract class AbstractAzureServiceConfigurationProperties implements AzureProperties {
 
     protected boolean enabled = true;
-
-    @NestedConfigurationProperty
-    protected final ProxyProperties proxy = new ProxyProperties();
 
     @NestedConfigurationProperty
     protected final RetryProperties retry = new RetryProperties();
@@ -39,11 +35,6 @@ public abstract class AbstractAzureServiceConfigurationProperties implements Azu
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    @Override
-    public ProxyProperties getProxy() {
-        return proxy;
     }
 
     @Override
