@@ -6,6 +6,7 @@ package com.azure.core.http.rest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.FormData;
 import com.azure.core.annotation.FormParam;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Head;
@@ -472,6 +473,91 @@ public class SwaggerMethodParserTests {
                 "x%3Ams%3Avalue=value"),
             Arguments.of(encodedFormKey2, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
                 "x%3Ams%3Avalue=value")
+        );
+    }
+
+    interface FormDataSubstitutionMethods {
+        @Get("test")
+        void singleFormDataBody(@FormData("name") String name);
+
+        @Get("test")
+        void multipleFormDataBody(@FormData("name") String name, @FormData("age") Integer age,
+                                  @FormData("dob") OffsetDateTime dob,
+                                  @FormData("favoriteColors") List<String> favoriteColors);
+
+        @Get("test")
+        void singleFormDataBodyWithFilename(@FormData(value = "file", filename = "file.txt") String name);
+
+        @Get("test")
+        void multipleFormDataBodyWithFilename(@FormData("name") String name,
+                                              @FormData(value = "file", filename = "file.txt") String file,
+                                              @FormData(value = "image", filename = "image.png") String image);
+    }
+
+    @ParameterizedTest
+    @MethodSource("formDataSubstitutionSupplier")
+    public void formDataSubstitution(Method method, Object[] arguments, Object expectedBody) {
+        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
+
+        assertEquals(void.class, swaggerMethodParser.getReturnType());
+        assertEquals(String.class, swaggerMethodParser.getBodyJavaType());
+        assertEquals(ContentType.MULTIPART_FORM_DATA, swaggerMethodParser.getBodyContentType());
+        assertEquals(expectedBody, swaggerMethodParser.setMultipartBody(arguments, "boundary"));
+    }
+
+    private static Stream<Arguments> formDataSubstitutionSupplier() throws NoSuchMethodException {
+        Class<FormDataSubstitutionMethods> clazz = FormDataSubstitutionMethods.class;
+        Method singleFormDataBody = clazz.getDeclaredMethod("singleFormDataBody", String.class);
+        Method multipleFormDataBody = clazz.getDeclaredMethod("multipleFormDataBody", String.class, Integer.class,
+            OffsetDateTime.class, List.class);
+        Method singleFormDataBodyWithFilename = clazz.getDeclaredMethod("singleFormDataBodyWithFilename", String.class);
+        Method multipleFormDataBodyWithFilename = clazz.getDeclaredMethod("multipleFormDataBodyWithFilename",
+            String.class, String.class, String.class);
+
+        String name = "John Doe";
+        OffsetDateTime dob = OffsetDateTime.of(1980, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        List<String> favoriteColors = Arrays.asList("blue", "green");
+        List<String> badFavoriteColors = Arrays.asList(null, "green");
+        String file = "This are the contents of my text file.";
+        String image = "This are the contents of my image file.";
+
+        return Stream.of(
+            Arguments.of(singleFormDataBody, null, null),
+            Arguments.of(singleFormDataBody, toObjectArray(name),
+                String.format("--boundary%nContent-Disposition: form-data; name=\"name\"%n%n%s%n--boundary--", name)),
+            Arguments.of(multipleFormDataBody, null, null),
+            Arguments.of(multipleFormDataBody, toObjectArray("John Doe", null, dob, null),
+                String.format("--boundary%nContent-Disposition: form-data; name=\"name\"%n%n%s%n--boundary"
+                    + "%nContent-Disposition: form-data; name=\"dob\"%n%n1980-01-01T00:00:00Z%n--boundary--", name)),
+            Arguments.of(multipleFormDataBody, toObjectArray("John Doe", 40, null, favoriteColors),
+                String.format("--boundary%nContent-Disposition: form-data; name=\"name\"%n%n%s%n--boundary"
+                    + "%nContent-Disposition: form-data; name=\"age\"%n%n%d%n--boundary"
+                    + "%nContent-Disposition: form-data; name=\"favoriteColors\"%n%n[\"blue\",\"green\"]%n--boundary--",
+                    name, 40)),
+            Arguments.of(multipleFormDataBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
+                String.format("--boundary%nContent-Disposition: form-data; name=\"name\"%n%n%s%n--boundary"
+                    + "%nContent-Disposition: form-data; name=\"age\"%n%n%d%n--boundary"
+                    + "%nContent-Disposition: form-data; name=\"favoriteColors\"%n%n[null,\"green\"]%n--boundary--",
+                    name, 40)),
+            Arguments.of(singleFormDataBodyWithFilename, null, null),
+            Arguments.of(singleFormDataBodyWithFilename, toObjectArray(file),
+                String.format("--boundary%nContent-Disposition: form-data; name=\"file\"; "
+                    + "filename=\"file.txt\"%nContent-Type: text/plain; charset=UTF-8%n%n%s%n--boundary--", file)),
+            Arguments.of(multipleFormDataBodyWithFilename, null, null),
+            Arguments.of(multipleFormDataBodyWithFilename, toObjectArray("John Doe", file, null),
+                String.format("--boundary%nContent-Disposition: form-data; name=\"name\"%n%n%s%n--boundary"
+                    + "%nContent-Disposition: form-data; name=\"file\"; filename=\"file.txt\"%n"
+                    + "Content-Type: text/plain; charset=UTF-8%n%n%s%n--boundary--", name, file)),
+            Arguments.of(multipleFormDataBodyWithFilename, toObjectArray("John Doe", null, image),
+                String.format("--boundary%nContent-Disposition: form-data; name=\"name\"%n%n%s%n--boundary"
+                    + "%nContent-Disposition: form-data; name=\"image\"; filename=\"image.png\"%n"
+                    + "Content-Type: image/png%n%n%s%n--boundary--", name, image)),
+            Arguments.of(multipleFormDataBodyWithFilename, toObjectArray("John Doe", file, image),
+                String.format("--boundary%nContent-Disposition: form-data; name=\"name\"%n%n%s%n--boundary"
+                    + "%nContent-Disposition: form-data; name=\"file\"; filename=\"file.txt\"%n"
+                    + "Content-Type: text/plain; charset=UTF-8%n%n%s%n--boundary"
+                    + "%nContent-Disposition: form-data; name=\"image\"; filename=\"image.png\"%n"
+                    + "Content-Type: image/png%n%n%s%n--boundary--", name, file, image))
         );
     }
 
