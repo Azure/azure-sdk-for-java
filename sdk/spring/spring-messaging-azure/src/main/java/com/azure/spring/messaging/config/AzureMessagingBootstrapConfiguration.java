@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Role;
  */
 @Configuration
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-public class AzureBootstrapConfiguration {
+public class AzureMessagingBootstrapConfiguration {
 
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     @Bean

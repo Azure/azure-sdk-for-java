@@ -3,7 +3,7 @@
 
 package com.azure.spring.messaging.annotation;
 
-import com.azure.spring.messaging.config.AzureBootstrapConfiguration;
+import com.azure.spring.messaging.config.AzureMessagingBootstrapConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.Documented;
@@ -19,6 +19,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(AzureBootstrapConfiguration.class)
+@Import(AzureMessagingBootstrapConfiguration.class)
 public @interface EnableAzureMessaging {
 }

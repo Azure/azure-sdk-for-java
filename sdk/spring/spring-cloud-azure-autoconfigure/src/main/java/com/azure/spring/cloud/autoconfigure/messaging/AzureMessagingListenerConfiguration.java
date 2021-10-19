@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.listener;
+package com.azure.spring.cloud.autoconfigure.messaging;
 
 import com.azure.spring.messaging.annotation.EnableAzureMessaging;
 import com.azure.spring.messaging.config.AzureListenerAnnotationBeanPostProcessor;
