@@ -448,7 +448,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ipConfigurations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<HubIpConfigurationInner>, HubIpConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, String ipConfigName, HubIpConfigurationInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -477,7 +477,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ipConfigurations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<HubIpConfigurationInner>, HubIpConfigurationInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String virtualHubName,
@@ -510,7 +510,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ipConfigurations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubIpConfigurationInner>, HubIpConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, String ipConfigName, HubIpConfigurationInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, ipConfigName, parameters).getSyncPoller();
@@ -530,7 +530,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ipConfigurations.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubIpConfigurationInner>, HubIpConfigurationInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualHubName,
@@ -748,7 +748,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String ipConfigName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -770,7 +770,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String ipConfigName, Context context) {
         context = this.client.mergeContext(context);
@@ -792,7 +792,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String ipConfigName) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, ipConfigName).getSyncPoller();
@@ -810,7 +810,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String ipConfigName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, ipConfigName, context).getSyncPoller();

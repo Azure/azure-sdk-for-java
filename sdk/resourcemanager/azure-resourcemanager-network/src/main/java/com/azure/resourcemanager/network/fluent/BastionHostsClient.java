@@ -48,7 +48,7 @@ public interface BastionHostsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String bastionHostname);
 
     /**
@@ -61,7 +61,7 @@ public interface BastionHostsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bastionHostname);
 
     /**
@@ -75,7 +75,7 @@ public interface BastionHostsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bastionHostname, Context context);
 
     /**
@@ -197,7 +197,7 @@ public interface BastionHostsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters);
 
@@ -212,7 +212,7 @@ public interface BastionHostsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdate(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters);
 
@@ -228,7 +228,7 @@ public interface BastionHostsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdate(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context);
 
@@ -303,7 +303,7 @@ public interface BastionHostsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTagsAsync(
         String resourceGroupName, String bastionHostname, TagsObject parameters);
 
@@ -318,7 +318,7 @@ public interface BastionHostsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(
         String resourceGroupName, String bastionHostname, TagsObject parameters);
 
@@ -334,7 +334,7 @@ public interface BastionHostsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(
         String resourceGroupName, String bastionHostname, TagsObject parameters, Context context);
 

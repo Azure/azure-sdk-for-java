@@ -44,7 +44,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginCancelAsync(String resourceGroupName, String vmScaleSetName);
 
     /**
@@ -57,7 +57,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String vmScaleSetName);
 
     /**
@@ -71,7 +71,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginCancel(String resourceGroupName, String vmScaleSetName, Context context);
 
     /**
@@ -137,7 +137,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStartOSUpgradeAsync(String resourceGroupName, String vmScaleSetName);
 
     /**
@@ -151,7 +151,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(String resourceGroupName, String vmScaleSetName);
 
     /**
@@ -166,7 +166,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(
         String resourceGroupName, String vmScaleSetName, Context context);
 
@@ -237,7 +237,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStartExtensionUpgradeAsync(String resourceGroupName, String vmScaleSetName);
 
     /**
@@ -251,7 +251,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(String resourceGroupName, String vmScaleSetName);
 
     /**
@@ -266,7 +266,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(
         String resourceGroupName, String vmScaleSetName, Context context);
 
