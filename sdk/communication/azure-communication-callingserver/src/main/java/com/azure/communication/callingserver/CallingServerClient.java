@@ -5,6 +5,7 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.models.CallRejectReason;
 import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.AnswerCallOptions;
 import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.communication.callingserver.models.CallRecordingProperties;
@@ -125,6 +126,36 @@ public final class CallingServerClient {
         JoinCallOptions joinCallOptions,
         Context context) {
         return callingServerAsyncClient.joinWithResponseInternal(callLocator, source, joinCallOptions, context).block();
+    }
+
+    /**
+     * Answer a call
+     *
+     * @param answerCallOptions to answer Call.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return CallConnection for a successful join request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallConnection answerCall(
+        AnswerCallOptions answerCallOptions) {
+        return callingServerAsyncClient.answerInternal(answerCallOptions).block();
+    }
+
+    /**
+     * Answer a call
+     *
+     * @param answerCallOptions to answer Call.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @param context A {@link Context} representing the request context.
+     * @return Response for a successful answer request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CallConnection> answerCallWithResponse(
+        AnswerCallOptions answerCallOptions,
+        Context context) {
+        return callingServerAsyncClient.answerWithResponseInternal(answerCallOptions, context).block();
     }
 
     /**
