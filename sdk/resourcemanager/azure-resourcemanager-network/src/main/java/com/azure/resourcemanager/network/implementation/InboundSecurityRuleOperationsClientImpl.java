@@ -232,7 +232,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nVA Inbound Security Rule resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -265,7 +265,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nVA Inbound Security Rule resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -299,7 +299,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nVA Inbound Security Rule resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -323,7 +323,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nVA Inbound Security Rule resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkVirtualApplianceName,

@@ -811,7 +811,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkWatcherName);
         return this
@@ -830,7 +830,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkWatcherName, Context context) {
         context = this.client.mergeContext(context);
@@ -850,7 +850,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkWatcherName) {
         return beginDeleteAsync(resourceGroupName, networkWatcherName).getSyncPoller();
     }
@@ -866,7 +866,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkWatcherName, Context context) {
         return beginDeleteAsync(resourceGroupName, networkWatcherName, context).getSyncPoller();
@@ -1674,7 +1674,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of IP flow verification on the target resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlowAsync(
         String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1701,7 +1701,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of IP flow verification on the target resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlowAsync(
         String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1728,7 +1728,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of IP flow verification on the target resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlow(
         String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters) {
         return beginVerifyIpFlowAsync(resourceGroupName, networkWatcherName, parameters).getSyncPoller();
@@ -1746,7 +1746,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of IP flow verification on the target resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlow(
         String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters, Context context) {
         return beginVerifyIpFlowAsync(resourceGroupName, networkWatcherName, parameters, context).getSyncPoller();
@@ -1949,7 +1949,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the next hop from the specified VM.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHopAsync(
         String resourceGroupName, String networkWatcherName, NextHopParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1972,7 +1972,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the next hop from the specified VM.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHopAsync(
         String resourceGroupName, String networkWatcherName, NextHopParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1995,7 +1995,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the next hop from the specified VM.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHop(
         String resourceGroupName, String networkWatcherName, NextHopParameters parameters) {
         return beginGetNextHopAsync(resourceGroupName, networkWatcherName, parameters).getSyncPoller();
@@ -2013,7 +2013,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the next hop from the specified VM.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHop(
         String resourceGroupName, String networkWatcherName, NextHopParameters parameters, Context context) {
         return beginGetNextHopAsync(resourceGroupName, networkWatcherName, parameters, context).getSyncPoller();
@@ -2216,7 +2216,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configured and effective security group rules on the specified VM.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner>
         beginGetVMSecurityRulesAsync(
             String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters) {
@@ -2244,7 +2244,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configured and effective security group rules on the specified VM.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner>
         beginGetVMSecurityRulesAsync(
             String resourceGroupName,
@@ -2275,7 +2275,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configured and effective security group rules on the specified VM.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner> beginGetVMSecurityRules(
         String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters) {
         return beginGetVMSecurityRulesAsync(resourceGroupName, networkWatcherName, parameters).getSyncPoller();
@@ -2293,7 +2293,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configured and effective security group rules on the specified VM.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner> beginGetVMSecurityRules(
         String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters, Context context) {
         return beginGetVMSecurityRulesAsync(resourceGroupName, networkWatcherName, parameters, context).getSyncPoller();
@@ -2496,7 +2496,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return troubleshooting information gained from specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingAsync(
         String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2523,7 +2523,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return troubleshooting information gained from specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingAsync(
         String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -2550,7 +2550,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return troubleshooting information gained from specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshooting(
         String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters) {
         return beginGetTroubleshootingAsync(resourceGroupName, networkWatcherName, parameters).getSyncPoller();
@@ -2568,7 +2568,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return troubleshooting information gained from specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshooting(
         String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters, Context context) {
         return beginGetTroubleshootingAsync(resourceGroupName, networkWatcherName, parameters, context).getSyncPoller();
@@ -2774,7 +2774,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the last completed troubleshooting result on a specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner>
         beginGetTroubleshootingResultAsync(
             String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters) {
@@ -2802,7 +2802,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the last completed troubleshooting result on a specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner>
         beginGetTroubleshootingResultAsync(
             String resourceGroupName,
@@ -2833,7 +2833,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the last completed troubleshooting result on a specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingResult(
         String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters) {
         return beginGetTroubleshootingResultAsync(resourceGroupName, networkWatcherName, parameters).getSyncPoller();
@@ -2851,7 +2851,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the last completed troubleshooting result on a specified resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingResult(
         String resourceGroupName,
         String networkWatcherName,
@@ -3064,7 +3064,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfigurationAsync(
         String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -3091,7 +3091,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfigurationAsync(
         String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -3118,7 +3118,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfiguration(
         String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters) {
         return beginSetFlowLogConfigurationAsync(resourceGroupName, networkWatcherName, parameters).getSyncPoller();
@@ -3136,7 +3136,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfiguration(
         String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters, Context context) {
         return beginSetFlowLogConfigurationAsync(resourceGroupName, networkWatcherName, parameters, context)
@@ -3340,7 +3340,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatusAsync(
         String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -3367,7 +3367,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatusAsync(
         String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -3394,7 +3394,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatus(
         String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters) {
         return beginGetFlowLogStatusAsync(resourceGroupName, networkWatcherName, parameters).getSyncPoller();
@@ -3412,7 +3412,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatus(
         String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters, Context context) {
         return beginGetFlowLogStatusAsync(resourceGroupName, networkWatcherName, parameters, context).getSyncPoller();
@@ -3618,7 +3618,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner>
         beginCheckConnectivityAsync(
             String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters) {
@@ -3647,7 +3647,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner>
         beginCheckConnectivityAsync(
             String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters, Context context) {
@@ -3676,7 +3676,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner> beginCheckConnectivity(
         String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters) {
         return beginCheckConnectivityAsync(resourceGroupName, networkWatcherName, parameters).getSyncPoller();
@@ -3695,7 +3695,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner> beginCheckConnectivity(
         String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters, Context context) {
         return beginCheckConnectivityAsync(resourceGroupName, networkWatcherName, parameters, context).getSyncPoller();
@@ -3908,7 +3908,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure reachability report details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
         beginGetAzureReachabilityReportAsync(
             String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters) {
@@ -3937,7 +3937,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure reachability report details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
         beginGetAzureReachabilityReportAsync(
             String resourceGroupName,
@@ -3969,7 +3969,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure reachability report details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
         beginGetAzureReachabilityReport(
             String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters) {
@@ -3989,7 +3989,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure reachability report details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
         beginGetAzureReachabilityReport(
             String resourceGroupName,
@@ -4213,7 +4213,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available countries with details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner>
         beginListAvailableProvidersAsync(
             String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters) {
@@ -4242,7 +4242,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available countries with details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner>
         beginListAvailableProvidersAsync(
             String resourceGroupName,
@@ -4274,7 +4274,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available countries with details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner> beginListAvailableProviders(
         String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters) {
         return beginListAvailableProvidersAsync(resourceGroupName, networkWatcherName, parameters).getSyncPoller();
@@ -4293,7 +4293,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available countries with details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner> beginListAvailableProviders(
         String resourceGroupName,
         String networkWatcherName,
@@ -4522,7 +4522,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>
         beginGetNetworkConfigurationDiagnosticAsync(
@@ -4554,7 +4554,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>
         beginGetNetworkConfigurationDiagnosticAsync(
@@ -4590,7 +4590,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>
         beginGetNetworkConfigurationDiagnostic(
@@ -4614,7 +4614,7 @@ public final class NetworkWatchersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>
         beginGetNetworkConfigurationDiagnostic(
