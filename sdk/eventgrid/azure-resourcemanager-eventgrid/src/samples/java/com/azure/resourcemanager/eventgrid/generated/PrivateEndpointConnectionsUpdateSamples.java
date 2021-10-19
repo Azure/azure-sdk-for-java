@@ -13,7 +13,7 @@ import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnectionsPare
 /** Samples for PrivateEndpointConnections Update. */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/PrivateEndpointConnections_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/PrivateEndpointConnections_Update.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Update.

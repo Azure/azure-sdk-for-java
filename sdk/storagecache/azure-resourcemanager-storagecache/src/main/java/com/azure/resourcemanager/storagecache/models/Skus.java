@@ -14,7 +14,7 @@ public interface Skus {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of StorageCache.
+     * @return the list of StorageCache.Cache SKUs available to this subscription.
      */
     PagedIterable<ResourceSku> list();
 
@@ -25,7 +25,7 @@ public interface Skus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of StorageCache.
+     * @return the list of StorageCache.Cache SKUs available to this subscription.
      */
     PagedIterable<ResourceSku> list(Context context);
 }

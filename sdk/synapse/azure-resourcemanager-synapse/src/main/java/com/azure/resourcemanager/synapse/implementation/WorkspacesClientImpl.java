@@ -615,7 +615,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdateAsync(
         String resourceGroupName, String workspaceName, WorkspacePatchInfo workspacePatchInfo) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -638,7 +638,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdateAsync(
         String resourceGroupName, String workspaceName, WorkspacePatchInfo workspacePatchInfo, Context context) {
         context = this.client.mergeContext(context);
@@ -661,7 +661,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(
         String resourceGroupName, String workspaceName, WorkspacePatchInfo workspacePatchInfo) {
         return beginUpdateAsync(resourceGroupName, workspaceName, workspacePatchInfo).getSyncPoller();
@@ -679,7 +679,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(
         String resourceGroupName, String workspaceName, WorkspacePatchInfo workspacePatchInfo, Context context) {
         return beginUpdateAsync(resourceGroupName, workspaceName, workspacePatchInfo, context).getSyncPoller();
@@ -880,7 +880,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, WorkspaceInner workspaceInfo) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -903,7 +903,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, WorkspaceInner workspaceInfo, Context context) {
         context = this.client.mergeContext(context);
@@ -926,7 +926,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceInner workspaceInfo) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, workspaceInfo).getSyncPoller();
@@ -944,7 +944,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceInner workspaceInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, workspaceInfo, context).getSyncPoller();
@@ -1128,7 +1128,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Object>, Object> beginDeleteAsync(String resourceGroupName, String workspaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName);
         return this
@@ -1148,7 +1148,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Object>, Object> beginDeleteAsync(
         String resourceGroupName, String workspaceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1168,7 +1168,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDelete(String resourceGroupName, String workspaceName) {
         return beginDeleteAsync(resourceGroupName, workspaceName).getSyncPoller();
     }
@@ -1184,7 +1184,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return any object.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDelete(
         String resourceGroupName, String workspaceName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, context).getSyncPoller();

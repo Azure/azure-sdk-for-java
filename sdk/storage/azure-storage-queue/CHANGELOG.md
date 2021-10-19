@@ -10,6 +10,13 @@
 
 ### Other Changes
 
+## 12.11.1 (2021-10-12)
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-storage-common` to version `12.14.0`
+- Updated `azure-core` to version `1.21.0`
+
 ## 12.11.0 (2021-09-15)
 - GA release
 

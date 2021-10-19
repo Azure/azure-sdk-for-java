@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubsClient;
 import com.azure.resourcemanager.webpubsub.fluent.models.NameAvailabilityInner;
+import com.azure.resourcemanager.webpubsub.fluent.models.SkuListInner;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubKeysInner;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubResourceInner;
 import com.azure.resourcemanager.webpubsub.models.NameAvailability;
 import com.azure.resourcemanager.webpubsub.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.webpubsub.models.RegenerateKeyParameters;
+import com.azure.resourcemanager.webpubsub.models.SkuList;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubKeys;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubResource;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubs;
@@ -162,6 +164,29 @@ public final class WebPubSubsImpl implements WebPubSubs {
 
     public void restart(String resourceGroupName, String resourceName, Context context) {
         this.serviceClient().restart(resourceGroupName, resourceName, context);
+    }
+
+    public SkuList listSkus(String resourceGroupName, String resourceName) {
+        SkuListInner inner = this.serviceClient().listSkus(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new SkuListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<SkuList> listSkusWithResponse(String resourceGroupName, String resourceName, Context context) {
+        Response<SkuListInner> inner =
+            this.serviceClient().listSkusWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new SkuListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public WebPubSubResource getById(String id) {

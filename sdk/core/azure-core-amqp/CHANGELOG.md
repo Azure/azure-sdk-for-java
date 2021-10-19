@@ -4,12 +4,20 @@
 
 ### Features Added
 
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.3.3 (2021-10-07)
+
+### Features Added
+
 - Defer creation of AmqpException in switchIfEmpty to decrease creation of unused exception objects.
 - Updated tests to run in parallel.
 - Updated log messages so they are consistent in reporting connectionId.
 - Updated incorrect log messages in ReactorReceiver.
-
-### Breaking Changes
 
 ### Bugs Fixed
 
