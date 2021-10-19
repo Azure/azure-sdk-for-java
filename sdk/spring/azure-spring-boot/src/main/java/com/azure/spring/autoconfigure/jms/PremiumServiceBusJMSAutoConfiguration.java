@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.jms.ConnectionFactory;
 
+import java.util.HashMap;
+
 import static com.azure.spring.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
 
 /**
@@ -40,17 +42,30 @@ public class PremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMS
         String clientId = azureServiceBusJMSProperties.getTopicClientId();
         int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
         int prefetchPolicyAll = azureServiceBusJMSProperties.getPrefetchPolicyAll();
+        int durableTopicPrefetch = azureServiceBusJMSProperties.getDurableTopicPrefetch();
+        int queueBrowserPrefetch = azureServiceBusJMSProperties.getQueueBrowserPrefetch();
+        int queuePrefetch = azureServiceBusJMSProperties.getQueuePrefetch();
+        int topicPrefetch = azureServiceBusJMSProperties.getTopicPrefetch();
 
         ServiceBusJmsConnectionFactorySettings settings =
-            new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
+            new ServiceBusJmsConnectionFactorySettings(new HashMap<>());
+        settings.setConnectionIdleTimeoutMS(idleTimeout);
+        settings.setTraceFrames(false);
         settings.setShouldReconnect(false);
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.all", String.valueOf(prefetchPolicyAll));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.durableTopicPrefetch", String.valueOf(durableTopicPrefetch));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.queueBrowserPrefetch", String.valueOf(queueBrowserPrefetch));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.queuePrefetch", String.valueOf(queuePrefetch));
+        settings.getConfigurationOptions()
+            .put("jms.prefetchPolicy.topicPrefetch", String.valueOf(topicPrefetch));
         SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
         springServiceBusJmsConnectionFactory.setClientId(clientId);
         springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS);
-        springServiceBusJmsConnectionFactory.getSettings()
-                                            .getConfigurationOptions()
-                                            .put("jms.prefetchPolicy.all", String.valueOf(prefetchPolicyAll));
 
         return springServiceBusJmsConnectionFactory;
     }

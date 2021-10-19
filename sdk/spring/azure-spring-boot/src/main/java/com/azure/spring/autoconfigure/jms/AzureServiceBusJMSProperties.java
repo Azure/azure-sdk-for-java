@@ -29,16 +29,56 @@ public class AzureServiceBusJMSProperties {
 
     private int prefetchPolicyAll = 0;
 
+    private int durableTopicPrefetch = 0;
+
+    private int queueBrowserPrefetch = 0;
+
+    private int queuePrefetch = 0;
+
+    private int topicPrefetch = 0;
+
     private String pricingTier;
 
     private final Listener listener = new Listener();
 
     public int getPrefetchPolicyAll() {
-        return prefetchPolicyAll;
+        return Math.max(prefetchPolicyAll, 0);
     }
 
     public void setPrefetchPolicyAll(int prefetchPolicyAll) {
         this.prefetchPolicyAll = prefetchPolicyAll;
+    }
+
+    public int getDurableTopicPrefetch() {
+        return durableTopicPrefetch > 0 ? durableTopicPrefetch : getPrefetchPolicyAll();
+    }
+
+    public void setDurableTopicPrefetch(int durableTopicPrefetch) {
+        this.durableTopicPrefetch = durableTopicPrefetch;
+    }
+
+    public int getQueueBrowserPrefetch() {
+        return queueBrowserPrefetch >= 0 ? queueBrowserPrefetch : getPrefetchPolicyAll();
+    }
+
+    public void setQueueBrowserPrefetch(int queueBrowserPrefetch) {
+        this.queueBrowserPrefetch = queueBrowserPrefetch;
+    }
+
+    public int getQueuePrefetch() {
+        return queuePrefetch >= 0 ? queuePrefetch : getPrefetchPolicyAll();
+    }
+
+    public void setQueuePrefetch(int queuePrefetch) {
+        this.queuePrefetch = queuePrefetch;
+    }
+
+    public int getTopicPrefetch() {
+        return topicPrefetch >= 0 ? topicPrefetch : getPrefetchPolicyAll();
+    }
+
+    public void setTopicPrefetch(int topicPrefetch) {
+        this.topicPrefetch = topicPrefetch;
     }
 
     public String getConnectionString() {
