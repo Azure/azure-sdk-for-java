@@ -21,7 +21,9 @@ param (
   [Parameter(Mandatory = $true)]
   $Configs, # The configuration elements informing important locations within the cloned doc repo
   [Parameter(Mandatory = $false)]
-  $DocAuthor # The one triggered the release pipeline will be the doc.ms author
+  $DocAuthorEmail, # The one triggered the release pipeline will be the doc.ms author
+  [Parameter(Mandatory = $false)]
+  $DocAuthorName # The one triggered the release pipeline will be the doc.ms author
 )
 
 . (Join-Path $PSScriptRoot common.ps1)
@@ -73,8 +75,11 @@ function GetAdjustedReadmeContent($pkgInfo){
     $ReplacementPattern = "`${1}$($pkgInfo.Tag)"
     $fileContent = $fileContent -replace $releaseReplaceRegex, $ReplacementPattern
     Write-Host "Service name is $service."
-    Write-Host "Doc author name is $DocAuthor."
-    $header = "---`ntitle: $foundTitle`nkeywords: Azure, $Language, SDK, API, $($pkgInfo.PackageId), $service`nauthor: $DocAuthor`nms.author: $DocAuthor`nms.date: $date`nms.topic: reference`nms.prod: azure`nms.technology: azure`nms.devlang: $Language`nms.service: $service`n---`n"
+    $aliasFromDocAuthor = $DocAuthorEmail.split('@')[0].trim()
+    Write-Host "Doc author name is $DocAuthorEmail."
+    Write-Host "Doc author name is $DocAuthorName."
+    Write-Host "Doc author name is $aliasFromDocAuthor."
+    $header = "---`ntitle: $foundTitle`nkeywords: Azure, $Language, SDK, API, $($pkgInfo.PackageId), $service`nauthor: $DocAuthorName`nms.author: $aliasFromDocAuthor`nms.date: $date`nms.topic: reference`nms.prod: azure`nms.technology: azure`nms.devlang: $Language`nms.service: $service`n---`n"
 
     if ($fileContent) {
       return "$header`n$fileContent"
@@ -102,7 +107,6 @@ foreach ($config in $targets) {
   }
 
   if ($pkgsFiltered) {
-    Write-Host "Doc author name is $DocAuthor."
     Write-Host "Given the visible artifacts, $($config.mode) Readme updates against $($config.path_to_config) will be processed for the following packages."
     Write-Host ($pkgsFiltered | % { $_.PackageId + " " + $_.PackageVersion })
 
