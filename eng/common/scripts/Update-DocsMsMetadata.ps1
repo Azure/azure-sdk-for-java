@@ -23,7 +23,7 @@ Location of the root of the docs.microsoft.com reference doc location. Further
 path information is provided by $GetDocsMsMetadataForPackageFn
 
 .PARAMETER Language
-Programming language to supply to metadata. It can default to the variable of 'Language' in Language-Setting.ps1.
+Programming language to supply to metadata.
 
 .PARAMETER RepoId
 GitHub repository ID of the SDK. Typically of the form: 'Azure/azure-sdk-for-js'
@@ -39,7 +39,7 @@ param(
   [Parameter(Mandatory = $true)]
   [string]$DocRepoLocation, 
 
-  [Parameter(Mandatory = $false)]
+  [Parameter(Mandatory = $true)]
   [string]$Language,
 
   [Parameter(Mandatory = $true)]
