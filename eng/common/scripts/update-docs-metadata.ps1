@@ -19,7 +19,9 @@ param (
   [Parameter(Mandatory = $true)]
   $Language, # EG: js, java, dotnet. Used in language for the embedded readme.
   [Parameter(Mandatory = $true)]
-  $Configs # The configuration elements informing important locations within the cloned doc repo
+  $Configs, # The configuration elements informing important locations within the cloned doc repo
+  [Parameter(Mandatory = $false)]
+  $VsoVariable # Devops github owner info output variable
 )
 
 . (Join-Path $PSScriptRoot common.ps1)
@@ -70,8 +72,24 @@ function GetAdjustedReadmeContent($pkgInfo){
     # Replace github main link with release tag.
     $ReplacementPattern = "`${1}$($pkgInfo.Tag)"
     $fileContent = $fileContent -replace $releaseReplaceRegex, $ReplacementPattern
-
-    $header = "---`ntitle: $foundTitle`nkeywords: Azure, $Language, SDK, API, $($pkgInfo.PackageId), $service`nauthor: maggiepint`nms.author: magpint`nms.date: $date`nms.topic: reference`nms.prod: azure`nms.technology: azure`nms.devlang: $Language`nms.service: $service`n---`n"
+    Write-Host "Service name is $service."
+    if ($VsoVariable) {
+      $alreadyPresent = [System.Environment]::GetEnvironmentVariable($VsoVariable)
+  
+      if ($alreadyPresent) { 
+        $authorMetadataJson = $alreadyPresent | ConvertFrom-Json
+      }
+    }
+    $author = 'ramya-rao-a'
+    $msauthor = 'ramyar'
+    if ($authorMetadataJson) {
+      $author = $authorMetadataJson.GithubUserName
+      $msauthor = $authorMetadataJson.Alias
+    }
+    
+    Write-Host "Doc author is $author."
+    Write-Host "Doc ms author is $msauthor."
+    $header = "---`ntitle: $foundTitle`nkeywords: Azure, $Language, SDK, API, $($pkgInfo.PackageId), $service`nauthor: $author`nms.author: $msauthor`nms.date: $date`nms.topic: reference`nms.prod: azure`nms.technology: azure`nms.devlang: $Language`nms.service: $service`n---`n"
 
     if ($fileContent) {
       return "$header`n$fileContent"

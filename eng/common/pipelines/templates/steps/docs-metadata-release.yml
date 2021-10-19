@@ -60,7 +60,6 @@ parameters:
   - name: SparseCheckoutPaths
     type: object
     default: null
-
 steps:
 - pwsh: |
     if ($IsWindows) {
@@ -104,6 +103,7 @@ steps:
       -DocRepoLocation "${{ parameters.WorkingDirectory }}/repo"
       -Language "${{parameters.Language}}"
       -Configs "${{ parameters.CIConfigs }}"
+      -VsoVariable "${{ parameters.GHReviewersVariable }}"
     pwsh: true
   env:
     GH_TOKEN: $(azuresdk-github-pat)
