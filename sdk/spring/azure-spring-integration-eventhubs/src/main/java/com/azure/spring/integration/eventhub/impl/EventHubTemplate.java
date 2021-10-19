@@ -4,8 +4,10 @@
 package com.azure.spring.integration.eventhub.impl;
 
 import com.azure.spring.cloud.context.core.util.Tuple;
+import com.azure.spring.integration.core.converter.AzureMessageConverter;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
@@ -60,5 +62,15 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
 
     public EventHubProcessor createEventProcessor(Consumer<Message<?>> consumer, Class<?> messagePayloadType) {
         return new EventHubProcessor(consumer, messagePayloadType, getCheckpointConfig(), getMessageConverter());
+    }
+
+    @Override
+    public AzureMessageConverter<?, ?> getMessageConverter() {
+        return messageConverter;
+    }
+
+    @Override
+    public void setMessageConverter(AzureMessageConverter<?, ?> messageConverter) {
+        this.messageConverter = messageConverter;
     }
 }

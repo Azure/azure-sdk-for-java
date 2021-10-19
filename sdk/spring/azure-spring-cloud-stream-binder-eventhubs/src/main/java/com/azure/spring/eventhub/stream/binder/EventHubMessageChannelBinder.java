@@ -12,6 +12,8 @@ import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
+import com.azure.spring.integration.eventhub.converter.EventHubBatchMessageConverter;
+import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import com.azure.spring.integration.eventhub.inbound.EventHubInboundChannelAdapter;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
@@ -87,10 +89,14 @@ public class EventHubMessageChannelBinder extends
                                 .checkpointInterval(properties.getExtension().getCheckpointInterval())
                                 .build();
         this.eventHubOperation.setCheckpointConfig(checkpointConfig);
+        if (properties.getExtension().getBatchSize() > 1) {
+            ((EventHubTemplate)this.eventHubOperation).setMessageConverter(new EventHubBatchMessageConverter());
+        }
         BatchConfig batchConfig = BatchConfig.builder().batchSize(properties.getExtension().getBatchSize())
                                                        .maxWaitTime(properties.getExtension().getMaxBatchDuration())
                                                        .build();
         this.eventHubOperation.setBatchConfig(batchConfig);
+
         boolean anonymous = !StringUtils.hasText(group);
         if (anonymous) {
             group = "anonymous." + UUID.randomUUID().toString();

@@ -3,6 +3,7 @@
 
 package com.azure.spring.integration.core.converter;
 
+import com.azure.spring.integration.core.EventHubHeaders;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -12,13 +13,13 @@ import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
+import org.springframework.util.LinkedMultiValueMap;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 
 /**
  * Abstract class handles common conversion logic between &lt;T&gt; and {@link Message}
@@ -30,7 +31,11 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureMessageConverter.class);
 
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
+    protected static final Set<String> SYSTEM_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+        EventHubHeaders.PARTITION_KEY,
+        EventHubHeaders.ENQUEUED_TIME,
+        EventHubHeaders.OFFSET,
+        EventHubHeaders.SEQUENCE_NUMBER)));
     protected ObjectMapper getObjectMapper() {
         return OBJECT_MAPPER;
     }
@@ -122,7 +127,7 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
         return fromByte(toPayload(payload));
     }
 
-    private <U> Message<?> internalToMessage(I azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
+    protected <U> Message<?> internalToMessage(I azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
         byte[] payload = getPayload(azureMessage);
         Assert.isTrue(payload != null && payload.length > 0, "payload must not be null");
         if (targetPayloadClass.isInstance(azureMessage)) {
@@ -138,6 +143,14 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
         }
 
         return MessageBuilder.withPayload(fromPayload(payload, targetPayloadClass)).copyHeaders(headers).build();
+    }
+
+
+    protected void convertNativeHeadersIfNeeded(Map<String, Object> eventDataProperties) {
+        if (eventDataProperties.containsKey(NATIVE_HEADERS) && isValidJson(eventDataProperties.get(NATIVE_HEADERS))) {
+            String nativeHeader = (String) eventDataProperties.remove(NATIVE_HEADERS);
+            eventDataProperties.put(NATIVE_HEADERS, readValue(nativeHeader, LinkedMultiValueMap.class));
+        }
     }
 
     /**

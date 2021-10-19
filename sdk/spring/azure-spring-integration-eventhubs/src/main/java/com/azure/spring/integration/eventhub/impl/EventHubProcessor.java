@@ -10,6 +10,7 @@ import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.reactor.AzureCheckpointer;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
+import com.azure.spring.integration.core.converter.AzureMessageConverter;
 import com.azure.spring.integration.eventhub.checkpoint.BatchCheckpointManager;
 import com.azure.spring.integration.eventhub.checkpoint.CheckpointManager;
 import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
@@ -33,15 +34,14 @@ import java.util.function.Consumer;
 public class EventHubProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubProcessor.class);
     protected final Consumer<Message<?>> consumer;
-//    protected final Consumer<List<Message<?>>> batchConsumer;
     protected final Class<?> payloadType;
     protected final CheckpointConfig checkpointConfig;
-    protected final EventHubMessageConverter messageConverter;
+    protected final AzureMessageConverter<?, ?> messageConverter;
     protected final CheckpointManager checkpointManager;
     protected EventPosition eventPosition = EventPosition.latest();
 
     public EventHubProcessor(Consumer<Message<?>> consumer, Class<?> payloadType, CheckpointConfig checkpointConfig,
-                             EventHubMessageConverter messageConverter) {
+                             AzureMessageConverter<?, ?> messageConverter) {
         this.consumer = consumer;
         this.payloadType = payloadType;
         this.checkpointConfig = checkpointConfig;
@@ -71,7 +71,7 @@ public class EventHubProcessor {
             headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
         }
 
-        this.consumer.accept(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType));
+        this.consumer.accept(((EventHubMessageConverter)messageConverter).toMessage(event, new MessageHeaders(headers), payloadType));
         this.checkpointManager.onMessage(context, context.getEventData());
 
         if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH) {

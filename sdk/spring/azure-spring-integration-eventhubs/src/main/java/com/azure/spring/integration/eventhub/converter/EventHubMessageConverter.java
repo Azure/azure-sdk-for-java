@@ -31,12 +31,6 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubMessageConverter.class);
 
-    private static final Set<String> SYSTEM_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        EventHubHeaders.PARTITION_KEY,
-        EventHubHeaders.ENQUEUED_TIME,
-        EventHubHeaders.OFFSET,
-        EventHubHeaders.SEQUENCE_NUMBER)));
-
     @Override
     protected byte[] getPayload(EventData azureMessage) {
         return azureMessage.getBody();
@@ -76,10 +70,7 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
         headers.putAll(getSystemProperties(azureMessage));
 
         Map<String, Object> properties = azureMessage.getProperties();
-        if (properties.containsKey(NATIVE_HEADERS) && isValidJson(properties.get(NATIVE_HEADERS))) {
-            String nativeHeader = (String) properties.remove(NATIVE_HEADERS);
-            properties.put(NATIVE_HEADERS, readValue(nativeHeader, LinkedMultiValueMap.class));
-        }
+        convertNativeHeadersIfNeeded(properties);
         headers.putAll(azureMessage.getProperties());
         return headers;
     }
