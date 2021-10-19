@@ -29,7 +29,9 @@ parameters:
   - name: TargetVariable
     type: string
     default: ''
-
+  - name: TargetUserVariable
+    type: string
+    default: ''
 steps:
 - template: /eng/common/pipelines/templates/steps/enable-long-path-support.yml
 
@@ -44,6 +46,8 @@ steps:
       - Name: ${{ parameters.TargetDocRepoOwner }}/${{ parameters.TargetDocRepoName }}
         WorkingDirectory: $(DocRepoLocation)
     Paths: ${{ parameters.SparseCheckoutPaths }}
+
+# Pull the information from Github user
 - pwsh: |
     git clone https://github.com/Azure/azure-sdk-tools.git $(Build.SourcesDirectory)/tools_repo
     cd $(Build.SourcesDirectory)/tools_repo
@@ -58,9 +62,8 @@ steps:
       --kusto-url-var KUSTO_URL `
       --kusto-database-var KUSTO_DB `
       --kusto-table-var KUSTO_TABLE `
-      --identity-name "$(Build.QueuedBy)" `
-      --identity-email "$(Build.RequestedForEmail)" `
-      --targetvar "${{ parameters.TargetVariable }}"
+      --identity "$(Build.QueuedBy)" `
+      --targetvar "${{ coalesce(parameters.TargetVariable, parameters.TargetUserVariable) }}"
   displayName: 'Resolving Queuing User'
   continueOnError: true
   workingDirectory: $(Build.SourcesDirectory)/tools_repo/tools/notification-configuration/identity-resolver
