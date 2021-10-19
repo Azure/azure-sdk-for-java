@@ -3,8 +3,8 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/chat/threads/19:4b72178530934b7790135dd9359205e0@thread.v2/readReceipts?maxPageSize=1&api-version=2021-04-05-preview6",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-chat/1.1.0-beta.1 (1.8.0_262; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f233816c-42e1-4a39-827b-845d7278481c"
+      "User-Agent" : "azsdk-java-azure-communication-chat/1.1.0 (1.8.0_262; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "83aa9442-406f-488c-8f23-506bbf5bc525"
     },
     "Response" : {
       "retry-after" : "0",

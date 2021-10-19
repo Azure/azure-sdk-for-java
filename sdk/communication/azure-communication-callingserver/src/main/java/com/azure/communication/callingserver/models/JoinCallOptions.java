@@ -6,6 +6,7 @@ package com.azure.communication.callingserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.net.URI;
 import java.util.List;
 
 /** The options for join call. */
@@ -21,7 +22,7 @@ public final class JoinCallOptions {
      * The callback URI.
      */
     @JsonProperty(value = "callbackUri", required = true)
-    private String callbackUri;
+    private URI callbackUri;
 
     /*
      * The requested MediaTypes.
@@ -60,7 +61,7 @@ public final class JoinCallOptions {
      *
      * @return the callbackUri value.
      */
-    public String getCallbackUri() {
+    public URI getCallbackUri() {
         return callbackUri;
     }
 
@@ -70,7 +71,7 @@ public final class JoinCallOptions {
      * @param callbackUri the callbackUri value to set.
      * @return the JoinCallOptions object itself.
      */
-    public JoinCallOptions setCallbackUri(String callbackUri) {
+    public JoinCallOptions setCallbackUri(URI callbackUri) {
         this.callbackUri = callbackUri;
         return this;
     }
@@ -126,7 +127,7 @@ public final class JoinCallOptions {
      * @throws IllegalArgumentException if any parameters are null.
      */
     public JoinCallOptions(
-        String callbackUri,
+        URI callbackUri,
         List<MediaType> requestedMediaTypes,
         List<EventSubscriptionType> requestedCallEvents) {
         if (callbackUri == null) {

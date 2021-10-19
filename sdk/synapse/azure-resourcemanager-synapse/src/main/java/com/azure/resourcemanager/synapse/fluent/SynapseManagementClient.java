@@ -485,4 +485,67 @@ public interface SynapseManagementClient {
      * @return the SparkConfigurationsOperationsClient object.
      */
     SparkConfigurationsOperationsClient getSparkConfigurationsOperations();
+
+    /**
+     * Gets the KustoOperationsClient object to access its operations.
+     *
+     * @return the KustoOperationsClient object.
+     */
+    KustoOperationsClient getKustoOperations();
+
+    /**
+     * Gets the KustoPoolsClient object to access its operations.
+     *
+     * @return the KustoPoolsClient object.
+     */
+    KustoPoolsClient getKustoPools();
+
+    /**
+     * Gets the KustoPoolsOperationsClient object to access its operations.
+     *
+     * @return the KustoPoolsOperationsClient object.
+     */
+    KustoPoolsOperationsClient getKustoPoolsOperations();
+
+    /**
+     * Gets the KustoPoolChildResourcesClient object to access its operations.
+     *
+     * @return the KustoPoolChildResourcesClient object.
+     */
+    KustoPoolChildResourcesClient getKustoPoolChildResources();
+
+    /**
+     * Gets the KustoPoolAttachedDatabaseConfigurationsClient object to access its operations.
+     *
+     * @return the KustoPoolAttachedDatabaseConfigurationsClient object.
+     */
+    KustoPoolAttachedDatabaseConfigurationsClient getKustoPoolAttachedDatabaseConfigurations();
+
+    /**
+     * Gets the KustoPoolDatabasesClient object to access its operations.
+     *
+     * @return the KustoPoolDatabasesClient object.
+     */
+    KustoPoolDatabasesClient getKustoPoolDatabases();
+
+    /**
+     * Gets the KustoPoolDataConnectionsClient object to access its operations.
+     *
+     * @return the KustoPoolDataConnectionsClient object.
+     */
+    KustoPoolDataConnectionsClient getKustoPoolDataConnections();
+
+    /**
+     * Gets the KustoPoolPrincipalAssignmentsClient object to access its operations.
+     *
+     * @return the KustoPoolPrincipalAssignmentsClient object.
+     */
+    KustoPoolPrincipalAssignmentsClient getKustoPoolPrincipalAssignments();
+
+    /**
+     * Gets the KustoPoolDatabasePrincipalAssignmentsClient object to access its operations.
+     *
+     * @return the KustoPoolDatabasePrincipalAssignmentsClient object.
+     */
+    KustoPoolDatabasePrincipalAssignmentsClient getKustoPoolDatabasePrincipalAssignments();
 }

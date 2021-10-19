@@ -3,7 +3,9 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.GroupCallLocator;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -21,6 +23,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -196,10 +199,10 @@ public class CallingServerTestBase extends TestBase {
     }
 
     protected List<CallConnection> createCall(CallingServerClient callingServerClient,
-                                              String groupId,
+                                              GroupCallLocator groupCallLocator,
                                               String from,
                                               String to,
-                                              String callBackUri) {
+                                              URI callBackUri) {
         CallConnection fromCallConnection =  null;
         CallConnection toCallConnection = null;
 
@@ -211,7 +214,7 @@ public class CallingServerTestBase extends TestBase {
                 callBackUri,
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
-            fromCallConnection = callingServerClient.joinCall(groupId, fromParticipant, fromCallOptions);
+            fromCallConnection = callingServerClient.joinCall(groupCallLocator, fromParticipant, fromCallOptions);
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnection(fromCallConnection);
 
@@ -220,7 +223,7 @@ public class CallingServerTestBase extends TestBase {
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
-            toCallConnection = callingServerClient.joinCall(groupId, toParticipant, joinCallOptions);
+            toCallConnection = callingServerClient.joinCall(groupCallLocator, toParticipant, joinCallOptions);
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnection(toCallConnection);
 
@@ -241,10 +244,10 @@ public class CallingServerTestBase extends TestBase {
     }
 
     protected List<CallConnectionAsync> createAsyncCall(CallingServerAsyncClient callingServerClient,
-                                                        String groupId,
+                                                        GroupCallLocator groupCallLocator,
                                                         String from,
                                                         String to,
-                                                        String callBackUri) {
+                                                        URI callBackUri) {
         CallConnectionAsync fromCallConnection =  null;
         CallConnectionAsync toCallConnection = null;
 
@@ -256,7 +259,7 @@ public class CallingServerTestBase extends TestBase {
                 callBackUri,
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
-            fromCallConnection = callingServerClient.joinCall(groupId, fromParticipant, fromCallOptions).block();
+            fromCallConnection = callingServerClient.joinCall(groupCallLocator, fromParticipant, fromCallOptions).block();
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnectionAsync(fromCallConnection);
 
@@ -265,7 +268,7 @@ public class CallingServerTestBase extends TestBase {
                 Collections.singletonList(MediaType.AUDIO),
                 Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
 
-            toCallConnection = callingServerClient.joinCall(groupId, toParticipant, joinCallOptions).block();
+            toCallConnection = callingServerClient.joinCall(groupCallLocator, toParticipant, joinCallOptions).block();
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnectionAsync(toCallConnection);
 

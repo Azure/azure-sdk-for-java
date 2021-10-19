@@ -33,7 +33,6 @@ import com.azure.resourcemanager.resources.fluent.SubscriptionFeatureRegistratio
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionFeatureRegistrationInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.models.SubscriptionFeatureRegistrationList;
-import com.azure.resourcemanager.resources.models.SubscriptionFeatureRegistrationProperties;
 import reactor.core.publisher.Mono;
 
 /**
@@ -317,7 +316,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      *
      * @param providerNamespace The provider namespace.
      * @param featureName The feature name.
-     * @param properties The properties parameter.
+     * @param subscriptionFeatureRegistrationType Subscription Feature Registration Type details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -325,7 +324,9 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionFeatureRegistrationInner>> createOrUpdateWithResponseAsync(
-        String providerNamespace, String featureName, SubscriptionFeatureRegistrationProperties properties) {
+        String providerNamespace,
+        String featureName,
+        SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -345,17 +346,10 @@ public final class SubscriptionFeatureRegistrationsClientImpl
         if (featureName == null) {
             return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (subscriptionFeatureRegistrationType != null) {
+            subscriptionFeatureRegistrationType.validate();
         }
         final String accept = "application/json";
-        SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationTypeInternal = null;
-        if (properties != null) {
-            subscriptionFeatureRegistrationTypeInternal = new SubscriptionFeatureRegistrationInner();
-            subscriptionFeatureRegistrationTypeInternal.withProperties(properties);
-        }
-        SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType =
-            subscriptionFeatureRegistrationTypeInternal;
         return FluxUtil
             .withContext(
                 context ->
@@ -377,7 +371,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      *
      * @param providerNamespace The provider namespace.
      * @param featureName The feature name.
-     * @param properties The properties parameter.
+     * @param subscriptionFeatureRegistrationType Subscription Feature Registration Type details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -388,7 +382,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
     private Mono<Response<SubscriptionFeatureRegistrationInner>> createOrUpdateWithResponseAsync(
         String providerNamespace,
         String featureName,
-        SubscriptionFeatureRegistrationProperties properties,
+        SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -409,17 +403,10 @@ public final class SubscriptionFeatureRegistrationsClientImpl
         if (featureName == null) {
             return Mono.error(new IllegalArgumentException("Parameter featureName is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (subscriptionFeatureRegistrationType != null) {
+            subscriptionFeatureRegistrationType.validate();
         }
         final String accept = "application/json";
-        SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationTypeInternal = null;
-        if (properties != null) {
-            subscriptionFeatureRegistrationTypeInternal = new SubscriptionFeatureRegistrationInner();
-            subscriptionFeatureRegistrationTypeInternal.withProperties(properties);
-        }
-        SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType =
-            subscriptionFeatureRegistrationTypeInternal;
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -438,7 +425,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      *
      * @param providerNamespace The provider namespace.
      * @param featureName The feature name.
-     * @param properties The properties parameter.
+     * @param subscriptionFeatureRegistrationType Subscription Feature Registration Type details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -446,8 +433,10 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionFeatureRegistrationInner> createOrUpdateAsync(
-        String providerNamespace, String featureName, SubscriptionFeatureRegistrationProperties properties) {
-        return createOrUpdateWithResponseAsync(providerNamespace, featureName, properties)
+        String providerNamespace,
+        String featureName,
+        SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType) {
+        return createOrUpdateWithResponseAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType)
             .flatMap(
                 (Response<SubscriptionFeatureRegistrationInner> res) -> {
                     if (res.getValue() != null) {
@@ -471,8 +460,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionFeatureRegistrationInner> createOrUpdateAsync(
         String providerNamespace, String featureName) {
-        final SubscriptionFeatureRegistrationProperties properties = null;
-        return createOrUpdateWithResponseAsync(providerNamespace, featureName, properties)
+        final SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType = null;
+        return createOrUpdateWithResponseAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType)
             .flatMap(
                 (Response<SubscriptionFeatureRegistrationInner> res) -> {
                     if (res.getValue() != null) {
@@ -495,8 +484,8 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionFeatureRegistrationInner createOrUpdate(String providerNamespace, String featureName) {
-        final SubscriptionFeatureRegistrationProperties properties = null;
-        return createOrUpdateAsync(providerNamespace, featureName, properties).block();
+        final SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType = null;
+        return createOrUpdateAsync(providerNamespace, featureName, subscriptionFeatureRegistrationType).block();
     }
 
     /**
@@ -504,7 +493,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      *
      * @param providerNamespace The provider namespace.
      * @param featureName The feature name.
-     * @param properties The properties parameter.
+     * @param subscriptionFeatureRegistrationType Subscription Feature Registration Type details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -515,9 +504,11 @@ public final class SubscriptionFeatureRegistrationsClientImpl
     public Response<SubscriptionFeatureRegistrationInner> createOrUpdateWithResponse(
         String providerNamespace,
         String featureName,
-        SubscriptionFeatureRegistrationProperties properties,
+        SubscriptionFeatureRegistrationInner subscriptionFeatureRegistrationType,
         Context context) {
-        return createOrUpdateWithResponseAsync(providerNamespace, featureName, properties, context).block();
+        return createOrUpdateWithResponseAsync(
+                providerNamespace, featureName, subscriptionFeatureRegistrationType, context)
+            .block();
     }
 
     /**

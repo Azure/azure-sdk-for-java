@@ -10,18 +10,19 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import java.util.regex.Pattern;
 
 /**
  * Wraps any potential error responses from the service and applies post processing of the response's eTag header to
  * standardize the value.
  */
 public class ScrubEtagPolicy implements HttpPipelinePolicy {
+    private static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
     private static final String ETAG = "eTag";
 
     /**
@@ -49,9 +50,9 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
         }
         String eTag = eTagHeader.getValue();
 
-        eTag = eTag.replace("\"", "");
+        eTag = QUOTE_PATTERN.matcher(eTag).replaceAll("");
         HttpHeaders headers = unprocessedResponse.getHeaders();
-        headers.put(eTagHeader.getName(), eTag);
+        headers.set(eTagHeader.getName(), eTag);
         return new InnerHttpResponse(unprocessedResponse, headers, unprocessedResponse.getRequest());
     }
 

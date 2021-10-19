@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver.models.events;
 
+import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.ParticipantsUpdatedEventInternal;
@@ -78,11 +79,7 @@ public final class ParticipantsUpdatedEvent extends CallingServerEventBase {
         ParticipantsUpdatedEventInternal internalEvent = eventData.toObject(ParticipantsUpdatedEventInternal.class);
         List<CallParticipant> participants = new LinkedList<>();
         for (CallParticipantInternal callParticipantInternal : internalEvent.getParticipants()) {
-            participants.add(
-                new CallParticipant(
-                    CommunicationIdentifierConverter.convert(callParticipantInternal.getIdentifier()),
-                    callParticipantInternal.getParticipantId(),
-                    callParticipantInternal.isMuted()));
+            participants.add(CallParticipantConverter.convert(callParticipantInternal));
         }
 
         return new ParticipantsUpdatedEvent(internalEvent.getCallConnectionId(), participants);

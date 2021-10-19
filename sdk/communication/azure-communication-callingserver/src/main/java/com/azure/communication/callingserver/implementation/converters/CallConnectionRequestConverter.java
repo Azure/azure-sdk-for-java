@@ -62,6 +62,6 @@ public final class CallConnectionRequestConverter {
             .setRequestedMediaTypes(requestedMediaTypes)
             .setRequestedCallEvents(requestedCallEvents)
             .setAlternateCallerId(sourceAlternateIdentity)
-            .setCallbackUri(createCallOptions.getCallbackUri());
+            .setCallbackUri(createCallOptions.getCallbackUri().toString());
     }
 }

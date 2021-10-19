@@ -136,6 +136,29 @@ public interface Volume {
     String subnetId();
 
     /**
+     * Gets the networkFeatures property: Network features Basic network, or Standard features available to the volume.
+     *
+     * @return the networkFeatures value.
+     */
+    NetworkFeatures networkFeatures();
+
+    /**
+     * Gets the networkSiblingSetId property: Network Sibling Set ID Network Sibling Set ID for the the group of volumes
+     * sharing networking resources.
+     *
+     * @return the networkSiblingSetId value.
+     */
+    String networkSiblingSetId();
+
+    /**
+     * Gets the storageToNetworkProximity property: Storage to Network Proximity Provides storage to network proximity
+     * information for the volume.
+     *
+     * @return the storageToNetworkProximity value.
+     */
+    VolumeStorageToNetworkProximity storageToNetworkProximity();
+
+    /**
      * Gets the mountTargets property: mountTargets List of mount targets.
      *
      * @return the mountTargets value.
@@ -143,7 +166,8 @@ public interface Volume {
     List<MountTargetProperties> mountTargets();
 
     /**
-     * Gets the volumeType property: What type of volume is this.
+     * Gets the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
+     * set type to DataProtection.
      *
      * @return the volumeType value.
      */
@@ -406,6 +430,7 @@ public interface Volume {
                 DefinitionStages.WithProtocolTypes,
                 DefinitionStages.WithSnapshotId,
                 DefinitionStages.WithBackupId,
+                DefinitionStages.WithNetworkFeatures,
                 DefinitionStages.WithVolumeType,
                 DefinitionStages.WithDataProtection,
                 DefinitionStages.WithIsRestoring,
@@ -501,12 +526,25 @@ public interface Volume {
              */
             WithCreate withBackupId(String backupId);
         }
+        /** The stage of the Volume definition allowing to specify networkFeatures. */
+        interface WithNetworkFeatures {
+            /**
+             * Specifies the networkFeatures property: Network features Basic network, or Standard features available to
+             * the volume..
+             *
+             * @param networkFeatures Network features Basic network, or Standard features available to the volume.
+             * @return the next definition stage.
+             */
+            WithCreate withNetworkFeatures(NetworkFeatures networkFeatures);
+        }
         /** The stage of the Volume definition allowing to specify volumeType. */
         interface WithVolumeType {
             /**
-             * Specifies the volumeType property: What type of volume is this.
+             * Specifies the volumeType property: What type of volume is this. For destination volumes in Cross Region
+             * Replication, set type to DataProtection.
              *
-             * @param volumeType What type of volume is this.
+             * @param volumeType What type of volume is this. For destination volumes in Cross Region Replication, set
+             *     type to DataProtection.
              * @return the next definition stage.
              */
             WithCreate withVolumeType(String volumeType);

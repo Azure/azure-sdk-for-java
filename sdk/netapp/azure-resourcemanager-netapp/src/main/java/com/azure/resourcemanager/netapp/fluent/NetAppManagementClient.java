@@ -60,6 +60,13 @@ public interface NetAppManagementClient {
     NetAppResourcesClient getNetAppResources();
 
     /**
+     * Gets the NetAppResourceQuotaLimitsClient object to access its operations.
+     *
+     * @return the NetAppResourceQuotaLimitsClient object.
+     */
+    NetAppResourceQuotaLimitsClient getNetAppResourceQuotaLimits();
+
+    /**
      * Gets the AccountsClient object to access its operations.
      *
      * @return the AccountsClient object.

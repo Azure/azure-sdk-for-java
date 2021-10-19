@@ -3,8 +3,10 @@
 
 package com.azure.communication.callingserver.models.events;
 
+import com.azure.communication.callingserver.implementation.converters.CallLocatorConverter;
 import com.azure.communication.callingserver.implementation.models.CallConnectionStateChangedEventInternal;
 import com.azure.communication.callingserver.models.CallConnectionState;
+import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
@@ -12,9 +14,9 @@ import com.azure.core.util.BinaryData;
 @Immutable
 public final class CallConnectionStateChangedEvent extends CallingServerEventBase {
     /*
-     * The server call id.
+     * The call locator.
      */
-    private final String serverCallId;
+    private final CallLocator callLocator;
 
     /*
      * The call connection id.
@@ -27,12 +29,12 @@ public final class CallConnectionStateChangedEvent extends CallingServerEventBas
     private final CallConnectionState callConnectionState;
 
     /**
-     * Get the serverCallId property: The server call id.
+     * Get the callLocator property: The call locator.
      *
-     * @return the serverCallId value.
+     * @return the callLocator value.
      */
-    public String getServerCallId() {
-        return serverCallId;
+    public CallLocator getCallLocator() {
+        return callLocator;
     }
 
     /**
@@ -56,15 +58,15 @@ public final class CallConnectionStateChangedEvent extends CallingServerEventBas
     /**
      * Initializes a new instance of CallConnectionStateChangedEvent.
      *
-     * @param serverCallId the serverCallId value.
+     * @param callLocator the callLocator value.
      * @param callConnectionId the callConnectionId value.
      * @param callConnectionState the callConnectionState value.
      */
     CallConnectionStateChangedEvent(
-        String serverCallId,
+        CallLocator callLocator,
         String callConnectionId,
         CallConnectionState callConnectionState) {
-        this.serverCallId = serverCallId;
+        this.callLocator = callLocator;
         this.callConnectionId = callConnectionId;
         this.callConnectionState = callConnectionState;
     }
@@ -83,7 +85,7 @@ public final class CallConnectionStateChangedEvent extends CallingServerEventBas
             eventData.toObject(CallConnectionStateChangedEventInternal.class);
 
         return new CallConnectionStateChangedEvent(
-            callConnectionStateChangedEventInternal.getServerCallId(),
+            CallLocatorConverter.convert(callConnectionStateChangedEventInternal.getCallLocator()),
             callConnectionStateChangedEventInternal.getCallConnectionId(),
             callConnectionStateChangedEventInternal.getCallConnectionState());
     }

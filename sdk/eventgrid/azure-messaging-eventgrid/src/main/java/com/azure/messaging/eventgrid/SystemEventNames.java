@@ -24,6 +24,22 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEv
 import com.azure.messaging.eventgrid.systemevents.AcsRecordingFileStatusUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsUserDisconnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementApiUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementProductCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementProductDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementProductUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementSubscriptionCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementSubscriptionDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementSubscriptionUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementUserCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementUserDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementUserUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedEventData;
@@ -70,6 +86,7 @@ import com.azure.messaging.eventgrid.systemevents.MediaJobOutputStateChangeEvent
 import com.azure.messaging.eventgrid.systemevents.MediaJobProcessingEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaJobScheduledEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaJobStateChangeEventData;
+import com.azure.messaging.eventgrid.systemevents.MediaLiveEventChannelArchiveHeartbeatEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventConnectionRejectedEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.MediaLiveEventEncoderDisconnectedEventData;
@@ -141,6 +158,68 @@ import com.azure.core.models.CloudEvent;
  */
 public final class SystemEventNames {
     // Keep this sorted by the name of the service publishing the events.
+
+    // ApiManagement events.
+    /**
+     * indicate an event of ApiCreated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_CREATED = "Microsoft.ApiManagement.ApiCreated";
+    /**
+     * indicate an event of ApiDeleted in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_DELETED = "Microsoft.ApiManagement.ApiDeleted";
+    /**
+     * indicate an event of ApiReleaseCreated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_RELEASE_CREATED = "Microsoft.ApiManagement.ApiReleaseCreated";
+    /**
+     * indicate an event of ApiReleaseDeleted in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_RELEASE_DELETED = "Microsoft.ApiManagement.ApiReleaseDeleted";
+    /**
+     * indicate an event of ApiReleaseUpdated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_RELEASE_UPDATED = "Microsoft.ApiManagement.ApiReleaseUpdated";
+    /**
+     * indicate an event of ApiUpdated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.ApiUpdated";
+    /**
+     * indicate an event of ProductCreated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_PRODUCT_CREATED = "Microsoft.ApiManagement.ProductCreated";
+    /**
+     * indicate an event of ProductDeleted in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_PRODUCT_DELETED = "Microsoft.ApiManagement.ProductDeleted";
+    /**
+     * indicate an event of ProductUpdated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_PRODUCT_UPDATED = "Microsoft.ApiManagement.ProductUpdated";
+    /**
+     * indicate an event of SubscriptionCreated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_SUBSCRIPTION_CREATED = "Microsoft.ApiManagement.SubscriptionCreated";
+    /**
+     * indicate an event of SubscriptionDeleted in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_SUBSCRIPTION_DELETED = "Microsoft.ApiManagement.SubscriptionDeleted";
+    /**
+     * indicate an event of SubscriptionUpdated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_SUBSCRIPTION_UPDATED = "Microsoft.ApiManagement.SubscriptionUpdated";
+    /**
+     * indicate an event of UserCreated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_USER_CREATED = "Microsoft.ApiManagement.UserCreated";
+    /**
+     * indicate an event of UserDeleted in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_USER_DELETED = "Microsoft.ApiManagement.UserDeleted";
+    /**
+     * indicate an event of UserUpdated in ApiManagement.
+     */
+    public static final String API_MANAGEMENT_USER_UPDATED = "Microsoft.ApiManagement.UserUpdated";
 
     // AppConfiguration events.
     /**
@@ -301,6 +380,12 @@ public final class SystemEventNames {
     public static final String MEDIA_JOB_STATE_CHANGE = "Microsoft.Media.JobStateChange";
 
     /**
+     * Media Services Live Event Channel Archive Heartbeat event.
+     */
+    public static final String MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT =
+        "Microsoft.Media.LiveEventChannelArchiveHeartbeat";
+
+    /**
      * Media Services Live Event Connection Rejected event.
      */
     public static final String MEDIA_LIVE_EVENT_CONNECTION_REJECTED = "Microsoft.Media.LiveEventConnectionRejected";
@@ -450,7 +535,6 @@ public final class SystemEventNames {
         "Microsoft.Communication.SMSDeliveryReportReceived";
     public static final String COMMUNICATION_SMS_RECEIVED =
         "Microsoft.Communication.SMSReceived";
-
     public static final String COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD =
         "Microsoft.Communication.ChatMessageDeletedInThread";
     public static final String COMMUNICATION_CHAT_MESSAGE_EDITED_IN_THREAD =
@@ -461,6 +545,8 @@ public final class SystemEventNames {
         "Microsoft.Communication.ChatThreadParticipantAdded";
     public static final String COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER =
         "Microsoft.Communication.ChatParticipantAddedToThreadWithUser";
+    public static final String COMMUNICATION_USER_DISCONNECTED =
+        "Microsoft.Communication.UserDisconnected";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerService.NewKubernetesVersionAvailable
@@ -547,6 +633,23 @@ public final class SystemEventNames {
 
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>() {
         {
+            // API events.
+            put(API_MANAGEMENT_API_CREATED, ApiManagementApiCreatedEventData.class);
+            put(API_MANAGEMENT_API_DELETED, ApiManagementApiDeletedEventData.class);
+            put(API_MANAGEMENT_API_RELEASE_CREATED, ApiManagementApiReleaseCreatedEventData.class);
+            put(API_MANAGEMENT_API_RELEASE_DELETED, ApiManagementApiReleaseDeletedEventData.class);
+            put(API_MANAGEMENT_API_RELEASE_UPDATED, ApiManagementApiReleaseUpdatedEventData.class);
+            put(API_MANAGEMENT_API_UPDATED, ApiManagementApiUpdatedEventData.class);
+            put(API_MANAGEMENT_PRODUCT_CREATED, ApiManagementProductCreatedEventData.class);
+            put(API_MANAGEMENT_PRODUCT_DELETED, ApiManagementProductDeletedEventData.class);
+            put(API_MANAGEMENT_PRODUCT_UPDATED, ApiManagementProductUpdatedEventData.class);
+            put(API_MANAGEMENT_SUBSCRIPTION_CREATED, ApiManagementSubscriptionCreatedEventData.class);
+            put(API_MANAGEMENT_SUBSCRIPTION_DELETED, ApiManagementSubscriptionDeletedEventData.class);
+            put(API_MANAGEMENT_SUBSCRIPTION_UPDATED, ApiManagementSubscriptionUpdatedEventData.class);
+            put(API_MANAGEMENT_USER_CREATED, ApiManagementUserCreatedEventData.class);
+            put(API_MANAGEMENT_USER_DELETED, ApiManagementUserDeletedEventData.class);
+            put(API_MANAGEMENT_USER_UPDATED, ApiManagementUserUpdatedEventData.class);
+
             // AppConfiguration events.
             put(APP_CONFIGURATION_KEY_VALUE_DELETED, AppConfigurationKeyValueDeletedEventData.class);
             put(APP_CONFIGURATION_KEY_VALUE_MODIFIED, AppConfigurationKeyValueModifiedEventData.class);
@@ -591,6 +694,7 @@ public final class SystemEventNames {
             put(MEDIA_JOB_PROCESSING, MediaJobProcessingEventData.class);
             put(MEDIA_JOB_SCHEDULED, MediaJobScheduledEventData.class);
             put(MEDIA_JOB_STATE_CHANGE, MediaJobStateChangeEventData.class);
+            put(MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT, MediaLiveEventChannelArchiveHeartbeatEventData.class);
             put(MEDIA_LIVE_EVENT_CONNECTION_REJECTED, MediaLiveEventConnectionRejectedEventData.class);
             put(MEDIA_LIVE_EVENT_ENCODER_CONNECTED, MediaLiveEventEncoderConnectedEventData.class);
             put(MEDIA_LIVE_EVENT_ENCODER_DISCONNECTED, MediaLiveEventEncoderDisconnectedEventData.class);
@@ -654,6 +758,7 @@ public final class SystemEventNames {
             put(COMMUNICATION_CHAT_THREAD_DELETED, AcsChatThreadDeletedEventData.class);
             put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED, AcsChatThreadPropertiesUpdatedEventData.class);
             put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
+            put(COMMUNICATION_USER_DISCONNECTED, AcsUserDisconnectedEventData.class);
 
             // Web events
             put(WEB_APP_UPDATED, WebAppUpdatedEventData.class);

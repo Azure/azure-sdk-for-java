@@ -18,6 +18,7 @@ public final class ResultInfoInternal {
 
     /*
      * The subcode that further classifies the result.
+     * The subcode further classifies a failure. For example.
      */
     @JsonProperty(value = "subcode", required = true)
     private int subcode;
@@ -49,7 +50,8 @@ public final class ResultInfoInternal {
     }
 
     /**
-     * Get the subcode property: The subcode that further classifies the result.
+     * Get the subcode property: The subcode that further classifies the result. The subcode further classifies a
+     * failure. For example.
      *
      * @return the subcode value.
      */
@@ -58,7 +60,8 @@ public final class ResultInfoInternal {
     }
 
     /**
-     * Set the subcode property: The subcode that further classifies the result.
+     * Set the subcode property: The subcode that further classifies the result. The subcode further classifies a
+     * failure. For example.
      *
      * @param subcode the subcode value to set.
      * @return the ResultInfoInternal object itself.

@@ -11,6 +11,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class CallingServerClientJavaDocCodeSnippets {
             EventSubscriptionType.DTMF_RECEIVED,
             EventSubscriptionType.PARTICIPANTS_UPDATED);
         CreateCallOptions createCallOptions = new CreateCallOptions(
-            callbackUri,
+            URI.create(callbackUri),
             requestedMediaTypes,
             requestedCallEvents);
         CallConnection callConnection = callingServerClient.createCallConnection(source, targets, createCallOptions);

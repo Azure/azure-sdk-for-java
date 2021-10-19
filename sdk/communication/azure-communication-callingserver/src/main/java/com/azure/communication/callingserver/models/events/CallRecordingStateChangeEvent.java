@@ -3,7 +3,9 @@
 
 package com.azure.communication.callingserver.models.events;
 
+import com.azure.communication.callingserver.implementation.converters.CallLocatorConverter;
 import com.azure.communication.callingserver.implementation.models.CallRecordingStateChangeEventInternal;
+import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.CallRecordingState;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
@@ -29,9 +31,9 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
     private final OffsetDateTime startDateTime;
 
     /*
-     * The server call id.
+     * The call locator.
      */
-    private final String serverCallId;
+    private final CallLocator callLocator;
 
     /**
      * Get the recordingId property: The call recording id.
@@ -61,12 +63,12 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
     }
 
     /**
-     * Get the serverCallId property: The server call id.
+     * Get the callLocator property: The call locator.
      *
-     * @return the serverCallId value.
+     * @return the callLocator value.
      */
-    public String getServerCallId() {
-        return serverCallId;
+    public CallLocator getCallLocator() {
+        return callLocator;
     }
 
     /**
@@ -75,17 +77,17 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
      * @param recordingId the recordingId value.
      * @param state the state value.
      * @param startDateTime the startDateTime value.
-     * @param serverCallId the serverCallId value.
+     * @param callLocator the callLocator value.
      */
     CallRecordingStateChangeEvent(
         String recordingId,
         CallRecordingState state,
         OffsetDateTime startDateTime,
-        String serverCallId) {
+        CallLocator callLocator) {
         this.recordingId = recordingId;
         this.state = state;
         this.startDateTime = startDateTime;
-        this.serverCallId = serverCallId;
+        this.callLocator = callLocator;
     }
 
     /**
@@ -105,7 +107,7 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
             callRecordingStateChangeEventInternal.getRecordingId(),
             callRecordingStateChangeEventInternal.getState(),
             callRecordingStateChangeEventInternal.getStartDateTime(),
-            callRecordingStateChangeEventInternal.getServerCallId());
+            CallLocatorConverter.convert(callRecordingStateChangeEventInternal.getCallLocator()));
     }
 }
 

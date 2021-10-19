@@ -10,14 +10,17 @@ import java.util.Collection;
 
 /** Defines values for CallConnectionState. */
 public final class CallConnectionState extends ExpandableStringEnum<CallConnectionState> {
-    /** Static value incoming for CallConnectionState. */
-    public static final CallConnectionState INCOMING = fromString("incoming");
-
     /** Static value connecting for CallConnectionState. */
     public static final CallConnectionState CONNECTING = fromString("connecting");
 
     /** Static value connected for CallConnectionState. */
     public static final CallConnectionState CONNECTED = fromString("connected");
+
+    /** Static value transferring for CallConnectionState. */
+    public static final CallConnectionState TRANSFERRING = fromString("transferring");
+
+    /** Static value transferAccepted for CallConnectionState. */
+    public static final CallConnectionState TRANSFER_ACCEPTED = fromString("transferAccepted");
 
     /** Static value disconnecting for CallConnectionState. */
     public static final CallConnectionState DISCONNECTING = fromString("disconnecting");

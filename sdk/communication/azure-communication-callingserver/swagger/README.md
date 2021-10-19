@@ -31,9 +31,9 @@ To update generated files for calling service, run the following command
 
 ### Code generation settings
 ``` yaml
-tag: package-2021-08-30-preview
+tag: package-2021-11-15-preview
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3893616381e816729ef9cdd768e87fb2845e189d/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/navali-msft/azure-rest-api-specs/694c933e3eb62c87a7932763c747181c0f8608e8/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
@@ -87,12 +87,39 @@ directive:
     from: AddParticipantResult
     to: AddParticipantResultInternal    
 - rename-model:
-    from: CancelAllMediaOperationsResult
-    to: CancelAllMediaOperationsResultInternal
-- rename-model:
     from: ResultInfo
     to: ResultInfoInternal
 - rename-model:
     from: ToneInfo
-    to: ToneInfoInternal                        
+    to: ToneInfoInternal
+- rename-model:
+    from: AnswerCallResult
+    to: AnswerCallResultInternal
+```
+
+### Rename RecordingChannelType to RecordingChannel
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.RecordingChannelType
+    transform: >
+      $["x-ms-enum"].name = "RecordingChannel";
+```
+
+### Rename RecordingContentType to RecordingContent
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.RecordingContentType
+    transform: >
+      $["x-ms-enum"].name = "RecordingContent";
+```
+
+### Rename RecordingFormatType to RecordingFormat
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingFormatType["x-ms-enum"]
+  transform: >
+    $.name = "RecordingFormat";
 ```

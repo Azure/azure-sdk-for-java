@@ -604,7 +604,7 @@ public final class ShareServiceAsyncClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
-        return new AccountSasImplUtil(accountSasSignatureValues)
+        return new AccountSasImplUtil(accountSasSignatureValues, null)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
@@ -625,12 +625,14 @@ public final class ShareServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShare#String-String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/restore-share">Azure Docs</a>.</p>
+     *
      * @param deletedShareName The name of the previously deleted share.
      * @param deletedShareVersion The version of the previously deleted share.
      * @return A {@link Mono} containing a {@link ShareAsyncClient} used
      * to interact with the restored share.
      */
-    // TODO (kasobol-msft) add link to REST API docs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareAsyncClient> undeleteShare(
         String deletedShareName, String deletedShareVersion) {
@@ -654,12 +656,14 @@ public final class ShareServiceAsyncClient {
      *
      * {@codesnippet com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShareWithResponse#String-String}
      *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/restore-share">Azure Docs</a>.</p>
+     *
      * @param deletedShareName The name of the previously deleted share.
      * @param deletedShareVersion The version of the previously deleted share.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * ShareAsyncClient} used to interact with the restored share.
      */
-    // TODO (kasobol-msft) add link to REST API docs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
         String deletedShareName, String deletedShareVersion) {

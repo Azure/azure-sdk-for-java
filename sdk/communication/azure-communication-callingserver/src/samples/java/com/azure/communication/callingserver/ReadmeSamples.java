@@ -11,6 +11,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.net.URI;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -64,7 +65,7 @@ public class ReadmeSamples {
             EventSubscriptionType.PARTICIPANTS_UPDATED);
 
         CreateCallOptions createCallOptions = new CreateCallOptions(
-            callbackUri,
+            URI.create(callbackUri),
             requestedMediaTypes,
             requestedCallEvents);
 
@@ -89,7 +90,8 @@ public class ReadmeSamples {
         CallingServerClient callingServerClient = createCallingServerClient();
         CallConnection callConnection = callingServerClient.getCallConnection(callConnectionId);
         CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-3>");
-        callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>");
+        String callbackUri = "<callback-uri-for-notification>";
+        callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>", URI.create(callbackUri));
     }
 
     /**

@@ -141,9 +141,20 @@ public class PerfStressProgram {
                 Flux.just(tests).flatMap(PerfStressTest::setupAsync).blockLast();
                 setupStatus.dispose();
 
-                if (options.getTestProxy() != null) {
+                if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
                     Disposable recordStatus = printStatus("=== Record and Start Playback ===", () -> ".", false, false);
-                    Flux.just(tests).flatMap(PerfStressTest::recordAndStartPlaybackAsync).blockLast();
+
+                    try {
+                        ForkJoinPool forkJoinPool = new ForkJoinPool(tests.length);
+                        forkJoinPool.submit(() -> {
+                            IntStream.range(0, tests.length).parallel().forEach(i -> tests[i].recordAndStartPlayback());
+                        }).get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
+                        e.printStackTrace(System.err);
+                        throw new RuntimeException(e);
+                    }
+
                     startedPlayback = true;
                     recordStatus.dispose();
                 }
