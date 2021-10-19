@@ -147,15 +147,11 @@ com.azure.spring:azure-spring-cloud-feature-management;2.0.1;2.1.0-beta.1
 com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;2.1.1;2.2.0-beta.1
 com.azure.spring:azure-spring-boot-bom;3.9.0;4.0.0-beta.1
 com.azure.spring:azure-spring-cloud-dependencies;2.9.0;4.0.0-beta.1
-com.azure.spring:azure-spring-boot-test-aad-resource-server;1.0.0;1.0.0
-com.azure.spring:azure-spring-boot-test-aad-webapp-and-resource-server-with-obo;1.0.0;1.0.0
-com.azure.spring:azure-spring-boot-test-aad;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-core;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-cosmosdb;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-keyvault-reactive;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-keyvault;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-parent;1.0.0;1.0.0
-com.azure.spring:azure-spring-boot-test-selenium-common;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-servicebus-jms;1.0.0;1.0.0
 com.azure.spring:spring-messaging-azure;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:spring-messaging-azure-eventhubs;4.0.0-beta.1;4.0.0-beta.1

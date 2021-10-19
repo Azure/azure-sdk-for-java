@@ -151,7 +151,6 @@
         <module>azure-spring-boot-test-keyvault/pom-reactive.xml</module>
         <module>azure-spring-boot-test-keyvault/pom.xml</module>
         <module>azure-spring-boot-test-parent</module>
-        <module>azure-spring-boot-test-selenium-common</module>
         <module>azure-spring-boot-test-servicebus-jms</module>
         <module>azure-spring-boot-test-storage</module>
         <module>spring-messaging-azure</module>
