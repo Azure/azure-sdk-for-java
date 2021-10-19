@@ -5,7 +5,7 @@ jobs:
 
   - job: UpdateDocsMsBuildConfig
     pool:
-      vmImage: windows-2019
+      vmImage: ubuntu-20.04
     variables:
       DocRepoLocation: $(Pipeline.Workspace)/docs
       DocRepoOwner: Azure
@@ -57,10 +57,9 @@ jobs:
         displayName: Checkout daily branch if it exists
         workingDirectory: $(DocRepoLocation)
       - powershell: |
-          dir $env:USERPROFILE
           Get-Command mvn
-          if (!(Test-Path '$env:USERPROFILE/.m2')) {
-            mkdir $env:USERPROFILE/.m2
+          if (!(Test-Path '~/.m2/')) {
+            mkdir ~/.m2/
           }
           
           @"
@@ -88,8 +87,7 @@ jobs:
                   </profile>
               </profiles>
           </settings>
-          "@ | Set-Content $env:USERPROFILE/.m2/settings.xml
-          dir $env:USERPROFILE/.m2
+          "@ | Set-Content ~/.m2/settings.xml
 
         displayName: 'Configure mvn'
         workingDirectory: $(Build.SourcesDirectory)
