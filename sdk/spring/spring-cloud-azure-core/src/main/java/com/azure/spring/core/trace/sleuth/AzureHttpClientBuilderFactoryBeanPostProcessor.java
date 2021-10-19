@@ -12,7 +12,6 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.core.Ordered;
-import org.springframework.lang.Nullable;
 
 /**
  * Apply the http pipeline policy to service client builder based on HTTP protocol.
@@ -23,7 +22,6 @@ public class AzureHttpClientBuilderFactoryBeanPostProcessor
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpClientBuilderFactoryBeanPostProcessor.class);
     public static final String DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME = "sleuthHttpPolicy";
 
-    @Nullable
     private BeanFactory beanFactory;
 
     @Override
@@ -39,7 +37,7 @@ public class AzureHttpClientBuilderFactoryBeanPostProcessor
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        if (beanFactory != null && bean instanceof AbstractAzureHttpClientBuilderFactory) {
+        if (bean instanceof AbstractAzureHttpClientBuilderFactory) {
             HttpPipelinePolicy policy = beanFactory.getBean(DEFAULT_SLEUTH_HTTP_POLICY_BEAN_NAME, HttpPipelinePolicy.class);
             if (policy != null) {
                 AbstractAzureHttpClientBuilderFactory builderFactory = (AbstractAzureHttpClientBuilderFactory) bean;

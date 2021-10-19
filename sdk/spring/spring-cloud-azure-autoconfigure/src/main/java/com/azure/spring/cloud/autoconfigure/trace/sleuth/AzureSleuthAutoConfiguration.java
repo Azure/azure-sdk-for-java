@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.cloud.sleuth.autoconfig.SleuthTracerProperties;
 import org.springframework.cloud.sleuth.propagation.Propagator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +23,7 @@ import static com.azure.spring.core.trace.sleuth.AzureHttpClientBuilderFactoryBe
  */
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass({ SleuthHttpPolicy.class, Tracer.class, SleuthTracerProperties.class })
+@ConditionalOnClass({ SleuthHttpPolicy.class, Tracer.class })
 @ConditionalOnProperty(value = "spring.sleuth.enabled", matchIfMissing = true)
 public class AzureSleuthAutoConfiguration {
 

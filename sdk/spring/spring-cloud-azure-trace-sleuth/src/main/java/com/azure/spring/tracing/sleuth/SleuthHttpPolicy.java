@@ -17,7 +17,6 @@ import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.TraceContext;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.cloud.sleuth.propagation.Propagator;
-import org.springframework.core.Ordered;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
@@ -35,12 +34,7 @@ import static com.azure.spring.tracing.sleuth.implementation.TraceContextUtil.is
  * Pipeline policy that creates a Sleuth span which traces the service request,
  * this policy will be placed after a {@link RetryPolicy} by default.
  */
-public class SleuthHttpPolicy implements HttpPipelinePolicy, Ordered {
-
-    @Override
-    public int getOrder() {
-        return Ordered.LOWEST_PRECEDENCE;
-    }
+public class SleuthHttpPolicy implements HttpPipelinePolicy {
 
     // Singleton Sleuth tracer capable of starting and exporting spans.
     private final Tracer tracer;
@@ -66,7 +60,7 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy, Ordered {
         if ((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false)) {
             return next.process();
         }
-        //        tracer.getBaggage()
+
         Span parentSpan = (Span) context.getData(PARENT_SPAN_KEY).orElse(tracer.currentSpan());
         HttpRequest request = context.getHttpRequest();
 
