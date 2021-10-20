@@ -37,9 +37,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Warren Zhu
  */
 public class EventHubMessageChannelBinder extends
-    AbstractMessageChannelBinder<ExtendedConsumerProperties<EventHubConsumerProperties>,
-                ExtendedProducerProperties<EventHubProducerProperties>, EventHubChannelProvisioner>
-        implements ExtendedPropertiesBinder<MessageChannel, EventHubConsumerProperties, EventHubProducerProperties> {
+    // @formatter:off
+    AbstractMessageChannelBinder<ExtendedConsumerProperties<EventHubConsumerProperties>, ExtendedProducerProperties<EventHubProducerProperties>, EventHubChannelProvisioner>
+    // @formatter:on
+    implements
+    ExtendedPropertiesBinder<MessageChannel, EventHubConsumerProperties, EventHubProducerProperties> {
 
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
     
@@ -56,15 +58,20 @@ public class EventHubMessageChannelBinder extends
     }
 
     @Override
-    protected MessageHandler createProducerMessageHandler(ProducerDestination destination,
-            ExtendedProducerProperties<EventHubProducerProperties> producerProperties, MessageChannel errorChannel) {
+    protected MessageHandler createProducerMessageHandler(
+        ProducerDestination destination,
+        ExtendedProducerProperties<EventHubProducerProperties> producerProperties,
+        MessageChannel errorChannel) {
+
         eventHubsInUse.put(destination.getName(), new EventHubInformation(null));
 
         DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), this.eventHubOperation);
+
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
         handler.setSendFailureChannel(errorChannel);
+
         if (producerProperties.isPartitioned()) {
             handler.setPartitionIdExpression(
                 EXPRESSION_PARSER.parseExpression("headers['" + BinderHeaders.PARTITION_HEADER + "']"));

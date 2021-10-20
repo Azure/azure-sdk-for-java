@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage.queue;
 
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.service.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;

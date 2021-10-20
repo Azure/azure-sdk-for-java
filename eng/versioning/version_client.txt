@@ -167,6 +167,7 @@ com.azure.spring:spring-cloud-azure-actuator;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:spring-cloud-azure-autoconfigure;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:spring-cloud-azure-messaging;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:spring-cloud-azure-resourcemanager;4.0.0-beta.1;4.0.0-beta.1
+com.azure.spring:spring-cloud-azure-service;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-actuator;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-cache;4.0.0-beta.1;4.0.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-cosmos;4.0.0-beta.1;4.0.0-beta.1

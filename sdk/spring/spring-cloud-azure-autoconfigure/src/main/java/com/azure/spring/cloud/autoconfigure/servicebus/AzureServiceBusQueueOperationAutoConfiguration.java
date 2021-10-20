@@ -12,7 +12,6 @@ import com.azure.spring.servicebus.provisioning.ServiceBusQueueProvisioner;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -30,7 +29,6 @@ public class AzureServiceBusQueueOperationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(ServiceBusClientBuilder.class)
     public ServiceBusQueueClientFactory queueClientFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                            ObjectProvider<ServiceBusQueueProvisioner> serviceBusQueueProvisioners) {
         DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(serviceBusClientBuilder);
@@ -46,7 +44,6 @@ public class AzureServiceBusQueueOperationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(ServiceBusQueueClientFactory.class)
     public ServiceBusQueueOperation queueOperation(ServiceBusQueueClientFactory factory,
                                                    ServiceBusMessageConverter messageConverter) {
         return new ServiceBusQueueTemplate(factory, messageConverter);
