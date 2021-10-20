@@ -90,6 +90,10 @@ public class AzureServiceBusJMSProperties {
         }
     }
 
+    /**
+     * Properties to configure {@link org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;} for
+     * {@link org.apache.qpid.jms.JmsConnectionFactory}.
+     */
     public static class PrefetchPolicy {
 
         private int all = 0;
@@ -110,34 +114,63 @@ public class AzureServiceBusJMSProperties {
             this.all = all;
         }
 
+        /**
+         * @return Returns the durableTopicPrefetch.
+         */
         public int getDurableTopicPrefetch() {
             return durableTopicPrefetch > 0 ? durableTopicPrefetch : getAll();
         }
 
+        /**
+         * @param durableTopicPrefetch
+         * Sets the durable topic prefetch value
+         */
         public void setDurableTopicPrefetch(int durableTopicPrefetch) {
             this.durableTopicPrefetch = durableTopicPrefetch;
         }
 
+        /**
+         *
+         * @return Returns the queueBrowserPrefetch.
+         */
         public int getQueueBrowserPrefetch() {
             return queueBrowserPrefetch > 0 ? queueBrowserPrefetch : getAll();
         }
 
+        /**
+         * @param queueBrowserPrefetch
+         *        The queueBrowserPrefetch to set.
+         */
         public void setQueueBrowserPrefetch(int queueBrowserPrefetch) {
             this.queueBrowserPrefetch = queueBrowserPrefetch;
         }
 
+        /**
+         * @return Returns the queuePrefetch.
+         */
         public int getQueuePrefetch() {
             return queuePrefetch > 0 ? queuePrefetch : getAll();
         }
 
+        /**
+         * @param queuePrefetch
+         *        The queuePrefetch to set.
+         */
         public void setQueuePrefetch(int queuePrefetch) {
             this.queuePrefetch = queuePrefetch;
         }
 
+        /**
+         * @return Returns the topicPrefetch.
+         */
         public int getTopicPrefetch() {
             return topicPrefetch > 0 ? topicPrefetch : getAll();
         }
 
+        /**
+         * @param topicPrefetch
+         *        The topicPrefetch to set.
+         */
         public void setTopicPrefetch(int topicPrefetch) {
             this.topicPrefetch = topicPrefetch;
         }
