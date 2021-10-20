@@ -1,4 +1,5 @@
 {
+    "output_path":"docs-ref-autogen",
     "target_repo": {
         "url": "https://github.com/Azure/azure-docs-sdk-java",
         "branch": "%%DailyDocsBranchName%%"
