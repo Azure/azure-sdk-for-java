@@ -30,10 +30,10 @@ public class AbstractQueryGeneratorTest {
     @Test
     public void binaryOperatorPriorityPreserved() {
         Criteria x = Criteria.getInstance(CriteriaType.IS_EQUAL, "x", Collections.singletonList("xVal"), Part.IgnoreCaseType.NEVER);
-        Criteria y = Criteria.getInstance(CriteriaType.IS_EQUAL, "y", Collections.singletonList("yVal"), Part.IgnoreCaseType.NEVER);
-        Criteria z = Criteria.getInstance(CriteriaType.IS_EQUAL, "z", Collections.singletonList("zVal"), Part.IgnoreCaseType.NEVER);
+        Criteria left = Criteria.getInstance(CriteriaType.IS_EQUAL, "y", Collections.singletonList("yVal"), Part.IgnoreCaseType.NEVER);
+        Criteria right = Criteria.getInstance(CriteriaType.IS_EQUAL, "z", Collections.singletonList("zVal"), Part.IgnoreCaseType.NEVER);
 
-        Criteria or = Criteria.getInstance(CriteriaType.OR, y, z);
+        Criteria or = Criteria.getInstance(CriteriaType.OR, left, right);
         Criteria and = Criteria.getInstance(CriteriaType.AND, x, or);
 
         final CosmosQuery query = new CosmosQuery(and);
