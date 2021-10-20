@@ -7,15 +7,8 @@ import java.net.URI;
 import java.util.List;
 
 import com.azure.communication.callingserver.implementation.models.AudioRoutingMode;
-import com.azure.communication.callingserver.models.AddParticipantResult;
-import com.azure.communication.callingserver.models.CallConnectionProperties;
-import com.azure.communication.callingserver.models.CallParticipant;
-import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
-import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResult;
-import com.azure.communication.callingserver.models.StartHoldMusicResult;
-import com.azure.communication.callingserver.models.StopHoldMusicResult;
+import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -108,32 +101,27 @@ public final class CallConnection {
     /**
      * Cancel all media operations in the call.
      *
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful cancel all media operations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelAllMediaOperationsResult cancelAllMediaOperations(String operationContext) {
-        return callConnectionAsync.cancelAllMediaOperations(operationContext).block();
+    public Void cancelAllMediaOperations() {
+        return callConnectionAsync.cancelAllMediaOperations().block();
     }
 
     /**
      * Cancel all media operations in the call.
      *
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful cancel all media operations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsWithResponse(
-        String operationContext,
+    public Response<Void> cancelAllMediaOperationsWithResponse(
         Context context) {
-        return callConnectionAsync.cancelAllMediaOperationsWithResponse(operationContext, context).block();
+        return callConnectionAsync.cancelAllMediaOperationsWithResponse(context).block();
     }
 
     /**
@@ -388,7 +376,6 @@ public final class CallConnection {
      *
      * @param participant The identifier of the participant.
      * @param mediaOperationId The Id of the media operation to Cancel.
-     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for play audio operation.
@@ -546,6 +533,7 @@ public final class CallConnection {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful create audio routing group request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createAudioRoutingGroup(
@@ -563,9 +551,10 @@ public final class CallConnection {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful create audio routing group request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createAudioRoutingGroupWithResponse(
+    public Response<CreateAudioRoutingGroupResult> createAudioRoutingGroupWithResponse(
         AudioRoutingMode audioRoutingMode,
         List<CommunicationIdentifier> targets,
         Context context) {

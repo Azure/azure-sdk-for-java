@@ -1358,9 +1358,9 @@ public final class CallingServerAsyncClient {
         Objects.requireNonNull(incomingCallContext, "'redirectCallRequest' cannot be null.");
         Objects.requireNonNull(targets, "'targets' cannot be null.");
         RedirectCallRequest request = new RedirectCallRequest()
-            .setCallbackUrl(callbackUri.toString())
+            .setCallbackUri(callbackUri.toString())
             .setIncomingCallContext(incomingCallContext)
-            .setTimeout(timeoutInSeconds)
+            .setTimeoutInSeconds(timeoutInSeconds)
             .setTargets(targets
                 .stream()
                 .map(CommunicationIdentifierConverter::convert)
@@ -1419,7 +1419,7 @@ public final class CallingServerAsyncClient {
     private RejectCallRequest getRejectCallRequest(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
         Objects.requireNonNull(incomingCallContext, "'redirectCallRequest' cannot be null.");
         RejectCallRequest request = new RejectCallRequest()
-            .setCallbackUrl(callbackUri.toString())
+            .setCallbackUri(callbackUri.toString())
             .setIncomingCallContext(incomingCallContext)
             .setCallRejectReason(rejectReason);
         return request;

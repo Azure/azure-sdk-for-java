@@ -16,7 +16,7 @@ public final class PlayAudioResult {
     /*
      * The status of the operation
      */
-    private final OperationStatus status;
+    private final CallingOperationStatus status;
 
     /*
      * The operation context
@@ -26,7 +26,7 @@ public final class PlayAudioResult {
     /*
      * The result info
      */
-    private final ResultInfo resultInfo;
+    private final CallingOperationResultDetails resultInfo;
 
     /**
      * Get the operationId property: The operation id.
@@ -42,7 +42,7 @@ public final class PlayAudioResult {
      *
      * @return the status value.
      */
-    public OperationStatus getStatus() {
+    public CallingOperationStatus getStatus() {
         return status;
     }
 
@@ -60,7 +60,7 @@ public final class PlayAudioResult {
      *
      * @return the resultInfo value.
      */
-    public ResultInfo getResultInfo() {
+    public CallingOperationResultDetails getResultInfo() {
         return resultInfo;
     }
 
@@ -72,7 +72,7 @@ public final class PlayAudioResult {
      * @param operationContext the operationContext value.
      * @param resultInfo the resultInfo value.
      */
-    public PlayAudioResult(String operationId, OperationStatus status, String operationContext, ResultInfo resultInfo) {
+    public PlayAudioResult(String operationId, CallingOperationStatus status, String operationContext, CallingOperationResultDetails resultInfo) {
         this.operationId = operationId;
         this.status = status;
         this.operationContext = operationContext;

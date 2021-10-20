@@ -29,7 +29,7 @@ public final class PlayAudioToParticipantWithCallLocatorRequest {
      * (single-channel),
      * 16-bit samples with a 16,000 (16KHz) sampling rate.
      */
-    @JsonProperty(value = "audioFileUri")
+    @JsonProperty(value = "audioFileUri", required = true)
     private String audioFileUri;
 
     /*

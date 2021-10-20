@@ -4,8 +4,8 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.MediaType;
+import com.azure.communication.callingserver.models.CallMediaType;
+import com.azure.communication.callingserver.models.CallingEventSubscriptionType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,7 +16,7 @@ public final class JoinCallRequest {
     /*
      * The call locator.
      */
-    @JsonProperty(value = "callLocator")
+    @JsonProperty(value = "callLocator", required = true)
     private CallLocatorModel callLocator;
 
     /*
@@ -41,13 +41,13 @@ public final class JoinCallRequest {
      * The requested modalities.
      */
     @JsonProperty(value = "requestedMediaTypes")
-    private List<MediaType> requestedMediaTypes;
+    private List<CallMediaType> requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
      */
     @JsonProperty(value = "requestedCallEvents")
-    private List<EventSubscriptionType> requestedCallEvents;
+    private List<CallingEventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the callLocator property: The call locator.
@@ -134,7 +134,7 @@ public final class JoinCallRequest {
      *
      * @return the requestedMediaTypes value.
      */
-    public List<MediaType> getRequestedMediaTypes() {
+    public List<CallMediaType> getRequestedMediaTypes() {
         return this.requestedMediaTypes;
     }
 
@@ -144,7 +144,7 @@ public final class JoinCallRequest {
      * @param requestedMediaTypes the requestedMediaTypes value to set.
      * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequest setRequestedMediaTypes(List<MediaType> requestedMediaTypes) {
+    public JoinCallRequest setRequestedMediaTypes(List<CallMediaType> requestedMediaTypes) {
         this.requestedMediaTypes = requestedMediaTypes;
         return this;
     }
@@ -154,7 +154,7 @@ public final class JoinCallRequest {
      *
      * @return the requestedCallEvents value.
      */
-    public List<EventSubscriptionType> getRequestedCallEvents() {
+    public List<CallingEventSubscriptionType> getRequestedCallEvents() {
         return this.requestedCallEvents;
     }
 
@@ -164,7 +164,7 @@ public final class JoinCallRequest {
      * @param requestedCallEvents the requestedCallEvents value to set.
      * @return the JoinCallRequest object itself.
      */
-    public JoinCallRequest setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
+    public JoinCallRequest setRequestedCallEvents(List<CallingEventSubscriptionType> requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents;
         return this;
     }

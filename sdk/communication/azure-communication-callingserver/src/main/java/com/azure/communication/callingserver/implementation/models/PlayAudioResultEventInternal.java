@@ -4,7 +4,7 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.communication.callingserver.models.OperationStatus;
+import com.azure.communication.callingserver.models.CallingOperationStatus;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,7 +15,7 @@ public final class PlayAudioResultEventInternal {
      * The result details.
      */
     @JsonProperty(value = "resultInfo")
-    private ResultInfoInternal resultInfo;
+    private CallingOperationResultDetailsInternal resultInfo;
 
     /*
      * The operation context.
@@ -27,14 +27,14 @@ public final class PlayAudioResultEventInternal {
      * The status of the operation
      */
     @JsonProperty(value = "status", required = true)
-    private OperationStatus status;
+    private CallingOperationStatus status;
 
     /**
      * Get the resultInfo property: The result details.
      *
      * @return the resultInfo value.
      */
-    public ResultInfoInternal getResultInfo() {
+    public CallingOperationResultDetailsInternal getResultInfo() {
         return this.resultInfo;
     }
 
@@ -44,7 +44,7 @@ public final class PlayAudioResultEventInternal {
      * @param resultInfo the resultInfo value to set.
      * @return the PlayAudioResultEventInternal object itself.
      */
-    public PlayAudioResultEventInternal setResultInfo(ResultInfoInternal resultInfo) {
+    public PlayAudioResultEventInternal setResultInfo(CallingOperationResultDetailsInternal resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }
@@ -74,7 +74,7 @@ public final class PlayAudioResultEventInternal {
      *
      * @return the status value.
      */
-    public OperationStatus getStatus() {
+    public CallingOperationStatus getStatus() {
         return this.status;
     }
 
@@ -84,7 +84,7 @@ public final class PlayAudioResultEventInternal {
      * @param status the status value to set.
      * @return the PlayAudioResultEventInternal object itself.
      */
-    public PlayAudioResultEventInternal setStatus(OperationStatus status) {
+    public PlayAudioResultEventInternal setStatus(CallingOperationStatus status) {
         this.status = status;
         return this;
     }

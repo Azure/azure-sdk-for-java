@@ -4,9 +4,7 @@
 package com.azure.communication.callingserver.implementation.converters;
 
 import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
-import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callingserver.models.CallParticipant;
-import com.azure.communication.common.CommunicationIdentifier;
 
 /**
  * A converter for {@link CallParticipant}
@@ -18,7 +16,7 @@ public final class CallParticipantConverter {
      */
     public static CallParticipant convert(
         CallParticipantInternal callParticipantInternal) {
-            
+
         if (callParticipantInternal == null) {
             return null;
         }

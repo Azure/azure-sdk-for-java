@@ -33,12 +33,12 @@ public final class CreateCallOptions {
     /**
      * The requested media types.
      */
-    private final List<MediaType> requestedMediaTypes;
+    private final List<CallMediaType> requestedMediaTypes;
 
     /**
      * The requested call events to subscribe to.
      */
-    private final List<EventSubscriptionType> requestedCallEvents;
+    private final List<CallingEventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the alternate caller id of the source.
@@ -94,7 +94,7 @@ public final class CreateCallOptions {
      *
      * @return the requested modalities object itself.
      */
-    public List<MediaType> getRequestedMediaTypes() {
+    public List<CallMediaType> getRequestedMediaTypes() {
         return requestedMediaTypes;
     }
 
@@ -103,7 +103,7 @@ public final class CreateCallOptions {
      *
      * @return the requested call events to subscribe to object itself.
      */
-    public List<EventSubscriptionType> getRequestedCallEvents() {
+    public List<CallingEventSubscriptionType> getRequestedCallEvents() {
         return requestedCallEvents;
     }
 
@@ -117,8 +117,8 @@ public final class CreateCallOptions {
      */
     public CreateCallOptions(
         URI callbackUri,
-        List<MediaType> requestedMediaTypes,
-        List<EventSubscriptionType> requestedCallEvents) {
+        List<CallMediaType> requestedMediaTypes,
+        List<CallingEventSubscriptionType> requestedCallEvents) {
         if (callbackUri == null) {
             throw new IllegalArgumentException("object callbackUri cannot be null");
         }

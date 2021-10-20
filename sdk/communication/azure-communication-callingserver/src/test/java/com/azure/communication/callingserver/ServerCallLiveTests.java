@@ -3,18 +3,7 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.AddParticipantResult;
-import com.azure.communication.callingserver.models.CallRecordingProperties;
-import com.azure.communication.callingserver.models.CallRecordingState;
-import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.GroupCallLocator;
-import com.azure.communication.callingserver.models.MediaType;
-import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResult;
-import com.azure.communication.callingserver.models.ServerCallLocator;
-import com.azure.communication.callingserver.models.StartCallRecordingResult;
+import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
@@ -228,8 +217,8 @@ public class ServerCallLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
@@ -283,8 +272,8 @@ public class ServerCallLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 

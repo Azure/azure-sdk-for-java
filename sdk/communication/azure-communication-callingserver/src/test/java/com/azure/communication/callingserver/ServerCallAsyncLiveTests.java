@@ -224,8 +224,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
@@ -280,8 +280,8 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 

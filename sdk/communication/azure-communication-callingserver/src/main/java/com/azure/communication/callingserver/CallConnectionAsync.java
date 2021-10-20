@@ -12,37 +12,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
-import com.azure.communication.callingserver.implementation.converters.CallConnectionPropertiesConverter;
-import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
-import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
-import com.azure.communication.callingserver.implementation.converters.CancelAllMediaOperationsResultConverter;
-import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
-import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
-import com.azure.communication.callingserver.implementation.converters.TransferCallRequestConverter;
-import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
-import com.azure.communication.callingserver.implementation.models.AudioRoutingGroupRequest;
-import com.azure.communication.callingserver.implementation.models.AudioRoutingMode;
-import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
-import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationRequest;
-import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.callingserver.implementation.models.GetParticipantRequest;
-import com.azure.communication.callingserver.implementation.models.HoldMeetingAudioRequest;
-import com.azure.communication.callingserver.implementation.models.MuteParticipantRequest;
-import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
-import com.azure.communication.callingserver.implementation.models.PlayAudioToParticipantRequest;
-import com.azure.communication.callingserver.implementation.models.RemoveParticipantRequest;
-import com.azure.communication.callingserver.implementation.models.ResumeMeetingAudioRequest;
-import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
-import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
-import com.azure.communication.callingserver.implementation.models.UpdateAudioRoutingGroupRequest;
-import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.implementation.converters.*;
+import com.azure.communication.callingserver.implementation.models.*;
+import com.azure.communication.callingserver.models.*;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
-import com.azure.communication.callingserver.models.CallParticipant;
-import com.azure.communication.callingserver.models.CallingServerErrorException;
-import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
-import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -220,20 +193,16 @@ public final class CallConnectionAsync {
     /**
      * Cancel all media operations in the call.
      *
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelAllMediaOperationsResult> cancelAllMediaOperations(String operationContext) {
+    public Mono<Void> cancelAllMediaOperations() {
         try {
-            CancelAllMediaOperationsRequest request = new CancelAllMediaOperationsRequest();
-            request.setOperationContext(operationContext);
-            return callConnectionInternal.cancelAllMediaOperationsAsync(callConnectionId, request)
+            return callConnectionInternal.cancelAllMediaOperationsAsync(callConnectionId)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.just(CancelAllMediaOperationsResultConverter.convert(result)));
+                .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -242,30 +211,24 @@ public final class CallConnectionAsync {
     /**
      * Cancel all media operations in the call.
      *
-     * @param operationContext The value to identify context of the operation. This is used to co-relate other
-     *                         communications related to this operation
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponse(String operationContext) {
-        return cancelAllMediaOperationsWithResponse(operationContext, Context.NONE);
+    public Mono<Response<Void>> cancelAllMediaOperationsWithResponse() {
+        return cancelAllMediaOperationsWithResponse(Context.NONE);
     }
 
-    Mono<Response<CancelAllMediaOperationsResult>> cancelAllMediaOperationsWithResponse(
-        String operationContext,
+    Mono<Response<Void>> cancelAllMediaOperationsWithResponse(
         Context context) {
         try {
-            CancelAllMediaOperationsRequest request = new CancelAllMediaOperationsRequest();
-            request.setOperationContext(operationContext);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal
-                    .cancelAllMediaOperationsWithResponseAsync(callConnectionId, request, contextValue)
+                    .cancelAllMediaOperationsWithResponseAsync(callConnectionId, contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                    .map(response ->
-                        new SimpleResponse<>(response, CancelAllMediaOperationsResultConverter.convert(response.getValue())));
+                    .flatMap(result -> Mono.empty());
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -279,7 +242,7 @@ public final class CallConnectionAsync {
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @param callBackUri callBackUri to get notifications.
+     * @param callbackUri callBackUri to get notifications.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
@@ -323,7 +286,7 @@ public final class CallConnectionAsync {
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @param callBackUri callBackUri to get notifications.
+     * @param callbackUri callBackUri to get notifications.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
@@ -373,8 +336,7 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeParticipant(CommunicationIdentifier participant) {
         try {
-            RemoveParticipantRequest request = new RemoveParticipantRequest().setIdentifier(CommunicationIdentifierConverter.convert(participant));
-            return callConnectionInternal.removeParticipantAsync(callConnectionId, request)
+            return callConnectionInternal.removeParticipantAsync(callConnectionId, RemoveParticipantRequestConverter.convert(participant))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
@@ -397,12 +359,10 @@ public final class CallConnectionAsync {
 
     Mono<Response<Void>> removeParticipantWithResponse(CommunicationIdentifier participant, Context context) {
         try {
-            RemoveParticipantRequest request = new RemoveParticipantRequest().setIdentifier(CommunicationIdentifierConverter.convert(participant));
-
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal
-                    .removeParticipantWithResponseAsync(callConnectionId, request, contextValue)
+                    .removeParticipantWithResponseAsync(callConnectionId, RemoveParticipantRequestConverter.convert(participant), contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
@@ -435,7 +395,7 @@ public final class CallConnectionAsync {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant The identifier of the participant.
+     * @param participant The identifier of the participant.
      * @param targetCallConnectionId The target call connection id to transfer to.
      * @param userToUserInformation The user to user information.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -664,7 +624,6 @@ public final class CallConnectionAsync {
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
      * @param playAudioOptions Options for play audio.
-     * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for play audio operation.
@@ -1053,9 +1012,10 @@ public final class CallConnectionAsync {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful create audio routing group request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createAudioRoutingGroup(
+    public Mono<CreateAudioRoutingGroupResult> createAudioRoutingGroup(
         AudioRoutingMode audioRoutingMode,
         List<CommunicationIdentifier> targets) {
         try {
@@ -1063,7 +1023,7 @@ public final class CallConnectionAsync {
 
             return callConnectionInternal.createAudioRoutingGroupAsync(callConnectionId, request)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.empty());
+                .flatMap(result -> Mono.just(new CreateAudioRoutingGroupResult(result.getAudioRoutingGroupId())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1088,19 +1048,26 @@ public final class CallConnectionAsync {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful create audio routing group request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createAudioRoutingGroupWithResponse(
+    public Mono<Response<CreateAudioRoutingGroupResult>> createAudioRoutingGroupWithResponse(
         AudioRoutingMode audioRoutingMode,
         List<CommunicationIdentifier> targets) {
         return createAudioRoutingGroupWithResponseInternal(audioRoutingMode, targets, Context.NONE);
     }
 
-    Mono<Response<Void>> createAudioRoutingGroupWithResponseInternal(AudioRoutingMode audioRoutingMode, List<CommunicationIdentifier> targets, Context context) {
+    Mono<Response<CreateAudioRoutingGroupResult>> createAudioRoutingGroupWithResponseInternal(AudioRoutingMode audioRoutingMode, List<CommunicationIdentifier> targets, Context context) {
         try {
             AudioRoutingGroupRequest request = getAudioRoutingGroupRequest(audioRoutingMode, targets);
-            return callConnectionInternal.createAudioRoutingGroupWithResponseAsync(callConnectionId, request, context)
-            .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal
+                    .createAudioRoutingGroupWithResponseAsync(callConnectionId, request, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, new CreateAudioRoutingGroupResult(response.getValue().getAudioRoutingGroupId())));
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

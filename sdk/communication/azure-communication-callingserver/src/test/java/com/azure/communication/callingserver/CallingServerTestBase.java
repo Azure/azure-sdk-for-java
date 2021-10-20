@@ -3,11 +3,10 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallLocator;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.CallMediaType;
+import com.azure.communication.callingserver.models.CallingEventSubscriptionType;
 import com.azure.communication.callingserver.models.GroupCallLocator;
 import com.azure.communication.callingserver.models.JoinCallOptions;
-import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
@@ -187,16 +186,16 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
             fromCallConnection = callingServerClient.joinCall(groupCallLocator, fromParticipant, fromCallOptions);
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnection(fromCallConnection);
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
             toCallConnection = callingServerClient.joinCall(groupCallLocator, toParticipant, joinCallOptions);
             sleepIfRunningAgainstService(1000);
@@ -232,16 +231,16 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
             fromCallConnection = callingServerClient.joinCall(groupCallLocator, fromParticipant, fromCallOptions).block();
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnectionAsync(fromCallConnection);
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
             toCallConnection = callingServerClient.joinCall(groupCallLocator, toParticipant, joinCallOptions).block();
             sleepIfRunningAgainstService(1000);
