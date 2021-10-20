@@ -153,6 +153,10 @@ public class TestUtils {
         return getPropertyValue("AZURE_SERVICEBUS_EDNPOINT_SUFFIX", ".servicebus.windows.net");
     }
 
+    public static String getEndPoint() {
+        return Configuration.getGlobalConfiguration().get("AZURE_SERVICEBUS_EDNPOINT_SUFFIX", ".servicebus.windows.net");
+    }
+
     /**
      * The Service Bus queue name (NOT session enabled).
      *
