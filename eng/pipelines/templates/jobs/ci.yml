@@ -128,7 +128,7 @@ jobs:
               -AddDevVersion
             pwsh: true
             workingDirectory: $(Pipeline.Workspace)
-          displayName: Dump Package properties
+          displayName: Update package properties with dev version
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
           
       - script: |
