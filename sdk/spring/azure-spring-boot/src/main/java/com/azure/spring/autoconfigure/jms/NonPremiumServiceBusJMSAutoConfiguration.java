@@ -39,11 +39,11 @@ public class NonPremiumServiceBusJMSAutoConfiguration extends AbstractServiceBus
         String connectionString = azureServiceBusJMSProperties.getConnectionString();
         String clientId = azureServiceBusJMSProperties.getTopicClientId();
         int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
-        int prefetchPolicyAll = azureServiceBusJMSProperties.getPrefetchPolicyAll();
-        int durableTopicPrefetch = azureServiceBusJMSProperties.getDurableTopicPrefetch();
-        int queueBrowserPrefetch = azureServiceBusJMSProperties.getQueueBrowserPrefetch();
-        int queuePrefetch = azureServiceBusJMSProperties.getQueuePrefetch();
-        int topicPrefetch = azureServiceBusJMSProperties.getTopicPrefetch();
+        int prefetchPolicyAll = azureServiceBusJMSProperties.getPrefetchPolicy().getAll();
+        int durableTopicPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getDurableTopicPrefetch();
+        int queueBrowserPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getQueueBrowserPrefetch();
+        int queuePrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getQueuePrefetch();
+        int topicPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getTopicPrefetch();
 
         ServiceBusKey serviceBusKey = ConnectionStringResolver.getServiceBusKey(connectionString);
         String host = serviceBusKey.getHost();
