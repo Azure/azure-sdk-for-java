@@ -274,8 +274,12 @@ public final class RestProxy implements InvocationHandler {
         final Object[] args) throws IOException {
 
         final Object bodyContentObject;
-        if (methodParser.getBodyContentType().equals(ContentType.MULTIPART_FORM_DATA)) {
-            bodyContentObject = methodParser.setMultipartBody(args, UUID.randomUUID().toString());
+        String contentType = methodParser.getBodyContentType();
+
+        if (contentType.equals(ContentType.MULTIPART_FORM_DATA)) {
+            String boundary = UUID.randomUUID().toString();
+            bodyContentObject = methodParser.setMultipartBody(args, boundary);
+            contentType += "; boundary=" + boundary;
         } else {
             bodyContentObject = methodParser.setBody(args);
         }
@@ -283,10 +287,6 @@ public final class RestProxy implements InvocationHandler {
         if (bodyContentObject == null) {
             request.getHeaders().set("Content-Length", "0");
         } else {
-            // We read the content type from the @BodyParam annotation. If working with @FormData, this should be equal
-            // to "multipart/form-data".
-            String contentType = methodParser.getBodyContentType();
-
             // If this is null or empty, the service interface definition is incomplete and should
             // be fixed to ensure correct definitions are applied
             if (contentType == null || contentType.isEmpty()) {
