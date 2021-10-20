@@ -4,7 +4,7 @@
 package com.azure.core.implementation.jackson;
 
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.core.util.serializer.SerializerEncoding;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,12 +20,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * Tests for {@link DateTimeDeserializer}.
  */
 public class DateTimeDeserializerTests {
-    private static final ObjectMapper MAPPER = new JacksonAdapter().serializer();
+    private static final JacksonAdapter MAPPER = new JacksonAdapter();
 
     @ParameterizedTest
     @MethodSource("deserializeOffsetDateTimeSupplier")
     public void deserializeJson(String dateTimeJson, OffsetDateTime expected) throws IOException {
-        assertEquals(expected, MAPPER.readValue(dateTimeJson, OffsetDateTime.class));
+        assertEquals(expected, MAPPER.deserialize(dateTimeJson, OffsetDateTime.class, SerializerEncoding.JSON));
     }
 
     private static Stream<Arguments> deserializeOffsetDateTimeSupplier() {

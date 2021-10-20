@@ -768,7 +768,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return openShift Managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -795,7 +795,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return openShift Managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -822,7 +822,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return openShift Managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
@@ -840,7 +840,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return openShift Managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
@@ -1041,7 +1041,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return openShift Managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginUpdateTagsAsync(
         String resourceGroupName, String resourceName, TagsObject parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1068,7 +1068,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return openShift Managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginUpdateTagsAsync(
         String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1095,7 +1095,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return openShift Managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginUpdateTags(
         String resourceGroupName, String resourceName, TagsObject parameters) {
         return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
@@ -1113,7 +1113,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return openShift Managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OpenShiftManagedClusterInner>, OpenShiftManagedClusterInner> beginUpdateTags(
         String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
         return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
@@ -1298,7 +1298,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
         return this
@@ -1317,7 +1317,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1337,7 +1337,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
         return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
@@ -1353,7 +1353,7 @@ public final class OpenShiftManagedClustersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
         return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();

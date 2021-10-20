@@ -283,7 +283,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -305,7 +305,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String serviceEndpointPolicyName,
@@ -331,7 +331,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
         return beginDeleteAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName)
@@ -350,7 +350,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String serviceEndpointPolicyName,
@@ -786,7 +786,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service Endpoint policy definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServiceEndpointPolicyDefinitionInner>, ServiceEndpointPolicyDefinitionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -823,7 +823,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service Endpoint policy definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServiceEndpointPolicyDefinitionInner>, ServiceEndpointPolicyDefinitionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -862,7 +862,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service Endpoint policy definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceEndpointPolicyDefinitionInner>, ServiceEndpointPolicyDefinitionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -891,7 +891,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service Endpoint policy definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceEndpointPolicyDefinitionInner>, ServiceEndpointPolicyDefinitionInner>
         beginCreateOrUpdate(
             String resourceGroupName,

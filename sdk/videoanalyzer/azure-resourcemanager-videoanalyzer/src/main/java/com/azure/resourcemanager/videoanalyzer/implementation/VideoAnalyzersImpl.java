@@ -11,7 +11,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.VideoAnalyzersClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerCollectionInner;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.VideoAnalyzerInner;
-import com.azure.resourcemanager.videoanalyzer.models.SyncStorageKeysInput;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzer;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzerCollection;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzers;
@@ -83,15 +82,6 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, context);
-    }
-
-    public void syncStorageKeys(String resourceGroupName, String accountName, SyncStorageKeysInput parameters) {
-        this.serviceClient().syncStorageKeys(resourceGroupName, accountName, parameters);
-    }
-
-    public Response<Void> syncStorageKeysWithResponse(
-        String resourceGroupName, String accountName, SyncStorageKeysInput parameters, Context context) {
-        return this.serviceClient().syncStorageKeysWithResponse(resourceGroupName, accountName, parameters, context);
     }
 
     public VideoAnalyzerCollection listBySubscription() {

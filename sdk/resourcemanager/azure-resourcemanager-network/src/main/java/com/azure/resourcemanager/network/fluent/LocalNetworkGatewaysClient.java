@@ -50,7 +50,7 @@ public interface LocalNetworkGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<LocalNetworkGatewayInner>, LocalNetworkGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters);
 
@@ -65,7 +65,7 @@ public interface LocalNetworkGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LocalNetworkGatewayInner>, LocalNetworkGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters);
 
@@ -81,7 +81,7 @@ public interface LocalNetworkGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LocalNetworkGatewayInner>, LocalNetworkGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters, Context context);
 
@@ -209,7 +209,7 @@ public interface LocalNetworkGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String localNetworkGatewayName);
 
     /**
@@ -222,7 +222,7 @@ public interface LocalNetworkGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localNetworkGatewayName);
 
     /**
@@ -236,7 +236,7 @@ public interface LocalNetworkGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String localNetworkGatewayName, Context context);
 

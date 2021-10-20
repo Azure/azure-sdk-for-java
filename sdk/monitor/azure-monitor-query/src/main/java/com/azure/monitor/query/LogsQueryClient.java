@@ -6,7 +6,6 @@ package com.azure.monitor.query;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.models.TimeInterval;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -15,6 +14,7 @@ import com.azure.monitor.query.models.LogsBatchQuery;
 import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
+import com.azure.monitor.query.models.QueryTimeInterval;
 
 import java.util.List;
 
@@ -43,15 +43,15 @@ public final class LogsQueryClient {
      *
      * <p><strong>Query logs from the last 24 hours</strong></p>
      *
-     * {@codesnippet com.azure.monitor.query.LogsQueryClient.query#String-String-TimeInterval}
+     * {@codesnippet com.azure.monitor.query.LogsQueryClient.query#String-String-QueryTimeInterval}
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
      * @return The logs matching the query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogsQueryResult query(String workspaceId, String query, TimeInterval timeInterval) {
-        return asyncClient.query(workspaceId, query, timeInterval).block();
+    public LogsQueryResult queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval) {
+        return asyncClient.queryWorkspace(workspaceId, query, timeInterval).block();
     }
 
     /**
@@ -64,8 +64,8 @@ public final class LogsQueryClient {
      * @return The logs matching the query as a list of objects of type T.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> List<T> query(String workspaceId, String query, TimeInterval timeInterval, Class<T> type) {
-        LogsQueryResult logsQueryResult = asyncClient.query(workspaceId, query, timeInterval).block();
+    public <T> List<T> queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval, Class<T> type) {
+        LogsQueryResult logsQueryResult = asyncClient.queryWorkspace(workspaceId, query, timeInterval).block();
         if (logsQueryResult != null) {
             return LogsQueryHelper.toObject(logsQueryResult.getTable(), type);
         }
@@ -84,9 +84,9 @@ public final class LogsQueryClient {
      * @return The logs matching the query as a list of objects of type T.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> List<T> query(String workspaceId, String query, TimeInterval timeInterval,
-                             Class<T> type, LogsQueryOptions options) {
-        LogsQueryResult logsQueryResult = queryWithResponse(workspaceId, query, timeInterval, options, Context.NONE)
+    public <T> List<T> queryWorkspace(String workspaceId, String query, QueryTimeInterval timeInterval,
+                                      Class<T> type, LogsQueryOptions options) {
+        LogsQueryResult logsQueryResult = queryWorkspaceWithResponse(workspaceId, query, timeInterval, options, Context.NONE)
                 .getValue();
         if (logsQueryResult != null) {
             return LogsQueryHelper.toObject(logsQueryResult.getTable(), type);
@@ -99,7 +99,7 @@ public final class LogsQueryClient {
      *
      * <p><strong>Query logs from the last 7 days and set the service timeout to 2 minutes</strong></p>
      *
-     * {@codesnippet com.azure.monitor.query.LogsQueryClient.queryWithResponse#String-String-TimeInterval-LogsQueryOptions-Context}
+     * {@codesnippet com.azure.monitor.query.LogsQueryClient.queryWithResponse#String-String-QueryTimeInterval-LogsQueryOptions-Context}
      * @param workspaceId The workspaceId where the query should be executed.
      * @param query The Kusto query to fetch the logs.
      * @param timeInterval The time period for which the logs should be looked up.
@@ -110,9 +110,9 @@ public final class LogsQueryClient {
      * @return The logs matching the query including the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogsQueryResult> queryWithResponse(String workspaceId, String query, TimeInterval timeInterval,
-                                                       LogsQueryOptions options, Context context) {
-        return asyncClient.queryWithResponse(workspaceId, query, timeInterval, options, context).block();
+    public Response<LogsQueryResult> queryWorkspaceWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
+                                                                LogsQueryOptions options, Context context) {
+        return asyncClient.queryWorkspaceWithResponse(workspaceId, query, timeInterval, options, context).block();
     }
 
     /**
@@ -130,9 +130,9 @@ public final class LogsQueryClient {
      * @return The logs matching the query including the HTTP response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Response<List<T>> queryWithResponse(String workspaceId, String query, TimeInterval timeInterval,
-                                                       Class<T> type, LogsQueryOptions options, Context context) {
-        return asyncClient.queryWithResponse(workspaceId, query, timeInterval, options, context)
+    public <T> Response<List<T>> queryWorkspaceWithResponse(String workspaceId, String query, QueryTimeInterval timeInterval,
+                                                            Class<T> type, LogsQueryOptions options, Context context) {
+        return asyncClient.queryWorkspaceWithResponse(workspaceId, query, timeInterval, options, context)
                 .map(response -> new SimpleResponse<>(response.getRequest(),
                         response.getStatusCode(), response.getHeaders(),
                         LogsQueryHelper.toObject(response.getValue().getTable(), type)))
@@ -146,7 +146,7 @@ public final class LogsQueryClient {
      * @param timeInterval The time period for which the logs should be looked up.
      * @return A collection of query results corresponding to the input batch of queries.
      */
-    LogsBatchQueryResultCollection queryBatch(String workspaceId, List<String> queries, TimeInterval timeInterval) {
+    LogsBatchQueryResultCollection queryBatch(String workspaceId, List<String> queries, QueryTimeInterval timeInterval) {
         return asyncClient.queryBatch(workspaceId, queries, timeInterval).block();
     }
 

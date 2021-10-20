@@ -21,6 +21,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -210,6 +211,7 @@ public final class MonitorManagementClientImplBuilder {
         if (host == null) {
             this.host = "https://management.azure.com";
         }
+
         if (apiVersion == null) {
             this.apiVersion = "2018-01-01";
         }
@@ -237,8 +239,9 @@ public final class MonitorManagementClientImplBuilder {
                 new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-        BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential, " https://management.azure.com" +
-                "/.default");
+        String resolvedAudience = host + "/.default";
+        BearerTokenAuthenticationPolicy tokenPolicy = new BearerTokenAuthenticationPolicy(this.tokenCredential,
+                resolvedAudience);
         policies.add(tokenPolicy);
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);

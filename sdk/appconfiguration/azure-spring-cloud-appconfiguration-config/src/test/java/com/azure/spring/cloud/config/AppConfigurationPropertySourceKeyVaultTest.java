@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
-import static com.azure.spring.cloud.config.Constants.KEY_VAULT_CONTENT_TYPE;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.KEY_VAULT_CONTENT_TYPE;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.config.TestConstants.TEST_CONTEXT;
 import static com.azure.spring.cloud.config.TestConstants.TEST_KEY_1;

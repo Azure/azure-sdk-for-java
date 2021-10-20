@@ -6,7 +6,7 @@ package com.azure.core.http.rest;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectionUtilsApi;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -66,7 +66,7 @@ final class ResponseConstructorsCache {
     private MethodHandle locateResponseConstructor(Class<?> responseClass) {
         MethodHandles.Lookup lookupToUse;
         try {
-            lookupToUse = ReflectionUtils.getLookupToUse(responseClass);
+            lookupToUse = ReflectionUtilsApi.INSTANCE.getLookupToUse(responseClass);
         } catch (Throwable t) {
             throw logger.logExceptionAsError(new RuntimeException(t));
         }

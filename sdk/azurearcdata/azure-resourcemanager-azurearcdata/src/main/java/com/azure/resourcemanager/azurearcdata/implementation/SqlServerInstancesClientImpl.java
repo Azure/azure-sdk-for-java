@@ -129,9 +129,9 @@ public final class SqlServerInstancesClientImpl implements SqlServerInstancesCli
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureArcData"
                 + "/sqlServerInstances/{sqlServerInstanceName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
+        Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -933,7 +933,8 @@ public final class SqlServerInstancesClientImpl implements SqlServerInstancesCli
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String sqlServerInstanceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String sqlServerInstanceName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -982,7 +983,7 @@ public final class SqlServerInstancesClientImpl implements SqlServerInstancesCli
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String sqlServerInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1028,9 +1029,101 @@ public final class SqlServerInstancesClientImpl implements SqlServerInstancesCli
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String sqlServerInstanceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, sqlServerInstanceName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Deletes a SQL Server Instance resource.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param sqlServerInstanceName The name of SQL Server Instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String sqlServerInstanceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, sqlServerInstanceName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes a SQL Server Instance resource.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param sqlServerInstanceName The name of SQL Server Instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlServerInstanceName) {
+        return beginDeleteAsync(resourceGroupName, sqlServerInstanceName).getSyncPoller();
+    }
+
+    /**
+     * Deletes a SQL Server Instance resource.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param sqlServerInstanceName The name of SQL Server Instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String sqlServerInstanceName, Context context) {
+        return beginDeleteAsync(resourceGroupName, sqlServerInstanceName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes a SQL Server Instance resource.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param sqlServerInstanceName The name of SQL Server Instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String sqlServerInstanceName) {
-        return deleteWithResponseAsync(resourceGroupName, sqlServerInstanceName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return beginDeleteAsync(resourceGroupName, sqlServerInstanceName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a SQL Server Instance resource.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param sqlServerInstanceName The name of SQL Server Instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String sqlServerInstanceName, Context context) {
+        return beginDeleteAsync(resourceGroupName, sqlServerInstanceName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1056,11 +1149,10 @@ public final class SqlServerInstancesClientImpl implements SqlServerInstancesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String resourceGroupName, String sqlServerInstanceName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, sqlServerInstanceName, context).block();
+    public void delete(String resourceGroupName, String sqlServerInstanceName, Context context) {
+        deleteAsync(resourceGroupName, sqlServerInstanceName, context).block();
     }
 
     /**

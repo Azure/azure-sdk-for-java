@@ -443,7 +443,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnGatewayNatRuleInner>, VpnGatewayNatRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String gatewayName, String natRuleName, VpnGatewayNatRuleInner natRuleParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -471,7 +471,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VpnGatewayNatRuleInner>, VpnGatewayNatRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String gatewayName,
@@ -503,7 +503,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayNatRuleInner>, VpnGatewayNatRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String gatewayName, String natRuleName, VpnGatewayNatRuleInner natRuleParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, gatewayName, natRuleName, natRuleParameters).getSyncPoller();
@@ -522,7 +522,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnGatewayNatRuleInner>, VpnGatewayNatRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String gatewayName,
@@ -736,7 +736,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String gatewayName, String natRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, gatewayName, natRuleName);
@@ -757,7 +757,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String gatewayName, String natRuleName, Context context) {
         context = this.client.mergeContext(context);
@@ -779,7 +779,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String gatewayName, String natRuleName) {
         return beginDeleteAsync(resourceGroupName, gatewayName, natRuleName).getSyncPoller();
@@ -797,7 +797,7 @@ public final class NatRulesClientImpl implements NatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String gatewayName, String natRuleName, Context context) {
         return beginDeleteAsync(resourceGroupName, gatewayName, natRuleName, context).getSyncPoller();

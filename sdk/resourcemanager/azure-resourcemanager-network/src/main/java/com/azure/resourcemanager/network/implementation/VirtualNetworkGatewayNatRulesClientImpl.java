@@ -465,7 +465,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualNetworkGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -498,7 +498,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualNetworkGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -532,7 +532,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualNetworkGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -556,7 +556,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualNetworkGatewayNatRule Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -788,7 +788,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkGatewayName, String natRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -810,7 +810,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkGatewayName, String natRuleName, Context context) {
         context = this.client.mergeContext(context);
@@ -832,7 +832,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkGatewayName, String natRuleName) {
         return beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName).getSyncPoller();
@@ -850,7 +850,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkGatewayName, String natRuleName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName, context).getSyncPoller();

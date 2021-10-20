@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
@@ -15,6 +16,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.security.attestation.implementation.AttestationClientImplBuilder;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
+import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,10 +36,14 @@ public final class AttestationClientBuilder {
 
     private static final String SDK_VERSION = "version";
 
+    private final String[] dataplaneScope = new String[] {"https://attest.azure.net/.default"};
+
     private final AttestationClientImplBuilder clientImplBuilder;
     private final ClientLogger logger = new ClientLogger(AttestationClientBuilder.class);
 
     private AttestationServiceVersion serviceVersion;
+    private AttestationTokenValidationOptions tokenValidationOptions;
+    private TokenCredential tokenCredential = null;
 
     /**
      * Creates a new instance of the AttestationClientBuilder class.
@@ -46,6 +52,7 @@ public final class AttestationClientBuilder {
 
         clientImplBuilder = new AttestationClientImplBuilder();
         serviceVersion = AttestationServiceVersion.V2020_10_01;
+        tokenValidationOptions = new AttestationTokenValidationOptions();
     }
 
     /*
@@ -88,7 +95,7 @@ public final class AttestationClientBuilder {
      */
     public AttestationClientBuilder credential(TokenCredential credential) {
         Objects.requireNonNull(credential);
-        clientImplBuilder.credential(credential);
+        this.tokenCredential = credential;
         return this;
     }
 
@@ -170,6 +177,16 @@ public final class AttestationClientBuilder {
     }
 
     /**
+     * Sets {@link com.azure.security.attestation.models.AttestationToken} validation options for clients created from this builder.
+     * @param tokenValidationOptions - Validation options to use on APIs which interact with the attestation service.
+     * @return this {@link AttestationClientBuilder}
+     */
+    public AttestationClientBuilder tokenValidationOptions(AttestationTokenValidationOptions tokenValidationOptions) {
+        this.tokenValidationOptions = tokenValidationOptions;
+        return this;
+    }
+
+    /**
      * Builds an instance of AttestationClient sync client.
      *
      * Instantiating a synchronous Attestation client:
@@ -178,8 +195,6 @@ public final class AttestationClientBuilder {
      * @return an instance of {@link AttestationClient}.
      */
     public AttestationClient buildClient() {
-        AttestationServiceVersion version = serviceVersion != null ? serviceVersion : AttestationServiceVersion.getLatest();
-        clientImplBuilder.apiVersion(version.getVersion());
         return new AttestationClient(buildAsyncClient());
     }
 
@@ -192,9 +207,7 @@ public final class AttestationClientBuilder {
      * @return an instance of {@link AttestationClient}.
      */
     public AttestationAsyncClient buildAsyncClient() {
-        AttestationServiceVersion version = serviceVersion != null ? serviceVersion : AttestationServiceVersion.getLatest();
-        clientImplBuilder.apiVersion(version.getVersion());
-        return new AttestationAsyncClient(buildInnerClient());
+        return new AttestationAsyncClient(buildInnerClient(), this.tokenValidationOptions);
     }
 
     /**
@@ -208,6 +221,11 @@ public final class AttestationClientBuilder {
      * @return an instance of AttestationClientImpl.
      */
     private AttestationClientImpl buildInnerClient() {
+        AttestationServiceVersion version = serviceVersion != null ? serviceVersion : AttestationServiceVersion.getLatest();
+        clientImplBuilder.apiVersion(version.getVersion());
+        if (tokenCredential != null) {
+            clientImplBuilder.addPolicy(new BearerTokenAuthenticationPolicy(tokenCredential, dataplaneScope));
+        }
         return clientImplBuilder.buildClient();
     }
 

@@ -85,7 +85,7 @@ def generate(
 def compile_package(sdk_root, service):
     module = ARTIFACT_FORMAT.format(service)
     if os.system(
-            'mvn clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
+            'mvn --no-transfer-progress clean verify package -f {0}/pom.xml -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
         logging.error('[COMPILE] Maven build fail')
         return False
@@ -101,7 +101,7 @@ def generate_changelog_and_breaking_change(
     logging.info('[CHANGELOG] changelog jar: {0} -> {1}'.format(
         old_jar, new_jar))
     stdout = subprocess.run(
-        'mvn clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
+        'mvn --no-transfer-progress clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
         .format(sdk_root, old_jar, new_jar),
         stdout = subprocess.PIPE,
         shell = True,
@@ -137,7 +137,10 @@ def update_changelog(changelog_file, changelog):
     # remove text starting from the first '###' (usually the block '### Features Added')
     first_version_part = re.sub('\n###.*', '\n', first_version_part, re.S)
     first_version_part = re.sub('\s+$', '', first_version_part)
-    first_version_part += '\n\n' + changelog.strip() + '\n\n'
+
+    first_version_part += '\n\n'
+    if changelog.strip() != '':
+        first_version_part += changelog.strip() + '\n\n'
 
     with open(changelog_file, 'w') as fout:
         fout.write(first_version_part +
@@ -148,6 +151,8 @@ def update_changelog(changelog_file, changelog):
 
 def compare_with_maven_package(sdk_root, service, stable_version,
                                current_version):
+    logging.info('[Changelog] Compare stable version {0} with current version {1}'.format(stable_version, current_version))
+
     if stable_version == current_version:
         logging.info('[Changelog][Skip] no previous version')
         return
@@ -171,7 +176,7 @@ def compare_with_maven_package(sdk_root, service, stable_version,
             raise Exception('Cannot found built jar in {0}'.format(new_jar))
         breaking, changelog = generate_changelog_and_breaking_change(
             sdk_root, old_jar, new_jar)
-        if changelog and changelog.strip() != '':
+        if changelog:
             changelog_file = os.path.join(
                 sdk_root,
                 CHANGELOG_FORMAT.format(service = service,
