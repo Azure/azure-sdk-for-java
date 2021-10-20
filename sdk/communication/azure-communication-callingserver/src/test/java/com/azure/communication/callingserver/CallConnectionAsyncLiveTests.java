@@ -149,7 +149,6 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
             new CommunicationUserIdentifier(fromUser),
             Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
             options).block();
-        sleepIfRunningAgainstService(15000);
         CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
 
         try {
@@ -162,8 +161,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
                 null,
                 operationContext,
                 URI.create(CALLBACK_URI)).block();
-            sleepIfRunningAgainstService(15000);
             assert addParticipantResult != null;
+
             // Remove User
             callConnectionAsync.removeParticipant(addedUser).block();
         } catch (Exception e) {
@@ -201,7 +200,6 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
                 options).block();
 
         CallingServerTestUtils.validateCallConnectionAsyncResponse(callConnectionAsyncResponse);
-        sleepIfRunningAgainstService(15000);
         assert callConnectionAsyncResponse != null;
         CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
         try {
@@ -215,7 +213,6 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
                     operationContext,
                     URI.create(CALLBACK_URI)).block();
             CallingServerTestUtils.validateAddParticipantResponse(addParticipantResponse);
-            sleepIfRunningAgainstService(15000);
             assert addParticipantResponse != null;
 
             // Remove User
@@ -340,7 +337,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
               Waiting for an update to be able to get this serverCallId when using
               createCallConnection()
              */
-            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3lKQXY0TnVlOEV5bUpYVm1IYklIeUE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
+            // serverCallId looks like this: "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4"
+            String serverCallId = CallLocatorConverter.convert(callConnectionAsync.getCall().block().getCallLocator()).getServerCallId();
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 URI.create(CALLBACK_URI),
                 Collections.singletonList(CallMediaType.AUDIO),

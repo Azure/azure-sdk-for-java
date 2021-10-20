@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.implementation.converters.CallLocatorConverter;
 import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
@@ -138,11 +139,11 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
         try {
             callConnections = createCall(callingServerClient, groupCallLocator, fromUser, toUser, URI.create(CALLBACK_URI));
-            PlayAudioOptions options = new PlayAudioOptions();
-            options.setAudioFileId(UUID.randomUUID().toString());
-            options.setCallbackUri(URI.create(CALLBACK_URI));
-            options.setOperationContext(operationContext);
-            options.setLoop(true);
+            PlayAudioOptions options = new PlayAudioOptions()
+                .setAudioFileId(UUID.randomUUID().toString())
+                .setCallbackUri(URI.create(CALLBACK_URI))
+                .setOperationContext(operationContext)
+                .setLoop(true);
 
             PlayAudioResult playAudioResult =
             callingServerClient.playAudio(groupCallLocator, URI.create(AUDIO_FILE_URI), options);
@@ -214,48 +215,54 @@ public class ServerCallLiveTests extends CallingServerTestBase {
     public void runAddRemoveScenario(HttpClient httpClient) {
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenario");
+
+        // Establish a call
+        CreateCallOptions options = new CreateCallOptions(
+            URI.create(CALLBACK_URI),
+            Collections.singletonList(CallMediaType.AUDIO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
+
+        options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
+
+        CallConnection callConnection = callingServerClient.createCallConnection(
+            new CommunicationUserIdentifier(fromUser),
+            Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
+            options);
+
+        validateCallConnection(callConnection);
+
         try {
-            // Establish a call
-            CreateCallOptions options = new CreateCallOptions(
-                URI.create(CALLBACK_URI),
-                Collections.singletonList(CallMediaType.AUDIO),
-                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
-
-            options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
-
-            CallConnection callConnection = callingServerClient.createCallConnection(
-                new CommunicationUserIdentifier(fromUser),
-                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
-                options);
-
-            validateCallConnection(callConnection);
-
             // Get Server Call
             /*
               Waiting for an update to be able to get this serverCallId when using
               createCallConnection()
              */
-            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L1VDRl9RMVVlUGsyb0Y1YlJSMXliVXc_aT0xJmU9NjM3NTg0MzkzMzg3ODg3MDI3";
+            // serverCallId looks like this: "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4"
+            String serverCallId = CallLocatorConverter.convert(callConnection.getCall().getCallLocator()).getServerCallId();
             ServerCallLocator serverCallLocator = new ServerCallLocator(serverCallId);
 
             // Add User
+            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-3eb4-b48f-32fb-343a0d000fc1");
+
             String operationContext = UUID.randomUUID().toString();
             CommunicationUserIdentifier addUser = new CommunicationUserIdentifier(toUser);
             AddParticipantResult addParticipantResult = callingServerClient
                 .addParticipant(
                     serverCallLocator,
-                    addUser,
+                    addedUser,
                     URI.create(CALLBACK_URI),
                     null,
                     operationContext);
+            assert addParticipantResult != null;
 
-            callingServerClient.removeParticipant(serverCallLocator, addUser);
-
-            // Hangup
-            callConnection.hangup();
+            // Remove User
+            callingServerClient.removeParticipant(serverCallLocator, addedUser);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
+        } finally {
+            // Hangup
+            callConnection.hangup();
         }
     }
 
@@ -269,51 +276,54 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient callingServerClient = setupClient(builder, "runAddRemoveScenarioWithResponse");
 
+        // Establish a call
+        CreateCallOptions options = new CreateCallOptions(
+            URI.create(CALLBACK_URI),
+            Collections.singletonList(CallMediaType.AUDIO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
+
+        options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
+
+        CallConnection callConnection = callingServerClient.createCallConnection(
+            new CommunicationUserIdentifier(fromUser),
+            Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
+            options);
+
+        validateCallConnection(callConnection);
+
         try {
-            // Establish a call
-            CreateCallOptions options = new CreateCallOptions(
-                URI.create(CALLBACK_URI),
-                Collections.singletonList(CallMediaType.AUDIO),
-                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
-
-            options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
-
-            CallConnection callConnection = callingServerClient.createCallConnection(
-                new CommunicationUserIdentifier(fromUser),
-                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
-                options);
-
-            validateCallConnection(callConnection);
-
             // Get Server Call
             /*
               Waiting for an update to be able to get this serverCallId when using
               createCallConnection()
              */
-            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L0Z1MENEVF9lLWtPalRtdjlXMDFuSXc_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
+            // serverCallId looks like this: "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4"
+            String serverCallId = CallLocatorConverter.convert(callConnection.getCall().getCallLocator()).getServerCallId();
             ServerCallLocator serverCallLocator = new ServerCallLocator(serverCallId);
 
             // Add User
+            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-3eb4-b48f-32fb-343a0d000fc1");
+
             String operationContext = UUID.randomUUID().toString();
             CommunicationUserIdentifier addUser = new CommunicationUserIdentifier(toUser);
             Response<AddParticipantResult> addParticipantResultResponse =
                 callingServerClient.addParticipantWithResponse(
                     serverCallLocator,
-                    addUser,
+                    addedUser,
                     URI.create(CALLBACK_URI),
                     null,
                     operationContext,
                     null);
             CallingServerTestUtils.validateAddParticipantResponse(addParticipantResultResponse);
 
-            Response<Void> removeResponse = callingServerClient.removeParticipantWithResponse(serverCallLocator, addUser, null);
+            Response<Void> removeResponse = callingServerClient.removeParticipantWithResponse(serverCallLocator, addedUser, null);
             validateResponse(removeResponse);
-
-            // Hangup
-            callConnection.hangup();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
+        } finally {
+            // Hangup
+            callConnection.hangup();
         }
     }
 
