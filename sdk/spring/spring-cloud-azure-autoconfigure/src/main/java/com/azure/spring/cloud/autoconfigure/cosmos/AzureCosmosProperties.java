@@ -13,7 +13,6 @@ import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureServiceConfi
 import com.azure.spring.core.properties.aware.credential.KeyAware;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
@@ -31,7 +30,7 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 
     @NestedConfigurationProperty
-    private final ProxyProperties proxy = new HttpProxyProperties();
+    private final HttpProxyProperties proxy = new HttpProxyProperties();
 
     @NotEmpty
     @Pattern(regexp = "http[s]{0,1}://.*.documents.azure.com.*")
@@ -71,7 +70,7 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
     private boolean populateQueryMetrics;
 
     @Override
-    public ProxyProperties getProxy() {
+    public HttpProxyProperties getProxy() {
         return proxy;
     }
 

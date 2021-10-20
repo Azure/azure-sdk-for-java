@@ -82,7 +82,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
         final BlobServiceClientBuilder builder = builderFactory.build();
         final BlobServiceClient client = builder.buildClient();
 
-        verify(builder).httpClient(any(TestHttpClient.class));
+        verify(builder, times(1)).httpClient(any(TestHttpClient.class));
     }
 
     @Test
@@ -109,7 +109,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
 
-        final BlobServiceClientBuilderFactoryExt builderFactory = new BlobServiceClientBuilderFactoryExt(properties);
+        final BlobServiceClientBuilderFactoryProxyExt builderFactory = new BlobServiceClientBuilderFactoryProxyExt(properties);
         HttpClientProvider defaultHttpClientProvider = builderFactory.getDefaultHttpClientProvider();
         final BlobServiceClientBuilder builder = builderFactory.build();
         final BlobServiceClient client = builder.buildClient();
@@ -127,18 +127,25 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
 
     static class BlobServiceClientBuilderFactoryExt extends BlobServiceClientBuilderFactory {
 
-        private HttpClientProvider httpClientProvider = mock(DefaultHttpProvider.class);
-
         BlobServiceClientBuilderFactoryExt(AzureStorageBlobProperties blobProperties) {
             super(blobProperties);
-
-            HttpClient httpClient = mock(HttpClient.class);
-            when(this.httpClientProvider.createInstance(any(HttpClientOptions.class))).thenReturn(httpClient);
         }
 
         @Override
         public BlobServiceClientBuilder createBuilderInstance() {
             return mock(BlobServiceClientBuilder.class);
+        }
+    }
+
+    static class BlobServiceClientBuilderFactoryProxyExt extends BlobServiceClientBuilderFactoryExt {
+
+        private HttpClientProvider httpClientProvider = mock(DefaultHttpProvider.class);
+
+        BlobServiceClientBuilderFactoryProxyExt(AzureStorageBlobProperties blobProperties) {
+            super(blobProperties);
+
+            HttpClient httpClient = mock(HttpClient.class);
+            when(this.httpClientProvider.createInstance(any(HttpClientOptions.class))).thenReturn(httpClient);
         }
 
         @Override
@@ -150,6 +157,5 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
             return getHttpClientProvider();
         }
     }
-
 }
 
