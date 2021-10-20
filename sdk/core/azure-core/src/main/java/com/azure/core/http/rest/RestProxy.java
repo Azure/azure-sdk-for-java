@@ -276,7 +276,7 @@ public final class RestProxy implements InvocationHandler {
         final Object bodyContentObject;
         String contentType = methodParser.getBodyContentType();
 
-        if (contentType.equals(ContentType.MULTIPART_FORM_DATA)) {
+        if (ContentType.MULTIPART_FORM_DATA.equals(contentType)) {
             String boundary = UUID.randomUUID().toString();
             bodyContentObject = methodParser.setMultipartBody(args, boundary);
             contentType += "; boundary=" + boundary;
