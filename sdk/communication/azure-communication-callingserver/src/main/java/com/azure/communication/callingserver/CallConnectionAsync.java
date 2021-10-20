@@ -429,7 +429,7 @@ public final class CallConnectionAsync {
      * @return Response for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionProperties> get() {
+    public Mono<CallConnectionProperties> getCall() {
         try {
 
             return callConnectionInternal.getCallAsync(callConnectionId)
@@ -448,11 +448,11 @@ public final class CallConnectionAsync {
      * @return Response for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionProperties>> getWithResponse() {
-        return getWithResponse(Context.NONE);
+    public Mono<Response<CallConnectionProperties>> getCallWithResponse() {
+        return getCallWithResponse(Context.NONE);
     }
 
-    Mono<Response<CallConnectionProperties>> getWithResponse(Context context) {
+    Mono<Response<CallConnectionProperties>> getCallWithResponse(Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;

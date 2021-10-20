@@ -234,8 +234,8 @@ public final class CallConnection {
      * @return Response for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnectionProperties get() {
-        return callConnectionAsync.get().block();
+    public CallConnectionProperties getCall() {
+        return callConnectionAsync.getCall().block();
     }
 
     /**
@@ -248,7 +248,7 @@ public final class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnectionProperties> getWithResponse(Context context) {
-        return callConnectionAsync.getWithResponse(context).block();
+        return callConnectionAsync.getCallWithResponse(context).block();
     }
 
     /**

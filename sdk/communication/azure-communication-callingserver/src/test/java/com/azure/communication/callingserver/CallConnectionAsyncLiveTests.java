@@ -281,7 +281,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
               createCallConnection()
              */
             // serverCallId looks like this: "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4"
-            String serverCallId = CallLocatorConverter.convert(callConnectionAsync.get().block().getCallLocator()).getServerCallId();
+            String serverCallId = CallLocatorConverter.convert(callConnectionAsync.getCall().block().getCallLocator()).getServerCallId();
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 URI.create(CALLBACK_URI),
