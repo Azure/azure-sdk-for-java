@@ -3,6 +3,7 @@
 ## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for Microsoft 365 Teams identities
 
 ### Breaking Changes
 
