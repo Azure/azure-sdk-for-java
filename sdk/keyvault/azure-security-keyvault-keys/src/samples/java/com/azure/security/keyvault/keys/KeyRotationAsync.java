@@ -6,11 +6,8 @@ package com.azure.security.keyvault.keys;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyRotationLifetimeAction;
-import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyProperties;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;

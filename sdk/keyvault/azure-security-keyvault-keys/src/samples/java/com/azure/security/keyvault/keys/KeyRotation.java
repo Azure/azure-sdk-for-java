@@ -11,7 +11,6 @@ import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyProperties;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
