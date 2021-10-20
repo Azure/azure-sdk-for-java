@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EnableAzureMessaging.class)
+@ConditionalOnBean(SubscribeByGroupOperation.class)
 public class AzureMessagingListenerConfiguration {
 
     @Bean
