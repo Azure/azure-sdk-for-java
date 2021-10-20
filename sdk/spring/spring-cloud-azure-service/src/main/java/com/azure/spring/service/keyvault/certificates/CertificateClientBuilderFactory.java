@@ -75,7 +75,7 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
 
     @Override
     protected void configureService(CertificateClientBuilder builder) {
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper map = new PropertyMapper();
         map.from(certificateProperties.getEndpoint()).to(builder::vaultUrl);
         map.from(certificateProperties.getServiceVersion()).to(builder::serviceVersion);
     }

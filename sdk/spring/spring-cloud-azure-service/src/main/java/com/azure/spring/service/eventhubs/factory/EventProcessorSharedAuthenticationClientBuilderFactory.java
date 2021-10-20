@@ -74,7 +74,7 @@ public class EventProcessorSharedAuthenticationClientBuilderFactory extends Abst
 
     @Override
     protected void configureService(EventProcessorSharedAuthenticationClientBuilder builder) {
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper map = new PropertyMapper();
         map.from(eventHubProperties.getPrefetchCount()).to(builder::prefetchCount);
         map.from(eventHubProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
         map.from(eventHubProperties.getProcessor().getConsumerGroup()).to(builder::consumerGroup);

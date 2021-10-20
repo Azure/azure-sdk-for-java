@@ -70,7 +70,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
     @Override
     protected void configureService(CosmosClientBuilder builder) {
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper map = new PropertyMapper();
 
         map.from(this.cosmosProperties.getEndpoint()).to(builder::endpoint);
         map.from(this.cosmosProperties.getConsistencyLevel()).to(builder::consistencyLevel);

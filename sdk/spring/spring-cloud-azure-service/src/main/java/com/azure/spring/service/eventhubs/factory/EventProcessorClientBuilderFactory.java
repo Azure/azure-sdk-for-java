@@ -78,7 +78,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
 
     @Override
     protected void configureService(EventProcessorClientBuilder builder) {
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper map = new PropertyMapper();
         map.from(processorProperties.getConsumerGroup()).to(builder::consumerGroup);
         map.from(processorProperties.getPrefetchCount()).to(builder::prefetchCount);
         map.from(processorProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);

@@ -79,7 +79,7 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
 
     @Override
     protected void configureService(ServiceBusClientBuilder builder) {
-        PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper mapper = new PropertyMapper();
 
         if (this.serviceBusProperties instanceof ServiceBusProperties) {
             mapper.from(((ServiceBusProperties) this.serviceBusProperties).getCrossEntityTransactions())

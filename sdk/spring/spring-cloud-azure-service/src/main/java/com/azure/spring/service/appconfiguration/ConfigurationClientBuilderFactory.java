@@ -71,7 +71,7 @@ public class ConfigurationClientBuilderFactory extends AbstractAzureHttpClientBu
 
     @Override
     protected void configureService(ConfigurationClientBuilder builder) {
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper map = new PropertyMapper();
         map.from(appConfigurationProperties.getEndpoint()).to(builder::endpoint);
         map.from(appConfigurationProperties.getConnectionString()).to(builder::connectionString);
         map.from(appConfigurationProperties.getServiceVersion()).to(builder::serviceVersion);

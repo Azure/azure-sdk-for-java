@@ -86,7 +86,7 @@ public class EventHubSharedAuthenticationClientBuilderFactory extends AbstractAz
 
     @Override
     protected void configureService(EventHubSharedAuthenticationClientBuilder builder) {
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper map = new PropertyMapper();
         map.from(eventHubProperties.getPrefetchCount()).to(builder::prefetchCount);
         map.from(eventHubProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
         map.from(eventHubProperties.getSharedConnection()).whenTrue().to(t -> builder.shareConnection());

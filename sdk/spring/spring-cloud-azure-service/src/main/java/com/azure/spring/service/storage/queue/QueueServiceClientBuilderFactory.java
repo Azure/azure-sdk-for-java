@@ -78,7 +78,7 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureHttpClientBui
 
     @Override
     protected void configureService(QueueServiceClientBuilder builder) {
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper map = new PropertyMapper();
         map.from(queueProperties.getMessageEncoding()).to(p -> builder.messageEncoding(convertToMessageEncoding(p)));
         map.from(queueProperties.getServiceVersion()).to(builder::serviceVersion);
         map.from(queueProperties.getEndpoint()).to(builder::endpoint);

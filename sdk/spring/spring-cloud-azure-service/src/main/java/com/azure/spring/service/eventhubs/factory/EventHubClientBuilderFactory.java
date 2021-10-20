@@ -90,7 +90,7 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
 
     @Override
     protected void configureService(EventHubClientBuilder builder) {
-        PropertyMapper mapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper mapper = new PropertyMapper();
 
         mapper.from(eventHubProperties.getPrefetchCount()).to(builder::prefetchCount);
         mapper.from(eventHubProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);

@@ -46,7 +46,7 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureHttpClientBuil
 
     @Override
     public void configureService(BlobServiceClientBuilder builder) {
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper map = new PropertyMapper();
         map.from(blobProperties.getCustomerProvidedKey()).to(CustomerProvidedKey::new);
         map.from(blobProperties.getEncryptionScope()).to(builder::encryptionScope);
         map.from(blobProperties.getEndpoint()).to(builder::endpoint);

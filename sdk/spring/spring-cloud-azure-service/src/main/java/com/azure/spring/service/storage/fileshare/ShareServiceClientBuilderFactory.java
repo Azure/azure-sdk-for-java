@@ -80,7 +80,7 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureHttpClientBui
 
     @Override
     protected void configureService(ShareServiceClientBuilder builder) {
-        PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper map = new PropertyMapper();
         map.from(this.fileShareProperties.getEndpoint()).to(builder::endpoint);
         map.from(this.fileShareProperties.getServiceVersion()).to(builder::serviceVersion);
     }
