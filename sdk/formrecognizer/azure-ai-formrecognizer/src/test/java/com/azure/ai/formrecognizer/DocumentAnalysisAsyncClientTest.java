@@ -190,7 +190,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .setPollInterval(durationTestMode)
                     .getSyncPoller().getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -248,7 +248,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .getFinalResult());
 
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -389,7 +389,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .setPollInterval(durationTestMode)
                     .getSyncPoller().getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -522,7 +522,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                 () -> client.beginAnalyzeDocumentFromUrl("prebuilt-layout", invalidSourceUrl)
                     .setPollInterval(durationTestMode).getSyncPoller().getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -685,7 +685,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .getFinalResult());
 
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -764,7 +764,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .getFinalResult());
 
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -931,7 +931,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .getSyncPoller()
                     .getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -1140,7 +1140,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     .getFinalResult());
 
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -1178,7 +1178,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
                     () -> client.beginAnalyzeDocumentFromUrl("prebuilt-idDocument", invalidSourceUrl)
                         .setPollInterval(durationTestMode).getSyncPoller().getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 }

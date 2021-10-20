@@ -193,7 +193,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                         .getFinalResult());
             ResponseError responseError =
                 (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -380,7 +380,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                         .getFinalResult());
             ResponseError responseError =
                 (ResponseError) errorResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -857,7 +857,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 () -> client.beginAnalyzeDocumentFromUrl(NON_EXIST_MODEL_ID, fileUrl)
                     .setPollInterval(durationTestMode));
             ResponseError responseError = (ResponseError) errorResponseException.getValue();
-            Assertions.assertEquals("ModelNotFound", responseError.getCode());
+            Assertions.assertEquals("NotFound", responseError.getCode());
         }, CONTENT_FORM_JPG);
     }
 
@@ -1015,7 +1015,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -1188,7 +1188,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -1396,7 +1396,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
             ResponseError responseError = (ResponseError) httpResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -1432,7 +1432,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                     .setPollInterval(durationTestMode)
                     .getFinalResult());
             ResponseError responseError = (ResponseError) errorResponseException.getValue();
-            Assertions.assertEquals("InvalidContent", responseError.getCode());
+            Assertions.assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 }

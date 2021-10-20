@@ -25,13 +25,13 @@ import com.azure.ai.formrecognizer.implementation.models.OperationInfo;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.AnalyzedDocument;
 import com.azure.ai.formrecognizer.models.BoundingRegion;
-import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentEntity;
 import com.azure.ai.formrecognizer.models.DocumentField;
 import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentKeyValueElement;
 import com.azure.ai.formrecognizer.models.DocumentKeyValuePair;
 import com.azure.ai.formrecognizer.models.DocumentLine;
+import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.models.DocumentPage;
 import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
@@ -573,12 +573,15 @@ public class Transforms {
             return null;
         }
         com.azure.ai.formrecognizer.implementation.models.InnerError innerError = error.getInnererror();
+        String message = error.getMessage();
+        StringBuilder errorInformationStringBuilder = new StringBuilder().append(message);
 
-        if (innerError == null) {
-            return new ResponseError(error.getCode(), error.getMessage());
-        } else {
-            return new ResponseError(innerError.getCode(), innerError.getMessage());
+        if (innerError != null) {
+            errorInformationStringBuilder.append(", " + "errorCode" + ": [")
+                .append(innerError.getCode()).append("], ").append("message")
+                .append(": ").append(innerError.getMessage());
         }
+        return new ResponseError(error.getCode(), errorInformationStringBuilder.toString());
     }
 
     private static DocumentModelOperationError toDocumentModelOperationError(Error error) {

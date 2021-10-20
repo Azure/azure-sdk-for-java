@@ -80,7 +80,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
             client.getModel(NON_EXIST_MODEL_ID));
         final ResponseError responseError = (ResponseError) exception.getValue();
-        assertEquals("ModelNotFound", responseError.getCode());
+        assertEquals("NotFound", responseError.getCode());
     }
 
     /**
@@ -137,7 +137,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
             client.deleteModel(NON_EXIST_MODEL_ID));
         final ResponseError responseError = (ResponseError) exception.getValue();
-        assertEquals("ModelNotFound", responseError.getCode());
+        assertEquals("NotFound", responseError.getCode());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -310,7 +310,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
                 .setPollInterval(durationTestMode));
 
             final ResponseError responseError  = (ResponseError) exception.getValue();
-            assertEquals("TrainingContentMissing", responseError.getCode());
+            assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -330,7 +330,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
                     .setPollInterval(durationTestMode));
 
             final ResponseError responseError = (ResponseError) exception.getValue();
-            assertEquals("TrainingContentMissing", responseError.getCode());
+            assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
