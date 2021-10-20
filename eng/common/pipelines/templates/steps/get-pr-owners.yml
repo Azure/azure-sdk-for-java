@@ -34,12 +34,12 @@ steps:
       Remove-Item -Force -Recurse $(Build.SourcesDirectory)/tools_repo
     displayName: Clean Up Cloned Tools Repo
 
-  - task: PowerShell@2
-    displayName: Add CodeOwners if Present
-    inputs:
-      pwsh: true
-      filePath: $(Build.SourcesDirectory)/eng/common/scripts/get-codeowners.ps1
-      arguments: >
-        -TargetDirectory "/sdk/${{ parameters.ServiceDirectory }}/"
-        -RootDirectory "$(Build.SourcesDirectory)"
-        -VsoVariable "${{ parameters.TargetVariable }}"
+  # - task: PowerShell@2
+  #   displayName: Add CodeOwners if Present
+  #   inputs:
+  #     pwsh: true
+  #     filePath: $(Build.SourcesDirectory)/eng/common/scripts/get-codeowners.ps1
+  #     arguments: >
+  #       -TargetDirectory "/sdk/${{ parameters.ServiceDirectory }}/"
+  #       -RootDirectory "$(Build.SourcesDirectory)"
+  #       -VsoVariable "${{ parameters.TargetVariable }}"
