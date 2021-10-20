@@ -1,0 +1,39 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/vi/ci.yml
+      - sdk/vi/azure-resourcemanager-vi/
+    exclude:
+      - sdk/vi/pom.xml
+      - sdk/vi/azure-resourcemanager-vi/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/vi/ci.yml
+      - sdk/vi/azure-resourcemanager-vi/
+    exclude:
+      - sdk/vi/pom.xml
+      - sdk/vi/azure-resourcemanager-vi/pom.xml
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: vi
+    Artifacts:
+      - name: azure-resourcemanager-vi
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagervi
