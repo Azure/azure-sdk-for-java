@@ -140,29 +140,29 @@ public final class AnalyzeActionsResult {
     }
 
     /**
-     * Gets the {@code customRecognizeEntitiesResults} property: the custom recognize entities actions results property.
+     * Gets the {@code recognizeCustomEntitiesResults} property: the custom recognize entities actions results property.
      *
-     * @return the customRecognizeEntitiesResults value.
+     * @return the recognizeCustomEntitiesResults value.
      */
     public IterableStream<RecognizeCustomEntitiesActionResult> getRecognizeCustomEntitiesResults() {
         return recognizeCustomEntitiesResults;
     }
 
     /**
-     * Gets the {@code customClassifyDocumentSingleCategoryResults} property: the custom classify document
+     * Gets the {@code singleCategoryClassifyResults} property: the custom classify document
      * single category actions results property.
      *
-     * @return the customClassifyDocumentSingleCategoryResults value.
+     * @return the singleCategoryClassifyResults value.
      */
     public IterableStream<SingleCategoryClassifyActionResult> getSingleCategoryClassifyResults() {
         return singleCategoryClassifyResults;
     }
 
     /**
-     * Gets the {@code customClassifyDocumentMultiCategoriesResults} property: the custom classify document
+     * Gets the {@code multiCategoryClassifyResults} property: the custom classify document
      * multiple categories actions results property.
      *
-     * @return the customClassifyDocumentMultiCategoriesResults value.
+     * @return the multiCategoryClassifyResults value.
      */
     public IterableStream<MultiCategoryClassifyActionResult> getMultiCategoryClassifyResults() {
         return multiCategoryClassifyResults;

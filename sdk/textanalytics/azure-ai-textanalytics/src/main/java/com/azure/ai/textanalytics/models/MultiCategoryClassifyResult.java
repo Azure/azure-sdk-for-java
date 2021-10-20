@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link MultiCategoryClassifyResult} model. It classify the text document the multiple categories.
+ * The {@link MultiCategoryClassifyResult} model. It classifies the text document the multiple categories.
  */
 @Immutable
 public final class MultiCategoryClassifyResult extends TextAnalyticsResult {
@@ -16,8 +16,8 @@ public final class MultiCategoryClassifyResult extends TextAnalyticsResult {
 
     static {
         MultiCategoryClassifyResultPropertiesHelper.setAccessor(
-            ((classifyMultiCategoriesResult, classifications) ->
-                 classifyMultiCategoriesResult.setClassifications(classifications))
+            ((classifyMultiCategoryResult, classifications) ->
+                 classifyMultiCategoryResult.setClassifications(classifications))
         );
     }
 

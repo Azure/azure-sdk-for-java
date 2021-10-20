@@ -2719,7 +2719,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void multiCategoryClassifyAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
-        classifyCustomMultiCategoriesActionRunner((documents, tasks) -> {
+        classifyCustomMultiCategoryActionRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en", null).getSyncPoller();
             syncPoller = setPollInterval(syncPoller);
@@ -2731,7 +2731,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             actionsResults.forEach(
                 actionsResult -> actionsResult.getMultiCategoryClassifyResults().forEach(
                     customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCustomMultiCategories(documentResult))));
+                        documentResult -> validateCustomMultiCategory(documentResult))));
         });
     }
 }

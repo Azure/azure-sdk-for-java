@@ -64,9 +64,9 @@ public final class MultiCategoryClassifyResultCollection
     }
 
     /**
-     * Gets the name of the deployment (model version) being consumed.
+     * Gets the name of the deployment being consumed.
      *
-     * @return The name of the deployment (model version) being consumed.
+     * @return The name of the deployment being consumed.
      */
     public String getDeploymentName() {
         return deploymentName;

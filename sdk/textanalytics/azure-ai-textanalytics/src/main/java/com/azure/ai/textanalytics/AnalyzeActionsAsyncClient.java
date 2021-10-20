@@ -692,6 +692,7 @@ class AnalyzeActionsAsyncClient {
                     RecognizeCustomEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toRecognizeCustomEntitiesResultCollection(results));
                 }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 recognizeCustomEntitiesActionResults.add(actionResult);
@@ -709,6 +710,7 @@ class AnalyzeActionsAsyncClient {
                     SingleCategoryClassifyActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toSingleCategoryClassifyResultCollection(results));
                 }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 singleCategoryClassifyActionResults.add(actionResult);
@@ -726,6 +728,7 @@ class AnalyzeActionsAsyncClient {
                     MultiCategoryClassifyActionResultPropertiesHelper.setDocumentsResults(actionResult,
                         toMultiCategoryClassifyResultCollection(results));
                 }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
                 TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
                     taskItem.getLastUpdateDateTime());
                 multiCategoryClassifyActionResults.add(actionResult);
@@ -788,7 +791,7 @@ class AnalyzeActionsAsyncClient {
             IterableStream.of(recognizeCustomEntitiesActionResults));
         AnalyzeActionsResultPropertiesHelper.setClassifySingleCategoryResults(analyzeActionsResult,
             IterableStream.of(singleCategoryClassifyActionResults));
-        AnalyzeActionsResultPropertiesHelper.setClassifyMultiCategoriesResults(analyzeActionsResult,
+        AnalyzeActionsResultPropertiesHelper.setClassifyMultiCategoryResults(analyzeActionsResult,
             IterableStream.of(multiCategoryClassifyActionResults));
         return analyzeActionsResult;
     }

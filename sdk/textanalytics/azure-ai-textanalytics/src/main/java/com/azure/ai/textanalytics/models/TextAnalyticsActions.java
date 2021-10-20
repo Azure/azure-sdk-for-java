@@ -59,9 +59,6 @@ public final class TextAnalyticsActions {
      * @param recognizeEntitiesActions The list of {@link RecognizeEntitiesAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link RecognizeEntitiesAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setRecognizeEntitiesActions(RecognizeEntitiesAction... recognizeEntitiesActions) {
         this.recognizeEntitiesActions = recognizeEntitiesActions == null ? null
@@ -84,9 +81,6 @@ public final class TextAnalyticsActions {
      * @param recognizeLinkedEntitiesActions The list of {@link RecognizeLinkedEntitiesAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link RecognizeLinkedEntitiesAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setRecognizeLinkedEntitiesActions(
         RecognizeLinkedEntitiesAction... recognizeLinkedEntitiesActions) {
@@ -110,9 +104,6 @@ public final class TextAnalyticsActions {
      * @param recognizePiiEntitiesActions The list of {@link RecognizePiiEntitiesAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link RecognizePiiEntitiesAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setRecognizePiiEntitiesActions(
         RecognizePiiEntitiesAction... recognizePiiEntitiesActions) {
@@ -136,9 +127,6 @@ public final class TextAnalyticsActions {
      * @param extractKeyPhrasesActions The list of {@link ExtractKeyPhrasesAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link ExtractKeyPhrasesAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setExtractKeyPhrasesActions(ExtractKeyPhrasesAction... extractKeyPhrasesActions) {
         this.extractKeyPhrasesActions = extractKeyPhrasesActions == null ? null
@@ -161,9 +149,6 @@ public final class TextAnalyticsActions {
      * @param analyzeSentimentActions The list of {@link AnalyzeSentimentAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link AnalyzeSentimentAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setAnalyzeSentimentActions(AnalyzeSentimentAction... analyzeSentimentActions) {
         this.analyzeSentimentActions = analyzeSentimentActions == null ? null : Arrays.asList(analyzeSentimentActions);
@@ -185,9 +170,6 @@ public final class TextAnalyticsActions {
      * @param extractSummaryActions The list of {@link ExtractSummaryAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link ExtractSummaryAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
         this.extractSummaryActions = extractSummaryActions == null ? null : Arrays.asList(extractSummaryActions);
@@ -209,9 +191,6 @@ public final class TextAnalyticsActions {
      * @param recognizeCustomEntitiesActions The list of {@link RecognizeCustomEntitiesAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link RecognizeCustomEntitiesAction} action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setRecognizeCustomEntitiesActions(
         RecognizeCustomEntitiesAction... recognizeCustomEntitiesActions) {
@@ -236,10 +215,6 @@ public final class TextAnalyticsActions {
      * {@link SingleCategoryClassifyAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link SingleCategoryClassifyAction}
-     * action are passed in.
-     * Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setSingleCategoryClassifyActions(
         SingleCategoryClassifyAction... singleCategoryClassifyActions) {
@@ -264,9 +239,6 @@ public final class TextAnalyticsActions {
      * be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
-     *
-     * @throws IllegalArgumentException if more than one {@link MultiCategoryClassifyAction} action are
-     * passed in. Currently service v3.1 and up only accepts up to one action per type.
      */
     public TextAnalyticsActions setMultiCategoryClassifyActions(
         MultiCategoryClassifyAction... multiCategoryClassifyActions) {

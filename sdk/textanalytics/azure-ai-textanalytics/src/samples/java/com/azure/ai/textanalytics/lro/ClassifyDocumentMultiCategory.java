@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Sample demonstrates how to synchronously execute a "Multi-label Classification" action.
  */
-public class ClassifyDocumentMultiCategories {
+public class ClassifyDocumentMultiCategory {
     /**
      * Main method to invoke this demo about how to analyze an "Multi-label Classification" action.
      *
@@ -68,7 +68,7 @@ public class ClassifyDocumentMultiCategories {
                         }
                     }
                 } else {
-                    System.out.printf("\tCannot execute 'ClassifyCustomMultiCategoriesAction'. Error: %s%n",
+                    System.out.printf("\tCannot execute 'MultiCategoryClassifyAction'. Error: %s%n",
                         actionResult.getError().getMessage());
                 }
             }

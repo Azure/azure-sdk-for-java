@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample demonstrates how to asynchronously execute a "Multi-label Classification" action.
  */
-public class ClassifyDocumentMultiCategoriesAsync {
+public class ClassifyDocumentMultiCategoryAsync {
     /**
      * Main method to invoke this demo about how to analyze an "Multi-label Classification" action.
      *
@@ -89,7 +89,7 @@ public class ClassifyDocumentMultiCategoriesAsync {
                     }
                 }
             } else {
-                System.out.printf("\tCannot execute 'ClassifyCustomMultiCategoriesAction'. Error: %s%n",
+                System.out.printf("\tCannot execute 'MultiCategoryClassifyAction'. Error: %s%n",
                     actionResult.getError().getMessage());
             }
         }

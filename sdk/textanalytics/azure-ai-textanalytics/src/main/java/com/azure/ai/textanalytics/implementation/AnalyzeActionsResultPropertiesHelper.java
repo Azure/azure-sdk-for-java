@@ -97,7 +97,7 @@ public final class AnalyzeActionsResultPropertiesHelper {
         accessor.setSingleCategoryClassifyResults(analyzeActionsResult, classifyCustomCategoryResults);
     }
 
-    public static void setClassifyMultiCategoriesResults(AnalyzeActionsResult analyzeActionsResult,
+    public static void setClassifyMultiCategoryResults(AnalyzeActionsResult analyzeActionsResult,
         IterableStream<MultiCategoryClassifyActionResult> classifyCustomCategoriesResults) {
         accessor.setMultiCategoryClassifyResults(analyzeActionsResult, classifyCustomCategoriesResults);
     }

@@ -37,6 +37,9 @@ import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -2638,7 +2641,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void multiCategoryClassifyAction(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        classifyCustomMultiCategoriesActionRunner((documents, tasks) -> {
+        classifyCustomMultiCategoryActionRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en", null);
             syncPoller = setPollInterval(syncPoller);
@@ -2650,7 +2653,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             actionsResults.forEach(
                 actionsResult -> actionsResult.getMultiCategoryClassifyResults().forEach(
                     customMultiCategoryActionResult -> customMultiCategoryActionResult.getDocumentsResults().forEach(
-                        documentResult -> validateCustomMultiCategories(documentResult))));
+                        documentResult -> validateCustomMultiCategory(documentResult))));
         });
     }
 }

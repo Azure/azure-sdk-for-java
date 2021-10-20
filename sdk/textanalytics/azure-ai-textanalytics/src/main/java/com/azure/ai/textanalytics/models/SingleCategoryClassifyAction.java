@@ -21,7 +21,7 @@ public final class SingleCategoryClassifyAction {
      * in a set of documents.
      *
      * @param projectName The name of the project which owns the model being consumed.
-     * @param deploymentName The name of the deployment (model version) being consumed.
+     * @param deploymentName The name of the deployment being consumed.
      */
     public SingleCategoryClassifyAction(String projectName, String deploymentName) {
         this.projectName = projectName;
@@ -59,9 +59,9 @@ public final class SingleCategoryClassifyAction {
     }
 
     /**
-     * Gets the name of the deployment (model version) being consumed.
+     * Gets the name of the deployment being consumed.
      *
-     * @return The name of the deployment (model version) being consumed.
+     * @return The name of the deployment being consumed.
      */
     public String getDeploymentName() {
         return deploymentName;

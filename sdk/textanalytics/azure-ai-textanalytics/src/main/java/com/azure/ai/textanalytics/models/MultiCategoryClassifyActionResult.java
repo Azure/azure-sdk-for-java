@@ -8,7 +8,7 @@ import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link MultiCategoryClassifyActionResult} is the result for
+ * The {@link MultiCategoryClassifyActionResult} is the result for multi-category classify action analysis.
  */
 @Immutable
 public final class MultiCategoryClassifyActionResult extends TextAnalyticsActionResult {
