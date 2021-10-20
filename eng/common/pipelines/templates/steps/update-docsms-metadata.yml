@@ -32,6 +32,9 @@ parameters:
   - name: TargetUserVariable
     type: string
     default: ''
+  - name: DevOpsFeed
+    type: string
+    default: "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-net/nuget/v3/index.json"
 steps:
 - template: /eng/common/pipelines/templates/steps/enable-long-path-support.yml
 
@@ -53,8 +56,17 @@ steps:
   inputs:
     command: custom
     custom: 'tool'
-    arguments: 'install --global --add-source "${parameters.DevOpsFeed}" --version "1.0.0-dev.20211018.1" "Azure.Sdk.Tools.IdentityResolver"'
+    arguments: 'install --global --add-source "${{ parameters.DevOpsFeed }}" --version "1.0.0-dev.20211018.1" "Azure.Sdk.Tools.IdentityResolver"'
     workingDirectory: '$(Agent.BuildDirectory)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Install CodeOwners Retriever'
+  inputs:
+    command: custom
+    custom: 'tool'
+    arguments: 'install --global --add-source "${{ parameters.DevOpsFeed }}" --version "1.0.0-dev.20211019.1" "Azure.Sdk.Tools.RetrieveCodeOwners"'
+    workingDirectory: '$(Agent.BuildDirectory)'
+
 - pwsh: |
     identity-resolver `
       --aad-app-id-var APP_ID `
