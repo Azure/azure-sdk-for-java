@@ -120,7 +120,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                 .verifyErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
                     final ResponseError responseError = (ResponseError) ((HttpResponseException) throwable).getValue();
-                    assertEquals("ModelNotFound", responseError.getCode());
+                    assertEquals("NotFound", responseError.getCode());
                 });
         });
     }

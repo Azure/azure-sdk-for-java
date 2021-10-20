@@ -823,7 +823,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
 
             adminClient.deleteModel(createdModel.getModelId());
 
-            Assertions.assertEquals("InvalidContentSourceFormat", responseError.getCode());
+            Assertions.assertEquals("InvalidArgument", responseError.getCode());
         });
     }
 
@@ -888,7 +888,7 @@ public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
                 adminClient.deleteModel(modelId);
 
                 ResponseError responseError = (ResponseError) httpResponseException.getValue();
-                Assertions.assertEquals("InvalidContent", responseError.getCode());
+                Assertions.assertEquals("InvalidRequest", responseError.getCode());
             })));
     }
 

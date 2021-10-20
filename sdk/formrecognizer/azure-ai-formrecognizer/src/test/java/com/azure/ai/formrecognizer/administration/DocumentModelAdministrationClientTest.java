@@ -159,7 +159,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
             final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.getModelWithResponse(createdModel.getModelId(), Context.NONE));
             final ResponseError responseError = (ResponseError) exception.getValue();
-            assertEquals("ModelNotFound", responseError.getCode());
+            assertEquals("NotFound", responseError.getCode());
         });
     }
 
