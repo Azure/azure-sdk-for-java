@@ -56,7 +56,11 @@ jobs:
           git status
         displayName: Checkout daily branch if it exists
         workingDirectory: $(DocRepoLocation)
+        
+      # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
+      # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
       - powershell: |
+          # Linux mvn `setting.xml` is sitting under path `~/.m2/setting.xml`
           Get-Command mvn
           if (!(Test-Path '~/.m2/')) {
             mkdir ~/.m2/
