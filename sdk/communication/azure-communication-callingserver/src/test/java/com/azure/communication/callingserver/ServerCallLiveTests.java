@@ -142,6 +142,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
             options.setAudioFileId(UUID.randomUUID().toString());
             options.setCallbackUri(URI.create(CALLBACK_URI));
             options.setOperationContext(operationContext);
+            options.setLoop(true);
 
             PlayAudioResult playAudioResult =
             callingServerClient.playAudio(groupCallLocator, URI.create(AUDIO_FILE_URI), options);

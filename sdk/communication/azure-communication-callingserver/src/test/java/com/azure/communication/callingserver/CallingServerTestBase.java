@@ -53,7 +53,7 @@ public class CallingServerTestBase extends TestBase {
             "016a7064-0581-40b9-be73-6dde64d69d72");
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("AZURE_PHONE_NUMBER", "+15551234567");
+        .get("ALTERNATE_CALLERID", "+15551234567");
 
     protected static final String TO_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+15551234567");
