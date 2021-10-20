@@ -103,7 +103,7 @@ steps:
       -DocRepoLocation "${{ parameters.WorkingDirectory }}/repo"
       -Language "${{parameters.Language}}"
       -Configs "${{ parameters.CIConfigs }}"
-      -VsoVariable "${{ parameters.GHReviewersVariable }}"
+      -DocAuthorInfo "$(parameters.GHReviewersVariable)"
     pwsh: true
   env:
     GH_TOKEN: $(azuresdk-github-pat)
