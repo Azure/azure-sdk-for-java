@@ -129,7 +129,7 @@ public class ServerCallUnitTests {
 
     @Test
     public void appParticipantServerCall() {
-        var callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+        CallingServerClient callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateAddParticipantResult(CallingServerResponseMocker.NEW_PARTICIPANT.getId()), 202)
             ))
@@ -141,7 +141,7 @@ public class ServerCallUnitTests {
 
     @Test
     public void appParticipantServerCallWithResponse() {
-        var callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+        CallingServerClient callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateAddParticipantResult(CallingServerResponseMocker.NEW_PARTICIPANT.getId()), 202)
             ))
@@ -155,7 +155,7 @@ public class ServerCallUnitTests {
 
     @Test
     public void appParticipantServerCallAsync() {
-        var callingServerAsyncClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+        CallingServerAsyncClient callingServerAsyncClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateAddParticipantResult(CallingServerResponseMocker.NEW_PARTICIPANT.getId()), 202)
             ))
@@ -167,7 +167,7 @@ public class ServerCallUnitTests {
 
     @Test
     public void appParticipantServerCallAsyncWithResponse() {
-        var callingServerAsyncClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+        CallingServerAsyncClient callingServerAsyncClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateAddParticipantResult(CallingServerResponseMocker.NEW_PARTICIPANT.getId()), 202)
             ))
@@ -181,7 +181,7 @@ public class ServerCallUnitTests {
 
     @Test
     public void removeParticipantServerCall() {
-        var callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+        CallingServerClient callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 202)
             ))
@@ -192,7 +192,7 @@ public class ServerCallUnitTests {
 
     @Test
     public void removeParticipantServerCallWithResponse() {
-        var callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+        CallingServerClient callingServerClient = CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 202)
             ))
@@ -204,7 +204,7 @@ public class ServerCallUnitTests {
 
     @Test
     public void removeParticipantServerCallAsync() {
-        var callingServerAsyncClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+        CallingServerAsyncClient callingServerAsyncClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 202)
             ))
@@ -215,7 +215,7 @@ public class ServerCallUnitTests {
 
     @Test
     public void removeParticipantServerCallAsyncWithResponse() {
-        var callingServerAsyncClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+        CallingServerAsyncClient callingServerAsyncClient = CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 202)
             ))

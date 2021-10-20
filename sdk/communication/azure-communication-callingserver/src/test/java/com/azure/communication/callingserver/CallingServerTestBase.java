@@ -49,6 +49,9 @@ public class CallingServerTestBase extends TestBase {
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT",
         "https://REDACTED.communication.azure.com/");
 
+    protected static final String ENDPOINT_401 = Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT_401",
+        "https://REDACTED.communication.azure.com/");
+
     protected static final String AZURE_TENANT_ID = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
             "016a7064-0581-40b9-be73-6dde64d69d72");
@@ -73,6 +76,12 @@ public class CallingServerTestBase extends TestBase {
 
     protected static final String CONTENT_URL_404 = Configuration.getGlobalConfiguration()
         .get("CONTENT_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141d/content/acsmetadata");
+
+    protected static final String RECORDING_DELETE_URL = Configuration.getGlobalConfiguration()
+        .get("RECORDING_DELETE_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d11-229745ac3df2eeaf672cefd311ef2401");
+
+    protected static final String RECORDING_DELETE_URL_404 = Configuration.getGlobalConfiguration()
+        .get("RECORDING_DELETE_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -132,6 +141,22 @@ public class CallingServerTestBase extends TestBase {
 
         CallingServerClientBuilder builder = new CallingServerClientBuilder()
             .endpoint(ENDPOINT)
+            .credential(tokenCredential)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        return builder;
+    }
+
+    protected CallingServerClientBuilder getCallingServerClientUsingInvalidTokenCredential(HttpClient httpClient) {
+        TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
+
+        CallingServerClientBuilder builder = new CallingServerClientBuilder()
+            .endpoint(ENDPOINT_401)
             .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
