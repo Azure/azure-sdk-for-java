@@ -261,7 +261,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String peeringName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, circuitName, peeringName);
@@ -282,7 +282,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String peeringName, Context context) {
         context = this.client.mergeContext(context);
@@ -304,7 +304,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String peeringName) {
         return beginDeleteAsync(resourceGroupName, circuitName, peeringName).getSyncPoller();
@@ -322,7 +322,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String peeringName, Context context) {
         return beginDeleteAsync(resourceGroupName, circuitName, peeringName, context).getSyncPoller();
@@ -702,7 +702,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -734,7 +734,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -767,7 +767,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner> beginCreateOrUpdate(
         String resourceGroupName,
         String circuitName,
@@ -789,7 +789,7 @@ public final class ExpressRouteCircuitPeeringsClientImpl implements ExpressRoute
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteCircuitPeeringInner>, ExpressRouteCircuitPeeringInner> beginCreateOrUpdate(
         String resourceGroupName,
         String circuitName,

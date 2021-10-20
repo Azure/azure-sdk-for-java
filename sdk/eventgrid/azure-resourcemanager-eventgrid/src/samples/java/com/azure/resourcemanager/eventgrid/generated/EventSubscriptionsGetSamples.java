@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EventSubscriptions Get. */
 public final class EventSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetForResourceGroup.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_GetForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_GetForResourceGroup.
@@ -27,7 +27,7 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetForSubscription.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_GetForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_GetForSubscription.
@@ -43,7 +43,7 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetForCustomTopic.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_GetForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic.
@@ -61,7 +61,7 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2021-06-01-preview/examples/EventSubscriptions_GetForResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/EventSubscriptions_GetForResource.json
      */
     /**
      * Sample code: EventSubscriptions_GetForResource.

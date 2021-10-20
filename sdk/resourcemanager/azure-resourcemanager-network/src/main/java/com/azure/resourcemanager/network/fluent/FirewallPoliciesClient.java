@@ -49,7 +49,7 @@ public interface FirewallPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String firewallPolicyName);
 
     /**
@@ -62,7 +62,7 @@ public interface FirewallPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String firewallPolicyName);
 
     /**
@@ -76,7 +76,7 @@ public interface FirewallPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String firewallPolicyName, Context context);
 
@@ -216,7 +216,7 @@ public interface FirewallPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return firewallPolicy Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters);
 
@@ -231,7 +231,7 @@ public interface FirewallPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return firewallPolicy Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters);
 
@@ -247,7 +247,7 @@ public interface FirewallPoliciesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return firewallPolicy Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FirewallPolicyInner>, FirewallPolicyInner> beginCreateOrUpdate(
         String resourceGroupName, String firewallPolicyName, FirewallPolicyInner parameters, Context context);
 

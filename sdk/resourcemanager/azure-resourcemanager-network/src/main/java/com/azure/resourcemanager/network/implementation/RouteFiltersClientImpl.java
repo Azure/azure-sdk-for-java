@@ -292,7 +292,7 @@ public final class RouteFiltersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String routeFilterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeFilterName);
         return this
@@ -311,7 +311,7 @@ public final class RouteFiltersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String routeFilterName, Context context) {
         context = this.client.mergeContext(context);
@@ -331,7 +331,7 @@ public final class RouteFiltersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeFilterName) {
         return beginDeleteAsync(resourceGroupName, routeFilterName).getSyncPoller();
     }
@@ -347,7 +347,7 @@ public final class RouteFiltersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String routeFilterName, Context context) {
         return beginDeleteAsync(resourceGroupName, routeFilterName, context).getSyncPoller();
@@ -727,7 +727,7 @@ public final class RouteFiltersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route Filter Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -750,7 +750,7 @@ public final class RouteFiltersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route Filter Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
         context = this.client.mergeContext(context);
@@ -773,7 +773,7 @@ public final class RouteFiltersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route Filter Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdate(
         String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters).getSyncPoller();
@@ -791,7 +791,7 @@ public final class RouteFiltersClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route Filter Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdate(
         String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, routeFilterName, routeFilterParameters, context)

@@ -20,6 +20,7 @@ import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -496,6 +497,32 @@ public final class BulkExecutor<TContext> {
     private Mono<CosmosBatchResponse> executeBatchRequest(PartitionKeyRangeServerBatchRequest serverRequest) {
         RequestOptions options = new RequestOptions();
         options.setOperationContextAndListenerTuple(operationListener);
+
+        // The request options here are used for the BulkRequest exchanged with the service
+        // If contentResponseOnWrite is not enabled here (or at the client level) the
+        // service will not even send a bulk response payload - so all the
+        // CosmosBulItemRequestOptions are irrelevant - all payloads will be null
+        // Instead we should automatically enforce contentResponseOnWrite for all
+        // bulk requests whenever at least one of the item operations requires a content response (either
+        // because it is a read operation or because contentResponseOnWrite was enabled explicitly)
+        if (!this.docClientWrapper.isContentResponseOnWriteEnabled() &&
+            serverRequest.getOperations().size() > 0) {
+
+            for (CosmosItemOperation itemOperation : serverRequest.getOperations()) {
+                if (itemOperation instanceof ItemBulkOperation<?, ?>) {
+
+                    ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) itemOperation;
+                    if (itemBulkOperation.getOperationType() == CosmosItemOperationType.READ ||
+                        (itemBulkOperation.getRequestOptions() != null &&
+                            itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled() != null &&
+                            itemBulkOperation.getRequestOptions().isContentResponseOnWriteEnabled().booleanValue())) {
+
+                        options.setContentResponseOnWriteEnabled(true);
+                        break;
+                    }
+                }
+            }
+        }
 
         return this.docClientWrapper.executeBatchRequest(
             BridgeInternal.getLink(this.container), serverRequest, options, false);

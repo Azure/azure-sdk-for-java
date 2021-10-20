@@ -48,7 +48,7 @@ public interface FirewallPolicyRuleCollectionGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName);
 
@@ -63,7 +63,7 @@ public interface FirewallPolicyRuleCollectionGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName);
 
@@ -79,7 +79,7 @@ public interface FirewallPolicyRuleCollectionGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String firewallPolicyName, String ruleCollectionGroupName, Context context);
 
@@ -216,7 +216,7 @@ public interface FirewallPolicyRuleCollectionGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rule Collection Group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<FirewallPolicyRuleCollectionGroupInner>, FirewallPolicyRuleCollectionGroupInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -236,7 +236,7 @@ public interface FirewallPolicyRuleCollectionGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rule Collection Group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FirewallPolicyRuleCollectionGroupInner>, FirewallPolicyRuleCollectionGroupInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -257,7 +257,7 @@ public interface FirewallPolicyRuleCollectionGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return rule Collection Group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<FirewallPolicyRuleCollectionGroupInner>, FirewallPolicyRuleCollectionGroupInner>
         beginCreateOrUpdate(
             String resourceGroupName,

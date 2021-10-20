@@ -1,5 +1,23 @@
 # Release History
 
+## 11.5.0-beta.5 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 11.4.4 (2021-10-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` and other dependencies for the library.
+- 
 ## 11.5.0-beta.4 (2021-10-12)
 
 ### Features Added

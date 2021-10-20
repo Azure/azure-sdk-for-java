@@ -1,5 +1,16 @@
 # Release History
 
+## 12.15.0-beta.1 (Unreleased)
+
+### Features Added
+- Added support for permanent delete permissions in blob and account level SAS.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 12.14.1 (2021-10-12)
 
 ### Bugs Fixed

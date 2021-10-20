@@ -7,8 +7,6 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DeadLetterDestination;
-import com.azure.resourcemanager.eventgrid.models.DeadLetterWithResourceIdentity;
-import com.azure.resourcemanager.eventgrid.models.DeliveryWithResourceIdentity;
 import com.azure.resourcemanager.eventgrid.models.EventDeliverySchema;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
@@ -39,21 +37,9 @@ public final class EventSubscriptionProperties {
     /*
      * Information about the destination where events have to be delivered for
      * the event subscription.
-     * Uses Azure Event Grid's identity to acquire the authentication tokens
-     * being used during delivery / dead-lettering.
      */
     @JsonProperty(value = "destination")
     private EventSubscriptionDestination destination;
-
-    /*
-     * Information about the destination where events have to be delivered for
-     * the event subscription.
-     * Uses the managed identity setup on the parent resource (namely, topic or
-     * domain) to acquire the authentication tokens being used during delivery
-     * / dead-lettering.
-     */
-    @JsonProperty(value = "deliveryWithResourceIdentity")
-    private DeliveryWithResourceIdentity deliveryWithResourceIdentity;
 
     /*
      * Information about the filter for the event subscription.
@@ -87,25 +73,10 @@ public final class EventSubscriptionProperties {
     private RetryPolicy retryPolicy;
 
     /*
-     * The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter
-     * destination.
-     * Uses Azure Event Grid's identity to acquire the authentication tokens
-     * being used during delivery / dead-lettering.
+     * The DeadLetter destination of the event subscription.
      */
     @JsonProperty(value = "deadLetterDestination")
     private DeadLetterDestination deadLetterDestination;
-
-    /*
-     * The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter
-     * destination.
-     * Uses the managed identity setup on the parent resource (namely, topic or
-     * domain) to acquire the authentication tokens being used during delivery
-     * / dead-lettering.
-     */
-    @JsonProperty(value = "deadLetterWithResourceIdentity")
-    private DeadLetterWithResourceIdentity deadLetterWithResourceIdentity;
 
     /**
      * Get the topic property: Name of the topic of the event subscription.
@@ -127,8 +98,7 @@ public final class EventSubscriptionProperties {
 
     /**
      * Get the destination property: Information about the destination where events have to be delivered for the event
-     * subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
-     * dead-lettering.
+     * subscription.
      *
      * @return the destination value.
      */
@@ -138,39 +108,13 @@ public final class EventSubscriptionProperties {
 
     /**
      * Set the destination property: Information about the destination where events have to be delivered for the event
-     * subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
-     * dead-lettering.
+     * subscription.
      *
      * @param destination the destination value to set.
      * @return the EventSubscriptionProperties object itself.
      */
     public EventSubscriptionProperties withDestination(EventSubscriptionDestination destination) {
         this.destination = destination;
-        return this;
-    }
-
-    /**
-     * Get the deliveryWithResourceIdentity property: Information about the destination where events have to be
-     * delivered for the event subscription. Uses the managed identity setup on the parent resource (namely, topic or
-     * domain) to acquire the authentication tokens being used during delivery / dead-lettering.
-     *
-     * @return the deliveryWithResourceIdentity value.
-     */
-    public DeliveryWithResourceIdentity deliveryWithResourceIdentity() {
-        return this.deliveryWithResourceIdentity;
-    }
-
-    /**
-     * Set the deliveryWithResourceIdentity property: Information about the destination where events have to be
-     * delivered for the event subscription. Uses the managed identity setup on the parent resource (namely, topic or
-     * domain) to acquire the authentication tokens being used during delivery / dead-lettering.
-     *
-     * @param deliveryWithResourceIdentity the deliveryWithResourceIdentity value to set.
-     * @return the EventSubscriptionProperties object itself.
-     */
-    public EventSubscriptionProperties withDeliveryWithResourceIdentity(
-        DeliveryWithResourceIdentity deliveryWithResourceIdentity) {
-        this.deliveryWithResourceIdentity = deliveryWithResourceIdentity;
         return this;
     }
 
@@ -277,9 +221,7 @@ public final class EventSubscriptionProperties {
     }
 
     /**
-     * Get the deadLetterDestination property: The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's identity
-     * to acquire the authentication tokens being used during delivery / dead-lettering.
+     * Get the deadLetterDestination property: The DeadLetter destination of the event subscription.
      *
      * @return the deadLetterDestination value.
      */
@@ -288,42 +230,13 @@ public final class EventSubscriptionProperties {
     }
 
     /**
-     * Set the deadLetterDestination property: The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's identity
-     * to acquire the authentication tokens being used during delivery / dead-lettering.
+     * Set the deadLetterDestination property: The DeadLetter destination of the event subscription.
      *
      * @param deadLetterDestination the deadLetterDestination value to set.
      * @return the EventSubscriptionProperties object itself.
      */
     public EventSubscriptionProperties withDeadLetterDestination(DeadLetterDestination deadLetterDestination) {
         this.deadLetterDestination = deadLetterDestination;
-        return this;
-    }
-
-    /**
-     * Get the deadLetterWithResourceIdentity property: The dead letter destination of the event subscription. Any event
-     * that cannot be delivered to its' destination is sent to the dead letter destination. Uses the managed identity
-     * setup on the parent resource (namely, topic or domain) to acquire the authentication tokens being used during
-     * delivery / dead-lettering.
-     *
-     * @return the deadLetterWithResourceIdentity value.
-     */
-    public DeadLetterWithResourceIdentity deadLetterWithResourceIdentity() {
-        return this.deadLetterWithResourceIdentity;
-    }
-
-    /**
-     * Set the deadLetterWithResourceIdentity property: The dead letter destination of the event subscription. Any event
-     * that cannot be delivered to its' destination is sent to the dead letter destination. Uses the managed identity
-     * setup on the parent resource (namely, topic or domain) to acquire the authentication tokens being used during
-     * delivery / dead-lettering.
-     *
-     * @param deadLetterWithResourceIdentity the deadLetterWithResourceIdentity value to set.
-     * @return the EventSubscriptionProperties object itself.
-     */
-    public EventSubscriptionProperties withDeadLetterWithResourceIdentity(
-        DeadLetterWithResourceIdentity deadLetterWithResourceIdentity) {
-        this.deadLetterWithResourceIdentity = deadLetterWithResourceIdentity;
         return this;
     }
 
@@ -336,9 +249,6 @@ public final class EventSubscriptionProperties {
         if (destination() != null) {
             destination().validate();
         }
-        if (deliveryWithResourceIdentity() != null) {
-            deliveryWithResourceIdentity().validate();
-        }
         if (filter() != null) {
             filter().validate();
         }
@@ -347,9 +257,6 @@ public final class EventSubscriptionProperties {
         }
         if (deadLetterDestination() != null) {
             deadLetterDestination().validate();
-        }
-        if (deadLetterWithResourceIdentity() != null) {
-            deadLetterWithResourceIdentity().validate();
         }
     }
 }
