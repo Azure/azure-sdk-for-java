@@ -85,7 +85,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure.sdk.iot:iot-service-client:[1.28.0]</include> <!-- {x-include-update;com.microsoft.azure.sdk.iot:iot-service-client;external_dependency} -->
+                <include>com.microsoft.azure.sdk.iot:iot-service-client:[1.30.0]</include> <!-- {x-include-update;com.microsoft.azure.sdk.iot:iot-service-client;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

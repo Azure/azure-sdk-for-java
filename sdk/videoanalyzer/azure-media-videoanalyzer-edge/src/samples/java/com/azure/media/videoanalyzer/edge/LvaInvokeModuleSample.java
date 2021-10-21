@@ -158,7 +158,7 @@ public class LvaInvokeModuleSample {
         DeviceMethod dClient = new DeviceMethod(iothubConnectionstring);
 
         PipelineTopologySetRequest setPipelineTopologyRequest = new PipelineTopologySetRequest(pipelineTopology);
-        var setPipelineResult = invokeDirectMethodHelper(dClient, setPipelineTopologyRequest.getMethodName(), setPipelineTopologyRequest.getPayloadAsJson());
+        MethodResult setPipelineResult = invokeDirectMethodHelper(dClient, setPipelineTopologyRequest.getMethodName(), setPipelineTopologyRequest.getPayloadAsJson());
         System.out.println(setPipelineResult.getPayload());
 
         PipelineTopologyGetRequest getTopologyRequest = new PipelineTopologyGetRequest(pipelineTopology.getName());
