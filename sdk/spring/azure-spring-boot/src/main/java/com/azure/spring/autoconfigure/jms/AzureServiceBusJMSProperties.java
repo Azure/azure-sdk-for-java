@@ -91,8 +91,8 @@ public class AzureServiceBusJMSProperties {
     }
 
     /**
-     * Properties to configure {@link org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;} for
-     * {@link org.apache.qpid.jms.JmsConnectionFactory}.
+     * Properties to configure {@link org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy} for
+     * {@link org.apache.qpid.jms.JmsConnectionFactory} .
      */
     public static class PrefetchPolicy {
 
