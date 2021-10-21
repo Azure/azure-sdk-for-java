@@ -3,21 +3,28 @@
 
 package com.azure.spring.autoconfigure.jms;
 
+import java.util.logging.Logger;
 import org.apache.qpid.jms.JmsConnectionFactory;
 import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.jms.core.JmsTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NonPremiumServiceBusJMSAutoConfigurationTest extends AbstractServiceBusJMSAutoConfigurationTest {
+
+    private static final Logger LOGGER = Logger.getLogger(NonPremiumServiceBusJMSAutoConfigurationTest.class.getName());
+
+    @BeforeAll
+    public void init() {
+        LOGGER.info("Starting NonPremiumServiceBusJMSAutoConfigurationTest");
+    }
 
     @Test
     public void testAzureServiceBusNonPremiumAutoConfiguration() {
