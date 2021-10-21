@@ -8,7 +8,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureContextUtils;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.storage.blob.BlobServiceClientBuilderFactory;
+import com.azure.spring.service.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import org.assertj.core.api.Condition;
