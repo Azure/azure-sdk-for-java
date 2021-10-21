@@ -12,6 +12,7 @@ import com.azure.spring.servicebus.provisioning.ServiceBusQueueProvisioner;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnClass(ServiceBusQueueClientFactory.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnBean(ServiceBusClientBuilder.class)
 @AutoConfigureAfter(AzureServiceBusAutoConfiguration.class)
 public class AzureServiceBusQueueOperationAutoConfiguration {
 
