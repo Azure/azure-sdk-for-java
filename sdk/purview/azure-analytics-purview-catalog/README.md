@@ -60,7 +60,7 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 <!-- embedme ./src/samples/java/com/azure/analytics/purview/catalog/ReadmeSamples.java#L20-L23 -->
 ```java
 GlossaryClient client = new PurviewCatalogClientBuilder()
-    .endpoint(System.getenv("<account-name>.catalog.purview.azure.com"))
+    .endpoint(System.getenv("<account-name>.purview.azure.com"))
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildGlossaryClient();
 ```
