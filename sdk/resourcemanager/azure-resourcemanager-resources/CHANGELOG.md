@@ -6,12 +6,6 @@
 
 - Added support for `validateMoveResources` in `GenericResources`.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.8.0 (2021-09-15)
 
 ### Dependency Updates
