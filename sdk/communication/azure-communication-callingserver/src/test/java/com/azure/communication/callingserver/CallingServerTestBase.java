@@ -77,7 +77,7 @@ public class CallingServerTestBase extends TestBase {
         .get("CONTENT_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141d/content/acsmetadata");
 
     protected static final String RECORDING_DELETE_URL = Configuration.getGlobalConfiguration()
-        .get("RECORDING_DELETE_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d11-229745ac3df2eeaf672cefd311ef2401");
+        .get("RECORDING_DELETE_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d10-598a3ea36bfbc27e68c026b17982af22");
 
     protected static final String RECORDING_DELETE_URL_404 = Configuration.getGlobalConfiguration()
         .get("RECORDING_DELETE_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
