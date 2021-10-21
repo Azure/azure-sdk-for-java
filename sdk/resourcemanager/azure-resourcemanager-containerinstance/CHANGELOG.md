@@ -1,14 +1,16 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.9.0 (2021-10-21)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- `NetworkProfile` configuration in `ContainerGroup` is removed due to security concern from service. Please create `ContainerGroup` via `Subnet`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-09-01`.
 
 ## 2.8.0 (2021-09-15)
 

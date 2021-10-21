@@ -86,25 +86,27 @@ class SasModelsTest extends Specification {
             .setTagsPermission(tags)
             .setFilterTagsPermission(filterTags)
             .setImmutabilityPolicyPermission(setImmutabilityPolicy)
+            .setPermanentDeletePermission(permanentDelete)
 
         expect:
         perms.toString() == expectedString
 
         where:
-        read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags | setImmutabilityPolicy || expectedString
-        true  | false | false  | false | false | false  | false  | false   | false         | false | false      | false                 || "r"
-        false | true  | false  | false | false | false  | false  | false   | false         | false | false      | false                 || "w"
-        false | false | true   | false | false | false  | false  | false   | false         | false | false      | false                 || "d"
-        false | false | false  | true  | false | false  | false  | false   | false         | false | false      | false                 || "l"
-        false | false | false  | false | true  | false  | false  | false   | false         | false | false      | false                 || "a"
-        false | false | false  | false | false | true   | false  | false   | false         | false | false      | false                 || "c"
-        false | false | false  | false | false | false  | true   | false   | false         | false | false      | false                 || "u"
-        false | false | false  | false | false | false  | false  | true    | false         | false | false      | false                 || "p"
-        false | false | false  | false | false | false  | false  | false   | true          | false | false      | false                 || "x"
-        false | false | false  | false | false | false  | false  | false   | false         | true  | false      | false                 || "t"
-        false | false | false  | false | false | false  | false  | false   | false         | false | true       | false                 || "f"
-        false | false | false  | false | false | false  | false  | false   | false         | false | false      | true                  || "i"
-        true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       | true                  || "rwdxlacuptfi"
+        read  | write | delete | list  | add   | create | update | process | deleteVersion | tags  | filterTags | setImmutabilityPolicy | permanentDelete || expectedString
+        true  | false | false  | false | false | false  | false  | false   | false         | false | false      | false                 | false           || "r"
+        false | true  | false  | false | false | false  | false  | false   | false         | false | false      | false                 | false           || "w"
+        false | false | true   | false | false | false  | false  | false   | false         | false | false      | false                 | false           || "d"
+        false | false | false  | true  | false | false  | false  | false   | false         | false | false      | false                 | false           || "l"
+        false | false | false  | false | true  | false  | false  | false   | false         | false | false      | false                 | false           || "a"
+        false | false | false  | false | false | true   | false  | false   | false         | false | false      | false                 | false           || "c"
+        false | false | false  | false | false | false  | true   | false   | false         | false | false      | false                 | false           || "u"
+        false | false | false  | false | false | false  | false  | true    | false         | false | false      | false                 | false           || "p"
+        false | false | false  | false | false | false  | false  | false   | true          | false | false      | false                 | false           || "x"
+        false | false | false  | false | false | false  | false  | false   | false         | true  | false      | false                 | false           || "t"
+        false | false | false  | false | false | false  | false  | false   | false         | false | true       | false                 | false           || "f"
+        false | false | false  | false | false | false  | false  | false   | false         | false | false      | true                  | false           || "i"
+        false | false | false  | false | false | false  | false  | false   | false         | false | false      | false                 | true            || "y"
+        true  | true  | true   | true  | true  | true   | true   | true    | true          | true  | true       | true                  | true            || "rwdxylacuptfi"
     }
 
     @Unroll

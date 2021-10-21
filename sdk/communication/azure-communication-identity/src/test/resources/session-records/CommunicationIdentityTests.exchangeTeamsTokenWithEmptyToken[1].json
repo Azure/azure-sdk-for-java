@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2021-10-31-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 11.6)",
+      "x-ms-client-request-id" : "6cd30e3e-1959-4fff-ada2-b611efdcdec5",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "retry-after" : "0",
+      "StatusCode" : "401",
+      "Date" : "Tue, 12 Oct 2021 17:16:47 GMT",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "X-Processing-Time" : "19ms",
+      "MS-CV" : "gpixEhg6LUq3Fb7MgFxltg.0",
+      "X-Azure-Ref" : "0AMNlYQAAAABpQNuJ4d5QSJYaRrLs8ygtUFJHMDFFREdFMDYxOQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"error\":{\"code\":\"InvalidAccessToken\",\"message\":\"Provided access token is not valid.\"}}",
+      "x-ms-client-request-id" : "6cd30e3e-1959-4fff-ada2-b611efdcdec5",
+      "Content-Type" : "application/json",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

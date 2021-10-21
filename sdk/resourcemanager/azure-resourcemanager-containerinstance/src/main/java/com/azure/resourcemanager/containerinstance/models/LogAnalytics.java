@@ -7,6 +7,7 @@ package com.azure.resourcemanager.containerinstance.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -37,13 +38,14 @@ public final class LogAnalytics {
      * Metadata for log analytics.
      */
     @JsonProperty(value = "metadata")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
     /*
      * The workspace resource id for log analytics
      */
     @JsonProperty(value = "workspaceResourceId")
-    private Map<String, String> workspaceResourceId;
+    private String workspaceResourceId;
 
     /**
      * Get the workspaceId property: The workspace id for log analytics.
@@ -130,7 +132,7 @@ public final class LogAnalytics {
      *
      * @return the workspaceResourceId value.
      */
-    public Map<String, String> workspaceResourceId() {
+    public String workspaceResourceId() {
         return this.workspaceResourceId;
     }
 
@@ -140,7 +142,7 @@ public final class LogAnalytics {
      * @param workspaceResourceId the workspaceResourceId value to set.
      * @return the LogAnalytics object itself.
      */
-    public LogAnalytics withWorkspaceResourceId(Map<String, String> workspaceResourceId) {
+    public LogAnalytics withWorkspaceResourceId(String workspaceResourceId) {
         this.workspaceResourceId = workspaceResourceId;
         return this;
     }

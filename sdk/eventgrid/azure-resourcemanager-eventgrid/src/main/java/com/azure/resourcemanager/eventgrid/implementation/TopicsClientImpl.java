@@ -180,7 +180,7 @@ public final class TopicsClientImpl implements TopicsClient {
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
                 + "/{topicName}/regenerateKey")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> regenerateKey(
             @HostParam("$host") String endpoint,
@@ -497,7 +497,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicInner>, TopicInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String topicName, TopicInner topicInfo) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -520,7 +520,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicInner>, TopicInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String topicName, TopicInner topicInfo, Context context) {
         context = this.client.mergeContext(context);
@@ -543,7 +543,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginCreateOrUpdate(
         String resourceGroupName, String topicName, TopicInner topicInfo) {
         return beginCreateOrUpdateAsync(resourceGroupName, topicName, topicInfo).getSyncPoller();
@@ -561,7 +561,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return eventGrid Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginCreateOrUpdate(
         String resourceGroupName, String topicName, TopicInner topicInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, topicName, topicInfo, context).getSyncPoller();
@@ -738,7 +738,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String topicName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, topicName);
         return this
@@ -757,7 +757,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String topicName, Context context) {
         context = this.client.mergeContext(context);
@@ -777,7 +777,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName) {
         return beginDeleteAsync(resourceGroupName, topicName).getSyncPoller();
     }
@@ -793,7 +793,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName, Context context) {
         return beginDeleteAsync(resourceGroupName, topicName, context).getSyncPoller();
     }
@@ -981,7 +981,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicInner>, TopicInner> beginUpdateAsync(
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1004,7 +1004,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicInner>, TopicInner> beginUpdateAsync(
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1027,7 +1027,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginUpdate(
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
         return beginUpdateAsync(resourceGroupName, topicName, topicUpdateParameters).getSyncPoller();
@@ -1045,7 +1045,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginUpdate(
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters, Context context) {
         return beginUpdateAsync(resourceGroupName, topicName, topicUpdateParameters, context).getSyncPoller();
@@ -1829,7 +1829,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKeyAsync(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1856,7 +1856,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKeyAsync(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
         context = this.client.mergeContext(context);
@@ -1883,7 +1883,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest) {
         return beginRegenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest).getSyncPoller();
@@ -1901,7 +1901,7 @@ public final class TopicsClientImpl implements TopicsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Topic.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
         return beginRegenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest, context).getSyncPoller();

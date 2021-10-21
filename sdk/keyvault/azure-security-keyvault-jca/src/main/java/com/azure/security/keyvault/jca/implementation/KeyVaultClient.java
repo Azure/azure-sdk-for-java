@@ -5,7 +5,6 @@ package com.azure.security.keyvault.jca.implementation;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.WARNING;
 
-import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.model.CertificateBundle;
 import com.azure.security.keyvault.jca.implementation.model.CertificateItem;
 import com.azure.security.keyvault.jca.implementation.model.CertificateListResult;
