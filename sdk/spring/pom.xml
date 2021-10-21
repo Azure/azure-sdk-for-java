@@ -181,9 +181,7 @@
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
         <module>spring-cloud-azure-starter-actuator</module>
-        <module>spring-cloud-azure-starter-cache</module>
         <module>spring-cloud-azure-starter-cosmos</module>
-        <module>spring-cloud-azure-starter-eventhubs-kafka</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
@@ -201,7 +199,6 @@
         <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
         <module>spring-cloud-azure-starter-stream-servicebus-topic</module>
         <module>spring-cloud-azure-stream-binder-test</module>
-        <module>spring-cloud-azure-test-eventhubs-kafka</module>
         <module>spring-cloud-azure-test-servicebus-binder</module>
       </modules>
     </profile>
@@ -228,9 +225,7 @@
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
         <module>spring-cloud-azure-starter-actuator</module>
-        <module>spring-cloud-azure-starter-cache</module>
         <module>spring-cloud-azure-starter-cosmos</module>
-        <module>spring-cloud-azure-starter-eventhubs-kafka</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
