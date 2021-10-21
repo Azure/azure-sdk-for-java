@@ -23,6 +23,7 @@
         <module>spring-integration-azure-servicebus</module>
         <module>spring-integration-azure-storage-queue</module>
         <module>spring-cloud-azure-core</module>
+        <module>spring-cloud-azure-service</module>
         <module>spring-cloud-azure-resourcemanager</module>
         <module>spring-cloud-azure-actuator</module>
         <module>spring-cloud-azure-actuator-autoconfigure</module>
@@ -80,6 +81,11 @@
           <groupId>com.azure.spring</groupId>
           <artifactId>spring-cloud-azure-core</artifactId>
           <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>spring-cloud-azure-service</artifactId>
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-service;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
@@ -163,7 +169,6 @@
         <module>azure-spring-boot-test-keyvault/pom-reactive.xml</module>
         <module>azure-spring-boot-test-keyvault/pom.xml</module>
         <module>azure-spring-boot-test-parent</module>
-        <module>azure-spring-boot-test-selenium-common</module>
         <module>azure-spring-boot-test-servicebus-jms</module>
         <module>azure-spring-boot-test-storage</module>
         <module>spring-messaging-azure</module>
@@ -175,15 +180,14 @@
         <module>spring-integration-azure-servicebus</module>
         <module>spring-integration-azure-storage-queue</module>
         <module>spring-cloud-azure-core</module>
+        <module>spring-cloud-azure-service</module>
         <module>spring-cloud-azure-resourcemanager</module>
         <module>spring-cloud-azure-messaging</module>
         <module>spring-cloud-azure-actuator</module>
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
         <module>spring-cloud-azure-starter-actuator</module>
-        <module>spring-cloud-azure-starter-cache</module>
         <module>spring-cloud-azure-starter-cosmos</module>
-        <module>spring-cloud-azure-starter-eventhubs-kafka</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
@@ -201,7 +205,6 @@
         <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
         <module>spring-cloud-azure-starter-stream-servicebus-topic</module>
         <module>spring-cloud-azure-stream-binder-test</module>
-        <module>spring-cloud-azure-test-eventhubs-kafka</module>
         <module>spring-cloud-azure-test-servicebus-binder</module>
         <module>spring-cloud-azure-trace-sleuth</module>
       </modules>
@@ -212,6 +215,7 @@
       <modules>
         <module>../../eng/code-quality-reports</module>
         <module>../keyvault/azure-security-keyvault-jca</module>
+        <module>azure-spring-boot-test-core</module>
         <module>spring-messaging-azure</module>
         <module>spring-messaging-azure-eventhubs</module>
         <module>spring-messaging-azure-servicebus</module>
@@ -221,15 +225,14 @@
         <module>spring-integration-azure-servicebus</module>
         <module>spring-integration-azure-storage-queue</module>
         <module>spring-cloud-azure-core</module>
+        <module>spring-cloud-azure-service</module>
         <module>spring-cloud-azure-resourcemanager</module>
         <module>spring-cloud-azure-messaging</module>
         <module>spring-cloud-azure-actuator</module>
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
         <module>spring-cloud-azure-starter-actuator</module>
-        <module>spring-cloud-azure-starter-cache</module>
         <module>spring-cloud-azure-starter-cosmos</module>
-        <module>spring-cloud-azure-starter-eventhubs-kafka</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>

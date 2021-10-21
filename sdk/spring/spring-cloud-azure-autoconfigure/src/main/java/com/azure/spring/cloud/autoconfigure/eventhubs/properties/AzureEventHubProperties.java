@@ -7,6 +7,10 @@ import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobProperties;
 import com.azure.spring.core.properties.AzurePropertiesUtils;
+import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubProcessorProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubProperties;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.properties.PropertyMapper;
 
@@ -17,7 +21,7 @@ import java.util.Map;
 /**
  * Azure Event Hub related properties.
  */
-public class AzureEventHubProperties extends AzureEventHubCommonProperties {
+public class AzureEventHubProperties extends AzureEventHubCommonProperties implements EventHubProperties {
 
     public static final String PREFIX = "spring.cloud.azure.eventhubs";
 
@@ -134,21 +138,21 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties {
     /**
      * Properties of an Event Hub producer.
      */
-    public static class Producer extends AzureEventHubCommonProperties {
+    public static class Producer extends AzureEventHubCommonProperties implements EventHubProducerProperties {
 
     }
 
     /**
      * Properties of an Event Hub consumer.
      */
-    public static class Consumer extends AzureEventHubConsumerProperties {
+    public static class Consumer extends AzureEventHubConsumerProperties implements EventHubConsumerProperties {
 
     }
 
     /**
      * Properties of an Event Hub processor.
      */
-    public static class Processor extends AzureEventHubConsumerProperties {
+    public static class Processor extends AzureEventHubConsumerProperties implements EventHubProcessorProperties {
 
         private Boolean trackLastEnqueuedEventProperties;
         private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
@@ -196,7 +200,7 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties {
         /**
          * Event processor load balancing properties.
          */
-        public static class LoadBalancing {
+        public static class LoadBalancing implements EventHubProcessorProperties.LoadBalancing {
             private Duration updateInterval;
             private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
 
@@ -220,7 +224,7 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties {
         /**
          * Event processor batch properties.
          */
-        public static class Batch {
+        public static class Batch implements EventHubProcessorProperties.Batch {
             private Duration maxWaitTime;
             private Integer maxSize;
 

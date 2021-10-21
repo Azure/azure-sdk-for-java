@@ -12,16 +12,12 @@ trigger:
       - sdk/spring/
     exclude:
       - sdk/spring/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad/pom.xml
       - sdk/spring/azure-spring-boot-test-application/pom.xml
       - sdk/spring/azure-spring-boot-test-core/pom.xml
       - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
       - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
       - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
       - sdk/spring/azure-spring-boot-test-parent/pom.xml
-      - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
       - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
       - sdk/spring/azure-spring-boot-test-storage/pom.xml
       - sdk/spring/spring-messaging-azure/pom.xml
@@ -39,9 +35,7 @@ trigger:
       - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
       - sdk/spring/spring-cloud-azure-messaging/pom.xml
       - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-cache/pom.xml
       - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-eventhubs-kafka/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
@@ -73,16 +67,12 @@ pr:
       - sdk/spring/
     exclude:
       - sdk/spring/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad-resource-server/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad-webapp-and-resource-server-with-obo/pom.xml
-      - sdk/spring/azure-spring-boot-test-aad/pom.xml
       - sdk/spring/azure-spring-boot-test-application/pom.xml
       - sdk/spring/azure-spring-boot-test-core/pom.xml
       - sdk/spring/azure-spring-boot-test-cosmos/pom.xml
       - sdk/spring/azure-spring-boot-test-keyvault-certificate/pom.xml
       - sdk/spring/azure-spring-boot-test-keyvault/pom.xml
       - sdk/spring/azure-spring-boot-test-parent/pom.xml
-      - sdk/spring/azure-spring-boot-test-selenium-common/pom.xml
       - sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml
       - sdk/spring/azure-spring-boot-test-storage/pom.xml
       - sdk/spring/spring-messaging-azure/pom.xml
@@ -100,9 +90,7 @@ pr:
       - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
       - sdk/spring/spring-cloud-azure-messaging/pom.xml
       - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-cache/pom.xml
       - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-eventhubs-kafka/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
@@ -229,21 +217,9 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-cache
-        groupId: com.azure.spring
-        safeName: springcloudazurestartercache
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestartereventhubs
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-eventhubs-kafka
-        groupId: com.azure.spring
-        safeName: springcloudazurestartereventhubskafka
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true

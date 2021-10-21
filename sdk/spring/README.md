@@ -55,10 +55,8 @@ Below packages are available with latest release version. **We recommend users t
 > ❗ From Spring Cloud for Azure 2.0.0 onwards, we changed the groupId from `com.microsoft.azure` to `com.azure.spring`, and changed artifactIds, too.
 
 Artifact Id | Version for Spring Boot 2.3.x and 2.2.x | Version for Spring Boot 2.4.x
------- |--------- |--- 
-[azure-spring-cloud-starter-cache][azure-spring-cloud-starter-cache-readme] | [![Maven Central][azure-spring-cloud-starter-cache-mvn-2.2.x-img]][azure-spring-cloud-starter-cache-mvn-2.2.x] | [![Maven Central][azure-spring-cloud-starter-cache-mvn-2.3.x-img]][azure-spring-cloud-starter-cache-mvn-2.3.x]
+------ |--------- |---
 [azure-spring-cloud-stream-binder-eventhubs][azure-spring-cloud-stream-binder-eventhubs-readme] | [![Maven Central][azure-spring-cloud-stream-binder-eventhubs-mvn-2.2.x-img]][azure-spring-cloud-stream-binder-eventhubs-mvn-2.2.x] | [![Maven Central][azure-spring-cloud-stream-binder-eventhubs-mvn-2.3.x-img]][azure-spring-cloud-stream-binder-eventhubs-mvn-2.3.x]
-[azure-spring-cloud-starter-eventhubs-kafka][azure-spring-cloud-starter-eventhubs-kafka-readme] | [![Maven Central][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.2.x-img]][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.2.x] | [![Maven Central][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.3.x-img]][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.3.x]
 [azure-spring-cloud-starter-eventhubs][azure-spring-cloud-starter-eventhubs-readme] | [![Maven Central][azure-spring-cloud-starter-eventhubs-mvn-2.2.x-img]][azure-spring-cloud-starter-eventhubs-mvn-2.2.x] | [![Maven Central][azure-spring-cloud-starter-eventhubs-mvn-2.3.x-img]][azure-spring-cloud-starter-eventhubs-mvn-2.3.x]
 [azure-spring-integration-eventhubs][azure-spring-integration-eventhubs-readme] | [![Maven Central][azure-spring-integration-eventhubs-mvn-2.2.x-img]][azure-spring-integration-eventhubs-mvn-2.2.x] | [![Maven Central][azure-spring-integration-eventhubs-mvn-2.3.x-img]][azure-spring-integration-eventhubs-mvn-2.3.x]
 [azure-spring-cloud-stream-binder-servicebus-queue][azure-spring-cloud-stream-binder-servicebus-queue-readme] | [![Maven Central][azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.2.x-img]][azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.2.x] | [![Maven Central][azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.3.x-img]][azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.3.x]
@@ -77,10 +75,8 @@ spring-cloud-azure-appconfiguration-config | [![Maven Central][spring-cloud-azur
 spring-cloud-starter-azure-appconfiguration-config | [![Maven Central][spring-cloud-starter-azure-appconfiguration-config-mvn-1.2.x-img]][spring-cloud-starter-azure-appconfiguration-config-mvn-1.2.x]
 spring-cloud-azure-feature-management-web | [![Maven Central][spring-cloud-azure-feature-management-web-mvn-1.2.x-img]][spring-cloud-azure-feature-management-web-mvn-1.2.x]
 spring-cloud-azure-feature-management | [![Maven Central][spring-cloud-azure-feature-management-mvn-1.2.x-img]][spring-cloud-azure-feature-management-mvn-1.2.x]
-spring-starter-azure-cache | [![Maven Central][azure-spring-cloud-starter-cache-mvn-1.2.x-img]][azure-spring-cloud-starter-cache-mvn-1.2.x]
 spring-cloud-azure-eventhubs-stream-binder  | [![Maven Central][spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x]
 spring-cloud-starter-azure-eventhubs | [![Maven Central][spring-cloud-starter-azure-eventhubs-mvn-1.2.x-img]][spring-cloud-starter-azure-eventhubs-mvn-1.2.x]
-spring-cloud-starter-azure-eventhubs-kafka | [![Maven Central][spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x-img]][spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x]
 spring-cloud-azure-servicebus-queue-stream-binder | [![Maven Central][spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x]
 spring-cloud-azure-servicebus-topic-stream-binder | [![Maven Central][spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x]
 spring-cloud-starter-azure-servicebus | [![Maven Central][spring-cloud-starter-azure-servicebus-mvn-1.2.x-img]][spring-cloud-starter-azure-servicebus-mvn-1.2.x]
@@ -241,12 +237,6 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [azure-spring-cloud-starter-eventhubs-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-eventhubs.svg
 [azure-spring-cloud-starter-eventhubs-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-eventhubs%22
 
-[azure-spring-cloud-starter-eventhubs-kafka-readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/spring-cloud-azure-starter-eventhubs-kafka
-[azure-spring-cloud-starter-eventhubs-kafka-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-eventhubs-kafka/2.2.svg
-[azure-spring-cloud-starter-eventhubs-kafka-mvn-2.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-eventhubs-kafka%22AND%20v:2.2.*
-[azure-spring-cloud-starter-eventhubs-kafka-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-eventhubs-kafka.svg
-[azure-spring-cloud-starter-eventhubs-kafka-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-eventhubs-kafka%22
-
 [azure-spring-cloud-starter-servicebus-readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-servicebus
 [azure-spring-cloud-starter-servicebus-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-servicebus/2.2.svg
 [azure-spring-cloud-starter-servicebus-mvn-2.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-servicebus%22AND%20v:2.2.*
@@ -259,13 +249,6 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [azure-spring-cloud-starter-storage-queue-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-storage-queue.svg
 [azure-spring-cloud-starter-storage-queue-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-storage-queue%22
 
-[azure-spring-cloud-starter-cache-readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-cloud-starter-cache
-[azure-spring-cloud-starter-cache-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-starter-azure-cache/1.2.svg
-[azure-spring-cloud-starter-cache-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-starter-azure-cache%20AND%20v:1.2.*
-[azure-spring-cloud-starter-cache-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-cache/2.2.svg
-[azure-spring-cloud-starter-cache-mvn-2.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-cache%22AND%20v:2.2.*
-[azure-spring-cloud-starter-cache-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-cache.svg
-[azure-spring-cloud-starter-cache-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-cache%22
 <!-- End Track2 Spring Cloud -->
 
 <!-- Begin Track1 Spring Boot starters -->
@@ -355,9 +338,6 @@ This project collects usage data and sends it to Microsoft to help improve our p
 
 [spring-cloud-starter-azure-eventhubs-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-eventhubs/1.2.svg
 [spring-cloud-starter-azure-eventhubs-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-starter-azure-eventhubs%20AND%20v:1.2.*
-
-[spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-eventhubs-kafka/1.2.svg
-[spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-starter-azure-eventhubs-kafka%20AND%20v:1.2.*
 
 [spring-cloud-starter-azure-servicebus-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-servicebus/1.2.svg
 [spring-cloud-starter-azure-servicebus-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-starter-azure-servicebus%20AND%20v:1.2.*
