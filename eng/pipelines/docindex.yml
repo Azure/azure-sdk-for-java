@@ -66,8 +66,7 @@ jobs:
             mkdir ~/.m2/
           }
           
-          Get-Content "./eng/dailyupdateSetting.xml" | Set-Content ~/.m2/settings.xml
-
+          Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
         displayName: 'Configure mvn'
         workingDirectory: $(Build.SourcesDirectory)
         condition: and(succeeded(), startsWith(variables['Build.SourceBranchName'], 'daily/'))
