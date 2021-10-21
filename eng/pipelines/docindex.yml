@@ -65,7 +65,9 @@ jobs:
           if (!(Test-Path '~/.m2/')) {
             mkdir ~/.m2/
           }
-          
+          if (Test-Path '~/.m2/setting.xml') {
+            Write-Host "'setting.xml' exists. Overwriting the file to support multiple repositories."
+          }
           Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
         displayName: 'Configure mvn'
         workingDirectory: $(Build.SourcesDirectory)
