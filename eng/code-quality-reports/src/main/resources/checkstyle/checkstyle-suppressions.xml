@@ -44,7 +44,7 @@
 
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
-
+  
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
 

@@ -71,8 +71,8 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
     return DECODER.decode(b);
   }
 
-  @Deprecated public long value;
-  @Deprecated public com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList next;
+   private long value;
+   private com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList next;
 
   /**
    * Default constructor.  Note that this does not initialize fields
@@ -98,7 +98,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
     switch (field$) {
     case 0: return value;
     case 1: return next;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -108,7 +108,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
     switch (field$) {
     case 0: value = (java.lang.Long)value$; break;
     case 1: next = (com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList)value$; break;
-    default: throw new org.apache.avro.AvroRuntimeException("Bad index");
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -321,6 +321,7 @@ public class LongLinkedList extends org.apache.avro.specific.SpecificRecordBase 
      * @param value The builder instance that must be set.
      * @return This builder.
      */
+
     public com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder setNextBuilder(com.azure.core.serializer.avro.apache.generatedtestsources.LongLinkedList.Builder value) {
       clearNext();
       nextBuilder = value;

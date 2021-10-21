@@ -211,6 +211,12 @@ public class DefaultAzureCredentialTest {
         PowerMockito.whenNew(AzurePowerShellCredential.class).withAnyArguments()
             .thenReturn(powerShellCredential);
 
+        AzureCliCredential azureCliCredential = PowerMockito.mock(AzureCliCredential.class);
+        when(azureCliCredential.getToken(request))
+            .thenReturn(Mono.error(new CredentialUnavailableException("Cannot get token from Cli credential")));
+        PowerMockito.whenNew(AzureCliCredential.class).withAnyArguments()
+            .thenReturn(azureCliCredential);
+
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
             .build();
