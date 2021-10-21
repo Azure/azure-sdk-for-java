@@ -12017,5 +12017,6 @@ public final class GlossariesImpl {
         return listTermsByGlossaryNameWithResponseAsync(glossaryName, requestOptions, context).block();
     }
 
-    private static final class TypeReferenceBinaryData extends TypeReference<BinaryData> {}
+    private static final class TypeReferenceBinaryData extends TypeReference<BinaryData> {
+    }
 }
