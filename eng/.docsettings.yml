@@ -11,6 +11,7 @@ omitted_paths:
   - sdk/spring/spring-cloud-azure-starter/*
   - sdk/spring/spring-cloud-azure-autoconfigure/*
   - sdk/spring/spring-cloud-azure-resourcemanager/*
+  - sdk/spring/spring-cloud-azure-service/*
   - sdk/spring/spring-cloud-azure-actuator-autoconfigure/*
   - sdk/spring/spring-cloud-azure-actuator/*
   - sdk/spring/spring-cloud-azure-core/*

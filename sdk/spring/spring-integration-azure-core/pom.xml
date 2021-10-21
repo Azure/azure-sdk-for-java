@@ -26,11 +26,6 @@
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-core</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure</artifactId>
       <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure;current} -->
     </dependency>

@@ -6,6 +6,8 @@ package com.azure.spring.eventhubs.core;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.spring.service.eventhubs.builder.EventHubSharedAuthenticationClientBuilder;
+import com.azure.spring.service.eventhubs.builder.EventProcessorSharedAuthenticationClientBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

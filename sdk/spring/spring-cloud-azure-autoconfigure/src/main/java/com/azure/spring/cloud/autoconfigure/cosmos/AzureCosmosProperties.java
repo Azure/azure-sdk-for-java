@@ -10,8 +10,8 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureServiceConfigurationProperties;
-import com.azure.spring.core.properties.aware.credential.KeyAware;
 import com.azure.spring.core.properties.client.ClientProperties;
+import com.azure.spring.service.cosmos.CosmosProperties;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
@@ -25,7 +25,7 @@ import java.util.List;
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
-public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties implements KeyAware {
+public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties implements CosmosProperties {
 
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 
