@@ -5,8 +5,8 @@ package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.implementation.converters.ResultInfoConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantResultEventInternal;
-import com.azure.communication.callingserver.models.OperationStatus;
-import com.azure.communication.callingserver.models.ResultInfo;
+import com.azure.communication.callingserver.models.CallingOperationResultDetails;
+import com.azure.communication.callingserver.models.CallingOperationStatus;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
@@ -16,7 +16,7 @@ public final class AddParticipantResultEvent extends CallingServerEventBase {
     /*
      * The result details.
      */
-    private final ResultInfo resultInfo;
+    private final CallingOperationResultDetails resultInfo;
 
     /*
      * The operation context.
@@ -26,14 +26,14 @@ public final class AddParticipantResultEvent extends CallingServerEventBase {
     /*
      * The status of the operation
      */
-    private final OperationStatus status;
+    private final CallingOperationStatus status;
 
     /**
      * Get the resultInfo property: The result details.
      *
      * @return the resultInfo value.
      */
-    public ResultInfo getResultInfo() {
+    public CallingOperationResultDetails getResultInfo() {
         return resultInfo;
     }
 
@@ -51,7 +51,7 @@ public final class AddParticipantResultEvent extends CallingServerEventBase {
      *
      * @return the operation status value.
      */
-    public OperationStatus getStatus() {
+    public CallingOperationStatus getStatus() {
         return status;
     }
 
@@ -63,7 +63,7 @@ public final class AddParticipantResultEvent extends CallingServerEventBase {
      *                         communications related to this operation
      * @param status the status value.
      */
-    AddParticipantResultEvent(ResultInfo resultInfo, String operationContext, OperationStatus status) {
+    AddParticipantResultEvent(CallingOperationResultDetails resultInfo, String operationContext, CallingOperationStatus status) {
         this.resultInfo = resultInfo;
         this.operationContext = operationContext;
         this.status = status;

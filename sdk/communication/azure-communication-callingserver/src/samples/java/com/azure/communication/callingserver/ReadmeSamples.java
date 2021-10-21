@@ -3,9 +3,9 @@
 
 package com.azure.communication.callingserver;
 
+import com.azure.communication.callingserver.models.CallMediaType;
+import com.azure.communication.callingserver.models.CallingEventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.credential.TokenCredential;
@@ -58,11 +58,11 @@ public class ReadmeSamples {
 
         String callbackUri = "<callback-uri-for-notification>";
 
-        List<MediaType> requestedMediaTypes = Arrays.asList(MediaType.AUDIO, MediaType.VIDEO);
+        List<CallMediaType> requestedMediaTypes = Arrays.asList(CallMediaType.AUDIO, CallMediaType.VIDEO);
 
-        List<EventSubscriptionType> requestedCallEvents = Arrays.asList(
-            EventSubscriptionType.DTMF_RECEIVED,
-            EventSubscriptionType.PARTICIPANTS_UPDATED);
+        List<CallingEventSubscriptionType> requestedCallEvents = Arrays.asList(
+            CallingEventSubscriptionType.TONE_RECEIVED,
+            CallingEventSubscriptionType.PARTICIPANTS_UPDATED);
 
         CreateCallOptions createCallOptions = new CreateCallOptions(
             URI.create(callbackUri),

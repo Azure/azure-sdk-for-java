@@ -28,13 +28,13 @@ public final class JoinCallOptions {
      * The requested MediaTypes.
      */
     @JsonProperty(value = "requestedMediaTypes", required = true)
-    private List<MediaType> requestedMediaTypes;
+    private List<CallMediaType> requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
      */
     @JsonProperty(value = "requestedCallEvents", required = true)
-    private List<EventSubscriptionType> requestedCallEvents;
+    private List<CallingEventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the subject property: The subject.
@@ -81,7 +81,7 @@ public final class JoinCallOptions {
      *
      * @return the requestedMediaTypes value.
      */
-    public List<MediaType> getRequestedMediaTypes() {
+    public List<CallMediaType> getRequestedMediaTypes() {
         return requestedMediaTypes;
     }
 
@@ -91,7 +91,7 @@ public final class JoinCallOptions {
      * @param requestedMediaTypes the requestedModalities value to set.
      * @return the JoinCallOptions object itself.
      */
-    public JoinCallOptions setRequestedMediaTypes(List<MediaType> requestedMediaTypes) {
+    public JoinCallOptions setRequestedMediaTypes(List<CallMediaType> requestedMediaTypes) {
         this.requestedMediaTypes = requestedMediaTypes;
         return this;
     }
@@ -102,7 +102,7 @@ public final class JoinCallOptions {
      *
      * @return the requestedCallEvents value.
      */
-    public List<EventSubscriptionType> getRequestedCallEvents() {
+    public List<CallingEventSubscriptionType> getRequestedCallEvents() {
         return requestedCallEvents;
     }
 
@@ -113,7 +113,7 @@ public final class JoinCallOptions {
      * @param requestedCallEvents the requestedCallEvents value to set.
      * @return the JoinCallOptions object itself.
      */
-    public JoinCallOptions setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
+    public JoinCallOptions setRequestedCallEvents(List<CallingEventSubscriptionType> requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents;
         return this;
     }
@@ -128,8 +128,8 @@ public final class JoinCallOptions {
      */
     public JoinCallOptions(
         URI callbackUri,
-        List<MediaType> requestedMediaTypes,
-        List<EventSubscriptionType> requestedCallEvents) {
+        List<CallMediaType> requestedMediaTypes,
+        List<CallingEventSubscriptionType> requestedCallEvents) {
         if (callbackUri == null) {
             throw new IllegalArgumentException("object callbackUri cannot be null");
         }

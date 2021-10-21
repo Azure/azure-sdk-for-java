@@ -4,22 +4,8 @@
 package com.azure.communication.callingserver;
 
 import com.azure.communication.callingserver.implementation.converters.CallLocatorConverter;
-import com.azure.communication.callingserver.implementation.models.AddParticipantResultEventInternal;
-import com.azure.communication.callingserver.implementation.models.CallConnectionStateChangedEventInternal;
-import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
-import com.azure.communication.callingserver.implementation.models.CallRecordingStateChangeEventInternal;
-import com.azure.communication.callingserver.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callingserver.implementation.models.ParticipantsUpdatedEventInternal;
-import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
-import com.azure.communication.callingserver.implementation.models.PlayAudioResultEventInternal;
-import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
-import com.azure.communication.callingserver.implementation.models.ToneInfoInternal;
-import com.azure.communication.callingserver.implementation.models.ToneReceivedEventInternal;
-import com.azure.communication.callingserver.models.CallConnectionState;
-import com.azure.communication.callingserver.models.CallRecordingState;
-import com.azure.communication.callingserver.models.OperationStatus;
-import com.azure.communication.callingserver.models.ServerCallLocator;
-import com.azure.communication.callingserver.models.ToneValue;
+import com.azure.communication.callingserver.implementation.models.*;
+import com.azure.communication.callingserver.models.*;
 import com.azure.communication.callingserver.models.events.AddParticipantResultEvent;
 import com.azure.communication.callingserver.models.events.CallConnectionStateChangedEvent;
 import com.azure.communication.callingserver.models.events.CallRecordingStateChangeEvent;
@@ -80,8 +66,8 @@ public class EventTests {
         AddParticipantResultEventInternal internalEvent =
             new AddParticipantResultEventInternal()
                 .setOperationContext(operationContext)
-                .setStatus(OperationStatus.COMPLETED)
-                .setResultInfo(new ResultInfoInternal().setCode(100).setSubcode(200).setMessage(message));
+                .setStatus(CallingOperationStatus.COMPLETED)
+                .setResultInfo(new CallingOperationResultDetailsInternal().setCode(100).setSubcode(200).setMessage(message));
 
         BinaryData binaryData = getBinaryData(internalEvent);
         AddParticipantResultEvent event =
@@ -89,7 +75,7 @@ public class EventTests {
 
         assertNotNull(event);
         assertEquals(event.getOperationContext(), operationContext);
-        assertEquals(event.getStatus(), OperationStatus.COMPLETED);
+        assertEquals(event.getStatus(), CallingOperationStatus.COMPLETED);
         assertNotNull(event.getResultInfo());
         assertEquals(event.getResultInfo().getCode(), 100);
         assertEquals(event.getResultInfo().getSubcode(), 200);
@@ -104,7 +90,7 @@ public class EventTests {
             new CallRecordingStateChangeEventInternal()
                 .setCallLocator(CallLocatorConverter.convert(new ServerCallLocator(serverCallId)))
                 .setRecordingId(recordingId)
-                .setState(CallRecordingState.ACTIVE)
+                .setCallRecordingState(CallRecordingState.ACTIVE)
                 .setStartDateTime(OffsetDateTime.MIN);
 
         BinaryData binaryData = getBinaryData(internalEvent);
@@ -125,8 +111,8 @@ public class EventTests {
         PlayAudioResultEventInternal internalEvent =
             new PlayAudioResultEventInternal()
                 .setOperationContext(operationContext)
-                .setStatus(OperationStatus.COMPLETED)
-                .setResultInfo(new ResultInfoInternal().setCode(100).setSubcode(200).setMessage(message));
+                .setStatus(CallingOperationStatus.COMPLETED)
+                .setResultInfo(new CallingOperationResultDetailsInternal().setCode(100).setSubcode(200).setMessage(message));
 
         BinaryData binaryData = getBinaryData(internalEvent);
         PlayAudioResultEvent event =
@@ -134,7 +120,7 @@ public class EventTests {
 
         assertNotNull(event);
         assertEquals(event.getOperationContext(), operationContext);
-        assertEquals(event.getStatus(), OperationStatus.COMPLETED);
+        assertEquals(event.getStatus(), CallingOperationStatus.COMPLETED);
         assertNotNull(event.getResultInfo());
         assertEquals(event.getResultInfo().getCode(), 100);
         assertEquals(event.getResultInfo().getSubcode(), 200);

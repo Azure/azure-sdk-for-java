@@ -10,10 +10,9 @@ import com.azure.communication.callingserver.implementation.models.AudioRoutingG
 import com.azure.communication.callingserver.implementation.models.AudioRoutingGroupResult;
 import com.azure.communication.callingserver.implementation.models.CallConnectionProperties;
 import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
-import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsRequest;
-import com.azure.communication.callingserver.implementation.models.CancelAllMediaOperationsResultInternal;
 import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.callingserver.implementation.models.CreateAudioRoutingGroupResultInternal;
 import com.azure.communication.callingserver.implementation.models.CreateCallRequest;
 import com.azure.communication.callingserver.implementation.models.CreateCallResultInternal;
 import com.azure.communication.callingserver.implementation.models.GetParticipantRequest;
@@ -163,11 +162,10 @@ public final class CallConnectionsImpl {
         @Post("/calling/callConnections/{callConnectionId}/:cancelAllMediaOperations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<CancelAllMediaOperationsResultInternal>> cancelAllMediaOperations(
+        Mono<Response<Void>> cancelAllMediaOperations(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CancelAllMediaOperationsRequest cancelAllMediaOperationRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -193,9 +191,9 @@ public final class CallConnectionsImpl {
                 Context context);
 
         @Post("/calling/callConnections/{callConnectionId}/:createAudioRoutingGroup")
-        @ExpectedResponses({200})
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> createAudioRoutingGroup(
+        Mono<Response<CreateAudioRoutingGroupResultInternal>> createAudioRoutingGroup(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -1242,15 +1240,13 @@ public final class CallConnectionsImpl {
      * Cancel all media operations.
      *
      * @param callConnectionId The call connection id.
-     * @param cancelAllMediaOperationRequest The cancel all media operations context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the cancel all media operations.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelAllMediaOperationsResultInternal>> cancelAllMediaOperationsWithResponseAsync(
-            String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest) {
+    public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1258,7 +1254,6 @@ public final class CallConnectionsImpl {
                                 this.client.getEndpoint(),
                                 callConnectionId,
                                 this.client.getApiVersion(),
-                                cancelAllMediaOperationRequest,
                                 accept,
                                 context));
     }
@@ -1267,107 +1262,76 @@ public final class CallConnectionsImpl {
      * Cancel all media operations.
      *
      * @param callConnectionId The call connection id.
-     * @param cancelAllMediaOperationRequest The cancel all media operations context.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the cancel all media operations.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CancelAllMediaOperationsResultInternal>> cancelAllMediaOperationsWithResponseAsync(
-            String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest, Context context) {
+    public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId, Context context) {
         final String accept = "application/json";
         return service.cancelAllMediaOperations(
-                this.client.getEndpoint(),
-                callConnectionId,
-                this.client.getApiVersion(),
-                cancelAllMediaOperationRequest,
-                accept,
-                context);
+                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Cancel all media operations.
      *
      * @param callConnectionId The call connection id.
-     * @param cancelAllMediaOperationRequest The cancel all media operations context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the cancel all media operations.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelAllMediaOperationsResultInternal> cancelAllMediaOperationsAsync(
-            String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest) {
-        return cancelAllMediaOperationsWithResponseAsync(callConnectionId, cancelAllMediaOperationRequest)
-                .flatMap(
-                        (Response<CancelAllMediaOperationsResultInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<Void> cancelAllMediaOperationsAsync(String callConnectionId) {
+        return cancelAllMediaOperationsWithResponseAsync(callConnectionId)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Cancel all media operations.
      *
      * @param callConnectionId The call connection id.
-     * @param cancelAllMediaOperationRequest The cancel all media operations context.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the cancel all media operations.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelAllMediaOperationsResultInternal> cancelAllMediaOperationsAsync(
-            String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest, Context context) {
-        return cancelAllMediaOperationsWithResponseAsync(callConnectionId, cancelAllMediaOperationRequest, context)
-                .flatMap(
-                        (Response<CancelAllMediaOperationsResultInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    public Mono<Void> cancelAllMediaOperationsAsync(String callConnectionId, Context context) {
+        return cancelAllMediaOperationsWithResponseAsync(callConnectionId, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Cancel all media operations.
      *
      * @param callConnectionId The call connection id.
-     * @param cancelAllMediaOperationRequest The cancel all media operations context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the cancel all media operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CancelAllMediaOperationsResultInternal cancelAllMediaOperations(
-            String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest) {
-        return cancelAllMediaOperationsAsync(callConnectionId, cancelAllMediaOperationRequest).block();
+    public void cancelAllMediaOperations(String callConnectionId) {
+        cancelAllMediaOperationsAsync(callConnectionId).block();
     }
 
     /**
      * Cancel all media operations.
      *
      * @param callConnectionId The call connection id.
-     * @param cancelAllMediaOperationRequest The cancel all media operations context.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response payload of the cancel all media operations.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CancelAllMediaOperationsResultInternal> cancelAllMediaOperationsWithResponse(
-            String callConnectionId, CancelAllMediaOperationsRequest cancelAllMediaOperationRequest, Context context) {
-        return cancelAllMediaOperationsWithResponseAsync(callConnectionId, cancelAllMediaOperationRequest, context)
-                .block();
+    public Response<Void> cancelAllMediaOperationsWithResponse(String callConnectionId, Context context) {
+        return cancelAllMediaOperationsWithResponseAsync(callConnectionId, context).block();
     }
 
     /**
@@ -1580,17 +1544,17 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Create audio routing groups from a call.
+     * Create audio routing group in a call.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupRequest The audio routing group request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response payload of the create audio routing group operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createAudioRoutingGroupWithResponseAsync(
+    public Mono<Response<CreateAudioRoutingGroupResultInternal>> createAudioRoutingGroupWithResponseAsync(
             String callConnectionId, AudioRoutingGroupRequest audioRoutingGroupRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1605,7 +1569,7 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Create audio routing groups from a call.
+     * Create audio routing group in a call.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupRequest The audio routing group request.
@@ -1613,10 +1577,10 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response payload of the create audio routing group operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createAudioRoutingGroupWithResponseAsync(
+    public Mono<Response<CreateAudioRoutingGroupResultInternal>> createAudioRoutingGroupWithResponseAsync(
             String callConnectionId, AudioRoutingGroupRequest audioRoutingGroupRequest, Context context) {
         final String accept = "application/json";
         return service.createAudioRoutingGroup(
@@ -1629,24 +1593,31 @@ public final class CallConnectionsImpl {
     }
 
     /**
-     * Create audio routing groups from a call.
+     * Create audio routing group in a call.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupRequest The audio routing group request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response payload of the create audio routing group operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createAudioRoutingGroupAsync(
+    public Mono<CreateAudioRoutingGroupResultInternal> createAudioRoutingGroupAsync(
             String callConnectionId, AudioRoutingGroupRequest audioRoutingGroupRequest) {
         return createAudioRoutingGroupWithResponseAsync(callConnectionId, audioRoutingGroupRequest)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(
+                        (Response<CreateAudioRoutingGroupResultInternal> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
-     * Create audio routing groups from a call.
+     * Create audio routing group in a call.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupRequest The audio routing group request.
@@ -1654,31 +1625,40 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response payload of the create audio routing group operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createAudioRoutingGroupAsync(
+    public Mono<CreateAudioRoutingGroupResultInternal> createAudioRoutingGroupAsync(
             String callConnectionId, AudioRoutingGroupRequest audioRoutingGroupRequest, Context context) {
         return createAudioRoutingGroupWithResponseAsync(callConnectionId, audioRoutingGroupRequest, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(
+                        (Response<CreateAudioRoutingGroupResultInternal> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
-     * Create audio routing groups from a call.
+     * Create audio routing group in a call.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupRequest The audio routing group request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload of the create audio routing group operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createAudioRoutingGroup(String callConnectionId, AudioRoutingGroupRequest audioRoutingGroupRequest) {
-        createAudioRoutingGroupAsync(callConnectionId, audioRoutingGroupRequest).block();
+    public CreateAudioRoutingGroupResultInternal createAudioRoutingGroup(
+            String callConnectionId, AudioRoutingGroupRequest audioRoutingGroupRequest) {
+        return createAudioRoutingGroupAsync(callConnectionId, audioRoutingGroupRequest).block();
     }
 
     /**
-     * Create audio routing groups from a call.
+     * Create audio routing group in a call.
      *
      * @param callConnectionId The call connection id.
      * @param audioRoutingGroupRequest The audio routing group request.
@@ -1686,10 +1666,10 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response payload of the create audio routing group operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createAudioRoutingGroupWithResponse(
+    public Response<CreateAudioRoutingGroupResultInternal> createAudioRoutingGroupWithResponse(
             String callConnectionId, AudioRoutingGroupRequest audioRoutingGroupRequest, Context context) {
         return createAudioRoutingGroupWithResponseAsync(callConnectionId, audioRoutingGroupRequest, context).block();
     }

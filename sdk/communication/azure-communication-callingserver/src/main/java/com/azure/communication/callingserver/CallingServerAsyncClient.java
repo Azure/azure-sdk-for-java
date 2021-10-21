@@ -1378,9 +1378,9 @@ public final class CallingServerAsyncClient {
         Objects.requireNonNull(incomingCallContext, "'redirectCallRequest' cannot be null.");
         Objects.requireNonNull(targets, "'targets' cannot be null.");
         RedirectCallRequest request = new RedirectCallRequest()
-            .setCallbackUrl(callbackUri.toString())
+            .setCallbackUri(callbackUri.toString())
             .setIncomingCallContext(incomingCallContext)
-            .setTimeout(timeoutInSeconds)
+            .setTimeoutInSeconds(timeoutInSeconds)
             .setTargets(targets
                 .stream()
                 .map(CommunicationIdentifierConverter::convert)
@@ -1439,7 +1439,7 @@ public final class CallingServerAsyncClient {
     private RejectCallRequest getRejectCallRequest(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
         Objects.requireNonNull(incomingCallContext, "'redirectCallRequest' cannot be null.");
         RejectCallRequest request = new RejectCallRequest()
-            .setCallbackUrl(callbackUri.toString())
+            .setCallbackUri(callbackUri.toString())
             .setIncomingCallContext(incomingCallContext)
             .setCallRejectReason(rejectReason);
         return request;
@@ -1490,7 +1490,7 @@ public final class CallingServerAsyncClient {
      * Recording deletion will be done using parallel workers.
      * @param deleteEndpoint - ACS URL where the content is located.
      * @param context A {@link Context} representing the request context.
-     * @return RResponse for successful delete request.
+     * @return Response for successful delete request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<HttpResponse>> deleteRecordingWithResponse(String deleteEndpoint, Context context) {

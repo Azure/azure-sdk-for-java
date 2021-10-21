@@ -4,11 +4,10 @@
 package com.azure.communication.callingserver.implementation.converters;
 
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 
 /**
- * A converter for {@link AddParticipantRequest}
+ * A converter for {@link PhoneNumberIdentifier}
  */
 public final class PhoneNumberIdentifierConverter {
 

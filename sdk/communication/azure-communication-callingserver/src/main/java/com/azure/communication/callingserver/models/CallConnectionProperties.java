@@ -6,9 +6,6 @@ package com.azure.communication.callingserver.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 
-import com.azure.communication.callingserver.models.CallConnectionState;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.MediaType;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -63,13 +60,13 @@ public final class CallConnectionProperties {
      * The requested modalities.
      */
     @JsonProperty(value = "requestedMediaTypes")
-    private List<MediaType> requestedMediaTypes;
+    private List<CallMediaType> requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
      */
     @JsonProperty(value = "requestedCallEvents")
-    private List<EventSubscriptionType> requestedCallEvents;
+    private List<CallingEventSubscriptionType> requestedCallEvents;
 
     /*
      * The call locator.
@@ -224,7 +221,7 @@ public final class CallConnectionProperties {
      *
      * @return the requestedMediaTypes value.
      */
-    public List<MediaType> getRequestedMediaTypes() {
+    public List<CallMediaType> getRequestedMediaTypes() {
         return this.requestedMediaTypes;
     }
 
@@ -234,7 +231,7 @@ public final class CallConnectionProperties {
      * @param requestedMediaTypes the requestedMediaTypes value to set.
      * @return the CallConnectionProperties object itself.
      */
-    public CallConnectionProperties setRequestedMediaTypes(List<MediaType> requestedMediaTypes) {
+    public CallConnectionProperties setRequestedMediaTypes(List<CallMediaType> requestedMediaTypes) {
         this.requestedMediaTypes = requestedMediaTypes;
         return this;
     }
@@ -244,7 +241,7 @@ public final class CallConnectionProperties {
      *
      * @return the requestedCallEvents value.
      */
-    public List<EventSubscriptionType> getRequestedCallEvents() {
+    public List<CallingEventSubscriptionType> getRequestedCallEvents() {
         return this.requestedCallEvents;
     }
 
@@ -254,7 +251,7 @@ public final class CallConnectionProperties {
      * @param requestedCallEvents the requestedCallEvents value to set.
      * @return the CallConnectionProperties object itself.
      */
-    public CallConnectionProperties setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
+    public CallConnectionProperties setRequestedCallEvents(List<CallingEventSubscriptionType> requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents;
         return this;
     }

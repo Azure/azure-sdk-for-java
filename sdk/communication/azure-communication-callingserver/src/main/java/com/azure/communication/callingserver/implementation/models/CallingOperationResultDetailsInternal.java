@@ -7,9 +7,9 @@ package com.azure.communication.callingserver.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Result info class to be used to report result status for actions/operations. */
+/** The result details of calling operation. */
 @Fluent
-public final class ResultInfoInternal {
+public final class CallingOperationResultDetailsInternal {
     /*
      * The result code associated with the operation.
      */
@@ -18,7 +18,6 @@ public final class ResultInfoInternal {
 
     /*
      * The subcode that further classifies the result.
-     * The subcode further classifies a failure. For example.
      */
     @JsonProperty(value = "subcode", required = true)
     private int subcode;
@@ -42,16 +41,15 @@ public final class ResultInfoInternal {
      * Set the code property: The result code associated with the operation.
      *
      * @param code the code value to set.
-     * @return the ResultInfoInternal object itself.
+     * @return the CallingOperationResultDetailsInternal object itself.
      */
-    public ResultInfoInternal setCode(int code) {
+    public CallingOperationResultDetailsInternal setCode(int code) {
         this.code = code;
         return this;
     }
 
     /**
-     * Get the subcode property: The subcode that further classifies the result. The subcode further classifies a
-     * failure. For example.
+     * Get the subcode property: The subcode that further classifies the result.
      *
      * @return the subcode value.
      */
@@ -60,13 +58,12 @@ public final class ResultInfoInternal {
     }
 
     /**
-     * Set the subcode property: The subcode that further classifies the result. The subcode further classifies a
-     * failure. For example.
+     * Set the subcode property: The subcode that further classifies the result.
      *
      * @param subcode the subcode value to set.
-     * @return the ResultInfoInternal object itself.
+     * @return the CallingOperationResultDetailsInternal object itself.
      */
-    public ResultInfoInternal setSubcode(int subcode) {
+    public CallingOperationResultDetailsInternal setSubcode(int subcode) {
         this.subcode = subcode;
         return this;
     }
@@ -84,9 +81,9 @@ public final class ResultInfoInternal {
      * Set the message property: The message is a detail explanation of subcode.
      *
      * @param message the message value to set.
-     * @return the ResultInfoInternal object itself.
+     * @return the CallingOperationResultDetailsInternal object itself.
      */
-    public ResultInfoInternal setMessage(String message) {
+    public CallingOperationResultDetailsInternal setMessage(String message) {
         this.message = message;
         return this;
     }

@@ -11,24 +11,10 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Collections;
-import java.util.List;
 
-import com.azure.communication.callingserver.models.RecordingChannel;
-import com.azure.communication.callingserver.models.RecordingContent;
-import com.azure.communication.callingserver.models.RecordingFormat;
-import com.azure.communication.callingserver.models.StartRecordingOptions;
-import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
-import com.azure.communication.callingserver.CallingServerAsyncClient;
-import com.azure.communication.callingserver.CallingServerClient;
-import com.azure.communication.callingserver.models.AddParticipantResult;
-import com.azure.communication.callingserver.models.OperationStatus;
-import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResult;
-import com.azure.communication.callingserver.models.ServerCallLocator;
-import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.callingserver.implementation.models.CallingOperationResultDetailsInternal;
+import com.azure.communication.callingserver.models.*;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
 
 import org.junit.jupiter.api.Test;
@@ -90,41 +76,41 @@ public class ServerCallUnitTests {
 
     @Test
     public void playAudioWithResponse() {
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri"));
+        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri")).setLoop(true);
         Response<PlayAudioResult> playAudioResultResponse = getCallingServerClient().playAudioWithResponse(serverCallLocator, URI.create("https://audioFileUri"), playAudioOptions, Context.NONE);
         assertEquals(202, playAudioResultResponse.getStatusCode());
         PlayAudioResult playAudioResult = playAudioResultResponse.getValue();
-        assertEquals(OperationStatus.COMPLETED, playAudioResult.getStatus());
+        assertEquals(CallingOperationStatus.COMPLETED, playAudioResult.getStatus());
     }
 
     @Test
     public void playAudio() {
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("callbackUri")).setOperationContext("operationContext");
+        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("callbackUri")).setOperationContext("operationContext").setLoop(true);
         PlayAudioResult playAudioResult = getCallingServerClient().playAudio(serverCallLocator, URI.create("audioFileUri"), playAudioOptions);
-        assertEquals(OperationStatus.COMPLETED, playAudioResult.getStatus());
+        assertEquals(CallingOperationStatus.COMPLETED, playAudioResult.getStatus());
     }
 
     @Test
     public void playAudioWithResponseAsync() {
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri"));
+        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri")).setLoop(true);
         Response<PlayAudioResult> playAudioResultResponse = getCallingServerAsyncClient().playAudioWithResponse(serverCallLocator, URI.create("https://audioFileUri"), playAudioOptions).block();
         assertEquals(202, playAudioResultResponse.getStatusCode());
         PlayAudioResult playAudioResult = playAudioResultResponse.getValue();
-        assertEquals(OperationStatus.COMPLETED, playAudioResult.getStatus());
+        assertEquals(CallingOperationStatus.COMPLETED, playAudioResult.getStatus());
     }
 
     @Test
     public void playAudioAsync() {
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri")).setOperationContext("operationContext");
+        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri")).setLoop(true).setOperationContext("operationContext");
         PlayAudioResult playAudioResult = getCallingServerAsyncClient().playAudio(serverCallLocator, URI.create("https://audioFileUri"), playAudioOptions).block();
-        assertEquals(OperationStatus.COMPLETED, playAudioResult.getStatus());
+        assertEquals(CallingOperationStatus.COMPLETED, playAudioResult.getStatus());
     }
 
     @Test
     public void playAudioAsyncUsingOptions() {
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri"));
+        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri")).setLoop(true);
         PlayAudioResult playAudioResult = getCallingServerAsyncClient().playAudio(serverCallLocator, URI.create("audioFileUri"), playAudioOptions).block();
-        assertEquals(OperationStatus.COMPLETED, playAudioResult.getStatus());
+        assertEquals(CallingOperationStatus.COMPLETED, playAudioResult.getStatus());
     }
 
     @Test
@@ -226,16 +212,24 @@ public class ServerCallUnitTests {
     }
 
     private CallingServerClient getCallingServerClient() {
-        return new CallingServerClientBuilder()
-        .httpClient(new NoOpHttpClient())
-        .connectionString(MOCK_CONNECTION_STRING)
-        .buildClient();
+        return CallingServerResponseMocker.getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generatePlayAudioResult(
+                    CallingServerResponseMocker.OPERATION_ID,
+                    CallingOperationStatus.COMPLETED,
+                    new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message")),
+                    202)
+            )));
     }
 
     private CallingServerAsyncClient getCallingServerAsyncClient() {
-        return new CallingServerClientBuilder()
-        .httpClient(new NoOpHttpClient())
-        .connectionString(MOCK_CONNECTION_STRING)
-        .buildAsyncClient();
+        return CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(CallingServerResponseMocker.generatePlayAudioResult(
+                    CallingServerResponseMocker.OPERATION_ID,
+                    CallingOperationStatus.COMPLETED,
+                    new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message")),
+                    202)
+            )));
     }
 }

@@ -14,16 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.AbstractMap.SimpleEntry;
 
-import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
-import com.azure.communication.callingserver.models.AddParticipantResult;
-import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.JoinCallOptions;
-import com.azure.communication.callingserver.models.MediaType;
-import com.azure.communication.callingserver.models.OperationStatus;
-import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResult;
-import com.azure.communication.callingserver.models.ServerCallLocator;
+import com.azure.communication.callingserver.implementation.models.CallingOperationResultDetailsInternal;
+import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
@@ -50,8 +42,8 @@ public class CallConnectionAsyncUnitTests {
 
         CreateCallOptions options = new CreateCallOptions(
             URI.create("https://callbackUri.local"),
-            Collections.singletonList(MediaType.AUDIO),
-            Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+            Collections.singletonList(CallMediaType.AUDIO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
         Response<CallConnectionAsync> callConnectionAsyncResponse = callingServerAsyncClient.createCallConnectionWithResponse(sourceUser, targetUsers, options).block();
         assertEquals(201, callConnectionAsyncResponse.getStatusCode());
@@ -71,7 +63,7 @@ public class CallConnectionAsyncUnitTests {
     public void playAudioWithResponse() {
         CallConnectionAsync callConnectionAsync = getPlayAudioCallConnection();
 
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri.local"));
+        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri.local")).setLoop(true);
         Response<PlayAudioResult> playAudioResultResponse = callConnectionAsync.playAudioWithResponse(URI.create("https://audioFileUri.local"), playAudioOptions).block();
         assertEquals(202, playAudioResultResponse.getStatusCode());
     }
@@ -80,9 +72,9 @@ public class CallConnectionAsyncUnitTests {
     public void playAudio() {
         CallConnectionAsync callConnectionAsync = getPlayAudioCallConnection();
 
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri.local"));
+        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri.local")).setLoop(true);
         PlayAudioResult playAudioResult = callConnectionAsync.playAudio(URI.create("https://audioFileUri.local"), playAudioOptions).block();
-        assertEquals(OperationStatus.COMPLETED, playAudioResult.getStatus());
+        assertEquals(CallingOperationStatus.COMPLETED, playAudioResult.getStatus());
     }
 
     @Test
@@ -95,7 +87,7 @@ public class CallConnectionAsyncUnitTests {
             .setOperationContext("operationContext");
 
         PlayAudioResult playAudioResult = callConnectionAsync.playAudio(URI.create("https://audioFileUri.local"), options).block();
-        assertEquals(OperationStatus.COMPLETED, playAudioResult.getStatus());
+        assertEquals(CallingOperationStatus.COMPLETED, playAudioResult.getStatus());
     }
 
     @Test
@@ -128,8 +120,8 @@ public class CallConnectionAsyncUnitTests {
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
         JoinCallOptions options = new JoinCallOptions(
             CallingServerResponseMocker.URI_CALLBACK,
-            Collections.singletonList(MediaType.VIDEO),
-            Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+            Collections.singletonList(CallMediaType.VIDEO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
         Response<CallConnectionAsync> callConnectionAsyncResponse = callingServerAsyncClient.joinCallWithResponse(new ServerCallLocator(CallingServerResponseMocker.SERVER_CALL_ID), (CommunicationIdentifier) user, options).block();
         assertEquals(202, callConnectionAsyncResponse.getStatusCode());
         assertNotNull(callConnectionAsyncResponse.getValue());
@@ -145,8 +137,8 @@ public class CallConnectionAsyncUnitTests {
         CommunicationUserIdentifier user = new CommunicationUserIdentifier(NEW_PARTICIPANT_ID);
         JoinCallOptions options = new JoinCallOptions(
             CallingServerResponseMocker.URI_CALLBACK,
-            Collections.singletonList(MediaType.VIDEO),
-            Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+            Collections.singletonList(CallMediaType.VIDEO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
         CallConnectionAsync callConnectionAsync = callingServerAsyncClient.joinCall(new ServerCallLocator(CallingServerResponseMocker.SERVER_CALL_ID), (CommunicationIdentifier) user, options).block();
         assertNotNull(callConnectionAsync);
     }
@@ -157,8 +149,8 @@ public class CallConnectionAsyncUnitTests {
                 new SimpleEntry<String, Integer>(CallingServerResponseMocker.generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>(CallingServerResponseMocker.generatePlayAudioResult(
                     OPERATION_ID,
-                    OperationStatus.COMPLETED,
-                    new ResultInfoInternal().setCode(202).setSubcode(0).setMessage("message")),
+                    CallingOperationStatus.COMPLETED,
+                    new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message")),
                     202)
             )));
     }

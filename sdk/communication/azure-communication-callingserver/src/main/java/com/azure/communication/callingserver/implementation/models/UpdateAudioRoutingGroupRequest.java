@@ -15,7 +15,7 @@ public final class UpdateAudioRoutingGroupRequest {
      * The target identities that would be receivers in the audio routing
      * group.
      */
-    @JsonProperty(value = "targets")
+    @JsonProperty(value = "targets", required = true)
     private List<CommunicationIdentifierModel> targets;
 
     /**

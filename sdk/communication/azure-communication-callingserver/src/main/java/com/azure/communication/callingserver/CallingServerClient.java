@@ -554,7 +554,7 @@ public final class CallingServerClient {
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
+     * @return Response payload for cancel media operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelMediaOperationWithResponse(

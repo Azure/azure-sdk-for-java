@@ -14,14 +14,14 @@ public final class AudioRoutingGroupRequest {
     /*
      * The audio routing mode.
      */
-    @JsonProperty(value = "audioRoutingMode")
+    @JsonProperty(value = "audioRoutingMode", required = true)
     private AudioRoutingMode audioRoutingMode;
 
     /*
      * The target identities that would be receivers in the audio routing
      * group.
      */
-    @JsonProperty(value = "targets")
+    @JsonProperty(value = "targets", required = true)
     private List<CommunicationIdentifierModel> targets;
 
     /**

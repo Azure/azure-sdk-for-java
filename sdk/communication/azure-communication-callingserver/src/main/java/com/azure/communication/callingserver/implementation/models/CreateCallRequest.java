@@ -4,8 +4,8 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.MediaType;
+import com.azure.communication.callingserver.models.CallMediaType;
+import com.azure.communication.callingserver.models.CallingEventSubscriptionType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -48,13 +48,13 @@ public final class CreateCallRequest {
      * The requested modalities.
      */
     @JsonProperty(value = "requestedMediaTypes")
-    private List<MediaType> requestedMediaTypes;
+    private List<CallMediaType> requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
      */
     @JsonProperty(value = "requestedCallEvents")
-    private List<EventSubscriptionType> requestedCallEvents;
+    private List<CallingEventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the alternateCallerId property: The alternate identity of the source of the call if dialing out to a pstn
@@ -163,7 +163,7 @@ public final class CreateCallRequest {
      *
      * @return the requestedMediaTypes value.
      */
-    public List<MediaType> getRequestedMediaTypes() {
+    public List<CallMediaType> getRequestedMediaTypes() {
         return this.requestedMediaTypes;
     }
 
@@ -173,7 +173,7 @@ public final class CreateCallRequest {
      * @param requestedMediaTypes the requestedMediaTypes value to set.
      * @return the CreateCallRequest object itself.
      */
-    public CreateCallRequest setRequestedMediaTypes(List<MediaType> requestedMediaTypes) {
+    public CreateCallRequest setRequestedMediaTypes(List<CallMediaType> requestedMediaTypes) {
         this.requestedMediaTypes = requestedMediaTypes;
         return this;
     }
@@ -183,7 +183,7 @@ public final class CreateCallRequest {
      *
      * @return the requestedCallEvents value.
      */
-    public List<EventSubscriptionType> getRequestedCallEvents() {
+    public List<CallingEventSubscriptionType> getRequestedCallEvents() {
         return this.requestedCallEvents;
     }
 
@@ -193,7 +193,7 @@ public final class CreateCallRequest {
      * @param requestedCallEvents the requestedCallEvents value to set.
      * @return the CreateCallRequest object itself.
      */
-    public CreateCallRequest setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
+    public CreateCallRequest setRequestedCallEvents(List<CallingEventSubscriptionType> requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents;
         return this;
     }

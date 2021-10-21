@@ -105,7 +105,7 @@ public final class CallRecordingStateChangeEvent extends CallingServerEventBase 
 
         return new CallRecordingStateChangeEvent(
             callRecordingStateChangeEventInternal.getRecordingId(),
-            callRecordingStateChangeEventInternal.getState(),
+            callRecordingStateChangeEventInternal.getCallRecordingState(),
             callRecordingStateChangeEventInternal.getStartDateTime(),
             CallLocatorConverter.convert(callRecordingStateChangeEventInternal.getCallLocator()));
     }

@@ -21,8 +21,8 @@ public final class CallRecordingStateChangeEventInternal {
     /*
      * The state of the recording
      */
-    @JsonProperty(value = "state", required = true)
-    private CallRecordingState state;
+    @JsonProperty(value = "callRecordingState", required = true)
+    private CallRecordingState callRecordingState;
 
     /*
      * The time of the recording started
@@ -31,7 +31,7 @@ public final class CallRecordingStateChangeEventInternal {
     private OffsetDateTime startDateTime;
 
     /*
-     * The call locator.
+     * The server call locator.
      */
     @JsonProperty(value = "callLocator")
     private CallLocatorModel callLocator;
@@ -57,22 +57,22 @@ public final class CallRecordingStateChangeEventInternal {
     }
 
     /**
-     * Get the state property: The state of the recording.
+     * Get the callRecordingState property: The state of the recording.
      *
-     * @return the state value.
+     * @return the callRecordingState value.
      */
-    public CallRecordingState getState() {
-        return this.state;
+    public CallRecordingState getCallRecordingState() {
+        return this.callRecordingState;
     }
 
     /**
-     * Set the state property: The state of the recording.
+     * Set the callRecordingState property: The state of the recording.
      *
-     * @param state the state value to set.
+     * @param callRecordingState the callRecordingState value to set.
      * @return the CallRecordingStateChangeEventInternal object itself.
      */
-    public CallRecordingStateChangeEventInternal setState(CallRecordingState state) {
-        this.state = state;
+    public CallRecordingStateChangeEventInternal setCallRecordingState(CallRecordingState callRecordingState) {
+        this.callRecordingState = callRecordingState;
         return this;
     }
 
@@ -97,7 +97,7 @@ public final class CallRecordingStateChangeEventInternal {
     }
 
     /**
-     * Get the callLocator property: The call locator.
+     * Get the callLocator property: The server call locator.
      *
      * @return the callLocator value.
      */
@@ -106,7 +106,7 @@ public final class CallRecordingStateChangeEventInternal {
     }
 
     /**
-     * Set the callLocator property: The call locator.
+     * Set the callLocator property: The server call locator.
      *
      * @param callLocator the callLocator value to set.
      * @return the CallRecordingStateChangeEventInternal object itself.

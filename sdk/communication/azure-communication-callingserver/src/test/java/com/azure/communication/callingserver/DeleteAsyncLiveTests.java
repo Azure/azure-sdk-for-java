@@ -41,7 +41,6 @@ public class DeleteAsyncLiveTests extends CallingServerTestBase {
         deleteRecording(callingServerAsyncClient);
     }
 
-
     private void deleteRecording(CallingServerAsyncClient callingServerAsyncClient) {
         try {
             Response<HttpResponse> response = callingServerAsyncClient.deleteRecordingWithResponse(RECORDING_DELETE_URL, null).block();
