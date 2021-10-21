@@ -4,39 +4,28 @@
 
 package com.azure.analytics.purview.catalog;
 
+import com.azure.analytics.purview.catalog.implementation.RelationshipsImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.experimental.http.DynamicRequest;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.serializer.ObjectSerializer;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the RelationshipBaseClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class)
-public final class RelationshipBaseClient {
-    private final String endpoint;
-
-    private final String apiVersion;
-
-    private final HttpPipeline httpPipeline;
-
-    private final ObjectSerializer serializer;
+/** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
+@ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
+public final class RelationshipAsyncClient {
+    private final RelationshipsImpl serviceClient;
 
     /**
-     * Initializes an instance of RelationshipBaseClient client.
+     * Initializes an instance of Relationships client.
      *
-     * @param endpoint The catalog endpoint of your Purview account. Example:
-     *     https://{accountName}.catalog.purview.azure.com.
-     * @param apiVersion Api Version.
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param serializer The serializer to serialize an object into a string.
+     * @param serviceClient the service client implementation.
      */
-    RelationshipBaseClient(String endpoint, String apiVersion, HttpPipeline httpPipeline, ObjectSerializer serializer) {
-        this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
-        this.httpPipeline = httpPipeline;
-        this.serializer = serializer;
+    RelationshipAsyncClient(RelationshipsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -75,19 +64,42 @@ public final class RelationshipBaseClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
+     *     createTime: Float
+     *     createdBy: String
+     *     end1: {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
+     *     }
+     *     end2: (recursive schema, see end2 above)
+     *     guid: String
+     *     homeId: String
+     *     label: String
+     *     provenanceType: Float
+     *     status: String(ACTIVE/DELETED)
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasRelationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest create() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/relationship")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.POST);
+    public Mono<Response<BinaryData>> createWithResponse(BinaryData relationship, RequestOptions requestOptions) {
+        return this.serviceClient.createWithResponseAsync(relationship, requestOptions);
     }
 
     /**
@@ -126,30 +138,53 @@ public final class RelationshipBaseClient {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * (recursive schema, see above)
+     * {
+     *     attributes: {
+     *         String: Object
+     *     }
+     *     typeName: String
+     *     lastModifiedTS: String
+     *     createTime: Float
+     *     createdBy: String
+     *     end1: {
+     *         guid: String
+     *         typeName: String
+     *         uniqueAttributes: {
+     *             String: Object
+     *         }
+     *     }
+     *     end2: (recursive schema, see end2 above)
+     *     guid: String
+     *     homeId: String
+     *     label: String
+     *     provenanceType: Float
+     *     status: String(ACTIVE/DELETED)
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     * }
      * }</pre>
      *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return atlasRelationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest update() {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/relationship")
-                .setPathParam("Endpoint", endpoint)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.PUT);
+    public Mono<Response<BinaryData>> updateWithResponse(BinaryData relationship, RequestOptions requestOptions) {
+        return this.serviceClient.updateWithResponseAsync(relationship, requestOptions);
     }
 
     /**
      * Get relationship information between entities by its GUID.
      *
-     * <p><strong>Optional Query Parameters</strong>
+     * <p><strong>Query Parameters</strong>
      *
      * <table border="1">
-     *     <caption>Optional Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Description</th></tr>
-     *     <tr><td>extendedInfo</td><td>Boolean</td><td>Limits whether includes extended information.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>extendedInfo</td><td>String</td><td>No</td><td>Limits whether includes extended information.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -240,43 +275,27 @@ public final class RelationshipBaseClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the relationship.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest get(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/relationship/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Accept", "application/json")
-                .addHeader("Content-Type", "application/json")
-                .setHttpMethod(HttpMethod.GET);
+    public Mono<Response<BinaryData>> getWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(guid, requestOptions);
     }
 
     /**
      * Delete a relationship between entities by its GUID.
      *
      * @param guid The globally unique identifier of the relationship.
-     * @return a DynamicRequest where customizations can be made before sent to the service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
+     *     false.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest delete(String guid) {
-        return new DynamicRequest(serializer, httpPipeline)
-                .setUrl("{Endpoint}/api/atlas/v2/relationship/guid/{guid}")
-                .setPathParam("Endpoint", endpoint)
-                .setPathParam("guid", guid)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", "application/json;q=0.9")
-                .setHttpMethod(HttpMethod.DELETE);
-    }
-
-    /**
-     * Create an empty DynamicRequest with the serializer and pipeline initialized for this client.
-     *
-     * @return a DynamicRequest where customizations can be made before sent to the service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynamicRequest invoke() {
-        return new DynamicRequest(serializer, httpPipeline);
+    public Mono<Response<Void>> deleteWithResponse(String guid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(guid, requestOptions);
     }
 }
