@@ -190,9 +190,9 @@ public final class EntityClient {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
+    public Response<BinaryData> upsertWithResponse(
             BinaryData entity, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateWithResponse(entity, requestOptions, context);
+        return this.serviceClient.upsertWithResponse(entity, requestOptions, context);
     }
 
     /**
@@ -465,9 +465,9 @@ public final class EntityClient {
      * @return entityMutationResponse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateEntitiesWithResponse(
+    public Response<BinaryData> upsertEntitiesWithResponse(
             BinaryData entities, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createOrUpdateEntitiesWithResponse(entities, requestOptions, context);
+        return this.serviceClient.upsertEntitiesWithResponse(entities, requestOptions, context);
     }
 
     /**
