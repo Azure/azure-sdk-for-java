@@ -286,14 +286,14 @@ public final class CommunicationIdentityAsyncClient {
     /**
      * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
      *
-     * @param accessTokenAAD AAD access token of a Teams User to acquire Communication Identity access token.
+     * @param teamsUserAadToken AAD access token of a Teams User to acquire Communication Identity access token.
      * @return Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessToken> exchangeTeamsToken(String accessTokenAAD) {
+    public Mono<AccessToken> exchangeTeamsUserAadToken(String teamsUserAadToken) {
         try {
             TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
-            requestBody.setToken(accessTokenAAD);
+            requestBody.setToken(teamsUserAadToken);
             return client.exchangeTeamsUserAccessTokenAsync(requestBody)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap((CommunicationIdentityAccessToken rawToken) -> {
@@ -307,14 +307,14 @@ public final class CommunicationIdentityAsyncClient {
     /**
      * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
      *
-     * @param accessTokenAAD AAD access token of a Teams User to acquire Communication Identity access token.
+     * @param teamsUserAadToken AAD access token of a Teams User to acquire Communication Identity access token.
      * @return Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AccessToken>> exchangeTeamsTokenWithResponse(String accessTokenAAD) {
+    public Mono<Response<AccessToken>> exchangeTeamsUserAadTokenWithResponse(String teamsUserAadToken) {
         try {
             TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
-            requestBody.setToken(accessTokenAAD);
+            requestBody.setToken(teamsUserAadToken);
             return client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody)
                 .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                 .flatMap((Response<CommunicationIdentityAccessToken> response) -> {
