@@ -80,8 +80,8 @@ public class LogsQueryClientTest extends TestBase {
 
     private TokenCredential getCredential() {
         return new ClientSecretCredentialBuilder()
-                .clientId(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_ID"))
-                .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_SECRET"))
+                .clientId(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID"))
+                .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET"))
                 .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
                 .build();
     }
