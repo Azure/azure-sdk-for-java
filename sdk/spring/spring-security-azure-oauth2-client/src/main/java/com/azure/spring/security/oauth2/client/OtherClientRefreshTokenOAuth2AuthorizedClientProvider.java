@@ -122,7 +122,7 @@ public class OtherClientRefreshTokenOAuth2AuthorizedClientProvider implements OA
             return null;
         }
         OAuth2AuthorizedClient authorizedClient = context.getAuthorizedClient();
-        if (authorizedClient != null && tokenNotExpired(authorizedClient.getAccessToken())) {
+        if (authorizedClient != null && !hasTokenExpired(authorizedClient.getAccessToken())) {
             return null;
         }
         Authentication principal = context.getPrincipal();
@@ -144,9 +144,8 @@ public class OtherClientRefreshTokenOAuth2AuthorizedClientProvider implements OA
         return provider.authorize(refreshTokenAuthorizationContext);
     }
 
-    private boolean tokenNotExpired(OAuth2Token token) {
-        return token.getExpiresAt() != null
-            && this.clock.instant().isBefore(token.getExpiresAt().minus(this.clockSkew));
+    private boolean hasTokenExpired(OAuth2Token token) {
+        return this.clock.instant().isAfter(token.getExpiresAt().minus(this.clockSkew));
     }
 
     private OAuth2AuthorizedClient createClientWithExpiredToken(OAuth2AuthorizedClient otherClient,

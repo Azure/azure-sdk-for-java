@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.server.resource.authentication.AbstractOAuth2TokenAuthenticationToken;
 import org.springframework.util.Assert;
 
@@ -69,7 +70,7 @@ public class OnBehalfOfOAuth2AuthorizedClientProvider implements OAuth2Authorize
             return null;
         }
         OAuth2AuthorizedClient authorizedClient = context.getAuthorizedClient();
-        if (authorizedClient != null && !tokenExpired(authorizedClient.getAccessToken())) {
+        if (authorizedClient != null && !hasTokenExpired(authorizedClient.getAccessToken())) {
             // If client is already authorized but access token is NOT expired than no need for re-authorization
             return null;
         }
@@ -80,9 +81,8 @@ public class OnBehalfOfOAuth2AuthorizedClientProvider implements OAuth2Authorize
         return getOboAuthorizedClient(context.getClientRegistration(), principal);
     }
 
-    private boolean tokenExpired(AbstractOAuth2Token token) {
-        Instant expiresAt = token.getExpiresAt();
-        return expiresAt == null || this.clock.instant().isAfter(expiresAt.minus(this.clockSkew));
+    private boolean hasTokenExpired(OAuth2Token token) {
+        return this.clock.instant().isAfter(token.getExpiresAt().minus(this.clockSkew));
     }
 
     @SuppressWarnings({ "unchecked" })
