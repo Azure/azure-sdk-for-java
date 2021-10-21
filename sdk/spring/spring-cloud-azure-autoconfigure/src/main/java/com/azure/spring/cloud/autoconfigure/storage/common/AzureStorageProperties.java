@@ -4,12 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.storage.common;
 
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpConfigurationProperties;
-import com.azure.spring.core.properties.aware.credential.SasTokenAware;
+import com.azure.spring.service.storage.common.StorageProperties;
 
 /**
  * Common properties for all Azure Storage services.
  */
-public class AzureStorageProperties extends AbstractAzureHttpConfigurationProperties implements SasTokenAware {
+public class AzureStorageProperties extends AbstractAzureHttpConfigurationProperties implements StorageProperties {
 
     protected String endpoint;
 

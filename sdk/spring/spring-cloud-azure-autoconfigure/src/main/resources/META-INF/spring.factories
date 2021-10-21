@@ -7,7 +7,6 @@ com.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPo
 com.azure.spring.cloud.autoconfigure.context.AzureGlobalConfigurationEnvironmentPostProcessor
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.azure.spring.autoconfigure.aad.AADAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.jms.NonPremiumServiceBusJmsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.jms.PremiumServiceBusJmsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.cache.AzureRedisAutoConfiguration,\

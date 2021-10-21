@@ -504,18 +504,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-cache</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cache;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>
       <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-eventhubs;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-eventhubs-kafka</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-eventhubs-kafka;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>

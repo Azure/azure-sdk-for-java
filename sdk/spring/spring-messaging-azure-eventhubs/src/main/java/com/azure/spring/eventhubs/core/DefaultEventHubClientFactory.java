@@ -8,6 +8,8 @@ import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.core.util.Memoizer;
+import com.azure.spring.service.eventhubs.builder.EventHubSharedAuthenticationClientBuilder;
+import com.azure.spring.service.eventhubs.builder.EventProcessorSharedAuthenticationClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
