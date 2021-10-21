@@ -116,7 +116,7 @@ public class LvaInvokeModuleSample {
 
         RemoteDeviceAdapterProperties remoteDeviceAdapterProperties = new RemoteDeviceAdapterProperties(new RemoteDeviceAdapterTarget("camerasimulator"), iotHubDeviceConnection);
         RemoteDeviceAdapter remoteDeviceAdapter = new RemoteDeviceAdapter(remoteDeviceName)
-            .setProperties(remoteDeviceAdapterProperties);;
+            .setProperties(remoteDeviceAdapterProperties);
 
         return remoteDeviceAdapter;
     }
