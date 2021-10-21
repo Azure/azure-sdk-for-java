@@ -16,8 +16,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.webpubsub.implementation.WebPubSubUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
-import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
-import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
+import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
+import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import java.util.stream.Collectors;
 
@@ -44,11 +44,11 @@ public final class WebPubSubServiceClient {
     }
 
     /**
-     * Creates an authentication token.
-     * @param options Options to apply when creating the authentication token.
-     * @return A new authentication token instance.
+     * Creates a client access token.
+     * @param options Options to apply when creating the client access token.
+     * @return A new client access instance.
      */
-    public WebPubSubAuthenticationToken getAuthenticationToken(GetAuthenticationTokenOptions options) {
+    public WebPubSubClientAccessToken getClientAccessToken(GetClientAccessTokenOptions options) {
         if (this.keyCredential == null) {
             RequestOptions requestOptions = new RequestOptions();
             if (options.getUserId() != null) {
@@ -569,8 +569,6 @@ public final class WebPubSubServiceClient {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
@@ -578,7 +576,7 @@ public final class WebPubSubServiceClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeAllConnectionsWithResponse(String hub, RequestOptions requestOptions, Context context) {
+    public Response<Void> closeAllConnectionsWithResponse(RequestOptions requestOptions, Context context) {
         return this.serviceClient.closeAllConnectionsWithResponse(hub, requestOptions, context);
     }
 
@@ -595,8 +593,6 @@ public final class WebPubSubServiceClient {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
@@ -606,7 +602,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeGroupConnectionsWithResponse(
-        String hub, String group, RequestOptions requestOptions, Context context) {
+        String group, RequestOptions requestOptions, Context context) {
         return this.serviceClient.closeGroupConnectionsWithResponse(hub, group, requestOptions, context);
     }
 
@@ -623,8 +619,6 @@ public final class WebPubSubServiceClient {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
      * @param userId The user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
@@ -634,7 +628,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> closeUserConnectionsWithResponse(
-        String hub, String userId, RequestOptions requestOptions, Context context) {
+        String userId, RequestOptions requestOptions, Context context) {
         return this.serviceClient.closeUserConnectionsWithResponse(hub, userId, requestOptions, context);
     }
 }

@@ -16,8 +16,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubUtil;
 import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
-import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
-import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
+import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
+import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import reactor.core.publisher.Mono;
 
@@ -48,12 +48,12 @@ public final class WebPubSubServiceAsyncClient {
     }
 
     /**
-     * Creates an authentication token.
+     * Creates a client access token.
      *
-     * @param options Options to apply when creating the authentication token.
-     * @return A new authentication token instance.
+     * @param options Options to apply when creating the client access token.
+     * @return A new client access token instance.
      */
-    public Mono<WebPubSubAuthenticationToken> getAuthenticationToken(GetAuthenticationTokenOptions options) {
+    public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
         if (this.keyCredential == null) {
             RequestOptions requestOptions = new RequestOptions();
             if (options.getUserId() != null) {
@@ -547,15 +547,13 @@ public final class WebPubSubServiceAsyncClient {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> closeAllConnectionsWithResponse(String hub, RequestOptions requestOptions) {
+    public Mono<Response<Void>> closeAllConnectionsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.closeAllConnectionsWithResponseAsync(hub, requestOptions);
     }
 
@@ -572,8 +570,6 @@ public final class WebPubSubServiceAsyncClient {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
@@ -582,7 +578,7 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeGroupConnectionsWithResponse(
-        String hub, String group, RequestOptions requestOptions) {
+        String group, RequestOptions requestOptions) {
         return this.serviceClient.closeGroupConnectionsWithResponseAsync(hub, group, requestOptions);
     }
 
@@ -599,8 +595,6 @@ public final class WebPubSubServiceAsyncClient {
      *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
      * </table>
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
      * @param userId The user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
@@ -609,7 +603,7 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> closeUserConnectionsWithResponse(
-        String hub, String userId, RequestOptions requestOptions) {
+        String userId, RequestOptions requestOptions) {
         return this.serviceClient.closeUserConnectionsWithResponseAsync(hub, userId, requestOptions);
     }
 }

@@ -15,8 +15,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
-import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
+import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
+import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
@@ -218,15 +218,15 @@ public class WebPubSubServiceClientTests extends TestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testGetAuthenticationToken() throws ParseException {
-        WebPubSubAuthenticationToken token = client.getAuthenticationToken(new GetAuthenticationTokenOptions());
+        WebPubSubClientAccessToken token = client.getClientAccessToken(new GetClientAccessTokenOptions());
         Assertions.assertNotNull(token);
-        Assertions.assertNotNull(token.getAuthToken());
+        Assertions.assertNotNull(token.getToken());
         Assertions.assertNotNull(token.getUrl());
 
         Assertions.assertTrue(token.getUrl().startsWith("wss://"));
         Assertions.assertTrue(token.getUrl().contains(".webpubsub.azure.com/client/hubs/"));
 
-        String authToken = token.getAuthToken();
+        String authToken = token.getToken();
         JWT jwt = JWTParser.parse(authToken);
         JWTClaimsSet claimsSet = jwt.getJWTClaimsSet();
         Assertions.assertNotNull(claimsSet);

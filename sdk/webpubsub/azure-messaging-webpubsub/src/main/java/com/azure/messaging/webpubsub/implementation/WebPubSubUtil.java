@@ -5,7 +5,7 @@ package com.azure.messaging.webpubsub.implementation;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.webpubsub.models.WebPubSubAuthenticationToken;
+import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
@@ -44,19 +44,19 @@ public final class WebPubSubUtil {
     }
 
     /**
-     * Creates a new instance of {@link WebPubSubAuthenticationToken}.
+     * Creates a new instance of {@link WebPubSubClientAccessToken}.
      * @param token The JWT token.
      * @param endpoint The Web PubSub endpoint.
      * @param hub The name of the hub.
-     * @return A new instance of {@link WebPubSubAuthenticationToken}.
+     * @return A new instance of {@link WebPubSubClientAccessToken}.
      */
-    public static WebPubSubAuthenticationToken createToken(String token, String endpoint, String hub) {
+    public static WebPubSubClientAccessToken createToken(String token, String endpoint, String hub) {
         endpoint = endpoint.endsWith("/") ? endpoint : endpoint + "/";
         // The endpoint should always be http or https and client endpoint should be ws or wss respectively.
         final String clientEndpoint = endpoint.replaceFirst("http", "ws");
         final String clientUrl = clientEndpoint + "client/hubs/" + hub;
         final String url = clientUrl + "?access_token=" + token;
-        return new WebPubSubAuthenticationToken(token, url);
+        return new WebPubSubClientAccessToken(token, url);
     }
 
     private WebPubSubUtil() {

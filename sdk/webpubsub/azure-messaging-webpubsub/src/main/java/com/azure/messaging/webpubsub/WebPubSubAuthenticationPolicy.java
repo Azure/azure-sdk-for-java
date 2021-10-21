@@ -10,7 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
+import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -75,7 +75,7 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     static String getAuthenticationToken(final String audienceUrl,
-                                         GetAuthenticationTokenOptions options,
+                                         GetClientAccessTokenOptions options,
                                          final AzureKeyCredential credential) {
         try {
             Duration expiresAfter = Duration.ofHours(1);
