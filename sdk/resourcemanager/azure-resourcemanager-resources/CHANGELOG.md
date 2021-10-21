@@ -1,6 +1,6 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.9.0 (2021-10-21)
 
 ### Features Added
 
