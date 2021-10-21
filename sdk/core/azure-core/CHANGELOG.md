@@ -1,14 +1,25 @@
 # Release History
 
-## 1.22.0-beta.1 (Unreleased)
+## 1.22.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `getJavaClass` method to retrieve the representing instance of the `TypeReference` created.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.22.0-beta.1 (2021-10-12)
+
+### Features Added
+
+- Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
+
+### Other Changes
+
+- Fixed a bug where `BinaryData.getLength` returns `null` when it should return valid length.
 
 ## 1.21.0 (2021-10-01)
 
@@ -32,6 +43,13 @@
 
 - Upgraded Jackson from `2.12.4` to `2.12.5`.
 - Upgraded Reactor from `3.4.9` to `3.4.10`.
+
+
+## 1.21.0-beta.1 (2021-09-08)
+
+### Features Added
+
+- Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
 
 ## 1.20.0 (2021-09-07)
 
@@ -92,8 +110,8 @@
 
 ### Features Added
 
- - Added `RequestOptions` for protocol methods
- - Added support for `BinaryData` type as the request body or response body in `RestProxy`
+- Added `RequestOptions` for protocol methods
+- Added support for `BinaryData` type as the request body or response body in `RestProxy`
 
 ## 1.18.0 (2021-07-01)
 

@@ -1,47 +1,47 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2021-10-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a2c6967a-0fa7-4321-bf7f-7c116cc0ba68",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 11.6)",
+      "x-ms-client-request-id" : "34f3277d-1581-4402-bef8-2355ae2a1326",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1",
+      "content-length" : "101",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Fri, 11 Jun 2021 19:47:28 GMT",
+      "Date" : "Tue, 12 Oct 2021 17:16:49 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "17ms",
-      "MS-CV" : "VFw8Qn3RVkqCON63ysMM2w.0",
-      "X-Azure-Ref" : "00L3DYAAAAAD6Hez5bdckTLYKU5DBy4BnWVZSMzBFREdFMDQxMQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_0000000a-9c7f-1bc3-02c3-593a0d009c5a\"}}",
-      "x-ms-client-request-id" : "a2c6967a-0fa7-4321-bf7f-7c116cc0ba68",
+      "X-Processing-Time" : "266ms",
+      "MS-CV" : "MV+fq81R0E6zc/RIwjRQ7A.0",
+      "X-Azure-Ref" : "0AcNlYQAAAABrWPG/Ydf6RISOKUvsXFdhUFJHMDFFREdFMDcyMQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000d-1563-63fe-e1fe-08482200b604\"}}",
+      "x-ms-client-request-id" : "34f3277d-1581-4402-bef8-2355ae2a1326",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.communication.azure.com/identities/8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_0000000a-9c7f-1bc3-02c3-593a0d009c5a?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/identities/8:acs:a5ba7870-ef05-4e2b-9901-7751faa29e20_0000000d-1563-63fe-e1fe-08482200b604?api-version=2021-10-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9fa22d9e-d795-4e72-a168-fb9452592dd2"
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.2.0-beta.1 (11.0.12; Mac OS X; 11.6)",
+      "x-ms-client-request-id" : "fa4ff752-4e46-4898-aeb0-d8f2ba771e4f"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
-      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1",
-      "X-Processing-Time" : "502ms",
-      "MS-CV" : "Xz5SjQ9G3kO0b5oiCprYCg.0",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview",
+      "X-Processing-Time" : "296ms",
+      "MS-CV" : "jqlZd+bUTkKPE+p7W6QRgg.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "00L3DYAAAAAA4fnha4TwHTrUuIlh+ErKCWVZSMzBFREdFMDQwNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0AsNlYQAAAAA2qDFTJSSTRq8aVFLi7FbbUFJHMDFFREdFMDYxOQBmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
       "StatusCode" : "204",
-      "x-ms-client-request-id" : "9fa22d9e-d795-4e72-a168-fb9452592dd2",
-      "Date" : "Fri, 11 Jun 2021 19:47:29 GMT",
+      "x-ms-client-request-id" : "fa4ff752-4e46-4898-aeb0-d8f2ba771e4f",
+      "Date" : "Tue, 12 Oct 2021 17:16:50 GMT",
       "Request-Context" : "appId="
     },
     "Exception" : null

@@ -455,7 +455,7 @@ public final class VpnSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnSiteInner>, VpnSiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -478,7 +478,7 @@ public final class VpnSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VpnSiteInner>, VpnSiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters, Context context) {
         context = this.client.mergeContext(context);
@@ -501,7 +501,7 @@ public final class VpnSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnSiteInner>, VpnSiteInner> beginCreateOrUpdate(
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, vpnSiteName, vpnSiteParameters).getSyncPoller();
@@ -519,7 +519,7 @@ public final class VpnSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnSite Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnSiteInner>, VpnSiteInner> beginCreateOrUpdate(
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, vpnSiteName, vpnSiteParameters, context).getSyncPoller();
@@ -874,7 +874,7 @@ public final class VpnSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vpnSiteName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, vpnSiteName);
         return this
@@ -893,7 +893,7 @@ public final class VpnSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vpnSiteName, Context context) {
         context = this.client.mergeContext(context);
@@ -913,7 +913,7 @@ public final class VpnSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vpnSiteName) {
         return beginDeleteAsync(resourceGroupName, vpnSiteName).getSyncPoller();
     }
@@ -929,7 +929,7 @@ public final class VpnSitesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vpnSiteName, Context context) {
         return beginDeleteAsync(resourceGroupName, vpnSiteName, context).getSyncPoller();

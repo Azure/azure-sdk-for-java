@@ -2173,7 +2173,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2193,7 +2193,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
         context = this.mergeContext(context);
@@ -2213,7 +2213,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest) {
         return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest).getSyncPoller();
@@ -2231,7 +2231,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
         String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context) {
         return beginDeleteBastionShareableLinkAsync(resourceGroupName, bastionHostname, bslRequest, context)
@@ -3331,7 +3331,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
             String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams) {
@@ -3360,7 +3360,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
             String resourceGroupName,
@@ -3388,7 +3388,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofile(
             String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams) {
@@ -3410,7 +3410,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpn Profile Response for package generation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
         beginGeneratevirtualwanvpnserverconfigurationvpnprofile(
             String resourceGroupName,

@@ -1,6 +1,16 @@
 # Release History
 
-## 12.7.1 (2021-10-11)
+## 12.8.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.7.1 (2021-10-12)
 
 ### Bugs Fixed
 - Fixed bug where composite BlobServiceException wasn't translated into DataLakeServiceException.

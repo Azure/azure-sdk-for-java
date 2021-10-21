@@ -19,7 +19,7 @@ public final class UsageInner {
      * An enum describing the unit of usage measurement.
      */
     @JsonProperty(value = "unit", required = true)
-    private String unit;
+    private String unit = "Count";
 
     /*
      * The current usage of the resource.

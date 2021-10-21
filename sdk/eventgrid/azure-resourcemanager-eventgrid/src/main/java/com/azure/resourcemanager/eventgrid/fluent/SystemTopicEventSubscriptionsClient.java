@@ -64,7 +64,7 @@ public interface SystemTopicEventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String systemTopicName,
@@ -86,7 +86,7 @@ public interface SystemTopicEventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String systemTopicName,
@@ -150,7 +150,7 @@ public interface SystemTopicEventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String systemTopicName, String eventSubscriptionName);
 
@@ -167,7 +167,7 @@ public interface SystemTopicEventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String systemTopicName, String eventSubscriptionName, Context context);
 
@@ -213,7 +213,7 @@ public interface SystemTopicEventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String resourceGroupName,
         String systemTopicName,
@@ -234,7 +234,7 @@ public interface SystemTopicEventSubscriptionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return event Subscription.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
         String resourceGroupName,
         String systemTopicName,
