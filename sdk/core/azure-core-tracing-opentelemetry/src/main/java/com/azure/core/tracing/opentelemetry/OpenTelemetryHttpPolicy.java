@@ -73,7 +73,12 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private static final String HTTP_METHOD = "http.method";
     private static final String HTTP_URL = "http.url";
     private static final String HTTP_STATUS_CODE = "http.status_code";
-    private static final String REQUEST_ID = "x-ms-request-id";
+    private static final String SERVICE_REQUEST_ID_HEADER = "x-ms-request-id";
+    private static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
+
+    private static final String CLIENT_REQUEST_ID_HEADER = "x-ms-client-request-id";
+    private static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
+
 
     // This helper class implements W3C distributed tracing protocol and injects SpanContext into the outgoing http
     // request
@@ -90,9 +95,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         HttpRequest request = context.getHttpRequest();
 
         // Build new child span representing this outgoing request.
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-
-        SpanBuilder spanBuilder = tracer.spanBuilder(urlBuilder.getPath())
+        SpanBuilder spanBuilder = tracer.spanBuilder("HTTP " + request.getHttpMethod().toString())
             .setParent(currentContext.with(parentSpan));
 
         // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request);
@@ -127,6 +130,9 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
         tracingNamespace.ifPresent(o -> putAttributeIfNotEmptyOrNull(span, OpenTelemetryTracer.AZ_NAMESPACE_KEY,
             o.toString()));
+
+        String requestId = request.getHeaders().getValue(CLIENT_REQUEST_ID_HEADER);
+        putAttributeIfNotEmptyOrNull(span, CLIENT_REQUEST_ID_ATTRIBUTE, requestId);
     }
 
     private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
@@ -183,10 +189,10 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             String requestId = null;
             if (response != null) {
                 statusCode = response.getStatusCode();
-                requestId = response.getHeaderValue(REQUEST_ID);
+                requestId = response.getHeaderValue(SERVICE_REQUEST_ID_HEADER);
             }
 
-            putAttributeIfNotEmptyOrNull(span, REQUEST_ID, requestId);
+            putAttributeIfNotEmptyOrNull(span, SERVICE_REQUEST_ID_ATTRIBUTE, requestId);
             span.setAttribute(HTTP_STATUS_CODE, statusCode);
             span = HttpTraceUtil.setSpanStatus(span, statusCode, error);
         }
