@@ -59,7 +59,7 @@ public interface DiskEncryptionSetsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
 
@@ -77,7 +77,7 @@ public interface DiskEncryptionSetsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
 
@@ -96,7 +96,7 @@ public interface DiskEncryptionSetsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
         String resourceGroupName,
         String diskEncryptionSetName,
@@ -193,7 +193,7 @@ public interface DiskEncryptionSetsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdateAsync(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
 
@@ -211,7 +211,7 @@ public interface DiskEncryptionSetsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
         String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
 
@@ -230,7 +230,7 @@ public interface DiskEncryptionSetsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
         String resourceGroupName,
         String diskEncryptionSetName,
@@ -385,7 +385,7 @@ public interface DiskEncryptionSetsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskEncryptionSetName);
 
     /**
@@ -400,7 +400,7 @@ public interface DiskEncryptionSetsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskEncryptionSetName);
 
     /**
@@ -416,7 +416,7 @@ public interface DiskEncryptionSetsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String diskEncryptionSetName, Context context);
 

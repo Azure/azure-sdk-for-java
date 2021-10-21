@@ -3,9 +3,7 @@
 ## 12.15.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added support for the 2020-12-06 service version.
-- Added support for setting an encryption scope on a BlobServiceSas and an AccountSas.
+- Added support for permanent delete permissions in blob and account level SAS.
 
 ### Breaking Changes
 

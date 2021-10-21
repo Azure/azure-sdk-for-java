@@ -70,8 +70,6 @@ public class CommonSasQueryParameters {
 
     private final String correlationId;
 
-    private final String encryptionScope;
-
     /**
      * Creates a new {@link CommonSasQueryParameters} object.
      *
@@ -132,8 +130,6 @@ public class CommonSasQueryParameters {
             removeSasParametersFromMap);
         this.directoryDepth = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_DIRECTORY_DEPTH,
             removeSasParametersFromMap, Integer::parseInt);
-        this.encryptionScope = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE,
-            removeSasParametersFromMap);
     }
 
     /**
@@ -222,7 +218,6 @@ public class CommonSasQueryParameters {
             this.unauthorizedObjectId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_DIRECTORY_DEPTH, this.directoryDepth);
-        SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
 
         return sb.toString();
     }
@@ -417,12 +412,5 @@ public class CommonSasQueryParameters {
      */
     public String getCorrelationId() {
         return correlationId;
-    }
-
-    /**
-     * @return An encryption scope that will be applied to any write operations performed with the sas.
-     */
-    public String getEncryptionScope() {
-        return encryptionScope;
     }
 }

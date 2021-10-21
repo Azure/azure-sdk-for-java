@@ -333,11 +333,6 @@ public final class Constants {
         public static final String SAS_SIGNATURE = "sig";
 
         /**
-         * The SAS encryption scope parameter.
-         */
-        public static final String SAS_ENCRYPTION_SCOPE = "ses";
-
-        /**
          * The SAS cache control parameter.
          */
         public static final String SAS_CACHE_CONTROL = "rscc";
