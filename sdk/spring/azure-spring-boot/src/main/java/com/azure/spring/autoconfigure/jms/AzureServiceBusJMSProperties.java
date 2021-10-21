@@ -122,8 +122,7 @@ public class AzureServiceBusJMSProperties {
         }
 
         /**
-         * @param durableTopicPrefetch
-         * Sets the durable topic prefetch value
+         * @param durableTopicPrefetch Sets the durable topic prefetch value
          */
         public void setDurableTopicPrefetch(int durableTopicPrefetch) {
             this.durableTopicPrefetch = durableTopicPrefetch;
@@ -138,8 +137,7 @@ public class AzureServiceBusJMSProperties {
         }
 
         /**
-         * @param queueBrowserPrefetch
-         *        The queueBrowserPrefetch to set.
+         * @param queueBrowserPrefetch The queueBrowserPrefetch to set.
          */
         public void setQueueBrowserPrefetch(int queueBrowserPrefetch) {
             this.queueBrowserPrefetch = queueBrowserPrefetch;
@@ -153,8 +151,7 @@ public class AzureServiceBusJMSProperties {
         }
 
         /**
-         * @param queuePrefetch
-         *        The queuePrefetch to set.
+         * @param queuePrefetch The queuePrefetch to set.
          */
         public void setQueuePrefetch(int queuePrefetch) {
             this.queuePrefetch = queuePrefetch;
@@ -168,8 +165,7 @@ public class AzureServiceBusJMSProperties {
         }
 
         /**
-         * @param topicPrefetch
-         *        The topicPrefetch to set.
+         * @param topicPrefetch The topicPrefetch to set.
          */
         public void setTopicPrefetch(int topicPrefetch) {
             this.topicPrefetch = topicPrefetch;
