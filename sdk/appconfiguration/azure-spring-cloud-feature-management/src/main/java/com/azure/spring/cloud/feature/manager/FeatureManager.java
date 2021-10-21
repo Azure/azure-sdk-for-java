@@ -187,15 +187,13 @@ public class FeatureManager extends HashMap<String, Object> {
 
         String[] parts = reference.split(":");
 
-        HashMap<String, Object> configurations = null;
+        Object configurations = null;
 
-        for (
-
-        String part : parts) {
+        for (String part : parts) {
             if (configurations == null) {
-                configurations = (HashMap<String, Object>) variantProperties.get(part);
-            } else {
-                configurations = (HashMap<String, Object>) configurations.get(part);
+                configurations = variantProperties.get(part);
+            } else if (configurations instanceof HashMap){
+                configurations = ((HashMap<String, Object>) configurations).get(part);
             }
         }
 

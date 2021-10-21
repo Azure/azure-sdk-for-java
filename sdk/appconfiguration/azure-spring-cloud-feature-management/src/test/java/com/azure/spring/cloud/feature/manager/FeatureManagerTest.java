@@ -31,6 +31,10 @@ import com.azure.spring.cloud.feature.manager.entities.FeatureFilterEvaluationCo
 import com.azure.spring.cloud.feature.manager.entities.featurevariants.DynamicFeature;
 import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureDefinition;
 import com.azure.spring.cloud.feature.manager.entities.featurevariants.FeatureVariant;
+import com.azure.spring.cloud.feature.manager.entities.featurevariants.IFeatureVariantAssigner;
+import com.azure.spring.cloud.feature.manager.testobjects.BasicObject;
+
+import reactor.core.publisher.Mono;
 
 /**
  * Unit tests for FeatureManager.
@@ -45,13 +49,13 @@ public class FeatureManagerTest {
     private static final String PARAM_1_NAME = "param1";
 
     private static final String PARAM_1_VALUE = "testParam";
-    
+
     private static final String USERS = "users";
 
     private static final String GROUPS = "groups";
-    
+
     private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
-    
+
     private static final LinkedHashMap<String, Object> EMPTY_MAP = new LinkedHashMap<>();
 
     @InjectMocks
@@ -62,9 +66,12 @@ public class FeatureManagerTest {
 
     @Mock
     private FeatureManagementConfigProperties properties;
-    
+
     @Mock
     private FeatureVariantProperties variantProperties;
+
+    @Mock
+    private MockFilter filterMock;
 
     @BeforeEach
     public void setup() {
@@ -250,20 +257,150 @@ public class FeatureManagerTest {
             () -> featureManager.isEnabledAsync("Off").block());
         assertThat(e).hasMessage("Fail fast is set and a Filter was unable to be found: AlwaysOff");
     }
-    
+
     @Test
-    public void getVariantAsyncTest() {
-        
+    public void getVariantAsyncDefaultBasic() {
+        String testString = "Basic Object";
+        when(variantProperties.get("testVariantReference")).thenReturn(testString);
         DynamicFeature dynamicFeature = new DynamicFeature();
         dynamicFeature.setAssigner("Test.Assigner");
-        
+
         Map<String, FeatureVariant> variants = new LinkedHashMap<>();
-        
+
         variants.put("0", createFeatureVariant("testVariant", EMPTY_MAP, EMPTY_MAP, 100));
-        
+        variants.get("0").setDefault(true);
         dynamicFeature.setVariants(variants);
-        
-        featureManager.getVariantAsync("testVariant", Object.class);
+
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put("testVariant", dynamicFeature);
+        ;
+
+        featureManager.putAll(params);
+
+        assertEquals(testString, featureManager.getVariantAsync("testVariant", String.class).block());
+    }
+
+    @Test
+    public void getVariantAsyncDefaultMultiPart() {
+        String testString = "Basic Object";
+        String variantName = "testVariant";
+
+        HashMap<String, Object> config = new HashMap<>();
+        config.put("LevelTwo", testString);
+
+        when(variantProperties.get(variantName + "Reference")).thenReturn(config);
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("Test.Assigner");
+
+        Map<String, FeatureVariant> variants = new LinkedHashMap<>();
+
+        variants.put("0", createFeatureVariant(variantName, ":LevelTwo", EMPTY_MAP, EMPTY_MAP, 100));
+        variants.get("0").setDefault(true);
+        dynamicFeature.setVariants(variants);
+
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put(variantName, dynamicFeature);
+
+        featureManager.putAll(params);
+
+        assertEquals(testString, featureManager.getVariantAsync(variantName, String.class).block());
+    }
+
+    @Test
+    public void getVariantNoDefault() {
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("Test.Assigner");
+
+        Map<String, FeatureVariant> variants = new LinkedHashMap<>();
+
+        variants.put("0", createFeatureVariant("testVariant", EMPTY_MAP, EMPTY_MAP, 100));
+
+        dynamicFeature.setVariants(variants);
+
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put("testVariant", dynamicFeature);
+
+        featureManager.putAll(params);
+
+        ;
+        FeatureManagementException e = assertThrows(FeatureManagementException.class,
+            () -> featureManager.getVariantAsync("testVariant", Object.class).block());
+        assertEquals("A default variant cannot be found for the feature testVariant", e.getMessage());
+    }
+
+    @Test
+    public void getVariantAsyncNonDefault() {
+        String testString = "Basic Object";
+
+        FeatureVariant variant = createFeatureVariant("testVariant2", EMPTY_MAP, EMPTY_MAP, 100);
+
+        when(variantProperties.get("testVariant2Reference")).thenReturn(testString);
+
+        when(context.getBean(Mockito.matches("Test.Assigner"))).thenReturn(filterMock);
+        when(filterMock.assignVariantAsync(Mockito.any())).thenReturn(Mono.just(variant));
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("Test.Assigner");
+
+        Map<String, FeatureVariant> variants = new LinkedHashMap<>();
+
+        variants.put("0", createFeatureVariant("testVariant", EMPTY_MAP, EMPTY_MAP, 0));
+        variants.get("0").setDefault(true);
+        variants.put("1", variant);
+        dynamicFeature.setVariants(variants);
+
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put("testVariant", dynamicFeature);
+
+        featureManager.putAll(params);
+
+        assertEquals(testString, featureManager.getVariantAsync("testVariant", String.class).block());
+    }
+    
+    @Test
+    public void getVariantAsyncComplexObject() {
+        String testString = "Basic Object";
+        BasicObject testObject = new BasicObject();
+        testObject.setTestValue(testString);
+
+        FeatureVariant variant = createFeatureVariant("testVariant2", EMPTY_MAP, EMPTY_MAP, 100);
+
+        when(variantProperties.get("testVariant2Reference")).thenReturn(testObject);
+
+        when(context.getBean(Mockito.matches("Test.Assigner"))).thenReturn(filterMock);
+        when(filterMock.assignVariantAsync(Mockito.any())).thenReturn(Mono.just(variant));
+
+        DynamicFeature dynamicFeature = new DynamicFeature();
+        dynamicFeature.setAssigner("Test.Assigner");
+
+        Map<String, FeatureVariant> variants = new LinkedHashMap<>();
+
+        variants.put("0", createFeatureVariant("testVariant", EMPTY_MAP, EMPTY_MAP, 0));
+        variants.get("0").setDefault(true);
+        variants.put("1", variant);
+        dynamicFeature.setVariants(variants);
+
+        Map<String, Object> params = new LinkedHashMap<>();
+        params.put("testVariant", dynamicFeature);
+
+        featureManager.putAll(params);
+
+        assertEquals(testString, featureManager.getVariantAsync("testVariant", BasicObject.class).block().getTestValue());
+    }
+
+    class MockFilter implements FeatureFilter, IFeatureVariantAssigner {
+
+        @Override
+        public Mono<FeatureVariant> assignVariantAsync(FeatureDefinition featureDefinition) {
+            return null;
+        }
+
+        @Override
+        public boolean evaluate(FeatureFilterEvaluationContext context) {
+            return false;
+        }
+
     }
 
     class AlwaysOnFilter implements FeatureFilter {
@@ -274,13 +411,19 @@ public class FeatureManagerTest {
         }
 
     }
-    
+
     private FeatureVariant createFeatureVariant(String variantName, LinkedHashMap<String, Object> users,
+        LinkedHashMap<String, Object> groups, int defautPercentage) {
+        return createFeatureVariant(variantName, "", users, groups, defautPercentage);
+    }
+
+    private FeatureVariant createFeatureVariant(String variantName, String additionalRerence,
+        LinkedHashMap<String, Object> users,
         LinkedHashMap<String, Object> groups, int defautPercentage) {
         FeatureVariant variant = new FeatureVariant();
         variant.setName(variantName);
         variant.setDefault(false);
-        variant.setConfigurationReference(variantName + "Reference");
+        variant.setConfigurationReference(variantName + "Reference" + additionalRerence);
 
         LinkedHashMap<String, Object> parameters = new LinkedHashMap<String, Object>();
 
