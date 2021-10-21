@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.jms;
 
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactorySettings;
+import java.util.LinkedHashMap;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -48,7 +49,7 @@ public class PremiumServiceBusJMSAutoConfiguration extends AbstractServiceBusJMS
         int topicPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getTopicPrefetch();
 
         ServiceBusJmsConnectionFactorySettings settings =
-            new ServiceBusJmsConnectionFactorySettings(new HashMap<>());
+            new ServiceBusJmsConnectionFactorySettings(new LinkedHashMap<>());
         settings.setConnectionIdleTimeoutMS(idleTimeout);
         settings.setTraceFrames(false);
         settings.setShouldReconnect(false);

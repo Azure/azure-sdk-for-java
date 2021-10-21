@@ -39,7 +39,6 @@ public class NonPremiumServiceBusJMSAutoConfiguration extends AbstractServiceBus
         String connectionString = azureServiceBusJMSProperties.getConnectionString();
         String clientId = azureServiceBusJMSProperties.getTopicClientId();
         int idleTimeout = azureServiceBusJMSProperties.getIdleTimeout();
-        int prefetchPolicyAll = azureServiceBusJMSProperties.getPrefetchPolicy().getAll();
         int durableTopicPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getDurableTopicPrefetch();
         int queueBrowserPrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getQueueBrowserPrefetch();
         int queuePrefetch = azureServiceBusJMSProperties.getPrefetchPolicy().getQueuePrefetch();
@@ -58,7 +57,6 @@ public class NonPremiumServiceBusJMSAutoConfiguration extends AbstractServiceBus
         jmsConnectionFactory.setPassword(sasKey);
 
         JmsDefaultPrefetchPolicy prefetchPolicy = (JmsDefaultPrefetchPolicy) jmsConnectionFactory.getPrefetchPolicy();
-        prefetchPolicy.setAll(prefetchPolicyAll);
         prefetchPolicy.setDurableTopicPrefetch(durableTopicPrefetch);
         prefetchPolicy.setQueueBrowserPrefetch(queueBrowserPrefetch);
         prefetchPolicy.setQueuePrefetch(queuePrefetch);
