@@ -4,6 +4,7 @@
 package com.azure.spring.autoconfigure.jms;
 
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PremiumServiceBusJMSAutoConfigurationTest extends AbstractServiceBusJMSAutoConfigurationTest {
 
@@ -32,6 +34,24 @@ public class PremiumServiceBusJMSAutoConfigurationTest extends AbstractServiceBu
         ApplicationContextRunner contextRunner = getEmptyContextRunner();
         contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusJmsConnectionFactory.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusJMSProperties.class));
+    }
+
+    @Test
+    public void testPreminumPrefetchPolicy() {
+        ApplicationContextRunner contextRunner = getContextRunnerWithProperties();
+        contextRunner.run(
+            context -> {
+                assertThat(context).hasBean("jmsConnectionFactory");
+                SpringServiceBusJmsConnectionFactory jmsConnectionFactory = (SpringServiceBusJmsConnectionFactory) context.getBean("jmsConnectionFactory");
+                assertNotNull(jmsConnectionFactory.getSettings().getConfigurationOptions());
+                Map<String, String> configurationOptions = jmsConnectionFactory.getSettings().getConfigurationOptions();
+                assertThat(configurationOptions.get("jms.prefetchPolicy.all")).isEqualTo("5");
+                assertThat(configurationOptions.get("jms.prefetchPolicy.topicPrefetch")).isEqualTo("12");
+                assertThat(configurationOptions.get("jms.prefetchPolicy.durableTopicPrefetch")).isEqualTo("999");
+                assertThat(configurationOptions.get("jms.prefetchPolicy.queuePrefetch")).isEqualTo("19");
+                assertThat(configurationOptions.get("jms.prefetchPolicy.queueBrowserPrefetch")).isEqualTo("21");
+            }
+        );
     }
 
     @Override
@@ -60,7 +80,12 @@ public class PremiumServiceBusJMSAutoConfigurationTest extends AbstractServiceBu
                 "spring.jms.servicebus.idle-timeout=123",
                 "spring.jms.servicebus.pricing-tier=premium",
                 "spring.jms.servicebus.listener.reply-pub-sub-domain=false",
-                "spring.jms.servicebus.listener.reply-qos-settings.priority=1"
+                "spring.jms.servicebus.listener.reply-qos-settings.priority=1",
+                "spring.jms.servicebus.prefetch-policy.all=5",
+                "spring.jms.servicebus.prefetch-policy.topic-prefetch=12",
+                "spring.jms.servicebus.prefetch-policy.durable-topic-prefetch=999",
+                "spring.jms.servicebus.prefetch-policy.queue-prefetch= 19",
+                "spring.jms.servicebus.prefetch-policy.queue-browser-prefetch= 21"
             );
     }
 }
