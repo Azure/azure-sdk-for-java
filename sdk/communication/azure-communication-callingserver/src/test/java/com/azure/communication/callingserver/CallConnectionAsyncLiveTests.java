@@ -155,7 +155,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
             // Add User
             String operationContext = UUID.randomUUID().toString();
             assert callConnectionAsync != null;
-            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-3eb4-b48f-32fb-343a0d000fc1");
+            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-4093-ebc3-d6d4-4448220005fd");
             AddParticipantResult addParticipantResult = callConnectionAsync.addParticipant(
                 addedUser,
                 null,
@@ -205,7 +205,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         try {
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-3eb4-b48f-32fb-343a0d000fc1");
+            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-4093-ebc3-d6d4-4448220005fd");
             Response<AddParticipantResult> addParticipantResponse =
                 callConnectionAsync.addParticipantWithResponse(
                     addedUser,

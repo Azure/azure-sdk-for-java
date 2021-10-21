@@ -249,7 +249,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             ServerCallLocator serverCallLocator = new ServerCallLocator(serverCallId);
 
             // Add User
-            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-3eb4-b48f-32fb-343a0d000fc1");
+            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-4093-ebc3-d6d4-4448220005fd");
 
             String operationContext = UUID.randomUUID().toString();
             AddParticipantResult addParticipantResult = callingServerAsyncClient
@@ -311,7 +311,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             ServerCallLocator serverCallLocator = new ServerCallLocator(serverCallId);
 
             // Add User
-            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-3eb4-b48f-32fb-343a0d000fc1");
+            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-4093-ebc3-d6d4-4448220005fd");
 
             String operationContext = UUID.randomUUID().toString();
             CommunicationUserIdentifier addUser = new CommunicationUserIdentifier(toUser);
