@@ -104,7 +104,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
 
     @Test
     void testProxyPropertiesConfigured() {
-        AzureStorageBlobProperties properties = createMinimalServiceProperties();
+        TestAzureStorageBlobProperties properties = createMinimalServiceProperties();
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);

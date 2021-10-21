@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.cosmos;
+package com.azure.spring.service.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.spring.cloud.autoconfigure.AzureServiceClientBuilderFactoryTestBase;
+import com.azure.spring.service.AzureServiceClientBuilderFactoryTestBase;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -16,13 +16,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.mock;
 
 public class CosmosClientBuilderFactoryTest extends AzureServiceClientBuilderFactoryTestBase<CosmosClientBuilder,
-    AzureCosmosProperties, CosmosClientBuilderFactory> {
+    TestAzureCosmosProperties, CosmosClientBuilderFactory> {
 
     private static final String ENDPOINT = "https://test.documents.azure.com:443/";
 
     @Test
     void testGateConnectionModeConfigured() {
-        AzureCosmosProperties properties = createMinimalServiceProperties();
+        TestAzureCosmosProperties properties = createMinimalServiceProperties();
         properties.setConnectionMode(ConnectionMode.GATEWAY);
         final CosmosClientBuilderFactoryExt factoryExt = new CosmosClientBuilderFactoryExt(properties);
         final CosmosClientBuilder builder = factoryExt.build();
@@ -32,7 +32,7 @@ public class CosmosClientBuilderFactoryTest extends AzureServiceClientBuilderFac
 
     @Test
     void testDirectConnectionModeConfigured() {
-        AzureCosmosProperties properties = createMinimalServiceProperties();
+        TestAzureCosmosProperties properties = createMinimalServiceProperties();
         properties.setConnectionMode(ConnectionMode.DIRECT);
         final CosmosClientBuilderFactoryExt factoryExt = new CosmosClientBuilderFactoryExt(properties);
         final CosmosClientBuilder builder = factoryExt.build();
@@ -41,15 +41,15 @@ public class CosmosClientBuilderFactoryTest extends AzureServiceClientBuilderFac
     }
 
     @Override
-    protected AzureCosmosProperties createMinimalServiceProperties() {
-        AzureCosmosProperties cosmosProperties = new AzureCosmosProperties();
+    protected TestAzureCosmosProperties createMinimalServiceProperties() {
+        TestAzureCosmosProperties cosmosProperties = new TestAzureCosmosProperties();
         cosmosProperties.setEndpoint(ENDPOINT);
         return cosmosProperties;
     }
 
     static class CosmosClientBuilderFactoryExt extends CosmosClientBuilderFactory {
 
-        CosmosClientBuilderFactoryExt(AzureCosmosProperties cosmosProperties) {
+        CosmosClientBuilderFactoryExt(TestAzureCosmosProperties cosmosProperties) {
             super(cosmosProperties);
         }
 
