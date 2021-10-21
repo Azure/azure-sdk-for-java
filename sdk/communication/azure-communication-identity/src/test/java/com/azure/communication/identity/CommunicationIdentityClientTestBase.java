@@ -183,8 +183,8 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return content;
     }
 
-    protected static String generateTeamsToken() throws MalformedURLException, ExecutionException, InterruptedException {
-        String token = "Sanitized";
+    protected static String generateTeamsUserAadToken() throws MalformedURLException, ExecutionException, InterruptedException {
+        String teamsUserAadToken = "Sanitized";
         if (TEST_MODE != TestMode.PLAYBACK) {
             try {
                 IPublicClientApplication publicClientApplication = PublicClientApplication.builder(COMMUNICATION_M365_APP_ID)
@@ -196,12 +196,12 @@ public class CommunicationIdentityClientTestBase extends TestBase {
                         .build();
                 Arrays.fill(password, '0');
                 IAuthenticationResult result = publicClientApplication.acquireToken(userNamePasswordParameters).get();
-                token = result.accessToken();
+                teamsUserAadToken = result.accessToken();
             } catch (Exception e) {
                 throw e;
             }
         }
-        return token;
+        return teamsUserAadToken;
     }
 
     protected void verifyTokenNotEmpty(AccessToken issuedToken) {

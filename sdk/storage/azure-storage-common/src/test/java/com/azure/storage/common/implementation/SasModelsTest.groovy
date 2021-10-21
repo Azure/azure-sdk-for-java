@@ -250,7 +250,7 @@ class SasModelsTest extends Specification {
         def s = AccountSasService.parse("b")
         def rt = AccountSasResourceType.parse("o")
         def v = new AccountSasSignatureValues(e, p, s, rt)
-        def implUtil = new AccountSasImplUtil(v)
+        def implUtil = new AccountSasImplUtil(v, null)
 
         when:
         implUtil.generateSas(null, Context.NONE)

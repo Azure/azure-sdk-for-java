@@ -5,6 +5,10 @@
 ### Features Added
 - Added support for permanent delete permissions in blob and account level SAS.
 
+- Added support for the 2020-12-06 service version.
+- Added support for setting an encryption scope on a BlobServiceSas and an AccountSas.
+- Added support for setting encryption scopes on the destination of a sync copy.
+
 ### Breaking Changes
 
 ### Bugs Fixed
