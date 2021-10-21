@@ -358,13 +358,13 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void exchangeTeamsTokenWithEmptyToken(HttpClient httpClient) {
+    public void exchangeTeamsUserAadTokenWithEmptyToken(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "exchangeTeamsTokenWithEmptyTokenSync");
+        client = setupClient(builder, "exchangeTeamsUserAadTokenWithEmptyTokenSync");
         // Action & Assert
         try {
-            AccessToken issuedToken = client.exchangeTeamsToken("");
+            AccessToken issuedToken = client.exchangeTeamsUserAadToken("");
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("401"));
@@ -375,13 +375,13 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void exchangeTeamsTokenWithNull(HttpClient httpClient) {
+    public void exchangeTeamsUserAadTokenWithNull(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "exchangeTeamsTokenWithNullSync");
+        client = setupClient(builder, "exchangeTeamsUserAadTokenWithNullSync");
         // Action & Assert
         try {
-            AccessToken issuedToken = client.exchangeTeamsToken(null);
+            AccessToken issuedToken = client.exchangeTeamsUserAadToken(null);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("token"));
@@ -392,13 +392,13 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void exchangeTeamsTokenWithInvalidToken(HttpClient httpClient) {
+    public void exchangeTeamsUserAadTokenWithInvalidToken(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "exchangeTeamsTokenWithInvalidTokenSync");
+        client = setupClient(builder, "exchangeTeamsUserAadTokenWithInvalidTokenSync");
         // Action & Assert
         try {
-            AccessToken issuedToken = client.exchangeTeamsToken("invalid");
+            AccessToken issuedToken = client.exchangeTeamsUserAadToken("invalid");
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("401"));
@@ -409,13 +409,13 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void exchangeTeamsTokenWithExpiredToken(HttpClient httpClient) {
+    public void exchangeTeamsUserAadTokenWithExpiredToken(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "exchangeTeamsTokenWithExpiredTokenSync");
+        client = setupClient(builder, "exchangeTeamsUserAadTokenWithExpiredTokenSync");
         // Action & Assert
         try {
-            AccessToken issuedToken = client.exchangeTeamsToken(COMMUNICATION_EXPIRED_TEAMS_TOKEN);
+            AccessToken issuedToken = client.exchangeTeamsUserAadToken(COMMUNICATION_EXPIRED_TEAMS_TOKEN);
         } catch (Exception exception) {
             assertNotNull(exception.getMessage());
             assertTrue(exception.getMessage().contains("401"));
@@ -426,14 +426,14 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void exchangeTeamsTokenWithValidToken(HttpClient httpClient) {
+    public void exchangeTeamsUserAadTokenWithValidToken(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "exchangeTeamsTokenWithValidTokenSync");
+        client = setupClient(builder, "exchangeTeamsUserAadTokenWithValidTokenSync");
         // Action & Assert
         try {
-            String accessTokenAAD = generateTeamsToken();
-            AccessToken issuedToken = client.exchangeTeamsToken(accessTokenAAD);
+            String teamsUserAadToken = generateTeamsUserAadToken();
+            AccessToken issuedToken = client.exchangeTeamsUserAadToken(teamsUserAadToken);
             verifyTokenNotEmpty(issuedToken);
         } catch (Exception exception) {
             fail("Could not generate teams token");
@@ -443,14 +443,14 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void exchangeTeamsTokenWithValidTokenWithResponse(HttpClient httpClient) {
+    public void exchangeTeamsUserAadTokenWithValidTokenWithResponse(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "exchangeTeamsTokenWithValidTokenWithResponseSync");
+        client = setupClient(builder, "exchangeTeamsUserAadTokenWithValidTokenWithResponseSync");
         // Action & Assert
         try {
-            String accessTokenAAD = generateTeamsToken();
-            Response<AccessToken> response = client.exchangeTeamsTokenWithResponse(accessTokenAAD, Context.NONE);
+            String teamsUserAadToken = generateTeamsUserAadToken();
+            Response<AccessToken> response = client.exchangeTeamsUserAadTokenWithResponse(teamsUserAadToken, Context.NONE);
             assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
             verifyTokenNotEmpty(response.getValue());
         } catch (Exception exception) {
@@ -460,14 +460,14 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void exchangeTeamsTokenUsingManagedIdentity(HttpClient httpClient) {
+    public void exchangeTeamsUserAadTokenUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "exchangeTeamsTokenUsingManagedIdentitySync");
+        client = setupClient(builder, "exchangeTeamsUserAadTokenUsingManagedIdentitySync");
         // Action & Assert
         try {
-            String accessTokenAAD = generateTeamsToken();
-            AccessToken issuedToken = client.exchangeTeamsToken(accessTokenAAD);
+            String teamsUserAadToken = generateTeamsUserAadToken();
+            AccessToken issuedToken = client.exchangeTeamsUserAadToken(teamsUserAadToken);
             verifyTokenNotEmpty(issuedToken);
         } catch (Exception e) {
             fail("Could not generate teams token");
@@ -476,14 +476,14 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void exchangeTeamsTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
+    public void exchangeTeamsUserAadTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        client = setupClient(builder, "exchangeTeamsTokenWithResponseUsingManagedIdentitySync");
+        client = setupClient(builder, "exchangeTeamsUserAadTokenWithResponseUsingManagedIdentitySync");
         // Action & Assert
         try {
-            String accessTokenAAD = generateTeamsToken();
-            Response<AccessToken> response = client.exchangeTeamsTokenWithResponse(accessTokenAAD, Context.NONE);
+            String teamsUserAadToken = generateTeamsUserAadToken();
+            Response<AccessToken> response = client.exchangeTeamsUserAadTokenWithResponse(teamsUserAadToken, Context.NONE);
             assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
             verifyTokenNotEmpty(response.getValue());
         } catch (Exception e) {
