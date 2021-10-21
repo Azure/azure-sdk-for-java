@@ -7,7 +7,7 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextUtils;
-import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

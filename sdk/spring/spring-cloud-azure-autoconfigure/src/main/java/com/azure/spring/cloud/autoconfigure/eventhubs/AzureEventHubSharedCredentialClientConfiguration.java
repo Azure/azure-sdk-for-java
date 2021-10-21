@@ -4,14 +4,14 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
-import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubSharedAuthenticationClientBuilderFactory;
-import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventProcessorSharedAuthenticationClientBuilderFactory;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.eventhubs.core.EventHubOperation;
-import com.azure.spring.eventhubs.core.EventHubSharedAuthenticationClientBuilder;
-import com.azure.spring.eventhubs.core.EventProcessorSharedAuthenticationClientBuilder;
+import com.azure.spring.service.eventhubs.builder.EventHubSharedAuthenticationClientBuilder;
+import com.azure.spring.service.eventhubs.builder.EventProcessorSharedAuthenticationClientBuilder;
+import com.azure.spring.service.eventhubs.factory.EventHubSharedAuthenticationClientBuilderFactory;
+import com.azure.spring.service.eventhubs.factory.EventProcessorSharedAuthenticationClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
