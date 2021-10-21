@@ -17,6 +17,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
+import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
@@ -170,6 +171,28 @@ public class WebPubSubServiceClientTests extends TestBase {
         assertEquals(200, removeUserResponse.getStatusCode());
     }
 
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testGetAuthenticationToken() throws ParseException {
+        WebPubSubClientAccessToken token = client.getClientAccessToken(new GetClientAccessTokenOptions());
+        Assertions.assertNotNull(token);
+        Assertions.assertNotNull(token.getToken());
+        Assertions.assertNotNull(token.getUrl());
+
+        Assertions.assertTrue(token.getUrl().startsWith("wss://"));
+        Assertions.assertTrue(token.getUrl().contains(".webpubsub.azure.com/client/hubs/"));
+
+        String authToken = token.getToken();
+        JWT jwt = JWTParser.parse(authToken);
+        JWTClaimsSet claimsSet = jwt.getJWTClaimsSet();
+        Assertions.assertNotNull(claimsSet);
+        Assertions.assertNotNull(claimsSet.getAudience());
+        Assertions.assertFalse(claimsSet.getAudience().isEmpty());
+
+        String aud = claimsSet.getAudience().iterator().next();
+        Assertions.assertTrue(aud.contains(".webpubsub.azure.com/client/hubs/"));
+    }
+
     /*****************************************************************************************************************
      * Sync Tests - WebPubSubGroup
      ****************************************************************************************************************/
@@ -216,24 +239,12 @@ public class WebPubSubServiceClientTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
-    public void testGetAuthenticationToken() throws ParseException {
-        WebPubSubClientAccessToken token = client.getClientAccessToken(new GetClientAccessTokenOptions());
-        Assertions.assertNotNull(token);
-        Assertions.assertNotNull(token.getToken());
-        Assertions.assertNotNull(token.getUrl());
-
-        Assertions.assertTrue(token.getUrl().startsWith("wss://"));
-        Assertions.assertTrue(token.getUrl().contains(".webpubsub.azure.com/client/hubs/"));
-
-        String authToken = token.getToken();
-        JWT jwt = JWTParser.parse(authToken);
-        JWTClaimsSet claimsSet = jwt.getJWTClaimsSet();
-        Assertions.assertNotNull(claimsSet);
-        Assertions.assertNotNull(claimsSet.getAudience());
-        Assertions.assertFalse(claimsSet.getAudience().isEmpty());
-
-        String aud = claimsSet.getAudience().iterator().next();
-        Assertions.assertTrue(aud.contains(".webpubsub.azure.com/client/hubs/"));
+    public void testCheckPermission() {
+        RequestOptions requestOptions = new RequestOptions()
+            .addQueryParam("targetName", "group_name")
+            .setThrowOnError(false);
+        boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.JOIN_LEAVE_GROUP, "connection_id",
+            requestOptions, Context.NONE).getValue();
+        Assertions.assertFalse(permission);
     }
 }

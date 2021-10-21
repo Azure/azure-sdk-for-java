@@ -19,6 +19,7 @@ import com.azure.messaging.webpubsub.implementation.WebPubSubsImpl;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
+import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 import reactor.core.publisher.Mono;
 
 import java.util.stream.Collectors;
@@ -498,8 +499,9 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> grantPermissionWithResponse(
-            String permission, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.grantPermissionWithResponseAsync(hub, permission, connectionId, requestOptions);
+            WebPubSubPermission permission, String connectionId, RequestOptions requestOptions) {
+        return this.serviceClient.grantPermissionWithResponseAsync(hub, permission.toString(), connectionId,
+            requestOptions);
     }
 
     /**
@@ -514,8 +516,9 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokePermissionWithResponse(
-            String permission, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.revokePermissionWithResponseAsync(hub, permission, connectionId, requestOptions);
+            WebPubSubPermission permission, String connectionId, RequestOptions requestOptions) {
+        return this.serviceClient.revokePermissionWithResponseAsync(hub, permission.toString(), connectionId,
+            requestOptions);
     }
 
     /**
@@ -530,8 +533,9 @@ public final class WebPubSubServiceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> checkPermissionWithResponse(
-            String permission, String connectionId, RequestOptions requestOptions) {
-        return this.serviceClient.checkPermissionWithResponseAsync(hub, permission, connectionId, requestOptions);
+            WebPubSubPermission permission, String connectionId, RequestOptions requestOptions) {
+        return this.serviceClient.checkPermissionWithResponseAsync(hub, permission.toString(), connectionId,
+            requestOptions);
     }
 
     /**
