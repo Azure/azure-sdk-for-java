@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.messaging.webpubsub.models;
 
-import com.azure.messaging.webpubsub.WebPubSubAsyncServiceClient;
+import com.azure.messaging.webpubsub.WebPubSubServiceAsyncClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 
 import java.time.Duration;
@@ -12,10 +12,10 @@ import java.util.List;
 
 /**
  * Options class for configuring the
- * {@link WebPubSubAsyncServiceClient#getAuthenticationToken(GetAuthenticationTokenOptions)} and
- * {@link WebPubSubServiceClient#getAuthenticationToken(GetAuthenticationTokenOptions)} methods.
+ * {@link WebPubSubServiceAsyncClient#getClientAccessToken(GetClientAccessTokenOptions)} and
+ * {@link WebPubSubServiceClient#getClientAccessToken(GetClientAccessTokenOptions)} methods.
  */
-public final class GetAuthenticationTokenOptions {
+public final class GetClientAccessTokenOptions {
     private Duration expiresAfter;
     private String userId;
     private List<String> roles;
@@ -26,7 +26,7 @@ public final class GetAuthenticationTokenOptions {
      * @param expiresAfter The duration after which the requested authentication token will expire.
      * @return The same instance of this type, modified based on the value provided in this set method.
      */
-    public GetAuthenticationTokenOptions setExpiresAfter(final Duration expiresAfter) {
+    public GetClientAccessTokenOptions setExpiresAfter(final Duration expiresAfter) {
         this.expiresAfter = expiresAfter;
         return this;
     }
@@ -45,7 +45,7 @@ public final class GetAuthenticationTokenOptions {
      * @param role The role to be added to the requested authentication token.
      * @return The same instance of this type, modified based on the value provided in this add method.
      */
-    public GetAuthenticationTokenOptions addRole(String role) {
+    public GetClientAccessTokenOptions addRole(String role) {
         if (roles == null) {
             roles = new ArrayList<>();
         }
@@ -59,7 +59,7 @@ public final class GetAuthenticationTokenOptions {
      * @param roles The complete set of roles to be included when creating the authentication token.
      * @return The same instance of this type, modified based on the value provided in this set method.
      */
-    public GetAuthenticationTokenOptions setRoles(List<String> roles) {
+    public GetClientAccessTokenOptions setRoles(List<String> roles) {
         this.roles = roles;
         return this;
     }
@@ -78,7 +78,7 @@ public final class GetAuthenticationTokenOptions {
      * @param userId The user ID to be used when creating the authentication token.
      * @return The same instance of this type, modified based on the value provided in this set method.
      */
-    public GetAuthenticationTokenOptions setUserId(final String userId) {
+    public GetClientAccessTokenOptions setUserId(final String userId) {
         this.userId = userId;
         return this;
     }
