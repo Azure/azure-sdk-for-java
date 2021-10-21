@@ -143,11 +143,11 @@ public class ReadmeSamples {
     /**
      * Sample code for exchanging an AAD access token of a Teams User for a new Communication Identity access token.
      */
-    public void exchangeTeamsToken() {
+    public void exchangeTeamsUserAadToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         try {
-            String accessTokenAAD = generateTeamsToken();
-            AccessToken accessToken = communicationIdentityClient.exchangeTeamsToken(accessTokenAAD);
+            String teamsUserAadToken = generateTeamsUserAadToken();
+            AccessToken accessToken = communicationIdentityClient.exchangeTeamsUserAadToken(teamsUserAadToken);
             System.out.println("User token value: " + accessToken.getToken());
             System.out.println("Expires at: " + accessToken.getExpiresAt());
         } catch (Exception ex) {
@@ -158,8 +158,8 @@ public class ReadmeSamples {
     /**
      * Sample code for generating an AAD access token of a Teams User
      */
-    private static String generateTeamsToken() throws MalformedURLException, ExecutionException, InterruptedException {
-        String token = "";
+    private static String generateTeamsUserAadToken() throws MalformedURLException, ExecutionException, InterruptedException {
+        String teamsUserAadToken = "";
         try {
             IPublicClientApplication publicClientApplication = PublicClientApplication.builder("<M365_APP_ID>")
                 .authority("<M365_AAD_AUTHORITY>" + "/" + "<M365_AAD_TENANT>")
@@ -171,11 +171,11 @@ public class ReadmeSamples {
                 .build();
             Arrays.fill(password, '0');
             IAuthenticationResult result = publicClientApplication.acquireToken(userNamePasswordParameters).get();
-            token = result.accessToken();
+            teamsUserAadToken = result.accessToken();
         } catch (Exception e) {
             throw e;
         }
-        return token;
+        return teamsUserAadToken;
     }
 
     /**
