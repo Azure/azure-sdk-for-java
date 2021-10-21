@@ -17,8 +17,6 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.jms.ConnectionFactory;
 
-import java.util.HashMap;
-
 import static com.azure.spring.utils.ApplicationId.AZURE_SPRING_SERVICE_BUS;
 
 /**
