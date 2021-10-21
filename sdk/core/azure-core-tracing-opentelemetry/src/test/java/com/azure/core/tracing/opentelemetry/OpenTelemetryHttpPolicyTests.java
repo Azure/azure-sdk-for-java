@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import io.opentelemetry.api.trace.Span;
@@ -26,13 +27,18 @@ import io.opentelemetry.sdk.trace.export.SpanExporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
@@ -43,7 +49,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class OpenTelemetryHttpPolicyTests {
 
-    private static final String X_MS_REQUEST_ID = "response id";
+    private static final String X_MS_REQUEST_ID_1 = "response id 1";
+    private static final String X_MS_REQUEST_ID_2 = "response id 2";
     private static final int RESPONSE_STATUS_CODE = 201;
     private TestExporter exporter;
     private Tracer tracer;
@@ -101,7 +108,67 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals("user-agent", httpAttributes.get("http.user_agent"));
         assertEquals("foo", httpAttributes.get(AZ_TRACING_NAMESPACE_KEY));
         assertEquals(Long.valueOf(RESPONSE_STATUS_CODE), httpAttributes.get("http.status_code"));
-        assertEquals(X_MS_REQUEST_ID, httpAttributes.get("x-ms-request-id"));
+        assertEquals(X_MS_REQUEST_ID_1, httpAttributes.get("x-ms-request-id"));
+    }
+
+    @Test
+    public void everyTryIsTraced(){
+        AtomicInteger attemptCount = new AtomicInteger();
+        AtomicReference<String> traceparentTry503 = new AtomicReference<>();
+        AtomicReference<String> traceparentTry200 = new AtomicReference<>();
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy())
+            .policies(new OpenTelemetryHttpPolicy(tracer))
+            .httpClient(request -> {
+                HttpHeaders headers = new HttpHeaders();
+
+                int count = attemptCount.getAndIncrement();
+                if (count == 0) {
+                    traceparentTry503.set(request.getHeaders().getValue("traceparent"));
+                    headers.set("x-ms-request-id", X_MS_REQUEST_ID_1);
+                    return Mono.just(new MockHttpResponse(request, 503, headers));
+                } else if (count == 1) {
+                    traceparentTry200.set(request.getHeaders().getValue("traceparent"));
+                    headers.set("x-ms-request-id", X_MS_REQUEST_ID_2);
+                    return Mono.just(new MockHttpResponse(request, 200, headers));
+                } else {
+                    // Too many requests have been made.
+                    return Mono.just(new MockHttpResponse(request, 400, headers));
+                }
+            })
+            .build();
+
+        // Start user parent span and populate context.
+        Span parentSpan = tracer.spanBuilder(PARENT_SPAN_KEY).startSpan();
+
+        Context tracingContext = new Context(PARENT_SPAN_KEY, parentSpan)
+            .addData(AZ_TRACING_NAMESPACE_KEY, "foo");
+
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+
+        List<SpanData> exportedSpans = exporter.getSpans();
+        assertEquals(2, exportedSpans.size());
+
+        SpanData try503 = exportedSpans.get(0);
+        SpanData try200 = exportedSpans.get(1);
+
+        assertEquals(traceparentTry503.get(), String.format("00-%s-%s-01", try503.getTraceId(), try503.getSpanId()));
+        assertEquals(traceparentTry200.get(), String.format("00-%s-%s-01", try200.getTraceId(), try200.getSpanId()));
+
+        assertEquals("/hello", try503.getName());
+        Map<String, Object> httpAttributes503 = getAttributes(try503);
+        assertEquals(5, httpAttributes503.size());
+        assertEquals(Long.valueOf(503), httpAttributes503.get("http.status_code"));
+        assertEquals(X_MS_REQUEST_ID_1, httpAttributes503.get("x-ms-request-id"));
+
+        assertEquals("/hello", try503.getName());
+        Map<String, Object> httpAttributes200 = getAttributes(try200);
+        assertEquals(5, httpAttributes200.size());
+        assertEquals(Long.valueOf(200), httpAttributes200.get("http.status_code"));
+        assertEquals(X_MS_REQUEST_ID_2, httpAttributes200.get("x-ms-request-id"));
     }
 
     private Map<String, Object> getAttributes(SpanData span) {
@@ -124,11 +191,12 @@ public class OpenTelemetryHttpPolicyTests {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-request-id", X_MS_REQUEST_ID);
+                .set("x-ms-request-id", X_MS_REQUEST_ID_1);
 
             return Mono.just(new MockHttpResponse(request, RESPONSE_STATUS_CODE, headers));
         }
     }
+
 
     static class TestExporter implements SpanExporter {
 
