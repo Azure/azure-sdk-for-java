@@ -70,7 +70,7 @@ jobs:
 
         displayName: 'Configure mvn'
         workingDirectory: $(Build.SourcesDirectory)
-        #condition: and(succeeded(), startsWith(variables['Build.SourceBranchName'], 'daily/'))
+        condition: and(succeeded(), startsWith(variables['Build.SourceBranchName'], 'daily/'))
 
       - task: Powershell@2
         inputs:
