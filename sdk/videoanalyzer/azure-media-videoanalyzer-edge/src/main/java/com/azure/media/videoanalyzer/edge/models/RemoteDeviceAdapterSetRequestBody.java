@@ -9,13 +9,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Live Pipeline represents an unique instance of a pipeline topology which is used for real-time content ingestion and
- * analysis.
+ * The Video Analyzer edge module can act as a transparent gateway for video, enabling IoT devices to send video to the
+ * cloud from behind a firewall. A remote device adapter should be created for each such IoT device. Communication
+ * between the cloud and IoT device would then flow via the Video Analyzer edge module.
  */
 @Fluent
-public final class LivePipelineSetRequestBody extends MethodRequest {
+public final class RemoteDeviceAdapterSetRequestBody extends MethodRequest {
     /*
-     * Live pipeline unique identifier.
+     * The unique identifier for the remote device adapter.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -27,23 +28,23 @@ public final class LivePipelineSetRequestBody extends MethodRequest {
     private SystemData systemData;
 
     /*
-     * Live pipeline properties.
+     * Properties of the remote device adapter.
      */
     @JsonProperty(value = "properties")
-    private LivePipelineProperties properties;
+    private RemoteDeviceAdapterProperties properties;
 
     /**
-     * Creates an instance of LivePipelineSetRequestBody class.
+     * Creates an instance of RemoteDeviceAdapterSetRequestBody class.
      *
      * @param name the name value to set.
      */
     @JsonCreator
-    public LivePipelineSetRequestBody(@JsonProperty(value = "name", required = true) String name) {
+    public RemoteDeviceAdapterSetRequestBody(@JsonProperty(value = "name", required = true) String name) {
         this.name = name;
     }
 
     /**
-     * Get the name property: Live pipeline unique identifier.
+     * Get the name property: The unique identifier for the remote device adapter.
      *
      * @return the name value.
      */
@@ -64,29 +65,29 @@ public final class LivePipelineSetRequestBody extends MethodRequest {
      * Set the systemData property: Read-only system metadata associated with this object.
      *
      * @param systemData the systemData value to set.
-     * @return the LivePipelineSetRequestBody object itself.
+     * @return the RemoteDeviceAdapterSetRequestBody object itself.
      */
-    public LivePipelineSetRequestBody setSystemData(SystemData systemData) {
+    public RemoteDeviceAdapterSetRequestBody setSystemData(SystemData systemData) {
         this.systemData = systemData;
         return this;
     }
 
     /**
-     * Get the properties property: Live pipeline properties.
+     * Get the properties property: Properties of the remote device adapter.
      *
      * @return the properties value.
      */
-    public LivePipelineProperties getProperties() {
+    public RemoteDeviceAdapterProperties getProperties() {
         return this.properties;
     }
 
     /**
-     * Set the properties property: Live pipeline properties.
+     * Set the properties property: Properties of the remote device adapter.
      *
      * @param properties the properties value to set.
-     * @return the LivePipelineSetRequestBody object itself.
+     * @return the RemoteDeviceAdapterSetRequestBody object itself.
      */
-    public LivePipelineSetRequestBody setProperties(LivePipelineProperties properties) {
+    public RemoteDeviceAdapterSetRequestBody setProperties(RemoteDeviceAdapterProperties properties) {
         this.properties = properties;
         return this;
     }
