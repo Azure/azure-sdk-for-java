@@ -241,12 +241,6 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [azure-spring-cloud-starter-eventhubs-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-eventhubs.svg
 [azure-spring-cloud-starter-eventhubs-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-eventhubs%22
 
-[azure-spring-cloud-starter-eventhubs-kafka-readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/spring-cloud-azure-starter-eventhubs-kafka
-[azure-spring-cloud-starter-eventhubs-kafka-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-eventhubs-kafka/2.2.svg
-[azure-spring-cloud-starter-eventhubs-kafka-mvn-2.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-eventhubs-kafka%22AND%20v:2.2.*
-[azure-spring-cloud-starter-eventhubs-kafka-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-eventhubs-kafka.svg
-[azure-spring-cloud-starter-eventhubs-kafka-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-eventhubs-kafka%22
-
 [azure-spring-cloud-starter-servicebus-readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-servicebus
 [azure-spring-cloud-starter-servicebus-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-servicebus/2.2.svg
 [azure-spring-cloud-starter-servicebus-mvn-2.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-servicebus%22AND%20v:2.2.*

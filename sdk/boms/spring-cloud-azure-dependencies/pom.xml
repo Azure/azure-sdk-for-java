@@ -146,22 +146,12 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-starter-cache</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-starter-eventhubs-kafka</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
