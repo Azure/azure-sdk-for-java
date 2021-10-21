@@ -691,7 +691,7 @@ public final class ResourceSetRulesImpl {
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertResourceSetRuleWithResponseAsync(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -924,7 +924,7 @@ public final class ResourceSetRulesImpl {
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertResourceSetRuleWithResponseAsync(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions, Context context) {
         return service.createOrUpdateResourceSetRule(
                 this.client.getEndpoint(),
@@ -1155,9 +1155,9 @@ public final class ResourceSetRulesImpl {
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(
+    public Response<BinaryData> upsertResourceSetRuleWithResponse(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions, Context context) {
-        return createOrUpdateResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions, context).block();
+        return upsertResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions, context).block();
     }
 
     /**

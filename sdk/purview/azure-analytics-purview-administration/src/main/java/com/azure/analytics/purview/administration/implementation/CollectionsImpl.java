@@ -337,7 +337,7 @@ public final class CollectionsImpl {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertCollectionWithResponseAsync(
             String collectionName, BinaryData collection, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -416,7 +416,7 @@ public final class CollectionsImpl {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponseAsync(
+    public Mono<Response<BinaryData>> upsertCollectionWithResponseAsync(
             String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
         return service.createOrUpdateCollection(
                 this.client.getEndpoint(),
@@ -493,9 +493,9 @@ public final class CollectionsImpl {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateCollectionWithResponse(
+    public Response<BinaryData> upsertCollectionWithResponse(
             String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
-        return createOrUpdateCollectionWithResponseAsync(collectionName, collection, requestOptions, context).block();
+        return upsertCollectionWithResponseAsync(collectionName, collection, requestOptions, context).block();
     }
 
     /**
