@@ -22,7 +22,7 @@ public class NonPremiumServiceBusJMSAutoConfigurationTest extends AbstractServic
     private static final Logger LOGGER = Logger.getLogger(NonPremiumServiceBusJMSAutoConfigurationTest.class.getName());
 
     @BeforeAll
-    public void init() {
+    public static void init() {
         LOGGER.info("Starting NonPremiumServiceBusJMSAutoConfigurationTest");
     }
 

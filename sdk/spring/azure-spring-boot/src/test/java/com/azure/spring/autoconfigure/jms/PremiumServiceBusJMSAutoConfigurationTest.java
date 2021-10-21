@@ -5,6 +5,8 @@ package com.azure.spring.autoconfigure.jms;
 
 import com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import java.util.Map;
+import java.util.logging.Logger;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
@@ -15,6 +17,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PremiumServiceBusJMSAutoConfigurationTest extends AbstractServiceBusJMSAutoConfigurationTest {
+
+    private static final Logger LOGGER = Logger.getLogger(PremiumServiceBusJMSAutoConfigurationTest.class.getName());
+
+    @BeforeAll
+    public static void init() {
+        LOGGER.info("Starting PremiumServiceBusJMSAutoConfigurationTest");
+    }
 
     @Test
     public void testAzureServiceBusPremiumAutoConfiguration() {
