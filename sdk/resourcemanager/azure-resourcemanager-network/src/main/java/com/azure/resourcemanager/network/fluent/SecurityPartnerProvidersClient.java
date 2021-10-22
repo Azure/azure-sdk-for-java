@@ -51,7 +51,7 @@ public interface SecurityPartnerProvidersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String securityPartnerProviderName);
 
     /**
@@ -64,7 +64,7 @@ public interface SecurityPartnerProvidersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String securityPartnerProviderName);
 
     /**
@@ -78,7 +78,7 @@ public interface SecurityPartnerProvidersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String securityPartnerProviderName, Context context);
 
@@ -202,7 +202,7 @@ public interface SecurityPartnerProvidersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security Partner Provider resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<SecurityPartnerProviderInner>, SecurityPartnerProviderInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String securityPartnerProviderName, SecurityPartnerProviderInner parameters);
 
@@ -217,7 +217,7 @@ public interface SecurityPartnerProvidersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security Partner Provider resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SecurityPartnerProviderInner>, SecurityPartnerProviderInner> beginCreateOrUpdate(
         String resourceGroupName, String securityPartnerProviderName, SecurityPartnerProviderInner parameters);
 
@@ -233,7 +233,7 @@ public interface SecurityPartnerProvidersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security Partner Provider resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SecurityPartnerProviderInner>, SecurityPartnerProviderInner> beginCreateOrUpdate(
         String resourceGroupName,
         String securityPartnerProviderName,

@@ -56,12 +56,12 @@ and then include the direct dependency in the dependencies section without the v
 If you want to take dependency on a particular version of the library that is not present in the BOM,
 add the direct dependency to your project as follows.
 
-[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
+[//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>5.2.0-beta.2</version>
+    <version>5.1.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -162,7 +162,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.6</version>
+    <version>1.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

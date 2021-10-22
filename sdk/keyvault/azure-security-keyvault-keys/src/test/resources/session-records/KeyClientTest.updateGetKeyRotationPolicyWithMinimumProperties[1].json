@@ -1,0 +1,81 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey20817799/create?api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "699",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 05 Oct 2021 01:42:29 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "71d3ac57-ffff-4dda-9306-fe0f3ad90f0a",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"key\":{\"kid\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey20817799/c805dc0415e642898887e095f33c0926\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"wc9AQGQEoRVUEW-I8Qb-brAjxdBfQ8xVt5x2Rjm2UkKZT-FrmIdTZMBvtJWwcQ_lf-c3MSzNXzErhLr8Xv2DaeZ-F_Ha-QjDUV7SQLbjJhPz0Il6a7kUwDSzU5X-W7l0ReqpVuf8FOgO55F9lV3xg-CPDB7w2JqeW-ruTtWOJ2PvpqqsjDL56AU2U4YgzG2t-B7ajaISgheBR3eZNGkYxBuJks_POPC6Vt89njmtvmxJ9VIeWL_IvZ4FI5vqoUEyOM4pPtmSIi1RXNxpYpVn_4umCA07R7gzo_61oUJkUPk8vLCEhrbbsaYCQ0Zw9740R1doLOOcgD7ARfDvcDZGyQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1633398149,\"updated\":1633398149,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey20817799/rotationpolicy?api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "166",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 05 Oct 2021 01:42:29 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "f53afba5-1913-4829-bf9a-c72faff9f944",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"id\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey20817799/rotationpolicy\",\"lifetimeActions\":[],\"attributes\":{\"created\":1633398150,\"updated\":1633398150}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey20817799/rotationpolicy?api-version=7.3-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "content-length" : "166",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 05 Oct 2021 01:42:30 GMT",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "centralus",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "19994c12-9470-478a-8d97-4d4e4f4628d4",
+      "x-ms-keyvault-service-version" : "1.9.132.3",
+      "Body" : "{\"id\":\"https://azure-kv-tests2.vault.azure.net/keys/rotatekey20817799/rotationpolicy\",\"lifetimeActions\":[],\"attributes\":{\"created\":1633398150,\"updated\":1633398150}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "rotatekey20817799" ]
+}

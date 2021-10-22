@@ -118,8 +118,12 @@ public class RetryUtils {
                     return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod,
                             shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector);
                 } else {
-                    return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod,
-                        shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector)
+                    // it is important to use defer here, because we do not want the TimeoutHelper to be initialized before the backoff.
+                    // TimeoutHelper is used in consistency layer for request timeout check.
+                    return Mono.defer(() -> {
+                        return recursiveFunc(callbackMethod, retryPolicy, inBackoffAlternateCallbackMethod,
+                            shouldRetryResult, minBackoffForInBackoffCallback, rxDocumentServiceRequest, addressSelector);
+                    })
                         .delaySubscription(
                             Duration.ofMillis(shouldRetryResult.backOffTime.toMillis()),
                             CosmosSchedulers.COSMOS_PARALLEL);

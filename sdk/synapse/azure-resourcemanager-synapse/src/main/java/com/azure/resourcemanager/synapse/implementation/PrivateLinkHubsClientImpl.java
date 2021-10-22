@@ -960,7 +960,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateLinkHubName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, privateLinkHubName);
         return this
@@ -979,7 +979,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateLinkHubName, Context context) {
         context = this.client.mergeContext(context);
@@ -999,7 +999,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateLinkHubName) {
         return beginDeleteAsync(resourceGroupName, privateLinkHubName).getSyncPoller();
     }
@@ -1015,7 +1015,7 @@ public final class PrivateLinkHubsClientImpl implements PrivateLinkHubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateLinkHubName, Context context) {
         return beginDeleteAsync(resourceGroupName, privateLinkHubName, context).getSyncPoller();

@@ -1,8 +1,19 @@
 # Release History
 ## 5.2.0-beta.2 (Unreleased)
+### Feature Added
+- Multiple of the same action type is now supported with `beginAnalyzeActions` method, and the action name for each 
+  action can be set now.
+
 ### Breaking Changes
 - Renamed methods `setSentencesOrderBy()` to `setOrderBy()` and `getSentencesOrderBy()` to `getOrderBy()`, in the
   option bag, `ExtractSummaryAction`.
+
+## 5.1.3 (2021-10-05)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` from `1.20.0` to `1.21.0`.
+- Updated `azure-core-http-netty` from `1.11.0` to `1.11.1`.
 
 ## 5.1.2 (2021-09-09)
 ### Other Changes

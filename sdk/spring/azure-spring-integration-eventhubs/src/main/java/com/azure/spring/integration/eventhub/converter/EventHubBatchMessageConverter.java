@@ -9,23 +9,15 @@ import com.azure.spring.integration.core.EventHubHeaders;
 import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.Assert;
-import org.springframework.util.LinkedMultiValueMap;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 
 /**
  * A converter to turn a {@link com.azure.messaging.eventhubs.models.EventBatchContext} to {@link Message} and vice versa.
@@ -36,21 +28,11 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBatchMessageConverter.class);
 
-    protected List<byte[]> getPayloadAsList(EventBatchContext azureMessage) {
-        List<EventData> events = azureMessage.getEvents();
-
-        List<byte[]> payloadList = new ArrayList<>();
-        for (EventData event : events) {
-            payloadList.add(event.getBody());
-        }
-        return payloadList;
-    }
-
-    @Override
-    protected byte[] getPayload(EventBatchContext azureMessage) {
-        //np-op
-        return null;
-    }
+//    @Override
+//    protected byte[] getPayload(EventBatchContext azureMessage) {
+//        //np-op
+//        return null;
+//    }
 
     @Override
     protected EventData fromString(String payload) {
@@ -66,23 +48,31 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
     protected void setCustomHeaders(MessageHeaders headers, EventData azureMessage) {
         super.setCustomHeaders(headers, azureMessage);
         headers.forEach((key, value) -> {
-            if (key.equals(NATIVE_HEADERS) && value instanceof LinkedMultiValueMap) {
-                azureMessage.getProperties().put(key, toJson(value));
+            if (SYSTEM_HEADERS.contains(key)) {
+                LOGGER.warn("System property {}({}) is not allowed to be defined and will be ignored.",
+                    key, value);
             } else {
-                if (SYSTEM_HEADERS.contains(key)) {
-                    LOGGER.warn("System property {}({}) is not allowed to be defined and will be ignored.",
-                        key, value);
-                } else {
-                    azureMessage.getProperties().put(key, value.toString());
-                }
+                azureMessage.getProperties().put(key, value.toString());
             }
         });
     }
 
-    protected <U> Message<?> internalToMessage(EventBatchContext azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
-        List<byte[]> payload = getPayloadAsList(azureMessage);
-        Assert.isTrue(payload != null && payload.size() > 0, "payload must not be null");
-        return MessageBuilder.withPayload(payload).copyHeaders(headers).build();
+//    @Override
+//    protected <U> Message<?> internalToMessage(EventBatchContext azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
+//        Object payload = getPayload(azureMessage);
+//        Assert.isTrue(payload != null, "payload must not be null");
+//        return MessageBuilder.withPayload(payload).copyHeaders(headers).build();
+//    }
+
+
+    protected Object getPayload(EventBatchContext azureMessage) {
+        List<EventData> events = azureMessage.getEvents();
+
+        List<byte[]> payloadList = new ArrayList<>();
+        for (EventData event : events) {
+            payloadList.add(event.getBody());
+        }
+        return payloadList;
     }
 
     @Override
@@ -103,8 +93,6 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
             sequenceNumberList.add(event.getSequenceNumber());
             partitionKeyList.add(event.getPartitionKey());
             batchConvertedSystemProperties.add(event.getSystemProperties());
-            Map<String, Object> applicationProperties = event.getProperties();
-            convertNativeHeadersIfNeeded(applicationProperties);
             batchConvertedApplicationProperties.add(event.getProperties());
         }
         headers.put(EventHubHeaders.ENQUEUED_TIME, enqueueTimeList);

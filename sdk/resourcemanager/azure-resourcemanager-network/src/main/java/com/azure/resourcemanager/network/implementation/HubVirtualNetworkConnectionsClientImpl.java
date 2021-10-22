@@ -292,7 +292,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -326,7 +326,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -361,7 +361,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -387,7 +387,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return hubVirtualNetworkConnection Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -619,7 +619,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String connectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -641,7 +641,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String connectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -663,7 +663,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String connectionName) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).getSyncPoller();
@@ -681,7 +681,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String connectionName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName, context).getSyncPoller();

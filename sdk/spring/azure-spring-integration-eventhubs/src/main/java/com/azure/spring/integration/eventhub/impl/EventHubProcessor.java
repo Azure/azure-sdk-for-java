@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import static com.azure.spring.integration.core.EventHubHeaders.BATCH_CHECKPOINTER;
+
 /**
  * Mainly handle message conversion and checkpoint
  *
@@ -61,15 +63,15 @@ public class EventHubProcessor {
     }
 
     public void onEvent(EventContext context) {
-        PartitionContext partition = context.getPartitionContext();
-
         Map<String, Object> headers = new HashMap<>();
+
+        PartitionContext partition = context.getPartitionContext();
         headers.put(AzureHeaders.RAW_PARTITION_ID, partition.getPartitionId());
 
         final EventData event = context.getEventData();
 
-        Checkpointer checkpointer = new AzureCheckpointer(context::updateCheckpointAsync);
         if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
+            Checkpointer checkpointer = new AzureCheckpointer(context::updateCheckpointAsync);
             headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
         }
 
@@ -82,13 +84,13 @@ public class EventHubProcessor {
     }
 
     public void onEventBatch(EventBatchContext context) {
-        PartitionContext partition = context.getPartitionContext();
-
         Map<String, Object> headers = new HashMap<>();
+
+        PartitionContext partition = context.getPartitionContext();
         headers.put(AzureHeaders.RAW_PARTITION_ID, partition.getPartitionId());
 
-        Checkpointer checkpointer = new AzureCheckpointer(context::updateCheckpointAsync);
         if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
+            Checkpointer checkpointer = new AzureCheckpointer(context::updateCheckpointAsync);
             headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
         }
 

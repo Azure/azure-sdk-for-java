@@ -13,13 +13,15 @@ import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
-import org.springframework.util.LinkedMultiValueMap;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
-
-import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Abstract class handles common conversion logic between &lt;T&gt; and {@link Message}
@@ -63,11 +65,11 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
      * @return The converted object.
      * @throws ConversionException When fail to convert to object from byte array.
      */
-    private <U> U fromPayload(byte[] payload, Class<U> payloadType) {
+    private <U> U fromPayload(Object payload, Class<U> payloadType) {
         try {
-            return getObjectMapper().readerFor(payloadType).readValue(payload);
+            return getObjectMapper().readerFor(payloadType).readValue((byte[]) payload);
         } catch (IOException e) {
-            throw new ConversionException("Failed to read JSON: " + Arrays.toString(payload), e);
+            throw new ConversionException("Failed to read JSON: " + Arrays.toString((byte[]) payload), e);
         }
     }
 
@@ -91,7 +93,7 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
         return (Message<U>) internalToMessage(azureMessage, mergedHeaders, targetPayloadClass);
     }
 
-    protected abstract byte[] getPayload(I azureMessage);
+    protected abstract Object getPayload(I azureMessage);
 
     protected abstract O fromString(String payload);
 
@@ -128,14 +130,14 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
     }
 
     protected <U> Message<?> internalToMessage(I azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
-        byte[] payload = getPayload(azureMessage);
-        Assert.isTrue(payload != null && payload.length > 0, "payload must not be null");
+        Object payload = getPayload(azureMessage);
+        Assert.isTrue(payload != null, "payload must not be null");
         if (targetPayloadClass.isInstance(azureMessage)) {
             return MessageBuilder.withPayload(azureMessage).copyHeaders(headers).build();
         }
 
         if (targetPayloadClass == String.class) {
-            return MessageBuilder.withPayload(new String(payload, StandardCharsets.UTF_8)).copyHeaders(headers).build();
+            return MessageBuilder.withPayload(new String((byte[])payload, StandardCharsets.UTF_8)).copyHeaders(headers).build();
         }
 
         if (targetPayloadClass == byte[].class) {
@@ -145,58 +147,4 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
         return MessageBuilder.withPayload(fromPayload(payload, targetPayloadClass)).copyHeaders(headers).build();
     }
 
-    protected void convertNativeHeadersIfNeeded(Map<String, Object> eventDataProperties) {
-        if (eventDataProperties.containsKey(NATIVE_HEADERS) && isValidJson(eventDataProperties.get(NATIVE_HEADERS))) {
-            String nativeHeader = (String) eventDataProperties.remove(NATIVE_HEADERS);
-            eventDataProperties.put(NATIVE_HEADERS, readValue(nativeHeader, LinkedMultiValueMap.class));
-        }
-    }
-
-    /**
-     * Convert the json string to class targetType instance.
-     * @param value json string
-     * @param targetType target class to convert
-     * @param <M> Target class type
-     * @return Return the corresponding class instance
-     * @throws ConversionException When fail to convert.
-     */
-    protected <M> M readValue(String value, Class<M> targetType) {
-        try {
-            return getObjectMapper().readValue(value, targetType);
-        } catch (IOException e) {
-            throw new ConversionException("Failed to read JSON: " + value, e);
-        }
-    }
-
-    /**
-     * Check value is valid json string.
-     * @param value json string to check
-     * @return true if it's json string.
-     */
-    protected boolean isValidJson(Object value) {
-        try {
-            if (value instanceof String) {
-                getObjectMapper().readTree((String) value);
-                return true;
-            }
-            LOGGER.warn("Not a valid json string: " + value);
-            return false;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    /**
-     * Convert the object to json string
-     * @param value object to be converted
-     * @return json string
-     * @throws ConversionException When fail to convert.
-     */
-    protected String toJson(Object value) {
-        try {
-            return getObjectMapper().writeValueAsString(value);
-        } catch (IOException e) {
-            throw new ConversionException("Failed to convert to JSON: " + value.toString(), e);
-        }
-    }
 }

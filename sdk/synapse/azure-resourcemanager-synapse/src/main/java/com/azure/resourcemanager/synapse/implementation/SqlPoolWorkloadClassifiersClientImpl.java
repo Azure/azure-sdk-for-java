@@ -549,7 +549,7 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -585,7 +585,7 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String workspaceName,
@@ -628,7 +628,7 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -656,7 +656,7 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
         String resourceGroupName,
         String workspaceName,
@@ -952,7 +952,7 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String workspaceName,
@@ -981,7 +981,7 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String workspaceName,
@@ -1011,7 +1011,7 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String workspaceName,
@@ -1037,7 +1037,7 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String workspaceName,

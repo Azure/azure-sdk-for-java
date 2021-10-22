@@ -70,14 +70,15 @@ final class PercentEscaper {
         while (index < end) {
             int codePoint = getCodePoint(original, index, end, logger);
 
-            // Supplementary code points comprise of two characters in the string.
+            // Supplementary code points are comprised of two characters in the string.
             index += (Character.isSupplementaryCodePoint(codePoint)) ? 2 : 1;
 
             if (safeCharacterPoints.contains(codePoint)) {
                 // This is a safe character, use it as is.
-                escapedBuilder.append(Character.toChars(codePoint));
+                // All safe characters should be ASCII.
+                escapedBuilder.append((char) codePoint);
             } else if (usePlusForSpace && codePoint == ' ') {
-                // Character is a space and we are using '+' instead of "%20".
+                // Character is a space, and we are using '+' instead of "%20".
                 escapedBuilder.append('+');
             } else if (codePoint <= 0x7F) {
                 // Character is one byte, use format '%xx'.

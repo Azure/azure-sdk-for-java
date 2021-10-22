@@ -42,8 +42,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentMap;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.ADDRESSES;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
@@ -144,7 +144,7 @@ public class CosmosTemplatePartitionIT {
 
         CosmosAsyncClient cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
         AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
-        ConcurrentMap<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
+        Map<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
         assertThat(initialCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
         int initialSize = initialCache.size();
 
@@ -158,7 +158,7 @@ public class CosmosTemplatePartitionIT {
         result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
             PartitionPerson.class.getSimpleName()));
 
-        ConcurrentMap<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
+        Map<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
         assertThat(postQueryCallCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
         assertThat(postQueryCallCache.size()).isEqualTo(initialSize);
         assertThat(result.size()).isEqualTo(1);
