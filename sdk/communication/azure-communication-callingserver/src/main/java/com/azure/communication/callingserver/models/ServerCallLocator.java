@@ -7,21 +7,31 @@ import com.azure.core.annotation.Immutable;
 
 /** The server call locator. */
 @Immutable
-public final class ServerCallLocator extends CallLocator
-{
+public final class ServerCallLocator extends CallLocator {
+    /**
+     * The server call id.
+     */
     private final String serverCallId;
 
-    /// <summary> The server call id. </summary>
-    public final String getServerCallId()
-    {
+    /**
+     * Get the server call id.
+     *
+     * @return the server call id of the ServerCallLocator object itself
+     */
+    public String getServerCallId() {
         return serverCallId;
     }
 
     /**
      * Initializes a new instance of ServerCallLocator
+     *
+     * @param serverCallId The server call id.
+     * @throws IllegalArgumentException if either parameter is null.
      */
-    public ServerCallLocator(String serverCallId)
-    {
+    public ServerCallLocator(String serverCallId) {
+        if (serverCallId == null) {
+            throw new IllegalArgumentException("serverCallId cannot be null");
+        }
         this.serverCallId = serverCallId;
     }
 }

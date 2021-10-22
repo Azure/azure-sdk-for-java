@@ -96,7 +96,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
             callConnections = createCall(callingServerClient, groupCallLocator, fromUser, toUser, URI.create(CALLBACK_URI));
 
             Response<StartCallRecordingResult> startRecordingResponse =
-            callingServerClient.startRecordingWithResponse(groupCallLocator, URI.create(CALLBACK_URI), null, null);
+                callingServerClient.startRecordingWithResponse(groupCallLocator, URI.create(CALLBACK_URI), null, null);
             assertEquals(startRecordingResponse.getStatusCode(), 200);
             StartCallRecordingResult startCallRecordingResult = startRecordingResponse.getValue();
             recordingId = startCallRecordingResult.getRecordingId();
@@ -146,7 +146,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
                 .setLoop(true);
 
             PlayAudioResult playAudioResult =
-            callingServerClient.playAudio(groupCallLocator, URI.create(AUDIO_FILE_URI), options);
+                callingServerClient.playAudio(groupCallLocator, URI.create(AUDIO_FILE_URI), options);
             validatePlayAudioResult(playAudioResult);
 
         } catch (Exception e) {
@@ -178,7 +178,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
                     .setOperationContext(operationContext);
 
             Response<PlayAudioResult> playAudioResult =
-            callingServerClient.playAudioWithResponse(groupCallLocator, URI.create(AUDIO_FILE_URI), playAudioOptions, Context.NONE);
+                callingServerClient.playAudioWithResponse(groupCallLocator, URI.create(AUDIO_FILE_URI), playAudioOptions, Context.NONE);
             validatePlayAudioResponse(playAudioResult);
 
         } catch (Exception e) {
@@ -199,7 +199,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
 
         try {
             Response<StartCallRecordingResult> response =
-            callingServerClient.startRecordingWithResponse(serverCallLocator, URI.create(CALLBACK_URI), null, Context.NONE);
+                callingServerClient.startRecordingWithResponse(serverCallLocator, URI.create(CALLBACK_URI), null, Context.NONE);
             assertEquals(response.getStatusCode(), 400);
         } catch (CallingServerErrorException e) {
             assertEquals(e.getResponse().getStatusCode(), 400);
@@ -364,7 +364,7 @@ public class ServerCallLiveTests extends CallingServerTestBase {
         sleepIfRunningAgainstService(6000);
 
         Response<CallRecordingProperties> response =
-        callingServerClient.getRecordingStateWithResponse(recordingId, null);
+            callingServerClient.getRecordingStateWithResponse(recordingId, null);
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);
         assertNotNull(response.getValue());

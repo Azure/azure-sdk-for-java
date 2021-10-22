@@ -12,17 +12,17 @@ public final class CallingOperationResultDetails {
     /*
      * The result code associated with the operation.
      */
-    private int code;
+    private final int code;
 
     /*
      * The subcode that further classifies the result.
      */
-    private int subcode;
+    private final int subcode;
 
     /*
      * The message is a detail explanation of subcode.
      */
-    private String message;
+    private final String message;
 
     /**
      * Get the code property: The result code associated with the operation.
@@ -57,7 +57,6 @@ public final class CallingOperationResultDetails {
      * @param code the code value to set.
      * @param subcode the subcode value to set.
      * @param message the message value to set.
-     * @return the CallingOperationResultDetails object itself.
      */
     public CallingOperationResultDetails(int code, int subcode, String message) {
         this.code = code;

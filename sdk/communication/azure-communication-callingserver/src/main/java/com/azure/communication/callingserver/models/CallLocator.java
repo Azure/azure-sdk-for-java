@@ -7,6 +7,5 @@ import com.azure.core.annotation.Immutable;
 
 /** The call locator. */
 @Immutable
-public abstract class CallLocator
-{
+public abstract class CallLocator {
 }

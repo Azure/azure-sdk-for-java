@@ -6,9 +6,14 @@ package com.azure.communication.callingserver;
 import java.net.URI;
 import java.util.List;
 
-import com.azure.communication.callingserver.implementation.models.AudioRoutingMode;
-import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.callingserver.models.*;
+import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.AudioRoutingMode;
+import com.azure.communication.callingserver.models.CallConnectionProperties;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.CallParticipant;
+import com.azure.communication.callingserver.models.CreateAudioRoutingGroupResult;
+import com.azure.communication.callingserver.models.PlayAudioOptions;
+import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -203,7 +208,6 @@ public final class CallConnection {
      * @param userToUserInformation The user to user information.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void transferCall(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
@@ -381,7 +385,7 @@ public final class CallConnection {
      * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void CancelParticipantMediaOperation(
+    public Void cancelParticipantMediaOperation(
         CommunicationIdentifier participant,
         String mediaOperationId) {
         return cancelParticipantMediaOperationWithResponse(participant, mediaOperationId, Context.NONE).getValue();
@@ -531,15 +535,14 @@ public final class CallConnection {
      * @param audioRoutingMode The audio routing group mode.
      * @param targets the targets value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful create audio routing group request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createAudioRoutingGroup(
         AudioRoutingMode audioRoutingMode,
         List<CommunicationIdentifier> targets) {
-        createAudioRoutingGroupWithResponse(audioRoutingMode,targets, Context.NONE).getValue();
+        createAudioRoutingGroupWithResponse(audioRoutingMode, targets, Context.NONE).getValue();
     }
 
     /**
@@ -549,7 +552,7 @@ public final class CallConnection {
      * @param targets the targets value to set.
      * @param context A {@link Context} representing the request context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful create audio routing group request.
      */
@@ -567,14 +570,14 @@ public final class CallConnection {
      * @param audioRoutingGroupId The audio routing group id.
      * @param targets the targets value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateAudioRoutingGroup(
         String audioRoutingGroupId,
         List<CommunicationIdentifier> targets) {
-            updateAudioRoutingGroupWithResponse(audioRoutingGroupId, targets, Context.NONE).getValue();
+        updateAudioRoutingGroupWithResponse(audioRoutingGroupId, targets, Context.NONE).getValue();
     }
 
     /**
@@ -584,8 +587,9 @@ public final class CallConnection {
      * @param targets the targets value to set.
      * @param context A {@link Context} representing the request context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateAudioRoutingGroupWithResponse(
@@ -600,13 +604,13 @@ public final class CallConnection {
      *
      * @param audioRoutingGroupId The audio routing group id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateAudioRoutingGroup(
         String audioRoutingGroupId) {
-            deleteAudioRoutingGroupWithResponse(audioRoutingGroupId, Context.NONE).getValue();
+        deleteAudioRoutingGroupWithResponse(audioRoutingGroupId, Context.NONE).getValue();
     }
 
     /**
@@ -615,8 +619,9 @@ public final class CallConnection {
      * @param audioRoutingGroupId The audio routing group id.
      * @param context A {@link Context} representing the request context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAudioRoutingGroupWithResponse(

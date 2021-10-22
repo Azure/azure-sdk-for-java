@@ -11,7 +11,7 @@ public final class CreateAudioRoutingGroupResult {
     /*
      * The audio routing group id.
      */
-    private String audioRoutingGroupId;
+    private final String audioRoutingGroupId;
 
     /**
      * Get the audioRoutingGroupId property: The audio routing group id.

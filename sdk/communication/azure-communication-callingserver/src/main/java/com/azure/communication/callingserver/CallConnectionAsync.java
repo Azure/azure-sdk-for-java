@@ -12,10 +12,35 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
-import com.azure.communication.callingserver.implementation.converters.*;
-import com.azure.communication.callingserver.implementation.models.*;
-import com.azure.communication.callingserver.models.*;
+import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
+import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
+import com.azure.communication.callingserver.implementation.converters.CallConnectionPropertiesConverter;
+import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
+import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
+import com.azure.communication.callingserver.implementation.converters.RemoveParticipantRequestConverter;
+import com.azure.communication.callingserver.implementation.converters.TransferCallRequestConverter;
+import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.AudioRoutingGroupRequest;
+import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationRequest;
+import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.callingserver.implementation.models.GetParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.HoldMeetingAudioRequest;
+import com.azure.communication.callingserver.implementation.models.MuteParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
+import com.azure.communication.callingserver.implementation.models.PlayAudioToParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.ResumeMeetingAudioRequest;
+import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
+import com.azure.communication.callingserver.implementation.models.UpdateAudioRoutingGroupRequest;
+import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
+import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.AudioRoutingMode;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.CallParticipant;
+import com.azure.communication.callingserver.models.CreateAudioRoutingGroupResult;
+import com.azure.communication.callingserver.models.PlayAudioOptions;
+import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -267,16 +292,17 @@ public final class CallConnectionAsync {
         }
     }
 
-    private AddParticipantRequest getAddParticipantRequest(CommunicationIdentifier participant,
-            String alternateCallerId, String operationContext, URI callbackUri) {
-
-            AddParticipantRequest request = new AddParticipantRequest()
+    private AddParticipantRequest getAddParticipantRequest(
+        CommunicationIdentifier participant,
+        String alternateCallerId,
+        String operationContext,
+        URI callbackUri) {
+        AddParticipantRequest request = new AddParticipantRequest()
             .setParticipant(CommunicationIdentifierConverter.convert(participant))
             .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
             .setOperationContext(operationContext)
             .setCallbackUri(callbackUri.toString());
-
-            return request;
+        return request;
     }
 
     /**
@@ -717,6 +743,7 @@ public final class CallConnectionAsync {
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelParticipantMediaOperation(
@@ -746,6 +773,7 @@ public final class CallConnectionAsync {
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelParticipantMediaOperationWithResponse(
@@ -782,6 +810,7 @@ public final class CallConnectionAsync {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> muteParticipant(
@@ -807,6 +836,7 @@ public final class CallConnectionAsync {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> muteParticipantWithResponse(
@@ -839,6 +869,7 @@ public final class CallConnectionAsync {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> unmuteParticipant(
@@ -864,6 +895,7 @@ public final class CallConnectionAsync {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> unmuteParticipantWithResponse(
@@ -896,6 +928,7 @@ public final class CallConnectionAsync {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> holdParticipantMeetingAudio(
@@ -921,6 +954,7 @@ public final class CallConnectionAsync {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> holdParticipantMeetingAudioWithResponse(
@@ -953,6 +987,7 @@ public final class CallConnectionAsync {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resumeParticipantMeetingAudio(
@@ -978,6 +1013,7 @@ public final class CallConnectionAsync {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resumeParticipantMeetingAudioWithResponse(
@@ -1081,6 +1117,7 @@ public final class CallConnectionAsync {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateAudioRoutingGroup(
@@ -1116,6 +1153,7 @@ public final class CallConnectionAsync {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateAudioRoutingGroupWithResponse(
@@ -1143,6 +1181,7 @@ public final class CallConnectionAsync {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAudioRoutingGroup(
@@ -1165,6 +1204,7 @@ public final class CallConnectionAsync {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAudioRoutingGroupWithResponse(

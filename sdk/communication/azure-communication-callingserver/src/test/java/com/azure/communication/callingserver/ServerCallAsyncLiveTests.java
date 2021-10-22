@@ -95,7 +95,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             callConnections = createAsyncCall(callingServerAsyncClient, groupCallLocator, fromUser, toUser, URI.create(CALLBACK_URI));
 
             Response<StartCallRecordingResult> startRecordingResponse =
-            callingServerAsyncClient.startRecordingWithResponse(groupCallLocator, URI.create(CALLBACK_URI), null, null).block();
+                callingServerAsyncClient.startRecordingWithResponse(groupCallLocator, URI.create(CALLBACK_URI), null, null).block();
             assert startRecordingResponse != null;
             assertEquals(startRecordingResponse.getStatusCode(), 200);
             StartCallRecordingResult startCallRecordingResult = startRecordingResponse.getValue();
@@ -148,7 +148,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
                 .setLoop(false);
 
             PlayAudioResult playAudioResult =
-            callingServerAsyncClient.playAudio(groupCallLocator, URI.create(AUDIO_FILE_URI), options).block();
+                callingServerAsyncClient.playAudio(groupCallLocator, URI.create(AUDIO_FILE_URI), options).block();
             CallingServerTestUtils.validatePlayAudioResult(playAudioResult);
 
         } catch (Exception e) {
@@ -180,7 +180,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
             options.setLoop(false);
 
             Response<PlayAudioResult> playAudioResult =
-            callingServerAsyncClient.playAudioWithResponse(
+                callingServerAsyncClient.playAudioWithResponse(
                     groupCallLocator,
                     URI.create(AUDIO_FILE_URI),
                     options).block();
@@ -204,7 +204,7 @@ public class ServerCallAsyncLiveTests extends CallingServerTestBase {
 
         try {
             Response<StartCallRecordingResult> response =
-            callingServerAsyncClient.startRecordingWithResponse(serverCallLocator, URI.create(CALLBACK_URI), null, null).block();
+                callingServerAsyncClient.startRecordingWithResponse(serverCallLocator, URI.create(CALLBACK_URI), null, null).block();
             assert response != null;
             assertEquals(response.getStatusCode(), 400);
         } catch (CallingServerErrorException e) {

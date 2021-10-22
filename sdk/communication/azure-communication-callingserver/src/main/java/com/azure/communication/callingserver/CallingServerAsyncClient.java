@@ -34,7 +34,6 @@ import com.azure.communication.callingserver.implementation.converters.JoinCallR
 import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantWithCallLocatorRequest;
-import com.azure.communication.callingserver.implementation.models.CallRejectReason;
 import com.azure.communication.callingserver.implementation.models.CancelMediaOperationWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
@@ -53,6 +52,7 @@ import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.CallRejectReason;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
@@ -1360,6 +1360,7 @@ public final class CallingServerAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redirectCall(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds) {
@@ -1398,6 +1399,7 @@ public final class CallingServerAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds) {
@@ -1414,7 +1416,7 @@ public final class CallingServerAsyncClient {
         }
     }
 
-   /**
+    /**
      * Reject the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
@@ -1423,6 +1425,7 @@ public final class CallingServerAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rejectCall(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
@@ -1454,6 +1457,7 @@ public final class CallingServerAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
