@@ -3,14 +3,16 @@
 
 package com.azure.security.keyvault.jca;
 
-import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
-
 import javax.crypto.SecretKey;
 import java.security.PrivateKey;
 
 /**
  * KeyVault fake private which work when key less
+ *
+ * @deprecated Should not use this class outside of azure-security-keyvault-jca.jar.
+ * Move this class to implementation package.
  */
+@Deprecated
 public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
 
     /**
@@ -22,35 +24,14 @@ public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
 
     private String algorithm;
 
-    private final KeyVaultClient keyVaultClient;
-
-    /**
-     * Builder for key vault private key
-     * @param algorithm algorithm
-     * @param kid The key id
-     * @param keyVaultClient related keyVaultClient
-     */
-    public KeyVaultPrivateKey(String algorithm, String kid, KeyVaultClient keyVaultClient) {
-        this.algorithm = algorithm;
-        this.kid = kid;
-        this.keyVaultClient = keyVaultClient;
-    }
-
     /**
      * Builder for key vault private key
      * @param algorithm algorithm
      * @param kid The key id
      */
     public KeyVaultPrivateKey(String algorithm, String kid) {
-        this(algorithm, kid, null);
-    }
-
-    /**
-     * Get related keyVaultClient, which will be used when signature
-     * @return related keyVaultClient
-     */
-    public KeyVaultClient getKeyVaultClient() {
-        return keyVaultClient;
+        this.algorithm = algorithm;
+        this.kid = kid;
     }
 
     /**

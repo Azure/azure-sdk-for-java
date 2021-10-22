@@ -3,7 +3,7 @@
 
 package com.azure.security.keyvault.jca.implementation.signature;
 
-import com.azure.security.keyvault.jca.KeyVaultPrivateKey;
+import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

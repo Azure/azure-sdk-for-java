@@ -27,7 +27,7 @@ For more information about creating the account see [here][create_azure_purview_
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-analytics-purview-catalog</artifactId>
-  <version>1.0.0-beta.1</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -49,19 +49,20 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.2.5</version>
+    <version>1.3.6</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example
 <!-- embedme ./src/samples/java/com/azure/analytics/purview/catalog/ReadmeSamples.java#L20-L23 -->
 ```java
-GlossaryBaseClient client = new PurviewCatalogClientBuilder()
-    .endpoint(System.getenv("<account-name>.catalog.purview.azure.com"))
+GlossaryClient client = new PurviewCatalogClientBuilder()
+    .endpoint(System.getenv("<account-name>.purview.azure.com"))
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildGlossaryBaseClient();
+    .buildGlossaryClient();
 ```
 
 ## Key concepts

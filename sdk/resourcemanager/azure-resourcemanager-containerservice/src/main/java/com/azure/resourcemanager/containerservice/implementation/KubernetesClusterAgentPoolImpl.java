@@ -253,6 +253,7 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withEnableUltraSsd(innerModel().enableUltraSsd());
         agentPoolInner.withEnableFips(innerModel().enableFips());
         agentPoolInner.withGpuInstanceProfile(innerModel().gpuInstanceProfile());
+        agentPoolInner.withPowerState(innerModel().powerState());
         return agentPoolInner;
     }
 

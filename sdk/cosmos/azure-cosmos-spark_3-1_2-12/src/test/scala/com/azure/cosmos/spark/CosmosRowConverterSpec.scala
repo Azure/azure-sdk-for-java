@@ -25,6 +25,14 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
   //scalastyle:off file.size.limit
 
   val objectMapper = new ObjectMapper()
+  private[this] val defaultRowConverter =
+    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.Always))
+  private[this] val rowConverterInclusionNonNull =
+    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonNull))
+  private[this] val rowConverterInclusionNonDefault =
+    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonDefault))
+  private[this] val rowConverterInclusionNonEmpty =
+    CosmosRowConverter.get(new CosmosSerializationConfig(SerializationInclusionModes.NonEmpty))
 
   "basic spark row" should "translate to ObjectNode" in {
 
@@ -37,7 +45,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       Array(colVal1, colVal2),
       StructType(Seq(StructField(colName1, IntegerType), StructField(colName2, StringType))))
 
-    val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).asInt() shouldEqual colVal1
     objectNode.get(colName2).asText() shouldEqual colVal2
   }
@@ -53,37 +61,235 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       Array(colVal1, colVal2),
       StructType(Seq(StructField(colName1, NullType), StructField(colName2, StringType))))
 
-    val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).isNull shouldBe true
     objectNode.get(colName2).asText() shouldEqual colVal2
+
+    objectNode.toString shouldEqual s"""{"testCol1":null,"testCol2":"strVal"}"""
+  }
+
+  "null type in spark row" should "translate to property being skipped if InclusionMode is not Always" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colVal1 = null
+    val colVal2 = "strVal"
+
+    val row = new GenericRowWithSchema(
+      Array(colVal1, colVal2),
+      StructType(Seq(StructField(colName1, NullType), StructField(colName2, StringType))))
+
+    val testCases = Array(
+      ("NonDefault", rowConverterInclusionNonDefault.fromRowToObjectNode(row)),
+      ("NonEmpty", rowConverterInclusionNonEmpty.fromRowToObjectNode(row)),
+      ("NonNull", rowConverterInclusionNonNull.fromRowToObjectNode(row))
+    )
+
+    for (testCaseAndObjectNodeTuple <- testCases) {
+      val testCaseName = testCaseAndObjectNodeTuple._1
+      val objectNode = testCaseAndObjectNodeTuple._2
+      print(s"TEST CASE: $testCaseName")
+      objectNode.get(colName1) shouldBe null
+      objectNode.get(colName2).asText() shouldEqual colVal2
+
+      objectNode.toString shouldEqual s"""{"testCol2":"strVal"}"""
+    }
+  }
+
+  "empty values in spark row" should "translate to property being serialized if InclusionMode is NonNull/Always" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colVal1 = "strVal1"
+    val colVal2 = ""
+    val colVal3 = Array[Byte]()
+
+    val row = new GenericRowWithSchema(
+      Array(colVal1, colVal2, colVal3),
+      StructType(Seq(
+        StructField(colName1, StringType),
+        StructField(colName2, StringType),
+        StructField(colName3, BinaryType))))
+
+    val testCases = Array(
+      ("Always", defaultRowConverter.fromRowToObjectNode(row)),
+      ("NonNull", rowConverterInclusionNonNull.fromRowToObjectNode(row))
+    )
+
+    for (testCaseAndObjectNodeTuple <- testCases) {
+      val testCaseName = testCaseAndObjectNodeTuple._1
+      val objectNode = testCaseAndObjectNodeTuple._2
+      print(s"TEST CASE: $testCaseName")
+      objectNode.get(colName1).asText() shouldEqual colVal1
+      objectNode.get(colName2).asText() shouldEqual colVal2
+      objectNode.get(colName3).asText() shouldEqual ""
+
+      objectNode.toString shouldEqual s"""{"testCol1":"strVal1","testCol2":"","testCol3":""}"""
+    }
+  }
+
+  "empty values in spark row" should "translate to property being skipped if InclusionMode is NonDefault/NonEmpty" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colVal1 = "strVal1"
+    val colVal2 = ""
+    val colVal3 = Array[Byte]()
+
+    val row = new GenericRowWithSchema(
+      Array(colVal1, colVal2, colVal3),
+      StructType(Seq(
+        StructField(colName1, StringType),
+        StructField(colName2, StringType),
+        StructField(colName3, BinaryType))))
+
+    val testCases = Array(
+      ("NonEmpty", rowConverterInclusionNonEmpty.fromRowToObjectNode(row)),
+      ("NonDefault", rowConverterInclusionNonDefault.fromRowToObjectNode(row))
+    )
+
+    for (testCaseAndObjectNodeTuple <- testCases) {
+      val testCaseName = testCaseAndObjectNodeTuple._1
+      val objectNode = testCaseAndObjectNodeTuple._2
+      print(s"TEST CASE: $testCaseName")
+      objectNode.get(colName1).asText() shouldEqual colVal1
+      objectNode.get(colName2) shouldEqual null
+      objectNode.get(colName3) shouldEqual null
+
+      objectNode.toString shouldEqual s"""{"testCol1":"strVal1"}"""
+    }
+  }
+
+  "default value in spark row" should "translate to property being skipped for InclusionModes.NonDefault" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colName4 = "testCol4"
+    val colVal1 = 1
+    val colVal2 = 0
+    val colVal3 = ""
+    val colVal4 = Array[Byte]()
+
+    val row = new GenericRowWithSchema(
+      Array(colVal1, colVal2, colVal3, colVal4),
+      StructType(Seq(
+        StructField(colName1, IntegerType),
+        StructField(colName2, IntegerType),
+        StructField(colName3, StringType),
+        StructField(colName4, BinaryType))))
+
+    val objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInt() shouldEqual colVal1
+    objectNode.get(colName2) shouldBe null
+    objectNode.get(colName3) shouldBe null
+    objectNode.get(colName4) shouldBe null
+
+    objectNode.toString shouldEqual s"""{"testCol1":1}"""
+  }
+
+  "default value in spark row" should "translate to only empty valuesbeing skipped for InclusionModes.NonEmpty" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colName4 = "testCol4"
+    val colVal1 = 1
+    val colVal2 = 0
+    val colVal3 = ""
+    val colVal4 = Array[Byte]()
+
+    val row = new GenericRowWithSchema(
+      Array(colVal1, colVal2, colVal3, colVal4),
+      StructType(Seq(
+        StructField(colName1, IntegerType),
+        StructField(colName2, IntegerType),
+        StructField(colName3, StringType),
+        StructField(colName4, BinaryType)
+      )))
+
+    val objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInt() shouldEqual colVal1
+    objectNode.get(colName2).asInt() shouldEqual colVal2
+    objectNode.get(colName3) shouldBe null
+    objectNode.get(colName4) shouldBe null
+
+    objectNode.toString shouldEqual s"""{"testCol1":1,"testCol2":0}"""
   }
 
   "array in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
     val colName2 = "testCol2"
     val colName3 = "testCol3"
+    val colName4 = "testCol4"
+    val colName5 = "testCol5"
     val colVal1 = "strVal"
 
     val row = new GenericRowWithSchema(
       Array(
         Seq("arrayElement1", "arrayElement2"),
         ArrayData.toArrayData(Array(1, 2)),
-        colVal1),
+        colVal1,
+        Seq(),
+        ArrayData.toArrayData(Array[Int]())),
       StructType(Seq(
         StructField(colName1, ArrayType(StringType, containsNull = false)),
         StructField(colName2, ArrayType(IntegerType, containsNull = false)),
-        StructField(colName3, StringType))))
+        StructField(colName3, StringType),
+        StructField(colName4, ArrayType(StringType, containsNull = false)),
+        StructField(colName5, ArrayType(StringType, containsNull = false))
+      ))
+    )
 
-    val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).isArray shouldBe true
     objectNode.get(colName1).asInstanceOf[ArrayNode] should have size 2
     objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText shouldEqual "arrayElement1"
     objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText shouldEqual "arrayElement2"
+
     objectNode.get(colName2).isArray shouldBe true
     objectNode.get(colName2).asInstanceOf[ArrayNode] should have size 2
     objectNode.get(colName2).asInstanceOf[ArrayNode].get(0).asInt shouldEqual 1
     objectNode.get(colName2).asInstanceOf[ArrayNode].get(1).asInt shouldEqual 2
+
     objectNode.get(colName3).asText shouldEqual colVal1
+
+    objectNode.get(colName4).isArray shouldBe true
+    objectNode.get(colName4).asInstanceOf[ArrayNode] should have size 0
+
+    objectNode.get(colName5).isArray shouldBe true
+    objectNode.get(colName5).asInstanceOf[ArrayNode] should have size 0
+
+    objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    objectNode.get(colName1).isArray shouldBe true
+    objectNode.get(colName1).asInstanceOf[ArrayNode] should have size 2
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText shouldEqual "arrayElement1"
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText shouldEqual "arrayElement2"
+
+    objectNode.get(colName2).isArray shouldBe true
+    objectNode.get(colName2).asInstanceOf[ArrayNode] should have size 2
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(0).asInt shouldEqual 1
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(1).asInt shouldEqual 2
+
+    objectNode.get(colName3).asText shouldEqual colVal1
+
+    objectNode.get(colName4) shouldBe null
+
+    objectNode.get(colName5) shouldBe null
+
+    objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
+    objectNode.get(colName1).isArray shouldBe true
+    objectNode.get(colName1).asInstanceOf[ArrayNode] should have size 2
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText shouldEqual "arrayElement1"
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText shouldEqual "arrayElement2"
+
+    objectNode.get(colName2).isArray shouldBe true
+    objectNode.get(colName2).asInstanceOf[ArrayNode] should have size 2
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(0).asInt shouldEqual 1
+    objectNode.get(colName2).asInstanceOf[ArrayNode].get(1).asInt shouldEqual 2
+
+    objectNode.get(colName3).asText shouldEqual colVal1
+
+    objectNode.get(colName4) shouldBe null
+
+    objectNode.get(colName5) shouldBe null
   }
 
   "binary in spark row" should "translate to ObjectNode" in {
@@ -94,7 +300,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       Array(colVal1),
       StructType(Seq(StructField(colName1, BinaryType))))
 
-    val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
     val nodeAsBinary = objectNode.get(colName1).asInstanceOf[BinaryNode].binaryValue()
     nodeAsBinary should have size colVal1.length
     for (i <- 0 until colVal1.length)
@@ -113,22 +319,48 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
         StructField(colName1, StringType),
         StructField(colName2, NullType))))
 
-    val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).isNull shouldBe true
     objectNode.get(colName2).isNull shouldBe true
+
+    objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    objectNode.get(colName1) shouldBe null
+    objectNode.get(colName2) shouldBe null
+
+    objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
+    objectNode.get(colName1) shouldBe null
+    objectNode.get(colName2) shouldBe null
+
+    objectNode = rowConverterInclusionNonNull.fromRowToObjectNode(row)
+    objectNode.get(colName1) shouldBe null
+    objectNode.get(colName2) shouldBe null
   }
 
   "boolean in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
+    val colName2 = "testCol2"
     val colVal1 = true
+    val colVal2 = false
 
     val row = new GenericRowWithSchema(
-      Array(colVal1),
-      StructType(Seq(StructField(colName1, BooleanType))))
+      Array(colVal1, colVal2),
+      StructType(Seq(StructField(colName1, BooleanType), StructField(colName2, BooleanType))))
 
-    val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
-    val nodeAsBoolean = objectNode.get(colName1).asInstanceOf[BooleanNode].asBoolean()
-    nodeAsBoolean shouldEqual colVal1
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal1
+    objectNode.get(colName2).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal2
+
+    objectNode = rowConverterInclusionNonNull.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal1
+    objectNode.get(colName2).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal2
+
+    objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal1
+    objectNode.get(colName2).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal2
+
+    objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
+    objectNode.get(colName1).asInstanceOf[BooleanNode].asBoolean() shouldEqual colVal1
+    objectNode.get(colName2) shouldEqual null
   }
 
   "date and time in spark row" should "translate to ObjectNode" in {
@@ -142,7 +374,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       Array(colVal1, colVal2),
       StructType(Seq(StructField(colName1, DateType), StructField(colName2, TimestampType))))
 
-    val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).asLong() shouldEqual currentMillis
     objectNode.get(colName2).asLong() shouldEqual currentMillis
   }
@@ -152,44 +384,132 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val colName2 = "testCol2"
     val colName3 = "testCol3"
     val colName4 = "testCol4"
+    val colName5 = "testCol5"
+    val colName6 = "testCol6"
+    val colName7 = "testCol7"
+    val colName8 = "testCol8"
 
     val colVal1: Double = 3.5
     val colVal2: Float = 1e14f
     val colVal3: Long = 1000000000
     val colVal4: Decimal = Decimal(4.6)
+    val colVal5: Double = 0
+    val colVal6: Float = 0
+    val colVal7: Long = 0
+    val colVal8: Decimal = Decimal(0)
 
     val row = new GenericRowWithSchema(
-      Array(colVal1, colVal2, colVal3, colVal4),
-      StructType(Seq(StructField(colName1, DoubleType), StructField(colName2, FloatType),
-        StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2)))))
+      Array(colVal1, colVal2, colVal3, colVal4, colVal5, colVal6, colVal7, colVal8),
+      StructType(Seq(
+        StructField(colName1, DoubleType),
+        StructField(colName2, FloatType),
+        StructField(colName3, LongType),
+        StructField(colName4, DecimalType(precision = 2, scale = 2)),
+        StructField(colName5, DoubleType),
+        StructField(colName6, FloatType),
+        StructField(colName7, LongType),
+        StructField(colName8, DecimalType(precision = 2, scale = 2)))))
 
-    val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).asDouble() shouldEqual colVal1
     objectNode.get(colName2).asDouble() shouldEqual colVal2
     objectNode.get(colName3).asLong() shouldEqual colVal3
-    val col4AsDecimal = Decimal(objectNode.get(colName4).asDouble())
-    col4AsDecimal.compareTo(colVal4) shouldEqual 0
+    Decimal(objectNode.get(colName4).asDouble()).compareTo(colVal4) shouldEqual 0
+    objectNode.get(colName5).asDouble() shouldEqual colVal5
+    objectNode.get(colName6).asDouble() shouldEqual colVal6
+    objectNode.get(colName7).asLong() shouldEqual colVal7
+    Decimal(objectNode.get(colName8).asDouble()).compareTo(colVal8) shouldEqual 0
+
+    objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    objectNode.get(colName1).asDouble() shouldEqual colVal1
+    objectNode.get(colName2).asDouble() shouldEqual colVal2
+    objectNode.get(colName3).asLong() shouldEqual colVal3
+    Decimal(objectNode.get(colName4).asDouble()).compareTo(colVal4) shouldEqual 0
+    objectNode.get(colName5).asDouble() shouldEqual colVal5
+    objectNode.get(colName6).asDouble() shouldEqual colVal6
+    objectNode.get(colName7).asLong() shouldEqual colVal7
+    Decimal(objectNode.get(colName8).asDouble()).compareTo(colVal8) shouldEqual 0
+
+    objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
+    objectNode.get(colName1).asDouble() shouldEqual colVal1
+    objectNode.get(colName2).asDouble() shouldEqual colVal2
+    objectNode.get(colName3).asLong() shouldEqual colVal3
+    Decimal(objectNode.get(colName4).asDouble()).compareTo(colVal4) shouldEqual 0
+    objectNode.get(colName5) shouldEqual null
+    objectNode.get(colName6) shouldEqual null
+    objectNode.get(colName7) shouldEqual null
+    objectNode.get(colName8) shouldEqual null
   }
 
   "map in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
     val colName2 = "testCol2"
+    val colName3 = "testCol3"
+    val colName4 = "testCol4"
     val colVal1: Map[String, String] = Map("x" -> "a", "y" -> null)
     val colVal2: Map[String, Int] = Map("x" -> 20, "y" -> 10)
+    val colVal3: Map[String, String] = Map()
+    val colVal4: Map[String, Int] = Map()
 
     val row = new GenericRowWithSchema(
-      Array(colVal1, colVal2),
+      Array(colVal1, colVal2, colVal3, colVal4),
       StructType(Seq(
         StructField(colName1, MapType(keyType = StringType, valueType = StringType, valueContainsNull = true)),
-        StructField(colName2, MapType(keyType = StringType, valueType = IntegerType, valueContainsNull = false)))))
+        StructField(colName2, MapType(keyType = StringType, valueType = IntegerType, valueContainsNull = false)),
+        StructField(colName3, MapType(keyType = StringType, valueType = StringType, valueContainsNull = true)),
+        StructField(colName4, MapType(keyType = StringType, valueType = IntegerType, valueContainsNull = false)))))
 
-    val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
-    val node1 = objectNode.get(colName1)
+    var objectNode = defaultRowConverter.fromRowToObjectNode(row)
+    var node1 = objectNode.get(colName1)
+    node1.size() shouldEqual 2
     node1.get("x").asText() shouldEqual colVal1("x")
     node1.get("y").isNull shouldBe true
-    val node2 = objectNode.get(colName2)
+    var node2 = objectNode.get(colName2)
+    node2.size() shouldEqual 2
     node2.get("x").asInt() shouldEqual colVal2("x")
     node2.get("y").asInt() shouldEqual colVal2("y")
+    var node3 = objectNode.get(colName3)
+    node3.size() shouldEqual 0
+    var node4 = objectNode.get(colName4)
+    node4.size() shouldEqual 0
+
+    objectNode = rowConverterInclusionNonNull.fromRowToObjectNode(row)
+    node1 = objectNode.get(colName1)
+    node1.size() shouldEqual 1
+    node1.get("x").asText() shouldEqual colVal1("x")
+    node1.get("y") shouldBe null
+    node2 = objectNode.get(colName2)
+    node2.size() shouldEqual 2
+    node2.get("x").asInt() shouldEqual colVal2("x")
+    node2.get("y").asInt() shouldEqual colVal2("y")
+    node3 = objectNode.get(colName3)
+    node3.size() shouldEqual 0
+    node4 = objectNode.get(colName4)
+    node4.size() shouldEqual 0
+
+    objectNode = rowConverterInclusionNonEmpty.fromRowToObjectNode(row)
+    node1 = objectNode.get(colName1)
+    node1.size() shouldEqual 1
+    node1.get("x").asText() shouldEqual colVal1("x")
+    node1.get("y") shouldBe null
+    node2 = objectNode.get(colName2)
+    node2.size() shouldEqual 2
+    node2.get("x").asInt() shouldEqual colVal2("x")
+    node2.get("y").asInt() shouldEqual colVal2("y")
+    objectNode.get(colName3) shouldEqual null
+    objectNode.get(colName4) shouldEqual null
+
+    objectNode = rowConverterInclusionNonDefault.fromRowToObjectNode(row)
+    node1 = objectNode.get(colName1)
+    node1.size() shouldEqual 1
+    node1.get("x").asText() shouldEqual colVal1("x")
+    node1.get("y") shouldBe null
+    node2 = objectNode.get(colName2)
+    node2.size() shouldEqual 2
+    node2.get("x").asInt() shouldEqual colVal2("x")
+    node2.get("y").asInt() shouldEqual colVal2("y")
+    objectNode.get(colName3) shouldEqual null
+    objectNode.get(colName4) shouldEqual null
   }
 
   "struct in spark row" should "translate to ObjectNode" in {
@@ -211,7 +531,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       Array(colVal1, coLVal2),
       StructType(Seq(StructField(colName1, colVal1Definition), StructField(colName2, colVal2Definition))))
 
-    val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).isInstanceOf[ObjectNode] shouldBe true
     val nestedNode = objectNode.get(colName1).asInstanceOf[ObjectNode]
     nestedNode.get(structCol1Name).asText() shouldEqual structCol1Val
@@ -232,7 +552,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       Array(sourceObjectNode.toString),
       StructType(Seq(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType))))
 
-    val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
     objectNode.get(colName1).asInt shouldEqual colVal1
     objectNode.get(colName2).asText shouldEqual colVal2
   }
@@ -248,7 +568,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
 
     val row = InternalRow(sourceObjectNode.toString)
 
-    val objectNode = CosmosRowConverter.fromInternalRowToObjectNode(
+    val objectNode = defaultRowConverter.fromInternalRowToObjectNode(
       row,
       StructType(Seq(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType))))
     objectNode.get(colName1).asInt shouldEqual colVal1
@@ -265,7 +585,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     objectNode.put(colName1, colVal1)
     objectNode.put(colName2, colVal2)
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     row.getInt(0) shouldEqual colVal1
     row.getString(1) shouldEqual colVal2
   }
@@ -290,7 +610,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(StructField(colName1, DoubleType), StructField(colName2, FloatType),
       StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2))))
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     row.getDouble(0) shouldEqual colVal1
     row.getDouble(1) shouldEqual colVal2
     row.getLong(2) shouldEqual colVal3
@@ -317,7 +637,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(StructField(colName1, DoubleType), StructField(colName2, FloatType),
       StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2))))
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     row.getDouble(0) shouldEqual colVal1
     row.getFloat(1) shouldEqual colVal2
     row.getLong(2) shouldEqual colVal3
@@ -333,7 +653,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, DoubleType)))
     try {
-      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
+      defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
       fail("Should have thrown on invalid data")
     }
     catch {
@@ -350,7 +670,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, DoubleType)))
     try {
-      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+      val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
       row.isNullAt(0) shouldBe true
     }
     catch {
@@ -367,7 +687,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, LongType)))
     try {
-      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
+      defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
       fail("Should have thrown on invalid data")
     }
     catch {
@@ -384,7 +704,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, LongType)))
     try {
-      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+      val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
       row.isNullAt(0) shouldBe true
     }
     catch {
@@ -401,7 +721,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, FloatType)))
     try {
-      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
+      defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
       fail("Should have thrown on invalid data")
     }
     catch {
@@ -418,7 +738,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, FloatType)))
     try {
-      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+      val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
       row.isNullAt(0) shouldBe true
     }
     catch {
@@ -435,7 +755,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, DecimalType(precision = 2, scale = 2))))
     try {
-      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
+      defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
       fail("Should have thrown on invalid data")
     }
     catch {
@@ -452,7 +772,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, DecimalType(precision = 2, scale = 2))))
     try {
-      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+      val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
       row.isNullAt(0) shouldBe true
     }
     catch {
@@ -470,7 +790,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName1, DecimalType(precision = 2, scale = 2), nullable = true)))
     try {
       val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(schema)
-      val row = CosmosRowConverter.fromObjectNodeToInternalRow(
+      val row = defaultRowConverter.fromObjectNodeToInternalRow(
         schema, rowSerializer, objectNode, SchemaConversionModes.Relaxed)
       row.isNullAt(0) shouldBe true
     }
@@ -490,7 +810,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName1, DecimalType(precision = 2, scale = 2), nullable = false)))
     try {
       val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(schema)
-      CosmosRowConverter.fromObjectNodeToInternalRow(
+      defaultRowConverter.fromObjectNodeToInternalRow(
         schema, rowSerializer, objectNode, SchemaConversionModes.Relaxed)
       fail("Expected Exception not thrown")
     }
@@ -513,7 +833,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode.put(colName1, colVal1)
     objectNode.put(colName2, colVal2)
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     row.isNullAt(0) shouldBe true
     row.getString(1) shouldEqual colVal2
   }
@@ -528,7 +848,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     objectNode.put(colName1, colVal1)
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     row.isNullAt(1) shouldBe true
   }
 
@@ -542,7 +862,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     colVal1.foreach(elem => arrayObjectNode.add(elem))
     objectNode.set(colName1, arrayObjectNode)
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     val arrayNode = row.get(0).asInstanceOf[Array[Any]]
     arrayNode.length shouldEqual colVal1.length
     for (i <- colVal1.indices)
@@ -562,7 +882,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode.set(colName1, arrayObjectNode)
     objectNode.set(colName2, objectNode.binaryNode(colVal2))
 
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     val nodeAsBinary = row.get(0).asInstanceOf[Array[Byte]]
     for (i <- 0 until colVal1.length)
       nodeAsBinary(i) shouldEqual colVal1(i)
@@ -599,7 +919,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName2, TimestampType),
       StructField(colName3, TimestampType),
       StructField(colName4, TimestampType)))
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     val asTime = row.get(0).asInstanceOf[Timestamp]
     asTime.compareTo(colVal1AsTime) shouldEqual 0
     val asTime2 = row.get(1).asInstanceOf[Timestamp]
@@ -619,7 +939,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, TimestampType)))
     try {
-      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
+      defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
       fail("Should have thrown on invalid data")
     }
     catch {
@@ -636,7 +956,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, TimestampType)))
     try {
-      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+      val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
       row.isNullAt(0) shouldBe true
     }
     catch {
@@ -670,7 +990,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName2, DateType),
       StructField(colName3, DateType),
       StructField(colName4, DateType)))
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     val asTime = row.get(0).asInstanceOf[Date]
     asTime.compareTo(colVal1AsTime) shouldEqual 0
     val asTime2 = row.get(1).asInstanceOf[Date]
@@ -690,7 +1010,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, DateType)))
     try {
-      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
+      defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
       fail("Should have thrown on invalid data")
     }
     catch {
@@ -707,7 +1027,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, DateType)))
     try {
-      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+      val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
       row.isNullAt(0) shouldBe true
     }
     catch {
@@ -729,7 +1049,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     // with struct
     val schema = StructType(Seq(StructField(colName1, StructType(Seq(StructField(colName1, StringType)))),
       StructField(colName2, StringType)))
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     val asStruct = row.getStruct(0)
     asStruct.getString(0) shouldEqual colVal1
     row.getString(1) shouldEqual colVal2
@@ -739,7 +1059,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
       StructField(colName1, MapType(keyType = StringType, valueType = StringType, valueContainsNull = false)),
       StructField(colName2, StringType)))
 
-    val rowWithMap = CosmosRowConverter.fromObjectNodeToRow(schemaWithMap, objectNode, SchemaConversionModes.Relaxed)
+    val rowWithMap = defaultRowConverter.fromObjectNodeToRow(schemaWithMap, objectNode, SchemaConversionModes.Relaxed)
 
     val convertedMap = rowWithMap.getMap[String, String](0)
     convertedMap(colName1) shouldEqual colVal1
@@ -753,7 +1073,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     objectNode.put(colName1, colVal1)
     val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.RawJsonBodyAttributeName, StringType)))
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     row.getString(0) shouldEqual objectNode.toString
   }
 
@@ -767,7 +1087,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schemaIncorrectType = StructType(Seq(StructField(CosmosTableSchemaInferrer.LsnAttributeName, StringType)))
     schemaIncorrectType.size shouldEqual 1
     schemaIncorrectType.head.dataType shouldEqual StringType
-    val rowIncorrectType = CosmosRowConverter.fromObjectNodeToRow(schemaIncorrectType,
+    val rowIncorrectType = defaultRowConverter.fromObjectNodeToRow(schemaIncorrectType,
                                                                   objectNode,
                                                                   SchemaConversionModes.Relaxed)
     rowIncorrectType.getString(0) shouldEqual "12345"
@@ -775,7 +1095,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(StructField(CosmosTableSchemaInferrer.LsnAttributeName, LongType)))
     schema.size shouldEqual 1
     schema.head.dataType shouldEqual LongType
-    val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
     row.getLong(0) shouldEqual 12345
   }
 
@@ -788,7 +1108,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, BinaryType)))
     try {
-      CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
+      defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Strict)
       fail("Should have thrown on invalid data")
     }
     catch {
@@ -805,7 +1125,7 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     val schema = StructType(Seq(
       StructField(colName1, BinaryType)))
     try {
-      val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+      val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
       row.isNullAt(0) shouldBe true
     }
     catch {

@@ -539,7 +539,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -569,7 +569,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -600,7 +600,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -621,7 +621,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -854,7 +854,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginUpdateTagsAsync(
         String resourceGroupName, String expressRouteGatewayName, TagsObject expressRouteGatewayParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -881,7 +881,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginUpdateTagsAsync(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -912,7 +912,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginUpdateTags(
         String resourceGroupName, String expressRouteGatewayName, TagsObject expressRouteGatewayParameters) {
         return beginUpdateTagsAsync(resourceGroupName, expressRouteGatewayName, expressRouteGatewayParameters)
@@ -931,7 +931,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginUpdateTags(
         String resourceGroupName,
         String expressRouteGatewayName,
@@ -1291,7 +1291,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String expressRouteGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, expressRouteGatewayName);
@@ -1312,7 +1312,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String expressRouteGatewayName, Context context) {
         context = this.client.mergeContext(context);
@@ -1334,7 +1334,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteGatewayName) {
         return beginDeleteAsync(resourceGroupName, expressRouteGatewayName).getSyncPoller();
     }
@@ -1351,7 +1351,7 @@ public final class ExpressRouteGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String expressRouteGatewayName, Context context) {
         return beginDeleteAsync(resourceGroupName, expressRouteGatewayName, context).getSyncPoller();
