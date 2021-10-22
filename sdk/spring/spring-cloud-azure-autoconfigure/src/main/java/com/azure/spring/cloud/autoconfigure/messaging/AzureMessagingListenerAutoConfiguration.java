@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
 @AutoConfigureAfter(value = { AzureEventHubOperationAutoConfiguration.class,
     AzureServiceBusTopicOperationAutoConfiguration.class })
 @ConditionalOnBean(SubscribeByGroupOperation.class)
-public class AzureMessagingListenerConfiguration {
+public class AzureMessagingListenerAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = AzureListenerAnnotationBeanPostProcessor.DEFAULT_AZURE_LISTENER_CONTAINER_FACTORY_BEAN_NAME)
