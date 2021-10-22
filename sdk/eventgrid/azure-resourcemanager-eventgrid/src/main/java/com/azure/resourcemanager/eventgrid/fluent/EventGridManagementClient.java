@@ -109,6 +109,13 @@ public interface EventGridManagementClient {
     SystemTopicsClient getSystemTopics();
 
     /**
+     * Gets the ExtensionTopicsClient object to access its operations.
+     *
+     * @return the ExtensionTopicsClient object.
+     */
+    ExtensionTopicsClient getExtensionTopics();
+
+    /**
      * Gets the TopicTypesClient object to access its operations.
      *
      * @return the TopicTypesClient object.
