@@ -465,7 +465,7 @@ public class TargetingFilterTest {
         FeatureDefinition featureDefinition = new FeatureDefinition("testFeature", dynamicFeature);
 
         Mono<FeatureVariant> result = filter.assignVariantAsync(featureDefinition);
-        assertNull(result);
+        assertNull(result.block());
     }
     
     @Test
@@ -555,7 +555,7 @@ public class TargetingFilterTest {
         FeatureDefinition featureDefinition = new FeatureDefinition("testFeature", new DynamicFeature());
 
         Mono<FeatureVariant> result = new TargetingFilter(contextAccessor).assignVariantAsync(featureDefinition);
-        assertNull(result);
+        assertNull(result.block());
     }
 
     private FeatureVariant createFeatureVariant(String variantName, LinkedHashMap<String, Object> users,

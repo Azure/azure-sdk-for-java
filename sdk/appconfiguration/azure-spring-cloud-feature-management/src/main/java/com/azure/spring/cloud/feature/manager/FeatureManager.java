@@ -134,36 +134,7 @@ public class FeatureManager extends HashMap<String, Object> {
 
         FeatureDefinition featureDefinition = new FeatureDefinition(featureName, dynamicFeature);
 
-        if (!StringUtils.hasText(featureDefinition.getAssigner())) {
-            throw new FeatureManagementException(
-                "Missing Feature Variant assigner name for the feature " + featureName);
-        }
-
-        if (featureDefinition.getVariants() == null || featureDefinition.getVariants().size() == 0) {
-            throw new FeatureManagementException(
-                "No Variants are registered for the feature " + featureName);
-        }
-
-        FeatureVariant defaultVariant = null;
-
-        for (FeatureVariant v : featureDefinition.getVariants()) {
-            if (v.getDefault()) {
-                if (defaultVariant != null) {
-                    throw new FeatureManagementException(
-                        "Multiple default variants are registered for the feature " + featureName);
-                }
-                defaultVariant = v;
-            }
-
-            if (!StringUtils.hasText(v.getConfigurationReference())) {
-                throw new FeatureManagementException("The variant " + v.getName() + " for the feature " + featureName
-                    + "does not have a configuration reference.");
-            }
-        }
-
-        if (defaultVariant == null) {
-            throw new FeatureManagementException("A default variant cannot be found for the feature " + featureName);
-        }
+        FeatureVariant defaultVariant = validateDynamicFeature(featureDefinition, featureName);
 
         IFeatureVariantAssignerMetadata assigner = null;
 
@@ -198,6 +169,40 @@ public class FeatureManager extends HashMap<String, Object> {
         }
 
         return MAPPER.convertValue(configurations, type);
+    }
+    
+    private FeatureVariant validateDynamicFeature(FeatureDefinition featureDefinition, String featureName) {
+        if (!StringUtils.hasText(featureDefinition.getAssigner())) {
+            throw new FeatureManagementException(
+                "Missing Feature Variant assigner name for the feature " + featureName);
+        }
+
+        if (featureDefinition.getVariants() == null || featureDefinition.getVariants().size() == 0) {
+            throw new FeatureManagementException(
+                "No Variants are registered for the feature " + featureName);
+        }
+
+        FeatureVariant defaultVariant = null;
+
+        for (FeatureVariant v : featureDefinition.getVariants()) {
+            if (v.getDefault()) {
+                if (defaultVariant != null) {
+                    throw new FeatureManagementException(
+                        "Multiple default variants are registered for the feature " + featureName);
+                }
+                defaultVariant = v;
+            }
+
+            if (!StringUtils.hasText(v.getConfigurationReference())) {
+                throw new FeatureManagementException("The variant " + v.getName() + " for the feature " + featureName
+                    + "does not have a configuration reference.");
+            }
+        }
+
+        if (defaultVariant == null) {
+            throw new FeatureManagementException("A default variant cannot be found for the feature " + featureName);
+        }
+        return defaultVariant;
     }
 
     @SuppressWarnings("unchecked")

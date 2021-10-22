@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,21 +94,21 @@ public class TargetingFilter implements FeatureFilter, IFeatureVariantAssigner {
             settings.setAudience(OBJECT_MAPPER.convertValue(parameters, Audience.class));
         }
 
-        tryValidateSettings(settings);
+        validateSettings(settings);
 
         Audience audience = settings.getAudience();
 
         if (targetingContext.getUserId() != null
             && audience.getUsers() != null
             && audience.getUsers().stream()
-                .anyMatch(user -> compairStrings(targetingContext.getUserId(), user))) {
+                .anyMatch(user -> compareStrings(targetingContext.getUserId(), user))) {
             return true;
         }
 
         if (targetingContext.getGroups() != null && audience.getGroups() != null) {
             for (String group : targetingContext.getGroups()) {
                 Optional<GroupRollout> groupRollout = audience.getGroups().stream()
-                    .filter(g -> compairStrings(g.getName(), group)).findFirst();
+                    .filter(g -> compareStrings(g.getName(), group)).findFirst();
 
                 if (groupRollout.isPresent()) {
                     String audienceContextId = targetingContext.getUserId() + "\n" + context.getName() + "\n" + group;
@@ -148,7 +149,7 @@ public class TargetingFilter implements FeatureFilter, IFeatureVariantAssigner {
         return isTargetedPercentage(contextId) < percentage;
     }
 
-    private void tryValidateSettings(TargetingFilterSettings settings) {
+    private void validateSettings(TargetingFilterSettings settings) {
         String paramName = "";
         String reason = "";
 
@@ -182,7 +183,7 @@ public class TargetingFilter implements FeatureFilter, IFeatureVariantAssigner {
         }
     }
 
-    private boolean compairStrings(String s1, String s2) {
+    private boolean compareStrings(String s1, String s2) {
         if (options.isIgnoreCase()) {
             return s1.equalsIgnoreCase(s2);
         }
@@ -205,14 +206,14 @@ public class TargetingFilter implements FeatureFilter, IFeatureVariantAssigner {
 
         if (targetingContext == null) {
             LOGGER.warn("No targeting context available for targeting evaluation.");
-            return null;
+            return Mono.justOrEmpty(null);
         }
 
         TargetingFilterSettings settings = new TargetingFilterSettings();
 
         List<FeatureVariant> variants = featureDefinition.getVariants();
-
-        double totalAudiencePercentage = 0;
+        
+        HashMap<String, Double> totalGroupPerentages = new HashMap<>();
         double totalDefaultPercentage = 0;
 
         for (FeatureVariant variant : variants) {
@@ -231,32 +232,34 @@ public class TargetingFilter implements FeatureFilter, IFeatureVariantAssigner {
                 settings.setAudience(OBJECT_MAPPER.convertValue(parameters, Audience.class));
             }
 
-            tryValidateSettings(settings);
+            validateSettings(settings);
 
             Audience audience = settings.getAudience();
 
             if (targetingContext.getUserId() != null
                 && audience.getUsers() != null
                 && audience.getUsers().stream()
-                    .anyMatch(user -> compairStrings(targetingContext.getUserId(), user))) {
+                    .anyMatch(user -> compareStrings(targetingContext.getUserId(), user))) {
                 return Mono.just(variant);
             }
 
             if (targetingContext.getGroups() != null && audience.getGroups() != null) {
                 for (String group : targetingContext.getGroups()) {
                     Optional<GroupRollout> groupRollout = audience.getGroups().stream()
-                        .filter(g -> compairStrings(g.getName(), group)).findFirst();
+                        .filter(g -> compareStrings(g.getName(), group)).findFirst();
 
                     if (groupRollout.isPresent()) {
                         String audienceContextId = targetingContext.getUserId() + "\n" + featureDefinition.getName()
                             + "\n"
                             + group;
+                        
+                        double chance = totalGroupPerentages.getOrDefault(group, (double) 0);
 
                         if (isTargetedPercentage(audienceContextId) < groupRollout.get().getRolloutPercentage() +
-                            totalAudiencePercentage) {
+                            chance) {
                             return Mono.just(variant);
                         }
-                        totalAudiencePercentage += groupRollout.get().getRolloutPercentage();
+                        totalGroupPerentages.put(group, chance + groupRollout.get().getRolloutPercentage());
                     }
                 }
             }
@@ -270,6 +273,6 @@ public class TargetingFilter implements FeatureFilter, IFeatureVariantAssigner {
             totalDefaultPercentage += settings.getAudience().getDefaultRolloutPercentage();
         }
 
-        return null;
+        return Mono.justOrEmpty(null);
     }
 }
