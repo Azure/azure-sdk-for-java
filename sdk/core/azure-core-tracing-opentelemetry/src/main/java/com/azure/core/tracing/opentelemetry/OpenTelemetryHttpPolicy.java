@@ -93,8 +93,12 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         Span parentSpan = (Span) context.getData(PARENT_SPAN_KEY).orElse(Span.current());
         HttpRequest request = context.getHttpRequest();
 
-        // Build new child span representing this outgoing request.
-        SpanBuilder spanBuilder = tracer.spanBuilder("HTTP " + request.getHttpMethod().toString())
+        // Build new child span representing this outgoing request
+        // provide sampling-relevant attributes (users make sampling decisions based on this)
+        String methodName = request.getHttpMethod().toString();
+        SpanBuilder spanBuilder = tracer.spanBuilder("HTTP " + methodName)
+            .setAttribute(HTTP_METHOD, methodName)
+            .setAttribute(HTTP_URL, request.getUrl().toString())
             .setParent(currentContext.with(parentSpan));
 
         // A span's kind can be SERVER (incoming request) or CLIENT (outgoing request);
@@ -103,9 +107,9 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         // Starting the span makes the sampling decision (nothing is logged at this time)
         Span span = spanBuilder.startSpan();
 
-        // If span is sampled in, add additional TRACING attributes
+        // If span is sampled in, add additional attributes
         if (span.isRecording()) {
-            addSpanRequestAttributes(span, request, context); // Adds HTTP method, URL, & user-agent
+            addPostSamplingAttributes(span, request, context);
         }
 
         // For no-op tracer, SpanContext is INVALID; inject valid span headers onto outgoing request
@@ -120,12 +124,10 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             .contextWrite(Context.of("TRACING_SPAN", span, "REQUEST", request));
     }
 
-    private static void addSpanRequestAttributes(Span span, HttpRequest request,
+    private static void addPostSamplingAttributes(Span span, HttpRequest request,
         HttpPipelineCallContext context) {
         putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT,
             request.getHeaders().getValue("User-Agent"));
-        putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
-        putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
         Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
         tracingNamespace.ifPresent(o -> putAttributeIfNotEmptyOrNull(span, OpenTelemetryTracer.AZ_NAMESPACE_KEY,
             o.toString()));

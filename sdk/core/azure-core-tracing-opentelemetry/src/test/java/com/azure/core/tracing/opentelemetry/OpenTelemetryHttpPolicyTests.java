@@ -16,15 +16,21 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
+import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.ReadableSpan;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
+import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import io.opentelemetry.sdk.trace.samplers.Sampler;
+import io.opentelemetry.sdk.trace.samplers.SamplingDecision;
+import io.opentelemetry.sdk.trace.samplers.SamplingResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -36,12 +42,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for {@link OpenTelemetryHttpPolicy}.
@@ -108,6 +116,48 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals("foo", httpAttributes.get(AZ_TRACING_NAMESPACE_KEY));
         assertEquals(Long.valueOf(RESPONSE_STATUS_CODE), httpAttributes.get("http.status_code"));
         assertEquals(X_MS_REQUEST_ID_1, httpAttributes.get("serviceRequestId"));
+    }
+
+    @Test
+    public void presamplingAttributesArePopulatedBeforeSpanStarts() {
+        AtomicBoolean samplerCalled = new AtomicBoolean();
+        SdkTracerProvider providerWithSampler = SdkTracerProvider.builder()
+            .setSampler(new Sampler() {
+                @Override
+                public SamplingResult shouldSample(io.opentelemetry.context.Context parentContext, String traceId, String name, SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
+                    samplerCalled.set(true);
+                    assertEquals(2, attributes.size());
+                    assertEquals("HTTP DELETE", name);
+                    attributes.forEach((k, v) -> {
+                        if (k.getKey() == "http.url") {
+                            assertEquals("https://httpbin.org/hello?there#otel", v);
+                        } else {
+                            assertEquals("http.method", k.getKey());
+                            assertEquals("DELETE", v);
+                        }
+                    });
+
+                    return SamplingResult.create(SamplingDecision.DROP);
+                }
+
+                @Override
+                public String getDescription() {
+                    return "test";
+                }
+            })
+            .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
+
+        tracer = OpenTelemetrySdk.builder().setTracerProvider(providerWithSampler).build().getTracer("presampling-test");
+
+        // Act
+        HttpRequest request = new HttpRequest(HttpMethod.DELETE, "https://httpbin.org/hello?there#otel");
+        HttpResponse response =  createHttpPipeline(tracer).send(request).block();
+
+        // Assert
+        List<SpanData> exportedSpans = exporter.getSpans();
+        // rest proxy span is not exported as global otel is not configured
+        assertEquals(0, exportedSpans.size());
+        assertTrue(samplerCalled.get());
     }
 
     @Test
@@ -242,5 +292,4 @@ public class OpenTelemetryHttpPolicyTests {
             return exportedSpans;
         }
     }
-
 }
