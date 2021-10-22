@@ -7,6 +7,7 @@ import com.azure.security.keyvault.jca.KeyVaultKeyStore;
 import com.azure.security.keyvault.jca.KeyVaultTrustManagerFactoryProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.boot.logging.DeferredLog;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -14,7 +15,9 @@ import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.util.StringUtils;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.security.Provider;
 import java.security.Security;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -24,9 +27,12 @@ import java.util.Properties;
 @Order
 public class KeyVaultCertificatesEnvironmentPostProcessor implements EnvironmentPostProcessor {
 
+    private static final DeferredLog LOGGER = new DeferredLog();
+
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-
+        application.addInitializers(ctx -> LOGGER.replayTo(KeyVaultCertificatesEnvironmentPostProcessor.class));
+        LOGGER.info("KeyVaultCertificatesEnvironmentPostProcessor works");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.uri");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.tenant-id");
         putEnvironmentPropertyToSystemProperty(environment, "azure.keyvault.client-id");
@@ -42,22 +48,37 @@ public class KeyVaultCertificatesEnvironmentPostProcessor implements Environment
         if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.key-store-type"))) {
             Properties properties = new Properties();
             properties.put("server.ssl.key-store", "classpath:keyvault.dummy");
+            LOGGER.info("update key-store as keyvault.dummy");
             if (hasEmbedTomcat()) {
                 properties.put("server.ssl.key-store-type", "DKS");
+                LOGGER.info("update key-store-type as DKS");
             }
             propertySources.addFirst(new PropertiesPropertySource("KeyStorePropertySource", properties));
         }
         if (KeyVaultKeyStore.KEY_STORE_TYPE.equals(environment.getProperty("server.ssl.trust-store-type"))) {
             Properties properties = new Properties();
             properties.put("server.ssl.trust-store", "classpath:keyvault.dummy");
+            LOGGER.info("update trust-store as keyvault.dummy");
             if (hasEmbedTomcat()) {
                 properties.put("server.ssl.trust-store-type", "DKS");
+                LOGGER.info("update trust-store-type as DKS");
             }
             propertySources.addFirst(new PropertiesPropertySource("TrustStorePropertySource", properties));
         }
 
+        Arrays.asList(Security.getProviders())
+              .stream()
+              .map(Provider::getName)
+              .forEach(name -> LOGGER.info("Before Add Providers contains " + name));
+
         Security.removeProvider("AzureKeyVault");
         Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+
+        Arrays.asList(Security.getProviders())
+              .stream()
+              .map(Provider::getName)
+              .forEach(name -> LOGGER.info("After Add Providers contains " + name));
+
         if (overrideTrustManagerFactory(environment)) {
             Security.insertProviderAt(new KeyVaultTrustManagerFactoryProvider(), 1);
         }

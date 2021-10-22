@@ -4,6 +4,7 @@ package com.azure.spring.security.keyvault.certificates.starter;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.StandardEnvironment;
@@ -60,7 +61,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessorTest {
         Security.insertProviderAt(new KeyVaultJcaProvider(), 11);
         ConfigurableEnvironment environment = new StandardEnvironment();
         KeyVaultCertificatesEnvironmentPostProcessor postProcessor = new KeyVaultCertificatesEnvironmentPostProcessor();
-        postProcessor.postProcessEnvironment(environment, null);
+        postProcessor.postProcessEnvironment(environment, new SpringApplication());
         KeyStore keyStore = KeyStore.getInstance("DKS");
         assertTrue(keyStore.getProvider() instanceof KeyVaultJcaProvider);
     }
@@ -71,7 +72,7 @@ public class KeyVaultCertificatesEnvironmentPostProcessorTest {
         Security.removeProvider("AzureKeyVault");
         ConfigurableEnvironment environment = new StandardEnvironment();
         KeyVaultCertificatesEnvironmentPostProcessor postProcessor = new KeyVaultCertificatesEnvironmentPostProcessor();
-        postProcessor.postProcessEnvironment(environment, null);
+        postProcessor.postProcessEnvironment(environment, new SpringApplication());
         KeyStore keyStore = KeyStore.getInstance("DKS");
         assertTrue(keyStore.getProvider() instanceof KeyVaultJcaProvider);
     }
