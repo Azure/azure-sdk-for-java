@@ -25,6 +25,7 @@ import com.azure.resourcemanager.eventgrid.implementation.DomainTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.DomainsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.EventGridManagementClientBuilder;
 import com.azure.resourcemanager.eventgrid.implementation.EventSubscriptionsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.ExtensionTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.OperationsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PrivateLinkResourcesImpl;
@@ -35,6 +36,7 @@ import com.azure.resourcemanager.eventgrid.implementation.TopicsImpl;
 import com.azure.resourcemanager.eventgrid.models.DomainTopics;
 import com.azure.resourcemanager.eventgrid.models.Domains;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptions;
+import com.azure.resourcemanager.eventgrid.models.ExtensionTopics;
 import com.azure.resourcemanager.eventgrid.models.Operations;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.eventgrid.models.PrivateLinkResources;
@@ -67,6 +69,8 @@ public final class EventGridManager {
     private PrivateLinkResources privateLinkResources;
 
     private SystemTopics systemTopics;
+
+    private ExtensionTopics extensionTopics;
 
     private TopicTypes topicTypes;
 
@@ -206,7 +210,7 @@ public final class EventGridManager {
                 .append("-")
                 .append("com.azure.resourcemanager.eventgrid")
                 .append("/")
-                .append("1.1.0-beta.3");
+                .append("1.1.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -317,6 +321,14 @@ public final class EventGridManager {
             this.systemTopics = new SystemTopicsImpl(clientObject.getSystemTopics(), this);
         }
         return systemTopics;
+    }
+
+    /** @return Resource collection API of ExtensionTopics. */
+    public ExtensionTopics extensionTopics() {
+        if (this.extensionTopics == null) {
+            this.extensionTopics = new ExtensionTopicsImpl(clientObject.getExtensionTopics(), this);
+        }
+        return extensionTopics;
     }
 
     /** @return Resource collection API of TopicTypes. */

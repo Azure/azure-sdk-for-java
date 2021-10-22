@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
@@ -30,6 +31,12 @@ public final class TopicInner extends Resource {
     private TopicProperties innerProperties;
 
     /*
+     * Identity information for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
+
+    /*
      * The system metadata relating to Topic resource.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
@@ -42,6 +49,26 @@ public final class TopicInner extends Resource {
      */
     private TopicProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: Identity information for the resource.
+     *
+     * @return the identity value.
+     */
+    public IdentityInfo identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity information for the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the TopicInner object itself.
+     */
+    public TopicInner withIdentity(IdentityInfo identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -242,6 +269,9 @@ public final class TopicInner extends Resource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

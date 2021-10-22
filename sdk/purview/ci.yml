@@ -11,6 +11,7 @@ trigger:
       - sdk/purview/
     exclude:
       - sdk/purview/pom.xml
+      - sdk/purview/azure-analytics-purview-administration/pom.xml
       - sdk/purview/azure-analytics-purview-catalog/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
 
@@ -26,6 +27,7 @@ pr:
       - sdk/purview/
     exclude:
       - sdk/purview/pom.xml
+      - sdk/purview/azure-analytics-purview-administration/pom.xml
       - sdk/purview/azure-analytics-purview-catalog/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
 
@@ -34,6 +36,9 @@ extends:
   parameters:
     ServiceDirectory: purview
     Artifacts:
+      - name: azure-analytics-purview-administration
+        groupId: com.azure
+        safeName: azureanalyticspurviewadministration
       - name: azure-analytics-purview-catalog
         groupId: com.azure
         safeName: azureanalyticspurviewcatalog

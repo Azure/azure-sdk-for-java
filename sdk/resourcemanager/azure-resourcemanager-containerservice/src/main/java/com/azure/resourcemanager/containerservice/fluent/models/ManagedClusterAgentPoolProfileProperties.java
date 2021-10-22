@@ -192,9 +192,13 @@ public class ManagedClusterAgentPoolProfileProperties {
     private String provisioningState;
 
     /*
-     * Describes whether the Agent Pool is Running or Stopped
+     * When an Agent Pool is first created it is initially Running. The Agent
+     * Pool can be stopped by setting this field to Stopped. A stopped Agent
+     * Pool stops all of its VMs and does not accrue billing charges. An Agent
+     * Pool can only be stopped if it is Running and provisioning state is
+     * Succeeded
      */
-    @JsonProperty(value = "powerState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "powerState")
     private PowerState powerState;
 
     /*
@@ -771,12 +775,27 @@ public class ManagedClusterAgentPoolProfileProperties {
     }
 
     /**
-     * Get the powerState property: Describes whether the Agent Pool is Running or Stopped.
+     * Get the powerState property: When an Agent Pool is first created it is initially Running. The Agent Pool can be
+     * stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing
+     * charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded.
      *
      * @return the powerState value.
      */
     public PowerState powerState() {
         return this.powerState;
+    }
+
+    /**
+     * Set the powerState property: When an Agent Pool is first created it is initially Running. The Agent Pool can be
+     * stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing
+     * charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded.
+     *
+     * @param powerState the powerState value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withPowerState(PowerState powerState) {
+        this.powerState = powerState;
+        return this;
     }
 
     /**

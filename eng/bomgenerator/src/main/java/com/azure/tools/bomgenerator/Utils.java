@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -202,23 +203,51 @@ public class Utils {
                 return bomDependencies;
             }
 
-            for(Dependency dependency : dependencies) {
-                ScopeType scopeType = ScopeType.COMPILE;
-
-                if("test".equals(dependency.getScope())) {
-                    scopeType = ScopeType.TEST;
-                }
-
-                bomDependencies.add(new BomDependency(
-                    dependency.getGroupId(),
-                    dependency.getArtifactId(),
-                    dependency.getVersion(),
-                    scopeType));
-            }
+            Properties properties = value.getProperties();
+            bomDependencies.addAll(parseDependencyVersion(dependencies, properties, value.getModelVersion()));
         } catch (IOException exception) {
             exception.printStackTrace();
         }
 
         return bomDependencies.stream().distinct().collect(Collectors.toList());
+    }
+
+    static List<BomDependency> parseDependencyVersion(List<Dependency> dependencies, Properties properties, String modelVersion) {
+        return dependencies.stream().map(dep -> {
+                String version = getPropertyName(dep.getVersion());
+
+                while(properties.getProperty(version) != null) {
+                    version = getPropertyName(properties.getProperty(version));
+
+                    if(version.equals(PROJECT_VERSION)) {
+                        version = modelVersion;
+                    }
+                }
+
+            if(version == null) {
+                version = dep.getVersion();
+            }
+
+            ScopeType scopeType = ScopeType.COMPILE;
+
+            if("test".equals(dep.getScope())) {
+                scopeType = ScopeType.TEST;
+            }
+
+            return new BomDependency(
+                dep.getGroupId(),
+                dep.getArtifactId(),
+                version,
+                scopeType);
+
+            }).collect(Collectors.toList());
+    }
+
+    private static String getPropertyName(String propertyValue) {
+        if(propertyValue.startsWith("${")) {
+            return propertyValue.substring(2, propertyValue.length() - 1);
+        }
+
+        return propertyValue;
     }
 }

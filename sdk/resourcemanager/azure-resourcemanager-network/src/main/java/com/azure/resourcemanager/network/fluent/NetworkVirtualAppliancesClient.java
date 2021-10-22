@@ -51,7 +51,7 @@ public interface NetworkVirtualAppliancesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkVirtualApplianceName);
 
     /**
@@ -64,7 +64,7 @@ public interface NetworkVirtualAppliancesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkVirtualApplianceName);
 
     /**
@@ -78,7 +78,7 @@ public interface NetworkVirtualAppliancesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkVirtualApplianceName, Context context);
 
@@ -280,7 +280,7 @@ public interface NetworkVirtualAppliancesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkVirtualAppliance Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<NetworkVirtualApplianceInner>, NetworkVirtualApplianceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkVirtualApplianceName, NetworkVirtualApplianceInner parameters);
 
@@ -295,7 +295,7 @@ public interface NetworkVirtualAppliancesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkVirtualAppliance Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkVirtualApplianceInner>, NetworkVirtualApplianceInner> beginCreateOrUpdate(
         String resourceGroupName, String networkVirtualApplianceName, NetworkVirtualApplianceInner parameters);
 
@@ -311,7 +311,7 @@ public interface NetworkVirtualAppliancesClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkVirtualAppliance Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkVirtualApplianceInner>, NetworkVirtualApplianceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkVirtualApplianceName,
