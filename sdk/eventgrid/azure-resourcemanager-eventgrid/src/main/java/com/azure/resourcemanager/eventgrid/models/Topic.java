@@ -50,6 +50,13 @@ public interface Topic {
     Map<String, String> tags();
 
     /**
+     * Gets the identity property: Identity information for the resource.
+     *
+     * @return the identity value.
+     */
+    IdentityInfo identity();
+
+    /**
      * Gets the systemData property: The system metadata relating to Topic resource.
      *
      * @return the systemData value.
@@ -194,6 +201,7 @@ public interface Topic {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithInputSchema,
                 DefinitionStages.WithInputSchemaMapping,
                 DefinitionStages.WithPublicNetworkAccess,
@@ -223,6 +231,16 @@ public interface Topic {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the Topic definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Identity information for the resource..
+             *
+             * @param identity Identity information for the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(IdentityInfo identity);
         }
         /** The stage of the Topic definition allowing to specify inputSchema. */
         interface WithInputSchema {
@@ -302,6 +320,7 @@ public interface Topic {
     /** The template for Topic update. */
     interface Update
         extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
             UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithInboundIpRules,
             UpdateStages.WithDisableLocalAuth {
@@ -331,6 +350,16 @@ public interface Topic {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the Topic update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: Topic resource identity information..
+             *
+             * @param identity Topic resource identity information.
+             * @return the next definition stage.
+             */
+            Update withIdentity(IdentityInfo identity);
         }
         /** The stage of the Topic update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
