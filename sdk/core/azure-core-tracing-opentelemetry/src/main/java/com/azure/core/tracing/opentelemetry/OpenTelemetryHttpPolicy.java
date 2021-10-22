@@ -12,7 +12,6 @@ import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UrlBuilder;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;

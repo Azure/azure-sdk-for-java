@@ -28,8 +28,6 @@ import io.opentelemetry.sdk.trace.export.SpanExporter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -135,7 +133,7 @@ public class OpenTelemetryHttpPolicyTests {
     }
 
     @Test
-    public void everyTryIsTraced(){
+    public void everyTryIsTraced() {
         AtomicInteger attemptCount = new AtomicInteger();
         AtomicReference<String> traceparentTry503 = new AtomicReference<>();
         AtomicReference<String> traceparentTry200 = new AtomicReference<>();
