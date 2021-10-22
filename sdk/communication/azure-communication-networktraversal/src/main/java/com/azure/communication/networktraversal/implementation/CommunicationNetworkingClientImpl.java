@@ -74,23 +74,31 @@ public final class CommunicationNetworkingClientImpl {
         return this.communicationNetworkTraversals;
     }
 
-    /** Initializes an instance of CommunicationNetworkingClient client. */
-    CommunicationNetworkingClientImpl(String endpoint) {
+    /**
+     * Initializes an instance of CommunicationNetworkingClient client.
+     *
+     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
+     * @param apiVersion Api Version.
+     */
+    CommunicationNetworkingClientImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+                endpoint,
+                apiVersion);
     }
 
     /**
      * Initializes an instance of CommunicationNetworkingClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
+     * @param apiVersion Api Version.
      */
-    CommunicationNetworkingClientImpl(HttpPipeline httpPipeline, String endpoint) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    CommunicationNetworkingClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -98,12 +106,15 @@ public final class CommunicationNetworkingClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
+     * @param apiVersion Api Version.
      */
-    CommunicationNetworkingClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    CommunicationNetworkingClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-06-21-preview";
+        this.apiVersion = apiVersion;
         this.communicationNetworkTraversals = new CommunicationNetworkTraversalsImpl(this);
     }
 }

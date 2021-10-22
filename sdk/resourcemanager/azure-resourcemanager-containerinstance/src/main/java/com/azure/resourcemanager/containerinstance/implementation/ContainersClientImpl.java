@@ -96,7 +96,7 @@ public final class ContainersClientImpl implements ContainersClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance"
                 + "/containerGroups/{containerGroupName}/containers/{containerName}/attach")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)

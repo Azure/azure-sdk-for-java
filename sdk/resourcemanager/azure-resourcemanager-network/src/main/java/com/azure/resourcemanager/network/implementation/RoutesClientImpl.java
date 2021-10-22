@@ -258,7 +258,7 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String routeTableName, String routeName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, routeTableName, routeName);
@@ -279,7 +279,7 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String routeTableName, String routeName, Context context) {
         context = this.client.mergeContext(context);
@@ -301,7 +301,7 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String routeTableName, String routeName) {
         return beginDeleteAsync(resourceGroupName, routeTableName, routeName).getSyncPoller();
@@ -319,7 +319,7 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String routeTableName, String routeName, Context context) {
         return beginDeleteAsync(resourceGroupName, routeTableName, routeName, context).getSyncPoller();
@@ -695,7 +695,7 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<RouteInner>, RouteInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -719,7 +719,7 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RouteInner>, RouteInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String routeTableName,
@@ -747,7 +747,7 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RouteInner>, RouteInner> beginCreateOrUpdate(
         String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, routeTableName, routeName, routeParameters).getSyncPoller();
@@ -766,7 +766,7 @@ public final class RoutesClientImpl implements RoutesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return route resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RouteInner>, RouteInner> beginCreateOrUpdate(
         String resourceGroupName,
         String routeTableName,

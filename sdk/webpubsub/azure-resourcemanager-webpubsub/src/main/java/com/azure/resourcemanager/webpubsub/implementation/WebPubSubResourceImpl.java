@@ -11,12 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.webpubsub.fluent.models.SharedPrivateLinkResourceInner;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubResourceInner;
-import com.azure.resourcemanager.webpubsub.models.DiagnosticConfiguration;
-import com.azure.resourcemanager.webpubsub.models.EventHandlerSettings;
+import com.azure.resourcemanager.webpubsub.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ManagedIdentity;
 import com.azure.resourcemanager.webpubsub.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.RegenerateKeyParameters;
+import com.azure.resourcemanager.webpubsub.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
 import com.azure.resourcemanager.webpubsub.models.SharedPrivateLinkResource;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubKeys;
@@ -127,12 +127,16 @@ public final class WebPubSubResourceImpl
         return this.innerModel().tls();
     }
 
-    public DiagnosticConfiguration diagnosticConfiguration() {
-        return this.innerModel().diagnosticConfiguration();
+    public String hostnamePrefix() {
+        return this.innerModel().hostnamePrefix();
     }
 
-    public EventHandlerSettings eventHandler() {
-        return this.innerModel().eventHandler();
+    public LiveTraceConfiguration liveTraceConfiguration() {
+        return this.innerModel().liveTraceConfiguration();
+    }
+
+    public ResourceLogConfiguration resourceLogConfiguration() {
+        return this.innerModel().resourceLogConfiguration();
     }
 
     public WebPubSubNetworkACLs networkACLs() {
@@ -304,13 +308,13 @@ public final class WebPubSubResourceImpl
         return this;
     }
 
-    public WebPubSubResourceImpl withDiagnosticConfiguration(DiagnosticConfiguration diagnosticConfiguration) {
-        this.innerModel().withDiagnosticConfiguration(diagnosticConfiguration);
+    public WebPubSubResourceImpl withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration) {
+        this.innerModel().withLiveTraceConfiguration(liveTraceConfiguration);
         return this;
     }
 
-    public WebPubSubResourceImpl withEventHandler(EventHandlerSettings eventHandler) {
-        this.innerModel().withEventHandler(eventHandler);
+    public WebPubSubResourceImpl withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration) {
+        this.innerModel().withResourceLogConfiguration(resourceLogConfiguration);
         return this;
     }
 

@@ -5,14 +5,13 @@
 package com.azure.resourcemanager.webpubsub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.webpubsub.models.DiagnosticConfiguration;
-import com.azure.resourcemanager.webpubsub.models.EventHandlerSettings;
+import com.azure.resourcemanager.webpubsub.models.LiveTraceConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ManagedIdentity;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
+import com.azure.resourcemanager.webpubsub.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubNetworkACLs;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubTlsSettings;
@@ -22,9 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 /** A class represent a resource. */
-@JsonFlatten
 @Fluent
-public class WebPubSubResourceInner extends Resource {
+public final class WebPubSubResourceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebPubSubResourceInner.class);
 
     /*
@@ -32,6 +30,12 @@ public class WebPubSubResourceInner extends Resource {
      */
     @JsonProperty(value = "sku")
     private ResourceSku sku;
+
+    /*
+     * Settings used to provision or configure the resource
+     */
+    @JsonProperty(value = "properties")
+    private WebPubSubProperties innerProperties;
 
     /*
      * The managed identity response
@@ -44,107 +48,6 @@ public class WebPubSubResourceInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
-
-    /*
-     * Provisioning state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The publicly accessible IP of the resource.
-     */
-    @JsonProperty(value = "properties.externalIP", access = JsonProperty.Access.WRITE_ONLY)
-    private String externalIp;
-
-    /*
-     * FQDN of the service instance.
-     */
-    @JsonProperty(value = "properties.hostName", access = JsonProperty.Access.WRITE_ONLY)
-    private String hostname;
-
-    /*
-     * The publicly accessible port of the resource which is designed for
-     * browser/client side usage.
-     */
-    @JsonProperty(value = "properties.publicPort", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer publicPort;
-
-    /*
-     * The publicly accessible port of the resource which is designed for
-     * customer server side usage.
-     */
-    @JsonProperty(value = "properties.serverPort", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer serverPort;
-
-    /*
-     * Version of the resource. Probably you need the same or higher version of
-     * client SDKs.
-     */
-    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
-    private String version;
-
-    /*
-     * Private endpoint connections to the resource.
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
-
-    /*
-     * The list of shared private link resources.
-     */
-    @JsonProperty(value = "properties.sharedPrivateLinkResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources;
-
-    /*
-     * TLS settings.
-     */
-    @JsonProperty(value = "properties.tls")
-    private WebPubSubTlsSettings tls;
-
-    /*
-     * Diagnostic configuration of a Microsoft.SignalRService resource. Used
-     * together with Azure monitor DiagnosticSettings.
-     */
-    @JsonProperty(value = "properties.diagnosticConfiguration")
-    private DiagnosticConfiguration diagnosticConfiguration;
-
-    /*
-     * The settings for event handler in webpubsub service.
-     */
-    @JsonProperty(value = "properties.eventHandler")
-    private EventHandlerSettings eventHandler;
-
-    /*
-     * Network ACLs
-     */
-    @JsonProperty(value = "properties.networkACLs")
-    private WebPubSubNetworkACLs networkACLs;
-
-    /*
-     * Enable or disable public network access. Default to "Enabled".
-     * When it's Enabled, network ACLs still apply.
-     * When it's Disabled, public network access is always disabled no matter
-     * what you set in network ACLs.
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private String publicNetworkAccess;
-
-    /*
-     * DisableLocalAuth
-     * Enable or disable local auth with AccessKey
-     * When set as true, connection with AccessKey=xxx won't work.
-     */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
-
-    /*
-     * DisableLocalAuth
-     * Enable or disable aad auth
-     * When set as true, connection with AuthType=aad won't work.
-     */
-    @JsonProperty(value = "properties.disableAadAuth")
-    private Boolean disableAadAuth;
 
     /**
      * Get the sku property: The billing information of the resource.(e.g. Free, Standard).
@@ -164,6 +67,15 @@ public class WebPubSubResourceInner extends Resource {
     public WebPubSubResourceInner withSku(ResourceSku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: Settings used to provision or configure the resource.
+     *
+     * @return the innerProperties value.
+     */
+    private WebPubSubProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -195,230 +107,6 @@ public class WebPubSubResourceInner extends Resource {
         return this.systemData;
     }
 
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the externalIp property: The publicly accessible IP of the resource.
-     *
-     * @return the externalIp value.
-     */
-    public String externalIp() {
-        return this.externalIp;
-    }
-
-    /**
-     * Get the hostname property: FQDN of the service instance.
-     *
-     * @return the hostname value.
-     */
-    public String hostname() {
-        return this.hostname;
-    }
-
-    /**
-     * Get the publicPort property: The publicly accessible port of the resource which is designed for browser/client
-     * side usage.
-     *
-     * @return the publicPort value.
-     */
-    public Integer publicPort() {
-        return this.publicPort;
-    }
-
-    /**
-     * Get the serverPort property: The publicly accessible port of the resource which is designed for customer server
-     * side usage.
-     *
-     * @return the serverPort value.
-     */
-    public Integer serverPort() {
-        return this.serverPort;
-    }
-
-    /**
-     * Get the version property: Version of the resource. Probably you need the same or higher version of client SDKs.
-     *
-     * @return the version value.
-     */
-    public String version() {
-        return this.version;
-    }
-
-    /**
-     * Get the privateEndpointConnections property: Private endpoint connections to the resource.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.privateEndpointConnections;
-    }
-
-    /**
-     * Get the sharedPrivateLinkResources property: The list of shared private link resources.
-     *
-     * @return the sharedPrivateLinkResources value.
-     */
-    public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
-        return this.sharedPrivateLinkResources;
-    }
-
-    /**
-     * Get the tls property: TLS settings.
-     *
-     * @return the tls value.
-     */
-    public WebPubSubTlsSettings tls() {
-        return this.tls;
-    }
-
-    /**
-     * Set the tls property: TLS settings.
-     *
-     * @param tls the tls value to set.
-     * @return the WebPubSubResourceInner object itself.
-     */
-    public WebPubSubResourceInner withTls(WebPubSubTlsSettings tls) {
-        this.tls = tls;
-        return this;
-    }
-
-    /**
-     * Get the diagnosticConfiguration property: Diagnostic configuration of a Microsoft.SignalRService resource. Used
-     * together with Azure monitor DiagnosticSettings.
-     *
-     * @return the diagnosticConfiguration value.
-     */
-    public DiagnosticConfiguration diagnosticConfiguration() {
-        return this.diagnosticConfiguration;
-    }
-
-    /**
-     * Set the diagnosticConfiguration property: Diagnostic configuration of a Microsoft.SignalRService resource. Used
-     * together with Azure monitor DiagnosticSettings.
-     *
-     * @param diagnosticConfiguration the diagnosticConfiguration value to set.
-     * @return the WebPubSubResourceInner object itself.
-     */
-    public WebPubSubResourceInner withDiagnosticConfiguration(DiagnosticConfiguration diagnosticConfiguration) {
-        this.diagnosticConfiguration = diagnosticConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the eventHandler property: The settings for event handler in webpubsub service.
-     *
-     * @return the eventHandler value.
-     */
-    public EventHandlerSettings eventHandler() {
-        return this.eventHandler;
-    }
-
-    /**
-     * Set the eventHandler property: The settings for event handler in webpubsub service.
-     *
-     * @param eventHandler the eventHandler value to set.
-     * @return the WebPubSubResourceInner object itself.
-     */
-    public WebPubSubResourceInner withEventHandler(EventHandlerSettings eventHandler) {
-        this.eventHandler = eventHandler;
-        return this;
-    }
-
-    /**
-     * Get the networkACLs property: Network ACLs.
-     *
-     * @return the networkACLs value.
-     */
-    public WebPubSubNetworkACLs networkACLs() {
-        return this.networkACLs;
-    }
-
-    /**
-     * Set the networkACLs property: Network ACLs.
-     *
-     * @param networkACLs the networkACLs value to set.
-     * @return the WebPubSubResourceInner object itself.
-     */
-    public WebPubSubResourceInner withNetworkACLs(WebPubSubNetworkACLs networkACLs) {
-        this.networkACLs = networkACLs;
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
-     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
-     * you set in network ACLs.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public String publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
-     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
-     * you set in network ACLs.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the WebPubSubResourceInner object itself.
-     */
-    public WebPubSubResourceInner withPublicNetworkAccess(String publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
-        return this;
-    }
-
-    /**
-     * Get the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
-     * connection with AccessKey=xxx won't work.
-     *
-     * @return the disableLocalAuth value.
-     */
-    public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
-    }
-
-    /**
-     * Set the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
-     * connection with AccessKey=xxx won't work.
-     *
-     * @param disableLocalAuth the disableLocalAuth value to set.
-     * @return the WebPubSubResourceInner object itself.
-     */
-    public WebPubSubResourceInner withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
-        return this;
-    }
-
-    /**
-     * Get the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
-     * AuthType=aad won't work.
-     *
-     * @return the disableAadAuth value.
-     */
-    public Boolean disableAadAuth() {
-        return this.disableAadAuth;
-    }
-
-    /**
-     * Set the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
-     * AuthType=aad won't work.
-     *
-     * @param disableAadAuth the disableAadAuth value to set.
-     * @return the WebPubSubResourceInner object itself.
-     */
-    public WebPubSubResourceInner withDisableAadAuth(Boolean disableAadAuth) {
-        this.disableAadAuth = disableAadAuth;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public WebPubSubResourceInner withLocation(String location) {
@@ -434,6 +122,264 @@ public class WebPubSubResourceInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the externalIp property: The publicly accessible IP of the resource.
+     *
+     * @return the externalIp value.
+     */
+    public String externalIp() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalIp();
+    }
+
+    /**
+     * Get the hostname property: FQDN of the service instance.
+     *
+     * @return the hostname value.
+     */
+    public String hostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
+    }
+
+    /**
+     * Get the publicPort property: The publicly accessible port of the resource which is designed for browser/client
+     * side usage.
+     *
+     * @return the publicPort value.
+     */
+    public Integer publicPort() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicPort();
+    }
+
+    /**
+     * Get the serverPort property: The publicly accessible port of the resource which is designed for customer server
+     * side usage.
+     *
+     * @return the serverPort value.
+     */
+    public Integer serverPort() {
+        return this.innerProperties() == null ? null : this.innerProperties().serverPort();
+    }
+
+    /**
+     * Get the version property: Version of the resource. Probably you need the same or higher version of client SDKs.
+     *
+     * @return the version value.
+     */
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private endpoint connections to the resource.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the sharedPrivateLinkResources property: The list of shared private link resources.
+     *
+     * @return the sharedPrivateLinkResources value.
+     */
+    public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().sharedPrivateLinkResources();
+    }
+
+    /**
+     * Get the tls property: TLS settings.
+     *
+     * @return the tls value.
+     */
+    public WebPubSubTlsSettings tls() {
+        return this.innerProperties() == null ? null : this.innerProperties().tls();
+    }
+
+    /**
+     * Set the tls property: TLS settings.
+     *
+     * @param tls the tls value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withTls(WebPubSubTlsSettings tls) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebPubSubProperties();
+        }
+        this.innerProperties().withTls(tls);
+        return this;
+    }
+
+    /**
+     * Get the hostnamePrefix property: Deprecated.
+     *
+     * @return the hostnamePrefix value.
+     */
+    public String hostnamePrefix() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostnamePrefix();
+    }
+
+    /**
+     * Get the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
+     *
+     * @return the liveTraceConfiguration value.
+     */
+    public LiveTraceConfiguration liveTraceConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().liveTraceConfiguration();
+    }
+
+    /**
+     * Set the liveTraceConfiguration property: Live trace configuration of a Microsoft.SignalRService resource.
+     *
+     * @param liveTraceConfiguration the liveTraceConfiguration value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withLiveTraceConfiguration(LiveTraceConfiguration liveTraceConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebPubSubProperties();
+        }
+        this.innerProperties().withLiveTraceConfiguration(liveTraceConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
+     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
+     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
+     * features.
+     *
+     * @return the resourceLogConfiguration value.
+     */
+    public ResourceLogConfiguration resourceLogConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceLogConfiguration();
+    }
+
+    /**
+     * Set the resourceLogConfiguration property: Resource log configuration of a Microsoft.SignalRService resource. If
+     * resourceLogConfiguration isn't null or empty, it will override options "EnableConnectivityLog" and
+     * "EnableMessagingLogs" in features. Otherwise, use options "EnableConnectivityLog" and "EnableMessagingLogs" in
+     * features.
+     *
+     * @param resourceLogConfiguration the resourceLogConfiguration value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebPubSubProperties();
+        }
+        this.innerProperties().withResourceLogConfiguration(resourceLogConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the networkACLs property: Network ACLs.
+     *
+     * @return the networkACLs value.
+     */
+    public WebPubSubNetworkACLs networkACLs() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkACLs();
+    }
+
+    /**
+     * Set the networkACLs property: Network ACLs.
+     *
+     * @param networkACLs the networkACLs value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withNetworkACLs(WebPubSubNetworkACLs networkACLs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebPubSubProperties();
+        }
+        this.innerProperties().withNetworkACLs(networkACLs);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
+     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
+     * you set in network ACLs.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Enable or disable public network access. Default to "Enabled". When it's
+     * Enabled, network ACLs still apply. When it's Disabled, public network access is always disabled no matter what
+     * you set in network ACLs.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withPublicNetworkAccess(String publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebPubSubProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
+     * connection with AccessKey=xxx won't work.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: DisableLocalAuth Enable or disable local auth with AccessKey When set as true,
+     * connection with AccessKey=xxx won't work.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebPubSubProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
+     * AuthType=aad won't work.
+     *
+     * @return the disableAadAuth value.
+     */
+    public Boolean disableAadAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableAadAuth();
+    }
+
+    /**
+     * Set the disableAadAuth property: DisableLocalAuth Enable or disable aad auth When set as true, connection with
+     * AuthType=aad won't work.
+     *
+     * @param disableAadAuth the disableAadAuth value to set.
+     * @return the WebPubSubResourceInner object itself.
+     */
+    public WebPubSubResourceInner withDisableAadAuth(Boolean disableAadAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebPubSubProperties();
+        }
+        this.innerProperties().withDisableAadAuth(disableAadAuth);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -442,26 +388,11 @@ public class WebPubSubResourceInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-        if (sharedPrivateLinkResources() != null) {
-            sharedPrivateLinkResources().forEach(e -> e.validate());
-        }
-        if (tls() != null) {
-            tls().validate();
-        }
-        if (diagnosticConfiguration() != null) {
-            diagnosticConfiguration().validate();
-        }
-        if (eventHandler() != null) {
-            eventHandler().validate();
-        }
-        if (networkACLs() != null) {
-            networkACLs().validate();
         }
     }
 }

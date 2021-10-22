@@ -1,16 +1,20 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.10.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added support for `validateMoveResources` in `GenericResources`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.9.0 (2021-10-21)
+
+### Features Added
+
+- Added support for `validateMoveResources` in `GenericResources`.
 
 ## 2.8.0 (2021-09-15)
 
