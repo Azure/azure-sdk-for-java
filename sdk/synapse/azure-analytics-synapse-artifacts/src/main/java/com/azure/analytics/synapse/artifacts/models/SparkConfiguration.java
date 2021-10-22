@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** SparkConfiguration Artifact information. */
+/** Information about a SparkConfiguration created at the workspace level. SparkConfiguration Artifact information. */
 @Fluent
 public final class SparkConfiguration {
     /*
@@ -48,6 +48,12 @@ public final class SparkConfiguration {
      */
     @JsonProperty(value = "created")
     private OffsetDateTime created;
+
+    /*
+     * SparkConfiguration configMergeRule.
+     */
+    @JsonProperty(value = "configMergeRule")
+    private Map<String, String> configMergeRule;
 
     /**
      * Get the description property: Description about the SparkConfiguration.
@@ -166,6 +172,26 @@ public final class SparkConfiguration {
      */
     public SparkConfiguration setCreated(OffsetDateTime created) {
         this.created = created;
+        return this;
+    }
+
+    /**
+     * Get the configMergeRule property: SparkConfiguration configMergeRule.
+     *
+     * @return the configMergeRule value.
+     */
+    public Map<String, String> getConfigMergeRule() {
+        return this.configMergeRule;
+    }
+
+    /**
+     * Set the configMergeRule property: SparkConfiguration configMergeRule.
+     *
+     * @param configMergeRule the configMergeRule value to set.
+     * @return the SparkConfiguration object itself.
+     */
+    public SparkConfiguration setConfigMergeRule(Map<String, String> configMergeRule) {
+        this.configMergeRule = configMergeRule;
         return this;
     }
 }

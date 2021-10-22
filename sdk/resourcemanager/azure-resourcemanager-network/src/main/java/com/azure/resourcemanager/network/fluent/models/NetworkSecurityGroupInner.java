@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -15,10 +14,15 @@ import java.util.List;
 import java.util.Map;
 
 /** NetworkSecurityGroup resource. */
-@JsonFlatten
 @Fluent
-public class NetworkSecurityGroupInner extends Resource {
+public final class NetworkSecurityGroupInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkSecurityGroupInner.class);
+
+    /*
+     * Properties of the network security group.
+     */
+    @JsonProperty(value = "properties")
+    private NetworkSecurityGroupPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -27,52 +31,19 @@ public class NetworkSecurityGroupInner extends Resource {
     private String etag;
 
     /*
-     * A collection of security rules of the network security group.
-     */
-    @JsonProperty(value = "properties.securityRules")
-    private List<SecurityRuleInner> securityRules;
-
-    /*
-     * The default security rules of network security group.
-     */
-    @JsonProperty(value = "properties.defaultSecurityRules", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SecurityRuleInner> defaultSecurityRules;
-
-    /*
-     * A collection of references to network interfaces.
-     */
-    @JsonProperty(value = "properties.networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
-    private List<NetworkInterfaceInner> networkInterfaces;
-
-    /*
-     * A collection of references to subnets.
-     */
-    @JsonProperty(value = "properties.subnets", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubnetInner> subnets;
-
-    /*
-     * A collection of references to flow log resources.
-     */
-    @JsonProperty(value = "properties.flowLogs", access = JsonProperty.Access.WRITE_ONLY)
-    private List<FlowLogInner> flowLogs;
-
-    /*
-     * The resource GUID property of the network security group resource.
-     */
-    @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceGuid;
-
-    /*
-     * The provisioning state of the network security group resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: Properties of the network security group.
+     *
+     * @return the innerProperties value.
+     */
+    private NetworkSecurityGroupPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -81,80 +52,6 @@ public class NetworkSecurityGroupInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the securityRules property: A collection of security rules of the network security group.
-     *
-     * @return the securityRules value.
-     */
-    public List<SecurityRuleInner> securityRules() {
-        return this.securityRules;
-    }
-
-    /**
-     * Set the securityRules property: A collection of security rules of the network security group.
-     *
-     * @param securityRules the securityRules value to set.
-     * @return the NetworkSecurityGroupInner object itself.
-     */
-    public NetworkSecurityGroupInner withSecurityRules(List<SecurityRuleInner> securityRules) {
-        this.securityRules = securityRules;
-        return this;
-    }
-
-    /**
-     * Get the defaultSecurityRules property: The default security rules of network security group.
-     *
-     * @return the defaultSecurityRules value.
-     */
-    public List<SecurityRuleInner> defaultSecurityRules() {
-        return this.defaultSecurityRules;
-    }
-
-    /**
-     * Get the networkInterfaces property: A collection of references to network interfaces.
-     *
-     * @return the networkInterfaces value.
-     */
-    public List<NetworkInterfaceInner> networkInterfaces() {
-        return this.networkInterfaces;
-    }
-
-    /**
-     * Get the subnets property: A collection of references to subnets.
-     *
-     * @return the subnets value.
-     */
-    public List<SubnetInner> subnets() {
-        return this.subnets;
-    }
-
-    /**
-     * Get the flowLogs property: A collection of references to flow log resources.
-     *
-     * @return the flowLogs value.
-     */
-    public List<FlowLogInner> flowLogs() {
-        return this.flowLogs;
-    }
-
-    /**
-     * Get the resourceGuid property: The resource GUID property of the network security group resource.
-     *
-     * @return the resourceGuid value.
-     */
-    public String resourceGuid() {
-        return this.resourceGuid;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the network security group resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -192,25 +89,90 @@ public class NetworkSecurityGroupInner extends Resource {
     }
 
     /**
+     * Get the securityRules property: A collection of security rules of the network security group.
+     *
+     * @return the securityRules value.
+     */
+    public List<SecurityRuleInner> securityRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityRules();
+    }
+
+    /**
+     * Set the securityRules property: A collection of security rules of the network security group.
+     *
+     * @param securityRules the securityRules value to set.
+     * @return the NetworkSecurityGroupInner object itself.
+     */
+    public NetworkSecurityGroupInner withSecurityRules(List<SecurityRuleInner> securityRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkSecurityGroupPropertiesFormat();
+        }
+        this.innerProperties().withSecurityRules(securityRules);
+        return this;
+    }
+
+    /**
+     * Get the defaultSecurityRules property: The default security rules of network security group.
+     *
+     * @return the defaultSecurityRules value.
+     */
+    public List<SecurityRuleInner> defaultSecurityRules() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultSecurityRules();
+    }
+
+    /**
+     * Get the networkInterfaces property: A collection of references to network interfaces.
+     *
+     * @return the networkInterfaces value.
+     */
+    public List<NetworkInterfaceInner> networkInterfaces() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkInterfaces();
+    }
+
+    /**
+     * Get the subnets property: A collection of references to subnets.
+     *
+     * @return the subnets value.
+     */
+    public List<SubnetInner> subnets() {
+        return this.innerProperties() == null ? null : this.innerProperties().subnets();
+    }
+
+    /**
+     * Get the flowLogs property: A collection of references to flow log resources.
+     *
+     * @return the flowLogs value.
+     */
+    public List<FlowLogInner> flowLogs() {
+        return this.innerProperties() == null ? null : this.innerProperties().flowLogs();
+    }
+
+    /**
+     * Get the resourceGuid property: The resource GUID property of the network security group resource.
+     *
+     * @return the resourceGuid value.
+     */
+    public String resourceGuid() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the network security group resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (securityRules() != null) {
-            securityRules().forEach(e -> e.validate());
-        }
-        if (defaultSecurityRules() != null) {
-            defaultSecurityRules().forEach(e -> e.validate());
-        }
-        if (networkInterfaces() != null) {
-            networkInterfaces().forEach(e -> e.validate());
-        }
-        if (subnets() != null) {
-            subnets().forEach(e -> e.validate());
-        }
-        if (flowLogs() != null) {
-            flowLogs().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

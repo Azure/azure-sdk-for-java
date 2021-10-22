@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
@@ -22,71 +21,31 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Specifies information about the gallery image definition that you want to create or update. */
-@JsonFlatten
 @Fluent
-public class SharedGalleryImageInner extends PirSharedGalleryResource {
+public final class SharedGalleryImageInner extends PirSharedGalleryResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedGalleryImageInner.class);
 
     /*
-     * This property allows you to specify the type of the OS that is included
-     * in the disk when creating a VM from a managed image. <br><br> Possible
-     * values are: <br><br> **Windows** <br><br> **Linux**
+     * Describes the properties of a gallery image definition.
      */
-    @JsonProperty(value = "properties.osType")
-    private OperatingSystemTypes osType;
+    @JsonProperty(value = "properties")
+    private SharedGalleryImageProperties innerProperties;
 
-    /*
-     * This property allows the user to specify whether the virtual machines
-     * created under this image are 'Generalized' or 'Specialized'.
+    /**
+     * Get the innerProperties property: Describes the properties of a gallery image definition.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.osState")
-    private OperatingSystemStateTypes osState;
+    private SharedGalleryImageProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The end of life date of the gallery image definition. This property can
-     * be used for decommissioning purposes. This property is updatable.
-     */
-    @JsonProperty(value = "properties.endOfLifeDate")
-    private OffsetDateTime endOfLifeDate;
-
-    /*
-     * This is the gallery image definition identifier.
-     */
-    @JsonProperty(value = "properties.identifier")
-    private GalleryImageIdentifier identifier;
-
-    /*
-     * The properties describe the recommended machine configuration for this
-     * Image Definition. These properties are updatable.
-     */
-    @JsonProperty(value = "properties.recommended")
-    private RecommendedMachineConfiguration recommended;
-
-    /*
-     * Describes the disallowed disk types.
-     */
-    @JsonProperty(value = "properties.disallowed")
-    private Disallowed disallowed;
-
-    /*
-     * The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
-     */
-    @JsonProperty(value = "properties.hyperVGeneration")
-    private HyperVGeneration hyperVGeneration;
-
-    /*
-     * A list of gallery image features.
-     */
-    @JsonProperty(value = "properties.features")
-    private List<GalleryImageFeature> features;
-
-    /*
-     * Describes the gallery image definition purchase plan. This is used by
-     * marketplace images.
-     */
-    @JsonProperty(value = "properties.purchasePlan")
-    private ImagePurchasePlan purchasePlan;
+    /** {@inheritDoc} */
+    @Override
+    public SharedGalleryImageInner withUniqueId(String uniqueId) {
+        super.withUniqueId(uniqueId);
+        return this;
+    }
 
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
@@ -96,7 +55,7 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
-        return this.osType;
+        return this.innerProperties() == null ? null : this.innerProperties().osType();
     }
 
     /**
@@ -108,7 +67,10 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withOsType(OperatingSystemTypes osType) {
-        this.osType = osType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
+        }
+        this.innerProperties().withOsType(osType);
         return this;
     }
 
@@ -119,7 +81,7 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the osState value.
      */
     public OperatingSystemStateTypes osState() {
-        return this.osState;
+        return this.innerProperties() == null ? null : this.innerProperties().osState();
     }
 
     /**
@@ -130,7 +92,10 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withOsState(OperatingSystemStateTypes osState) {
-        this.osState = osState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
+        }
+        this.innerProperties().withOsState(osState);
         return this;
     }
 
@@ -141,7 +106,7 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
-        return this.endOfLifeDate;
+        return this.innerProperties() == null ? null : this.innerProperties().endOfLifeDate();
     }
 
     /**
@@ -152,7 +117,10 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
-        this.endOfLifeDate = endOfLifeDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
+        }
+        this.innerProperties().withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
@@ -162,7 +130,7 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the identifier value.
      */
     public GalleryImageIdentifier identifier() {
-        return this.identifier;
+        return this.innerProperties() == null ? null : this.innerProperties().identifier();
     }
 
     /**
@@ -172,7 +140,10 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withIdentifier(GalleryImageIdentifier identifier) {
-        this.identifier = identifier;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
+        }
+        this.innerProperties().withIdentifier(identifier);
         return this;
     }
 
@@ -183,7 +154,7 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the recommended value.
      */
     public RecommendedMachineConfiguration recommended() {
-        return this.recommended;
+        return this.innerProperties() == null ? null : this.innerProperties().recommended();
     }
 
     /**
@@ -194,7 +165,10 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withRecommended(RecommendedMachineConfiguration recommended) {
-        this.recommended = recommended;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
+        }
+        this.innerProperties().withRecommended(recommended);
         return this;
     }
 
@@ -204,7 +178,7 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the disallowed value.
      */
     public Disallowed disallowed() {
-        return this.disallowed;
+        return this.innerProperties() == null ? null : this.innerProperties().disallowed();
     }
 
     /**
@@ -214,7 +188,10 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withDisallowed(Disallowed disallowed) {
-        this.disallowed = disallowed;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
+        }
+        this.innerProperties().withDisallowed(disallowed);
         return this;
     }
 
@@ -224,7 +201,7 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the hyperVGeneration value.
      */
     public HyperVGeneration hyperVGeneration() {
-        return this.hyperVGeneration;
+        return this.innerProperties() == null ? null : this.innerProperties().hyperVGeneration();
     }
 
     /**
@@ -234,7 +211,10 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withHyperVGeneration(HyperVGeneration hyperVGeneration) {
-        this.hyperVGeneration = hyperVGeneration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
+        }
+        this.innerProperties().withHyperVGeneration(hyperVGeneration);
         return this;
     }
 
@@ -244,7 +224,7 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the features value.
      */
     public List<GalleryImageFeature> features() {
-        return this.features;
+        return this.innerProperties() == null ? null : this.innerProperties().features();
     }
 
     /**
@@ -254,7 +234,10 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withFeatures(List<GalleryImageFeature> features) {
-        this.features = features;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
+        }
+        this.innerProperties().withFeatures(features);
         return this;
     }
 
@@ -265,7 +248,7 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the purchasePlan value.
      */
     public ImagePurchasePlan purchasePlan() {
-        return this.purchasePlan;
+        return this.innerProperties() == null ? null : this.innerProperties().purchasePlan();
     }
 
     /**
@@ -276,14 +259,10 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
      * @return the SharedGalleryImageInner object itself.
      */
     public SharedGalleryImageInner withPurchasePlan(ImagePurchasePlan purchasePlan) {
-        this.purchasePlan = purchasePlan;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SharedGalleryImageInner withUniqueId(String uniqueId) {
-        super.withUniqueId(uniqueId);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SharedGalleryImageProperties();
+        }
+        this.innerProperties().withPurchasePlan(purchasePlan);
         return this;
     }
 
@@ -295,20 +274,8 @@ public class SharedGalleryImageInner extends PirSharedGalleryResource {
     @Override
     public void validate() {
         super.validate();
-        if (identifier() != null) {
-            identifier().validate();
-        }
-        if (recommended() != null) {
-            recommended().validate();
-        }
-        if (disallowed() != null) {
-            disallowed().validate();
-        }
-        if (features() != null) {
-            features().forEach(e -> e.validate());
-        }
-        if (purchasePlan() != null) {
-            purchasePlan().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

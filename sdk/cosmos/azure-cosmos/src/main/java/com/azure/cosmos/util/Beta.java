@@ -37,7 +37,7 @@ public @interface Beta {
     /**
      * Azure library version numbers
      */
-    enum SinceVersion {
+    public enum SinceVersion {
         /** v4.3.0 */
         V4_3_0,
         /** v4.4.0 */
@@ -69,6 +69,8 @@ public @interface Beta {
         /** v4.17.0 */
         V4_17_0,
         /** v4.18.0 */
-        V4_18_0
+        V4_18_0,
+        /** v4.19.0 */
+        V4_19_0
     }
 }

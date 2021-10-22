@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
@@ -14,10 +13,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Domain Topic. */
-@JsonFlatten
 @Immutable
-public class DomainTopicInner extends ProxyResource {
+public final class DomainTopicInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainTopicInner.class);
+
+    /*
+     * Properties of the Domain Topic.
+     */
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private DomainTopicProperties innerProperties;
 
     /*
      * The system metadata relating to Domain Topic resource.
@@ -25,11 +29,14 @@ public class DomainTopicInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /*
-     * Provisioning state of the domain topic.
+    /**
+     * Get the innerProperties property: Properties of the Domain Topic.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private DomainTopicProvisioningState provisioningState;
+    private DomainTopicProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the systemData property: The system metadata relating to Domain Topic resource.
@@ -46,7 +53,7 @@ public class DomainTopicInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public DomainTopicProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -55,5 +62,8 @@ public class DomainTopicInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

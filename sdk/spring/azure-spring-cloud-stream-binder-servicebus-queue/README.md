@@ -42,14 +42,49 @@ The binder provides the following configuration options:
 
 ##### Spring Cloud Azure Properties
 
-Name | Description | Required | Default 
----|---|---|---
-spring.cloud.azure.credential-file-path | Location of azure credential file | Yes |
-spring.cloud.azure.resource-group | Name of Azure resource group | Yes |
-spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes | 
-spring.cloud.azure.servicebus.namespace | Service Bus Namespace. Auto creating if missing | Yes |
+|Name | Description | Required | Default
+|:---|:---|:---|:---
+spring.cloud.azure.auto-create-resources | If enable auto-creation for Azure resources |  | false
+spring.cloud.azure.region | Region name of the Azure resource group, e.g. westus | Yes if spring.cloud.azure.auto-create-resources is enabled. |
+spring.cloud.azure.environment | Azure Cloud name for Azure resources, supported values are  `azure`, `azurechina`, `azure_germany` and `azureusgovernment` which are case insensitive | |azure | 
+spring.cloud.azure.client-id | Client (application) id of a service principal or Managed Service Identity (MSI) | Yes if service principal or MSI is used as credential configuration. |
+spring.cloud.azure.client-secret | Client secret of a service principal | Yes if service principal is used as credential configuration. |
+spring.cloud.azure.msi-enabled | If enable MSI as credential configuration | Yes if MSI is used as credential configuration. | false
+spring.cloud.azure.resource-group | Name of Azure resource group | Yes if service principal or MSI is used as credential configuration. |
+spring.cloud.azure.subscription-id | Subscription id of an MSI | Yes if MSI is used as credential configuration. |
+spring.cloud.azure.tenant-id | Tenant id of a service principal | Yes if service principal is used as credential configuration. |
+spring.cloud.azure.servicebus.connection-string | Service Bus Namespace connection string | Yes if connection string is used as credential configuration |
+spring.cloud.azure.servicebus.namespace | Service Bus Namespace. Auto creating if missing | Yes if service principal or MSI is used as credential configuration. |
 spring.cloud.azure.servicebus.transportType | Service Bus transportType, supported value of `AMQP` and `AMQP_WEB_SOCKETS` | No | `AMQP`
 spring.cloud.azure.servicebus.retry-Options | Service Bus retry options | No | Default value of AmqpRetryOptions
+
+##### Partition configuration
+
+The system will obtain the parameter `PartitionSupply` to send the message.
+
+The following are configuration items related to the producer:
+
+**_partition-count_**
+
+The number of target partitions for the data, if partitioning is enabled.
+
+Default: 1
+
+**_partition-key-extractor-name_**
+
+The name of the bean that implements `PartitionKeyExtractorStrategy`. 
+The partition handler will first use the `PartitionKeyExtractorStrategy#extractKey` method to obtain the partition key value.
+
+Default: null
+
+**_partition-key-expression_**
+
+A SpEL expression that determines how to partition outbound data. 
+When interface `PartitionKeyExtractorStrategy` is not implemented, it will be called in the method `PartitionHandler#extractKey`.
+
+Default: null
+
+For more information about setting partition for the producer properties, please refer to the [Producer Properties of Spring Cloud Stream][spring_cloud_stream_current_producer_properties].
 
 ##### Serivce Bus Queue Producer Properties
 
@@ -152,8 +187,8 @@ Service Bus Message Headers and Properties | Spring Message Header Constants | T
 **MessageId** | org.springframework.messaging.MessageHeaders.ID | UUID | 3
 ContentType | org.springframework.messaging.MessageHeaders.CONTENT_TYPE | String | N/A
 ReplyTo | org.springframework.messaging.MessageHeaders.REPLY_CHANNEL | String | N/A
-**ScheduledEnqueueTimeUtc** | com.azure.spring.integration.core.AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE | Integer | 1
-**ScheduledEnqueueTimeUtc** | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME | Instant | 2
+**ScheduledEnqueueTimeUtc** | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME | OffsetDateTime | 1
+**ScheduledEnqueueTimeUtc** | com.azure.spring.integration.core.AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE | Integer | 2
 TimeToLive | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.TIME_TO_LIVE | Duration | N/A
 SessionID | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.SESSION_ID | String | N/A
 CorrelationId | com.azure.spring.integration.servicebus.converter.ServiceBusMessageHeaders.CORRELATION_ID | String | N/A
@@ -246,21 +281,16 @@ Please use this `sample` as a reference to learn more about how to use this bind
 - [Service Bus Queue][spring_cloud_stream_binder_service_bus_queue]
 
 ## Troubleshooting
+### Logging setting
+Please refer to [spring logging document] to get more information about logging.
 
-### Enable Spring logging
-Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using 
-`logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. 
-The root logger can be configured by using logging.level.root.
-
-The following example shows potential logging settings in `application.properties`:
-
-```
+#### Logging setting examples
+- Example: Setting logging level of hibernate
+```properties
 logging.level.root=WARN
 logging.level.org.springframework.web=DEBUG
 logging.level.org.hibernate=ERROR
 ```
-
-For more information about setting logging in spring, please refer to the [official doc][spring_boot_logging].
 
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
@@ -280,14 +310,15 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-with-service-bus
 [package]: https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-queue
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-stream-binder-servicebus-queue
-[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-cloud-sample-servicebus-queue-binder
-[spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
+[sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-queue
+[spring logging document]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging
 [service_bus_queue_binder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue
 [service_bus_topic_binder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic
-[spring_cloud_stream_binder_service_bus_multiple_binders]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-cloud-sample-servicebus-queue-multibinders
-[spring_cloud_stream_binder_service_bus_queue]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-cloud-sample-servicebus-queue-binder
-[spring_cloud_stream_binder_service_bus_topic]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/servicebus/azure-spring-cloud-sample-servicebus-topic-binder
+[spring_cloud_stream_binder_service_bus_multiple_binders]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-queue/servicebus-queue-multibinders
+[spring_cloud_stream_binder_service_bus_queue]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-queue
+[spring_cloud_stream_binder_service_bus_topic]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/servicebus/azure-spring-cloud-stream-binder-servicebus-topic/servicebus-topic-binder
 [spring_integration]: https://spring.io/projects/spring-integration
 [src_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue
 [environment_checklist]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist
 [Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies
+[spring_cloud_stream_current_producer_properties]: https://docs.spring.io/spring-cloud-stream/docs/current/reference/html/spring-cloud-stream.html#_producer_properties

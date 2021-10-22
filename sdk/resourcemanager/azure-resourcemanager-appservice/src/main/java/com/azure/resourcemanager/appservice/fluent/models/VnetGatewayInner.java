@@ -5,29 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Virtual Network gateway contract. This is used to give the Virtual Network gateway access to the VPN package. */
-@JsonFlatten
 @Fluent
-public class VnetGatewayInner extends ProxyOnlyResource {
+public final class VnetGatewayInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetGatewayInner.class);
 
     /*
-     * The Virtual Network name.
+     * VnetGateway resource specific properties
      */
-    @JsonProperty(value = "properties.vnetName")
-    private String vnetName;
+    @JsonProperty(value = "properties")
+    private VnetGatewayProperties innerProperties;
 
-    /*
-     * The URI where the VPN package can be downloaded.
+    /**
+     * Get the innerProperties property: VnetGateway resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.vpnPackageUri")
-    private String vpnPackageUri;
+    private VnetGatewayProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VnetGatewayInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the vnetName property: The Virtual Network name.
@@ -35,7 +43,7 @@ public class VnetGatewayInner extends ProxyOnlyResource {
      * @return the vnetName value.
      */
     public String vnetName() {
-        return this.vnetName;
+        return this.innerProperties() == null ? null : this.innerProperties().vnetName();
     }
 
     /**
@@ -45,7 +53,10 @@ public class VnetGatewayInner extends ProxyOnlyResource {
      * @return the VnetGatewayInner object itself.
      */
     public VnetGatewayInner withVnetName(String vnetName) {
-        this.vnetName = vnetName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetGatewayProperties();
+        }
+        this.innerProperties().withVnetName(vnetName);
         return this;
     }
 
@@ -55,7 +66,7 @@ public class VnetGatewayInner extends ProxyOnlyResource {
      * @return the vpnPackageUri value.
      */
     public String vpnPackageUri() {
-        return this.vpnPackageUri;
+        return this.innerProperties() == null ? null : this.innerProperties().vpnPackageUri();
     }
 
     /**
@@ -65,14 +76,10 @@ public class VnetGatewayInner extends ProxyOnlyResource {
      * @return the VnetGatewayInner object itself.
      */
     public VnetGatewayInner withVpnPackageUri(String vpnPackageUri) {
-        this.vpnPackageUri = vpnPackageUri;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VnetGatewayInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetGatewayProperties();
+        }
+        this.innerProperties().withVpnPackageUri(vpnPackageUri);
         return this;
     }
 
@@ -84,5 +91,8 @@ public class VnetGatewayInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

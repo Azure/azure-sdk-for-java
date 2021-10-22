@@ -5,43 +5,49 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TokenStore model. */
-@JsonFlatten
+/** The configuration settings of the token store. */
 @Fluent
-public class TokenStore extends ProxyOnlyResource {
+public final class TokenStore {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TokenStore.class);
 
     /*
-     * The enabled property.
+     * <code>true</code> to durably store platform-specific security tokens
+     * that are obtained during login flows; otherwise, <code>false</code>.
+     * The default is <code>false</code>.
      */
-    @JsonProperty(value = "properties.enabled")
+    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * The tokenRefreshExtensionHours property.
+     * The number of hours after session token expiration that a session token
+     * can be used to
+     * call the token refresh API. The default is 72 hours.
      */
-    @JsonProperty(value = "properties.tokenRefreshExtensionHours")
+    @JsonProperty(value = "tokenRefreshExtensionHours")
     private Double tokenRefreshExtensionHours;
 
     /*
-     * The fileSystem property.
+     * The configuration settings of the storage of the tokens if a file system
+     * is used.
      */
-    @JsonProperty(value = "properties.fileSystem")
+    @JsonProperty(value = "fileSystem")
     private FileSystemTokenStore fileSystem;
 
     /*
-     * The azureBlobStorage property.
+     * The configuration settings of the storage of the tokens if blob storage
+     * is used.
      */
-    @JsonProperty(value = "properties.azureBlobStorage")
+    @JsonProperty(value = "azureBlobStorage")
     private BlobStorageTokenStore azureBlobStorage;
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the enabled property: &lt;code&gt;true&lt;/code&gt; to durably store platform-specific security tokens that
+     * are obtained during login flows; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is
+     * &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the enabled value.
      */
@@ -50,7 +56,9 @@ public class TokenStore extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled property: The enabled property.
+     * Set the enabled property: &lt;code&gt;true&lt;/code&gt; to durably store platform-specific security tokens that
+     * are obtained during login flows; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is
+     * &lt;code&gt;false&lt;/code&gt;.
      *
      * @param enabled the enabled value to set.
      * @return the TokenStore object itself.
@@ -61,7 +69,8 @@ public class TokenStore extends ProxyOnlyResource {
     }
 
     /**
-     * Get the tokenRefreshExtensionHours property: The tokenRefreshExtensionHours property.
+     * Get the tokenRefreshExtensionHours property: The number of hours after session token expiration that a session
+     * token can be used to call the token refresh API. The default is 72 hours.
      *
      * @return the tokenRefreshExtensionHours value.
      */
@@ -70,7 +79,8 @@ public class TokenStore extends ProxyOnlyResource {
     }
 
     /**
-     * Set the tokenRefreshExtensionHours property: The tokenRefreshExtensionHours property.
+     * Set the tokenRefreshExtensionHours property: The number of hours after session token expiration that a session
+     * token can be used to call the token refresh API. The default is 72 hours.
      *
      * @param tokenRefreshExtensionHours the tokenRefreshExtensionHours value to set.
      * @return the TokenStore object itself.
@@ -81,7 +91,7 @@ public class TokenStore extends ProxyOnlyResource {
     }
 
     /**
-     * Get the fileSystem property: The fileSystem property.
+     * Get the fileSystem property: The configuration settings of the storage of the tokens if a file system is used.
      *
      * @return the fileSystem value.
      */
@@ -90,7 +100,7 @@ public class TokenStore extends ProxyOnlyResource {
     }
 
     /**
-     * Set the fileSystem property: The fileSystem property.
+     * Set the fileSystem property: The configuration settings of the storage of the tokens if a file system is used.
      *
      * @param fileSystem the fileSystem value to set.
      * @return the TokenStore object itself.
@@ -101,7 +111,8 @@ public class TokenStore extends ProxyOnlyResource {
     }
 
     /**
-     * Get the azureBlobStorage property: The azureBlobStorage property.
+     * Get the azureBlobStorage property: The configuration settings of the storage of the tokens if blob storage is
+     * used.
      *
      * @return the azureBlobStorage value.
      */
@@ -110,7 +121,8 @@ public class TokenStore extends ProxyOnlyResource {
     }
 
     /**
-     * Set the azureBlobStorage property: The azureBlobStorage property.
+     * Set the azureBlobStorage property: The configuration settings of the storage of the tokens if blob storage is
+     * used.
      *
      * @param azureBlobStorage the azureBlobStorage value to set.
      * @return the TokenStore object itself.
@@ -120,21 +132,12 @@ public class TokenStore extends ProxyOnlyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public TokenStore withKind(String kind) {
-        super.withKind(kind);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (fileSystem() != null) {
             fileSystem().validate();
         }

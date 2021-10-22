@@ -58,6 +58,13 @@ public class GalleryArtifactPublishingProfileBase {
     @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
 
+    /*
+     * Optional parameter which specifies the mode to be used for replication.
+     * This property is not updatable.
+     */
+    @JsonProperty(value = "replicationMode")
+    private ReplicationMode replicationMode;
+
     /**
      * Get the targetRegions property: The target regions where the Image Version is going to be replicated to. This
      * property is updatable.
@@ -174,6 +181,28 @@ public class GalleryArtifactPublishingProfileBase {
      */
     public GalleryArtifactPublishingProfileBase withStorageAccountType(StorageAccountType storageAccountType) {
         this.storageAccountType = storageAccountType;
+        return this;
+    }
+
+    /**
+     * Get the replicationMode property: Optional parameter which specifies the mode to be used for replication. This
+     * property is not updatable.
+     *
+     * @return the replicationMode value.
+     */
+    public ReplicationMode replicationMode() {
+        return this.replicationMode;
+    }
+
+    /**
+     * Set the replicationMode property: Optional parameter which specifies the mode to be used for replication. This
+     * property is not updatable.
+     *
+     * @param replicationMode the replicationMode value to set.
+     * @return the GalleryArtifactPublishingProfileBase object itself.
+     */
+    public GalleryArtifactPublishingProfileBase withReplicationMode(ReplicationMode replicationMode) {
+        this.replicationMode = replicationMode;
         return this;
     }
 

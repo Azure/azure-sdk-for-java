@@ -33,12 +33,12 @@ To update generated files for calling service, run the following command
 ``` yaml
 tag: package-2021-11-15-preview
 require:
-    - https://raw.githubusercontent.com/navali-msft/azure-rest-api-specs/694c933e3eb62c87a7932763c747181c0f8608e8/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/navali-msft/azure-rest-api-specs/c16d5c3b668207b9ec101294a9f05a20e7281083/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callingserver
-custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType
+custom-types: AudioRoutingMode,CallRejectReason,CallingOperationStatus,CallRecordingState,CallConnectionState,CallingEventSubscriptionType,CallMediaType,RecordingChannelType,RecordingContentType,RecordingFormatType,ToneValue
 custom-types-subpackage: models
 generate-client-as-impl: true
 models-subpackage: implementation.models
@@ -69,6 +69,9 @@ directive:
     from: CallParticipant
     to: CallParticipantInternal
 - rename-model:
+    from: CreateAudioRoutingGroupResult
+    to: CreateAudioRoutingGroupResultInternal
+- rename-model:
     from: JoinCallResult
     to: JoinCallResultInternal
 - rename-model:
@@ -87,21 +90,39 @@ directive:
     from: AddParticipantResult
     to: AddParticipantResultInternal    
 - rename-model:
-    from: CancelAllMediaOperationsResult
-    to: CancelAllMediaOperationsResultInternal
-- rename-model:
-    from: ResultInfo
-    to: ResultInfoInternal
+    from: CallingOperationResultDetails
+    to: CallingOperationResultDetailsInternal
 - rename-model:
     from: ToneInfo
     to: ToneInfoInternal
 - rename-model:
-    from: StartHoldMusicResult
-    to: StartHoldMusicResultInternal
-- rename-model:
-    from: StopHoldMusicResult
-    to: StopHoldMusicResultInternal
-- rename-model:
     from: AnswerCallResult
     to: AnswerCallResultInternal
+```
+
+### Rename RecordingChannelType to RecordingChannel
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.RecordingChannelType
+    transform: >
+      $["x-ms-enum"].name = "RecordingChannel";
+```
+
+### Rename RecordingContentType to RecordingContent
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.RecordingContentType
+    transform: >
+      $["x-ms-enum"].name = "RecordingContent";
+```
+
+### Rename RecordingFormatType to RecordingFormat
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.RecordingFormatType["x-ms-enum"]
+  transform: >
+    $.name = "RecordingFormat";
 ```

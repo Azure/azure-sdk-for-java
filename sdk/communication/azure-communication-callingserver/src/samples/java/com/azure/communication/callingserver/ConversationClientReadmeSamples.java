@@ -107,7 +107,7 @@ public class ConversationClientReadmeSamples {
      * Sample code for playing an audio notification in a call.
      *
      * @param callingServerClient {@link CallingServerClient} to use for recording.
-     * @param serverCallId Identifier of the current server call.
+     * @param serverCallLocator Locator of the current server call.
      * @return information about the play audio request, {@link PlayAudioResult}.
      */
     public PlayAudioResult playAudio(CallingServerClient callingServerClient, ServerCallLocator serverCallLocator) {

@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslProfilePropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SSL profile of an application gateway. */
-@JsonFlatten
 @Fluent
-public class ApplicationGatewaySslProfile extends SubResource {
+public final class ApplicationGatewaySslProfile extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslProfile.class);
+
+    /*
+     * Properties of the application gateway SSL profile.
+     */
+    @JsonProperty(value = "properties")
+    private ApplicationGatewaySslProfilePropertiesFormat innerProperties;
 
     /*
      * Name of the SSL profile that is unique within an Application Gateway.
@@ -36,29 +41,14 @@ public class ApplicationGatewaySslProfile extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Array of references to application gateway trusted client certificates.
+    /**
+     * Get the innerProperties property: Properties of the application gateway SSL profile.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.trustedClientCertificates")
-    private List<SubResource> trustedClientCertificates;
-
-    /*
-     * SSL policy of the application gateway resource.
-     */
-    @JsonProperty(value = "properties.sslPolicy")
-    private ApplicationGatewaySslPolicy sslPolicy;
-
-    /*
-     * Client authentication configuration of the application gateway resource.
-     */
-    @JsonProperty(value = "properties.clientAuthConfiguration")
-    private ApplicationGatewayClientAuthConfiguration clientAuthConfiguration;
-
-    /*
-     * The provisioning state of the HTTP listener resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private ApplicationGatewaySslProfilePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the SSL profile that is unique within an Application Gateway.
@@ -98,6 +88,13 @@ public class ApplicationGatewaySslProfile extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewaySslProfile withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the trustedClientCertificates property: Array of references to application gateway trusted client
      * certificates.
@@ -105,7 +102,7 @@ public class ApplicationGatewaySslProfile extends SubResource {
      * @return the trustedClientCertificates value.
      */
     public List<SubResource> trustedClientCertificates() {
-        return this.trustedClientCertificates;
+        return this.innerProperties() == null ? null : this.innerProperties().trustedClientCertificates();
     }
 
     /**
@@ -116,7 +113,10 @@ public class ApplicationGatewaySslProfile extends SubResource {
      * @return the ApplicationGatewaySslProfile object itself.
      */
     public ApplicationGatewaySslProfile withTrustedClientCertificates(List<SubResource> trustedClientCertificates) {
-        this.trustedClientCertificates = trustedClientCertificates;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewaySslProfilePropertiesFormat();
+        }
+        this.innerProperties().withTrustedClientCertificates(trustedClientCertificates);
         return this;
     }
 
@@ -126,7 +126,7 @@ public class ApplicationGatewaySslProfile extends SubResource {
      * @return the sslPolicy value.
      */
     public ApplicationGatewaySslPolicy sslPolicy() {
-        return this.sslPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().sslPolicy();
     }
 
     /**
@@ -136,7 +136,10 @@ public class ApplicationGatewaySslProfile extends SubResource {
      * @return the ApplicationGatewaySslProfile object itself.
      */
     public ApplicationGatewaySslProfile withSslPolicy(ApplicationGatewaySslPolicy sslPolicy) {
-        this.sslPolicy = sslPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewaySslProfilePropertiesFormat();
+        }
+        this.innerProperties().withSslPolicy(sslPolicy);
         return this;
     }
 
@@ -147,7 +150,7 @@ public class ApplicationGatewaySslProfile extends SubResource {
      * @return the clientAuthConfiguration value.
      */
     public ApplicationGatewayClientAuthConfiguration clientAuthConfiguration() {
-        return this.clientAuthConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().clientAuthConfiguration();
     }
 
     /**
@@ -159,7 +162,10 @@ public class ApplicationGatewaySslProfile extends SubResource {
      */
     public ApplicationGatewaySslProfile withClientAuthConfiguration(
         ApplicationGatewayClientAuthConfiguration clientAuthConfiguration) {
-        this.clientAuthConfiguration = clientAuthConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewaySslProfilePropertiesFormat();
+        }
+        this.innerProperties().withClientAuthConfiguration(clientAuthConfiguration);
         return this;
     }
 
@@ -169,14 +175,7 @@ public class ApplicationGatewaySslProfile extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApplicationGatewaySslProfile withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -185,11 +184,8 @@ public class ApplicationGatewaySslProfile extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sslPolicy() != null) {
-            sslPolicy().validate();
-        }
-        if (clientAuthConfiguration() != null) {
-            clientAuthConfiguration().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

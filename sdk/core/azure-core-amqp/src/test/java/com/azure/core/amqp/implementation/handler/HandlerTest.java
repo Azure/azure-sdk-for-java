@@ -33,7 +33,7 @@ public class HandlerTest {
             handler.close();
         }
 
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
     }
 
     @Test

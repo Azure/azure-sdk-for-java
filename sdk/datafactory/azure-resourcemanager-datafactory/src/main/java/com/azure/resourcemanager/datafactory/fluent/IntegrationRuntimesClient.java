@@ -14,6 +14,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeAuthKeysInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeConnectionInfoInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeMonitoringDataInner;
+import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeResourceInner;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeStatusResponseInner;
 import com.azure.resourcemanager.datafactory.models.CreateLinkedIntegrationRuntimeRequest;
@@ -229,6 +230,38 @@ public interface IntegrationRuntimesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeStatusResponseInner> getStatusWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String factoryName, String integrationRuntimeName);
+
+    /**
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>
+        listOutboundNetworkDependenciesEndpointsWithResponse(
+            String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
 
     /**
      * Gets the on-premises integration runtime connection information for encrypting the on-premises data source

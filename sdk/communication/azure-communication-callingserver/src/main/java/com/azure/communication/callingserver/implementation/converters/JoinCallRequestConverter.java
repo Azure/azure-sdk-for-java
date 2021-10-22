@@ -3,7 +3,6 @@
 
 package com.azure.communication.callingserver.implementation.converters;
 
-import com.azure.communication.callingserver.implementation.models.CallLocatorModel;
 import com.azure.communication.callingserver.implementation.models.JoinCallRequest;
 import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.JoinCallOptions;

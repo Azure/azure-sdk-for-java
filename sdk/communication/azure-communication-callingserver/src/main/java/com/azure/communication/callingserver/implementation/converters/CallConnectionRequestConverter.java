@@ -5,9 +5,9 @@ package com.azure.communication.callingserver.implementation.converters;
 
 import com.azure.communication.callingserver.implementation.models.CreateCallRequest;
 import com.azure.communication.callingserver.implementation.models.PhoneNumberIdentifierModel;
+import com.azure.communication.callingserver.models.CallMediaType;
+import com.azure.communication.callingserver.models.CallingEventSubscriptionType;
 import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 
 import java.util.LinkedList;
@@ -42,14 +42,14 @@ public final class CallConnectionRequestConverter {
             return createCallRequest;
         }
 
-        List<MediaType> requestedMediaTypes = new LinkedList<>();
-        for (MediaType mediaType : createCallOptions.getRequestedMediaTypes()) {
-            requestedMediaTypes.add(MediaType.fromString(mediaType.toString()));
+        List<CallMediaType> requestedMediaTypes = new LinkedList<>();
+        for (CallMediaType mediaType : createCallOptions.getRequestedMediaTypes()) {
+            requestedMediaTypes.add(CallMediaType.fromString(mediaType.toString()));
         }
 
-        List<EventSubscriptionType> requestedCallEvents = new LinkedList<>();
-        for (EventSubscriptionType requestedCallEvent : createCallOptions.getRequestedCallEvents()) {
-            requestedCallEvents.add(EventSubscriptionType.fromString(requestedCallEvent.toString()));
+        List<CallingEventSubscriptionType> requestedCallEvents = new LinkedList<>();
+        for (CallingEventSubscriptionType requestedCallEvent : createCallOptions.getRequestedCallEvents()) {
+            requestedCallEvents.add(CallingEventSubscriptionType.fromString(requestedCallEvent.toString()));
         }
 
         PhoneNumberIdentifierModel sourceAlternateIdentity = null;

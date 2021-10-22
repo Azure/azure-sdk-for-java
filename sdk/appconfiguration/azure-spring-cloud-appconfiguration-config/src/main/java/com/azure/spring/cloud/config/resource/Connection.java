@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 /**
  * Connection information for connecting to a Azure APp Configuration Store.
  */
-public class Connection {
+public final class Connection {
 
     public static final String NON_EMPTY_MSG =
         "%s property should not be null or empty in the connection string of Azure Config Service.";

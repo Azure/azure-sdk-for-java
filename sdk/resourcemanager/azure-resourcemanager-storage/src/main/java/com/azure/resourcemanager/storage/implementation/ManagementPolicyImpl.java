@@ -63,7 +63,8 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
     public Mono<ManagementPolicy> createResourceAsync() {
         ManagementPoliciesClient client = this.manager().serviceClient().getManagementPolicies();
         return client
-            .createOrUpdateAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT, cpolicy)
+            .createOrUpdateAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT,
+                new ManagementPolicyInner().withPolicy(cpolicy))
             .map(
                 resource -> {
                     resetCreateUpdateParameters();
@@ -76,7 +77,8 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
     public Mono<ManagementPolicy> updateResourceAsync() {
         ManagementPoliciesClient client = this.manager().serviceClient().getManagementPolicies();
         return client
-            .createOrUpdateAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT, upolicy)
+            .createOrUpdateAsync(this.resourceGroupName, this.accountName, ManagementPolicyName.DEFAULT,
+                new ManagementPolicyInner().withPolicy(upolicy))
             .map(
                 resource -> {
                     resetCreateUpdateParameters();

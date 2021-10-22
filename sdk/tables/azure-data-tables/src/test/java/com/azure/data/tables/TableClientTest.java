@@ -54,8 +54,8 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class TableClientTest extends TestBase {
     private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
-    private static final boolean IS_COSMOS_TEST = System.getenv("AZURE_TABLES_CONNECTION_STRING") != null
-        && System.getenv("AZURE_TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
+    private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
+
 
     private TableClient tableClient;
     private HttpPipelinePolicy recordPolicy;
@@ -543,13 +543,7 @@ public class TableClientTest extends TestBase {
 
         List<TableEntity> retrievedEntities = iterator.next().getValue();
 
-        TableEntity retrievedEntity = retrievedEntities.get(0);
-        TableEntity retrievedEntity2 = retrievedEntities.get(1);
-
-        assertEquals(partitionKeyValue, retrievedEntity.getPartitionKey());
-        assertEquals(rowKeyValue, retrievedEntity.getRowKey());
-        assertEquals(partitionKeyValue, retrievedEntity2.getPartitionKey());
-        assertEquals(rowKeyValue2, retrievedEntity2.getRowKey());
+        assertEquals(2, retrievedEntities.size());
     }
 
     @Test

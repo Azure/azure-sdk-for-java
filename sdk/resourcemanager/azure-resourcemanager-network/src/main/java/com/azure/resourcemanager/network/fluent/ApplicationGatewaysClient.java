@@ -20,12 +20,12 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackend
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslPredefinedPolicyInner;
 import com.azure.resourcemanager.network.models.ApplicationGatewayOnDemandProbe;
+import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
 import java.util.List;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -57,7 +57,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String applicationGatewayName);
 
     /**
@@ -70,7 +70,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationGatewayName);
 
     /**
@@ -84,7 +84,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String applicationGatewayName, Context context);
 
@@ -207,7 +207,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
 
@@ -222,7 +222,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
 
@@ -238,7 +238,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context);
 
@@ -293,7 +293,7 @@ public interface ApplicationGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update application gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -301,14 +301,14 @@ public interface ApplicationGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ApplicationGatewayInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String applicationGatewayName, Map<String, String> tags);
+        String resourceGroupName, String applicationGatewayName, TagsObject parameters);
 
     /**
      * Updates the specified application gateway tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update application gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -316,40 +316,28 @@ public interface ApplicationGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ApplicationGatewayInner> updateTagsAsync(
-        String resourceGroupName, String applicationGatewayName, Map<String, String> tags);
+        String resourceGroupName, String applicationGatewayName, TagsObject parameters);
 
     /**
      * Updates the specified application gateway tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to update application gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationGatewayInner> updateTagsAsync(String resourceGroupName, String applicationGatewayName);
+    ApplicationGatewayInner updateTags(String resourceGroupName, String applicationGatewayName, TagsObject parameters);
 
     /**
      * Updates the specified application gateway tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application gateway resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayInner updateTags(String resourceGroupName, String applicationGatewayName);
-
-    /**
-     * Updates the specified application gateway tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update application gateway tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -358,7 +346,7 @@ public interface ApplicationGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationGatewayInner> updateTagsWithResponse(
-        String resourceGroupName, String applicationGatewayName, Map<String, String> tags, Context context);
+        String resourceGroupName, String applicationGatewayName, TagsObject parameters, Context context);
 
     /**
      * Lists all application gateways in a resource group.
@@ -452,7 +440,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String applicationGatewayName);
 
     /**
@@ -465,7 +453,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String applicationGatewayName);
 
     /**
@@ -479,7 +467,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String applicationGatewayName, Context context);
 
@@ -544,7 +532,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String applicationGatewayName);
 
     /**
@@ -557,7 +545,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String applicationGatewayName);
 
     /**
@@ -571,7 +559,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String applicationGatewayName, Context context);
 
@@ -639,7 +627,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backend health of the specified application gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand);
 
@@ -654,7 +642,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backend health of the specified application gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand);
 
@@ -670,7 +658,7 @@ public interface ApplicationGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backend health of the specified application gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand, Context context);
 
@@ -782,7 +770,7 @@ public interface ApplicationGatewaysClient
      * @return the backend health for given combination of backend pool and http setting of the specified application
      *     gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
         beginBackendHealthOnDemandAsync(
             String resourceGroupName,
@@ -804,7 +792,7 @@ public interface ApplicationGatewaysClient
      * @return the backend health for given combination of backend pool and http setting of the specified application
      *     gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
         beginBackendHealthOnDemand(
             String resourceGroupName,
@@ -827,7 +815,7 @@ public interface ApplicationGatewaysClient
      * @return the backend health for given combination of backend pool and http setting of the specified application
      *     gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
         beginBackendHealthOnDemand(
             String resourceGroupName,

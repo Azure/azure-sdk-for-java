@@ -35,7 +35,6 @@ import com.azure.communication.callingserver.implementation.converters.JoinCallR
 import com.azure.communication.callingserver.implementation.converters.PhoneNumberIdentifierConverter;
 import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantWithCallLocatorRequest;
-import com.azure.communication.callingserver.implementation.models.CallRejectReason;
 import com.azure.communication.callingserver.implementation.models.CancelMediaOperationWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationWithCallLocatorRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
@@ -55,16 +54,22 @@ import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.CallRejectReason;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -73,6 +78,8 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Asynchronous client that supports calling server operations.
@@ -91,14 +98,17 @@ public final class CallingServerAsyncClient {
     private final ServerCallsImpl serverCallInternal;
     private final ClientLogger logger = new ClientLogger(CallingServerAsyncClient.class);
     private final ContentDownloader contentDownloader;
+    private final HttpPipeline httpPipelineInternal;
+    private final String resourceEndpoint;
 
     CallingServerAsyncClient(AzureCommunicationCallingServerServiceImpl callServiceClient) {
         callConnectionInternal = callServiceClient.getCallConnections();
         serverCallInternal = callServiceClient.getServerCalls();
-
+        httpPipelineInternal = callServiceClient.getHttpPipeline();
+        resourceEndpoint = callServiceClient.getEndpoint();
         contentDownloader = new ContentDownloader(
-            callServiceClient.getEndpoint(),
-            callServiceClient.getHttpPipeline());
+            resourceEndpoint,
+            httpPipelineInternal);
     }
 
     /**
@@ -422,11 +432,11 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
 
             AddParticipantWithCallLocatorRequest requestWithCallLocator = new AddParticipantWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setParticipant(CommunicationIdentifierConverter.convert(participant))
-            .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
-            .setOperationContext(operationContext)
-            .setCallbackUri(callBackUri.toString());
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setParticipant(CommunicationIdentifierConverter.convert(participant))
+                .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
+                .setOperationContext(operationContext)
+                .setCallbackUri(callBackUri.toString());
 
             return serverCallInternal.addParticipantAsync(requestWithCallLocator, Context.NONE)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
@@ -476,11 +486,11 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(participant, "'participant' cannot be null.");
 
             AddParticipantWithCallLocatorRequest requestWithCallLocator = new AddParticipantWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setParticipant(CommunicationIdentifierConverter.convert(participant))
-            .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
-            .setOperationContext(operationContext)
-            .setCallbackUri(callBackUri.toString());
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setParticipant(CommunicationIdentifierConverter.convert(participant))
+                .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
+                .setOperationContext(operationContext)
+                .setCallbackUri(callBackUri.toString());
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -548,8 +558,8 @@ public final class CallingServerAsyncClient {
     private RemoveParticipantWithCallLocatorRequest getRemoveParticipantWithCallLocatorRequest(CallLocator callLocator,
             CommunicationIdentifier participant) {
         RemoveParticipantWithCallLocatorRequest requestWithCallLocator = new RemoveParticipantWithCallLocatorRequest()
-        .setCallLocator(CallLocatorConverter.convert(callLocator))
-        .setIdentifier(CommunicationIdentifierConverter.convert(participant));
+            .setCallLocator(CallLocatorConverter.convert(callLocator))
+            .setIdentifier(CommunicationIdentifierConverter.convert(participant));
         return requestWithCallLocator;
     }
 
@@ -646,7 +656,7 @@ public final class CallingServerAsyncClient {
 
     /**
      * Get all participants of the call.
-     *
+     * @param callLocator the call locator.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get participants request.
@@ -711,8 +721,8 @@ public final class CallingServerAsyncClient {
     private StartCallRecordingWithCallLocatorRequest getStartCallRecordingWithCallLocatorRequest(CallLocator callLocator,
         URI recordingStateCallbackUri) {
         StartCallRecordingWithCallLocatorRequest requestWithCallLocator = new StartCallRecordingWithCallLocatorRequest()
-        .setCallLocator(CallLocatorConverter.convert(callLocator))
-        .setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
+            .setCallLocator(CallLocatorConverter.convert(callLocator))
+            .setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
         return requestWithCallLocator;
     }
 
@@ -721,19 +731,18 @@ public final class CallingServerAsyncClient {
      *
      * @param callLocator the call locator.
      * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @param startRecordingOptions StartRecordingOptions custom options.
+     * @param context A {@link Context} representing the request context.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(CallLocator callLocator, URI recordingStateCallbackUri) {
-        return startRecordingWithResponse(callLocator, recordingStateCallbackUri, null);
-    }
-
-    Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(
+    public Mono<Response<StartCallRecordingResult>> startRecordingWithResponse(
         CallLocator callLocator,
         URI recordingStateCallbackUri,
+        StartRecordingOptions startRecordingOptions,
         Context context) {
         try {
             Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
@@ -1174,8 +1183,8 @@ public final class CallingServerAsyncClient {
             PlayAudioOptions playAudioOptions) {
 
         PlayAudioWithCallLocatorRequest requestWithCallLocator = new PlayAudioWithCallLocatorRequest()
-        .setCallLocator(CallLocatorConverter.convert(callLocator))
-        .setAudioFileUri(audioFileUri.toString());
+            .setCallLocator(CallLocatorConverter.convert(callLocator))
+            .setAudioFileUri(audioFileUri.toString());
 
         if (playAudioOptions != null) {
             requestWithCallLocator
@@ -1244,8 +1253,8 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(mediaOperationId, "'mediaOperationId' cannot be null.");
 
             CancelMediaOperationWithCallLocatorRequest requestWithCallLocator = new CancelMediaOperationWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setMediaOperationId(mediaOperationId);
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setMediaOperationId(mediaOperationId);
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -1304,9 +1313,9 @@ public final class CallingServerAsyncClient {
         try {
 
             CancelParticipantMediaOperationWithCallLocatorRequest requestWithCallLocator = new CancelParticipantMediaOperationWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setIdentifier(CommunicationIdentifierConverter.convert(participant))
-            .setMediaOperationId(mediaOperationId);
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setIdentifier(CommunicationIdentifierConverter.convert(participant))
+                .setMediaOperationId(mediaOperationId);
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -1346,10 +1355,10 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(participant, "'participant' cannot be null.");
             Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
 
-            PlayAudioToParticipantWithCallLocatorRequest requestWithCallLocator= new PlayAudioToParticipantWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setIdentifier(CommunicationIdentifierConverter.convert(participant))
-            .setAudioFileUri(audioFileUri.toString());
+            PlayAudioToParticipantWithCallLocatorRequest requestWithCallLocator = new PlayAudioToParticipantWithCallLocatorRequest()
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setIdentifier(CommunicationIdentifierConverter.convert(participant))
+                .setAudioFileUri(audioFileUri.toString());
 
             if (playAudioOptions != null) {
                 requestWithCallLocator
@@ -1401,9 +1410,9 @@ public final class CallingServerAsyncClient {
             Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
 
             PlayAudioToParticipantWithCallLocatorRequest requestWithCallLocator = new PlayAudioToParticipantWithCallLocatorRequest()
-            .setCallLocator(CallLocatorConverter.convert(callLocator))
-            .setIdentifier(CommunicationIdentifierConverter.convert(participant))
-            .setAudioFileUri(audioFileUri.toString());
+                .setCallLocator(CallLocatorConverter.convert(callLocator))
+                .setIdentifier(CommunicationIdentifierConverter.convert(participant))
+                .setAudioFileUri(audioFileUri.toString());
 
             if (playAudioOptions != null) {
                 requestWithCallLocator
@@ -1432,11 +1441,12 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext the incomingCallContext value to set.
      * @param targets the targets value to set.
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUrl value to set.
      * @param timeoutInSeconds the timeout value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redirectCall(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds) {
@@ -1455,9 +1465,9 @@ public final class CallingServerAsyncClient {
         Objects.requireNonNull(incomingCallContext, "'redirectCallRequest' cannot be null.");
         Objects.requireNonNull(targets, "'targets' cannot be null.");
         RedirectCallRequest request = new RedirectCallRequest()
-            .setCallbackUrl(callbackUri.toString())
+            .setCallbackUri(callbackUri.toString())
             .setIncomingCallContext(incomingCallContext)
-            .setTimeout(timeoutInSeconds)
+            .setTimeoutInSeconds(timeoutInSeconds)
             .setTargets(targets
                 .stream()
                 .map(CommunicationIdentifierConverter::convert)
@@ -1470,11 +1480,12 @@ public final class CallingServerAsyncClient {
      *
      * @param incomingCallContext the incomingCallContext value to set.
      * @param targets the targets value to set.
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUrl value to set.
      * @param timeoutInSeconds the timeout value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds) {
@@ -1491,16 +1502,17 @@ public final class CallingServerAsyncClient {
         }
     }
 
-   /**
+    /**
      * Reject the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUrl value to set.
      * @param rejectReason the call reject reason value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
+     * @return the completion.
+    */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rejectCall(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
         try {
@@ -1516,7 +1528,7 @@ public final class CallingServerAsyncClient {
     private RejectCallRequest getRejectCallRequest(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
         Objects.requireNonNull(incomingCallContext, "'redirectCallRequest' cannot be null.");
         RejectCallRequest request = new RejectCallRequest()
-            .setCallbackUrl(callbackUri.toString())
+            .setCallbackUri(callbackUri.toString())
             .setIncomingCallContext(incomingCallContext)
             .setCallRejectReason(rejectReason);
         return request;
@@ -1526,11 +1538,12 @@ public final class CallingServerAsyncClient {
      * Reject the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUrl value to set.
      * @param rejectReason the call reject reason value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
@@ -1544,6 +1557,60 @@ public final class CallingServerAsyncClient {
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Delete the content located at the deleteEndpoint
+     * @param deleteEndpoint - ACS URL where the content is located.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for successful delete request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteRecording(String deleteEndpoint) {
+        try {
+            return deleteRecordingWithResponse(deleteEndpoint, null).then();
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Delete the content located at the deleteEndpoint
+     * Recording deletion will be done using parallel workers.
+     * @param deleteEndpoint - ACS URL where the content is located.
+     * @param context A {@link Context} representing the request context.
+     * @return Response for successful delete request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<HttpResponse>> deleteRecordingWithResponse(String deleteEndpoint, Context context) {
+        HttpRequest request = new HttpRequest(HttpMethod.DELETE, deleteEndpoint);
+        URL urlToSignWith = getUrlToSignRequestWith(deleteEndpoint);
+        Context finalContext;
+        if (context == null) {
+            finalContext = new Context("hmacSignatureURL", urlToSignWith);
+        } else {
+            finalContext = context.addData("hmacSignatureURL", urlToSignWith);
+        }
+        Mono<HttpResponse> httpResponse = httpPipelineInternal.send(request, finalContext);
+        try {
+            return httpResponse.map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    private URL getUrlToSignRequestWith(String endpoint) {
+        try {
+            String path = new URL(endpoint).getPath();
+
+            if (path.startsWith("/")) {
+                path = path.substring(1);
+            }
+
+            return new URL(resourceEndpoint + path);
+        } catch (MalformedURLException ex) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
     }
 }

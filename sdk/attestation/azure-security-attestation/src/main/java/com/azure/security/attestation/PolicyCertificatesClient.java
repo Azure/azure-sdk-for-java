@@ -7,10 +7,10 @@ package com.azure.security.attestation;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.implementation.PolicyCertificatesImpl;
-import com.azure.security.attestation.models.CloudErrorException;
 import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
 import com.azure.security.attestation.models.PolicyCertificatesResponse;
 
@@ -31,7 +31,7 @@ public final class PolicyCertificatesClient {
     /**
      * Retrieves the set of certificates used to express policy for the current tenant.
      *
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
@@ -45,7 +45,7 @@ public final class PolicyCertificatesClient {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
@@ -60,7 +60,7 @@ public final class PolicyCertificatesClient {
      *
      * @param policyCertificateToAdd An RFC 7519 Json Web Token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
@@ -75,7 +75,7 @@ public final class PolicyCertificatesClient {
      * @param policyCertificateToAdd An RFC 7519 Json Web Token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
@@ -91,7 +91,7 @@ public final class PolicyCertificatesClient {
      *
      * @param policyCertificateToRemove An RFC 7519 Json Web Token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */
@@ -107,7 +107,7 @@ public final class PolicyCertificatesClient {
      * @param policyCertificateToRemove An RFC 7519 Json Web Token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy management API.
      */

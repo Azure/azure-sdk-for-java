@@ -1,21 +1,65 @@
 ## Release History
 
-## 4.18.0-beta.2 (Unreleased)
+### 4.21.0-beta.1 (Unreleased)
 
+#### Features Added
 
-### 4.18.0-beta.1 (2021-08-11)
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
+### 4.20.0 (2021-10-14)
+#### Features Added
+* Enabling `queryplan` cache by default
+
+#### Key Bug Fixes
+* Fixed issue with bulk reads when `contentResponseOnWrite` is not explicitly enabled on the cosmos client.
+
+### 4.19.1 (2021-09-24)
+#### Features Added
+* Added support to config retry count for `openConnectionsAndInitCaches`.
+
+#### Key Bug Fixes
+* Fixed ReadMany Api on partition split.
+* Removed full exception trace from 404 error on open telemetry.
+* Fixed issue with onErrorDropped being called when using concatWith in QuorumReader.
+
+### 4.20.0-beta.1 (2021-09-22)
+#### Features Added
+* Added support to config retry count for `openConnectionsAndInitCaches`.
+
+### 4.19.0 (2021-09-09)
+#### New Features
+* Added support for distinct count queries.
+* Added support for capturing `IndexMetrics` in `CosmosQueryRequestOptions`.
+
+#### Key Bug Fixes
+* Added support to switch off IO thread for response processing.
+* Fixed issue for resuming order by queries from continuation token that includes undefined/null.
+
+### 4.19.0-beta.1 (2021-09-02)
+#### Key Bug Fixes
+* Added support to switch off IO thread for response processing.
+
+### 4.18.0 (2021-08-16)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.18.0 and above.
 #### New Features
 * Integrated cosmos diagnostics with open telemetry tracer.
-* Added `BulkExecutionOptions` and `BulkExecutionThresholds`.
 
 #### Key Bug Fixes
 * Added reactor netty timeline to query plan calls.
 * Fixed serialization warning on `clientSideRequestDiagnostics`.
-* Fixed an issue when `IdleEndpointTimeout` is 0.
+* Fixed an issue when `IdleEndpointTimeout` is set to 0 in `DirectConnectionConfig`.
 * Added retry for `PrematureCloseException`.
-* Fixed a hang issue in bulk executor.
+* Fixed an issue where application hangs in bulk executor.
 * Fixed an issue which preventing recovery from 410/0 after split.
-* Added TransportRequestChannelAcquisitionContext in cosmos diagnostics.
+
+### 4.18.0-beta.1 (2021-08-11)
+#### Key Bug Fixes
+* Added `TransportRequestChannelAcquisitionContext` in `CosmosDiagnostics`.
 
 ### 4.17.0 (2021-07-08)
 #### New Features
@@ -76,7 +120,7 @@
 * Fixed warning caused because of afterburner module usage in `CosmosDiagnostics`.
 * Query performance improvements.
 
-### 4.13.0 (2021-03-11) 
+### 4.13.0 (2021-03-11)
 > [!IMPORTANT] 
 > This release updates `reactor-core` and `reactor-netty` major versions to `2020.0.4 (Europium)` release train.
 #### New Features
@@ -140,9 +184,7 @@
 #### Key Bug Fixes
 * Improved the 449 retry policy to force back-off on initial retry and start with shorter back-offs.
 
-### 4.7.0 (2020-10-17) 
-> [!IMPORTANT] 
-> We strongly recommend our customers to use version 4.7.0 and above.
+### 4.7.0 (2020-10-17)
 #### New Features
 * Added Beta API for transactional batches.
 

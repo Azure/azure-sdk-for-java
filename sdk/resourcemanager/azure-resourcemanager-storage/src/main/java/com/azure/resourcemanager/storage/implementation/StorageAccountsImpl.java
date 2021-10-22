@@ -11,6 +11,7 @@ import com.azure.resourcemanager.storage.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.ServiceSasParameters;
 import com.azure.resourcemanager.storage.models.StorageAccount;
+import com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
@@ -35,7 +36,7 @@ public class StorageAccountsImpl
     public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
         return this
             .inner()
-            .checkNameAvailabilityAsync(name)
+            .checkNameAvailabilityAsync(new StorageAccountCheckNameAvailabilityParameters().withName(name))
             .map(CheckNameAvailabilityResult::new);
     }
 

@@ -4,7 +4,6 @@
 package com.azure.communication.callingserver.models.events;
 
 import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
-import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.ParticipantsUpdatedEventInternal;
 import com.azure.communication.callingserver.models.CallParticipant;

@@ -40,7 +40,7 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
     private void initializeClient(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         client = spy(new SecretClientBuilder()
-            .pipeline(getHttpPipeline(httpClient, serviceVersion))
+            .pipeline(getHttpPipeline(httpClient))
             .vaultUrl(getEndpoint())
             .serviceVersion(serviceVersion)
             .buildAsyncClient());

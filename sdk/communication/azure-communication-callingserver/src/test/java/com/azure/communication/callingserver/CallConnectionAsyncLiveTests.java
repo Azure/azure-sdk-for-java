@@ -3,15 +3,8 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.AddParticipantResult;
-import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
-import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.JoinCallOptions;
-import com.azure.communication.callingserver.models.MediaType;
-import com.azure.communication.callingserver.models.PlayAudioOptions;
-import com.azure.communication.callingserver.models.PlayAudioResult;
-import com.azure.communication.callingserver.models.ServerCallLocator;
+import com.azure.communication.callingserver.implementation.converters.CallLocatorConverter;
+import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
@@ -36,32 +29,31 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreatePlayCancelHangupScenarioAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioAsync");
 
+        // Establish a call
+        CreateCallOptions options = new CreateCallOptions(
+            URI.create(CALLBACK_URI),
+            Collections.singletonList(CallMediaType.AUDIO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
+
+        options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
+
+        CallConnectionAsync callConnectionAsync = callingServerAsyncClient.createCallConnection(
+            new CommunicationUserIdentifier(fromUser),
+            Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
+            options).block();
+        sleepIfRunningAgainstService(10000);
+        CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
         try {
-            // Establish a call
-            CreateCallOptions options = new CreateCallOptions(
-                URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
-
-            options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
-
-            CallConnectionAsync callConnectionAsync = callingServerAsyncClient.createCallConnection(
-                new CommunicationUserIdentifier(fromUser),
-                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
-                options).block();
-
-            CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
-
             // Play Audio
             String operationContext = UUID.randomUUID().toString();
             assert callConnectionAsync != null;
             PlayAudioOptions playAudioOptions = new PlayAudioOptions()
                 .setAudioFileId(null)
-                .setCallbackUri(null)
+                .setCallbackUri(URI.create(CALLBACK_URI))
                 .setLoop(false)
                 .setOperationContext(operationContext);
             PlayAudioResult playAudioResult = callConnectionAsync.playAudio(
@@ -70,16 +62,13 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
             CallingServerTestUtils.validatePlayAudioResult(playAudioResult);
 
             // Cancel All Media Operations
-            String cancelMediaOperationContext = UUID.randomUUID().toString();
-            CancelAllMediaOperationsResult cancelAllMediaOperationsResult =
-                callConnectionAsync.cancelAllMediaOperations(cancelMediaOperationContext).block();
-            CallingServerTestUtils.validateCancelAllMediaOperations(cancelAllMediaOperationsResult);
-
-            // Hang up
-            callConnectionAsync.hangup().block();
+            callConnectionAsync.cancelAllMediaOperations().block();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
+        } finally {
+            // Hang up
+            callConnectionAsync.hangup().block();
         }
     }
 
@@ -90,53 +79,50 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreatePlayCancelHangupScenarioWithResponseAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runCreatePlayCancelHangupScenarioWithResponseAsync");
 
+        // Establish a call
+        CreateCallOptions options = new CreateCallOptions(
+            URI.create(CALLBACK_URI),
+            Collections.singletonList(CallMediaType.AUDIO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
+
+        options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
+
+        Response<CallConnectionAsync> callConnectionAsyncResponse =
+            callingServerAsyncClient.createCallConnectionWithResponse(
+                new CommunicationUserIdentifier(fromUser),
+                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
+                options).block();
+        sleepIfRunningAgainstService(10000);
+        CallingServerTestUtils.validateCallConnectionAsyncResponse(callConnectionAsyncResponse);
+        assert callConnectionAsyncResponse != null;
+        CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
+
         try {
-            // Establish a call
-            CreateCallOptions options = new CreateCallOptions(
-                URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
-
-            options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
-
-            Response<CallConnectionAsync> callConnectionAsyncResponse =
-                callingServerAsyncClient.createCallConnectionWithResponse(
-                    new CommunicationUserIdentifier(fromUser),
-                    Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
-                    options).block();
-
-            CallingServerTestUtils.validateCallConnectionAsyncResponse(callConnectionAsyncResponse);
-            assert callConnectionAsyncResponse != null;
-            CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
-
             // Play Audio
             String operationContext = UUID.randomUUID().toString();
             PlayAudioOptions playAudioOptions =
                 new PlayAudioOptions()
                     .setLoop(false)
                     .setAudioFileId(UUID.randomUUID().toString())
-                    .setCallbackUri(null)
+                    .setCallbackUri(URI.create(CALLBACK_URI))
                     .setOperationContext(operationContext);
             Response<PlayAudioResult> playAudioResponse =
                 callConnectionAsync.playAudioWithResponse(URI.create(AUDIO_FILE_URI), playAudioOptions).block();
             CallingServerTestUtils.validatePlayAudioResponse(playAudioResponse);
 
             // Cancel All Media Operations
-            String cancelMediaOperationContext = UUID.randomUUID().toString();
-            Response<CancelAllMediaOperationsResult> cancelAllMediaOperationsResult =
-                callConnectionAsync.cancelAllMediaOperationsWithResponse(cancelMediaOperationContext).block();
-            CallingServerTestUtils.validateCancelAllMediaOperationsResult(cancelAllMediaOperationsResult);
-
-            // Hang up
-            Response<Void> hangupResponse = callConnectionAsync.hangupWithResponse().block();
-            CallingServerTestUtils.validateResponse(hangupResponse);
+            callConnectionAsync.cancelAllMediaOperationsWithResponse().block();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
+        } finally {
+            // Hang up
+            Response<Void> hangupResponse = callConnectionAsync.hangupWithResponse().block();
+            CallingServerTestUtils.validateResponse(hangupResponse);
         }
     }
 
@@ -147,44 +133,44 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreateAddRemoveHangupScenarioAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioAsync");
 
+        // Establish a call
+        CreateCallOptions options = new CreateCallOptions(
+            URI.create(CALLBACK_URI),
+            Collections.singletonList(CallMediaType.AUDIO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
+
+        options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
+
+        CallConnectionAsync callConnectionAsync = callingServerAsyncClient.createCallConnection(
+            new CommunicationUserIdentifier(fromUser),
+            Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
+            options).block();
+        CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
+
         try {
-            // Establish a call
-            CreateCallOptions options = new CreateCallOptions(
-                URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
-
-            options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
-
-            CallConnectionAsync callConnectionAsync = callingServerAsyncClient.createCallConnection(
-                new CommunicationUserIdentifier(fromUser),
-                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
-                options).block();
-
-            CallingServerTestUtils.validateCallConnectionAsync(callConnectionAsync);
-
             // Add User
             String operationContext = UUID.randomUUID().toString();
             assert callConnectionAsync != null;
-            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier(toUser);
+            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-4093-ebc3-d6d4-4448220005fd");
             AddParticipantResult addParticipantResult = callConnectionAsync.addParticipant(
                 addedUser,
                 null,
                 operationContext,
                 URI.create(CALLBACK_URI)).block();
-
             assert addParticipantResult != null;
-            callConnectionAsync.removeParticipant(addedUser).block();
 
-            // Hang up
-            callConnectionAsync.hangup().block();
+            // Remove User
+            callConnectionAsync.removeParticipant(addedUser).block();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
+        } finally {
+            // Hang up
+            callConnectionAsync.hangup().block();
         }
     }
 
@@ -195,32 +181,31 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreateAddRemoveHangupScenarioWithResponseAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runCreateAddRemoveHangupScenarioWithResponseAsync");
 
+        // Establish a call
+        CreateCallOptions options = new CreateCallOptions(
+            URI.create(CALLBACK_URI),
+            Collections.singletonList(CallMediaType.AUDIO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
+
+        options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
+
+        Response<CallConnectionAsync> callConnectionAsyncResponse =
+            callingServerAsyncClient.createCallConnectionWithResponse(
+                new CommunicationUserIdentifier(fromUser),
+                Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
+                options).block();
+
+        CallingServerTestUtils.validateCallConnectionAsyncResponse(callConnectionAsyncResponse);
+        assert callConnectionAsyncResponse != null;
+        CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
         try {
-            // Establish a call
-            CreateCallOptions options = new CreateCallOptions(
-                URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
-
-            options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
-
-            Response<CallConnectionAsync> callConnectionAsyncResponse =
-                callingServerAsyncClient.createCallConnectionWithResponse(
-                    new CommunicationUserIdentifier(fromUser),
-                    Collections.singletonList(new PhoneNumberIdentifier(TO_PHONE_NUMBER)),
-                    options).block();
-
-            CallingServerTestUtils.validateCallConnectionAsyncResponse(callConnectionAsyncResponse);
-            assert callConnectionAsyncResponse != null;
-            CallConnectionAsync callConnectionAsync = callConnectionAsyncResponse.getValue();
-
             // Add User
             String operationContext = UUID.randomUUID().toString();
-            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier(toUser);
+            CommunicationUserIdentifier addedUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-4093-ebc3-d6d4-4448220005fd");
             Response<AddParticipantResult> addParticipantResponse =
                 callConnectionAsync.addParticipantWithResponse(
                     addedUser,
@@ -228,18 +213,19 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
                     operationContext,
                     URI.create(CALLBACK_URI)).block();
             CallingServerTestUtils.validateAddParticipantResponse(addParticipantResponse);
-
             assert addParticipantResponse != null;
+
+            // Remove User
             Response<Void> removeParticipantResponse =
                 callConnectionAsync.removeParticipantWithResponse(addedUser).block();
             CallingServerTestUtils.validateResponse(removeParticipantResponse);
-
-            // Hang up
-            Response<Void> hangupResponse = callConnectionAsync.hangupWithResponse().block();
-            CallingServerTestUtils.validateResponse(hangupResponse);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             throw e;
+        } finally {
+            // Hang up
+            Response<Void> hangupResponse = callConnectionAsync.hangupWithResponse().block();
+            CallingServerTestUtils.validateResponse(hangupResponse);
         }
     }
 
@@ -249,17 +235,33 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
-    public void runCreateJoinHangupScenarioAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+    public void runCreateJoinHangupScenarioWithConnectionStringAsyncClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
-            setupAsyncClient(builder, "runCreateJoinHangupScenarioAsync");
+            setupAsyncClient(builder, "runCreateJoinHangupScenarioWithConnectionStringAsyncClient");
+        runCreateJoinHangupScenarioAsync(callingServerAsyncClient);
+    }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
+    public void runCreateJoinHangupScenarioWithTokenCredentialAsyncClient(HttpClient httpClient) {
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallingServerAsyncClient callingServerAsyncClient =
+            setupAsyncClient(builder, "runCreateJoinHangupScenarioWithTokenCredentialAsyncClient");
+        runCreateJoinHangupScenarioAsync(callingServerAsyncClient);
+    }
+
+    private void runCreateJoinHangupScenarioAsync(CallingServerAsyncClient callingServerAsyncClient) {
         try {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
@@ -275,11 +277,13 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
               Waiting for an update to be able to get this serverCallId when using
               createCallConnection()
              */
-            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4";
+            // serverCallId looks like this: "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4"
+            String serverCallId = CallLocatorConverter.convert(callConnectionAsync.getCall().block().getCallLocator()).getServerCallId();
+
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
             CallConnectionAsync joinedCallConnectionAsync =
                 callingServerAsyncClient.joinCall(
                     new ServerCallLocator(serverCallId),
@@ -305,7 +309,7 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void runCreateJoinHangupScenarioWithResponseAsync(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getCallClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerAsyncClient callingServerAsyncClient =
             setupAsyncClient(builder, "runCreateJoinHangupScenarioWithResponseAsync");
 
@@ -313,8 +317,8 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
             // Establish a call
             CreateCallOptions options = new CreateCallOptions(
                 URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
             options.setAlternateCallerId(new PhoneNumberIdentifier(FROM_PHONE_NUMBER));
 
@@ -333,11 +337,12 @@ public class CallConnectionAsyncLiveTests extends CallingServerTestBase {
               Waiting for an update to be able to get this serverCallId when using
               createCallConnection()
              */
-            String serverCallId = "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3lKQXY0TnVlOEV5bUpYVm1IYklIeUE_aT0wJmU9NjM3NTg0MzkwMjcxMzg0MTc3";
+            // serverCallId looks like this: "aHR0cHM6Ly94LWNvbnYtdXN3ZS0wMS5jb252LnNreXBlLmNvbS9jb252L3VodHNzZEZ3NFVHX1J4d1lHYWlLRmc_aT0yJmU9NjM3NTg0Mzk2NDM5NzQ5NzY4"
+            String serverCallId = CallLocatorConverter.convert(callConnectionAsync.getCall().block().getCallLocator()).getServerCallId();
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 URI.create(CALLBACK_URI),
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
             Response<CallConnectionAsync> joinedCallConnectionAsyncResponse =
                 callingServerAsyncClient.joinCallWithResponse(
                     new ServerCallLocator(serverCallId),

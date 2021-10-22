@@ -48,6 +48,27 @@ public interface BackupPolicy {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
+     * Gets the namePropertiesName property: Name of backup policy.
+     *
+     * @return the namePropertiesName value.
+     */
+    String namePropertiesName();
+
+    /**
+     * Gets the backupPolicyId property: Backup Policy Resource ID.
+     *
+     * @return the backupPolicyId value.
+     */
+    String backupPolicyId();
+
+    /**
      * Gets the provisioningState property: Azure lifecycle management.
      *
      * @return the provisioningState value.
@@ -74,13 +95,6 @@ public interface BackupPolicy {
      * @return the monthlyBackupsToKeep value.
      */
     Integer monthlyBackupsToKeep();
-
-    /**
-     * Gets the yearlyBackupsToKeep property: Yearly backups count to keep.
-     *
-     * @return the yearlyBackupsToKeep value.
-     */
-    Integer yearlyBackupsToKeep();
 
     /**
      * Gets the volumesAssigned property: Volumes using current backup policy.
@@ -174,10 +188,7 @@ public interface BackupPolicy {
                 DefinitionStages.WithDailyBackupsToKeep,
                 DefinitionStages.WithWeeklyBackupsToKeep,
                 DefinitionStages.WithMonthlyBackupsToKeep,
-                DefinitionStages.WithYearlyBackupsToKeep,
-                DefinitionStages.WithVolumesAssigned,
-                DefinitionStages.WithEnabled,
-                DefinitionStages.WithVolumeBackups {
+                DefinitionStages.WithEnabled {
             /**
              * Executes the create request.
              *
@@ -233,26 +244,6 @@ public interface BackupPolicy {
              */
             WithCreate withMonthlyBackupsToKeep(Integer monthlyBackupsToKeep);
         }
-        /** The stage of the BackupPolicy definition allowing to specify yearlyBackupsToKeep. */
-        interface WithYearlyBackupsToKeep {
-            /**
-             * Specifies the yearlyBackupsToKeep property: Yearly backups count to keep.
-             *
-             * @param yearlyBackupsToKeep Yearly backups count to keep.
-             * @return the next definition stage.
-             */
-            WithCreate withYearlyBackupsToKeep(Integer yearlyBackupsToKeep);
-        }
-        /** The stage of the BackupPolicy definition allowing to specify volumesAssigned. */
-        interface WithVolumesAssigned {
-            /**
-             * Specifies the volumesAssigned property: Volumes using current backup policy.
-             *
-             * @param volumesAssigned Volumes using current backup policy.
-             * @return the next definition stage.
-             */
-            WithCreate withVolumesAssigned(Integer volumesAssigned);
-        }
         /** The stage of the BackupPolicy definition allowing to specify enabled. */
         interface WithEnabled {
             /**
@@ -262,16 +253,6 @@ public interface BackupPolicy {
              * @return the next definition stage.
              */
             WithCreate withEnabled(Boolean enabled);
-        }
-        /** The stage of the BackupPolicy definition allowing to specify volumeBackups. */
-        interface WithVolumeBackups {
-            /**
-             * Specifies the volumeBackups property: A list of volumes assigned to this policy.
-             *
-             * @param volumeBackups A list of volumes assigned to this policy.
-             * @return the next definition stage.
-             */
-            WithCreate withVolumeBackups(List<VolumeBackups> volumeBackups);
         }
     }
     /**
@@ -287,10 +268,7 @@ public interface BackupPolicy {
             UpdateStages.WithDailyBackupsToKeep,
             UpdateStages.WithWeeklyBackupsToKeep,
             UpdateStages.WithMonthlyBackupsToKeep,
-            UpdateStages.WithYearlyBackupsToKeep,
-            UpdateStages.WithVolumesAssigned,
-            UpdateStages.WithEnabled,
-            UpdateStages.WithVolumeBackups {
+            UpdateStages.WithEnabled {
         /**
          * Executes the update request.
          *
@@ -348,26 +326,6 @@ public interface BackupPolicy {
              */
             Update withMonthlyBackupsToKeep(Integer monthlyBackupsToKeep);
         }
-        /** The stage of the BackupPolicy update allowing to specify yearlyBackupsToKeep. */
-        interface WithYearlyBackupsToKeep {
-            /**
-             * Specifies the yearlyBackupsToKeep property: Yearly backups count to keep.
-             *
-             * @param yearlyBackupsToKeep Yearly backups count to keep.
-             * @return the next definition stage.
-             */
-            Update withYearlyBackupsToKeep(Integer yearlyBackupsToKeep);
-        }
-        /** The stage of the BackupPolicy update allowing to specify volumesAssigned. */
-        interface WithVolumesAssigned {
-            /**
-             * Specifies the volumesAssigned property: Volumes using current backup policy.
-             *
-             * @param volumesAssigned Volumes using current backup policy.
-             * @return the next definition stage.
-             */
-            Update withVolumesAssigned(Integer volumesAssigned);
-        }
         /** The stage of the BackupPolicy update allowing to specify enabled. */
         interface WithEnabled {
             /**
@@ -377,16 +335,6 @@ public interface BackupPolicy {
              * @return the next definition stage.
              */
             Update withEnabled(Boolean enabled);
-        }
-        /** The stage of the BackupPolicy update allowing to specify volumeBackups. */
-        interface WithVolumeBackups {
-            /**
-             * Specifies the volumeBackups property: A list of volumes assigned to this policy.
-             *
-             * @param volumeBackups A list of volumes assigned to this policy.
-             * @return the next definition stage.
-             */
-            Update withVolumeBackups(List<VolumeBackups> volumeBackups);
         }
     }
     /**

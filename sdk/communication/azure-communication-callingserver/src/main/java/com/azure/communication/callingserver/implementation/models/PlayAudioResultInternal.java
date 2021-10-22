@@ -4,7 +4,7 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.communication.callingserver.models.OperationStatus;
+import com.azure.communication.callingserver.models.CallingOperationStatus;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,7 +21,7 @@ public final class PlayAudioResultInternal {
      * The status of the operation
      */
     @JsonProperty(value = "status", required = true)
-    private OperationStatus status;
+    private CallingOperationStatus status;
 
     /*
      * The operation context provided by client.
@@ -33,7 +33,7 @@ public final class PlayAudioResultInternal {
      * The result info for the operation.
      */
     @JsonProperty(value = "resultInfo")
-    private ResultInfoInternal resultInfo;
+    private CallingOperationResultDetailsInternal resultInfo;
 
     /**
      * Get the operationId property: The operation id.
@@ -60,7 +60,7 @@ public final class PlayAudioResultInternal {
      *
      * @return the status value.
      */
-    public OperationStatus getStatus() {
+    public CallingOperationStatus getStatus() {
         return this.status;
     }
 
@@ -70,7 +70,7 @@ public final class PlayAudioResultInternal {
      * @param status the status value to set.
      * @return the PlayAudioResultInternal object itself.
      */
-    public PlayAudioResultInternal setStatus(OperationStatus status) {
+    public PlayAudioResultInternal setStatus(CallingOperationStatus status) {
         this.status = status;
         return this;
     }
@@ -100,7 +100,7 @@ public final class PlayAudioResultInternal {
      *
      * @return the resultInfo value.
      */
-    public ResultInfoInternal getResultInfo() {
+    public CallingOperationResultDetailsInternal getResultInfo() {
         return this.resultInfo;
     }
 
@@ -110,7 +110,7 @@ public final class PlayAudioResultInternal {
      * @param resultInfo the resultInfo value to set.
      * @return the PlayAudioResultInternal object itself.
      */
-    public PlayAudioResultInternal setResultInfo(ResultInfoInternal resultInfo) {
+    public PlayAudioResultInternal setResultInfo(CallingOperationResultDetailsInternal resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }

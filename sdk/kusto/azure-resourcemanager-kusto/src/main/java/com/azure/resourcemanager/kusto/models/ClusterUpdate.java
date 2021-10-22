@@ -5,24 +5,25 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.kusto.fluent.models.ClusterProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Class representing an update to a Kusto cluster. */
-@JsonFlatten
 @Fluent
-public class ClusterUpdate extends ProxyResource {
+public final class ClusterUpdate extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterUpdate.class);
 
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
@@ -44,94 +45,10 @@ public class ClusterUpdate extends ProxyResource {
     private Identity identity;
 
     /*
-     * The state of the resource.
+     * The cluster properties.
      */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private State state;
-
-    /*
-     * The provisioned state of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The cluster URI.
-     */
-    @JsonProperty(value = "properties.uri", access = JsonProperty.Access.WRITE_ONLY)
-    private String uri;
-
-    /*
-     * The cluster data ingestion URI.
-     */
-    @JsonProperty(value = "properties.dataIngestionUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String dataIngestionUri;
-
-    /*
-     * The reason for the cluster's current state.
-     */
-    @JsonProperty(value = "properties.stateReason", access = JsonProperty.Access.WRITE_ONLY)
-    private String stateReason;
-
-    /*
-     * The cluster's external tenants.
-     */
-    @JsonProperty(value = "properties.trustedExternalTenants")
-    private List<TrustedExternalTenant> trustedExternalTenants;
-
-    /*
-     * Optimized auto scale definition.
-     */
-    @JsonProperty(value = "properties.optimizedAutoscale")
-    private OptimizedAutoscale optimizedAutoscale;
-
-    /*
-     * A boolean value that indicates if the cluster's disks are encrypted.
-     */
-    @JsonProperty(value = "properties.enableDiskEncryption")
-    private Boolean enableDiskEncryption;
-
-    /*
-     * A boolean value that indicates if the streaming ingest is enabled.
-     */
-    @JsonProperty(value = "properties.enableStreamingIngest")
-    private Boolean enableStreamingIngest;
-
-    /*
-     * Virtual network definition.
-     */
-    @JsonProperty(value = "properties.virtualNetworkConfiguration")
-    private VirtualNetworkConfiguration virtualNetworkConfiguration;
-
-    /*
-     * KeyVault properties for the cluster encryption.
-     */
-    @JsonProperty(value = "properties.keyVaultProperties")
-    private KeyVaultProperties keyVaultProperties;
-
-    /*
-     * A boolean value that indicates if the purge operations are enabled.
-     */
-    @JsonProperty(value = "properties.enablePurge")
-    private Boolean enablePurge;
-
-    /*
-     * List of the cluster's language extensions.
-     */
-    @JsonProperty(value = "properties.languageExtensions", access = JsonProperty.Access.WRITE_ONLY)
-    private LanguageExtensionsList languageExtensions;
-
-    /*
-     * A boolean value that indicates if double encryption is enabled.
-     */
-    @JsonProperty(value = "properties.enableDoubleEncryption")
-    private Boolean enableDoubleEncryption;
-
-    /*
-     * The engine type
-     */
-    @JsonProperty(value = "properties.engineType")
-    private EngineType engineType;
+    @JsonProperty(value = "properties")
+    private ClusterProperties innerProperties;
 
     /**
      * Get the tags property: Resource tags.
@@ -214,12 +131,21 @@ public class ClusterUpdate extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: The cluster properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ClusterProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the state property: The state of the resource.
      *
      * @return the state value.
      */
     public State state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -228,7 +154,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -237,7 +163,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the uri value.
      */
     public String uri() {
-        return this.uri;
+        return this.innerProperties() == null ? null : this.innerProperties().uri();
     }
 
     /**
@@ -246,7 +172,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the dataIngestionUri value.
      */
     public String dataIngestionUri() {
-        return this.dataIngestionUri;
+        return this.innerProperties() == null ? null : this.innerProperties().dataIngestionUri();
     }
 
     /**
@@ -255,7 +181,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the stateReason value.
      */
     public String stateReason() {
-        return this.stateReason;
+        return this.innerProperties() == null ? null : this.innerProperties().stateReason();
     }
 
     /**
@@ -264,7 +190,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the trustedExternalTenants value.
      */
     public List<TrustedExternalTenant> trustedExternalTenants() {
-        return this.trustedExternalTenants;
+        return this.innerProperties() == null ? null : this.innerProperties().trustedExternalTenants();
     }
 
     /**
@@ -274,7 +200,10 @@ public class ClusterUpdate extends ProxyResource {
      * @return the ClusterUpdate object itself.
      */
     public ClusterUpdate withTrustedExternalTenants(List<TrustedExternalTenant> trustedExternalTenants) {
-        this.trustedExternalTenants = trustedExternalTenants;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withTrustedExternalTenants(trustedExternalTenants);
         return this;
     }
 
@@ -284,7 +213,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the optimizedAutoscale value.
      */
     public OptimizedAutoscale optimizedAutoscale() {
-        return this.optimizedAutoscale;
+        return this.innerProperties() == null ? null : this.innerProperties().optimizedAutoscale();
     }
 
     /**
@@ -294,7 +223,10 @@ public class ClusterUpdate extends ProxyResource {
      * @return the ClusterUpdate object itself.
      */
     public ClusterUpdate withOptimizedAutoscale(OptimizedAutoscale optimizedAutoscale) {
-        this.optimizedAutoscale = optimizedAutoscale;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withOptimizedAutoscale(optimizedAutoscale);
         return this;
     }
 
@@ -304,7 +236,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the enableDiskEncryption value.
      */
     public Boolean enableDiskEncryption() {
-        return this.enableDiskEncryption;
+        return this.innerProperties() == null ? null : this.innerProperties().enableDiskEncryption();
     }
 
     /**
@@ -314,7 +246,10 @@ public class ClusterUpdate extends ProxyResource {
      * @return the ClusterUpdate object itself.
      */
     public ClusterUpdate withEnableDiskEncryption(Boolean enableDiskEncryption) {
-        this.enableDiskEncryption = enableDiskEncryption;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withEnableDiskEncryption(enableDiskEncryption);
         return this;
     }
 
@@ -324,7 +259,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the enableStreamingIngest value.
      */
     public Boolean enableStreamingIngest() {
-        return this.enableStreamingIngest;
+        return this.innerProperties() == null ? null : this.innerProperties().enableStreamingIngest();
     }
 
     /**
@@ -334,7 +269,10 @@ public class ClusterUpdate extends ProxyResource {
      * @return the ClusterUpdate object itself.
      */
     public ClusterUpdate withEnableStreamingIngest(Boolean enableStreamingIngest) {
-        this.enableStreamingIngest = enableStreamingIngest;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withEnableStreamingIngest(enableStreamingIngest);
         return this;
     }
 
@@ -344,7 +282,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the virtualNetworkConfiguration value.
      */
     public VirtualNetworkConfiguration virtualNetworkConfiguration() {
-        return this.virtualNetworkConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkConfiguration();
     }
 
     /**
@@ -354,7 +292,10 @@ public class ClusterUpdate extends ProxyResource {
      * @return the ClusterUpdate object itself.
      */
     public ClusterUpdate withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration) {
-        this.virtualNetworkConfiguration = virtualNetworkConfiguration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withVirtualNetworkConfiguration(virtualNetworkConfiguration);
         return this;
     }
 
@@ -364,7 +305,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the keyVaultProperties value.
      */
     public KeyVaultProperties keyVaultProperties() {
-        return this.keyVaultProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().keyVaultProperties();
     }
 
     /**
@@ -374,7 +315,10 @@ public class ClusterUpdate extends ProxyResource {
      * @return the ClusterUpdate object itself.
      */
     public ClusterUpdate withKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
-        this.keyVaultProperties = keyVaultProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withKeyVaultProperties(keyVaultProperties);
         return this;
     }
 
@@ -384,7 +328,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the enablePurge value.
      */
     public Boolean enablePurge() {
-        return this.enablePurge;
+        return this.innerProperties() == null ? null : this.innerProperties().enablePurge();
     }
 
     /**
@@ -394,7 +338,10 @@ public class ClusterUpdate extends ProxyResource {
      * @return the ClusterUpdate object itself.
      */
     public ClusterUpdate withEnablePurge(Boolean enablePurge) {
-        this.enablePurge = enablePurge;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withEnablePurge(enablePurge);
         return this;
     }
 
@@ -404,7 +351,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the languageExtensions value.
      */
     public LanguageExtensionsList languageExtensions() {
-        return this.languageExtensions;
+        return this.innerProperties() == null ? null : this.innerProperties().languageExtensions();
     }
 
     /**
@@ -413,7 +360,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the enableDoubleEncryption value.
      */
     public Boolean enableDoubleEncryption() {
-        return this.enableDoubleEncryption;
+        return this.innerProperties() == null ? null : this.innerProperties().enableDoubleEncryption();
     }
 
     /**
@@ -423,7 +370,58 @@ public class ClusterUpdate extends ProxyResource {
      * @return the ClusterUpdate object itself.
      */
     public ClusterUpdate withEnableDoubleEncryption(Boolean enableDoubleEncryption) {
-        this.enableDoubleEncryption = enableDoubleEncryption;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withEnableDoubleEncryption(enableDoubleEncryption);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Public network access to the cluster is enabled by default. When disabled,
+     * only private endpoint connection to the cluster is allowed.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Public network access to the cluster is enabled by default. When disabled,
+     * only private endpoint connection to the cluster is allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the allowedIpRangeList property: The list of ips in the format of CIDR allowed to connect to the cluster.
+     *
+     * @return the allowedIpRangeList value.
+     */
+    public List<String> allowedIpRangeList() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowedIpRangeList();
+    }
+
+    /**
+     * Set the allowedIpRangeList property: The list of ips in the format of CIDR allowed to connect to the cluster.
+     *
+     * @param allowedIpRangeList the allowedIpRangeList value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withAllowedIpRangeList(List<String> allowedIpRangeList) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAllowedIpRangeList(allowedIpRangeList);
         return this;
     }
 
@@ -433,7 +431,7 @@ public class ClusterUpdate extends ProxyResource {
      * @return the engineType value.
      */
     public EngineType engineType() {
-        return this.engineType;
+        return this.innerProperties() == null ? null : this.innerProperties().engineType();
     }
 
     /**
@@ -443,7 +441,106 @@ public class ClusterUpdate extends ProxyResource {
      * @return the ClusterUpdate object itself.
      */
     public ClusterUpdate withEngineType(EngineType engineType) {
-        this.engineType = engineType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withEngineType(engineType);
+        return this;
+    }
+
+    /**
+     * Get the acceptedAudiences property: The cluster's accepted audiences.
+     *
+     * @return the acceptedAudiences value.
+     */
+    public List<AcceptedAudiences> acceptedAudiences() {
+        return this.innerProperties() == null ? null : this.innerProperties().acceptedAudiences();
+    }
+
+    /**
+     * Set the acceptedAudiences property: The cluster's accepted audiences.
+     *
+     * @param acceptedAudiences the acceptedAudiences value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withAcceptedAudiences(List<AcceptedAudiences> acceptedAudiences) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAcceptedAudiences(acceptedAudiences);
+        return this;
+    }
+
+    /**
+     * Get the enableAutoStop property: A boolean value that indicates if the cluster could be automatically stopped
+     * (due to lack of data or no activity for many days).
+     *
+     * @return the enableAutoStop value.
+     */
+    public Boolean enableAutoStop() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableAutoStop();
+    }
+
+    /**
+     * Set the enableAutoStop property: A boolean value that indicates if the cluster could be automatically stopped
+     * (due to lack of data or no activity for many days).
+     *
+     * @param enableAutoStop the enableAutoStop value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withEnableAutoStop(Boolean enableAutoStop) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withEnableAutoStop(enableAutoStop);
+        return this;
+    }
+
+    /**
+     * Get the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the restrictOutboundNetworkAccess value.
+     */
+    public ClusterNetworkAccessFlag restrictOutboundNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().restrictOutboundNetworkAccess();
+    }
+
+    /**
+     * Set the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withRestrictOutboundNetworkAccess(ClusterNetworkAccessFlag restrictOutboundNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withRestrictOutboundNetworkAccess(restrictOutboundNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
+     *
+     * @return the allowedFqdnList value.
+     */
+    public List<String> allowedFqdnList() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowedFqdnList();
+    }
+
+    /**
+     * Set the allowedFqdnList property: List of allowed FQDNs(Fully Qualified Domain Name) for egress from Cluster.
+     *
+     * @param allowedFqdnList the allowedFqdnList value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withAllowedFqdnList(List<String> allowedFqdnList) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAllowedFqdnList(allowedFqdnList);
         return this;
     }
 
@@ -459,20 +556,8 @@ public class ClusterUpdate extends ProxyResource {
         if (identity() != null) {
             identity().validate();
         }
-        if (trustedExternalTenants() != null) {
-            trustedExternalTenants().forEach(e -> e.validate());
-        }
-        if (optimizedAutoscale() != null) {
-            optimizedAutoscale().validate();
-        }
-        if (virtualNetworkConfiguration() != null) {
-            virtualNetworkConfiguration().validate();
-        }
-        if (keyVaultProperties() != null) {
-            keyVaultProperties().validate();
-        }
-        if (languageExtensions() != null) {
-            languageExtensions().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

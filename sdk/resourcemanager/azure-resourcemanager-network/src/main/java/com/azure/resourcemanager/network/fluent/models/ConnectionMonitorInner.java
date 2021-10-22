@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
 import com.azure.resourcemanager.network.models.ConnectionMonitorEndpoint;
@@ -14,14 +13,14 @@ import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfiguration;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Parameters that define the operation to create a connection monitor. */
-@JsonFlatten
 @Fluent
-public class ConnectionMonitorInner {
+public final class ConnectionMonitorInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorInner.class);
 
     /*
@@ -34,62 +33,14 @@ public class ConnectionMonitorInner {
      * Connection monitor tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * Describes the source of connection monitor.
+     * Properties of the connection monitor.
      */
-    @JsonProperty(value = "properties.source")
-    private ConnectionMonitorSource source;
-
-    /*
-     * Describes the destination of connection monitor.
-     */
-    @JsonProperty(value = "properties.destination")
-    private ConnectionMonitorDestination destination;
-
-    /*
-     * Determines if the connection monitor will start automatically once
-     * created.
-     */
-    @JsonProperty(value = "properties.autoStart")
-    private Boolean autoStart;
-
-    /*
-     * Monitoring interval in seconds.
-     */
-    @JsonProperty(value = "properties.monitoringIntervalInSeconds")
-    private Integer monitoringIntervalInSeconds;
-
-    /*
-     * List of connection monitor endpoints.
-     */
-    @JsonProperty(value = "properties.endpoints")
-    private List<ConnectionMonitorEndpoint> endpoints;
-
-    /*
-     * List of connection monitor test configurations.
-     */
-    @JsonProperty(value = "properties.testConfigurations")
-    private List<ConnectionMonitorTestConfiguration> testConfigurations;
-
-    /*
-     * List of connection monitor test groups.
-     */
-    @JsonProperty(value = "properties.testGroups")
-    private List<ConnectionMonitorTestGroup> testGroups;
-
-    /*
-     * List of connection monitor outputs.
-     */
-    @JsonProperty(value = "properties.outputs")
-    private List<ConnectionMonitorOutput> outputs;
-
-    /*
-     * Optional notes to be associated with the connection monitor.
-     */
-    @JsonProperty(value = "properties.notes")
-    private String notes;
+    @JsonProperty(value = "properties", required = true)
+    private ConnectionMonitorParameters innerProperties = new ConnectionMonitorParameters();
 
     /**
      * Get the location property: Connection monitor location.
@@ -132,12 +83,21 @@ public class ConnectionMonitorInner {
     }
 
     /**
+     * Get the innerProperties property: Properties of the connection monitor.
+     *
+     * @return the innerProperties value.
+     */
+    private ConnectionMonitorParameters innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the source property: Describes the source of connection monitor.
      *
      * @return the source value.
      */
     public ConnectionMonitorSource source() {
-        return this.source;
+        return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
@@ -147,7 +107,10 @@ public class ConnectionMonitorInner {
      * @return the ConnectionMonitorInner object itself.
      */
     public ConnectionMonitorInner withSource(ConnectionMonitorSource source) {
-        this.source = source;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorParameters();
+        }
+        this.innerProperties().withSource(source);
         return this;
     }
 
@@ -157,7 +120,7 @@ public class ConnectionMonitorInner {
      * @return the destination value.
      */
     public ConnectionMonitorDestination destination() {
-        return this.destination;
+        return this.innerProperties() == null ? null : this.innerProperties().destination();
     }
 
     /**
@@ -167,7 +130,10 @@ public class ConnectionMonitorInner {
      * @return the ConnectionMonitorInner object itself.
      */
     public ConnectionMonitorInner withDestination(ConnectionMonitorDestination destination) {
-        this.destination = destination;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorParameters();
+        }
+        this.innerProperties().withDestination(destination);
         return this;
     }
 
@@ -177,7 +143,7 @@ public class ConnectionMonitorInner {
      * @return the autoStart value.
      */
     public Boolean autoStart() {
-        return this.autoStart;
+        return this.innerProperties() == null ? null : this.innerProperties().autoStart();
     }
 
     /**
@@ -187,7 +153,10 @@ public class ConnectionMonitorInner {
      * @return the ConnectionMonitorInner object itself.
      */
     public ConnectionMonitorInner withAutoStart(Boolean autoStart) {
-        this.autoStart = autoStart;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorParameters();
+        }
+        this.innerProperties().withAutoStart(autoStart);
         return this;
     }
 
@@ -197,7 +166,7 @@ public class ConnectionMonitorInner {
      * @return the monitoringIntervalInSeconds value.
      */
     public Integer monitoringIntervalInSeconds() {
-        return this.monitoringIntervalInSeconds;
+        return this.innerProperties() == null ? null : this.innerProperties().monitoringIntervalInSeconds();
     }
 
     /**
@@ -207,7 +176,10 @@ public class ConnectionMonitorInner {
      * @return the ConnectionMonitorInner object itself.
      */
     public ConnectionMonitorInner withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds) {
-        this.monitoringIntervalInSeconds = monitoringIntervalInSeconds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorParameters();
+        }
+        this.innerProperties().withMonitoringIntervalInSeconds(monitoringIntervalInSeconds);
         return this;
     }
 
@@ -217,7 +189,7 @@ public class ConnectionMonitorInner {
      * @return the endpoints value.
      */
     public List<ConnectionMonitorEndpoint> endpoints() {
-        return this.endpoints;
+        return this.innerProperties() == null ? null : this.innerProperties().endpoints();
     }
 
     /**
@@ -227,7 +199,10 @@ public class ConnectionMonitorInner {
      * @return the ConnectionMonitorInner object itself.
      */
     public ConnectionMonitorInner withEndpoints(List<ConnectionMonitorEndpoint> endpoints) {
-        this.endpoints = endpoints;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorParameters();
+        }
+        this.innerProperties().withEndpoints(endpoints);
         return this;
     }
 
@@ -237,7 +212,7 @@ public class ConnectionMonitorInner {
      * @return the testConfigurations value.
      */
     public List<ConnectionMonitorTestConfiguration> testConfigurations() {
-        return this.testConfigurations;
+        return this.innerProperties() == null ? null : this.innerProperties().testConfigurations();
     }
 
     /**
@@ -247,7 +222,10 @@ public class ConnectionMonitorInner {
      * @return the ConnectionMonitorInner object itself.
      */
     public ConnectionMonitorInner withTestConfigurations(List<ConnectionMonitorTestConfiguration> testConfigurations) {
-        this.testConfigurations = testConfigurations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorParameters();
+        }
+        this.innerProperties().withTestConfigurations(testConfigurations);
         return this;
     }
 
@@ -257,7 +235,7 @@ public class ConnectionMonitorInner {
      * @return the testGroups value.
      */
     public List<ConnectionMonitorTestGroup> testGroups() {
-        return this.testGroups;
+        return this.innerProperties() == null ? null : this.innerProperties().testGroups();
     }
 
     /**
@@ -267,7 +245,10 @@ public class ConnectionMonitorInner {
      * @return the ConnectionMonitorInner object itself.
      */
     public ConnectionMonitorInner withTestGroups(List<ConnectionMonitorTestGroup> testGroups) {
-        this.testGroups = testGroups;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorParameters();
+        }
+        this.innerProperties().withTestGroups(testGroups);
         return this;
     }
 
@@ -277,7 +258,7 @@ public class ConnectionMonitorInner {
      * @return the outputs value.
      */
     public List<ConnectionMonitorOutput> outputs() {
-        return this.outputs;
+        return this.innerProperties() == null ? null : this.innerProperties().outputs();
     }
 
     /**
@@ -287,7 +268,10 @@ public class ConnectionMonitorInner {
      * @return the ConnectionMonitorInner object itself.
      */
     public ConnectionMonitorInner withOutputs(List<ConnectionMonitorOutput> outputs) {
-        this.outputs = outputs;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorParameters();
+        }
+        this.innerProperties().withOutputs(outputs);
         return this;
     }
 
@@ -297,7 +281,7 @@ public class ConnectionMonitorInner {
      * @return the notes value.
      */
     public String notes() {
-        return this.notes;
+        return this.innerProperties() == null ? null : this.innerProperties().notes();
     }
 
     /**
@@ -307,7 +291,10 @@ public class ConnectionMonitorInner {
      * @return the ConnectionMonitorInner object itself.
      */
     public ConnectionMonitorInner withNotes(String notes) {
-        this.notes = notes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConnectionMonitorParameters();
+        }
+        this.innerProperties().withNotes(notes);
         return this;
     }
 
@@ -317,23 +304,13 @@ public class ConnectionMonitorInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (source() != null) {
-            source().validate();
-        }
-        if (destination() != null) {
-            destination().validate();
-        }
-        if (endpoints() != null) {
-            endpoints().forEach(e -> e.validate());
-        }
-        if (testConfigurations() != null) {
-            testConfigurations().forEach(e -> e.validate());
-        }
-        if (testGroups() != null) {
-            testGroups().forEach(e -> e.validate());
-        }
-        if (outputs() != null) {
-            outputs().forEach(e -> e.validate());
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ConnectionMonitorInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

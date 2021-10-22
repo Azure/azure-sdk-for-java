@@ -98,6 +98,14 @@ public class FeatureFlagSettingUnitTest {
         assertThrows(IllegalStateException.class, () -> setting.setValue("Hello World"));
     }
 
+    @Test
+    public void addFilter() {
+        FeatureFlagConfigurationSetting setting = new FeatureFlagConfigurationSetting("featureID", true);
+        assertEquals(0, setting.getClientFilters().size());
+        setting.addClientFilter(new FeatureFlagFilter("filterName"));
+        assertEquals(1, setting.getClientFilters().size());
+    }
+
     private FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting(String id, String description,
         String displayName, boolean isEnabled, List<FeatureFlagFilter> filters) {
         return new FeatureFlagConfigurationSetting(id, isEnabled)

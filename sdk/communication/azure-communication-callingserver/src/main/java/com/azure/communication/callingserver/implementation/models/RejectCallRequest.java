@@ -4,6 +4,7 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
+import com.azure.communication.callingserver.models.CallRejectReason;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,10 +24,10 @@ public final class RejectCallRequest {
     private CallRejectReason callRejectReason;
 
     /*
-     * The callback url.
+     * The callback uri.
      */
-    @JsonProperty(value = "callbackUrl", required = true)
-    private String callbackUrl;
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -69,22 +70,22 @@ public final class RejectCallRequest {
     }
 
     /**
-     * Get the callbackUrl property: The callback url.
+     * Get the callbackUri property: The callback uri.
      *
-     * @return the callbackUrl value.
+     * @return the callbackUri value.
      */
-    public String getCallbackUrl() {
-        return this.callbackUrl;
+    public String getCallbackUri() {
+        return this.callbackUri;
     }
 
     /**
-     * Set the callbackUrl property: The callback url.
+     * Set the callbackUri property: The callback uri.
      *
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUri value to set.
      * @return the RejectCallRequest object itself.
      */
-    public RejectCallRequest setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
+    public RejectCallRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 }

@@ -24,16 +24,16 @@ public final class RedirectCallRequest {
     private List<CommunicationIdentifierModel> targets;
 
     /*
-     * The callback url.
+     * The callback uri.
      */
-    @JsonProperty(value = "callbackUrl", required = true)
-    private String callbackUrl;
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
 
     /*
      * The timeout for the redirect in seconds.
      */
-    @JsonProperty(value = "timeout")
-    private Integer timeout;
+    @JsonProperty(value = "timeoutInSeconds")
+    private Integer timeoutInSeconds;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -76,42 +76,42 @@ public final class RedirectCallRequest {
     }
 
     /**
-     * Get the callbackUrl property: The callback url.
+     * Get the callbackUri property: The callback uri.
      *
-     * @return the callbackUrl value.
+     * @return the callbackUri value.
      */
-    public String getCallbackUrl() {
-        return this.callbackUrl;
+    public String getCallbackUri() {
+        return this.callbackUri;
     }
 
     /**
-     * Set the callbackUrl property: The callback url.
+     * Set the callbackUri property: The callback uri.
      *
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUri value to set.
      * @return the RedirectCallRequest object itself.
      */
-    public RedirectCallRequest setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
+    public RedirectCallRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 
     /**
-     * Get the timeout property: The timeout for the redirect in seconds.
+     * Get the timeoutInSeconds property: The timeout for the redirect in seconds.
      *
-     * @return the timeout value.
+     * @return the timeoutInSeconds value.
      */
-    public Integer getTimeout() {
-        return this.timeout;
+    public Integer getTimeoutInSeconds() {
+        return this.timeoutInSeconds;
     }
 
     /**
-     * Set the timeout property: The timeout for the redirect in seconds.
+     * Set the timeoutInSeconds property: The timeout for the redirect in seconds.
      *
-     * @param timeout the timeout value to set.
+     * @param timeoutInSeconds the timeoutInSeconds value to set.
      * @return the RedirectCallRequest object itself.
      */
-    public RedirectCallRequest setTimeout(Integer timeout) {
-        this.timeout = timeout;
+    public RedirectCallRequest setTimeoutInSeconds(Integer timeoutInSeconds) {
+        this.timeoutInSeconds = timeoutInSeconds;
         return this;
     }
 }

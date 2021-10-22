@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.BastionHostIpConfigurationPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP configuration of an Bastion Host. */
-@JsonFlatten
 @Fluent
-public class BastionHostIpConfiguration extends SubResource {
+public final class BastionHostIpConfiguration extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionHostIpConfiguration.class);
+
+    /*
+     * Represents the ip configuration associated with the resource.
+     */
+    @JsonProperty(value = "properties")
+    private BastionHostIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * Name of the resource that is unique within a resource group. This name
@@ -36,29 +41,14 @@ public class BastionHostIpConfiguration extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * Reference of the subnet resource.
+    /**
+     * Get the innerProperties property: Represents the ip configuration associated with the resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.subnet")
-    private SubResource subnet;
-
-    /*
-     * Reference of the PublicIP resource.
-     */
-    @JsonProperty(value = "properties.publicIPAddress")
-    private SubResource publicIpAddress;
-
-    /*
-     * The provisioning state of the bastion host IP configuration resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Private IP allocation method.
-     */
-    @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IpAllocationMethod privateIpAllocationMethod;
+    private BastionHostIpConfigurationPropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
@@ -100,13 +90,20 @@ public class BastionHostIpConfiguration extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public BastionHostIpConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the subnet property: Reference of the subnet resource.
      *
      * @return the subnet value.
      */
     public SubResource subnet() {
-        return this.subnet;
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -116,7 +113,10 @@ public class BastionHostIpConfiguration extends SubResource {
      * @return the BastionHostIpConfiguration object itself.
      */
     public BastionHostIpConfiguration withSubnet(SubResource subnet) {
-        this.subnet = subnet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostIpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -126,7 +126,7 @@ public class BastionHostIpConfiguration extends SubResource {
      * @return the publicIpAddress value.
      */
     public SubResource publicIpAddress() {
-        return this.publicIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddress();
     }
 
     /**
@@ -136,7 +136,10 @@ public class BastionHostIpConfiguration extends SubResource {
      * @return the BastionHostIpConfiguration object itself.
      */
     public BastionHostIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
-        this.publicIpAddress = publicIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostIpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withPublicIpAddress(publicIpAddress);
         return this;
     }
 
@@ -146,7 +149,7 @@ public class BastionHostIpConfiguration extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -155,7 +158,7 @@ public class BastionHostIpConfiguration extends SubResource {
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
-        return this.privateIpAllocationMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAllocationMethod();
     }
 
     /**
@@ -165,14 +168,10 @@ public class BastionHostIpConfiguration extends SubResource {
      * @return the BastionHostIpConfiguration object itself.
      */
     public BastionHostIpConfiguration withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
-        this.privateIpAllocationMethod = privateIpAllocationMethod;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public BastionHostIpConfiguration withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostIpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
     }
 
@@ -182,5 +181,8 @@ public class BastionHostIpConfiguration extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

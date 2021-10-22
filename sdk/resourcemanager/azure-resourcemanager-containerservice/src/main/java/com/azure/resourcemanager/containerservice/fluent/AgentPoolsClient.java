@@ -149,7 +149,7 @@ public interface AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return agent Pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters);
 
@@ -165,7 +165,7 @@ public interface AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return agent Pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters);
 
@@ -182,7 +182,7 @@ public interface AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return agent Pool.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
         String resourceGroupName,
         String resourceName,
@@ -269,7 +269,7 @@ public interface AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String resourceName, String agentPoolName);
 
@@ -284,7 +284,7 @@ public interface AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String agentPoolName);
 
     /**
@@ -299,7 +299,7 @@ public interface AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, String agentPoolName, Context context);
 
@@ -494,7 +494,7 @@ public interface AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersionAsync(
         String resourceGroupName, String resourceName, String agentPoolName);
 
@@ -511,7 +511,7 @@ public interface AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersion(
         String resourceGroupName, String resourceName, String agentPoolName);
 
@@ -529,7 +529,7 @@ public interface AgentPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpgradeNodeImageVersion(
         String resourceGroupName, String resourceName, String agentPoolName, Context context);
 

@@ -7,21 +7,31 @@ import com.azure.core.annotation.Immutable;
 
 /** The group call locator. */
 @Immutable
-public final class GroupCallLocator extends CallLocator
-{
+public final class GroupCallLocator extends CallLocator {
+    /**
+     * The group call id.
+     */
     private final String groupCallId;
 
-    /// <summary> The group call id. </summary>
-    public final String getGroupCallId()
-    {
+    /**
+     * Get the group call id.
+     *
+     * @return the group call id of the GroupCallLocator object itself
+     */
+    public String getGroupCallId() {
         return groupCallId;
     }
 
     /**
      * Initializes a new instance of ServerCallLocator
+     *
+     * @param groupCallId The group call id.
+     * @throws IllegalArgumentException if either parameter is null.
      */
-    public GroupCallLocator(String groupCallId)
-    {
+    public GroupCallLocator(String groupCallId) {
+        if (groupCallId == null) {
+            throw new IllegalArgumentException("serverCallId cannot be null");
+        }
         this.groupCallId = groupCallId;
     }
 }

@@ -6,6 +6,7 @@ package com.azure.communication.callingserver.implementation.converters;
 import java.util.ArrayList;
 
 import com.azure.communication.callingserver.implementation.models.CallLocatorModel;
+import com.azure.communication.callingserver.implementation.models.CallLocatorKindModel;
 import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.GroupCallLocator;
 import com.azure.communication.callingserver.models.ServerCallLocator;
@@ -49,13 +50,16 @@ public class CallLocatorConverter {
         if (callLocator instanceof ServerCallLocator) {
             ServerCallLocator serverCallLocator = (ServerCallLocator) callLocator;
             return new CallLocatorModel()
-                .setServerCallId(serverCallLocator.getServerCallId());
+                .setServerCallId(serverCallLocator.getServerCallId())
+                .setKind(CallLocatorKindModel.SERVER_CALL_LOCATOR);
+
         }
 
         if (callLocator instanceof GroupCallLocator) {
             GroupCallLocator groupCallLocator = (GroupCallLocator) callLocator;
             return new CallLocatorModel()
-                .setGroupCallId(groupCallLocator.getGroupCallId());
+                .setGroupCallId(groupCallLocator.getGroupCallId())
+                .setKind(CallLocatorKindModel.GROUP_CALL_LOCATOR);
         }
 
         throw new IllegalArgumentException(String.format("Unknown identifier class '%s'", callLocator.getClass().getName()));

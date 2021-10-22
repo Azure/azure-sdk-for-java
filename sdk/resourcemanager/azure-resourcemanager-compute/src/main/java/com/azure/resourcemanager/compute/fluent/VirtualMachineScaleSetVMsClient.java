@@ -19,6 +19,7 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMI
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMInstanceViewInner;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
+import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMReimageParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,8 +32,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -40,7 +40,10 @@ public interface VirtualMachineScaleSetVMsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk);
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -48,16 +51,18 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginReimageAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk);
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -65,16 +70,18 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk);
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -82,17 +89,20 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimage(
-        String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context);
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -100,15 +110,18 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk);
+    Mono<Void> reimageAsync(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -130,14 +143,17 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk);
+    void reimage(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput);
 
     /**
      * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
@@ -158,15 +174,19 @@ public interface VirtualMachineScaleSetVMsClient {
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
-     * @param tempDisk Specifies whether to reimage temp disk. Default value: false. Note: This temp disk reimage
-     *     parameter is only supported for VM/VMSS with Ephemeral OS disk.
+     * @param vmScaleSetVMReimageInput Parameters for the Reimaging Virtual machine in ScaleSet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reimage(String resourceGroupName, String vmScaleSetName, String instanceId, Boolean tempDisk, Context context);
+    void reimage(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        VirtualMachineScaleSetVMReimageParameters vmScaleSetVMReimageInput,
+        Context context);
 
     /**
      * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is
@@ -196,7 +216,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginReimageAllAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -212,7 +232,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimageAll(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -229,7 +249,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginReimageAll(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -305,7 +325,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -321,7 +341,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeallocate(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -338,7 +358,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeallocate(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -414,7 +434,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual machine scale set virtual machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdateAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, VirtualMachineScaleSetVMInner parameters);
 
@@ -430,7 +450,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual machine scale set virtual machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdate(
         String resourceGroupName, String vmScaleSetName, String instanceId, VirtualMachineScaleSetVMInner parameters);
 
@@ -447,7 +467,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a virtual machine scale set virtual machine.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMInner>, VirtualMachineScaleSetVMInner> beginUpdate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -538,7 +558,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion);
 
@@ -555,7 +575,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion);
 
@@ -573,7 +593,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean forceDeletion, Context context);
 
@@ -895,7 +915,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown);
 
@@ -914,7 +934,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown);
 
@@ -934,7 +954,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName, String vmScaleSetName, String instanceId, Boolean skipShutdown, Context context);
 
@@ -1047,7 +1067,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1062,7 +1082,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
@@ -1077,7 +1097,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1148,7 +1168,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1163,7 +1183,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
@@ -1178,7 +1198,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1249,7 +1269,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRedeployAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1264,7 +1284,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRedeploy(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1280,7 +1300,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRedeploy(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1440,7 +1460,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1455,7 +1475,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
         String resourceGroupName, String vmScaleSetName, String instanceId);
 
@@ -1471,7 +1491,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
         String resourceGroupName, String vmScaleSetName, String instanceId, Context context);
 
@@ -1602,7 +1622,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
         String resourceGroupName, String vmScaleSetName, String instanceId, RunCommandInput parameters);
 
@@ -1618,7 +1638,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String vmScaleSetName, String instanceId, RunCommandInput parameters);
 
@@ -1635,7 +1655,7 @@ public interface VirtualMachineScaleSetVMsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName,
         String vmScaleSetName,

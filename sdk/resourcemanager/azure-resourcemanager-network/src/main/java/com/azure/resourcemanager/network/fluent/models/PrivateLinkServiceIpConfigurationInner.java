@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
@@ -15,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The private link service ip configuration. */
-@JsonFlatten
 @Fluent
-public class PrivateLinkServiceIpConfigurationInner extends SubResource {
+public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceIpConfigurationInner.class);
+
+    /*
+     * Properties of the private link service ip configuration.
+     */
+    @JsonProperty(value = "properties")
+    private PrivateLinkServiceIpConfigurationPropertiesInner innerProperties;
 
     /*
      * The name of private link service ip configuration.
@@ -38,42 +42,14 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The private IP address of the IP configuration.
+    /**
+     * Get the innerProperties property: Properties of the private link service ip configuration.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.privateIPAddress")
-    private String privateIpAddress;
-
-    /*
-     * The private IP address allocation method.
-     */
-    @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IpAllocationMethod privateIpAllocationMethod;
-
-    /*
-     * The reference to the subnet resource.
-     */
-    @JsonProperty(value = "properties.subnet")
-    private SubnetInner subnet;
-
-    /*
-     * Whether the ip configuration is primary or not.
-     */
-    @JsonProperty(value = "properties.primary")
-    private Boolean primary;
-
-    /*
-     * The provisioning state of the private link service IP configuration
-     * resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
-     */
-    @JsonProperty(value = "properties.privateIPAddressVersion")
-    private IpVersion privateIpAddressVersion;
+    private PrivateLinkServiceIpConfigurationPropertiesInner innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of private link service ip configuration.
@@ -113,13 +89,20 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PrivateLinkServiceIpConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
      *
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
-        return this.privateIpAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddress();
     }
 
     /**
@@ -129,7 +112,10 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
     public PrivateLinkServiceIpConfigurationInner withPrivateIpAddress(String privateIpAddress) {
-        this.privateIpAddress = privateIpAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkServiceIpConfigurationPropertiesInner();
+        }
+        this.innerProperties().withPrivateIpAddress(privateIpAddress);
         return this;
     }
 
@@ -139,7 +125,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
-        return this.privateIpAllocationMethod;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAllocationMethod();
     }
 
     /**
@@ -150,7 +136,10 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      */
     public PrivateLinkServiceIpConfigurationInner withPrivateIpAllocationMethod(
         IpAllocationMethod privateIpAllocationMethod) {
-        this.privateIpAllocationMethod = privateIpAllocationMethod;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkServiceIpConfigurationPropertiesInner();
+        }
+        this.innerProperties().withPrivateIpAllocationMethod(privateIpAllocationMethod);
         return this;
     }
 
@@ -160,7 +149,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * @return the subnet value.
      */
     public SubnetInner subnet() {
-        return this.subnet;
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -170,7 +159,10 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
     public PrivateLinkServiceIpConfigurationInner withSubnet(SubnetInner subnet) {
-        this.subnet = subnet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkServiceIpConfigurationPropertiesInner();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -180,7 +172,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * @return the primary value.
      */
     public Boolean primary() {
-        return this.primary;
+        return this.innerProperties() == null ? null : this.innerProperties().primary();
     }
 
     /**
@@ -190,7 +182,10 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
     public PrivateLinkServiceIpConfigurationInner withPrimary(Boolean primary) {
-        this.primary = primary;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkServiceIpConfigurationPropertiesInner();
+        }
+        this.innerProperties().withPrimary(primary);
         return this;
     }
 
@@ -200,7 +195,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -209,7 +204,7 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * @return the privateIpAddressVersion value.
      */
     public IpVersion privateIpAddressVersion() {
-        return this.privateIpAddressVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().privateIpAddressVersion();
     }
 
     /**
@@ -219,14 +214,10 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * @return the PrivateLinkServiceIpConfigurationInner object itself.
      */
     public PrivateLinkServiceIpConfigurationInner withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
-        this.privateIpAddressVersion = privateIpAddressVersion;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PrivateLinkServiceIpConfigurationInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateLinkServiceIpConfigurationPropertiesInner();
+        }
+        this.innerProperties().withPrivateIpAddressVersion(privateIpAddressVersion);
         return this;
     }
 
@@ -236,8 +227,8 @@ public class PrivateLinkServiceIpConfigurationInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (subnet() != null) {
-            subnet().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

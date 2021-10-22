@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.commons.lang3.time.DateUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
@@ -19,7 +18,10 @@ class State {
 
     State(List<ConfigurationSetting> watchKeys, int refreshInterval, String key) {
         this.watchKeys = watchKeys;
-        nextRefreshCheck = DateUtils.addSeconds(new Date(), refreshInterval);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.SECOND, refreshInterval);
+        nextRefreshCheck = calendar.getTime();
         this.key = key;
     }
 

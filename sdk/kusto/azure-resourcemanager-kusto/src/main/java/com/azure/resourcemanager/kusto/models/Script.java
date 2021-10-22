@@ -176,10 +176,7 @@ public interface Script {
 
     /** The template for Script update. */
     interface Update
-        extends UpdateStages.WithScriptUrl,
-            UpdateStages.WithScriptUrlSasToken,
-            UpdateStages.WithForceUpdateTag,
-            UpdateStages.WithContinueOnErrors {
+        extends UpdateStages.WithScriptUrl, UpdateStages.WithForceUpdateTag, UpdateStages.WithContinueOnErrors {
         /**
          * Executes the update request.
          *
@@ -206,16 +203,6 @@ public interface Script {
              * @return the next definition stage.
              */
             Update withScriptUrl(String scriptUrl);
-        }
-        /** The stage of the Script update allowing to specify scriptUrlSasToken. */
-        interface WithScriptUrlSasToken {
-            /**
-             * Specifies the scriptUrlSasToken property: The SaS token..
-             *
-             * @param scriptUrlSasToken The SaS token.
-             * @return the next definition stage.
-             */
-            Update withScriptUrlSasToken(String scriptUrlSasToken);
         }
         /** The stage of the Script update allowing to specify forceUpdateTag. */
         interface WithForceUpdateTag {

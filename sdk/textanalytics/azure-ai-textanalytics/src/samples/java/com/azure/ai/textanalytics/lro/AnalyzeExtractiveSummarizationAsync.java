@@ -63,7 +63,7 @@ public class AnalyzeExtractiveSummarizationAsync {
                 .setExtractSummaryActions(
                     new ExtractSummaryAction()
                         .setMaxSentenceCount(4)
-                        .setSentencesOrderBy(SummarySentencesOrder.RANK)),
+                        .setOrderBy(SummarySentencesOrder.RANK)),
             "en",
             new AnalyzeActionsOptions())
             .flatMap(result -> {

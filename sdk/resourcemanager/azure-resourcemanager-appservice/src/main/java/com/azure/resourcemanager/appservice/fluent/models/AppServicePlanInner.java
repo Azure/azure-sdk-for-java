@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.models.ExtendedLocation;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
@@ -19,10 +19,15 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** App Service plan. */
-@JsonFlatten
 @Fluent
-public class AppServicePlanInner extends Resource {
+public final class AppServicePlanInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServicePlanInner.class);
+
+    /*
+     * AppServicePlan resource specific properties
+     */
+    @JsonProperty(value = "properties")
+    private AppServicePlanProperties innerProperties;
 
     /*
      * Description of a SKU for a scalable resource.
@@ -31,141 +36,25 @@ public class AppServicePlanInner extends Resource {
     private SkuDescription sku;
 
     /*
-     * Target worker tier assigned to the App Service plan.
+     * Extended Location.
      */
-    @JsonProperty(value = "properties.workerTierName")
-    private String workerTierName;
-
-    /*
-     * App Service plan status.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private StatusOptions status;
-
-    /*
-     * App Service plan subscription.
-     */
-    @JsonProperty(value = "properties.subscription", access = JsonProperty.Access.WRITE_ONLY)
-    private String subscription;
-
-    /*
-     * Specification for the App Service Environment to use for the App Service
-     * plan.
-     */
-    @JsonProperty(value = "properties.hostingEnvironmentProfile")
-    private HostingEnvironmentProfile hostingEnvironmentProfile;
-
-    /*
-     * Maximum number of instances that can be assigned to this App Service
-     * plan.
-     */
-    @JsonProperty(value = "properties.maximumNumberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer maximumNumberOfWorkers;
-
-    /*
-     * Geographical location for the App Service plan.
-     */
-    @JsonProperty(value = "properties.geoRegion", access = JsonProperty.Access.WRITE_ONLY)
-    private String geoRegion;
-
-    /*
-     * If <code>true</code>, apps assigned to this App Service plan can be
-     * scaled independently.
-     * If <code>false</code>, apps assigned to this App Service plan will scale
-     * to all instances of the plan.
-     */
-    @JsonProperty(value = "properties.perSiteScaling")
-    private Boolean perSiteScaling;
-
-    /*
-     * Maximum number of total workers allowed for this ElasticScaleEnabled App
-     * Service Plan
-     */
-    @JsonProperty(value = "properties.maximumElasticWorkerCount")
-    private Integer maximumElasticWorkerCount;
-
-    /*
-     * Number of apps assigned to this App Service plan.
-     */
-    @JsonProperty(value = "properties.numberOfSites", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer numberOfSites;
-
-    /*
-     * If <code>true</code>, this App Service Plan owns spot instances.
-     */
-    @JsonProperty(value = "properties.isSpot")
-    private Boolean isSpot;
-
-    /*
-     * The time when the server farm expires. Valid only if it is a spot server
-     * farm.
-     */
-    @JsonProperty(value = "properties.spotExpirationTime")
-    private OffsetDateTime spotExpirationTime;
-
-    /*
-     * The time when the server farm free offer expires.
-     */
-    @JsonProperty(value = "properties.freeOfferExpirationTime")
-    private OffsetDateTime freeOfferExpirationTime;
-
-    /*
-     * Resource group of the App Service plan.
-     */
-    @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceGroup;
-
-    /*
-     * If Linux app service plan <code>true</code>, <code>false</code>
-     * otherwise.
-     */
-    @JsonProperty(value = "properties.reserved")
-    private Boolean reserved;
-
-    /*
-     * Obsolete: If Hyper-V container app service plan <code>true</code>,
-     * <code>false</code> otherwise.
-     */
-    @JsonProperty(value = "properties.isXenon")
-    private Boolean isXenon;
-
-    /*
-     * If Hyper-V container app service plan <code>true</code>,
-     * <code>false</code> otherwise.
-     */
-    @JsonProperty(value = "properties.hyperV")
-    private Boolean hyperV;
-
-    /*
-     * Scaling worker count.
-     */
-    @JsonProperty(value = "properties.targetWorkerCount")
-    private Integer targetWorkerCount;
-
-    /*
-     * Scaling worker size ID.
-     */
-    @JsonProperty(value = "properties.targetWorkerSizeId")
-    private Integer targetWorkerSizeId;
-
-    /*
-     * Provisioning state of the App Service Plan.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Specification for the Kubernetes Environment to use for the App Service
-     * plan.
-     */
-    @JsonProperty(value = "properties.kubeEnvironmentProfile")
-    private KubeEnvironmentProfile kubeEnvironmentProfile;
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * Kind of resource.
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /**
+     * Get the innerProperties property: AppServicePlan resource specific properties.
+     *
+     * @return the innerProperties value.
+     */
+    private AppServicePlanProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the sku property: Description of a SKU for a scalable resource.
@@ -188,344 +77,22 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the workerTierName property: Target worker tier assigned to the App Service plan.
+     * Get the extendedLocation property: Extended Location.
      *
-     * @return the workerTierName value.
+     * @return the extendedLocation value.
      */
-    public String workerTierName() {
-        return this.workerTierName;
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
     }
 
     /**
-     * Set the workerTierName property: Target worker tier assigned to the App Service plan.
+     * Set the extendedLocation property: Extended Location.
      *
-     * @param workerTierName the workerTierName value to set.
+     * @param extendedLocation the extendedLocation value to set.
      * @return the AppServicePlanInner object itself.
      */
-    public AppServicePlanInner withWorkerTierName(String workerTierName) {
-        this.workerTierName = workerTierName;
-        return this;
-    }
-
-    /**
-     * Get the status property: App Service plan status.
-     *
-     * @return the status value.
-     */
-    public StatusOptions status() {
-        return this.status;
-    }
-
-    /**
-     * Get the subscription property: App Service plan subscription.
-     *
-     * @return the subscription value.
-     */
-    public String subscription() {
-        return this.subscription;
-    }
-
-    /**
-     * Get the hostingEnvironmentProfile property: Specification for the App Service Environment to use for the App
-     * Service plan.
-     *
-     * @return the hostingEnvironmentProfile value.
-     */
-    public HostingEnvironmentProfile hostingEnvironmentProfile() {
-        return this.hostingEnvironmentProfile;
-    }
-
-    /**
-     * Set the hostingEnvironmentProfile property: Specification for the App Service Environment to use for the App
-     * Service plan.
-     *
-     * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
-        this.hostingEnvironmentProfile = hostingEnvironmentProfile;
-        return this;
-    }
-
-    /**
-     * Get the maximumNumberOfWorkers property: Maximum number of instances that can be assigned to this App Service
-     * plan.
-     *
-     * @return the maximumNumberOfWorkers value.
-     */
-    public Integer maximumNumberOfWorkers() {
-        return this.maximumNumberOfWorkers;
-    }
-
-    /**
-     * Get the geoRegion property: Geographical location for the App Service plan.
-     *
-     * @return the geoRegion value.
-     */
-    public String geoRegion() {
-        return this.geoRegion;
-    }
-
-    /**
-     * Get the perSiteScaling property: If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan can be
-     * scaled independently. If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service plan will scale to all
-     * instances of the plan.
-     *
-     * @return the perSiteScaling value.
-     */
-    public Boolean perSiteScaling() {
-        return this.perSiteScaling;
-    }
-
-    /**
-     * Set the perSiteScaling property: If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan can be
-     * scaled independently. If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service plan will scale to all
-     * instances of the plan.
-     *
-     * @param perSiteScaling the perSiteScaling value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withPerSiteScaling(Boolean perSiteScaling) {
-        this.perSiteScaling = perSiteScaling;
-        return this;
-    }
-
-    /**
-     * Get the maximumElasticWorkerCount property: Maximum number of total workers allowed for this ElasticScaleEnabled
-     * App Service Plan.
-     *
-     * @return the maximumElasticWorkerCount value.
-     */
-    public Integer maximumElasticWorkerCount() {
-        return this.maximumElasticWorkerCount;
-    }
-
-    /**
-     * Set the maximumElasticWorkerCount property: Maximum number of total workers allowed for this ElasticScaleEnabled
-     * App Service Plan.
-     *
-     * @param maximumElasticWorkerCount the maximumElasticWorkerCount value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withMaximumElasticWorkerCount(Integer maximumElasticWorkerCount) {
-        this.maximumElasticWorkerCount = maximumElasticWorkerCount;
-        return this;
-    }
-
-    /**
-     * Get the numberOfSites property: Number of apps assigned to this App Service plan.
-     *
-     * @return the numberOfSites value.
-     */
-    public Integer numberOfSites() {
-        return this.numberOfSites;
-    }
-
-    /**
-     * Get the isSpot property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan owns spot instances.
-     *
-     * @return the isSpot value.
-     */
-    public Boolean isSpot() {
-        return this.isSpot;
-    }
-
-    /**
-     * Set the isSpot property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan owns spot instances.
-     *
-     * @param isSpot the isSpot value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withIsSpot(Boolean isSpot) {
-        this.isSpot = isSpot;
-        return this;
-    }
-
-    /**
-     * Get the spotExpirationTime property: The time when the server farm expires. Valid only if it is a spot server
-     * farm.
-     *
-     * @return the spotExpirationTime value.
-     */
-    public OffsetDateTime spotExpirationTime() {
-        return this.spotExpirationTime;
-    }
-
-    /**
-     * Set the spotExpirationTime property: The time when the server farm expires. Valid only if it is a spot server
-     * farm.
-     *
-     * @param spotExpirationTime the spotExpirationTime value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withSpotExpirationTime(OffsetDateTime spotExpirationTime) {
-        this.spotExpirationTime = spotExpirationTime;
-        return this;
-    }
-
-    /**
-     * Get the freeOfferExpirationTime property: The time when the server farm free offer expires.
-     *
-     * @return the freeOfferExpirationTime value.
-     */
-    public OffsetDateTime freeOfferExpirationTime() {
-        return this.freeOfferExpirationTime;
-    }
-
-    /**
-     * Set the freeOfferExpirationTime property: The time when the server farm free offer expires.
-     *
-     * @param freeOfferExpirationTime the freeOfferExpirationTime value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withFreeOfferExpirationTime(OffsetDateTime freeOfferExpirationTime) {
-        this.freeOfferExpirationTime = freeOfferExpirationTime;
-        return this;
-    }
-
-    /**
-     * Get the resourceGroup property: Resource group of the App Service plan.
-     *
-     * @return the resourceGroup value.
-     */
-    public String resourceGroup() {
-        return this.resourceGroup;
-    }
-
-    /**
-     * Get the reserved property: If Linux app service plan &lt;code&gt;true&lt;/code&gt;,
-     * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
-     * @return the reserved value.
-     */
-    public Boolean reserved() {
-        return this.reserved;
-    }
-
-    /**
-     * Set the reserved property: If Linux app service plan &lt;code&gt;true&lt;/code&gt;,
-     * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
-     * @param reserved the reserved value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withReserved(Boolean reserved) {
-        this.reserved = reserved;
-        return this;
-    }
-
-    /**
-     * Get the isXenon property: Obsolete: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
-     * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
-     * @return the isXenon value.
-     */
-    public Boolean isXenon() {
-        return this.isXenon;
-    }
-
-    /**
-     * Set the isXenon property: Obsolete: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
-     * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
-     * @param isXenon the isXenon value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withIsXenon(Boolean isXenon) {
-        this.isXenon = isXenon;
-        return this;
-    }
-
-    /**
-     * Get the hyperV property: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
-     * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
-     * @return the hyperV value.
-     */
-    public Boolean hyperV() {
-        return this.hyperV;
-    }
-
-    /**
-     * Set the hyperV property: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
-     * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
-     * @param hyperV the hyperV value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withHyperV(Boolean hyperV) {
-        this.hyperV = hyperV;
-        return this;
-    }
-
-    /**
-     * Get the targetWorkerCount property: Scaling worker count.
-     *
-     * @return the targetWorkerCount value.
-     */
-    public Integer targetWorkerCount() {
-        return this.targetWorkerCount;
-    }
-
-    /**
-     * Set the targetWorkerCount property: Scaling worker count.
-     *
-     * @param targetWorkerCount the targetWorkerCount value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withTargetWorkerCount(Integer targetWorkerCount) {
-        this.targetWorkerCount = targetWorkerCount;
-        return this;
-    }
-
-    /**
-     * Get the targetWorkerSizeId property: Scaling worker size ID.
-     *
-     * @return the targetWorkerSizeId value.
-     */
-    public Integer targetWorkerSizeId() {
-        return this.targetWorkerSizeId;
-    }
-
-    /**
-     * Set the targetWorkerSizeId property: Scaling worker size ID.
-     *
-     * @param targetWorkerSizeId the targetWorkerSizeId value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withTargetWorkerSizeId(Integer targetWorkerSizeId) {
-        this.targetWorkerSizeId = targetWorkerSizeId;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the App Service Plan.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
-     * plan.
-     *
-     * @return the kubeEnvironmentProfile value.
-     */
-    public KubeEnvironmentProfile kubeEnvironmentProfile() {
-        return this.kubeEnvironmentProfile;
-    }
-
-    /**
-     * Set the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
-     * plan.
-     *
-     * @param kubeEnvironmentProfile the kubeEnvironmentProfile value to set.
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withKubeEnvironmentProfile(KubeEnvironmentProfile kubeEnvironmentProfile) {
-        this.kubeEnvironmentProfile = kubeEnvironmentProfile;
+    public AppServicePlanInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -564,19 +131,452 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
+     * Get the workerTierName property: Target worker tier assigned to the App Service plan.
+     *
+     * @return the workerTierName value.
+     */
+    public String workerTierName() {
+        return this.innerProperties() == null ? null : this.innerProperties().workerTierName();
+    }
+
+    /**
+     * Set the workerTierName property: Target worker tier assigned to the App Service plan.
+     *
+     * @param workerTierName the workerTierName value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withWorkerTierName(String workerTierName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withWorkerTierName(workerTierName);
+        return this;
+    }
+
+    /**
+     * Get the status property: App Service plan status.
+     *
+     * @return the status value.
+     */
+    public StatusOptions status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the subscription property: App Service plan subscription.
+     *
+     * @return the subscription value.
+     */
+    public String subscription() {
+        return this.innerProperties() == null ? null : this.innerProperties().subscription();
+    }
+
+    /**
+     * Get the hostingEnvironmentProfile property: Specification for the App Service Environment to use for the App
+     * Service plan.
+     *
+     * @return the hostingEnvironmentProfile value.
+     */
+    public HostingEnvironmentProfile hostingEnvironmentProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostingEnvironmentProfile();
+    }
+
+    /**
+     * Set the hostingEnvironmentProfile property: Specification for the App Service Environment to use for the App
+     * Service plan.
+     *
+     * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withHostingEnvironmentProfile(hostingEnvironmentProfile);
+        return this;
+    }
+
+    /**
+     * Get the maximumNumberOfWorkers property: Maximum number of instances that can be assigned to this App Service
+     * plan.
+     *
+     * @return the maximumNumberOfWorkers value.
+     */
+    public Integer maximumNumberOfWorkers() {
+        return this.innerProperties() == null ? null : this.innerProperties().maximumNumberOfWorkers();
+    }
+
+    /**
+     * Get the geoRegion property: Geographical location for the App Service plan.
+     *
+     * @return the geoRegion value.
+     */
+    public String geoRegion() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoRegion();
+    }
+
+    /**
+     * Get the perSiteScaling property: If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan can be
+     * scaled independently. If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service plan will scale to all
+     * instances of the plan.
+     *
+     * @return the perSiteScaling value.
+     */
+    public Boolean perSiteScaling() {
+        return this.innerProperties() == null ? null : this.innerProperties().perSiteScaling();
+    }
+
+    /**
+     * Set the perSiteScaling property: If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service plan can be
+     * scaled independently. If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service plan will scale to all
+     * instances of the plan.
+     *
+     * @param perSiteScaling the perSiteScaling value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withPerSiteScaling(Boolean perSiteScaling) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withPerSiteScaling(perSiteScaling);
+        return this;
+    }
+
+    /**
+     * Get the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
+     * ServerFarm was ElasticPremium sku.
+     *
+     * @return the elasticScaleEnabled value.
+     */
+    public Boolean elasticScaleEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().elasticScaleEnabled();
+    }
+
+    /**
+     * Set the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
+     * ServerFarm was ElasticPremium sku.
+     *
+     * @param elasticScaleEnabled the elasticScaleEnabled value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withElasticScaleEnabled(Boolean elasticScaleEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withElasticScaleEnabled(elasticScaleEnabled);
+        return this;
+    }
+
+    /**
+     * Get the maximumElasticWorkerCount property: Maximum number of total workers allowed for this ElasticScaleEnabled
+     * App Service Plan.
+     *
+     * @return the maximumElasticWorkerCount value.
+     */
+    public Integer maximumElasticWorkerCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().maximumElasticWorkerCount();
+    }
+
+    /**
+     * Set the maximumElasticWorkerCount property: Maximum number of total workers allowed for this ElasticScaleEnabled
+     * App Service Plan.
+     *
+     * @param maximumElasticWorkerCount the maximumElasticWorkerCount value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withMaximumElasticWorkerCount(Integer maximumElasticWorkerCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withMaximumElasticWorkerCount(maximumElasticWorkerCount);
+        return this;
+    }
+
+    /**
+     * Get the numberOfSites property: Number of apps assigned to this App Service plan.
+     *
+     * @return the numberOfSites value.
+     */
+    public Integer numberOfSites() {
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfSites();
+    }
+
+    /**
+     * Get the isSpot property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan owns spot instances.
+     *
+     * @return the isSpot value.
+     */
+    public Boolean isSpot() {
+        return this.innerProperties() == null ? null : this.innerProperties().isSpot();
+    }
+
+    /**
+     * Set the isSpot property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan owns spot instances.
+     *
+     * @param isSpot the isSpot value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withIsSpot(Boolean isSpot) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withIsSpot(isSpot);
+        return this;
+    }
+
+    /**
+     * Get the spotExpirationTime property: The time when the server farm expires. Valid only if it is a spot server
+     * farm.
+     *
+     * @return the spotExpirationTime value.
+     */
+    public OffsetDateTime spotExpirationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().spotExpirationTime();
+    }
+
+    /**
+     * Set the spotExpirationTime property: The time when the server farm expires. Valid only if it is a spot server
+     * farm.
+     *
+     * @param spotExpirationTime the spotExpirationTime value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withSpotExpirationTime(OffsetDateTime spotExpirationTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withSpotExpirationTime(spotExpirationTime);
+        return this;
+    }
+
+    /**
+     * Get the freeOfferExpirationTime property: The time when the server farm free offer expires.
+     *
+     * @return the freeOfferExpirationTime value.
+     */
+    public OffsetDateTime freeOfferExpirationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().freeOfferExpirationTime();
+    }
+
+    /**
+     * Set the freeOfferExpirationTime property: The time when the server farm free offer expires.
+     *
+     * @param freeOfferExpirationTime the freeOfferExpirationTime value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withFreeOfferExpirationTime(OffsetDateTime freeOfferExpirationTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withFreeOfferExpirationTime(freeOfferExpirationTime);
+        return this;
+    }
+
+    /**
+     * Get the resourceGroup property: Resource group of the App Service plan.
+     *
+     * @return the resourceGroup value.
+     */
+    public String resourceGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGroup();
+    }
+
+    /**
+     * Get the reserved property: If Linux app service plan &lt;code&gt;true&lt;/code&gt;,
+     * &lt;code&gt;false&lt;/code&gt; otherwise.
+     *
+     * @return the reserved value.
+     */
+    public Boolean reserved() {
+        return this.innerProperties() == null ? null : this.innerProperties().reserved();
+    }
+
+    /**
+     * Set the reserved property: If Linux app service plan &lt;code&gt;true&lt;/code&gt;,
+     * &lt;code&gt;false&lt;/code&gt; otherwise.
+     *
+     * @param reserved the reserved value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withReserved(Boolean reserved) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withReserved(reserved);
+        return this;
+    }
+
+    /**
+     * Get the isXenon property: Obsolete: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
+     * &lt;code&gt;false&lt;/code&gt; otherwise.
+     *
+     * @return the isXenon value.
+     */
+    public Boolean isXenon() {
+        return this.innerProperties() == null ? null : this.innerProperties().isXenon();
+    }
+
+    /**
+     * Set the isXenon property: Obsolete: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
+     * &lt;code&gt;false&lt;/code&gt; otherwise.
+     *
+     * @param isXenon the isXenon value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withIsXenon(Boolean isXenon) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withIsXenon(isXenon);
+        return this;
+    }
+
+    /**
+     * Get the hyperV property: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
+     * &lt;code&gt;false&lt;/code&gt; otherwise.
+     *
+     * @return the hyperV value.
+     */
+    public Boolean hyperV() {
+        return this.innerProperties() == null ? null : this.innerProperties().hyperV();
+    }
+
+    /**
+     * Set the hyperV property: If Hyper-V container app service plan &lt;code&gt;true&lt;/code&gt;,
+     * &lt;code&gt;false&lt;/code&gt; otherwise.
+     *
+     * @param hyperV the hyperV value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withHyperV(Boolean hyperV) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withHyperV(hyperV);
+        return this;
+    }
+
+    /**
+     * Get the targetWorkerCount property: Scaling worker count.
+     *
+     * @return the targetWorkerCount value.
+     */
+    public Integer targetWorkerCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetWorkerCount();
+    }
+
+    /**
+     * Set the targetWorkerCount property: Scaling worker count.
+     *
+     * @param targetWorkerCount the targetWorkerCount value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withTargetWorkerCount(Integer targetWorkerCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withTargetWorkerCount(targetWorkerCount);
+        return this;
+    }
+
+    /**
+     * Get the targetWorkerSizeId property: Scaling worker size ID.
+     *
+     * @return the targetWorkerSizeId value.
+     */
+    public Integer targetWorkerSizeId() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetWorkerSizeId();
+    }
+
+    /**
+     * Set the targetWorkerSizeId property: Scaling worker size ID.
+     *
+     * @param targetWorkerSizeId the targetWorkerSizeId value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withTargetWorkerSizeId(Integer targetWorkerSizeId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withTargetWorkerSizeId(targetWorkerSizeId);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the App Service Plan.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
+     * plan.
+     *
+     * @return the kubeEnvironmentProfile value.
+     */
+    public KubeEnvironmentProfile kubeEnvironmentProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().kubeEnvironmentProfile();
+    }
+
+    /**
+     * Set the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
+     * plan.
+     *
+     * @param kubeEnvironmentProfile the kubeEnvironmentProfile value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withKubeEnvironmentProfile(KubeEnvironmentProfile kubeEnvironmentProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withKubeEnvironmentProfile(kubeEnvironmentProfile);
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
+     * zone balancing. If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone
+     * balancing.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
+    }
+
+    /**
+     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
+     * zone balancing. If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone
+     * balancing.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withZoneRedundant(Boolean zoneRedundant) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppServicePlanProperties();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }
-        if (hostingEnvironmentProfile() != null) {
-            hostingEnvironmentProfile().validate();
-        }
-        if (kubeEnvironmentProfile() != null) {
-            kubeEnvironmentProfile().validate();
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
         }
     }
 }

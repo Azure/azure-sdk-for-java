@@ -13,7 +13,7 @@ public final class TransferCallRequest {
     /*
      * The identity of the target where call should be transfer to.
      */
-    @JsonProperty(value = "targetParticipant", required = true)
+    @JsonProperty(value = "targetParticipant")
     private CommunicationIdentifierModel targetParticipant;
 
     /*
@@ -28,6 +28,18 @@ public final class TransferCallRequest {
      */
     @JsonProperty(value = "userToUserInformation")
     private String userToUserInformation;
+
+    /*
+     * The operation context.
+     */
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
+
+    /*
+     * The callback URI.
+     */
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
 
     /**
      * Get the targetParticipant property: The identity of the target where call should be transfer to.
@@ -88,6 +100,46 @@ public final class TransferCallRequest {
      */
     public TransferCallRequest setUserToUserInformation(String userToUserInformation) {
         this.userToUserInformation = userToUserInformation;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The operation context.
+     *
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The operation context.
+     *
+     * @param operationContext the operationContext value to set.
+     * @return the TransferCallRequest object itself.
+     */
+    public TransferCallRequest setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The callback URI.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The callback URI.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the TransferCallRequest object itself.
+     */
+    public TransferCallRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 }

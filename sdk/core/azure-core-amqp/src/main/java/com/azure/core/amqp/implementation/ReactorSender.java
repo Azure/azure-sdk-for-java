@@ -403,10 +403,18 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         return Mono.fromRunnable(() -> {
             try {
                 reactorProvider.getReactorDispatcher().invoke(closeWork);
-            } catch (IOException | RejectedExecutionException e) {
-                logger.info("connectionId[{}] entityPath[{}] linkName[{}]: Could not schedule close work. Running"
-                    + " manually.", handler.getConnectionId(), entityPath, getLinkName(), e);
+            } catch (IOException e) {
+                logger.warning("connectionId[{}] entityPath[{}] linkName[{}]: Could not schedule close work. Running"
+                    + " manually. And completing close.", handler.getConnectionId(), entityPath, getLinkName(), e);
+
                 closeWork.run();
+                handleClose();
+            } catch (RejectedExecutionException e) {
+                logger.info("connectionId[{}] entityPath[{}] linkName[{}]: RejectedExecutionException scheduling close"
+                    + " work. And completing close.", handler.getConnectionId(), entityPath, getLinkName());
+
+                closeWork.run();
+                handleClose();
             }
         }).then(isClosedMono.asMono())
             .publishOn(Schedulers.boundedElastic());
@@ -622,7 +630,11 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         try {
             reactorProvider.getReactorDispatcher().invoke(this::processSendWork);
         } catch (IOException e) {
-            logger.error("Error scheduling work on reactor.", e);
+            logger.warning("connectionId[{}] linkName[{}]: Error scheduling work on reactor.",
+                handler.getConnectionId(), getLinkName(), e);
+        } catch (RejectedExecutionException e) {
+            logger.info("connectionId[{}] linkName[{}]: Error scheduling work on reactor because of"
+                + " RejectedExecutionException.", handler.getConnectionId(), getLinkName());
         }
     }
 
@@ -654,9 +666,9 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         synchronized (pendingSendLock) {
             final String logMessage = isDisposed.getAndSet(true)
                 ? "This was already disposed. Dropping error."
-                : String.format("Disposing of %s pending sends with error.", pendingSendsMap.size());
+                : String.format("Disposing of '%d' pending sends with error.", pendingSendsMap.size());
             logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(), entityPath,
-                getLinkName(), logMessage, error);
+                getLinkName(), logMessage);
 
             pendingSendsMap.forEach((key, value) -> value.error(error));
             pendingSendsMap.clear();
@@ -674,7 +686,7 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         synchronized (pendingSendLock) {
             final String logMessage = isDisposed.getAndSet(true)
                 ? "This was already disposed."
-                : String.format("Disposing of '%s' pending sends.", pendingSendsMap.size());
+                : String.format("Disposing of '%d' pending sends.", pendingSendsMap.size());
 
             logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(), entityPath,
                 getLinkName(), logMessage);

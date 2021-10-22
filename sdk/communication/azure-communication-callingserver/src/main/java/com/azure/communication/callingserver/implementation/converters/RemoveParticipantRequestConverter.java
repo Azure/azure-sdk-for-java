@@ -12,7 +12,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 public final class RemoveParticipantRequestConverter {
 
     /**
-     * Converts to {@link RemoveParticipantByIdRequest}.
+     * Converts to {@link RemoveParticipantRequest}.
      */
     public static RemoveParticipantRequest convert(
         CommunicationIdentifier participant) {

@@ -187,7 +187,7 @@ public class EncryptionProcessorAndSettingsTest {
         includedPath1.setClientEncryptionKeyId("key1");
         includedPath1.setPath("/sensitiveString");
         includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);
         return new ClientEncryptionPolicy(paths);
@@ -201,7 +201,7 @@ public class EncryptionProcessorAndSettingsTest {
         includedPath1.setClientEncryptionKeyId("key1");
         includedPath1.setPath("/sensitiveString");
         includedPath1.setEncryptionType(CosmosEncryptionType.DETERMINISTIC);
-        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256);
+        includedPath1.setEncryptionAlgorithm(CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256);
         List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
         paths.add(includedPath1);
         return containerProperties.setClientEncryptionPolicy(new ClientEncryptionPolicy(paths));
@@ -214,6 +214,6 @@ public class EncryptionProcessorAndSettingsTest {
         EncryptionKeyWrapMetadata metadata = new EncryptionKeyWrapMetadata(keyStoreProvider.getProviderName(),
             "key1", "tempmetadata1");
         return new CosmosClientEncryptionKeyProperties("key1",
-            CosmosEncryptionAlgorithm.AEAES_256_CBC_HMAC_SHA_256, key, metadata);
+            CosmosEncryptionAlgorithm.AEAD_AES_256_CBC_HMAC_SHA256, key, metadata);
     }
 }

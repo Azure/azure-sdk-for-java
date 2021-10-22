@@ -76,15 +76,15 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         .setDeleteEnabled(false)
         .setListEnabled(true)
         .setReadEnabled(true)
-        .setWriteEnabled(true)
-        .setTeleportEnabled(false);
+        .setWriteEnabled(true);
+        //.setTeleportEnabled(false);
 
     protected static ContainerRepositoryProperties defaultRepoWriteableProperties = new ContainerRepositoryProperties()
         .setDeleteEnabled(true)
         .setListEnabled(true)
         .setReadEnabled(true)
-        .setWriteEnabled(true)
-        .setTeleportEnabled(false);
+        .setWriteEnabled(true);
+        //.setTeleportEnabled(false);
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient) {
         TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
@@ -134,7 +134,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertNotNull(properties.isListEnabled());
         assertNotNull(properties.isReadEnabled());
         assertNotNull(properties.isWriteEnabled());
-        assertNotNull(properties.isTeleportEnabled());
+        //assertNotNull(properties.isTeleportEnabled());
         assertNotNull(properties.getRegistryLoginServer());
     }
 
@@ -282,7 +282,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         assertEquals(true, properties.isListEnabled(), "isList incorrect");
         assertEquals(true, properties.isReadEnabled(), "isRead incorrect");
         assertEquals(true, properties.isWriteEnabled(), "isWrite incorrect");
-        assertEquals(false, properties.isTeleportEnabled(), "isTeleport incorrect");
+        //assertEquals(false, properties.isTeleportEnabled(), "isTeleport incorrect");
     }
 
     void validateTagContentProperties(ArtifactTagProperties properties) {

@@ -9,8 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import com.azure.communication.callingserver.models.AddParticipantResult;
-import com.azure.communication.callingserver.models.CancelAllMediaOperationsResult;
-import com.azure.communication.callingserver.models.OperationStatus;
+import com.azure.communication.callingserver.models.CallingOperationStatus;
 import com.azure.communication.callingserver.models.PlayAudioResult;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Assertions;
@@ -68,22 +67,7 @@ public class CallingServerTestUtils {
         assertNotNull(playAudioResponse.getOperationId());
         assertFalse(playAudioResponse.getOperationId().isEmpty());
         assertNotNull(playAudioResponse.getStatus());
-        assertSame(playAudioResponse.getStatus(), OperationStatus.RUNNING);
-    }
-
-    protected static void validateCancelAllMediaOperationsResult(Response<CancelAllMediaOperationsResult> result) {
-        assertNotNull(result);
-        Assertions.assertEquals(200, result.getStatusCode());
-        assertNotNull(result.getValue());
-        validateCancelAllMediaOperations(result.getValue());
-    }
-
-    protected static void validateCancelAllMediaOperations(CancelAllMediaOperationsResult result) {
-        assertNotNull(result);
-        assertNotNull(result.getOperationId());
-        assertFalse(result.getOperationId().isEmpty());
-        assertNotNull(result.getStatus());
-        assertSame(result.getStatus(), OperationStatus.COMPLETED);
+        assertSame(playAudioResponse.getStatus(), CallingOperationStatus.RUNNING);
     }
 
     protected static void validateResponse(Response<Void> response) {

@@ -4,6 +4,7 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
+import com.azure.communication.callingserver.models.AudioRoutingMode;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -14,14 +15,14 @@ public final class AudioRoutingGroupRequest {
     /*
      * The audio routing mode.
      */
-    @JsonProperty(value = "audioRoutingMode")
+    @JsonProperty(value = "audioRoutingMode", required = true)
     private AudioRoutingMode audioRoutingMode;
 
     /*
      * The target identities that would be receivers in the audio routing
      * group.
      */
-    @JsonProperty(value = "targets")
+    @JsonProperty(value = "targets", required = true)
     private List<CommunicationIdentifierModel> targets;
 
     /**

@@ -4,8 +4,8 @@
 
 package com.azure.communication.callingserver.implementation.models;
 
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.MediaType;
+import com.azure.communication.callingserver.models.CallMediaType;
+import com.azure.communication.callingserver.models.CallingEventSubscriptionType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,28 +20,22 @@ public final class AnswerCallRequest {
     private String incomingCallContext;
 
     /*
-     * The number of participant that the application can handle for the call.
+     * The callback uri.
      */
-    @JsonProperty(value = "participantCapacity")
-    private Integer participantCapacity;
-
-    /*
-     * The callback url.
-     */
-    @JsonProperty(value = "callbackUrl", required = true)
-    private String callbackUrl;
+    @JsonProperty(value = "callbackUri", required = true)
+    private String callbackUri;
 
     /*
      * The requested modalities.
      */
     @JsonProperty(value = "requestedMediaTypes")
-    private List<MediaType> requestedMediaTypes;
+    private List<CallMediaType> requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
      */
     @JsonProperty(value = "requestedCallEvents")
-    private List<EventSubscriptionType> requestedCallEvents;
+    private List<CallingEventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -64,42 +58,22 @@ public final class AnswerCallRequest {
     }
 
     /**
-     * Get the participantCapacity property: The number of participant that the application can handle for the call.
+     * Get the callbackUri property: The callback uri.
      *
-     * @return the participantCapacity value.
+     * @return the callbackUri value.
      */
-    public Integer getParticipantCapacity() {
-        return this.participantCapacity;
+    public String getCallbackUri() {
+        return this.callbackUri;
     }
 
     /**
-     * Set the participantCapacity property: The number of participant that the application can handle for the call.
+     * Set the callbackUri property: The callback uri.
      *
-     * @param participantCapacity the participantCapacity value to set.
+     * @param callbackUri the callbackUri value to set.
      * @return the AnswerCallRequest object itself.
      */
-    public AnswerCallRequest setParticipantCapacity(Integer participantCapacity) {
-        this.participantCapacity = participantCapacity;
-        return this;
-    }
-
-    /**
-     * Get the callbackUrl property: The callback url.
-     *
-     * @return the callbackUrl value.
-     */
-    public String getCallbackUrl() {
-        return this.callbackUrl;
-    }
-
-    /**
-     * Set the callbackUrl property: The callback url.
-     *
-     * @param callbackUrl the callbackUrl value to set.
-     * @return the AnswerCallRequest object itself.
-     */
-    public AnswerCallRequest setCallbackUrl(String callbackUrl) {
-        this.callbackUrl = callbackUrl;
+    public AnswerCallRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 
@@ -108,7 +82,7 @@ public final class AnswerCallRequest {
      *
      * @return the requestedMediaTypes value.
      */
-    public List<MediaType> getRequestedMediaTypes() {
+    public List<CallMediaType> getRequestedMediaTypes() {
         return this.requestedMediaTypes;
     }
 
@@ -118,7 +92,7 @@ public final class AnswerCallRequest {
      * @param requestedMediaTypes the requestedMediaTypes value to set.
      * @return the AnswerCallRequest object itself.
      */
-    public AnswerCallRequest setRequestedMediaTypes(List<MediaType> requestedMediaTypes) {
+    public AnswerCallRequest setRequestedMediaTypes(List<CallMediaType> requestedMediaTypes) {
         this.requestedMediaTypes = requestedMediaTypes;
         return this;
     }
@@ -128,7 +102,7 @@ public final class AnswerCallRequest {
      *
      * @return the requestedCallEvents value.
      */
-    public List<EventSubscriptionType> getRequestedCallEvents() {
+    public List<CallingEventSubscriptionType> getRequestedCallEvents() {
         return this.requestedCallEvents;
     }
 
@@ -138,7 +112,7 @@ public final class AnswerCallRequest {
      * @param requestedCallEvents the requestedCallEvents value to set.
      * @return the AnswerCallRequest object itself.
      */
-    public AnswerCallRequest setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
+    public AnswerCallRequest setRequestedCallEvents(List<CallingEventSubscriptionType> requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents;
         return this;
     }

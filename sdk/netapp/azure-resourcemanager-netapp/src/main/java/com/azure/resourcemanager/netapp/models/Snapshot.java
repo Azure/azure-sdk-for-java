@@ -40,14 +40,14 @@ public interface Snapshot {
     String location();
 
     /**
-     * Gets the snapshotId property: UUID v4 used to identify the Snapshot.
+     * Gets the snapshotId property: snapshotId UUID v4 used to identify the Snapshot.
      *
      * @return the snapshotId value.
      */
     String snapshotId();
 
     /**
-     * Gets the created property: The creation date of the snapshot.
+     * Gets the created property: name The creation date of the snapshot.
      *
      * @return the created value.
      */

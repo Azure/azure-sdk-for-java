@@ -3,11 +3,10 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.models.CallLocator;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
+import com.azure.communication.callingserver.models.CallMediaType;
+import com.azure.communication.callingserver.models.CallingEventSubscriptionType;
 import com.azure.communication.callingserver.models.GroupCallLocator;
 import com.azure.communication.callingserver.models.JoinCallOptions;
-import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
@@ -21,6 +20,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.net.URI;
 import java.time.OffsetDateTime;
@@ -45,12 +45,18 @@ public class CallingServerTestBase extends TestBase {
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
+    protected static final String ENDPOINT = Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT",
+        "https://REDACTED.communication.azure.com/");
+
+    protected static final String ENDPOINT_401 = Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT_401",
+        "https://REDACTED.communication.azure.com/");
+
     protected static final String AZURE_TENANT_ID = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_RESOURCE_IDENTIFIER",
             "016a7064-0581-40b9-be73-6dde64d69d72");
 
     protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("AZURE_PHONE_NUMBER", "+15551234567");
+        .get("ALTERNATE_CALLERID", "+15551234567");
 
     protected static final String TO_PHONE_NUMBER = Configuration.getGlobalConfiguration()
         .get("AZURE_PHONE_NUMBER", "+15551234567");
@@ -70,6 +76,12 @@ public class CallingServerTestBase extends TestBase {
     protected static final String CONTENT_URL_404 = Configuration.getGlobalConfiguration()
         .get("CONTENT_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141d/content/acsmetadata");
 
+    protected static final String RECORDING_DELETE_URL = Configuration.getGlobalConfiguration()
+        .get("RECORDING_DELETE_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d10-598a3ea36bfbc27e68c026b17982af22");
+
+    protected static final String RECORDING_DELETE_URL_404 = Configuration.getGlobalConfiguration()
+        .get("RECORDING_DELETE_URL_404", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c");
+
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("to");
@@ -77,19 +89,6 @@ public class CallingServerTestBase extends TestBase {
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
-
-    protected CallingServerClientBuilder getCallClientUsingConnectionString(HttpClient httpClient) {
-        CallingServerClientBuilder builder = new CallingServerClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-
-        if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
-        }
-        return builder;
-    }
 
     protected String getNewUserId() {
         if (getTestMode() == TestMode.LIVE) {
@@ -123,9 +122,41 @@ public class CallingServerTestBase extends TestBase {
         return UUID.nameUUIDFromBytes(testName.getBytes()).toString();
     }
 
-    protected CallingServerClientBuilder getConversationClientUsingConnectionString(HttpClient httpClient) {
+    protected CallingServerClientBuilder getCallingServerClientUsingConnectionString(HttpClient httpClient) {
         CallingServerClientBuilder builder = new CallingServerClientBuilder()
             .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        return builder;
+    }
+
+    protected CallingServerClientBuilder getCallingServerClientUsingTokenCredential(HttpClient httpClient) {
+        TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
+
+        CallingServerClientBuilder builder = new CallingServerClientBuilder()
+            .endpoint(ENDPOINT)
+            .credential(tokenCredential)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
+            List<Function<String, String>> redactors = new ArrayList<>();
+            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+        }
+        return builder;
+    }
+
+    protected CallingServerClientBuilder getCallingServerClientUsingInvalidTokenCredential(HttpClient httpClient) {
+        TokenCredential tokenCredential = getTestMode() == TestMode.PLAYBACK ? new FakeCredentials() : new DefaultAzureCredentialBuilder().build();
+
+        CallingServerClientBuilder builder = new CallingServerClientBuilder()
+            .endpoint(ENDPOINT_401)
+            .credential(tokenCredential)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
@@ -180,16 +211,16 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
             fromCallConnection = callingServerClient.joinCall(groupCallLocator, fromParticipant, fromCallOptions);
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnection(fromCallConnection);
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
             toCallConnection = callingServerClient.joinCall(groupCallLocator, toParticipant, joinCallOptions);
             sleepIfRunningAgainstService(1000);
@@ -225,16 +256,16 @@ public class CallingServerTestBase extends TestBase {
 
             JoinCallOptions fromCallOptions = new JoinCallOptions(
                 callBackUri,
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
             fromCallConnection = callingServerClient.joinCall(groupCallLocator, fromParticipant, fromCallOptions).block();
             sleepIfRunningAgainstService(1000);
             CallingServerTestUtils.validateCallConnectionAsync(fromCallConnection);
 
             JoinCallOptions joinCallOptions = new JoinCallOptions(
                 callBackUri,
-                Collections.singletonList(MediaType.AUDIO),
-                Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+                Collections.singletonList(CallMediaType.AUDIO),
+                Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
             toCallConnection = callingServerClient.joinCall(groupCallLocator, toParticipant, joinCallOptions).block();
             sleepIfRunningAgainstService(1000);

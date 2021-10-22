@@ -16,10 +16,12 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ConnectionResetSharedKeyInner;
 import com.azure.resourcemanager.network.fluent.models.ConnectionSharedKeyInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionInner;
+import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.models.VpnPacketCaptureStartParameters;
+import com.azure.resourcemanager.network.models.VpnPacketCaptureStopParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -56,7 +58,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -74,7 +76,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -93,7 +95,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -235,7 +237,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -249,7 +251,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -264,7 +266,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
 
@@ -311,7 +313,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update virtual network gateway connection tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -319,64 +321,61 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, Map<String, String> tags);
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
 
     /**
      * Updates a virtual network gateway connection tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update virtual network gateway connection tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
         beginUpdateTagsAsync(
-            String resourceGroupName, String virtualNetworkGatewayConnectionName, Map<String, String> tags);
+            String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
 
     /**
      * Updates a virtual network gateway connection tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update virtual network gateway connection tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginUpdateTags(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, Map<String, String> tags);
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
 
     /**
      * Updates a virtual network gateway connection tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update virtual network gateway connection tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginUpdateTags(
-        String resourceGroupName,
-        String virtualNetworkGatewayConnectionName,
-        Map<String, String> tags,
-        Context context);
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters, Context context);
 
     /**
      * Updates a virtual network gateway connection tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update virtual network gateway connection tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -384,28 +383,14 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualNetworkGatewayConnectionInner> updateTagsAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, Map<String, String> tags);
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
 
     /**
      * Updates a virtual network gateway connection tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkGatewayConnectionInner> updateTagsAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName);
-
-    /**
-     * Updates a virtual network gateway connection tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update virtual network gateway connection tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -413,28 +398,14 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualNetworkGatewayConnectionInner updateTags(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, Map<String, String> tags);
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
 
     /**
      * Updates a virtual network gateway connection tags.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkGatewayConnectionInner updateTags(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName);
-
-    /**
-     * Updates a virtual network gateway connection tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update virtual network gateway connection tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -443,10 +414,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualNetworkGatewayConnectionInner updateTags(
-        String resourceGroupName,
-        String virtualNetworkGatewayConnectionName,
-        Map<String, String> tags,
-        Context context);
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters, Context context);
 
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
@@ -478,7 +446,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for GetConnectionSharedKey API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKeyAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
 
@@ -495,7 +463,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for GetConnectionSharedKey API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKey(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
 
@@ -513,7 +481,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for GetConnectionSharedKey API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKey(
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
@@ -682,7 +650,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param keyLength The virtual network connection reset shared key length, should between 1 and 128.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -690,7 +659,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> resetSharedKeyWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, int keyLength);
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
     /**
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
@@ -699,15 +668,16 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param keyLength The virtual network connection reset shared key length, should between 1 and 128.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the virtual network connection reset shared key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKeyAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, int keyLength);
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
     /**
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
@@ -716,15 +686,16 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param keyLength The virtual network connection reset shared key length, should between 1 and 128.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the virtual network connection reset shared key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKey(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, int keyLength);
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
     /**
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
@@ -733,16 +704,20 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param keyLength The virtual network connection reset shared key length, should between 1 and 128.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the virtual network connection reset shared key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKey(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, int keyLength, Context context);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        ConnectionResetSharedKeyInner parameters,
+        Context context);
 
     /**
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
@@ -751,7 +726,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param keyLength The virtual network connection reset shared key length, should between 1 and 128.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -759,7 +735,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ConnectionResetSharedKeyInner> resetSharedKeyAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, int keyLength);
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
     /**
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
@@ -768,7 +744,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param keyLength The virtual network connection reset shared key length, should between 1 and 128.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -776,7 +753,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConnectionResetSharedKeyInner resetSharedKey(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, int keyLength);
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
     /**
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
@@ -785,7 +762,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param keyLength The virtual network connection reset shared key length, should between 1 and 128.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -794,14 +772,18 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConnectionResetSharedKeyInner resetSharedKey(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, int keyLength, Context context);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        ConnectionResetSharedKeyInner parameters,
+        Context context);
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param filterData Start Packet capture parameters.
+     * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
+     *     connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -809,60 +791,73 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> startPacketCaptureWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String filterData);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param filterData Start Packet capture parameters.
+     * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
+     *     connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String filterData);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param filterData Start Packet capture parameters.
+     * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
+     *     connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStartPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String filterData);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param filterData Start Packet capture parameters.
+     * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
+     *     connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStartPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String filterData, Context context);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStartParameters parameters,
+        Context context);
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param filterData Start Packet capture parameters.
+     * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
+     *     connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -870,7 +865,9 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<String> startPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String filterData);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
@@ -890,14 +887,18 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param filterData Start Packet capture parameters.
+     * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
+     *     connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    String startPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName, String filterData);
+    String startPacketCapture(
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
@@ -917,7 +918,8 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param filterData Start Packet capture parameters.
+     * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
+     *     connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -926,14 +928,18 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     String startPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String filterData, Context context);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStartParameters parameters,
+        Context context);
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
+     * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
+     *     connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -941,60 +947,73 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> stopPacketCaptureWithResponseAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String sasUrl);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
+     * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
+     *     connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String sasUrl);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
+     * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
+     *     connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStopPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String sasUrl);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
+     * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
+     *     connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStopPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String sasUrl, Context context);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStopParameters parameters,
+        Context context);
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
+     * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
+     *     connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1002,54 +1021,35 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<String> stopPacketCaptureAsync(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String sasUrl);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
+     *     connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<String> stopPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+    String stopPacketCapture(
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    String stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName, String sasUrl);
-
-    /**
-     * Stops packet capture on virtual network gateway connection in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    String stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName);
-
-    /**
-     * Stops packet capture on virtual network gateway connection in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
-     * @param sasUrl SAS url for packet capture on virtual network gateway.
+     * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
+     *     connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -1058,7 +1058,10 @@ public interface VirtualNetworkGatewayConnectionsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     String stopPacketCapture(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName, String sasUrl, Context context);
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VpnPacketCaptureStopParameters parameters,
+        Context context);
 
     /**
      * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
@@ -1084,7 +1087,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<String>, String> beginGetIkeSasAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -1098,7 +1101,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginGetIkeSas(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -1113,7 +1116,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginGetIkeSas(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
 
@@ -1181,7 +1184,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginResetConnectionAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -1195,7 +1198,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResetConnection(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -1210,7 +1213,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResetConnection(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
 

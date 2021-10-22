@@ -36,6 +36,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.webpubsub.fluent.WebPubSubsClient;
 import com.azure.resourcemanager.webpubsub.fluent.models.NameAvailabilityInner;
+import com.azure.resourcemanager.webpubsub.fluent.models.SkuListInner;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubKeysInner;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubResourceInner;
 import com.azure.resourcemanager.webpubsub.models.NameAvailabilityParameters;
@@ -213,6 +214,21 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
+                + "/webPubSub/{resourceName}/skus")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SkuListInner>> listSkus(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
@@ -980,7 +996,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1008,7 +1024,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1036,7 +1052,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
@@ -1055,7 +1071,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
@@ -1245,7 +1261,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
         return this
@@ -1265,7 +1281,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1286,7 +1302,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
         return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
@@ -1303,7 +1319,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
         return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
@@ -1497,7 +1513,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginUpdateAsync(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, resourceName, parameters);
@@ -1524,7 +1540,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginUpdateAsync(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1552,7 +1568,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginUpdate(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters) {
         return beginUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
@@ -1571,7 +1587,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represent a resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubResourceInner>, WebPubSubResourceInner> beginUpdate(
         String resourceGroupName, String resourceName, WebPubSubResourceInner parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
@@ -1931,7 +1947,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represents the access keys of the resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WebPubSubKeysInner>, WebPubSubKeysInner> beginRegenerateKeyAsync(
         String resourceGroupName, String resourceName, RegenerateKeyParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1955,7 +1971,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represents the access keys of the resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WebPubSubKeysInner>, WebPubSubKeysInner> beginRegenerateKeyAsync(
         String resourceGroupName, String resourceName, RegenerateKeyParameters parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1979,7 +1995,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represents the access keys of the resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubKeysInner>, WebPubSubKeysInner> beginRegenerateKey(
         String resourceGroupName, String resourceName, RegenerateKeyParameters parameters) {
         return beginRegenerateKeyAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
@@ -1998,7 +2014,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represents the access keys of the resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebPubSubKeysInner>, WebPubSubKeysInner> beginRegenerateKey(
         String resourceGroupName, String resourceName, RegenerateKeyParameters parameters, Context context) {
         return beginRegenerateKeyAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
@@ -2188,7 +2204,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = restartWithResponseAsync(resourceGroupName, resourceName);
         return this
@@ -2208,7 +2224,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -2229,7 +2245,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName) {
         return beginRestartAsync(resourceGroupName, resourceName).getSyncPoller();
     }
@@ -2246,7 +2262,7 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String resourceName, Context context) {
         return beginRestartAsync(resourceGroupName, resourceName, context).getSyncPoller();
@@ -2316,6 +2332,158 @@ public final class WebPubSubsClientImpl implements WebPubSubsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void restart(String resourceGroupName, String resourceName, Context context) {
         restartAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * List all available skus of the resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list skus operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuListInner>> listSkusWithResponseAsync(String resourceGroupName, String resourceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listSkus(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List all available skus of the resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list skus operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuListInner>> listSkusWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listSkus(
+                this.client.getEndpoint(),
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
+    }
+
+    /**
+     * List all available skus of the resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list skus operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SkuListInner> listSkusAsync(String resourceGroupName, String resourceName) {
+        return listSkusWithResponseAsync(resourceGroupName, resourceName)
+            .flatMap(
+                (Response<SkuListInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * List all available skus of the resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list skus operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SkuListInner listSkus(String resourceGroupName, String resourceName) {
+        return listSkusAsync(resourceGroupName, resourceName).block();
+    }
+
+    /**
+     * List all available skus of the resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list skus operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SkuListInner> listSkusWithResponse(String resourceGroupName, String resourceName, Context context) {
+        return listSkusWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**

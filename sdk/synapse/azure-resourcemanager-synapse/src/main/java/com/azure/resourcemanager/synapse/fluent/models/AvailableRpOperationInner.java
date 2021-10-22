@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.AvailableRpOperationDisplayInfo;
 import com.azure.resourcemanager.synapse.models.OperationMetaServiceSpecification;
@@ -13,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An operation that is available in this resource provider. */
-@JsonFlatten
 @Fluent
-public class AvailableRpOperationInner {
+public final class AvailableRpOperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableRpOperationInner.class);
 
     /*
@@ -37,16 +35,16 @@ public class AvailableRpOperationInner {
     private String name;
 
     /*
+     * Operation properties
+     */
+    @JsonProperty(value = "properties")
+    private OperationMetaPropertyInfo innerProperties;
+
+    /*
      * Operation origin
      */
     @JsonProperty(value = "origin")
     private String origin;
-
-    /*
-     * Operation service specification
-     */
-    @JsonProperty(value = "properties.serviceSpecification")
-    private OperationMetaServiceSpecification serviceSpecification;
 
     /**
      * Get the display property: Display properties of the operation.
@@ -109,6 +107,15 @@ public class AvailableRpOperationInner {
     }
 
     /**
+     * Get the innerProperties property: Operation properties.
+     *
+     * @return the innerProperties value.
+     */
+    private OperationMetaPropertyInfo innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the origin property: Operation origin.
      *
      * @return the origin value.
@@ -134,7 +141,7 @@ public class AvailableRpOperationInner {
      * @return the serviceSpecification value.
      */
     public OperationMetaServiceSpecification serviceSpecification() {
-        return this.serviceSpecification;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceSpecification();
     }
 
     /**
@@ -144,7 +151,10 @@ public class AvailableRpOperationInner {
      * @return the AvailableRpOperationInner object itself.
      */
     public AvailableRpOperationInner withServiceSpecification(OperationMetaServiceSpecification serviceSpecification) {
-        this.serviceSpecification = serviceSpecification;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationMetaPropertyInfo();
+        }
+        this.innerProperties().withServiceSpecification(serviceSpecification);
         return this;
     }
 
@@ -157,8 +167,8 @@ public class AvailableRpOperationInner {
         if (display() != null) {
             display().validate();
         }
-        if (serviceSpecification() != null) {
-            serviceSpecification().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

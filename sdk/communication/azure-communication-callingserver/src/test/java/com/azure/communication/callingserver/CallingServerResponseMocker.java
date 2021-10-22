@@ -11,15 +11,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.AbstractMap.SimpleEntry;
 
-import com.azure.communication.callingserver.implementation.models.AddParticipantResultInternal;
-import com.azure.communication.callingserver.implementation.models.CreateCallResultInternal;
-import com.azure.communication.callingserver.implementation.models.JoinCallResultInternal;
-import com.azure.communication.callingserver.implementation.models.PlayAudioResultInternal;
-import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
+import com.azure.communication.callingserver.implementation.models.*;
+import com.azure.communication.callingserver.models.CallMediaType;
+import com.azure.communication.callingserver.models.CallingEventSubscriptionType;
+import com.azure.communication.callingserver.models.CallingOperationStatus;
 import com.azure.communication.callingserver.models.CreateCallOptions;
-import com.azure.communication.callingserver.models.EventSubscriptionType;
-import com.azure.communication.callingserver.models.MediaType;
-import com.azure.communication.callingserver.models.OperationStatus;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
@@ -60,7 +56,7 @@ public class CallingServerResponseMocker {
         return content;
     }
 
-    public static String generatePlayAudioResult(String operationId, OperationStatus status, ResultInfoInternal resultInfo) {
+    public static String generatePlayAudioResult(String operationId, CallingOperationStatus status, CallingOperationResultDetailsInternal resultInfo) {
 
         PlayAudioResultInternal result = new PlayAudioResultInternal()
             .setOperationContext("operationContext")
@@ -85,8 +81,8 @@ public class CallingServerResponseMocker {
         List<CommunicationIdentifier> targetUsers = new ArrayList<CommunicationIdentifier>();
         CreateCallOptions options = new CreateCallOptions(
             URI.create("https://callbackUri.local"),
-            Collections.singletonList(MediaType.AUDIO),
-            Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+            Collections.singletonList(CallMediaType.AUDIO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
         return callingServerAsyncClient.createCallConnection(sourceUser, targetUsers, options).block();
     }
@@ -98,8 +94,8 @@ public class CallingServerResponseMocker {
         List<CommunicationIdentifier> targetUsers = new ArrayList<CommunicationIdentifier>();
         CreateCallOptions options = new CreateCallOptions(
             URI.create("https://callbackUri.local"),
-            Collections.singletonList(MediaType.AUDIO),
-            Collections.singletonList(EventSubscriptionType.PARTICIPANTS_UPDATED));
+            Collections.singletonList(CallMediaType.AUDIO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
         return callingServerClient.createCallConnection(sourceUser, targetUsers, options);
     }

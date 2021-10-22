@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.DnsVerificationTestResult;
 import com.azure.resourcemanager.appservice.models.ErrorEntity;
@@ -15,80 +14,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Custom domain analysis. */
-@JsonFlatten
 @Fluent
-public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
+public final class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomHostnameAnalysisResultInner.class);
 
     /*
-     * <code>true</code> if hostname is already verified; otherwise,
-     * <code>false</code>.
+     * CustomHostnameAnalysisResult resource specific properties
      */
-    @JsonProperty(value = "properties.isHostnameAlreadyVerified", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isHostnameAlreadyVerified;
+    @JsonProperty(value = "properties")
+    private CustomHostnameAnalysisResultProperties innerProperties;
 
-    /*
-     * DNS verification test result.
+    /**
+     * Get the innerProperties property: CustomHostnameAnalysisResult resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.customDomainVerificationTest", access = JsonProperty.Access.WRITE_ONLY)
-    private DnsVerificationTestResult customDomainVerificationTest;
+    private CustomHostnameAnalysisResultProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Raw failure information if DNS verification fails.
-     */
-    @JsonProperty(value = "properties.customDomainVerificationFailureInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private ErrorEntity customDomainVerificationFailureInfo;
-
-    /*
-     * <code>true</code> if there is a conflict on a scale unit; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.hasConflictOnScaleUnit", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean hasConflictOnScaleUnit;
-
-    /*
-     * <code>true</code> if there is a conflict across subscriptions;
-     * otherwise, <code>false</code>.
-     */
-    @JsonProperty(value = "properties.hasConflictAcrossSubscription", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean hasConflictAcrossSubscription;
-
-    /*
-     * Name of the conflicting app on scale unit if it's within the same
-     * subscription.
-     */
-    @JsonProperty(value = "properties.conflictingAppResourceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String conflictingAppResourceId;
-
-    /*
-     * CName records controller can see for this hostname.
-     */
-    @JsonProperty(value = "properties.cNameRecords")
-    private List<String> cNameRecords;
-
-    /*
-     * TXT records controller can see for this hostname.
-     */
-    @JsonProperty(value = "properties.txtRecords")
-    private List<String> txtRecords;
-
-    /*
-     * A records controller can see for this hostname.
-     */
-    @JsonProperty(value = "properties.aRecords")
-    private List<String> aRecords;
-
-    /*
-     * Alternate CName records controller can see for this hostname.
-     */
-    @JsonProperty(value = "properties.alternateCNameRecords")
-    private List<String> alternateCNameRecords;
-
-    /*
-     * Alternate TXT records controller can see for this hostname.
-     */
-    @JsonProperty(value = "properties.alternateTxtRecords")
-    private List<String> alternateTxtRecords;
+    /** {@inheritDoc} */
+    @Override
+    public CustomHostnameAnalysisResultInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the isHostnameAlreadyVerified property: &lt;code&gt;true&lt;/code&gt; if hostname is already verified;
@@ -97,7 +47,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the isHostnameAlreadyVerified value.
      */
     public Boolean isHostnameAlreadyVerified() {
-        return this.isHostnameAlreadyVerified;
+        return this.innerProperties() == null ? null : this.innerProperties().isHostnameAlreadyVerified();
     }
 
     /**
@@ -106,7 +56,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the customDomainVerificationTest value.
      */
     public DnsVerificationTestResult customDomainVerificationTest() {
-        return this.customDomainVerificationTest;
+        return this.innerProperties() == null ? null : this.innerProperties().customDomainVerificationTest();
     }
 
     /**
@@ -115,7 +65,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the customDomainVerificationFailureInfo value.
      */
     public ErrorEntity customDomainVerificationFailureInfo() {
-        return this.customDomainVerificationFailureInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().customDomainVerificationFailureInfo();
     }
 
     /**
@@ -125,7 +75,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the hasConflictOnScaleUnit value.
      */
     public Boolean hasConflictOnScaleUnit() {
-        return this.hasConflictOnScaleUnit;
+        return this.innerProperties() == null ? null : this.innerProperties().hasConflictOnScaleUnit();
     }
 
     /**
@@ -135,7 +85,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the hasConflictAcrossSubscription value.
      */
     public Boolean hasConflictAcrossSubscription() {
-        return this.hasConflictAcrossSubscription;
+        return this.innerProperties() == null ? null : this.innerProperties().hasConflictAcrossSubscription();
     }
 
     /**
@@ -145,7 +95,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the conflictingAppResourceId value.
      */
     public String conflictingAppResourceId() {
-        return this.conflictingAppResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().conflictingAppResourceId();
     }
 
     /**
@@ -154,7 +104,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the cNameRecords value.
      */
     public List<String> cNameRecords() {
-        return this.cNameRecords;
+        return this.innerProperties() == null ? null : this.innerProperties().cNameRecords();
     }
 
     /**
@@ -164,7 +114,10 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the CustomHostnameAnalysisResultInner object itself.
      */
     public CustomHostnameAnalysisResultInner withCNameRecords(List<String> cNameRecords) {
-        this.cNameRecords = cNameRecords;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomHostnameAnalysisResultProperties();
+        }
+        this.innerProperties().withCNameRecords(cNameRecords);
         return this;
     }
 
@@ -174,7 +127,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the txtRecords value.
      */
     public List<String> txtRecords() {
-        return this.txtRecords;
+        return this.innerProperties() == null ? null : this.innerProperties().txtRecords();
     }
 
     /**
@@ -184,7 +137,10 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the CustomHostnameAnalysisResultInner object itself.
      */
     public CustomHostnameAnalysisResultInner withTxtRecords(List<String> txtRecords) {
-        this.txtRecords = txtRecords;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomHostnameAnalysisResultProperties();
+        }
+        this.innerProperties().withTxtRecords(txtRecords);
         return this;
     }
 
@@ -194,7 +150,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the aRecords value.
      */
     public List<String> aRecords() {
-        return this.aRecords;
+        return this.innerProperties() == null ? null : this.innerProperties().aRecords();
     }
 
     /**
@@ -204,7 +160,10 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the CustomHostnameAnalysisResultInner object itself.
      */
     public CustomHostnameAnalysisResultInner withARecords(List<String> aRecords) {
-        this.aRecords = aRecords;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomHostnameAnalysisResultProperties();
+        }
+        this.innerProperties().withARecords(aRecords);
         return this;
     }
 
@@ -214,7 +173,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the alternateCNameRecords value.
      */
     public List<String> alternateCNameRecords() {
-        return this.alternateCNameRecords;
+        return this.innerProperties() == null ? null : this.innerProperties().alternateCNameRecords();
     }
 
     /**
@@ -224,7 +183,10 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the CustomHostnameAnalysisResultInner object itself.
      */
     public CustomHostnameAnalysisResultInner withAlternateCNameRecords(List<String> alternateCNameRecords) {
-        this.alternateCNameRecords = alternateCNameRecords;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomHostnameAnalysisResultProperties();
+        }
+        this.innerProperties().withAlternateCNameRecords(alternateCNameRecords);
         return this;
     }
 
@@ -234,7 +196,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the alternateTxtRecords value.
      */
     public List<String> alternateTxtRecords() {
-        return this.alternateTxtRecords;
+        return this.innerProperties() == null ? null : this.innerProperties().alternateTxtRecords();
     }
 
     /**
@@ -244,14 +206,10 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
      * @return the CustomHostnameAnalysisResultInner object itself.
      */
     public CustomHostnameAnalysisResultInner withAlternateTxtRecords(List<String> alternateTxtRecords) {
-        this.alternateTxtRecords = alternateTxtRecords;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CustomHostnameAnalysisResultInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomHostnameAnalysisResultProperties();
+        }
+        this.innerProperties().withAlternateTxtRecords(alternateTxtRecords);
         return this;
     }
 
@@ -263,8 +221,8 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (customDomainVerificationFailureInfo() != null) {
-            customDomainVerificationFailureInfo().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

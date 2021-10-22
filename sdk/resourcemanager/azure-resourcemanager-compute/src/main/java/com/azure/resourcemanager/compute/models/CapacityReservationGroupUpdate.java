@@ -5,69 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Specifies information about the capacity reservation group. Only tags can be updated. */
-@JsonFlatten
 @Fluent
-public class CapacityReservationGroupUpdate extends UpdateResource {
+public final class CapacityReservationGroupUpdate extends UpdateResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationGroupUpdate.class);
 
     /*
-     * A list of all capacity reservation resource ids that belong to capacity
-     * reservation group.
+     * capacity reservation group Properties.
      */
-    @JsonProperty(value = "properties.capacityReservations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResourceReadOnly> capacityReservations;
-
-    /*
-     * A list of references to all virtual machines associated to the capacity
-     * reservation group.
-     */
-    @JsonProperty(value = "properties.virtualMachinesAssociated", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResourceReadOnly> virtualMachinesAssociated;
-
-    /*
-     * The capacity reservation group instance view which has the list of
-     * instance views for all the capacity reservations that belong to the
-     * capacity reservation group.
-     */
-    @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private CapacityReservationGroupInstanceView instanceView;
+    @JsonProperty(value = "properties")
+    private CapacityReservationGroupProperties innerProperties;
 
     /**
-     * Get the capacityReservations property: A list of all capacity reservation resource ids that belong to capacity
-     * reservation group.
+     * Get the innerProperties property: capacity reservation group Properties.
      *
-     * @return the capacityReservations value.
+     * @return the innerProperties value.
      */
-    public List<SubResourceReadOnly> capacityReservations() {
-        return this.capacityReservations;
-    }
-
-    /**
-     * Get the virtualMachinesAssociated property: A list of references to all virtual machines associated to the
-     * capacity reservation group.
-     *
-     * @return the virtualMachinesAssociated value.
-     */
-    public List<SubResourceReadOnly> virtualMachinesAssociated() {
-        return this.virtualMachinesAssociated;
-    }
-
-    /**
-     * Get the instanceView property: The capacity reservation group instance view which has the list of instance views
-     * for all the capacity reservations that belong to the capacity reservation group.
-     *
-     * @return the instanceView value.
-     */
-    public CapacityReservationGroupInstanceView instanceView() {
-        return this.instanceView;
+    private CapacityReservationGroupProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -78,6 +40,36 @@ public class CapacityReservationGroupUpdate extends UpdateResource {
     }
 
     /**
+     * Get the capacityReservations property: A list of all capacity reservation resource ids that belong to capacity
+     * reservation group.
+     *
+     * @return the capacityReservations value.
+     */
+    public List<SubResourceReadOnly> capacityReservations() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityReservations();
+    }
+
+    /**
+     * Get the virtualMachinesAssociated property: A list of references to all virtual machines associated to the
+     * capacity reservation group.
+     *
+     * @return the virtualMachinesAssociated value.
+     */
+    public List<SubResourceReadOnly> virtualMachinesAssociated() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualMachinesAssociated();
+    }
+
+    /**
+     * Get the instanceView property: The capacity reservation group instance view which has the list of instance views
+     * for all the capacity reservations that belong to the capacity reservation group.
+     *
+     * @return the instanceView value.
+     */
+    public CapacityReservationGroupInstanceView instanceView() {
+        return this.innerProperties() == null ? null : this.innerProperties().instanceView();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -85,14 +77,8 @@ public class CapacityReservationGroupUpdate extends UpdateResource {
     @Override
     public void validate() {
         super.validate();
-        if (capacityReservations() != null) {
-            capacityReservations().forEach(e -> e.validate());
-        }
-        if (virtualMachinesAssociated() != null) {
-            virtualMachinesAssociated().forEach(e -> e.validate());
-        }
-        if (instanceView() != null) {
-            instanceView().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

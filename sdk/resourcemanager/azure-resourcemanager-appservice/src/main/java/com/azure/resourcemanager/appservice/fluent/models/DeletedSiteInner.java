@@ -4,137 +4,30 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A deleted app. */
-@JsonFlatten
-@Immutable
-public class DeletedSiteInner extends ProxyOnlyResource {
+@Fluent
+public final class DeletedSiteInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedSiteInner.class);
 
     /*
-     * Numeric id for the deleted site
+     * DeletedSite resource specific properties
      */
-    @JsonProperty(value = "properties.deletedSiteId", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer deletedSiteId;
-
-    /*
-     * Time in UTC when the app was deleted.
-     */
-    @JsonProperty(value = "properties.deletedTimestamp", access = JsonProperty.Access.WRITE_ONLY)
-    private String deletedTimestamp;
-
-    /*
-     * Subscription containing the deleted site
-     */
-    @JsonProperty(value = "properties.subscription", access = JsonProperty.Access.WRITE_ONLY)
-    private String subscription;
-
-    /*
-     * ResourceGroup that contained the deleted site
-     */
-    @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceGroup;
-
-    /*
-     * Name of the deleted site
-     */
-    @JsonProperty(value = "properties.deletedSiteName", access = JsonProperty.Access.WRITE_ONLY)
-    private String deletedSiteName;
-
-    /*
-     * Slot of the deleted site
-     */
-    @JsonProperty(value = "properties.slot", access = JsonProperty.Access.WRITE_ONLY)
-    private String slot;
-
-    /*
-     * Kind of site that was deleted
-     */
-    @JsonProperty(value = "properties.kind", access = JsonProperty.Access.WRITE_ONLY)
-    private String kindPropertiesKind;
-
-    /*
-     * Geo Region of the deleted site
-     */
-    @JsonProperty(value = "properties.geoRegionName", access = JsonProperty.Access.WRITE_ONLY)
-    private String geoRegionName;
+    @JsonProperty(value = "properties")
+    private DeletedSiteProperties innerProperties;
 
     /**
-     * Get the deletedSiteId property: Numeric id for the deleted site.
+     * Get the innerProperties property: DeletedSite resource specific properties.
      *
-     * @return the deletedSiteId value.
+     * @return the innerProperties value.
      */
-    public Integer deletedSiteId() {
-        return this.deletedSiteId;
-    }
-
-    /**
-     * Get the deletedTimestamp property: Time in UTC when the app was deleted.
-     *
-     * @return the deletedTimestamp value.
-     */
-    public String deletedTimestamp() {
-        return this.deletedTimestamp;
-    }
-
-    /**
-     * Get the subscription property: Subscription containing the deleted site.
-     *
-     * @return the subscription value.
-     */
-    public String subscription() {
-        return this.subscription;
-    }
-
-    /**
-     * Get the resourceGroup property: ResourceGroup that contained the deleted site.
-     *
-     * @return the resourceGroup value.
-     */
-    public String resourceGroup() {
-        return this.resourceGroup;
-    }
-
-    /**
-     * Get the deletedSiteName property: Name of the deleted site.
-     *
-     * @return the deletedSiteName value.
-     */
-    public String deletedSiteName() {
-        return this.deletedSiteName;
-    }
-
-    /**
-     * Get the slot property: Slot of the deleted site.
-     *
-     * @return the slot value.
-     */
-    public String slot() {
-        return this.slot;
-    }
-
-    /**
-     * Get the kindPropertiesKind property: Kind of site that was deleted.
-     *
-     * @return the kindPropertiesKind value.
-     */
-    public String kindPropertiesKind() {
-        return this.kindPropertiesKind;
-    }
-
-    /**
-     * Get the geoRegionName property: Geo Region of the deleted site.
-     *
-     * @return the geoRegionName value.
-     */
-    public String geoRegionName() {
-        return this.geoRegionName;
+    private DeletedSiteProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -145,6 +38,78 @@ public class DeletedSiteInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the deletedSiteId property: Numeric id for the deleted site.
+     *
+     * @return the deletedSiteId value.
+     */
+    public Integer deletedSiteId() {
+        return this.innerProperties() == null ? null : this.innerProperties().deletedSiteId();
+    }
+
+    /**
+     * Get the deletedTimestamp property: Time in UTC when the app was deleted.
+     *
+     * @return the deletedTimestamp value.
+     */
+    public String deletedTimestamp() {
+        return this.innerProperties() == null ? null : this.innerProperties().deletedTimestamp();
+    }
+
+    /**
+     * Get the subscription property: Subscription containing the deleted site.
+     *
+     * @return the subscription value.
+     */
+    public String subscription() {
+        return this.innerProperties() == null ? null : this.innerProperties().subscription();
+    }
+
+    /**
+     * Get the resourceGroup property: ResourceGroup that contained the deleted site.
+     *
+     * @return the resourceGroup value.
+     */
+    public String resourceGroup() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceGroup();
+    }
+
+    /**
+     * Get the deletedSiteName property: Name of the deleted site.
+     *
+     * @return the deletedSiteName value.
+     */
+    public String deletedSiteName() {
+        return this.innerProperties() == null ? null : this.innerProperties().deletedSiteName();
+    }
+
+    /**
+     * Get the slot property: Slot of the deleted site.
+     *
+     * @return the slot value.
+     */
+    public String slot() {
+        return this.innerProperties() == null ? null : this.innerProperties().slot();
+    }
+
+    /**
+     * Get the kind property: Kind of site that was deleted.
+     *
+     * @return the kind value.
+     */
+    public String kindPropertiesKind() {
+        return this.innerProperties() == null ? null : this.innerProperties().kind();
+    }
+
+    /**
+     * Get the geoRegionName property: Geo Region of the deleted site.
+     *
+     * @return the geoRegionName value.
+     */
+    public String geoRegionName() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoRegionName();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -152,5 +117,8 @@ public class DeletedSiteInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

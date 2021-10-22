@@ -126,7 +126,8 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                         raise ValueError('Invalid version type: {} for module: {}.\nFile={}\nLine={}'.format(version_type, module_name, target_file, line))
 
                     newlines.append(newline)
-                    file_changed = True
+                    if line != newline:
+                        file_changed = True
                 else:
                     newlines.append(line)
 
@@ -138,17 +139,17 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                 for line in newlines:
                     f.write(line)
 
-        # Check and see if we need to add a version line to the Changelog
-        file_name = os.path.basename(target_file)
-        if ((auto_version_increment or not skip_readme) and (file_name.startswith('pom.') and file_name.endswith('.xml'))):
-            update_changelog(target_file, auto_version_increment, not skip_readme)
+            # If the pom file changed check and see if we need to add a version line to the Changelog
+            file_name = os.path.basename(target_file)
+            if ((auto_version_increment or not skip_readme) and (file_name.startswith('pom.') and file_name.endswith('.xml'))):
+                update_changelog(target_file, auto_version_increment)
 
     except Exception as e:
         print("Unexpected exception: " + str(e))
         traceback.print_exc(file=sys.stderr)
 
 # Updating the changelog is special. Grab the version from the respective pom file
-def update_changelog(pom_file, is_unreleased, replace_version):
+def update_changelog(pom_file, is_increment):
 
     # Before doing anything, ensure that there is a changelog.md file sitting next to the pom file
     dirname = os.path.dirname(pom_file)
@@ -160,7 +161,7 @@ def update_changelog(pom_file, is_unreleased, replace_version):
         xml_version = xml_root.find('{http://maven.apache.org/POM/4.0.0}version')
         version = xml_version.text
 
-        script = os.path.join(".", "eng", "common", "Update-Change-Log.ps1")
+        script = os.path.join(".", "eng", "common", "scripts", "Update-ChangeLog.ps1")
         commands = [
             "pwsh",
             script,
@@ -168,10 +169,8 @@ def update_changelog(pom_file, is_unreleased, replace_version):
             version,
             "--ChangeLogPath",
             changelog,
-            "--Unreleased",
-            str(is_unreleased), # if this call is being made as the result of the auto version increment then it'll be unreleased
-            "--ReplaceVersion",
-            str(replace_version)
+            "--Unreleased:$true", # This update versions should never stamp in a release date so it will always be unreleased.
+            "--ReplaceLatestEntryTitle:$" + str(not is_increment) # If this call is not a result of auto version increment then replace the latest entry with the current version
         ]
         # Run script to update change log
         run_check_call(commands, '.')

@@ -2,6 +2,32 @@
 
 ## 1.2.0-beta.1 (Unreleased)
 
+### Features Added
+- Added support for Microsoft 365 Teams identities
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.3 (2021-10-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` to 1.0.5
+- Upgraded `azure-core` to 1.21.0
+
+## 1.1.2 (2021-09-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` to 1.0.4
+- Upgraded `azure-core` to 1.20.0
 
 ## 1.1.1 (2021-06-09)
 Updated `azure-communication-identity` version

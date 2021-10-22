@@ -76,7 +76,6 @@ public final class CertificateAsyncClient {
     static final String ACCEPT_LANGUAGE = "en-US";
     static final int DEFAULT_MAX_PAGE_RESULTS = 25;
     static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
-    static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
@@ -1769,8 +1768,10 @@ public final class CertificateAsyncClient {
     }
 
     /**
-     * Imports a pre-existing certificate to the key vault. The specified certificate must be in PFX or PEM format,
-     * and must contain the private key as well as the x509 certificates. This operation requires the {@code certificates/import} permission.
+     * Imports an existing valid certificate, containing a private key, into Azure Key Vault. This operation requires
+     * the {@code certificates/import} permission. The certificate to be imported can be in either PFX or PEM format. If
+     * the certificate is in PEM format the PEM file must contain the key as well as x509 certificates. Key Vault
+     * will only accept a key in PKCS#8 format.
      *
      * <p><strong>Code Samples</strong></p>
      * <p> Imports a certificate into the key vault.</p>

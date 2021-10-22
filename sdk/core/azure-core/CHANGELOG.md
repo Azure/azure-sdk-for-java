@@ -1,11 +1,83 @@
 # Release History
 
-## 1.20.0-beta.1 (Unreleased)
+## 1.22.0-beta.2 (Unreleased)
 
+### Features Added
+- Added `getJavaClass` method to retrieve the representing instance of the `TypeReference` created.
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.22.0-beta.1 (2021-10-12)
+
+### Features Added
+
+- Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
+
+### Other Changes
+
+- Fixed a bug where `BinaryData.getLength` returns `null` when it should return valid length.
+
+## 1.21.0 (2021-10-01)
+
+### Features Added
+
+- Added `ResponseError` which represents a general error response.
+- Added `HttpResponse.getBodyAsInputStream` to retrieve the `HttpResponse` body as an `InputStream`.
+- Added `HttpHeaders.add` to add an individual header to the `HttpHeaders`.
+- Added `setTenantId` and `getTenantId` methods to `TokenRequestContext` class that allows to configure TenantId Challenges.
+- Added additional logging when an `HttpClientProvider` is loaded from the classpath.
+
+### Breaking Changes
+
+- Deprecated annotation `ResumeOperation` as it was no longer used.
+- Deprecated `JacksonAdapter.simpleMapper` and `JacksonAdapter.serializer` as they should no longer be used.
+- Deprecated `CoreUtils.extractAndFetch` as it was no longer used.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.12.4` to `2.12.5`.
+- Upgraded Reactor from `3.4.9` to `3.4.10`.
+
+
+## 1.21.0-beta.1 (2021-09-08)
+
+### Features Added
+
+- Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
+
+## 1.20.0 (2021-09-07)
+
+### Features Added
+
+- Added new deferred logging APIs to `ClientLogger`. ([#20714](https://github.com/Azure/azure-sdk-for-java/pull/20714)) (Thank you, @tozsvath)
+- Added `HttpAuthorization` which supports configuring a generic `Authorization` header on a request. ([#23633](https://github.com/Azure/azure-sdk-for-java/pull/23633))
+- Added `RedirectPolicy` to standardize the ability to redirect HTTP requests. ([#23617](https://github.com/Azure/azure-sdk-for-java/pull/23617))
+- Added support for additional environment configurations. ([#23435](https://github.com/Azure/azure-sdk-for-java/pull/23435))
+- Added `RetryStrategy.shouldRetryException(Throwable throwable)` to allow `RetryStrategy`s to determine which exceptions
+  are acceptable to be retried. ([#23472](https://github.com/Azure/azure-sdk-for-java/pull/23472))
+- Updated `RetryPolicy` to attempt to lookup well-known retry after headers (`Retry-After`, `retry-after-ms`, and `x-ms-retry-after-ms`)
+  when a lookup header isn't supplied. ([#23472](https://github.com/Azure/azure-sdk-for-java/pull/23472))
+
+### Fixed
+
+- Fixed a bug where terminal status on initial poll wasn't respected. ([#23564](https://github.com/Azure/azure-sdk-for-java/pull/23564))
+- Fixed a bug where `UserAgentUtil` didn't validate that an `applicationId` was less than 24 characters. ([#23643](https://github.com/Azure/azure-sdk-for-java/pull/23643))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.8` to `3.4.9`.
 
 ## 1.19.0 (2021-08-06)
 
-### Feature Added
+### Features Added
 
 - Added `HttpRequestLogger`, `HttpResponseLogger`, and correlating context classes to enable support for custom
   logging in `HttpLoggingPolicy`. ([#16088](https://github.com/Azure/azure-sdk-for-java/pull/16088))
@@ -38,8 +110,8 @@
 
 ### Features Added
 
- - Added `RequestOptions` for protocol methods
- - Added support for `BinaryData` type as the request body or response body in `RestProxy`
+- Added `RequestOptions` for protocol methods
+- Added support for `BinaryData` type as the request body or response body in `RestProxy`
 
 ## 1.18.0 (2021-07-01)
 

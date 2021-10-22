@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +39,7 @@ public class UserAgentUtilTest {
                 Configuration.getGlobalConfiguration().clone().put("AZURE_TELEMETRY_DISABLED", "true")));
 
         // long app id should be truncated
-        assertEquals("ReallyLongApplicationIde azsdk-java-azure-storage-blob/12.0.0 " + plaform,
+        assertThrows(IllegalArgumentException.class, () ->
             UserAgentUtil.toUserAgentString("ReallyLongApplicationIdentity", "azure-storage-blob", "12.0.0", null));
 
         // null sdk name and version

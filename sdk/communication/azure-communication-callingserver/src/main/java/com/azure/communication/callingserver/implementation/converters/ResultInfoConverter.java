@@ -3,25 +3,25 @@
 
 package com.azure.communication.callingserver.implementation.converters;
 
-import com.azure.communication.callingserver.implementation.models.ResultInfoInternal;
-import com.azure.communication.callingserver.models.ResultInfo;
+import com.azure.communication.callingserver.models.CallingOperationResultDetails;
+import com.azure.communication.callingserver.implementation.models.CallingOperationResultDetailsInternal;
 
 /**
- * A converter between {@link ResultInfoInternal} and {@link ResultInfo}.
+ * A converter between {@link CallingOperationResultDetailsInternal} and {@link CallingOperationResultDetails}.
  */
 public final class ResultInfoConverter {
 
     /**
-     * Maps from {@link ResultInfoInternal} to {@link ResultInfo}.
+     * Maps from {@link CallingOperationResultDetailsInternal} to {@link CallingOperationResultDetails}.
      */
-    public static ResultInfo convert(ResultInfoInternal resultInfoInternal) {
-        if (resultInfoInternal == null) {
+    public static CallingOperationResultDetails convert(CallingOperationResultDetailsInternal callingOperationResultDetailsInternal) {
+        if (callingOperationResultDetailsInternal == null) {
             return null;
         }
 
-        return new ResultInfo(
-            resultInfoInternal.getCode(),
-            resultInfoInternal.getSubcode(),
-            resultInfoInternal.getMessage());
+        return new CallingOperationResultDetails(
+            callingOperationResultDetailsInternal.getCode(),
+            callingOperationResultDetailsInternal.getSubcode(),
+            callingOperationResultDetailsInternal.getMessage());
     }
 }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.PublicCertificateLocation;
@@ -14,76 +12,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Public certificate object. */
-@JsonFlatten
 @Fluent
-public class PublicCertificateInner extends ProxyOnlyResource {
+public final class PublicCertificateInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicCertificateInner.class);
 
     /*
-     * Public Certificate byte array
+     * PublicCertificate resource specific properties
      */
-    @JsonProperty(value = "properties.blob")
-    private byte[] blob;
-
-    /*
-     * Public Certificate Location
-     */
-    @JsonProperty(value = "properties.publicCertificateLocation")
-    private PublicCertificateLocation publicCertificateLocation;
-
-    /*
-     * Certificate Thumbprint
-     */
-    @JsonProperty(value = "properties.thumbprint", access = JsonProperty.Access.WRITE_ONLY)
-    private String thumbprint;
+    @JsonProperty(value = "properties")
+    private PublicCertificateProperties innerProperties;
 
     /**
-     * Get the blob property: Public Certificate byte array.
+     * Get the innerProperties property: PublicCertificate resource specific properties.
      *
-     * @return the blob value.
+     * @return the innerProperties value.
      */
-    public byte[] blob() {
-        return CoreUtils.clone(this.blob);
-    }
-
-    /**
-     * Set the blob property: Public Certificate byte array.
-     *
-     * @param blob the blob value to set.
-     * @return the PublicCertificateInner object itself.
-     */
-    public PublicCertificateInner withBlob(byte[] blob) {
-        this.blob = CoreUtils.clone(blob);
-        return this;
-    }
-
-    /**
-     * Get the publicCertificateLocation property: Public Certificate Location.
-     *
-     * @return the publicCertificateLocation value.
-     */
-    public PublicCertificateLocation publicCertificateLocation() {
-        return this.publicCertificateLocation;
-    }
-
-    /**
-     * Set the publicCertificateLocation property: Public Certificate Location.
-     *
-     * @param publicCertificateLocation the publicCertificateLocation value to set.
-     * @return the PublicCertificateInner object itself.
-     */
-    public PublicCertificateInner withPublicCertificateLocation(PublicCertificateLocation publicCertificateLocation) {
-        this.publicCertificateLocation = publicCertificateLocation;
-        return this;
-    }
-
-    /**
-     * Get the thumbprint property: Certificate Thumbprint.
-     *
-     * @return the thumbprint value.
-     */
-    public String thumbprint() {
-        return this.thumbprint;
+    private PublicCertificateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -94,6 +39,61 @@ public class PublicCertificateInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the blob property: Public Certificate byte array.
+     *
+     * @return the blob value.
+     */
+    public byte[] blob() {
+        return this.innerProperties() == null ? null : this.innerProperties().blob();
+    }
+
+    /**
+     * Set the blob property: Public Certificate byte array.
+     *
+     * @param blob the blob value to set.
+     * @return the PublicCertificateInner object itself.
+     */
+    public PublicCertificateInner withBlob(byte[] blob) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PublicCertificateProperties();
+        }
+        this.innerProperties().withBlob(blob);
+        return this;
+    }
+
+    /**
+     * Get the publicCertificateLocation property: Public Certificate Location.
+     *
+     * @return the publicCertificateLocation value.
+     */
+    public PublicCertificateLocation publicCertificateLocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicCertificateLocation();
+    }
+
+    /**
+     * Set the publicCertificateLocation property: Public Certificate Location.
+     *
+     * @param publicCertificateLocation the publicCertificateLocation value to set.
+     * @return the PublicCertificateInner object itself.
+     */
+    public PublicCertificateInner withPublicCertificateLocation(PublicCertificateLocation publicCertificateLocation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PublicCertificateProperties();
+        }
+        this.innerProperties().withPublicCertificateLocation(publicCertificateLocation);
+        return this;
+    }
+
+    /**
+     * Get the thumbprint property: Certificate Thumbprint.
+     *
+     * @return the thumbprint value.
+     */
+    public String thumbprint() {
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -101,5 +101,8 @@ public class PublicCertificateInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

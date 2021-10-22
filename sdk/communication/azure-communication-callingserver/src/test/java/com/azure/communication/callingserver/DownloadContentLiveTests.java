@@ -32,10 +32,24 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
-    public void downloadMetadata(HttpClient httpClient) throws UnsupportedEncodingException {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
-        CallingServerClient conversationClient = setupClient(builder, "downloadMetadata");
+    public void downloadMetadataWithConnectionStringClient(HttpClient httpClient) throws UnsupportedEncodingException {
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
+        CallingServerClient conversationClient = setupClient(builder, "downloadMetadataWithConnectionStringClient");
+        downloadMetadata(conversationClient);
+    }
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires human intervention")
+    public void downloadMetadataWithTokenCredentialClient(HttpClient httpClient) throws UnsupportedEncodingException {
+        CallingServerClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
+        CallingServerClient conversationClient = setupClient(builder, "downloadMetadataWithTokenCredentialClient");
+        downloadMetadata(conversationClient);
+    }
 
+    private void downloadMetadata(CallingServerClient conversationClient) throws UnsupportedEncodingException {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             conversationClient.downloadTo(METADATA_URL, byteArrayOutputStream, null);
@@ -54,7 +68,7 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadVideo(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadVideo");
 
         try {
@@ -81,7 +95,7 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadContent404(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -94,7 +108,7 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void downloadContentWrongUrl(HttpClient httpClient) {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadContentWrongUrl");
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -113,7 +127,7 @@ public class DownloadContentLiveTests extends CallingServerTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void downloadContentStreamFailure(HttpClient httpClient) throws IOException {
-        CallingServerClientBuilder builder = getConversationClientUsingConnectionString(httpClient);
+        CallingServerClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallingServerClient conversationClient = setupClient(builder, "downloadContent404");
 
         ByteArrayOutputStream byteArrayOutputStream = Mockito.mock(ByteArrayOutputStream.class);

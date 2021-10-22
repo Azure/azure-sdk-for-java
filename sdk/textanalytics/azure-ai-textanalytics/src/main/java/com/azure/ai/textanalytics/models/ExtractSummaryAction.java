@@ -11,10 +11,32 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class ExtractSummaryAction {
+    private String actionName;
     private String modelVersion;
     private Integer maxSentenceCount;
-    private SummarySentencesOrder sentencesOrderBy;
+    private SummarySentencesOrder orderBy;
     private boolean disableServiceLogs;
+
+    /**
+     * Get the name of action.
+     *
+     * @return the name of action.
+     */
+    public String getActionName() {
+        return actionName;
+    }
+
+    /**
+     * Set the custom name for the action.
+     *
+     * @param actionName the custom name for the action.
+     *
+     * @return The {@link ExtractSummaryAction} object itself.
+     */
+    public ExtractSummaryAction setActionName(String actionName) {
+        this.actionName = actionName;
+        return this;
+    }
 
     /**
      * Gets the version of the text analytics model used by this operation.
@@ -67,7 +89,7 @@ public final class ExtractSummaryAction {
      * Gets the maximum extractive summarization sentences number to be returned in the response.
      * If 'null' or not specified, a default value of 3 will be used as the maximum sentences number in the service
      * side.
-     * 
+     *
      * @return The maximum extractive summarization sentences number to be returned in the response.
      */
     public Integer getMaxSentenceCount() {
@@ -93,21 +115,21 @@ public final class ExtractSummaryAction {
      *
      * @return The order in which the summary sentences will be presented by.
      */
-    public SummarySentencesOrder getSentencesOrderBy() {
-        return sentencesOrderBy;
+    public SummarySentencesOrder getOrderBy() {
+        return orderBy;
     }
 
     /**
      * Sets the order in which the summary sentences will be presented by.
      * Defaults to {@link SummarySentencesOrder#OFFSET} if not specified.
      *
-     * @param sentencesOrderBy The type of summary sentences order. Defaults to {@link SummarySentencesOrder#OFFSET}
+     * @param orderBy The type of summary sentences order. Defaults to {@link SummarySentencesOrder#OFFSET}
      * if not specified.
      *
      * @return The {@link ExtractSummaryAction} object itself.
      */
-    public ExtractSummaryAction setSentencesOrderBy(SummarySentencesOrder sentencesOrderBy) {
-        this.sentencesOrderBy = sentencesOrderBy;
+    public ExtractSummaryAction setOrderBy(SummarySentencesOrder orderBy) {
+        this.orderBy = orderBy;
         return this;
     }
 }

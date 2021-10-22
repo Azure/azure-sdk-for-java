@@ -46,7 +46,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -449,7 +448,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -515,7 +514,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -653,7 +652,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -713,7 +712,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -855,7 +854,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -925,7 +924,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1083,7 +1082,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1134,7 +1133,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1158,7 +1157,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkInterfaceName);
         return this
@@ -1177,7 +1176,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkInterfaceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1198,7 +1197,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName) {
         return beginDeleteAsync(resourceGroupName, networkInterfaceName).getSyncPoller();
     }
@@ -1214,7 +1213,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkInterfaceName, Context context) {
         return beginDeleteAsync(resourceGroupName, networkInterfaceName, context).getSyncPoller();
@@ -1318,7 +1317,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1371,7 +1370,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1508,7 +1507,7 @@ public final class NetworkInterfacesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1566,7 +1565,7 @@ public final class NetworkInterfacesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1592,7 +1591,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1619,7 +1618,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1642,7 +1641,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters).getSyncPoller();
@@ -1660,7 +1659,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NetworkInterfaceInner>, NetworkInterfaceInner> beginCreateOrUpdate(
         String resourceGroupName, String networkInterfaceName, NetworkInterfaceInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, parameters, context).getSyncPoller();
@@ -1745,7 +1744,7 @@ public final class NetworkInterfacesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1753,7 +1752,7 @@ public final class NetworkInterfacesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkInterfaceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags) {
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1774,10 +1773,13 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         return FluxUtil
             .withContext(
                 context ->
@@ -1799,7 +1801,7 @@ public final class NetworkInterfacesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1808,7 +1810,7 @@ public final class NetworkInterfacesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkInterfaceInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context) {
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1829,10 +1831,13 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
-        TagsObject parameters = new TagsObject();
-        parameters.withTags(tags);
         context = this.client.mergeContext(context);
         return service
             .updateTags(
@@ -1851,7 +1856,7 @@ public final class NetworkInterfacesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1859,8 +1864,8 @@ public final class NetworkInterfacesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceInner> updateTagsAsync(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags)
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, parameters)
             .flatMap(
                 (Response<NetworkInterfaceInner> res) -> {
                     if (res.getValue() != null) {
@@ -1876,23 +1881,16 @@ public final class NetworkInterfacesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
+     * @param parameters Parameters supplied to update network interface tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network interface in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceInner> updateTagsAsync(String resourceGroupName, String networkInterfaceName) {
-        final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags)
-            .flatMap(
-                (Response<NetworkInterfaceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public NetworkInterfaceInner updateTags(
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, networkInterfaceName, parameters).block();
     }
 
     /**
@@ -1900,23 +1898,7 @@ public final class NetworkInterfacesClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network interface in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceInner updateTags(String resourceGroupName, String networkInterfaceName) {
-        final Map<String, String> tags = null;
-        return updateTagsAsync(resourceGroupName, networkInterfaceName, tags).block();
-    }
-
-    /**
-     * Updates a network interface tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param tags Resource tags.
+     * @param parameters Parameters supplied to update network interface tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1925,8 +1907,8 @@ public final class NetworkInterfacesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NetworkInterfaceInner> updateTagsWithResponse(
-        String resourceGroupName, String networkInterfaceName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, tags, context).block();
+        String resourceGroupName, String networkInterfaceName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, networkInterfaceName, parameters, context).block();
     }
 
     /**
@@ -1950,7 +1932,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1992,7 +1974,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2088,7 +2070,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2142,7 +2124,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2258,7 +2240,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2309,7 +2291,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2333,7 +2315,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2359,7 +2341,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTableAsync(String resourceGroupName, String networkInterfaceName, Context context) {
         context = this.client.mergeContext(context);
@@ -2385,7 +2367,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName) {
         return beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName).getSyncPoller();
@@ -2402,7 +2384,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route tables applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EffectiveRouteListResultInner>, EffectiveRouteListResultInner>
         beginGetEffectiveRouteTable(String resourceGroupName, String networkInterfaceName, Context context) {
         return beginGetEffectiveRouteTableAsync(resourceGroupName, networkInterfaceName, context).getSyncPoller();
@@ -2510,7 +2492,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2561,7 +2543,7 @@ public final class NetworkInterfacesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-02-01";
+        final String apiVersion = "2021-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2585,7 +2567,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroupsAsync(String resourceGroupName, String networkInterfaceName) {
@@ -2612,7 +2594,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroupsAsync(
@@ -2640,7 +2622,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroups(String resourceGroupName, String networkInterfaceName) {
@@ -2658,7 +2640,7 @@ public final class NetworkInterfacesClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network security groups applied to a network interface.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<EffectiveNetworkSecurityGroupListResultInner>, EffectiveNetworkSecurityGroupListResultInner>
         beginListEffectiveNetworkSecurityGroups(

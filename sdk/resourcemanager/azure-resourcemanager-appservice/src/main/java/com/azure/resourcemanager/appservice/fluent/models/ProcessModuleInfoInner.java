@@ -5,83 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Process Module Information. */
-@JsonFlatten
 @Fluent
-public class ProcessModuleInfoInner extends ProxyOnlyResource {
+public final class ProcessModuleInfoInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProcessModuleInfoInner.class);
 
     /*
-     * Base address. Used as module identifier in ARM resource URI.
+     * ProcessModuleInfo resource specific properties
      */
-    @JsonProperty(value = "properties.base_address")
-    private String baseAddress;
+    @JsonProperty(value = "properties")
+    private ProcessModuleInfoProperties innerProperties;
 
-    /*
-     * File name.
+    /**
+     * Get the innerProperties property: ProcessModuleInfo resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.file_name")
-    private String fileName;
+    private ProcessModuleInfoProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * HRef URI.
-     */
-    @JsonProperty(value = "properties.href")
-    private String href;
-
-    /*
-     * File path.
-     */
-    @JsonProperty(value = "properties.file_path")
-    private String filePath;
-
-    /*
-     * Module memory size.
-     */
-    @JsonProperty(value = "properties.module_memory_size")
-    private Integer moduleMemorySize;
-
-    /*
-     * File version.
-     */
-    @JsonProperty(value = "properties.file_version")
-    private String fileVersion;
-
-    /*
-     * File description.
-     */
-    @JsonProperty(value = "properties.file_description")
-    private String fileDescription;
-
-    /*
-     * Product name.
-     */
-    @JsonProperty(value = "properties.product")
-    private String product;
-
-    /*
-     * Product version.
-     */
-    @JsonProperty(value = "properties.product_version")
-    private String productVersion;
-
-    /*
-     * Is debug?
-     */
-    @JsonProperty(value = "properties.is_debug")
-    private Boolean isDebug;
-
-    /*
-     * Module language (locale).
-     */
-    @JsonProperty(value = "properties.language")
-    private String language;
+    /** {@inheritDoc} */
+    @Override
+    public ProcessModuleInfoInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the baseAddress property: Base address. Used as module identifier in ARM resource URI.
@@ -89,7 +43,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the baseAddress value.
      */
     public String baseAddress() {
-        return this.baseAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().baseAddress();
     }
 
     /**
@@ -99,7 +53,10 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the ProcessModuleInfoInner object itself.
      */
     public ProcessModuleInfoInner withBaseAddress(String baseAddress) {
-        this.baseAddress = baseAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessModuleInfoProperties();
+        }
+        this.innerProperties().withBaseAddress(baseAddress);
         return this;
     }
 
@@ -109,7 +66,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the fileName value.
      */
     public String fileName() {
-        return this.fileName;
+        return this.innerProperties() == null ? null : this.innerProperties().fileName();
     }
 
     /**
@@ -119,7 +76,10 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the ProcessModuleInfoInner object itself.
      */
     public ProcessModuleInfoInner withFileName(String fileName) {
-        this.fileName = fileName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessModuleInfoProperties();
+        }
+        this.innerProperties().withFileName(fileName);
         return this;
     }
 
@@ -129,7 +89,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the href value.
      */
     public String href() {
-        return this.href;
+        return this.innerProperties() == null ? null : this.innerProperties().href();
     }
 
     /**
@@ -139,7 +99,10 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the ProcessModuleInfoInner object itself.
      */
     public ProcessModuleInfoInner withHref(String href) {
-        this.href = href;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessModuleInfoProperties();
+        }
+        this.innerProperties().withHref(href);
         return this;
     }
 
@@ -149,7 +112,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the filePath value.
      */
     public String filePath() {
-        return this.filePath;
+        return this.innerProperties() == null ? null : this.innerProperties().filePath();
     }
 
     /**
@@ -159,7 +122,10 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the ProcessModuleInfoInner object itself.
      */
     public ProcessModuleInfoInner withFilePath(String filePath) {
-        this.filePath = filePath;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessModuleInfoProperties();
+        }
+        this.innerProperties().withFilePath(filePath);
         return this;
     }
 
@@ -169,7 +135,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the moduleMemorySize value.
      */
     public Integer moduleMemorySize() {
-        return this.moduleMemorySize;
+        return this.innerProperties() == null ? null : this.innerProperties().moduleMemorySize();
     }
 
     /**
@@ -179,7 +145,10 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the ProcessModuleInfoInner object itself.
      */
     public ProcessModuleInfoInner withModuleMemorySize(Integer moduleMemorySize) {
-        this.moduleMemorySize = moduleMemorySize;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessModuleInfoProperties();
+        }
+        this.innerProperties().withModuleMemorySize(moduleMemorySize);
         return this;
     }
 
@@ -189,7 +158,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the fileVersion value.
      */
     public String fileVersion() {
-        return this.fileVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().fileVersion();
     }
 
     /**
@@ -199,7 +168,10 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the ProcessModuleInfoInner object itself.
      */
     public ProcessModuleInfoInner withFileVersion(String fileVersion) {
-        this.fileVersion = fileVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessModuleInfoProperties();
+        }
+        this.innerProperties().withFileVersion(fileVersion);
         return this;
     }
 
@@ -209,7 +181,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the fileDescription value.
      */
     public String fileDescription() {
-        return this.fileDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().fileDescription();
     }
 
     /**
@@ -219,7 +191,10 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the ProcessModuleInfoInner object itself.
      */
     public ProcessModuleInfoInner withFileDescription(String fileDescription) {
-        this.fileDescription = fileDescription;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessModuleInfoProperties();
+        }
+        this.innerProperties().withFileDescription(fileDescription);
         return this;
     }
 
@@ -229,7 +204,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the product value.
      */
     public String product() {
-        return this.product;
+        return this.innerProperties() == null ? null : this.innerProperties().product();
     }
 
     /**
@@ -239,7 +214,10 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the ProcessModuleInfoInner object itself.
      */
     public ProcessModuleInfoInner withProduct(String product) {
-        this.product = product;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessModuleInfoProperties();
+        }
+        this.innerProperties().withProduct(product);
         return this;
     }
 
@@ -249,7 +227,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the productVersion value.
      */
     public String productVersion() {
-        return this.productVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().productVersion();
     }
 
     /**
@@ -259,7 +237,10 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the ProcessModuleInfoInner object itself.
      */
     public ProcessModuleInfoInner withProductVersion(String productVersion) {
-        this.productVersion = productVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessModuleInfoProperties();
+        }
+        this.innerProperties().withProductVersion(productVersion);
         return this;
     }
 
@@ -269,7 +250,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the isDebug value.
      */
     public Boolean isDebug() {
-        return this.isDebug;
+        return this.innerProperties() == null ? null : this.innerProperties().isDebug();
     }
 
     /**
@@ -279,7 +260,10 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the ProcessModuleInfoInner object itself.
      */
     public ProcessModuleInfoInner withIsDebug(Boolean isDebug) {
-        this.isDebug = isDebug;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessModuleInfoProperties();
+        }
+        this.innerProperties().withIsDebug(isDebug);
         return this;
     }
 
@@ -289,7 +273,7 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the language value.
      */
     public String language() {
-        return this.language;
+        return this.innerProperties() == null ? null : this.innerProperties().language();
     }
 
     /**
@@ -299,14 +283,10 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
      * @return the ProcessModuleInfoInner object itself.
      */
     public ProcessModuleInfoInner withLanguage(String language) {
-        this.language = language;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ProcessModuleInfoInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessModuleInfoProperties();
+        }
+        this.innerProperties().withLanguage(language);
         return this;
     }
 
@@ -318,5 +298,8 @@ public class ProcessModuleInfoInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -174,6 +174,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
                 .error(
                     new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -181,7 +182,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
                     service
                         .get(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -233,12 +234,13 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
                 .error(
                     new IllegalArgumentException("Parameter blobAuditingPolicyName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -357,6 +359,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -364,7 +367,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
                     service
                         .createOrUpdate(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -424,12 +427,13 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,
@@ -451,7 +455,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an extended server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -483,7 +487,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an extended server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -517,7 +521,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an extended server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -541,7 +545,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an extended server blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -678,6 +682,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -685,7 +690,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
                     service
                         .listByWorkspace(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             workspaceName,
@@ -736,12 +741,13 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClientIm
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByWorkspace(
                 this.client.getEndpoint(),
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 workspaceName,

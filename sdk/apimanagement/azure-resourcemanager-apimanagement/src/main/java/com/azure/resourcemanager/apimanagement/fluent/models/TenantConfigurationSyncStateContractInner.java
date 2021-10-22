@@ -10,60 +10,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Tenant Configuration Synchronization State. */
+/** Result of Tenant Configuration Sync State. */
 @Fluent
 public final class TenantConfigurationSyncStateContractInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantConfigurationSyncStateContractInner.class);
 
     /*
-     * The name of Git branch.
+     * Properties returned Tenant Configuration Sync State check.
      */
-    @JsonProperty(value = "branch")
-    private String branch;
+    @JsonProperty(value = "properties")
+    private TenantConfigurationSyncStateContractProperties innerProperties;
 
-    /*
-     * The latest commit Id.
-     */
-    @JsonProperty(value = "commitId")
-    private String commitId;
-
-    /*
-     * value indicating if last sync was save (true) or deploy (false)
-     * operation.
-     */
-    @JsonProperty(value = "isExport")
-    private Boolean isExport;
-
-    /*
-     * value indicating if last synchronization was later than the
-     * configuration change.
-     */
-    @JsonProperty(value = "isSynced")
-    private Boolean isSynced;
-
-    /*
-     * value indicating whether Git configuration access is enabled.
-     */
-    @JsonProperty(value = "isGitEnabled")
-    private Boolean isGitEnabled;
-
-    /*
-     * The date of the latest synchronization. The date conforms to the
-     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
-     * standard.
+    /**
+     * Get the innerProperties property: Properties returned Tenant Configuration Sync State check.
      *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "syncDate")
-    private OffsetDateTime syncDate;
-
-    /*
-     * The date of the latest configuration change. The date conforms to the
-     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
-     * standard.
-     *
-     */
-    @JsonProperty(value = "configurationChangeDate")
-    private OffsetDateTime configurationChangeDate;
+    private TenantConfigurationSyncStateContractProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the branch property: The name of Git branch.
@@ -71,7 +36,7 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the branch value.
      */
     public String branch() {
-        return this.branch;
+        return this.innerProperties() == null ? null : this.innerProperties().branch();
     }
 
     /**
@@ -81,7 +46,10 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the TenantConfigurationSyncStateContractInner object itself.
      */
     public TenantConfigurationSyncStateContractInner withBranch(String branch) {
-        this.branch = branch;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TenantConfigurationSyncStateContractProperties();
+        }
+        this.innerProperties().withBranch(branch);
         return this;
     }
 
@@ -91,7 +59,7 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the commitId value.
      */
     public String commitId() {
-        return this.commitId;
+        return this.innerProperties() == null ? null : this.innerProperties().commitId();
     }
 
     /**
@@ -101,7 +69,10 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the TenantConfigurationSyncStateContractInner object itself.
      */
     public TenantConfigurationSyncStateContractInner withCommitId(String commitId) {
-        this.commitId = commitId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TenantConfigurationSyncStateContractProperties();
+        }
+        this.innerProperties().withCommitId(commitId);
         return this;
     }
 
@@ -111,7 +82,7 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the isExport value.
      */
     public Boolean isExport() {
-        return this.isExport;
+        return this.innerProperties() == null ? null : this.innerProperties().isExport();
     }
 
     /**
@@ -121,7 +92,10 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the TenantConfigurationSyncStateContractInner object itself.
      */
     public TenantConfigurationSyncStateContractInner withIsExport(Boolean isExport) {
-        this.isExport = isExport;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TenantConfigurationSyncStateContractProperties();
+        }
+        this.innerProperties().withIsExport(isExport);
         return this;
     }
 
@@ -131,7 +105,7 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the isSynced value.
      */
     public Boolean isSynced() {
-        return this.isSynced;
+        return this.innerProperties() == null ? null : this.innerProperties().isSynced();
     }
 
     /**
@@ -141,7 +115,10 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the TenantConfigurationSyncStateContractInner object itself.
      */
     public TenantConfigurationSyncStateContractInner withIsSynced(Boolean isSynced) {
-        this.isSynced = isSynced;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TenantConfigurationSyncStateContractProperties();
+        }
+        this.innerProperties().withIsSynced(isSynced);
         return this;
     }
 
@@ -151,7 +128,7 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the isGitEnabled value.
      */
     public Boolean isGitEnabled() {
-        return this.isGitEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isGitEnabled();
     }
 
     /**
@@ -161,7 +138,10 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the TenantConfigurationSyncStateContractInner object itself.
      */
     public TenantConfigurationSyncStateContractInner withIsGitEnabled(Boolean isGitEnabled) {
-        this.isGitEnabled = isGitEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TenantConfigurationSyncStateContractProperties();
+        }
+        this.innerProperties().withIsGitEnabled(isGitEnabled);
         return this;
     }
 
@@ -172,7 +152,7 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the syncDate value.
      */
     public OffsetDateTime syncDate() {
-        return this.syncDate;
+        return this.innerProperties() == null ? null : this.innerProperties().syncDate();
     }
 
     /**
@@ -183,7 +163,10 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the TenantConfigurationSyncStateContractInner object itself.
      */
     public TenantConfigurationSyncStateContractInner withSyncDate(OffsetDateTime syncDate) {
-        this.syncDate = syncDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TenantConfigurationSyncStateContractProperties();
+        }
+        this.innerProperties().withSyncDate(syncDate);
         return this;
     }
 
@@ -194,7 +177,7 @@ public final class TenantConfigurationSyncStateContractInner {
      * @return the configurationChangeDate value.
      */
     public OffsetDateTime configurationChangeDate() {
-        return this.configurationChangeDate;
+        return this.innerProperties() == null ? null : this.innerProperties().configurationChangeDate();
     }
 
     /**
@@ -206,7 +189,33 @@ public final class TenantConfigurationSyncStateContractInner {
      */
     public TenantConfigurationSyncStateContractInner withConfigurationChangeDate(
         OffsetDateTime configurationChangeDate) {
-        this.configurationChangeDate = configurationChangeDate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TenantConfigurationSyncStateContractProperties();
+        }
+        this.innerProperties().withConfigurationChangeDate(configurationChangeDate);
+        return this;
+    }
+
+    /**
+     * Get the lastOperationId property: Most recent tenant configuration operation identifier.
+     *
+     * @return the lastOperationId value.
+     */
+    public String lastOperationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastOperationId();
+    }
+
+    /**
+     * Set the lastOperationId property: Most recent tenant configuration operation identifier.
+     *
+     * @param lastOperationId the lastOperationId value to set.
+     * @return the TenantConfigurationSyncStateContractInner object itself.
+     */
+    public TenantConfigurationSyncStateContractInner withLastOperationId(String lastOperationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TenantConfigurationSyncStateContractProperties();
+        }
+        this.innerProperties().withLastOperationId(lastOperationId);
         return this;
     }
 
@@ -216,5 +225,8 @@ public final class TenantConfigurationSyncStateContractInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

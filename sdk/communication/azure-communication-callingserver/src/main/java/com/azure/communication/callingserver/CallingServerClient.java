@@ -3,30 +3,33 @@
 
 package com.azure.communication.callingserver;
 
-import com.azure.communication.callingserver.implementation.models.CallRejectReason;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.AnswerCallOptions;
 import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.CallParticipant;
 import com.azure.communication.callingserver.models.CallRecordingProperties;
 import com.azure.communication.callingserver.models.CallingServerErrorException;
+import com.azure.communication.callingserver.models.CallRejectReason;
 import com.azure.communication.callingserver.models.CreateCallOptions;
 import com.azure.communication.callingserver.models.JoinCallOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.StartRecordingOptions;
 import com.azure.communication.callingserver.models.StartCallRecordingResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpRange;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 import java.io.OutputStream;
 import java.nio.file.Path;
 import java.net.URI;
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Objects;
 
@@ -227,7 +230,7 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void removeParticipant(CallLocator callLocator, CommunicationIdentifier participant) {
-            return callingServerAsyncClient.removeParticipant(callLocator, participant).block();
+        return callingServerAsyncClient.removeParticipant(callLocator, participant).block();
     }
 
     /**
@@ -254,7 +257,7 @@ public final class CallingServerClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get participant request.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public List<CallParticipant> getParticipant(CallLocator callLocator, CommunicationIdentifier participant) {
         return callingServerAsyncClient.getParticipant(callLocator, participant).block();
     }
@@ -269,7 +272,7 @@ public final class CallingServerClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get participant request.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<CallParticipant>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant, Context context) {
         return callingServerAsyncClient.getParticipantWithResponse(callLocator, participant, context).block();
     }
@@ -282,7 +285,7 @@ public final class CallingServerClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get participants request.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public List<CallParticipant> getAllParticipants(CallLocator callLocator) {
         return callingServerAsyncClient.getAllParticipants(callLocator).block();
     }
@@ -296,7 +299,7 @@ public final class CallingServerClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get participants request.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<CallParticipant>> getAllParticipantsWithResponse(CallLocator callLocator, Context context) {
         return callingServerAsyncClient.getParticipantsWithResponse(callLocator, context).block();
     }
@@ -309,7 +312,7 @@ public final class CallingServerClient {
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful start recording request.
+     * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StartCallRecordingResult startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
@@ -321,15 +324,20 @@ public final class CallingServerClient {
      *
      * @param callLocator the call locator.
      * @param recordingStateCallbackUri Uri to send state change callbacks.
+     * @param startRecordingOptions StartRecordingOptions custom options.
+     * @param context A {@link Context} representing the request context.
      * @throws InvalidParameterException is recordingStateCallbackUri is absolute uri.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @param context A {@link Context} representing the request context.
-     * @return Response for a successful join request.
+     * @return Result for a successful start recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StartCallRecordingResult> startRecordingWithResponse(CallLocator callLocator, URI recordingStateCallbackUri, Context context) {
-        return callingServerAsyncClient.startRecordingWithResponse(callLocator, recordingStateCallbackUri, context).block();
+    public Response<StartCallRecordingResult> startRecordingWithResponse(
+        CallLocator callLocator,
+        URI recordingStateCallbackUri,
+        StartRecordingOptions startRecordingOptions,
+        Context context) {
+        return callingServerAsyncClient.startRecordingWithResponse(callLocator, recordingStateCallbackUri, startRecordingOptions, context).block();
     }
 
     /**
@@ -354,7 +362,7 @@ public final class CallingServerClient {
      * @return Response for a successful stop recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopRecordingWithResponse(String recordingId, final Context context) {
+    public Response<Void> stopRecordingWithResponse(String recordingId, Context context) {
         return callingServerAsyncClient.stopRecordingWithResponse(recordingId, context).block();
     }
 
@@ -380,7 +388,7 @@ public final class CallingServerClient {
      * @return Response for a successful pause recording request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> pauseRecordingWithResponse(String recordingId, final Context context) {
+    public Response<Void> pauseRecordingWithResponse(String recordingId, Context context) {
         return callingServerAsyncClient.pauseRecordingWithResponse(recordingId, context).block();
     }
 
@@ -433,7 +441,7 @@ public final class CallingServerClient {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallRecordingProperties> getRecordingStateWithResponse(String recordingId, final Context context) {
+    public Response<CallRecordingProperties> getRecordingStateWithResponse(String recordingId, Context context) {
         return callingServerAsyncClient.getRecordingStateWithResponse(recordingId, context).block();
     }
 
@@ -560,7 +568,6 @@ public final class CallingServerClient {
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelMediaOperation(
@@ -577,7 +584,7 @@ public final class CallingServerClient {
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
+     * @return Response payload for cancel media operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelMediaOperationWithResponse(
@@ -591,11 +598,10 @@ public final class CallingServerClient {
      * Cancel Participant Media Operation.
      *
      * @param callLocator The call locator.
-     * @param participantId The participant id.
+     * @param participant The participant identity.
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response containing the http response information
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelParticipantMediaOperation(CallLocator callLocator, CommunicationIdentifier participant, String mediaOperationId) {
@@ -606,7 +612,7 @@ public final class CallingServerClient {
      * Cancel Participant Media Operation.
      *
      * @param callLocator The call locator.
-     * @param participantId The participant id.
+     * @param participant The participant identity.
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @param context A {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -627,7 +633,7 @@ public final class CallingServerClient {
      * Play audio to a participant.
      *
      * @param callLocator The call locator.
-     * @param participantId The participant id.
+     * @param participant The participant identity.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -645,7 +651,7 @@ public final class CallingServerClient {
      * Play audio to a participant.
      *
      * @param callLocator The call locator.
-     * @param participantId The participant id.
+     * @param participant The participant identity.
      * @param audioFileUri The media resource uri of the play audio request. Currently only Wave file (.wav) format
      *                     audio prompts are supported. More specifically, the audio content in the wave file must
      *                     be mono (single-channel), 16-bit samples with a 16,000 (16KHz) sampling rate.
@@ -672,10 +678,10 @@ public final class CallingServerClient {
      *
      * @param incomingCallContext the incomingCallContext value to set.
      * @param targets the targets value to set.
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUrl value to set.
      * @param timeout the timeout value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -688,12 +694,13 @@ public final class CallingServerClient {
      *
      * @param incomingCallContext the incomingCallContext value to set.
      * @param targets the targets value to set.
-     * @param callbackUrl the callbackUrl value to set.
+     * @param callbackUri the callbackUrl value to set.
      * @param timeout the timeout value to set.
      * @param context A {@link Context} representing the request context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> redirectCallWithResponse(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeout, Context context) {
@@ -704,10 +711,10 @@ public final class CallingServerClient {
      * Redirect the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUrl the callbackUrl value to set.
-     * @param rejectReason the call reject reason value to set.
+     * @param callbackUri the callbackUrl value to set.
+     * @param callRejectReason the call reject reason value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -719,15 +726,40 @@ public final class CallingServerClient {
      * Redirect the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUrl the callbackUrl value to set.
-     * @param rejectReason the call reject reason value to set.
+     * @param callbackUri the callbackUrl value to set.
+     * @param callRejectReason the call reject reason value to set.
      * @param context A {@link Context} representing the request context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> rejectCallWithResponse(String incomingCallContext, URI callbackUri, CallRejectReason callRejectReason, Context context) {
         return callingServerAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callbackUri, callRejectReason, context).block();
+    }
+
+    /**
+     * Delete the content located in the deleteEndpoint
+     *
+     * @param deleteEndpoint - ACS URL where the content is located.
+     * @param context A {@link Context} representing the request context.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteRecording(String deleteEndpoint, final Context context) {
+        callingServerAsyncClient.deleteRecordingWithResponse(deleteEndpoint, context).block();
+    }
+
+    /**
+     * Delete the content located in the deleteEndpoint
+     *
+     * @param deleteEndpoint - ACS URL where the content is located.
+     * @param context A {@link Context} representing the request context.
+     * @return Response containing the http response information from the download.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HttpResponse> deleteRecordingWithResponse(String deleteEndpoint, final Context context) {
+        Objects.requireNonNull(deleteEndpoint, "'deleteEndpoint' cannot be null");
+        return callingServerAsyncClient.deleteRecordingWithResponse(deleteEndpoint, context).block();
     }
 }

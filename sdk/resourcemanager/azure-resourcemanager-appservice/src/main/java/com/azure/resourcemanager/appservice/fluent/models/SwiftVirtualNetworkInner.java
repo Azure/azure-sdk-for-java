@@ -5,32 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Swift Virtual Network Contract. This is used to enable the new Swift way of doing virtual network integration. */
-@JsonFlatten
 @Fluent
-public class SwiftVirtualNetworkInner extends ProxyOnlyResource {
+public final class SwiftVirtualNetworkInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SwiftVirtualNetworkInner.class);
 
     /*
-     * The Virtual Network subnet's resource ID. This is the subnet that this
-     * Web App will join. This subnet must have a delegation to
-     * Microsoft.Web/serverFarms defined first.
+     * SwiftVirtualNetwork resource specific properties
      */
-    @JsonProperty(value = "properties.subnetResourceId")
-    private String subnetResourceId;
+    @JsonProperty(value = "properties")
+    private SwiftVirtualNetworkProperties innerProperties;
 
-    /*
-     * A flag that specifies if the scale unit this Web App is on supports
-     * Swift integration.
+    /**
+     * Get the innerProperties property: SwiftVirtualNetwork resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.swiftSupported")
-    private Boolean swiftSupported;
+    private SwiftVirtualNetworkProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SwiftVirtualNetworkInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the subnetResourceId property: The Virtual Network subnet's resource ID. This is the subnet that this Web App
@@ -39,7 +44,7 @@ public class SwiftVirtualNetworkInner extends ProxyOnlyResource {
      * @return the subnetResourceId value.
      */
     public String subnetResourceId() {
-        return this.subnetResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().subnetResourceId();
     }
 
     /**
@@ -50,7 +55,10 @@ public class SwiftVirtualNetworkInner extends ProxyOnlyResource {
      * @return the SwiftVirtualNetworkInner object itself.
      */
     public SwiftVirtualNetworkInner withSubnetResourceId(String subnetResourceId) {
-        this.subnetResourceId = subnetResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SwiftVirtualNetworkProperties();
+        }
+        this.innerProperties().withSubnetResourceId(subnetResourceId);
         return this;
     }
 
@@ -61,7 +69,7 @@ public class SwiftVirtualNetworkInner extends ProxyOnlyResource {
      * @return the swiftSupported value.
      */
     public Boolean swiftSupported() {
-        return this.swiftSupported;
+        return this.innerProperties() == null ? null : this.innerProperties().swiftSupported();
     }
 
     /**
@@ -72,14 +80,10 @@ public class SwiftVirtualNetworkInner extends ProxyOnlyResource {
      * @return the SwiftVirtualNetworkInner object itself.
      */
     public SwiftVirtualNetworkInner withSwiftSupported(Boolean swiftSupported) {
-        this.swiftSupported = swiftSupported;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SwiftVirtualNetworkInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SwiftVirtualNetworkProperties();
+        }
+        this.innerProperties().withSwiftSupported(swiftSupported);
         return this;
     }
 
@@ -91,5 +95,8 @@ public class SwiftVirtualNetworkInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

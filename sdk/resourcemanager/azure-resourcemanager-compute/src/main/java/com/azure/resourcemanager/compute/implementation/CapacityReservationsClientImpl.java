@@ -219,7 +219,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -291,7 +291,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -320,7 +320,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -353,7 +353,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -387,7 +387,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -412,7 +412,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -575,7 +575,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -646,7 +646,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -674,7 +674,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdateAsync(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -706,7 +706,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdateAsync(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -739,7 +739,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -762,7 +762,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -913,7 +913,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -978,7 +978,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1006,7 +1006,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1030,7 +1030,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -1057,7 +1057,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
         return beginDeleteAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName)
@@ -1078,7 +1078,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String capacityReservationGroupName,
@@ -1220,7 +1220,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1288,7 +1288,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1442,7 +1442,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1505,7 +1505,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-04-01";
+        final String apiVersion = "2021-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
