@@ -95,8 +95,9 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
         // Build new child span representing this outgoing request
         // provide sampling-relevant attributes (users make sampling decisions based on this)
-        SpanBuilder spanBuilder = tracer.spanBuilder("HTTP " + request.getHttpMethod().toString())
-            .setAttribute(HTTP_METHOD, request.getHttpMethod().toString())
+        String methodName = request.getHttpMethod().toString();
+        SpanBuilder spanBuilder = tracer.spanBuilder("HTTP " + methodName)
+            .setAttribute(HTTP_METHOD, methodName)
             .setAttribute(HTTP_URL, request.getUrl().toString())
             .setParent(currentContext.with(parentSpan));
 
