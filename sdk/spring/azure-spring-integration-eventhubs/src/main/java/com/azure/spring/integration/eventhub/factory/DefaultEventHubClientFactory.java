@@ -106,7 +106,7 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
         }
 
         // TODO (xiada): set up event processing position for each partition
-        if (batchConfig.getBatchSize() > 1) {
+        if (batchConfig != null) {
             return new EventProcessorClientBuilder()
                 .connectionString(eventHubConnectionString, eventHubName)
                 .consumerGroup(consumerGroup)

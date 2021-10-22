@@ -12,9 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.util.Assert;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,21 +36,20 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBatchMessageConverter.class);
 
-    @Override
-    protected byte[] getPayload(EventBatchContext azureMessage) {
+    protected List<byte[]> getPayloadAsList(EventBatchContext azureMessage) {
         List<EventData> events = azureMessage.getEvents();
 
         List<byte[]> payloadList = new ArrayList<>();
         for (EventData event : events) {
             payloadList.add(event.getBody());
         }
-        return payloadList
-            .stream()
-            .collect(
-                () -> new ByteArrayOutputStream(),
-                (b, e) -> b.write(e, 0, e.length),
-                (a, b) -> {})
-            .toByteArray();
+        return payloadList;
+    }
+
+    @Override
+    protected byte[] getPayload(EventBatchContext azureMessage) {
+        //np-op
+        return null;
     }
 
     @Override
@@ -76,15 +79,10 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
         });
     }
 
-    @Override
-    public <U> Message<U> toMessage(@NonNull EventBatchContext azureMessage,
-                                    Map<String, Object> headers,
-                                    @NonNull Class<U> targetPayloadClass) {
-        Map<String, Object> mergedHeaders = new HashMap<>();
-        mergedHeaders.putAll(buildCustomHeaders(azureMessage));
-        mergedHeaders.putAll(headers);
-        return (Message<U>) internalToMessage(azureMessage, mergedHeaders, targetPayloadClass);
-
+    protected <U> Message<?> internalToMessage(EventBatchContext azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
+        List<byte[]> payload = getPayloadAsList(azureMessage);
+        Assert.isTrue(payload != null && payload.size() > 0, "payload must not be null");
+        return MessageBuilder.withPayload(payload).copyHeaders(headers).build();
     }
 
     @Override
@@ -94,7 +92,7 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
         List<EventData> events = azureMessage.getEvents();
         List<Object> enqueueTimeList = new ArrayList<>();
         List<Object> offSetList = new ArrayList<>();
-        List<Object> sequeneceNumberList = new ArrayList<>();
+        List<Object> sequenceNumberList = new ArrayList<>();
         List<Object> partitionKeyList = new ArrayList<>();
         List<Object> batchConvertedSystemProperties = new ArrayList<>();
         List<Object> batchConvertedApplicationProperties = new ArrayList<>();
@@ -102,7 +100,7 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
         for (EventData event : events) {
             enqueueTimeList.add(event.getEnqueuedTime());
             offSetList.add(event.getOffset());
-            sequeneceNumberList.add(event.getSequenceNumber());
+            sequenceNumberList.add(event.getSequenceNumber());
             partitionKeyList.add(event.getPartitionKey());
             batchConvertedSystemProperties.add(event.getSystemProperties());
             Map<String, Object> applicationProperties = event.getProperties();
@@ -111,7 +109,7 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
         }
         headers.put(EventHubHeaders.ENQUEUED_TIME, enqueueTimeList);
         headers.put(EventHubHeaders.OFFSET, offSetList);
-        headers.put(EventHubHeaders.SEQUENCE_NUMBER, sequeneceNumberList);
+        headers.put(EventHubHeaders.SEQUENCE_NUMBER, sequenceNumberList);
         headers.put(EventHubHeaders.PARTITION_KEY, partitionKeyList);
         headers.put(EventHubHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES, batchConvertedSystemProperties);
         headers.put(EventHubHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES, batchConvertedApplicationProperties);

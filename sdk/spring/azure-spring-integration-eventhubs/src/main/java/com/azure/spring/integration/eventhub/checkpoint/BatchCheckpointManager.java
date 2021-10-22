@@ -52,7 +52,7 @@ public class BatchCheckpointManager extends CheckpointManager {
 
     public void onMessages(EventBatchContext context) {
         EventData lastEvent = getLastEnqueuedEvent(context);
-        Long offset = context.getLastEnqueuedEventProperties().getOffset();
+        Long offset = lastEvent.getOffset();
         context.updateCheckpointAsync()
             .doOnError(t -> logCheckpointFail(context, offset, lastEvent,
                 lastEventByPartition.get(context.getPartitionContext().getPartitionId()), t))

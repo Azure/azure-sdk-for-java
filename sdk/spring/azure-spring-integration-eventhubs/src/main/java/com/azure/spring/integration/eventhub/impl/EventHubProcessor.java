@@ -13,6 +13,7 @@ import com.azure.spring.integration.core.api.reactor.Checkpointer;
 import com.azure.spring.integration.core.converter.AzureMessageConverter;
 import com.azure.spring.integration.eventhub.checkpoint.BatchCheckpointManager;
 import com.azure.spring.integration.eventhub.checkpoint.CheckpointManager;
+import com.azure.spring.integration.eventhub.converter.EventHubBatchMessageConverter;
 import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +37,13 @@ public class EventHubProcessor {
     protected final Consumer<Message<?>> consumer;
     protected final Class<?> payloadType;
     protected final CheckpointConfig checkpointConfig;
-    protected final AzureMessageConverter<?, ?> messageConverter;
+    protected final EventHubMessageConverter messageConverter;
+    protected final EventHubBatchMessageConverter batchMessageConverter = new EventHubBatchMessageConverter();
     protected final CheckpointManager checkpointManager;
     protected EventPosition eventPosition = EventPosition.latest();
 
     public EventHubProcessor(Consumer<Message<?>> consumer, Class<?> payloadType, CheckpointConfig checkpointConfig,
-                             AzureMessageConverter<?, ?> messageConverter) {
+                             EventHubMessageConverter messageConverter) {
         this.consumer = consumer;
         this.payloadType = payloadType;
         this.checkpointConfig = checkpointConfig;
@@ -71,7 +73,7 @@ public class EventHubProcessor {
             headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
         }
 
-        this.consumer.accept(((EventHubMessageConverter)messageConverter).toMessage(event, new MessageHeaders(headers), payloadType));
+        this.consumer.accept(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType));
         this.checkpointManager.onMessage(context, context.getEventData());
 
         if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH) {
@@ -85,19 +87,12 @@ public class EventHubProcessor {
         Map<String, Object> headers = new HashMap<>();
         headers.put(AzureHeaders.RAW_PARTITION_ID, partition.getPartitionId());
 
-        final List<EventData> events = context.getEvents();
-
         Checkpointer checkpointer = new AzureCheckpointer(context::updateCheckpointAsync);
         if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
             headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
         }
 
-        List<Message<?>> springMessageList = new ArrayList<>();
-        for(EventData event: events) {
-            springMessageList.add(messageConverter.toMessage(event, new MessageHeaders(headers), payloadType));
-        }
-        this.consumer.accept(MessageBuilder.withPayload(springMessageList).copyHeaders(headers).build());
-
+        this.consumer.accept(batchMessageConverter.toMessage(context, new MessageHeaders(headers), payloadType));
         if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH) {
             ((BatchCheckpointManager) this.checkpointManager).onMessages(context);
         }

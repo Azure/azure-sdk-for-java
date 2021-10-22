@@ -145,7 +145,6 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
         return MessageBuilder.withPayload(fromPayload(payload, targetPayloadClass)).copyHeaders(headers).build();
     }
 
-
     protected void convertNativeHeadersIfNeeded(Map<String, Object> eventDataProperties) {
         if (eventDataProperties.containsKey(NATIVE_HEADERS) && isValidJson(eventDataProperties.get(NATIVE_HEADERS))) {
             String nativeHeader = (String) eventDataProperties.remove(NATIVE_HEADERS);

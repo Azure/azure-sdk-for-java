@@ -65,12 +65,12 @@ public class EventHubTemplate extends AbstractEventHubTemplate implements EventH
     }
 
     @Override
-    public AzureMessageConverter<?, ?> getMessageConverter() {
+    public EventHubMessageConverter getMessageConverter() {
         return messageConverter;
     }
 
     @Override
-    public void setMessageConverter(AzureMessageConverter<?, ?> messageConverter) {
+    public void setMessageConverter(EventHubMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }
 }

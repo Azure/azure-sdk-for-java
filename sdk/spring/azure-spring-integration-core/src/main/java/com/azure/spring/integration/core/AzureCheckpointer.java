@@ -13,8 +13,8 @@ import java.util.function.Supplier;
  * Azure implementation for check point callback.
  */
 public class AzureCheckpointer implements Checkpointer {
-    private final Supplier<CompletableFuture<Void>> success;
-    private final Supplier<CompletableFuture<Void>> fail;
+    public final Supplier<CompletableFuture<Void>> success;
+    public final Supplier<CompletableFuture<Void>> fail;
 
     public AzureCheckpointer(@NonNull Supplier<CompletableFuture<Void>> success) {
         this(success, null);

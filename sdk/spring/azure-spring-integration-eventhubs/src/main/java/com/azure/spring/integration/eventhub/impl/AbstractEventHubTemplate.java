@@ -10,7 +10,7 @@ import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.spring.integration.core.api.*;
-import com.azure.spring.integration.core.converter.AzureMessageConverter;
+import com.azure.spring.integration.eventhub.converter.EventHubBatchMessageConverter;
 import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import org.slf4j.Logger;
@@ -42,14 +42,14 @@ public class AbstractEventHubTemplate {
 
     private final EventHubClientFactory clientFactory;
 
-    protected AzureMessageConverter<?, ?> messageConverter = new EventHubMessageConverter();
+    protected EventHubMessageConverter messageConverter = new EventHubMessageConverter();
 
     private StartPosition startPosition = StartPosition.LATEST;
 
     private CheckpointConfig checkpointConfig = CheckpointConfig.builder()
         .checkpointMode(CheckpointMode.RECORD).build();
 
-    private BatchConfig batchConfig = BatchConfig.builder().batchSize(1).build();
+    private BatchConfig batchConfig;
 
     AbstractEventHubTemplate(EventHubClientFactory clientFactory) {
         this.clientFactory = clientFactory;
@@ -121,11 +121,11 @@ public class AbstractEventHubTemplate {
         return properties;
     }
 
-    public AzureMessageConverter<?, ?> getMessageConverter() {
+    public EventHubMessageConverter getMessageConverter() {
         return messageConverter;
     }
 
-    public void setMessageConverter(AzureMessageConverter<?, ?> messageConverter) {
+    public void setMessageConverter(EventHubMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }
 

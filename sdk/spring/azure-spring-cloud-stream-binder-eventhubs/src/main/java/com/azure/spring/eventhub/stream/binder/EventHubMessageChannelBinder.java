@@ -89,13 +89,12 @@ public class EventHubMessageChannelBinder extends
                                 .checkpointInterval(properties.getExtension().getCheckpointInterval())
                                 .build();
         this.eventHubOperation.setCheckpointConfig(checkpointConfig);
-        if (properties.getExtension().getBatchSize() > 1) {
-            ((EventHubTemplate)this.eventHubOperation).setMessageConverter(new EventHubBatchMessageConverter());
+        if(properties.isBatchMode()) {
+            BatchConfig batchConfig = BatchConfig.builder().batchSize(properties.getExtension().getBatchSize())
+                                                 .maxWaitTime(properties.getExtension().getMaxBatchDuration())
+                                                 .build();
+            this.eventHubOperation.setBatchConfig(batchConfig);
         }
-        BatchConfig batchConfig = BatchConfig.builder().batchSize(properties.getExtension().getBatchSize())
-                                                       .maxWaitTime(properties.getExtension().getMaxBatchDuration())
-                                                       .build();
-        this.eventHubOperation.setBatchConfig(batchConfig);
 
         boolean anonymous = !StringUtils.hasText(group);
         if (anonymous) {
