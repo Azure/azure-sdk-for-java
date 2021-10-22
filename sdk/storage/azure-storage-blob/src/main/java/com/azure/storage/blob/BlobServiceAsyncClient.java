@@ -467,6 +467,9 @@ public final class BlobServiceAsyncClient {
             if (blobContainerListDetails.getRetrieveMetadata()) {
                 flags.add(ListBlobContainersIncludeType.METADATA);
             }
+            if (blobContainerListDetails.getRetrieveSystem()) {
+                flags.add(ListBlobContainersIncludeType.SYSTEM);
+            }
             return flags;
         } else {
             return null;

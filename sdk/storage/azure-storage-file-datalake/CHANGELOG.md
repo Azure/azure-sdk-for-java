@@ -3,6 +3,9 @@
 ## 12.8.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for 2021-02-12 service version.
+- Added support for listing system containers.
+
 - Added support for the 2020-12-06 service version.
 
 ### Breaking Changes
