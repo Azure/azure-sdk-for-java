@@ -4,7 +4,6 @@
 package com.azure.spring.integration.eventhub.impl;
 
 import com.azure.spring.cloud.context.core.util.Tuple;
-import com.azure.spring.integration.core.converter.AzureMessageConverter;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;

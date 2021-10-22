@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.integration.core.api.BatchConfig;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 /**
@@ -24,7 +25,7 @@ public interface EventHubClientFactory {
     EventHubProducerAsyncClient getOrCreateProducerClient(String eventHubName);
 
     EventProcessorClient createEventProcessorClient(String eventHubName, String consumerGroup,
-                                                    EventHubProcessor eventHubProcessor, BatchConfig batchConfig);
+                                                    EventHubProcessor eventHubProcessor, @Nullable BatchConfig batchConfig);
 
     Optional<EventProcessorClient> getEventProcessorClient(String eventHubName, String consumerGroup);
 

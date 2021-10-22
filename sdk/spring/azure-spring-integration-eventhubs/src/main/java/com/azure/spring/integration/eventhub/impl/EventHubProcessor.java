@@ -4,13 +4,18 @@
 package com.azure.spring.integration.eventhub.impl;
 
 import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.models.*;
+import com.azure.messaging.eventhubs.models.CloseContext;
+import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
+import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.InitializationContext;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.reactor.AzureCheckpointer;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
-import com.azure.spring.integration.core.converter.AzureMessageConverter;
 import com.azure.spring.integration.eventhub.checkpoint.BatchCheckpointManager;
 import com.azure.spring.integration.eventhub.checkpoint.CheckpointManager;
 import com.azure.spring.integration.eventhub.converter.EventHubBatchMessageConverter;
@@ -19,15 +24,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-
-import static com.azure.spring.integration.core.EventHubHeaders.BATCH_CHECKPOINTER;
 
 /**
  * Mainly handle message conversion and checkpoint

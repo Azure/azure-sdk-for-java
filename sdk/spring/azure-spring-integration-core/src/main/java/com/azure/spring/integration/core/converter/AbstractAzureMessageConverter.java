@@ -137,7 +137,7 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
         }
 
         if (targetPayloadClass == String.class) {
-            return MessageBuilder.withPayload(new String((byte[])payload, StandardCharsets.UTF_8)).copyHeaders(headers).build();
+            return MessageBuilder.withPayload(new String((byte[]) payload, StandardCharsets.UTF_8)).copyHeaders(headers).build();
         }
 
         if (targetPayloadClass == byte[].class) {

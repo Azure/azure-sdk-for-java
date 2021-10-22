@@ -18,8 +18,8 @@ import java.util.function.Supplier;
  */
 @Deprecated
 public class AzureCheckpointer implements Checkpointer {
-    public final Supplier<CompletableFuture<Void>> success;
-    public final Supplier<CompletableFuture<Void>> fail;
+    private Supplier<CompletableFuture<Void>> success;
+    private Supplier<CompletableFuture<Void>> fail;
 
     public AzureCheckpointer(@NonNull Supplier<CompletableFuture<Void>> success) {
         this(success, null);
@@ -42,5 +42,21 @@ public class AzureCheckpointer implements Checkpointer {
             throw new UnsupportedOperationException("Fail current message unsupported");
         }
         return this.fail.get();
+    }
+
+    public Supplier<CompletableFuture<Void>> getSuccess() {
+        return success;
+    }
+
+    public void setSuccess(Supplier<CompletableFuture<Void>> success) {
+        this.success = success;
+    }
+
+    public Supplier<CompletableFuture<Void>> getFail() {
+        return fail;
+    }
+
+    public void setFail(Supplier<CompletableFuture<Void>> fail) {
+        this.fail = fail;
     }
 }

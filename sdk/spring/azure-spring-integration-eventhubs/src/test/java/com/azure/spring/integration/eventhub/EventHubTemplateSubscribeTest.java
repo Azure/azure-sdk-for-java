@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
@@ -56,13 +57,13 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
     @Override
     protected void verifySubscriberCreatorCalled() {
         verify(this.mockClientFactory, atLeastOnce()).createEventProcessorClient(anyString(), anyString(),
-            isA(EventHubProcessor.class), isA(BatchConfig.class));
+            isA(EventHubProcessor.class), isNull());
     }
 
     @Override
     protected void verifySubscriberCreatorNotCalled() {
         verify(this.mockClientFactory, never()).createEventProcessorClient(anyString(), anyString(),
-            isA(EventHubProcessor.class), isA(BatchConfig.class));
+            isA(EventHubProcessor.class), isNull());
     }
 
     @Override

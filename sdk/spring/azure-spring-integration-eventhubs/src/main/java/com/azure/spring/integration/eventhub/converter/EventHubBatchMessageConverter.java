@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.util.Assert;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -27,12 +25,6 @@ import java.util.Map;
 public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter<EventBatchContext, EventData> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBatchMessageConverter.class);
-
-//    @Override
-//    protected byte[] getPayload(EventBatchContext azureMessage) {
-//        //np-op
-//        return null;
-//    }
 
     @Override
     protected EventData fromString(String payload) {
@@ -56,14 +48,6 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
             }
         });
     }
-
-//    @Override
-//    protected <U> Message<?> internalToMessage(EventBatchContext azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
-//        Object payload = getPayload(azureMessage);
-//        Assert.isTrue(payload != null, "payload must not be null");
-//        return MessageBuilder.withPayload(payload).copyHeaders(headers).build();
-//    }
-
 
     protected Object getPayload(EventBatchContext azureMessage) {
         List<EventData> events = azureMessage.getEvents();

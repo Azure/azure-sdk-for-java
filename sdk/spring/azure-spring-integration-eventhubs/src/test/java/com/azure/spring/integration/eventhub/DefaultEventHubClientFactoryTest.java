@@ -144,7 +144,7 @@ public class DefaultEventHubClientFactoryTest {
         clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor, batchConfig);
 
         verifyPrivate(clientFactory, times(1))
-            .invoke("createEventProcessorClientInternal", eventHubName, consumerGroup, eventHubProcessor);
+            .invoke("createEventProcessorClientInternal", eventHubName, consumerGroup, eventHubProcessor, batchConfig);
     }
 
     @Test
@@ -155,7 +155,7 @@ public class DefaultEventHubClientFactoryTest {
         clientFactory.removeEventProcessorClient(eventHubName, consumerGroup);
         clientFactory.createEventProcessorClient(eventHubName, consumerGroup, eventHubProcessor, batchConfig);
         verifyPrivate(clientFactory, times(2))
-            .invoke("createEventProcessorClientInternal", eventHubName, consumerGroup, eventHubProcessor);
+            .invoke("createEventProcessorClientInternal", eventHubName, consumerGroup, eventHubProcessor, batchConfig);
 
     }
 

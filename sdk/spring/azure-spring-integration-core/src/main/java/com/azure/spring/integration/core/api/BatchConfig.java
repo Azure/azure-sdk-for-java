@@ -38,6 +38,9 @@ public class BatchConfig {
         return new BatchConfigBuilder();
     }
 
+    /**
+     * Builder class for {@link BatchConfig}.
+     */
     public static class BatchConfigBuilder {
         private int batchSize;
 
