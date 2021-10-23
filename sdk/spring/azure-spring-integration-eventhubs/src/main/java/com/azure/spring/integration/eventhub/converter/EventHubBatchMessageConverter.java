@@ -55,7 +55,6 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
     @Override
     protected Object getPayload(EventBatchContext azureMessage) {
         List<EventData> events = azureMessage.getEvents();
-
         List<byte[]> payloadList = new ArrayList<>();
         for (EventData event : events) {
             payloadList.add(event.getBody());

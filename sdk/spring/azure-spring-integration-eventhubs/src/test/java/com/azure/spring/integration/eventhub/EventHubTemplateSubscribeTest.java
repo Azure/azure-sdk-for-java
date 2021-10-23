@@ -12,14 +12,13 @@ import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import com.azure.spring.integration.test.support.SubscribeByGroupOperationTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
@@ -37,16 +36,42 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
 
     private AutoCloseable closeable;
 
+    private final BatchConfig batchConfig = BatchConfig.builder().batchSize(10).build();
+
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.subscribeByGroupOperation = new EventHubTemplate(mockClientFactory);
         when(this.mockClientFactory.createEventProcessorClient(anyString(), anyString(), isA(EventHubProcessor.class),
-            isA(BatchConfig.class))).thenReturn(this.eventProcessorClient);
+            any())).thenReturn(this.eventProcessorClient);
         when(this.mockClientFactory.getEventProcessorClient(anyString(), anyString()))
             .thenReturn(Optional.of(this.eventProcessorClient));
         doNothing().when(this.eventProcessorClient).stop();
         doNothing().when(this.eventProcessorClient).start();
+    }
+
+    @Test
+    public void testSubscribeAndUnsubscribeWithBatch() {
+        this.subscribeByGroupOperation.setBatchConfig(batchConfig);
+        super.testSubscribeAndUnsubscribe();
+    }
+
+    @Test
+    public void testSubscribeTwice() {
+        this.subscribeByGroupOperation.setBatchConfig(batchConfig);
+        super.testSubscribeTwice();
+    }
+
+    @Test
+    public void testSubscribeWithAnotherGroup() {
+        this.subscribeByGroupOperation.setBatchConfig(batchConfig);
+        super.testSubscribeWithAnotherGroup();
+    }
+
+    @Test
+    public void testUnsubscribeNotSubscribed() {
+        this.subscribeByGroupOperation.setBatchConfig(batchConfig);
+        super.testUnsubscribeNotSubscribed();
     }
 
     @AfterEach
@@ -57,13 +82,13 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
     @Override
     protected void verifySubscriberCreatorCalled() {
         verify(this.mockClientFactory, atLeastOnce()).createEventProcessorClient(anyString(), anyString(),
-            isA(EventHubProcessor.class), isNull());
+            isA(EventHubProcessor.class), any());
     }
 
     @Override
     protected void verifySubscriberCreatorNotCalled() {
         verify(this.mockClientFactory, never()).createEventProcessorClient(anyString(), anyString(),
-            isA(EventHubProcessor.class), isNull());
+            isA(EventHubProcessor.class), any());
     }
 
     @Override

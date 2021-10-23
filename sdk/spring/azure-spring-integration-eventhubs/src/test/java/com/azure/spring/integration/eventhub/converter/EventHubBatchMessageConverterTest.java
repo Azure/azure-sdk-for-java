@@ -12,7 +12,9 @@ import com.azure.spring.integration.core.EventHubHeaders;
 import com.azure.spring.integration.test.support.pojo.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.integration.support.MessageBuilder;
@@ -222,7 +224,7 @@ public class EventHubBatchMessageConverterTest {
         events.add(convertToEventData(payload2));
     }
 
-    private <U, T> void assertEventBatchPayloadEqual(List<byte[]> convertedPayload) {
+    private void assertEventBatchPayloadEqual(List<byte[]> convertedPayload) {
         assertEquals(convertedPayload.size(), events.size());
         for(int i = 0; i < convertedPayload.size(); i++) {
             assertArrayEquals(convertedPayload.get(i), events.get(i).getBody());
