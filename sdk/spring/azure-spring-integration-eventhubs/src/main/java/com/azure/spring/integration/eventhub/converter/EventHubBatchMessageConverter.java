@@ -9,13 +9,16 @@ import com.azure.spring.integration.core.EventHubHeaders;
 import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.integration.support.MessageBuilder;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
+import org.springframework.util.Assert;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A converter to turn a {@link com.azure.messaging.eventhubs.models.EventBatchContext} to {@link Message} and vice versa.
@@ -49,6 +52,7 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
         });
     }
 
+    @Override
     protected Object getPayload(EventBatchContext azureMessage) {
         List<EventData> events = azureMessage.getEvents();
 
@@ -57,6 +61,28 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
             payloadList.add(event.getBody());
         }
         return payloadList;
+    }
+
+    @Override
+    protected <U> Message<?> internalToMessage(EventBatchContext azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
+        List<byte[]> payload = (List<byte[]>) getPayload(azureMessage);
+        Assert.isTrue(payload != null, "payload must not be null");
+        if (targetPayloadClass.isInstance(azureMessage)) {
+            return MessageBuilder.withPayload(azureMessage).copyHeaders(headers).build();
+        }
+
+        if (targetPayloadClass == String.class) {
+            List<String> payLoadList = payload.stream().map(bytes -> new String(bytes, StandardCharsets.UTF_8))
+                                              .collect(Collectors.toList());
+            return MessageBuilder.withPayload(payLoadList).copyHeaders(headers).build();
+        }
+
+        if (targetPayloadClass == byte[].class) {
+            return MessageBuilder.withPayload(payload).copyHeaders(headers).build();
+        }
+        List<U> payLoadList = payload.stream().map(bytes -> fromPayload(bytes, targetPayloadClass))
+            .collect(Collectors.toList());
+        return MessageBuilder.withPayload(payLoadList).copyHeaders(headers).build();
     }
 
     @Override

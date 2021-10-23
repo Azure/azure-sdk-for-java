@@ -65,7 +65,7 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
      * @return The converted object.
      * @throws ConversionException When fail to convert to object from byte array.
      */
-    private <U> U fromPayload(Object payload, Class<U> payloadType) {
+    protected <U> U fromPayload(Object payload, Class<U> payloadType) {
         try {
             return getObjectMapper().readerFor(payloadType).readValue((byte[]) payload);
         } catch (IOException e) {

@@ -58,7 +58,7 @@ public class DefaultEventHubClientFactoryTest {
     @Mock
     EventHubConnectionStringProvider connectionStringProvider;
 
-    BatchConfig batchConfig = BatchConfig.builder().batchSize(1).build();
+    BatchConfig batchConfig = BatchConfig.builder().batchSize(10).build();
 
     private EventHubClientFactory clientFactory;
     private String eventHubName = "eventHub";
