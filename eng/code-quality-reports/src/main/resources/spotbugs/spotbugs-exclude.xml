@@ -1896,6 +1896,7 @@
     <Method name="verify"/>
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9104 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.routing.StringPartitionKeyComponent"/>
