@@ -12,8 +12,6 @@ import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
-import com.azure.spring.integration.eventhub.converter.EventHubBatchMessageConverter;
-import com.azure.spring.integration.eventhub.impl.EventHubTemplate;
 import com.azure.spring.integration.eventhub.inbound.EventHubInboundChannelAdapter;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
@@ -90,7 +88,7 @@ public class EventHubMessageChannelBinder extends
                                 .build();
         this.eventHubOperation.setCheckpointConfig(checkpointConfig);
         if(properties.isBatchMode()) {
-            BatchConfig batchConfig = BatchConfig.builder().batchSize(properties.getExtension().getBatchSize())
+            BatchConfig batchConfig = BatchConfig.builder().batchSize(properties.getExtension().getMaxBatchSize())
                                                  .maxWaitTime(properties.getExtension().getMaxBatchDuration())
                                                  .build();
             this.eventHubOperation.setBatchConfig(batchConfig);

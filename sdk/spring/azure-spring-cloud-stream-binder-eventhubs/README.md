@@ -120,6 +120,21 @@ Effective only if `sync` is set to true. The amount of time to wait for a respon
 
 Default: `10000`
 
+#### Common Consumer Properties ####
+
+You can use the below consumer configurations of **Spring Cloud Stream**, 
+it uses the configuration with the format of `spring.cloud.stream.bindings.<channelName>.consumer`.
+
+##### Batch Consumer
+
+When `spring.cloud.stream.binding.<name>.consumer.batch-mode` is set to `true`, all of the received events will be presented as a `List<?>` to the consumer function. Otherwise, the function will be called with one event at a time. The size of the batch is controlled by Event Hubs consumer properties `max-batch-size` and `max-batch-duration`; refer to the below section for more information.
+
+**_batch-mode_**
+
+Whether to enable the entire batch of messages to be passed to the consumer function in a `List`.
+
+Default: `False`
+
 #### Event Hub Consumer Properties ####
 
 It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
@@ -158,6 +173,18 @@ Default: `10`
 Effectively only when `checkpoint-mode` is `Time`. Decides The time interval to do one checkpoint.
 
 Default: `5s`
+
+**_max-batch-size_**
+
+The maximum number of events that will be in the list when this callback is invoked.
+
+Default: `10`
+
+**_max-wait-time_**
+
+The max time duration to wait to receive a batch of events upto the max batch size before invoking this callback.
+
+Default: `null`
 
 ### Error Channels
 **_consumer error channel_**

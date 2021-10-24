@@ -113,7 +113,7 @@ public class DefaultEventHubClientFactory implements EventHubClientFactory, Disp
                 .checkpointStore(new BlobCheckpointStore(blobClient))
                 .processPartitionInitialization(eventHubProcessor::onInitialize)
                 .processPartitionClose(eventHubProcessor::onClose)
-                .processEventBatch(eventHubProcessor::onEventBatch, batchConfig.getBatchSize(), batchConfig.getMaxWaitTime())
+                .processEventBatch(eventHubProcessor::onEventBatch, batchConfig.getMaxBatchSize(), batchConfig.getMaxWaitTime())
                 .processError(eventHubProcessor::onError)
                 .buildEventProcessorClient();
         } else {
