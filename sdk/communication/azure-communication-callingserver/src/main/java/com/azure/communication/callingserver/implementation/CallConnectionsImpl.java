@@ -8,7 +8,7 @@ import com.azure.communication.callingserver.implementation.models.AddParticipan
 import com.azure.communication.callingserver.implementation.models.AddParticipantResultInternal;
 import com.azure.communication.callingserver.implementation.models.AudioRoutingGroupRequest;
 import com.azure.communication.callingserver.implementation.models.AudioRoutingGroupResult;
-import com.azure.communication.callingserver.implementation.models.CallConnectionProperties;
+import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationRequest;
 import com.azure.communication.callingserver.implementation.models.CommunicationErrorResponseException;
@@ -121,7 +121,7 @@ public final class CallConnectionsImpl {
         @Get("/calling/callConnections/{callConnectionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<CallConnectionProperties>> getCall(
+        Mono<Response<CallConnectionPropertiesInternal>> getCall(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -817,7 +817,7 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionProperties>> getCallWithResponseAsync(String callConnectionId) {
+    public Mono<Response<CallConnectionPropertiesInternal>> getCallWithResponseAsync(String callConnectionId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -840,7 +840,8 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CallConnectionProperties>> getCallWithResponseAsync(String callConnectionId, Context context) {
+    public Mono<Response<CallConnectionPropertiesInternal>> getCallWithResponseAsync(
+            String callConnectionId, Context context) {
         final String accept = "application/json";
         return service.getCall(
                 this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept, context);
@@ -856,10 +857,10 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionProperties> getCallAsync(String callConnectionId) {
+    public Mono<CallConnectionPropertiesInternal> getCallAsync(String callConnectionId) {
         return getCallWithResponseAsync(callConnectionId)
                 .flatMap(
-                        (Response<CallConnectionProperties> res) -> {
+                        (Response<CallConnectionPropertiesInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -879,10 +880,10 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallConnectionProperties> getCallAsync(String callConnectionId, Context context) {
+    public Mono<CallConnectionPropertiesInternal> getCallAsync(String callConnectionId, Context context) {
         return getCallWithResponseAsync(callConnectionId, context)
                 .flatMap(
-                        (Response<CallConnectionProperties> res) -> {
+                        (Response<CallConnectionPropertiesInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -901,7 +902,7 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallConnectionProperties getCall(String callConnectionId) {
+    public CallConnectionPropertiesInternal getCall(String callConnectionId) {
         return getCallAsync(callConnectionId).block();
     }
 
@@ -916,7 +917,7 @@ public final class CallConnectionsImpl {
      * @return call connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionProperties> getCallWithResponse(String callConnectionId, Context context) {
+    public Response<CallConnectionPropertiesInternal> getCallWithResponse(String callConnectionId, Context context) {
         return getCallWithResponseAsync(callConnectionId, context).block();
     }
 

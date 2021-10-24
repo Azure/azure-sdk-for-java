@@ -3,6 +3,7 @@
 
 package com.azure.communication.callingserver;
 
+import static com.azure.communication.callingserver.CallingServerResponseMocker.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -36,9 +37,9 @@ public class DownloadContentAsyncUnitTests {
     @BeforeEach
     public void setup() {
         callingServerClient =
-            CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<>(
+            getCallingServerAsyncClient(new ArrayList<>(
                 Collections.singletonList(
-                    new SimpleEntry<>(CallingServerResponseMocker.generateDownloadResult(CONTENTS), 200)
+                    new SimpleEntry<>(generateDownloadResult(CONTENTS), 200)
                 )));
     }
     @Test
@@ -68,7 +69,7 @@ public class DownloadContentAsyncUnitTests {
     @Test
     public void downloadStreamWithResponseThrowException() {
         callingServerClient =
-            CallingServerResponseMocker.getCallingServerAsyncClient(new ArrayList<>(
+            getCallingServerAsyncClient(new ArrayList<>(
                 Collections.singletonList(
                     new SimpleEntry<>("", 416)
                 )));

@@ -251,7 +251,7 @@ public final class CallConnection {
      * @return Response for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionProperties> getWithResponse(Context context) {
+    public Response<CallConnectionProperties> getCallWithResponse(Context context) {
         return callConnectionAsync.getCallWithResponse(context).block();
     }
 
@@ -537,12 +537,13 @@ public final class CallConnection {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful create audio routing group request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createAudioRoutingGroup(
+    public CreateAudioRoutingGroupResult createAudioRoutingGroup(
         AudioRoutingMode audioRoutingMode,
         List<CommunicationIdentifier> targets) {
-        createAudioRoutingGroupWithResponse(audioRoutingMode, targets, Context.NONE).getValue();
+        return createAudioRoutingGroupWithResponse(audioRoutingMode, targets, Context.NONE).getValue();
     }
 
     /**
@@ -608,7 +609,7 @@ public final class CallConnection {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateAudioRoutingGroup(
+    public void deleteAudioRoutingGroup(
         String audioRoutingGroupId) {
         deleteAudioRoutingGroupWithResponse(audioRoutingGroupId, Context.NONE).getValue();
     }

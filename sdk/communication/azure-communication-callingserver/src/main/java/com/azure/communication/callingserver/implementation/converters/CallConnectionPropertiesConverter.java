@@ -16,7 +16,7 @@ public final class CallConnectionPropertiesConverter {
      * Converts to {@link CallConnectionProperties}.
      */
     public static com.azure.communication.callingserver.models.CallConnectionProperties convert(
-        com.azure.communication.callingserver.implementation.models.CallConnectionProperties callConnectionPropertiesInternal) {
+        com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
 
         if (callConnectionPropertiesInternal == null) {
             return null;

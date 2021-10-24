@@ -27,7 +27,7 @@ import static com.azure.communication.callingserver.CallingServerTestUtils.valid
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ServerCallLiveTests extends CallingServerTestBase {
+public class CallingServerLiveTests extends CallingServerTestBase {
 
     private final String fromUser = getRandomUserId();
     private final String toUser = getRandomUserId();

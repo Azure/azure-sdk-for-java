@@ -98,6 +98,9 @@ directive:
 - rename-model:
     from: AnswerCallResult
     to: AnswerCallResultInternal
+- rename-model:
+    from: CallConnectionProperties
+    to: CallConnectionPropertiesInternal
 ```
 
 ### Rename RecordingChannelType to RecordingChannel

@@ -4,61 +4,55 @@
 package com.azure.communication.callingserver;
 
 import static com.azure.communication.callingserver.CallingServerResponseMocker.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.net.URI;
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Collections;
-import java.util.List;
 
 import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
 import org.junit.jupiter.api.Test;
 
+import java.net.URI;
+import java.security.InvalidParameterException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 
-public class CallingServerUnitTests {
-    static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
-    static final String CALL_CONNECTION_ID = "callConnectionId";
+public class CallingServerAsyncUnitTests {
 
     @Test
-    public void startRecordingFails() {
+    public void startRecordingAsyncFails() {
         assertThrows(
             InvalidParameterException.class,
-            () -> getCallingServerClient(new ArrayList<>()).startRecording(
+            () -> getCallingServerAsyncClient(new ArrayList<>()).startRecording(
                 SERVERCALL_LOCATOR,
                 URI.create("/not/absolute/uri")
-            ));
+            ).block());
     }
 
     @Test
-    public void startRecordingWithFullParamsFails() {
+    public void startRecordingAsyncWithFullParamsFails() {
         StartRecordingOptions startRecordingOptions = new StartRecordingOptions();
         startRecordingOptions.setRecordingChannel(RecordingChannel.MIXED);
         startRecordingOptions.setRecordingContent(RecordingContent.AUDIO_VIDEO);
         startRecordingOptions.setRecordingFormat(RecordingFormat.MP4);
-
         assertThrows(
             InvalidParameterException.class,
-            () -> getCallingServerClient(new ArrayList<>()).startRecordingWithResponse(
+            () -> getCallingServerAsyncClient(new ArrayList<>()).startRecordingWithResponse(
                 SERVERCALL_LOCATOR,
                 URI.create("/not/absolute/uri"),
                 startRecordingOptions,
                 null
-            ));
+            ).block());
     }
 
     @Test
-    public void joinCall() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void joinCallAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateJoinCallResult(NEW_PARTICIPANT_ID), 202)
             )));
@@ -68,18 +62,18 @@ public class CallingServerUnitTests {
             CALLBACK_URI,
             Collections.singletonList(CallMediaType.VIDEO),
             Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
-        CallConnection callConnection = callingServerClient.joinCall(
+        CallConnectionAsync callConnectionAsync = callingServerAsyncClient.joinCall(
             SERVERCALL_LOCATOR,
             (CommunicationIdentifier) user,
             options
-        );
+        ).block();
 
-        assertNotNull(callConnection);
+        assertNotNull(callConnectionAsync);
     }
 
     @Test
-    public void joinCallWithResponse() {
-        CallingServerClient callingServerAsyncClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void joinCallAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateJoinCallResult(NEW_PARTICIPANT_ID), 202)
             )));
@@ -89,114 +83,109 @@ public class CallingServerUnitTests {
             CALLBACK_URI,
             Collections.singletonList(CallMediaType.VIDEO),
             Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
-        Response<CallConnection> callConnectionResponse = callingServerAsyncClient.joinCallWithResponse(
+        Response<CallConnectionAsync> callConnectionAsyncResponse = callingServerAsyncClient.joinCallWithResponse(
             SERVERCALL_LOCATOR,
             (CommunicationIdentifier) user,
-            options,
-            Context.NONE
-        );
+            options
+        ).block();
 
-        assertEquals(202, callConnectionResponse.getStatusCode());
-        assertNotNull(callConnectionResponse.getValue());
+        assertEquals(202, callConnectionAsyncResponse.getStatusCode());
+        assertNotNull(callConnectionAsyncResponse.getValue());
     }
 
     @Test
-    public void getCallConnection() {
-        CallingServerClient callingServerAsyncClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void getCallConnectionAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList()));
 
-        CallConnection callConnection = callingServerAsyncClient.getCallConnection(CALL_CONNECTION_ID);
+        CallConnectionAsync callConnection = callingServerAsyncClient.getCallConnection(CALL_CONNECTION_ID);
         assertNotNull(callConnection);
     }
 
     @Test
-    public void addParticipantNullParticipantFails() {
+    public void addParticipantAsyncNullParticipantFails() {
         assertThrows(
             NullPointerException.class,
-            () -> getCallingServerClient(new ArrayList<>()).addParticipant(
+            () -> getCallingServerAsyncClient(new ArrayList<>()).addParticipant(
                 SERVERCALL_LOCATOR,
                 null,
                 null,
                 null,
                 null
-            ));
+            ).block());
     }
 
     @Test
-    public void addParticipant() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void addParticipantAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateAddParticipantResult(COMMUNICATION_USER.getId()), 202)
             ))
         );
 
-        AddParticipantResult addParticipantResult = callingServerClient.addParticipant(
+        AddParticipantResult addParticipantResult = callingServerAsyncClient.addParticipant(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             CALLBACK_URI,
             "alternateCallerId",
             "operationContext"
-        );
-
+        ).block();
         assertEquals(COMMUNICATION_USER.getId(), addParticipantResult.getParticipantId());
     }
 
     @Test
-    public void addParticipantWithResponse() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void addParticipantAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateAddParticipantResult(COMMUNICATION_USER.getId()), 202)
             ))
         );
 
-        Response<AddParticipantResult> addParticipantResultResponse = callingServerClient.addParticipantWithResponse(
+        Response<AddParticipantResult> addParticipantResultResponse = callingServerAsyncClient.addParticipantWithResponse(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             CALLBACK_URI,
             "alternateCallerId",
-            "operationContext",
-            Context.NONE
-        );
-
+            "operationContext"
+        ).block();
         assertEquals(202, addParticipantResultResponse.getStatusCode());
         AddParticipantResult addParticipantResult = addParticipantResultResponse.getValue();
         assertEquals(COMMUNICATION_USER.getId(), addParticipantResult.getParticipantId());
     }
 
     @Test
-    public void removeParticipant() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void removeParticipantAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 202)
             ))
         );
 
-        callingServerClient.removeParticipant(
+        callingServerAsyncClient.removeParticipant(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER
-        );
+        ).block();
     }
 
     @Test
-    public void removeParticipantWithResponse() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void removeParticipantAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 202)
             ))
         );
 
-        Response<Void> removeParticipantResultResponse = callingServerClient.removeParticipantWithResponse(
+        Response<Void> removeParticipantResultResponse = callingServerAsyncClient.removeParticipantWithResponse(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             Context.NONE
-        );
-
+        ).block();
         assertEquals(202, removeParticipantResultResponse.getStatusCode());
     }
 
     @Test
-    public void getParticipant() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void getParticipantAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(
                     generateGetParticipantResult(),
@@ -204,10 +193,10 @@ public class CallingServerUnitTests {
             ))
         );
 
-        List<CallParticipant> getParticipantResult = callingServerClient.getParticipant(
+        List<CallParticipant> getParticipantResult = callingServerAsyncClient.getParticipant(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER
-        );
+        ).block();
 
         assertEquals(1, getParticipantResult.size());
         assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.get(0).getParticipantId());
@@ -216,8 +205,8 @@ public class CallingServerUnitTests {
     }
 
     @Test
-    public void getParticipantWithResponse() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void getParticipantAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(
                     generateGetParticipantResult(),
@@ -225,11 +214,11 @@ public class CallingServerUnitTests {
             ))
         );
 
-        Response<List<CallParticipant>> getParticipantResultResponse = callingServerClient.getParticipantWithResponse(
+        Response<List<CallParticipant>> getParticipantResultResponse = callingServerAsyncClient.getParticipantWithResponse(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             Context.NONE
-        );
+        ).block();
 
         assertEquals(200, getParticipantResultResponse.getStatusCode());
         List<CallParticipant> getParticipantResult = getParticipantResultResponse.getValue();
@@ -240,8 +229,8 @@ public class CallingServerUnitTests {
     }
 
     @Test
-    public void getAllParticipants() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void getAllParticipantsAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(
                     generateGetAllParticipantsResult(),
@@ -249,9 +238,9 @@ public class CallingServerUnitTests {
             ))
         );
 
-        List<CallParticipant> getParticipantResult = callingServerClient.getAllParticipants(
+        List<CallParticipant> getParticipantResult = callingServerAsyncClient.getAllParticipants(
             SERVERCALL_LOCATOR
-        );
+        ).block();
 
         assertEquals(2, getParticipantResult.size());
         assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.get(0).getParticipantId());
@@ -261,8 +250,8 @@ public class CallingServerUnitTests {
     }
 
     @Test
-    public void getAllParticipantsWithResponse() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void getAllParticipantsAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(
                     generateGetAllParticipantsResult(),
@@ -270,10 +259,9 @@ public class CallingServerUnitTests {
             ))
         );
 
-        Response<List<CallParticipant>> getParticipantResultResponse = callingServerClient.getAllParticipantsWithResponse(
-            SERVERCALL_LOCATOR,
-            Context.NONE
-        );
+        Response<List<CallParticipant>> getParticipantResultResponse = callingServerAsyncClient.getAllParticipantsWithResponse(
+            SERVERCALL_LOCATOR
+        ).block();
 
         assertEquals(200, getParticipantResultResponse.getStatusCode());
         List<CallParticipant> getParticipantResult = getParticipantResultResponse.getValue();
@@ -285,33 +273,8 @@ public class CallingServerUnitTests {
     }
 
     @Test
-    public void playAudio() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
-            Arrays.asList(
-                new SimpleEntry<String, Integer>(
-                    generatePlayAudioResult(),
-                    202)
-            ))
-        );
-
-        PlayAudioOptions playAudioOptions = new PlayAudioOptions()
-            .setAudioFileId("audioFileId").
-            setCallbackUri(URI.create("callbackUri")).
-            setOperationContext("operationContext").
-            setLoop(true);
-
-        PlayAudioResult playAudioResult = callingServerClient.playAudio(
-            SERVERCALL_LOCATOR,
-            URI.create("audioFileUri"),
-            playAudioOptions
-        );
-
-        assertEquals(CallingOperationStatus.COMPLETED, playAudioResult.getStatus());
-    }
-
-    @Test
-    public void playAudioWithResponse() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void playAudioAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(
                     generatePlayAudioResult(),
@@ -322,14 +285,34 @@ public class CallingServerUnitTests {
         PlayAudioOptions playAudioOptions = new PlayAudioOptions()
             .setAudioFileId("audioFileId")
             .setCallbackUri(URI.create("https://callbackUri"))
-            .setLoop(true);
+            .setLoop(true)
+            .setOperationContext("operationContext");
 
-        Response<PlayAudioResult> playAudioResultResponse = callingServerClient.playAudioWithResponse(
+        PlayAudioResult playAudioResult = callingServerAsyncClient.playAudio(
             SERVERCALL_LOCATOR,
             URI.create("https://audioFileUri"),
-            playAudioOptions,
-            Context.NONE
+            playAudioOptions
+        ).block();
+
+        assertEquals(CallingOperationStatus.COMPLETED, playAudioResult.getStatus());
+    }
+
+    @Test
+    public void playAudioAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(
+                    generatePlayAudioResult(),
+                    202)
+            ))
         );
+
+        PlayAudioOptions playAudioOptions = new PlayAudioOptions().setAudioFileId("audioFileId").setCallbackUri(URI.create("https://callbackUri")).setLoop(true);
+        Response<PlayAudioResult> playAudioResultResponse = callingServerAsyncClient.playAudioWithResponse(
+            SERVERCALL_LOCATOR,
+            URI.create("https://audioFileUri"),
+            playAudioOptions
+        ).block();
 
         assertEquals(202, playAudioResultResponse.getStatusCode());
         PlayAudioResult playAudioResult = playAudioResultResponse.getValue();
@@ -337,72 +320,70 @@ public class CallingServerUnitTests {
     }
 
     @Test
-    public void cancelMediaOperation() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void cancelMediaOperationAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 200)
             ))
         );
 
-        callingServerClient.cancelMediaOperation(
+        callingServerAsyncClient.cancelMediaOperation(
             SERVERCALL_LOCATOR,
             OPERATION_ID
-        );
+        ).block();
     }
 
     @Test
-    public void cancelMediaOperationWithResponse() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void cancelMediaOperationAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 200)
             ))
         );
 
-        Response<Void> cancelMediaOperationResponse = callingServerClient.cancelMediaOperationWithResponse(
+        Response<Void> cancelMediaOperationResponse = callingServerAsyncClient.cancelMediaOperationWithResponse(
             SERVERCALL_LOCATOR,
-            OPERATION_ID,
-            Context.NONE
-        );
+            OPERATION_ID
+        ).block();
 
         assertEquals(200, cancelMediaOperationResponse.getStatusCode());
     }
 
     @Test
-    public void cancelParticipantMediaOperation() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void cancelParticipantMediaOperationAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 200)
             ))
         );
 
-        callingServerClient.cancelParticipantMediaOperation(
+        callingServerAsyncClient.cancelParticipantMediaOperation(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             OPERATION_ID
-        );
+        ).block();
     }
 
     @Test
-    public void cancelParticipantMediaOperationWithResponse() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void cancelParticipantMediaOperationAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 200)
             ))
         );
 
-        Response<Void> cancelParticipantMediaOperationResponse = callingServerClient.cancelParticipantMediaOperationWithResponse(
+        Response<Void> cancelParticipantMediaOperationResponse = callingServerAsyncClient.cancelParticipantMediaOperationWithResponse(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
-            OPERATION_ID,
-            Context.NONE
-        );
+            OPERATION_ID
+        ).block();
 
         assertEquals(200, cancelParticipantMediaOperationResponse.getStatusCode());
     }
 
     @Test
-    public void playAudioToParticipant() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void playAudioToParticipantAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(
                     generatePlayAudioResult(),
@@ -416,19 +397,19 @@ public class CallingServerUnitTests {
             setOperationContext("operationContext").
             setLoop(true);
 
-        PlayAudioResult playAudioToParticipantResult = callingServerClient.playAudioToParticipant(
+        PlayAudioResult playAudioToParticipantResult = callingServerAsyncClient.playAudioToParticipant(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             URI.create("audioFileUri"),
             playAudioOptions
-        );
+        ).block();
 
         assertEquals(CallingOperationStatus.COMPLETED, playAudioToParticipantResult.getStatus());
     }
 
     @Test
-    public void playAudioToParticipantWithResponse() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void playAudioToParticipantAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(
                     generatePlayAudioResult(),
@@ -441,13 +422,12 @@ public class CallingServerUnitTests {
             .setCallbackUri(URI.create("https://callbackUri"))
             .setLoop(true);
 
-        Response<PlayAudioResult> playAudioToParticipantResultResponse = callingServerClient.playAudioToParticipantWithResponse(
+        Response<PlayAudioResult> playAudioToParticipantResultResponse = callingServerAsyncClient.playAudioToParticipantWithResponse(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             URI.create("https://audioFileUri"),
-            playAudioOptions,
-            Context.NONE
-        );
+            playAudioOptions
+        ).block();
 
         assertEquals(202, playAudioToParticipantResultResponse.getStatusCode());
         PlayAudioResult playAudioResult = playAudioToParticipantResultResponse.getValue();
@@ -455,69 +435,67 @@ public class CallingServerUnitTests {
     }
 
     @Test
-    public void redirectCall() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void redirectCallAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 202)
             ))
         );
 
-        callingServerClient.redirectCall(
+        callingServerAsyncClient.redirectCall(
             INCOMINGCALL_CONTEXT,
             new ArrayList<>(List.of(COMMUNICATION_USER)),
             URI.create("audioFileUri"),
             TIMEOUT
-        );
+        ).block();
     }
 
     @Test
-    public void redirectCallWithResponse() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void redirectCallAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 202)
             ))
         );
 
-        Response<Void> redirectCallResponse = callingServerClient.redirectCallWithResponse(
+        Response<Void> redirectCallResponse = callingServerAsyncClient.redirectCallWithResponse(
             INCOMINGCALL_CONTEXT,
             new ArrayList<>(List.of(COMMUNICATION_USER)),
             URI.create("audioFileUri"),
-            TIMEOUT,
-            Context.NONE
-        );
+            TIMEOUT
+        ).block();
 
         assertEquals(202, redirectCallResponse.getStatusCode());
     }
 
     @Test
-    public void rejectCall() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void rejectCallAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 202)
             ))
         );
 
-        callingServerClient.rejectCall(
+        callingServerAsyncClient.rejectCall(
             INCOMINGCALL_CONTEXT,
             URI.create("audioFileUri"),
             CallRejectReason.BUSY
-        );
+        ).block();
     }
 
     @Test
-    public void rejectCallWithResponse() {
-        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+    public void rejectCallAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>("", 202)
             ))
         );
 
-        Response<Void> rejectCallResponse = callingServerClient.rejectCallWithResponse(
+        Response<Void> rejectCallResponse = callingServerAsyncClient.rejectCallWithResponse(
             INCOMINGCALL_CONTEXT,
             URI.create("audioFileUri"),
-            CallRejectReason.BUSY,
-            Context.NONE
-        );
+            CallRejectReason.BUSY
+        ).block();
 
         assertEquals(202, rejectCallResponse.getStatusCode());
     }
