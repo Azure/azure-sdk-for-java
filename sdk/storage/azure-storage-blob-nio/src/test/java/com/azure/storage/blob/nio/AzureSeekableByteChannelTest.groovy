@@ -177,8 +177,15 @@ class AzureSeekableByteChannelTest extends APISpec {
         srcBuffer.position(initialOffset)
         srcBuffer.limit(initialOffset + sourceFileSize)
 
-        // Use a mock to intercept the write calls sent by the channel to BlobOutputStream, because
-        // reading back from a replay of HTTP doesn't confirm the actual written bytes/size
+        // This test aims to observe the actual bytes written by the ByteChannel to the underlying OutputStream,
+        // not just the number of bytes allegedly written as reported by its position. It would prefer to examine
+        // the OutputStream directly, but the channel requires the specific NioBlobOutputStream implementation
+        // and does not accept something generic like a ByteArrayOutputStream. NioBlobOutputStream is final, so
+        // it cannot be subclassed or mocked and has little state of its own -- writes go to a BlobOutputStream.
+        // That class is abstract, but its constructor is not accessible outside its package and cannot normally
+        // be subclassed to provide custom behavior, but a runtime mocking framework like Mockito can. This is
+        // the nearest accessible observation point, so the test mocks a BlobOutputStream such that all write
+        // methods store data in ByteArrayOutputStream which it can later examine for its size and content.
         def actualOutput = new ByteArrayOutputStream(sourceFileSize)
         def blobOutputStream = Mockito.mock(
             BlobOutputStream.class, Mockito.withSettings().useConstructor(4096 /* block size */))

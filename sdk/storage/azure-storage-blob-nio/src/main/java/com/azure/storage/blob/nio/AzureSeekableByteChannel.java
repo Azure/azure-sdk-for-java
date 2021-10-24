@@ -73,6 +73,8 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         final int limit;
         final byte[] buf;
         if (dst.hasArray()) {
+            // ByteBuffer has a position and limit that define the bounds of the writeable area, and that
+            // area can be both smaller than the backing array and might not begin at array index 0.
             pos = dst.position();
             limit = pos + dst.remaining();
             buf = dst.array();
@@ -123,6 +125,8 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         int pos;
         byte[] buf;
         if (src.hasArray()) {
+            // ByteBuffer has a position and limit that define the bounds of the readable area, and that
+            // area can be both smaller than the backing array and might not begin at array index 0.
             pos = src.position();
             buf = src.array();
             src.position(pos + length);
