@@ -464,7 +464,7 @@ public class CallingServerUnitTests {
 
         callingServerClient.redirectCall(
             INCOMINGCALL_CONTEXT,
-            new ArrayList<>(List.of(COMMUNICATION_USER)),
+            Arrays.asList(COMMUNICATION_USER),
             URI.create("audioFileUri"),
             TIMEOUT
         );
@@ -480,7 +480,7 @@ public class CallingServerUnitTests {
 
         Response<Void> redirectCallResponse = callingServerClient.redirectCallWithResponse(
             INCOMINGCALL_CONTEXT,
-            new ArrayList<>(List.of(COMMUNICATION_USER)),
+            Arrays.asList(COMMUNICATION_USER),
             URI.create("audioFileUri"),
             TIMEOUT,
             Context.NONE
