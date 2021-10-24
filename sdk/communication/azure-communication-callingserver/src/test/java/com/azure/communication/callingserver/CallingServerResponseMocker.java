@@ -11,11 +11,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.AbstractMap.SimpleEntry;
 
+import com.azure.communication.callingserver.implementation.converters.CallLocatorConverter;
+import com.azure.communication.callingserver.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callingserver.implementation.models.*;
-import com.azure.communication.callingserver.models.CallMediaType;
-import com.azure.communication.callingserver.models.CallingEventSubscriptionType;
-import com.azure.communication.callingserver.models.CallingOperationStatus;
-import com.azure.communication.callingserver.models.CreateCallOptions;
+import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
@@ -31,10 +30,19 @@ import reactor.core.publisher.Mono;
 public class CallingServerResponseMocker {
     public static final String CALL_CONNECTION_ID = "callConnectionId";
     public static final String OPERATION_ID = "operationId";
+    public static final String AUDIOROUTING_GROUPID = "audioRoutingGroupId";
+    public static final String OPERATION_CONTEXT = "operationContext";
+    public static final String INCOMINGCALL_CONTEXT = "incomingCallContext";
+    public static final int TIMEOUT = 3;
     public static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbG";
-    public static final CommunicationUserIdentifier NEW_PARTICIPANT = new CommunicationUserIdentifier("newParticipantId");
-    public static final URI URI_CALLBACK = URI.create("https://callBackUri.local");
-    public static final String SERVER_CALL_ID = "serverCallId";
+    public static final String NEW_PARTICIPANT_ID = "newParticipantId";
+    public static final String USER_ID = "USER_ID";
+    public static final CommunicationUserIdentifier COMMUNICATION_USER = new CommunicationUserIdentifier(USER_ID);
+    public static final String NEW_PARTICIPANT_ID_1 = "newParticipantId_1";
+    public static final String USER_ID_1 = "USER_ID_1";
+    public static final CommunicationUserIdentifier COMMUNICATION_USER_1 = new CommunicationUserIdentifier(USER_ID_1);
+    public static final URI CALLBACK_URI = URI.create("https://callBackUri.local");
+    public static final ServerCallLocator SERVERCALL_LOCATOR = new ServerCallLocator("aHR0cHM6Ly9jb252LXVzd2UtMDguY29udi5za3lwZS5jb20vY29udi8tby1FWjVpMHJrS3RFTDBNd0FST1J3P2k9ODgmZT02Mzc1Nzc0MTY4MDc4MjQyOTM");
 
     public static String generateCreateCallResult(String callConnectionId) {
 
@@ -52,17 +60,66 @@ public class CallingServerResponseMocker {
         return serializeObject(result);
     }
 
+    public static String generateGetParticipantResult() {
+        List<CallParticipantInternal> result = new ArrayList<>();
+        CallParticipantInternal participant = new CallParticipantInternal()
+            .setParticipantId(NEW_PARTICIPANT_ID)
+            .setIdentifier(CommunicationIdentifierConverter.convert(COMMUNICATION_USER))
+            .setIsMuted(true);
+        result.add(participant);
+
+        return serializeObject(result);
+    }
+
+    public static String generateGetParticipantsResult() {
+        return generateGetAllParticipantsResult();
+    }
+
+    public static String generateGetAllParticipantsResult() {
+        List<CallParticipantInternal> result = new ArrayList<>();
+        CallParticipantInternal participant = new CallParticipantInternal()
+            .setParticipantId(NEW_PARTICIPANT_ID)
+            .setIdentifier(CommunicationIdentifierConverter.convert(COMMUNICATION_USER))
+            .setIsMuted(true);
+        CallParticipantInternal participant1 = new CallParticipantInternal()
+            .setParticipantId(NEW_PARTICIPANT_ID_1)
+            .setIdentifier(CommunicationIdentifierConverter.convert(COMMUNICATION_USER_1))
+            .setIsMuted(true);
+        result.add(participant);
+        result.add(participant1);
+
+        return serializeObject(result);
+    }
+
+    public static String generateGetCallResult() {
+
+        CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
+            .setCallbackUri(CALLBACK_URI.toString())
+            .setCallConnectionId(CALL_CONNECTION_ID)
+            .setCallLocator(CallLocatorConverter.convert(SERVERCALL_LOCATOR))
+            .setCallConnectionState(CallConnectionState.CONNECTED)
+            .setRequestedCallEvents(Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED))
+            .setRequestedMediaTypes(Collections.singletonList(CallMediaType.AUDIO))
+            .setTargets(Collections.singletonList(CommunicationIdentifierConverter.convert(COMMUNICATION_USER)))
+            .setSource(CommunicationIdentifierConverter.convert(COMMUNICATION_USER_1));
+
+        return serializeObject(result);
+    }
+
     public static String generateDownloadResult(String content) {
         return content;
     }
 
-    public static String generatePlayAudioResult(String operationId, CallingOperationStatus status, CallingOperationResultDetailsInternal resultInfo) {
+    public static String generatePlayAudioToParticipantResult() {
+        return generatePlayAudioResult();
+    }
 
+    public static String generatePlayAudioResult() {
         PlayAudioResultInternal result = new PlayAudioResultInternal()
-            .setOperationContext("operationContext")
-            .setOperationId(operationId)
-            .setStatus(status)
-            .setResultInfo(resultInfo);
+            .setOperationContext(OPERATION_CONTEXT)
+            .setOperationId(OPERATION_ID)
+            .setStatus(CallingOperationStatus.COMPLETED)
+            .setResultInfo(new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message"));
 
         return serializeObject(result);
     }
@@ -74,13 +131,20 @@ public class CallingServerResponseMocker {
         return serializeObject(result);
     }
 
+    public static String generateCreateAudioRoutingGroupResult() {
+        CreateAudioRoutingGroupResultInternal result = new CreateAudioRoutingGroupResultInternal()
+            .setAudioRoutingGroupId(AUDIOROUTING_GROUPID);
+
+        return serializeObject(result);
+    }
+
     public static CallConnectionAsync getCallConnectionAsync(ArrayList<SimpleEntry<String, Integer>> responses) {
         CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(responses);
 
         CommunicationUserIdentifier sourceUser = new CommunicationUserIdentifier("id");
         List<CommunicationIdentifier> targetUsers = new ArrayList<CommunicationIdentifier>();
         CreateCallOptions options = new CreateCallOptions(
-            URI.create("https://callbackUri.local"),
+            CALLBACK_URI,
             Collections.singletonList(CallMediaType.AUDIO),
             Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 
@@ -93,7 +157,7 @@ public class CallingServerResponseMocker {
         CommunicationUserIdentifier sourceUser = new CommunicationUserIdentifier("id");
         List<CommunicationIdentifier> targetUsers = new ArrayList<CommunicationIdentifier>();
         CreateCallOptions options = new CreateCallOptions(
-            URI.create("https://callbackUri.local"),
+            CALLBACK_URI,
             Collections.singletonList(CallMediaType.AUDIO),
             Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
 

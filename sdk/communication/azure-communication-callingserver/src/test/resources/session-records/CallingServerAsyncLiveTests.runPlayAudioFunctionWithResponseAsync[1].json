@@ -3,7 +3,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling:join?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "69e11403-96f4-4efd-af4e-b003d9393a49",
       "Content-Type" : "application/json"
     },
@@ -24,7 +24,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling:join?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8b785744-7ff4-40ad-bb1b-de21f1336516",
       "Content-Type" : "application/json"
     },
@@ -45,7 +45,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling:playAudio?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "30e645b2-074b-4324-98a6-77915130116f",
       "Content-Type" : "application/json"
     },
@@ -66,7 +66,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/bd201300-c480-4134-a4f3-960636b62719/:hangup?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "86d29967-8159-4609-8940-f0bc62e71abe"
     },
     "Response" : {
@@ -84,7 +84,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/bd201300-f1d5-4cdc-8ebe-dc36fa3805cd/:hangup?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "64e9ecd3-ca9e-4415-8ee2-7a2ea506b031"
     },
     "Response" : {

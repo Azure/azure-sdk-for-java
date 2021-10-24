@@ -3,7 +3,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling:join?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e3177a97-c0de-4bac-95bd-72202dd85ad2",
       "Content-Type" : "application/json"
     },
@@ -24,7 +24,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling:join?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3a72c499-6374-4fce-895a-76e3c35ae64f",
       "Content-Type" : "application/json"
     },
@@ -45,7 +45,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/recordings?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4dc4bae6-5e38-4d6f-af5f-3d7c6a7d0263",
       "Content-Type" : "application/json"
     },
@@ -66,7 +66,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/calling/recordings/eyJQbGF0Zm9ybUVuZHBvaW50SWQiOiI3MzFmMTMwMC0zMjAyLTQ3M2UtYmI3Yi1jNDNkNWNkODEzYjkiLCJSZXNvdXJjZVNwZWNpZmljSWQiOiJlMmE0M2Q2OS0zM2YzLTQwNmUtOGU3ZS02YWE0M2JjNmQzY2YifQ?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "69cbad82-3597-459f-bf75-a73540a96998"
     },
     "Response" : {
@@ -86,7 +86,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/recordings/eyJQbGF0Zm9ybUVuZHBvaW50SWQiOiI3MzFmMTMwMC0zMjAyLTQ3M2UtYmI3Yi1jNDNkNWNkODEzYjkiLCJSZXNvdXJjZVNwZWNpZmljSWQiOiJlMmE0M2Q2OS0zM2YzLTQwNmUtOGU3ZS02YWE0M2JjNmQzY2YifQ/:pause?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3ce496f4-5a05-48f8-af74-d08896caa6e6"
     },
     "Response" : {
@@ -104,7 +104,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/calling/recordings/eyJQbGF0Zm9ybUVuZHBvaW50SWQiOiI3MzFmMTMwMC0zMjAyLTQ3M2UtYmI3Yi1jNDNkNWNkODEzYjkiLCJSZXNvdXJjZVNwZWNpZmljSWQiOiJlMmE0M2Q2OS0zM2YzLTQwNmUtOGU3ZS02YWE0M2JjNmQzY2YifQ?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3db65c61-2d0f-451d-9be3-ddd093020bb9"
     },
     "Response" : {
@@ -124,7 +124,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/recordings/eyJQbGF0Zm9ybUVuZHBvaW50SWQiOiI3MzFmMTMwMC0zMjAyLTQ3M2UtYmI3Yi1jNDNkNWNkODEzYjkiLCJSZXNvdXJjZVNwZWNpZmljSWQiOiJlMmE0M2Q2OS0zM2YzLTQwNmUtOGU3ZS02YWE0M2JjNmQzY2YifQ/:resume?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "5fe04625-d63a-4f47-9482-b65a866cc648"
     },
     "Response" : {
@@ -142,7 +142,7 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/calling/recordings/eyJQbGF0Zm9ybUVuZHBvaW50SWQiOiI3MzFmMTMwMC0zMjAyLTQ3M2UtYmI3Yi1jNDNkNWNkODEzYjkiLCJSZXNvdXJjZVNwZWNpZmljSWQiOiJlMmE0M2Q2OS0zM2YzLTQwNmUtOGU3ZS02YWE0M2JjNmQzY2YifQ?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "22ac768b-396c-413a-9a73-5827c2cb6e4d"
     },
     "Response" : {
@@ -162,7 +162,7 @@
     "Method" : "DELETE",
     "Uri" : "https://REDACTED.communication.azure.com/calling/recordings/eyJQbGF0Zm9ybUVuZHBvaW50SWQiOiI3MzFmMTMwMC0zMjAyLTQ3M2UtYmI3Yi1jNDNkNWNkODEzYjkiLCJSZXNvdXJjZVNwZWNpZmljSWQiOiJlMmE0M2Q2OS0zM2YzLTQwNmUtOGU3ZS02YWE0M2JjNmQzY2YifQ?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8615dc12-8f23-48c0-953e-9ced6e19cf4f"
     },
     "Response" : {
@@ -180,7 +180,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/731f1300-9e7b-4361-a3b4-4795c50eaffb/:hangup?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d7d83ff4-2ea7-41af-9af2-a6f01c74fe0d"
     },
     "Response" : {
@@ -198,7 +198,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/731f1300-1859-453e-9b01-b62055bf86eb/:hangup?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ce9a288b-c53b-48e9-8d42-bde600d563af"
     },
     "Response" : {

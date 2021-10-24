@@ -1120,10 +1120,10 @@ public final class CallingServerAsyncClient {
      * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelMediaOperation(
+    public Mono<Response<Void>> cancelMediaOperation(
         CallLocator callLocator,
         String mediaOperationId) {
-        return cancelMediaOperationWithResponseInternal(callLocator, mediaOperationId, Context.NONE).block();
+        return cancelMediaOperationWithResponseInternal(callLocator, mediaOperationId, Context.NONE);
     }
 
     /**
@@ -1152,10 +1152,10 @@ public final class CallingServerAsyncClient {
      * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelParticipantMediaOperation(
+    public Mono<Response<Void>> cancelParticipantMediaOperation(
         CallLocator callLocator,
         String mediaOperationId) {
-        return cancelMediaOperationWithResponseInternal(callLocator, mediaOperationId, Context.NONE).block();
+        return cancelMediaOperationWithResponseInternal(callLocator, mediaOperationId, Context.NONE);
     }
 
     Mono<Response<Void>> cancelMediaOperationWithResponseInternal(
@@ -1173,10 +1173,9 @@ public final class CallingServerAsyncClient {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal
-                    .cancelMediaOperationAsync(requestWithCallLocator, contextValue)
+                    .cancelMediaOperationWithResponseAsync(requestWithCallLocator, contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class,
-                                CallingServerErrorConverter::translateException)
-                    .flatMap(result -> Mono.empty());
+                                CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1212,11 +1211,13 @@ public final class CallingServerAsyncClient {
      * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelParticipantMediaOperation(
+    public Mono<Void> cancelParticipantMediaOperation(
         CallLocator callLocator,
         CommunicationIdentifier participant,
         String mediaOperationId) {
-        return cancelParticipantMediaOperationWithResponseInternal(callLocator, participant, mediaOperationId, Context.NONE).block();
+        return cancelParticipantMediaOperationWithResponseInternal(callLocator, participant, mediaOperationId, Context.NONE)
+            .flatMap(result -> Mono.empty());
+
     }
 
     Mono<Response<Void>> cancelParticipantMediaOperationWithResponseInternal(
@@ -1234,10 +1235,9 @@ public final class CallingServerAsyncClient {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal
-                    .cancelParticipantMediaOperationAsync(requestWithCallLocator, contextValue)
+                    .cancelParticipantMediaOperationWithResponseAsync(requestWithCallLocator, contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class,
-                                CallingServerErrorConverter::translateException)
-                    .flatMap(result -> Mono.empty());
+                                CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

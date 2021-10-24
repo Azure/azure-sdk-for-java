@@ -3,7 +3,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a5157726-630f-467e-9898-24355e462e95",
       "Content-Type" : "application/json"
     },
@@ -24,7 +24,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/971f1300-fe0f-4ebf-82f6-ea518be2faad/participants?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "417b3984-e1cc-4d7c-920f-c6a077d927b3",
       "Content-Type" : "application/json"
     },
@@ -45,7 +45,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/971f1300-fe0f-4ebf-82f6-ea518be2faad/participants:remove?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6cf9d9fa-62a2-4d6e-a213-efcc3f245ca2",
       "Content-Type" : "application/json"
     },
@@ -64,7 +64,7 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.communication.azure.com/calling/callConnections/971f1300-fe0f-4ebf-82f6-ea518be2faad/:hangup?api-version=2021-11-15-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.5 (16.0.2; Windows 10; 10.0)",
+      "User-Agent" : "azsdk-java-azure-communication-callingserver/1.0.0-beta.4 (16.0.2; Windows 10; 10.0)",
       "x-ms-client-request-id" : "121f5dcc-8275-4bcf-9e08-f2ad1cd06b0e"
     },
     "Response" : {
