@@ -9,7 +9,7 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.spring.integration.core.api.BatchConfig;
+import com.azure.spring.integration.core.api.BatchConsumerConfig;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.PartitionSupplier;
@@ -52,7 +52,7 @@ public class AbstractEventHubTemplate {
     private CheckpointConfig checkpointConfig = CheckpointConfig.builder()
         .checkpointMode(CheckpointMode.RECORD).build();
 
-    private BatchConfig batchConfig;
+    private BatchConsumerConfig batchConsumerConfig;
 
     AbstractEventHubTemplate(EventHubClientFactory clientFactory) {
         this.clientFactory = clientFactory;
@@ -102,7 +102,7 @@ public class AbstractEventHubTemplate {
 
     protected void createEventProcessorClient(String name, String consumerGroup, EventHubProcessor eventHubProcessor) {
         eventHubProcessor.setEventPosition(buildEventPosition(startPosition));
-        this.clientFactory.createEventProcessorClient(name, consumerGroup, eventHubProcessor, batchConfig);
+        this.clientFactory.createEventProcessorClient(name, consumerGroup, eventHubProcessor, batchConsumerConfig);
     }
 
     protected void startEventProcessorClient(String name, String consumerGroup) {
@@ -150,12 +150,12 @@ public class AbstractEventHubTemplate {
         this.checkpointConfig = checkpointConfig;
     }
 
-    public BatchConfig getBatchConfig() {
-        return batchConfig;
+    public BatchConsumerConfig getBatchConsumerConfig() {
+        return batchConsumerConfig;
     }
 
-    public void setBatchConfig(BatchConfig batchConfig) {
-        this.batchConfig = batchConfig;
+    public void setBatchConsumerConfig(BatchConsumerConfig batchConsumerConfig) {
+        this.batchConsumerConfig = batchConsumerConfig;
     }
 
 }

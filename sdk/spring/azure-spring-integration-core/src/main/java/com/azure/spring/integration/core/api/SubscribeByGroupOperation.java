@@ -39,11 +39,11 @@ public interface SubscribeByGroupOperation extends Checkpointable, Batchable {
      */
     boolean unsubscribe(String destination, String consumerGroup);
 
-    default BatchConfig getBatchConfig() {
+    default BatchConsumerConfig getBatchConsumerConfig() {
         return null;
     }
 
-    default void setBatchConfig(BatchConfig batchconfig) {
+    default void setBatchConsumerConfig(BatchConsumerConfig batchConsumerConfig) {
         // no-op
     }
 

@@ -8,7 +8,7 @@ import java.time.Duration;
 /**
  * Batch consumer config.
  */
-public class BatchConfig {
+public class BatchConsumerConfig {
 
     /**
      * The maximum number of events that will be in the list when this callback is invoked.
@@ -21,7 +21,7 @@ public class BatchConfig {
      */
     private final Duration maxWaitTime;
 
-    public BatchConfig(int maxBatchSize, Duration maxWaitTime) {
+    public BatchConsumerConfig(int maxBatchSize, Duration maxWaitTime) {
         this.maxBatchSize = maxBatchSize;
         this.maxWaitTime = maxWaitTime;
     }
@@ -39,7 +39,7 @@ public class BatchConfig {
     }
 
     /**
-     * Builder class for {@link BatchConfig}.
+     * Builder class for {@link BatchConsumerConfig}.
      */
     public static class BatchConsumerConfigBuilder {
         private int maxBatchSize;
@@ -56,8 +56,8 @@ public class BatchConfig {
             return this;
         }
 
-        public BatchConfig build() {
-            return new BatchConfig(this.maxBatchSize, this.maxWaitTime);
+        public BatchConsumerConfig build() {
+            return new BatchConsumerConfig(this.maxBatchSize, this.maxWaitTime);
         }
     }
 }

@@ -4,7 +4,7 @@
 package com.azure.spring.integration.eventhub;
 
 import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.spring.integration.core.api.BatchConfig;
+import com.azure.spring.integration.core.api.BatchConsumerConfig;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
 import com.azure.spring.integration.eventhub.api.EventHubOperation;
 import com.azure.spring.integration.eventhub.impl.EventHubProcessor;
@@ -36,7 +36,7 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
 
     private AutoCloseable closeable;
 
-    private final BatchConfig batchConfig = BatchConfig.builder().batchSize(10).build();
+    private final BatchConsumerConfig batchConsumerConfig = BatchConsumerConfig.builder().batchSize(10).build();
 
     @BeforeEach
     public void setUp() {
@@ -52,25 +52,25 @@ public class EventHubTemplateSubscribeTest extends SubscribeByGroupOperationTest
 
     @Test
     public void testSubscribeAndUnsubscribeWithBatch() {
-        this.subscribeByGroupOperation.setBatchConfig(batchConfig);
+        this.subscribeByGroupOperation.setBatchConsumerConfig(batchConsumerConfig);
         super.testSubscribeAndUnsubscribe();
     }
 
     @Test
     public void testSubscribeTwice() {
-        this.subscribeByGroupOperation.setBatchConfig(batchConfig);
+        this.subscribeByGroupOperation.setBatchConsumerConfig(batchConsumerConfig);
         super.testSubscribeTwice();
     }
 
     @Test
     public void testSubscribeWithAnotherGroup() {
-        this.subscribeByGroupOperation.setBatchConfig(batchConfig);
+        this.subscribeByGroupOperation.setBatchConsumerConfig(batchConsumerConfig);
         super.testSubscribeWithAnotherGroup();
     }
 
     @Test
     public void testUnsubscribeNotSubscribed() {
-        this.subscribeByGroupOperation.setBatchConfig(batchConfig);
+        this.subscribeByGroupOperation.setBatchConsumerConfig(batchConsumerConfig);
         super.testUnsubscribeNotSubscribed();
     }
 

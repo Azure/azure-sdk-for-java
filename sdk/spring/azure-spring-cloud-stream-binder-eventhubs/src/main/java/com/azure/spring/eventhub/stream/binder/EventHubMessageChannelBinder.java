@@ -7,7 +7,7 @@ import com.azure.spring.eventhub.stream.binder.properties.EventHubConsumerProper
 import com.azure.spring.eventhub.stream.binder.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.eventhub.stream.binder.properties.EventHubProducerProperties;
 import com.azure.spring.eventhub.stream.binder.provisioning.EventHubChannelProvisioner;
-import com.azure.spring.integration.core.api.BatchConfig;
+import com.azure.spring.integration.core.api.BatchConsumerConfig;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.StartPosition;
 import com.azure.spring.integration.core.api.reactor.DefaultMessageHandler;
@@ -88,10 +88,10 @@ public class EventHubMessageChannelBinder extends
                                 .build();
         this.eventHubOperation.setCheckpointConfig(checkpointConfig);
         if (properties.isBatchMode()) {
-            BatchConfig batchConfig = BatchConfig.builder().batchSize(properties.getExtension().getMaxBatchSize())
-                                                 .maxWaitTime(properties.getExtension().getMaxWaitTime())
-                                                 .build();
-            this.eventHubOperation.setBatchConfig(batchConfig);
+            BatchConsumerConfig batchConsumerConfig = BatchConsumerConfig.builder().batchSize(properties.getExtension().getMaxBatchSize())
+                                                                         .maxWaitTime(properties.getExtension().getMaxWaitTime())
+                                                                         .build();
+            this.eventHubOperation.setBatchConsumerConfig(batchConsumerConfig);
         }
 
         boolean anonymous = !StringUtils.hasText(group);
