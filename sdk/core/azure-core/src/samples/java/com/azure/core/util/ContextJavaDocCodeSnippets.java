@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.TRACE_CONTEXT_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.USER_SPAN_NAME_KEY;
 
 /**
@@ -29,11 +29,11 @@ public class ContextJavaDocCodeSnippets {
         // to calling methods in sdk clients using Context object.
         Context keyValueContext = new Context(USER_SPAN_NAME_KEY, "span-name");
 
-        // OpenTelemetry context can be optionally passed using TRACE_CONTEXT_KEY
+        // OpenTelemetry context can be optionally passed using PARENT_TRACE_CONTEXT_KEY
         // when OpenTelemetry context is not provided explicitly, ambient
         // io.opentelemetry.context.Context.current() is used
 
-        // Context contextWithSpan = new Context(TRACE_CONTEXT_KEY, openTelemetryContext);
+        // Context contextWithSpan = new Context(PARENT_TRACE_CONTEXT_KEY, openTelemetryContext);
         // END: com.azure.core.util.context#object-object
     }
 
@@ -63,7 +63,7 @@ public class ContextJavaDocCodeSnippets {
         final String hostNameValue = "host-name-value";
         final String entityPathValue = "entity-path-value";
         final String userParentSpan = "user-parent-span";
-        Context parentSpanContext = new Context(TRACE_CONTEXT_KEY, userParentSpan);
+        Context parentSpanContext = new Context(PARENT_TRACE_CONTEXT_KEY, userParentSpan);
 
         // Add a new key value pair to the existing context object.
         Context updatedContext = parentSpanContext.addData(HOST_NAME_KEY, hostNameValue)

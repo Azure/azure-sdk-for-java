@@ -48,7 +48,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.TRACE_CONTEXT_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -90,7 +90,7 @@ public class OpenTelemetryHttpPolicyTests {
         Span parentSpan = tracer.spanBuilder(SPAN_NAME).startSpan();
 
         // Add parent span to tracingContext
-        Context tracingContext = new Context(TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
+        Context tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
             .addData(AZ_TRACING_NAMESPACE_KEY, "foo");
 
         // Act
@@ -219,7 +219,7 @@ public class OpenTelemetryHttpPolicyTests {
         // Start user parent span and populate context.
         Span parentSpan = tracer.spanBuilder("test").startSpan();
 
-        Context tracingContext = new Context(TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
+        Context tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
             .addData(AZ_TRACING_NAMESPACE_KEY, "foo");
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext))

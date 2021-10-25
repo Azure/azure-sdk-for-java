@@ -12,7 +12,6 @@ import com.azure.core.http.policy.AfterRetryPolicyProvider;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
 import com.azure.core.tracing.opentelemetry.implementation.OpenTelemetrySpanSuppressionHelper;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -34,7 +33,7 @@ import java.util.Optional;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
-import static com.azure.core.util.tracing.Tracer.TRACE_CONTEXT_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
 /**
  * Pipeline policy that creates an OpenTelemetry span which traces the service request.
@@ -79,7 +78,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     private static final String CLIENT_REQUEST_ID_HEADER = "x-ms-client-request-id";
     private static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
-    private static final String REACTOR_TRACE_CONTEXT_KEY = "otel-context-key";
+    private static final String REACTOR_PARENT_TRACE_CONTEXT_KEY = "otel-context-key";
 
     // This helper class implements W3C distributed tracing protocol and injects SpanContext into the outgoing http
     // request
@@ -98,7 +97,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         return ScalarPropagatingMono.INSTANCE
                 .flatMap(ignored -> next.process())
                 .doOnEach(OpenTelemetryHttpPolicy::handleResponse)
-                .contextWrite(reactor.util.context.Context.of(REACTOR_TRACE_CONTEXT_KEY, startSpan(context)));
+                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpan(context)));
     }
 
     private Context startSpan(HttpPipelineCallContext azContext) {
@@ -161,7 +160,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
         ContextView context = signal.getContextView();
-        Optional<io.opentelemetry.context.Context> traceContext = context.getOrEmpty(REACTOR_TRACE_CONTEXT_KEY);
+        Optional<io.opentelemetry.context.Context> traceContext = context.getOrEmpty(REACTOR_PARENT_TRACE_CONTEXT_KEY);
         if (!traceContext.isPresent()) {
             return;
         }
@@ -207,17 +206,17 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     }
 
     /**
-     * Returns OpenTelemetry trace context from given com.azure.core.Context under TRACE_CONTEXT_KEY
+     * Returns OpenTelemetry trace context from given com.azure.core.Context under PARENT_TRACE_CONTEXT_KEY
      * or {@link io.opentelemetry.context.Context#current()}
      */
     private static io.opentelemetry.context.Context getTraceContextOrCurrent(HttpPipelineCallContext azContext) {
-        final Optional<Object> traceContextOpt = azContext.getData(TRACE_CONTEXT_KEY);
+        final Optional<Object> traceContextOpt = azContext.getData(PARENT_TRACE_CONTEXT_KEY);
         if (traceContextOpt.isPresent()) {
             return (io.opentelemetry.context.Context) traceContextOpt.get();
         }
 
         // no need for back-compat with PARENT_SPAN_KEY - OpenTelemetryTracer will always set
-        // TRACE_CONTEXT_KEY
+        // PARENT_TRACE_CONTEXT_KEY
 
         return io.opentelemetry.context.Context.current();
     }
@@ -246,7 +245,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         @Override
         @SuppressWarnings("try")
         public void subscribe(CoreSubscriber<? super Object> actual) {
-            Context traceContext = actual.currentContext().getOrDefault(REACTOR_TRACE_CONTEXT_KEY, null);
+            Context traceContext = actual.currentContext().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, null);
             if (traceContext != null) {
                 Object agentContext = OpenTelemetrySpanSuppressionHelper.registerClientSpan(traceContext);
                 AutoCloseable closeable = OpenTelemetrySpanSuppressionHelper.makeCurrent(agentContext, traceContext);

@@ -20,7 +20,7 @@ public interface Tracer {
      * <p>
      * If no span data is listed when the span is created it will default to using this span key as the parent span.
      *
-     * @deprecated Deprecated in favor of TRACE_CONTEXT_KEY, use it to propagate full io.opentelemetry.Context
+     * @deprecated Deprecated in favor of PARENT_TRACE_CONTEXT_KEY, use it to propagate full io.opentelemetry.Context
      */
     @Deprecated
     String PARENT_SPAN_KEY = "parent-span";
@@ -30,7 +30,7 @@ public interface Tracer {
      * for new spans and propagated in outgoing HTTP calls.
      *
      */
-    String TRACE_CONTEXT_KEY = "trace-context";
+    String PARENT_TRACE_CONTEXT_KEY = "trace-context";
 
     /**
      * Key for {@link Context} which indicates that the context contains the name for the user spans that are
@@ -101,7 +101,7 @@ public interface Tracer {
      * &#47;&#47; in io.opentelemetry.context.Context.current&#40;&#41;
      * Context traceContext = tracer.start&#40;&quot;keyvault.setsecret&quot;, Context.NONE&#41;;
      * System.out.printf&#40;&quot;OpenTelemetry Context with started `keyvault.setsecret` span: %s%n&quot;,
-     *     traceContext.getData&#40;TRACE_CONTEXT_KEY&#41;.get&#40;&#41;&#41;;
+     *     traceContext.getData&#40;PARENT_TRACE_CONTEXT_KEY&#41;.get&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.start#string-context -->
      *
@@ -129,7 +129,7 @@ public interface Tracer {
      *     .setAttribute&#40;&quot;key&quot;, &quot;value&quot;&#41;;
      * Context updatedClientSpanContext = tracer.start&#40;&quot;keyvault.setsecret&quot;, options, traceContext&#41;;
      * System.out.printf&#40;&quot;OpenTelemetry Context with started `keyvault.setsecret` span: %s%n&quot;,
-     *     updatedClientSpanContext.getData&#40;TRACE_CONTEXT_KEY&#41;.get&#40;&#41;&#41;;
+     *     updatedClientSpanContext.getData&#40;PARENT_TRACE_CONTEXT_KEY&#41;.get&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.start#options-context -->
      *
@@ -176,7 +176,7 @@ public interface Tracer {
      * &#47;&#47; kind to client when process kind SEND
      * Context updatedSendContext = tracer.start&#40;&quot;eventhubs.send&quot;, sendContext, ProcessKind.SEND&#41;;
      * System.out.printf&#40;&quot;OpenTelemetry Context with started `eventhubs.send` span: %s%n&quot;,
-     *     updatedSendContext.getData&#40;TRACE_CONTEXT_KEY&#41;.get&#40;&#41;&#41;;
+     *     updatedSendContext.getData&#40;PARENT_TRACE_CONTEXT_KEY&#41;.get&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.start#string-context-processKind-SEND -->
      *
@@ -198,7 +198,7 @@ public interface Tracer {
      * String spanImplContext = &quot;span-context&quot;;
      * &#47;&#47; start a new tracing span with remote parent and uses current context to return a scope
      * &#47;&#47; when process kind PROCESS
-     * Context processContext = new Context&#40;TRACE_CONTEXT_KEY, &quot;&lt;OpenTelemetry-context&gt;&quot;&#41;
+     * Context processContext = new Context&#40;PARENT_TRACE_CONTEXT_KEY, &quot;&lt;OpenTelemetry-context&gt;&quot;&#41;
      *     .addData&#40;spanImplContext, &quot;&lt;user-current-span-context&gt;&quot;&#41;;
      * Context updatedProcessContext = tracer.start&#40;&quot;EventHubs.process&quot;, processContext,
      *     ProcessKind.PROCESS&#41;;
@@ -225,7 +225,7 @@ public interface Tracer {
      * <pre>
      * &#47;&#47; context containing the span to end
      * String openTelemetrySpanKey = &quot;openTelemetry-span&quot;;
-     * Context traceContext = new Context&#40;TRACE_CONTEXT_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;;
+     * Context traceContext = new Context&#40;PARENT_TRACE_CONTEXT_KEY, &quot;&lt;user-current-span&gt;&quot;&#41;;
      *
      * &#47;&#47; completes the tracing span with the passed response status code
      * tracer.end&#40;200, null, traceContext&#41;;
@@ -283,7 +283,7 @@ public interface Tracer {
      * Context contextWithName = tracer.setSpanName&#40;&quot;keyvault.setsecret&quot;, Context.NONE&#41;;
      * Context traceContext = tracer.start&#40;&quot;placeholder&quot;, contextWithName&#41;;
      *
-     * System.out.printf&#40;&quot;OpenTelemetry Context with started `keyvault.setsecret` span:  %s%n&quot;, traceContext.getData&#40;TRACE_CONTEXT_KEY&#41;.get&#40;&#41;.toString&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;OpenTelemetry Context with started `keyvault.setsecret` span:  %s%n&quot;, traceContext.getData&#40;PARENT_TRACE_CONTEXT_KEY&#41;.get&#40;&#41;.toString&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.setSpanName#string-context -->
      *

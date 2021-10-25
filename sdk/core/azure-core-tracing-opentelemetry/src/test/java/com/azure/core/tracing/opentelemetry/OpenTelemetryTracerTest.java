@@ -46,7 +46,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.core.util.tracing.Tracer.TRACE_CONTEXT_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.USER_SPAN_NAME_KEY;
 import static io.opentelemetry.api.trace.StatusCode.UNSET;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -97,7 +97,7 @@ public class OpenTelemetryTracerTest {
         parentSpan = tracer.spanBuilder(METHOD_NAME).setNoParent().startSpan();
 
         // Add parent span to tracingContext
-        tracingContext = new Context(TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan));
+        tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan));
         openTelemetryTracer = new OpenTelemetryTracer(tracer);
     }
 
@@ -684,7 +684,7 @@ public class OpenTelemetryTracerTest {
     @Test
     public void startSpanWithOptionsNameEmptyParent() {
         final StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
-        final Context started = openTelemetryTracer.start(METHOD_NAME, options, new Context(TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root()));
+        final Context started = openTelemetryTracer.start(METHOD_NAME, options, new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root()));
         final ReadableSpan span = getSpan(started);
         final SpanData spanData = span.toSpanData();
 
@@ -731,7 +731,7 @@ public class OpenTelemetryTracerTest {
         final StartSpanOptions options = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
 
         final Span explicitParentSpan = tracer.spanBuilder("foo").setNoParent().startSpan();
-        final Context started = openTelemetryTracer.start(METHOD_NAME, options, new Context(TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(explicitParentSpan)));
+        final Context started = openTelemetryTracer.start(METHOD_NAME, options, new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(explicitParentSpan)));
 
         final ReadableSpan span = getSpan(started);
         final SpanData spanData = span.toSpanData();
@@ -794,7 +794,7 @@ public class OpenTelemetryTracerTest {
     }
 
     private static ReadableSpan getSpan(Context context) {
-        Optional<Object> otelCtx =  context.getData(TRACE_CONTEXT_KEY);
+        Optional<Object> otelCtx =  context.getData(PARENT_TRACE_CONTEXT_KEY);
         assertTrue(otelCtx.isPresent());
         assertTrue(io.opentelemetry.context.Context.class.isAssignableFrom(otelCtx.get().getClass()));
         Span span = Span.fromContext((io.opentelemetry.context.Context) otelCtx.get());

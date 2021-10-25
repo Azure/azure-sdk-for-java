@@ -24,7 +24,7 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.core.util.tracing.Tracer.TRACE_CONTEXT_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.OPERATION_TIMEOUT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -90,8 +90,8 @@ public class PublishEventsJaegerExporterSample {
             // We will publish three events based on simple sentences.
             Flux<EventData> data = Flux.just(
                 // only attach trace context if not using auto-instrumentation or if you didn't make userParentSpan current
-                new EventData(body).addContext(TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan)),
-                new EventData(body2).addContext(TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan)));
+                new EventData(body).addContext(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan)),
+                new EventData(body2).addContext(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan)));
 
             // Create a batch to send the events.
             final CreateBatchOptions options = new CreateBatchOptions()

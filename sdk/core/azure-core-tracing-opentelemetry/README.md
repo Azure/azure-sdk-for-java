@@ -47,7 +47,7 @@ The following sections provides examples of using the azure-core-tracing-opentel
 
     The plugin package creates a logical span representing public API call to encapsulate all the underlying HTTP calls. By default OpenTelemetry 
     `Context.current()` will be used as a parent context - check out [OpenTelemetry documentation](https://opentelemetry.io/docs/java/manual_instrumentation/#tracing) for more info.
-    Users can *optionally* pass the instance of `io.opentelemetry.context.Context` to the SDKs using key **TRACE_CONTEXT_KEY** on the [Context][context] parameter of the calling method
+    Users can *optionally* pass the instance of `io.opentelemetry.context.Context` to the SDKs using key **PARENT_TRACE_CONTEXT_KEY** on the [Context][context] parameter of the calling method
     to provide explicit parent context.
     This [sample][sample_key_vault] provides an example when no user parent span is passed.
 
@@ -76,7 +76,7 @@ public static void doClientWork() {
 
     // alternatively, you can pass context explicitly
     // Span span = TRACER.spanBuilder("user-span").startSpan();
-    // Context traceContext = new Context(TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(span));
+    // Context traceContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(span));
     // secretClient.setSecretWithResponse(new Secret("secret_name", "secret_value"), traceContext);
     // span.end();
 }
@@ -86,7 +86,7 @@ public static void doClientWork() {
 
 Send a single event/message using [azure-messaging-eventhubs][azure-messaging-eventhubs] with tracing enabled.
 
-Users can additionally pass the value of the current tracing span to the EventData object with key **TRACE_CONTEXT_KEY** on the [Context][context] object:
+Users can additionally pass the value of the current tracing span to the EventData object with key **PARENT_TRACE_CONTEXT_KEY** on the [Context][context] object:
 
 ```java
 // Get the Tracer Provider
@@ -101,7 +101,7 @@ private static void doClientWork() {
     Span span = TRACER.spanBuilder("user-span").startSpan();
     try (Scope scope = TRACER.withSpan(span)) {
         EventData event1 = new EventData("1".getBytes(UTF_8));
-        event1.addContext(TRACE_CONTEXT_KEY, context.current());
+        event1.addContext(PARENT_TRACE_CONTEXT_KEY, context.current());
 
         EventDataBatch eventDataBatch = producer.createBatch();
 

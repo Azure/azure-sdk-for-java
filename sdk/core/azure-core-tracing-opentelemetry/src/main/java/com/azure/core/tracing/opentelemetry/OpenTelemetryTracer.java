@@ -238,7 +238,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @Override
     @SuppressWarnings("deprecation")
     public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp) {
-        addEvent(eventName, traceEventAttributes, timestamp, new Context(TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
+        addEvent(eventName, traceEventAttributes, timestamp, new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
     }
 
     /**
@@ -294,7 +294,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             }
         }
 
-        return context.addData(TRACE_CONTEXT_KEY, getTraceContextOrDefault(context, io.opentelemetry.context.Context.current()).with(span));
+        return context.addData(PARENT_TRACE_CONTEXT_KEY, getTraceContextOrDefault(context, io.opentelemetry.context.Context.current()).with(span));
     }
 
     /**
@@ -473,13 +473,13 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
 
     /**
-     * Returns OpenTelemetry trace context from given com.azure.core.Context under TRACE_CONTEXT_KEY
+     * Returns OpenTelemetry trace context from given com.azure.core.Context under PARENT_TRACE_CONTEXT_KEY
      * or PARENT_SPAN_KEY (for backward-compatibility) or default value.
      */
     @SuppressWarnings("deprecation")
     private io.opentelemetry.context.Context getTraceContextOrDefault(Context azContext, io.opentelemetry.context.Context otelContext) {
         io.opentelemetry.context.Context traceContext = getOrDefault(azContext,
-            TRACE_CONTEXT_KEY,
+            PARENT_TRACE_CONTEXT_KEY,
             null,
             io.opentelemetry.context.Context.class);
 
@@ -497,13 +497,13 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     }
 
     /**
-     * Returns OpenTelemetry trace context from given com.azure.core.Context under TRACE_CONTEXT_KEY
+     * Returns OpenTelemetry trace context from given com.azure.core.Context under PARENT_TRACE_CONTEXT_KEY
      * or PARENT_SPAN_KEY (for backward-compatibility) or {@link Span#current()}
      */
     @SuppressWarnings("deprecation")
     private Span getSpanOrCurrent(Context azContext) {
         io.opentelemetry.context.Context traceContext = getOrDefault(azContext,
-            TRACE_CONTEXT_KEY,
+            PARENT_TRACE_CONTEXT_KEY,
             null,
             io.opentelemetry.context.Context.class);
 
