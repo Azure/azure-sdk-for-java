@@ -133,11 +133,6 @@ public class Configuration implements Cloneable {
      */
     public static final String PROPERTY_AZURE_TRACING_DISABLED = "AZURE_TRACING_DISABLED";
 
-    /**
-     * Flag to disable sharing of http clients if not configured by the user.
-     */
-    public static final String PROPERTY_HTTP_CLIENT_SINGLETON_DISABLED = "PROPERTY_HTTP_CLIENT_SINGLETON_DISABLED";
-
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
@@ -164,8 +159,7 @@ public class Configuration implements Cloneable {
         PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL,
         PROPERTY_AZURE_TRACING_DISABLED,
         PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL,
-        PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME,
-        PROPERTY_HTTP_CLIENT_SINGLETON_DISABLED
+        PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME
     };
 
     /*

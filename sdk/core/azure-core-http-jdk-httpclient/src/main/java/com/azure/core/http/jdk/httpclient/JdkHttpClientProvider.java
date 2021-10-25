@@ -6,6 +6,8 @@ package com.azure.core.http.jdk.httpclient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpClient.
  * <p>
@@ -13,8 +15,13 @@ import com.azure.core.http.HttpClientProvider;
  * introduced.
  */
 public final class JdkHttpClientProvider implements HttpClientProvider {
+    private static final AtomicReference<HttpClient> DEFAULT_HTTP_CLIENT = new AtomicReference<>();
+
     @Override
     public HttpClient createInstance() {
-        return new JdkAsyncHttpClientBuilder().build();
+        // by default use a singleton instance of http client
+        DEFAULT_HTTP_CLIENT.compareAndSet(null, new JdkAsyncHttpClientBuilder().build());
+
+        return DEFAULT_HTTP_CLIENT.get();
     }
 }
