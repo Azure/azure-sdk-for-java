@@ -108,6 +108,7 @@ public class Utils {
         } catch (Exception ex) {
             // Consumed the exception we got during parsing
             // For unknown version we wil mark it as -1
+            logger.warn("Error while fetching java version", ex);
             return version;
         }
     }
