@@ -19,9 +19,10 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
 
     @Override
     public HttpClient createInstance() {
+        HttpClient httpClient = new OkHttpAsyncHttpClientBuilder().build();
         DEFAULT_HTTP_CLIENT.compareAndSet(null, new OkHttpAsyncHttpClientBuilder().build());
-
-        return DEFAULT_HTTP_CLIENT.get();
+        // by default use a singleton http client
+        return httpClient;
     }
 
     @Override
@@ -29,6 +30,11 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
         OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder();
 
         if (clientOptions != null) {
+            if (clientOptions.getConfiguration() != null) {
+                DEFAULT_HTTP_CLIENT.compareAndSet(null, new OkHttpAsyncHttpClientBuilder().build());
+                return DEFAULT_HTTP_CLIENT.get();
+            }
+
             builder = builder.proxy(clientOptions.getProxyOptions())
                 .configuration(clientOptions.getConfiguration())
                 .writeTimeout(clientOptions.getWriteTimeout())

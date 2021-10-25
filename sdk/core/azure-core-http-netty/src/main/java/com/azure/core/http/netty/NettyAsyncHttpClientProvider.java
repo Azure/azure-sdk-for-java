@@ -18,9 +18,10 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
 
     @Override
     public HttpClient createInstance() {
-        DEFAULT_HTTP_CLIENT.compareAndSet(null, new NettyAsyncHttpClientBuilder().build());
-
-        return DEFAULT_HTTP_CLIENT.get();
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+        DEFAULT_HTTP_CLIENT.compareAndSet(null, httpClient);
+        // by default use a singleton http client
+        return httpClient;
     }
 
     @Override
@@ -28,6 +29,11 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
         NettyAsyncHttpClientBuilder builder = new NettyAsyncHttpClientBuilder();
 
         if (clientOptions != null) {
+            if (clientOptions.getConfiguration() != null) {
+                DEFAULT_HTTP_CLIENT.compareAndSet(null, new NettyAsyncHttpClientBuilder().build());
+                return DEFAULT_HTTP_CLIENT.get();
+            }
+
             builder = builder.proxy(clientOptions.getProxyOptions())
                 .configuration(clientOptions.getConfiguration())
                 .writeTimeout(clientOptions.getWriteTimeout())
