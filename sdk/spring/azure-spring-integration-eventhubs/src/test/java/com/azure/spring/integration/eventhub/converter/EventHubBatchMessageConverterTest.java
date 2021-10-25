@@ -35,6 +35,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 
+@SuppressWarnings("unchecked")
 public class EventHubBatchMessageConverterTest {
 
     private static final String PARTITION_KEY = "abc";
@@ -178,7 +179,7 @@ public class EventHubBatchMessageConverterTest {
             lastEnqueuedEventProperties);
         Map<String, Object> headerHeadersMap = converter.buildCustomHeaders(eventBatchContext);
         assertNotNull(headerHeadersMap.get(BATCH_CONVERTED_APPLICATION_PROPERTIES));
-        List<Map> headers = (List<Map>) headerHeadersMap.get(BATCH_CONVERTED_APPLICATION_PROPERTIES);
+        List<Map<String, Object>> headers = (List<Map<String, Object>>) headerHeadersMap.get(BATCH_CONVERTED_APPLICATION_PROPERTIES);
         headers.forEach(map -> assertEquals(map.get(NATIVE_HEADERS).getClass(), String.class));
     }
 
@@ -190,19 +191,19 @@ public class EventHubBatchMessageConverterTest {
         Map<String, Object> headerHeadersMap = converter.buildCustomHeaders(eventBatchContext);
 
         assertTrue(headerHeadersMap.containsKey(EventHubHeaders.ENQUEUED_TIME));
-        assertEquals(((List<Map>) headerHeadersMap.get(EventHubHeaders.ENQUEUED_TIME)).size(), 2);
+        assertEquals(((List<Map<String, Object>>) headerHeadersMap.get(EventHubHeaders.ENQUEUED_TIME)).size(), 2);
         assertTrue(headerHeadersMap.containsKey(EventHubHeaders.OFFSET));
-        assertEquals(((List<Map>) headerHeadersMap.get(EventHubHeaders.OFFSET)).size(), 2);
+        assertEquals(((List<Map<String, Object>>) headerHeadersMap.get(EventHubHeaders.OFFSET)).size(), 2);
         assertTrue(headerHeadersMap.containsKey(EventHubHeaders.SEQUENCE_NUMBER));
-        assertEquals(((List<Map>) headerHeadersMap.get(EventHubHeaders.SEQUENCE_NUMBER)).size(), 2);
+        assertEquals(((List<Map<String, Object>>) headerHeadersMap.get(EventHubHeaders.SEQUENCE_NUMBER)).size(), 2);
         assertTrue(headerHeadersMap.containsKey(EventHubHeaders.PARTITION_KEY));
-        assertEquals(((List<Map>) headerHeadersMap.get(EventHubHeaders.PARTITION_KEY)).size(), 2);
+        assertEquals(((List<Map<String, Object>>) headerHeadersMap.get(EventHubHeaders.PARTITION_KEY)).size(), 2);
         assertTrue(headerHeadersMap.containsKey(EventHubHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES));
-        assertEquals(((List<Map>) headerHeadersMap.get(EventHubHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES)).size(), 2);
+        assertEquals(((List<Map<String, Object>>) headerHeadersMap.get(EventHubHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES)).size(), 2);
         assertTrue(headerHeadersMap.containsKey(EventHubHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES));
-        assertEquals(((List<Map>) headerHeadersMap.get(EventHubHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES)).size(), 2);
+        assertEquals(((List<Map<String, Object>>) headerHeadersMap.get(EventHubHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES)).size(), 2);
 
-        List<Map> headers = (List<Map>) headerHeadersMap.get(BATCH_CONVERTED_APPLICATION_PROPERTIES);
+        List<Map<String, Object>> headers = (List<Map<String, Object>>) headerHeadersMap.get(BATCH_CONVERTED_APPLICATION_PROPERTIES);
         headers.forEach(map -> assertEquals(map.get(headerProperties), headerProperties));
     }
 

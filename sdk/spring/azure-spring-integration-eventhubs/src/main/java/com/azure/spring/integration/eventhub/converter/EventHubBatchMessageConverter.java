@@ -63,6 +63,7 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected <U> Message<?> internalToMessage(EventBatchContext azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
         List<byte[]> payload = (List<byte[]>) getPayload(azureMessage);
         Assert.isTrue(payload != null, "payload must not be null");
