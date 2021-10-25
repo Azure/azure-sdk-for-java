@@ -11,8 +11,13 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +30,7 @@ import org.springframework.core.io.WritableResource;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
 
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -117,6 +123,29 @@ public class AzureBlobStorageTests {
         BlobStorageResource resource = new BlobStorageResource(this.blobServiceClient,
             "azure-blob://container/non-existing");
         Assertions.assertFalse(resource.exists());
+    }
+
+    @ParameterizedTest
+    @MethodSource("contentTypeProvider")
+    public void testGetContentType(ArgumentsAccessor arguments) {
+        String contentType = arguments.getString(1);
+        String location = arguments.getString(0);
+        AzureStorageResource storageResource = new BlobStorageResource(this.blobServiceClient,location);
+        Assertions.assertEquals(contentType, storageResource.getContentType(location));
+    }
+
+    /**
+     * Provides a list of valid locations as parameters in the format of:
+     *
+     * location -- container name -- blob name
+     */
+    static Stream<Arguments> contentTypeProvider() {
+        return Stream.of(
+            arguments("azure-blob://c/b/a.pdf", "application/pdf"),
+            arguments("azure-BLOB://c/b/a.txt", "text/plain"),
+            arguments("AZURE-BLOB://c/b/a.jpg", "image/jpeg"),
+            arguments("azure-blob://c/b.unknown", null)
+        );
     }
 
     @Configuration
