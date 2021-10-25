@@ -57,7 +57,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DiskInner>, DiskInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String diskName, DiskInner disk);
 
@@ -74,7 +74,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
         String resourceGroupName, String diskName, DiskInner disk);
 
@@ -92,7 +92,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskInner>, DiskInner> beginCreateOrUpdate(
         String resourceGroupName, String diskName, DiskInner disk, Context context);
 
@@ -175,7 +175,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DiskInner>, DiskInner> beginUpdateAsync(
         String resourceGroupName, String diskName, DiskUpdate disk);
 
@@ -192,7 +192,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskInner>, DiskInner> beginUpdate(
         String resourceGroupName, String diskName, DiskUpdate disk);
 
@@ -210,7 +210,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DiskInner>, DiskInner> beginUpdate(
         String resourceGroupName, String diskName, DiskUpdate disk, Context context);
 
@@ -351,7 +351,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String diskName);
 
     /**
@@ -366,7 +366,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskName);
 
     /**
@@ -382,7 +382,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskName, Context context);
 
     /**
@@ -528,7 +528,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a disk access SAS uri.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccessAsync(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData);
 
@@ -545,7 +545,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a disk access SAS uri.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData);
 
@@ -563,7 +563,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a disk access SAS uri.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AccessUriInner>, AccessUriInner> beginGrantAccess(
         String resourceGroupName, String diskName, GrantAccessData grantAccessData, Context context);
 
@@ -644,7 +644,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRevokeAccessAsync(String resourceGroupName, String diskName);
 
     /**
@@ -659,7 +659,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName, String diskName);
 
     /**
@@ -675,7 +675,7 @@ public interface DisksClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevokeAccess(String resourceGroupName, String diskName, Context context);
 
     /**

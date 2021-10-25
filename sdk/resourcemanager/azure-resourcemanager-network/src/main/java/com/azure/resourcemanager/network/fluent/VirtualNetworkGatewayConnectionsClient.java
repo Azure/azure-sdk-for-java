@@ -58,7 +58,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -76,7 +76,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -95,7 +95,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -237,7 +237,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -251,7 +251,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -266,7 +266,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
 
@@ -334,7 +334,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
         beginUpdateTagsAsync(
             String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
@@ -350,7 +350,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginUpdateTags(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
 
@@ -366,7 +366,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a common class for general resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginUpdateTags(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters, Context context);
 
@@ -446,7 +446,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for GetConnectionSharedKey API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKeyAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
 
@@ -463,7 +463,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for GetConnectionSharedKey API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKey(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
 
@@ -481,7 +481,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for GetConnectionSharedKey API service call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKey(
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
@@ -675,7 +675,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the virtual network connection reset shared key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKeyAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
@@ -693,7 +693,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the virtual network connection reset shared key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKey(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
@@ -712,7 +712,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the virtual network connection reset shared key.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKey(
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
@@ -807,7 +807,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
@@ -825,7 +825,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStartPacketCapture(
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
@@ -844,7 +844,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStartPacketCapture(
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
@@ -963,7 +963,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
@@ -981,7 +981,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStopPacketCapture(
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
@@ -1000,7 +1000,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStopPacketCapture(
         String resourceGroupName,
         String virtualNetworkGatewayConnectionName,
@@ -1087,7 +1087,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<String>, String> beginGetIkeSasAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -1101,7 +1101,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginGetIkeSas(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -1116,7 +1116,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginGetIkeSas(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
 
@@ -1184,7 +1184,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginResetConnectionAsync(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -1198,7 +1198,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResetConnection(
         String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
@@ -1213,7 +1213,7 @@ public interface VirtualNetworkGatewayConnectionsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResetConnection(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
 

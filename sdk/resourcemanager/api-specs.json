@@ -89,7 +89,7 @@
     "dir": "azure-resourcemanager-containerinstance",
     "source": "specification/containerinstance/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerinstance",
-    "args": "--payload-flattening-threshold=1 --tag=package-2021-03 --remove-inner=Container,Operation,CachedImages,Capabilities"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-09 --remove-inner=Container,Operation,CachedImages,Capabilities"
   },
   "containerregistry": {
     "dir": "azure-resourcemanager-containerregistry",
@@ -101,7 +101,7 @@
     "dir": "azure-resourcemanager-containerservice",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.containerservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2021-08 --preserve-model=ContainerServiceVMSizeTypes"
+    "args": "--payload-flattening-threshold=1 --tag=package-2021-09 --preserve-model=ContainerServiceVMSizeTypes"
   },
   "cosmos": {
     "dir": "azure-resourcemanager-cosmos",
