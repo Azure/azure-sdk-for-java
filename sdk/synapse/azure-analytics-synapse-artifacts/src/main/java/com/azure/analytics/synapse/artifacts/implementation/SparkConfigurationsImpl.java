@@ -132,11 +132,12 @@ public final class SparkConfigurationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SparkConfigurationResource>> getSparkConfigurationsByWorkspaceSinglePageAsync() {
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
                                 service.getSparkConfigurationsByWorkspace(
-                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+                                        this.client.getEndpoint(), apiVersion, accept, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -160,9 +161,9 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SparkConfigurationResource>> getSparkConfigurationsByWorkspaceSinglePageAsync(
             Context context) {
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
-        return service.getSparkConfigurationsByWorkspace(
-                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
+        return service.getSparkConfigurationsByWorkspace(this.client.getEndpoint(), apiVersion, accept, context)
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -245,13 +246,14 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkConfigurationResource>> createOrUpdateSparkConfigurationWithResponseAsync(
             String sparkConfigurationName, SparkConfigurationResource sparkConfiguration, String ifMatch) {
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.createOrUpdateSparkConfiguration(
                                 this.client.getEndpoint(),
                                 sparkConfigurationName,
-                                this.client.getApiVersion(),
+                                apiVersion,
                                 ifMatch,
                                 sparkConfiguration,
                                 accept,
@@ -277,11 +279,12 @@ public final class SparkConfigurationsImpl {
             SparkConfigurationResource sparkConfiguration,
             String ifMatch,
             Context context) {
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return service.createOrUpdateSparkConfiguration(
                 this.client.getEndpoint(),
                 sparkConfigurationName,
-                this.client.getApiVersion(),
+                apiVersion,
                 ifMatch,
                 sparkConfiguration,
                 accept,
@@ -443,13 +446,14 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkConfigurationResource>> getSparkConfigurationWithResponseAsync(
             String sparkConfigurationName, String ifNoneMatch) {
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getSparkConfiguration(
                                 this.client.getEndpoint(),
                                 sparkConfigurationName,
-                                this.client.getApiVersion(),
+                                apiVersion,
                                 ifNoneMatch,
                                 accept,
                                 context));
@@ -470,14 +474,10 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkConfigurationResource>> getSparkConfigurationWithResponseAsync(
             String sparkConfigurationName, String ifNoneMatch, Context context) {
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return service.getSparkConfiguration(
-                this.client.getEndpoint(),
-                sparkConfigurationName,
-                this.client.getApiVersion(),
-                ifNoneMatch,
-                accept,
-                context);
+                this.client.getEndpoint(), sparkConfigurationName, apiVersion, ifNoneMatch, accept, context);
     }
 
     /**
@@ -614,15 +614,12 @@ public final class SparkConfigurationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSparkConfigurationWithResponseAsync(String sparkConfigurationName) {
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteSparkConfiguration(
-                                this.client.getEndpoint(),
-                                sparkConfigurationName,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+                                this.client.getEndpoint(), sparkConfigurationName, apiVersion, accept, context));
     }
 
     /**
@@ -638,9 +635,10 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSparkConfigurationWithResponseAsync(
             String sparkConfigurationName, Context context) {
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return service.deleteSparkConfiguration(
-                this.client.getEndpoint(), sparkConfigurationName, this.client.getApiVersion(), accept, context);
+                this.client.getEndpoint(), sparkConfigurationName, apiVersion, accept, context);
     }
 
     /**
@@ -715,13 +713,14 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSparkConfigurationWithResponseAsync(
             String sparkConfigurationName, ArtifactRenameRequest request) {
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.renameSparkConfiguration(
                                 this.client.getEndpoint(),
                                 sparkConfigurationName,
-                                this.client.getApiVersion(),
+                                apiVersion,
                                 request,
                                 accept,
                                 context));
@@ -741,14 +740,10 @@ public final class SparkConfigurationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSparkConfigurationWithResponseAsync(
             String sparkConfigurationName, ArtifactRenameRequest request, Context context) {
+        final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return service.renameSparkConfiguration(
-                this.client.getEndpoint(),
-                sparkConfigurationName,
-                this.client.getApiVersion(),
-                request,
-                accept,
-                context);
+                this.client.getEndpoint(), sparkConfigurationName, apiVersion, request, accept, context);
     }
 
     /**

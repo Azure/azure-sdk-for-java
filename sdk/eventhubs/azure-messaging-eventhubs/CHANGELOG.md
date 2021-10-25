@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+## 5.10.2 (2021-10-13)
+
+### Other Changes
+
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.20.0` to `1.21.0`.

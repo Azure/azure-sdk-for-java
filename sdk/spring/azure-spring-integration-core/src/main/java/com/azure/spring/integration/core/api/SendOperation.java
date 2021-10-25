@@ -12,7 +12,12 @@ import java.util.concurrent.CompletableFuture;
  * Operations for sending {@link Message} to a destination.
  *
  * @author Warren Zhu
+ *
+ * @deprecated {@link CompletableFuture} API will be dropped in version 4.0.0, please migrate to reactor API
+ * {@link com.azure.spring.integration.core.api.reactor.SendOperation}. From version 4.0.0, the reactor API support
+ * will be moved to com.azure.spring.messaging.core.SendOperation.
  */
+@Deprecated
 public interface SendOperation {
 
     /**
@@ -22,7 +27,12 @@ public interface SendOperation {
      * @param partitionSupplier partition supplier
      * @param <T> payload type in message
      * @return future instance
+     *
+     * @deprecated {@link CompletableFuture} API will be dropped in version 4.0.0, please migrate to reactor API.
+     * {@link com.azure.spring.integration.core.api.reactor.SendOperation}. From version 4.0.0, the reactor API support
+     * will be moved to package com.azure.spring.messaging.core.SendOperation.
      */
+    @Deprecated
     <T> CompletableFuture<Void> sendAsync(String destination, Message<T> message, PartitionSupplier partitionSupplier);
 
     /**
@@ -31,7 +41,12 @@ public interface SendOperation {
      * @param message message
      * @param <T> payload type in message
      * @return future instance
+     *
+     * @deprecated {@link CompletableFuture} API will be dropped in version 4.0.0, please migrate to reactor API
+     * {@link com.azure.spring.integration.core.api.reactor.SendOperation}. From version 4.0.0, the reactor API support
+     * will be moved to package com.azure.spring.messaging.core.SendOperation.
      */
+    @Deprecated
     default <T> CompletableFuture<Void> sendAsync(String destination, Message<T> message) {
         return sendAsync(destination, message, null);
     }

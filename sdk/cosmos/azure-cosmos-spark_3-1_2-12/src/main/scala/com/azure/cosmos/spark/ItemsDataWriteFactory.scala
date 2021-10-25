@@ -70,6 +70,8 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
     private val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
     private val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig)
+    private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(userConfig)
+    private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
 
     private val client = CosmosClientCache(CosmosClientConfiguration(userConfig, useEventualConsistency = true), Some(cosmosClientStateHandle))
 
@@ -86,7 +88,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     }
 
     override def write(internalRow: InternalRow): Unit = {
-      val objectNode = CosmosRowConverter.fromInternalRowToObjectNode(internalRow, inputSchema)
+      val objectNode = cosmosRowConverter.fromInternalRowToObjectNode(internalRow, inputSchema)
 
       // TODO moderakh investigate if we should also support point write in non-blocking way
       // TODO moderakh support patch?

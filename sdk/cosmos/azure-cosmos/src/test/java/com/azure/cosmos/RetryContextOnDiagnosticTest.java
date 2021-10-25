@@ -469,7 +469,9 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             } catch (CosmosException ex) {
                 RetryContext retryContext =
                     ex.getDiagnostics().clientSideRequestStatistics().getRetryContext();
-                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(7);
+
+                //In CI pipeline, the emulator starts with strong consitency
+                assertThat(retryContext.getStatusAndSubStatusCodes().size()).isLessThanOrEqualTo(9);
                 assertThat(retryContext.getStatusAndSubStatusCodes().size()).isGreaterThanOrEqualTo(6);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[0]).isEqualTo(410);
                 assertThat(retryContext.getStatusAndSubStatusCodes().get(0)[1]).isEqualTo(0);

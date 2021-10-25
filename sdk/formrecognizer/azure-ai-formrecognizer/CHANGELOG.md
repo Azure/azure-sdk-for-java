@@ -3,8 +3,12 @@
 ## 4.0.0-beta.2 (Unreleased)
 
 ### Features Added
+- Update `HttpResponseException` to use azure-core `ResponseError`.
+- Added client validation to check for empty modelId passed by the user for `beginAnalyzeDocument` methods.
 
 ### Breaking Changes
+- Rename `DocumentAnalysisException`, `FormRecognizerError`, `InnerError` to 
+`DocumentModelOperationException`, `DocumentModelOperationError`, `DocumentModelOperationInnerError` respectively. 
 
 ### Bugs Fixed
 
@@ -42,6 +46,12 @@ To continue to use Form Recognizer API version 2.1, please use major version 3 o
 #### Dependency Updates
 - Upgraded `azure-core` dependency to 1.21.0
 - Upgraded `azure-identity` dependency to 1.3.7
+
+## 3.1.5 (2021-10-05)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.21.0`.
+- Updated `azure-core-http-netty` to `1.11.1`.
 
 ## 3.1.4 (2021-09-09)
 ### Other Changes

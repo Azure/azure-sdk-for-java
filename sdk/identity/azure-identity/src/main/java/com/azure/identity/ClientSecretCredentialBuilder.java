@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.identity.implementation.RegionalAuthority;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -70,7 +71,7 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      * @param regionalAuthority the regional authority
      * @return An updated instance of this builder with the regional authority configured.
      */
-    public ClientSecretCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
+    ClientSecretCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
         this.identityClientOptions.setRegionalAuthority(regionalAuthority);
         return this;
     }

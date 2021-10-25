@@ -1772,6 +1772,40 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link SearchIndexerClient#resetDocuments(String, Boolean, List, List)}
+     */
+    public void resetDocuments() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-List-List
+        // Reset the documents with keys 1234 and 4321.
+        searchIndexerClient.resetDocuments("searchIndexer", false, Arrays.asList("1234", "4321"), null);
+
+        // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
+        searchIndexerClient.resetDocuments("searchIndexer", true, Arrays.asList("1235", "5321"), null);
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-List-List
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#resetDocumentsWithResponse(SearchIndexer, Boolean, List, List, Context)}
+     */
+    public void resetDocumentsWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List-Context
+        SearchIndexer searchIndexer = searchIndexerClient.getIndexer("searchIndexer");
+
+        // Reset the documents with keys 1234 and 4321.
+        Response<Void> resetDocsResult = searchIndexerClient.resetDocumentsWithResponse(searchIndexer, false,
+            Arrays.asList("1234", "4321"), null, new Context(key1, value1));
+        System.out.printf("Requesting documents to be reset completed with status code %d.%n",
+            resetDocsResult.getStatusCode());
+
+        // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
+        resetDocsResult = searchIndexerClient.resetDocumentsWithResponse(searchIndexer, true,
+            Arrays.asList("1235", "5321"), null, new Context(key1, value1));
+        System.out.printf("Overwriting the documents to be reset completed with status code %d.%n",
+            resetDocsResult.getStatusCode());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List-Context
+    }
+
+    /**
      * Code snippet for creating {@link SearchIndexerClient#createDataSourceConnection(SearchIndexerDataSourceConnection)}.
      */
     public void createDataSource() {
@@ -2166,6 +2200,30 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean-Context
     }
 
+    /**
+     * Code snippet for {@link SearchIndexerClient#resetSkills(String, List)}
+     */
+    public void resetSkills() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-List
+        // Reset the "myOcr" and "myText" skills.
+        searchIndexerClient.resetSkills("searchIndexerSkillset", Arrays.asList("myOcr", "myText"));
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-List
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerClient#resetSkillsWithResponse(SearchIndexerSkillset, List, Context)}
+     */
+    public void resetSkillsWithResponse() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#SearchIndexerSkillset-List-Context
+        SearchIndexerSkillset searchIndexerSkillset = searchIndexerClient.getSkillset("searchIndexerSkillset");
+
+        // Reset the "myOcr" and "myText" skills.
+        Response<Void> resetSkillsResponse = searchIndexerClient.resetSkillsWithResponse(searchIndexerSkillset,
+            Arrays.asList("myOcr", "myText"), new Context(key1, value1));
+        System.out.printf("Resetting skills completed with status code %d.%n", resetSkillsResponse.getStatusCode());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#SearchIndexerSkillset-List-Context
+    }
+
     private final SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
         .buildAsyncClient();
 
@@ -2401,6 +2459,41 @@ public class SearchJavaDocCodeSnippets {
                 System.out.printf("The status code of the response is %s.%nThe indexer status is %s.%n",
                 response.getStatusCode(), response.getValue().getStatus()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#resetDocuments(String, Boolean, List, List)}
+     */
+    public void resetDocumentsAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocuments#String-Boolean-List-List
+        // Reset the documents with keys 1234 and 4321.
+        searchIndexerAsyncClient.resetDocuments("searchIndexer", false, Arrays.asList("1234", "4321"), null)
+            // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
+            .then(searchIndexerAsyncClient.resetDocuments("searchIndexer", true, Arrays.asList("1235", "5321"), null))
+            .subscribe();
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocuments#String-Boolean-List-List
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#resetDocumentsWithResponse(SearchIndexer, Boolean, List, List)}
+     */
+    public void resetDocumentsWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List
+        searchIndexerAsyncClient.getIndexer("searchIndexer")
+            .flatMap(searchIndexer -> searchIndexerAsyncClient.resetDocumentsWithResponse(searchIndexer, false,
+                Arrays.asList("1234", "4321"), null)
+                .flatMap(resetDocsResult -> {
+                    System.out.printf("Requesting documents to be reset completed with status code %d.%n",
+                        resetDocsResult.getStatusCode());
+
+                    // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
+                    return searchIndexerAsyncClient.resetDocumentsWithResponse(searchIndexer, true,
+                        Arrays.asList("1235", "5321"), null);
+                }))
+            .subscribe(resetDocsResult ->
+                System.out.printf("Overwriting the documents to be reset completed with status code %d.%n",
+                    resetDocsResult.getStatusCode()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List
     }
 
     /**
@@ -2736,5 +2829,29 @@ public class SearchJavaDocCodeSnippets {
             .subscribe(deleteResponse ->
                 System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#resetSkills(String, List)}
+     */
+    public void resetSkillsAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkills#String-List
+        // Reset the "myOcr" and "myText" skills.
+        searchIndexerAsyncClient.resetSkills("searchIndexerSkillset", Arrays.asList("myOcr", "myText"))
+            .subscribe();
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkills#String-List
+    }
+
+    /**
+     * Code snippet for {@link SearchIndexerAsyncClient#resetSkillsWithResponse(SearchIndexerSkillset, List)}
+     */
+    public void resetSkillsWithResponseAsync() {
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List
+        searchIndexerAsyncClient.getSkillset("searchIndexerSkillset")
+            .flatMap(searchIndexerSkillset -> searchIndexerAsyncClient.resetSkillsWithResponse(searchIndexerSkillset,
+                Arrays.asList("myOcr", "myText")))
+            .subscribe(resetSkillsResponse -> System.out.printf("Resetting skills completed with status code %d.%n",
+                resetSkillsResponse.getStatusCode()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List
     }
 }

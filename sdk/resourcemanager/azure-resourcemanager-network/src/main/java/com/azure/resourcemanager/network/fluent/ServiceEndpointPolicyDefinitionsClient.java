@@ -48,7 +48,7 @@ public interface ServiceEndpointPolicyDefinitionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName);
 
@@ -63,7 +63,7 @@ public interface ServiceEndpointPolicyDefinitionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName);
 
@@ -79,7 +79,7 @@ public interface ServiceEndpointPolicyDefinitionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName,
         String serviceEndpointPolicyName,
@@ -229,7 +229,7 @@ public interface ServiceEndpointPolicyDefinitionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service Endpoint policy definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServiceEndpointPolicyDefinitionInner>, ServiceEndpointPolicyDefinitionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -250,7 +250,7 @@ public interface ServiceEndpointPolicyDefinitionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service Endpoint policy definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceEndpointPolicyDefinitionInner>, ServiceEndpointPolicyDefinitionInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -272,7 +272,7 @@ public interface ServiceEndpointPolicyDefinitionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service Endpoint policy definitions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceEndpointPolicyDefinitionInner>, ServiceEndpointPolicyDefinitionInner>
         beginCreateOrUpdate(
             String resourceGroupName,

@@ -8,12 +8,12 @@ import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
-import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
@@ -21,7 +21,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
@@ -53,7 +52,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
     private DocumentModelAdministrationAsyncClient getDocumentModelAdminAsyncClient(HttpClient httpClient,
                                                                                     DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion).buildAsyncClient();
+        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, false).buildAsyncClient();
     }
 
     /**
@@ -102,10 +101,9 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void deleteModelValidModelIdWithResponse(HttpClient httpClient,
                                                     DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
+
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> syncPoller1 =
@@ -121,9 +119,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             StepVerifier.create(client.getModelWithResponse(createdModel.getModelId()))
                 .verifyErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
-                    final FormRecognizerError errorInformation = (FormRecognizerError)
-                        ((HttpResponseException) throwable).getValue();
-                    assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
+                    final ResponseError responseError = (ResponseError) ((HttpResponseException) throwable).getValue();
+                    assertEquals("NotFound", responseError.getCode());
                 });
         });
     }
@@ -147,9 +144,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void beginCreateComposedModel(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
+
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> syncPoller1 =
@@ -287,9 +283,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void listOperations(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
+
         client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
         List<String> operationIdList = new ArrayList<>();
         StepVerifier.create(client.listOperations().byPage().take(10))

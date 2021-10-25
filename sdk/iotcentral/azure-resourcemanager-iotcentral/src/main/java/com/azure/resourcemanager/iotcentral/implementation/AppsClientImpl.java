@@ -499,7 +499,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppInner>, AppInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, AppInner app) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, app);
@@ -523,7 +523,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppInner>, AppInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, AppInner app, Context context) {
         context = this.client.mergeContext(context);
@@ -548,7 +548,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppInner>, AppInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, AppInner app) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, app).getSyncPoller();
@@ -568,7 +568,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppInner>, AppInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, AppInner app, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, app, context).getSyncPoller();
@@ -772,7 +772,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppInner>, AppInner> beginUpdateAsync(
         String resourceGroupName, String resourceName, AppPatch appPatch) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, resourceName, appPatch);
@@ -794,7 +794,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AppInner>, AppInner> beginUpdateAsync(
         String resourceGroupName, String resourceName, AppPatch appPatch, Context context) {
         context = this.client.mergeContext(context);
@@ -817,7 +817,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppInner>, AppInner> beginUpdate(
         String resourceGroupName, String resourceName, AppPatch appPatch) {
         return beginUpdateAsync(resourceGroupName, resourceName, appPatch).getSyncPoller();
@@ -835,7 +835,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IoT Central application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AppInner>, AppInner> beginUpdate(
         String resourceGroupName, String resourceName, AppPatch appPatch, Context context) {
         return beginUpdateAsync(resourceGroupName, resourceName, appPatch, context).getSyncPoller();
@@ -1015,7 +1015,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
         return this
@@ -1034,7 +1034,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1054,7 +1054,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
         return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
@@ -1070,7 +1070,7 @@ public final class AppsClientImpl implements AppsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
         return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();

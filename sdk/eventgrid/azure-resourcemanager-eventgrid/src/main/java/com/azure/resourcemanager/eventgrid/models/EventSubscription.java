@@ -57,8 +57,7 @@ public interface EventSubscription {
 
     /**
      * Gets the destination property: Information about the destination where events have to be delivered for the event
-     * subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
-     * dead-lettering.
+     * subscription.
      *
      * @return the destination value.
      */
@@ -110,9 +109,7 @@ public interface EventSubscription {
     RetryPolicy retryPolicy();
 
     /**
-     * Gets the deadLetterDestination property: The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's identity
-     * to acquire the authentication tokens being used during delivery / dead-lettering.
+     * Gets the deadLetterDestination property: The DeadLetter destination of the event subscription.
      *
      * @return the deadLetterDestination value.
      */
@@ -194,12 +191,10 @@ public interface EventSubscription {
         interface WithDestination {
             /**
              * Specifies the destination property: Information about the destination where events have to be delivered
-             * for the event subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being
-             * used during delivery / dead-lettering..
+             * for the event subscription..
              *
              * @param destination Information about the destination where events have to be delivered for the event
-             *     subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during
-             *     delivery / dead-lettering.
+             *     subscription.
              * @return the next definition stage.
              */
             WithCreate withDestination(EventSubscriptionDestination destination);
@@ -274,13 +269,9 @@ public interface EventSubscription {
         /** The stage of the EventSubscription definition allowing to specify deadLetterDestination. */
         interface WithDeadLetterDestination {
             /**
-             * Specifies the deadLetterDestination property: The dead letter destination of the event subscription. Any
-             * event that cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure
-             * Event Grid's identity to acquire the authentication tokens being used during delivery / dead-lettering..
+             * Specifies the deadLetterDestination property: The DeadLetter destination of the event subscription..
              *
-             * @param deadLetterDestination The dead letter destination of the event subscription. Any event that cannot
-             *     be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's
-             *     identity to acquire the authentication tokens being used during delivery / dead-lettering.
+             * @param deadLetterDestination The DeadLetter destination of the event subscription.
              * @return the next definition stage.
              */
             WithCreate withDeadLetterDestination(DeadLetterDestination deadLetterDestination);
@@ -342,12 +333,10 @@ public interface EventSubscription {
         interface WithDestination {
             /**
              * Specifies the destination property: Information about the destination where events have to be delivered
-             * for the event subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being
-             * used during delivery / dead-lettering..
+             * for the event subscription..
              *
              * @param destination Information about the destination where events have to be delivered for the event
-             *     subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during
-             *     delivery / dead-lettering.
+             *     subscription.
              * @return the next definition stage.
              */
             Update withDestination(EventSubscriptionDestination destination);
@@ -422,13 +411,9 @@ public interface EventSubscription {
         /** The stage of the EventSubscription update allowing to specify deadLetterDestination. */
         interface WithDeadLetterDestination {
             /**
-             * Specifies the deadLetterDestination property: The dead letter destination of the event subscription. Any
-             * event that cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure
-             * Event Grid's identity to acquire the authentication tokens being used during delivery / dead-lettering..
+             * Specifies the deadLetterDestination property: The DeadLetter destination of the event subscription..
              *
-             * @param deadLetterDestination The dead letter destination of the event subscription. Any event that cannot
-             *     be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's
-             *     identity to acquire the authentication tokens being used during delivery / dead-lettering.
+             * @param deadLetterDestination The DeadLetter destination of the event subscription.
              * @return the next definition stage.
              */
             Update withDeadLetterDestination(DeadLetterDestination deadLetterDestination);
