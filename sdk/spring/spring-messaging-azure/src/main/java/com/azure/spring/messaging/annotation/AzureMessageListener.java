@@ -55,7 +55,7 @@ import java.lang.annotation.Repeatable;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @MessageMapping
-@Repeatable(AzureMessageListeners.class)
+@Repeatable(value = AzureMessageListeners.class)
 public @interface AzureMessageListener {
 
     /**
