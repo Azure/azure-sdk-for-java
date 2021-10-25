@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.manager;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -22,10 +22,7 @@ public class FeatureVariantProperties extends HashMap<String, Object> {
      * @return a set of all feature variant names
      */
     public Set<String> getAllVariantNames() {
-        Set<String> allFeatures = new HashSet<>();
-
-        allFeatures.addAll(this.keySet());
-        return allFeatures;
+        return Collections.unmodifiableSet(this.keySet());
     }
     
 
