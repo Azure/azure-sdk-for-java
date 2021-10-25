@@ -4,15 +4,25 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Objects;
@@ -26,9 +36,13 @@ import java.util.regex.Pattern;
  */
 public class JacksonAdapter implements SerializerAdapter {
     private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
-    private static volatile Function<Callable<Object>, Object> accessHelper;
+    static volatile Function<Callable<Object>, Object> accessHelper;
 
-    private final ClientLogger logger = new ClientLogger(JacksonAdapter.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JacksonAdapter.class);
+
+    static {
+        accessHelper = loadAccessHelper(Configuration.getGlobalConfiguration());
+    }
 
     /**
      * An instance of {@link ObjectMapperShim} to serialize/deserialize objects.
@@ -190,12 +204,12 @@ public class JacksonAdapter implements SerializerAdapter {
                 try {
                     return PATTERN.matcher(serialize(object, SerializerEncoding.JSON)).replaceAll("");
                 } catch (IOException ex) {
-                    logger.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
+                    LOGGER.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
                     return null;
                 }
             });
         } catch (IOException ex) {
-            throw logger.logExceptionAsError(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
@@ -204,7 +218,7 @@ public class JacksonAdapter implements SerializerAdapter {
         try {
             return (String) useAccessHelper(() -> serializeIterable(list, format));
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
@@ -262,6 +276,73 @@ public class JacksonAdapter implements SerializerAdapter {
             }
 
             throw new IOException(ex);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    static Function<Callable<Object>, Object> loadAccessHelper(Configuration configuration) {
+        String accessHelper = configuration.get("AZURE_JACKSON_ADAPTER_ACCESS_HELPER");
+
+        // Only attempt to search for the access helper method if AZURE_JACKSON_ADAPTER_ACCESS_HELPER is set
+        // and AZURE_JACKSON_ADAPTER_ACCESS_HELPER contains #.
+        if (CoreUtils.isNullOrEmpty(accessHelper) || !accessHelper.contains(".")) {
+            return null;
+        }
+
+        try {
+            StringBuilder validationErrors = new StringBuilder();
+            int lastDot = accessHelper.lastIndexOf('.');
+
+            Class<?> clazz = JacksonAdapter.class.getClassLoader().loadClass(accessHelper.substring(0, lastDot));
+            if (!Modifier.isPublic(clazz.getModifiers())) {
+                validationErrors.append("'AZURE_JACKSON_ADAPTER_ACCESS_HELPER' is a Method that "
+                    + "isn't public, ignoring configuration.")
+                    .append(System.lineSeparator());
+            }
+
+            Method method = clazz.getDeclaredMethod(accessHelper.substring(lastDot + 1), Callable.class);
+            if (!Modifier.isPublic(method.getModifiers())) {
+                validationErrors.append("'AZURE_JACKSON_ADAPTER_ACCESS_HELPER' is a Method that "
+                    + "isn't public, ignoring configuration.")
+                    .append(System.lineSeparator());
+            }
+
+            if (!Modifier.isStatic(method.getModifiers())) {
+                validationErrors.append("'AZURE_JACKSON_ADAPTER_ACCESS_HELPER' is a Method that "
+                        + "isn't static, ignoring configuration.")
+                    .append(System.lineSeparator());
+            }
+
+            // The referenced method must return type Object and take only Callable<Object> as a parameter.
+            if (method.getReturnType() != Object.class) {
+                validationErrors.append("'AZURE_JACKSON_ADAPTER_ACCESS_HELPER' is a Method that "
+                    + "returns a type other than Object, ignoring configuration.")
+                    .append(System.lineSeparator());
+            }
+
+            Parameter[] parameterTypes = method.getParameters();
+            if (TypeUtil.getTypeArgument(parameterTypes[0].getParameterizedType()) != Object.class) {
+                validationErrors.append("'AZURE_JACKSON_ADAPTER_ACCESS_HELPER' is a Method that "
+                    + "doesn't take Callable<Object> as the only parameter, ignoring configuration.");
+            }
+
+            if (validationErrors.length() != 0) {
+                LOGGER.log(LogLevel.INFORMATIONAL, validationErrors::toString);
+                return null;
+            }
+
+            MethodHandles.Lookup lookup = MethodHandles.lookup();
+            MethodHandle accessHelperHandle = lookup.unreflect(method);
+
+            return (Function<Callable<Object>, Object>) LambdaMetafactory.metafactory(lookup,
+                    "apply",
+                    MethodType.methodType(Function.class), MethodType.methodType(Object.class, Object.class),
+                    accessHelperHandle, accessHelperHandle.type())
+                .getTarget().invoke();
+        } catch (Throwable ex) {
+            LOGGER.log(LogLevel.INFORMATIONAL, () -> "Failed to lookup 'AZURE_JACKSON_ADAPTER_ACCESS_HELPER' "
+                + "method. Execution will continue without usage of an access helper.", ex);
+            return null;
         }
     }
 }
