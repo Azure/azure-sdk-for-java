@@ -227,7 +227,7 @@ public class EventHubBatchMessageConverterTest {
 
     private void assertEventBatchPayloadEqual(List<byte[]> convertedPayload) {
         assertEquals(convertedPayload.size(), events.size());
-        for(int i = 0; i < convertedPayload.size(); i++) {
+        for (int i = 0; i < convertedPayload.size(); i++) {
             assertArrayEquals(convertedPayload.get(i), events.get(i).getBody());
         }
     }
