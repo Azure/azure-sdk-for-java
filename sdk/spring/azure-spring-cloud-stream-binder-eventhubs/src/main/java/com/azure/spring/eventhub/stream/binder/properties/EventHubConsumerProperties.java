@@ -46,7 +46,7 @@ public class EventHubConsumerProperties {
     private Duration checkpointInterval = Duration.ofSeconds(5);
 
     /**
-     * Effectively only when spring.cloud.stream.binding.<name>.consumer.batch-mode is set to true.
+     * Effectively only when spring.cloud.stream.binding.&ltname&gt.consumer.batch-mode is set to true.
      * Decides the maximum number of events that will be in the message payload {@link java.util.List} when the consumer callback is invoked.
      * It's required for the batching consumer mode.
      *
@@ -56,7 +56,7 @@ public class EventHubConsumerProperties {
     private int maxBatchSize = 10;
 
     /**
-     * Effectively only when spring.cloud.stream.binding.<name>.consumer.batch-mode is set to true.
+     * Effectively only when spring.cloud.stream.binding.&ltname&gt.consumer.batch-mode is set to true.
      * Decides the max time duration to wait to receive a batch of events upto the max batch size before invoking the consumer callback.
      * It's optional for the batching consumer mode.
      *
