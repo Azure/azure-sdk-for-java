@@ -7,12 +7,13 @@ import com.nimbusds.jwt.JWTParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.client.ClientAuthorizationException;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.core.AbstractOAuth2Token;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.server.resource.authentication.AbstractOAuth2TokenAuthenticationToken;
 import org.springframework.util.Assert;
@@ -57,9 +58,34 @@ public class OnBehalfOfOAuth2AuthorizedClientProvider implements OAuth2Authorize
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OnBehalfOfOAuth2AuthorizedClientProvider.class);
 
-    private final Clock clock = Clock.systemUTC();
-    private final Duration clockSkew = Duration.ofSeconds(60);
+    private Clock clock = Clock.systemUTC();
+    private Duration clockSkew = Duration.ofSeconds(60);
 
+    /**
+     * Sets the maximum acceptable clock skew, which is used when checking the {@link
+     * OAuth2AuthorizedClient#getAccessToken() access token} expiry. The default is 60 seconds.
+     *
+     * <p>
+     * An access token is considered expired if {@code OAuth2AccessToken#getExpiresAt() - clockSkew} is before the
+     * current time {@code clock#instant()}.
+     *
+     * @param clockSkew the maximum acceptable clock skew
+     */
+    public void setClockSkew(Duration clockSkew) {
+        Assert.notNull(clockSkew, "clockSkew cannot be null");
+        Assert.isTrue(clockSkew.getSeconds() >= 0, "clockSkew must be >= 0");
+        this.clockSkew = clockSkew;
+    }
+
+    /**
+     * Sets the {@link Clock} used in {@link Instant#now(Clock)} when checking the access token expiry.
+     *
+     * @param clock the clock
+     */
+    public void setClock(Clock clock) {
+        Assert.notNull(clock, "clock cannot be null");
+        this.clock = clock;
+    }
 
     @Override
     public OAuth2AuthorizedClient authorize(OAuth2AuthorizationContext context) {
@@ -78,7 +104,15 @@ public class OnBehalfOfOAuth2AuthorizedClientProvider implements OAuth2Authorize
         if (!(principal instanceof AbstractOAuth2TokenAuthenticationToken)) {
             return null;
         }
-        return getOboAuthorizedClient(context.getClientRegistration(), principal);
+        try {
+            return getOboAuthorizedClient(context.getClientRegistration(), principal);
+        } catch (MalformedURLException | ExecutionException | ParseException |InterruptedException ex) {
+            OAuth2Error oauth2Error = new OAuth2Error("get_on_bahalf_of_token_failed",
+                "An error occurred while attempting to retrieve the OAuth 2.0 Access Token Response: "
+                    + ex.getMessage(),
+                null);
+            throw new ClientAuthorizationException(oauth2Error, clientRegistration.getRegistrationId(), ex);
+        }
     }
 
     private boolean hasTokenExpired(OAuth2Token token) {
@@ -86,22 +120,18 @@ public class OnBehalfOfOAuth2AuthorizedClientProvider implements OAuth2Authorize
     }
 
     @SuppressWarnings({ "unchecked" })
-    private <T extends OAuth2AuthorizedClient> T getOboAuthorizedClient(ClientRegistration clientRegistration,
-                                                                        Authentication principal) {
-        try {
-            String oboAccessToken = getOnBehalfOfAccessToken(
-                toAuthority(clientRegistration.getProviderDetails().getAuthorizationUri()),
-                clientRegistration.getClientId(),
-                clientRegistration.getClientSecret(),
-                ((AbstractOAuth2TokenAuthenticationToken<?>) principal).getToken().getTokenValue(),
-                clientRegistration.getScopes());
-            return (T) new OAuth2AuthorizedClient(clientRegistration,
-                principal.getName(),
-                toOAuth2AccessToken(oboAccessToken));
-        } catch (InterruptedException | MalformedURLException | ParseException | ExecutionException exception) {
-            LOGGER.error("Failed to load authorized client.", exception);
-            return null;
-        }
+    private <T extends OAuth2AuthorizedClient> T getOboAuthorizedClient(
+        ClientRegistration clientRegistration, Authentication principal)
+        throws MalformedURLException, ExecutionException, InterruptedException, ParseException {
+        String oboAccessToken = getOnBehalfOfAccessToken(
+            toAuthority(clientRegistration.getProviderDetails().getAuthorizationUri()),
+            clientRegistration.getClientId(),
+            clientRegistration.getClientSecret(),
+            ((AbstractOAuth2TokenAuthenticationToken<?>) principal).getToken().getTokenValue(),
+            clientRegistration.getScopes());
+        return (T) new OAuth2AuthorizedClient(clientRegistration,
+            principal.getName(),
+            toOAuth2AccessToken(oboAccessToken));
     }
 
     private OAuth2AccessToken toOAuth2AccessToken(String accessToken) throws ParseException {

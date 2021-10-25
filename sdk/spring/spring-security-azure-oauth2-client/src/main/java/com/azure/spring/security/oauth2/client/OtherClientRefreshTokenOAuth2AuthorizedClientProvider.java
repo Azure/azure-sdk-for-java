@@ -85,12 +85,39 @@ import java.time.temporal.ChronoUnit;
  */
 public class OtherClientRefreshTokenOAuth2AuthorizedClientProvider implements OAuth2AuthorizedClientProvider {
 
-    private final Clock clock;
-    private final Duration clockSkew;
+    private Clock clock;
+    private Duration clockSkew;
     private final String otherClientId;
     private final String targetAuthorizationGrantType;
     private final OAuth2AuthorizedClientProvider provider;
     private final OAuth2AuthorizedClientRepository authorizedClientRepository;
+
+    /**
+     * Sets the maximum acceptable clock skew, which is used when checking the
+     * {@link OAuth2AuthorizedClient#getAccessToken() access token} expiry. The default is
+     * 60 seconds.
+     *
+     * <p>
+     * An access token is considered expired if
+     * {@code OAuth2AccessToken#getExpiresAt() - clockSkew} is before the current time
+     * {@code clock#instant()}.
+     * @param clockSkew the maximum acceptable clock skew
+     */
+    public void setClockSkew(Duration clockSkew) {
+        Assert.notNull(clockSkew, "clockSkew cannot be null");
+        Assert.isTrue(clockSkew.getSeconds() >= 0, "clockSkew must be >= 0");
+        this.clockSkew = clockSkew;
+    }
+
+    /**
+     * Sets the {@link Clock} used in {@link Instant#now(Clock)} when checking the access
+     * token expiry.
+     * @param clock the clock
+     */
+    public void setClock(Clock clock) {
+        Assert.notNull(clock, "clock cannot be null");
+        this.clock = clock;
+    }
 
     public OtherClientRefreshTokenOAuth2AuthorizedClientProvider(
         String otherClientId,
