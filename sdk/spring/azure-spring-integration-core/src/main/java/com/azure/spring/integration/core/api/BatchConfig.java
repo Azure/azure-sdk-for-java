@@ -34,24 +34,24 @@ public class BatchConfig {
         return maxWaitTime;
     }
 
-    public static BatchConfigBuilder builder() {
-        return new BatchConfigBuilder();
+    public static BatchConsumerConfigBuilder builder() {
+        return new BatchConsumerConfigBuilder();
     }
 
     /**
      * Builder class for {@link BatchConfig}.
      */
-    public static class BatchConfigBuilder {
+    public static class BatchConsumerConfigBuilder {
         private int maxBatchSize;
 
         private Duration maxWaitTime;
 
-        public BatchConfigBuilder batchSize(int batchSize) {
+        public BatchConsumerConfigBuilder batchSize(int batchSize) {
             this.maxBatchSize = batchSize;
             return this;
         }
 
-        public BatchConfigBuilder maxWaitTime(Duration maxWaitTime) {
+        public BatchConsumerConfigBuilder maxWaitTime(Duration maxWaitTime) {
             this.maxWaitTime = maxWaitTime;
             return this;
         }

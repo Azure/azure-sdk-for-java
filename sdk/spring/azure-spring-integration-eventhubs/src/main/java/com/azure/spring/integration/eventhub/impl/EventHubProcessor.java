@@ -86,6 +86,10 @@ public class EventHubProcessor {
     public void onEventBatch(EventBatchContext context) {
         Map<String, Object> headers = new HashMap<>();
 
+        if (context.getEvents().size() == 0) {
+            return;
+        }
+
         PartitionContext partition = context.getPartitionContext();
         headers.put(AzureHeaders.RAW_PARTITION_ID, partition.getPartitionId());
 
