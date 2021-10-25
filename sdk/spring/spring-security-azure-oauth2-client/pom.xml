@@ -43,14 +43,6 @@
       <version>1.11.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
 
-    <!-- Spring Framework dependencies-->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webflux</artifactId>
-      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-webflux;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-
     <!-- Spring Security dependencies-->
     <dependency>
       <groupId>org.springframework.security</groupId>
@@ -62,11 +54,6 @@
       <artifactId>spring-security-oauth2-resource-server</artifactId>
       <version>5.5.2</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-resource-server;current} -->
       <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-web</artifactId>
-      <version>5.5.2</version> <!-- {x-version-update;org.springframework.security<:spring-security-web;current} -->
     </dependency>
 
     <dependency>
