@@ -66,7 +66,7 @@ class SasClientTests extends APISpec {
                 .setDeleteVersionPermission(true)
                 .setTagsPermission(true)
         }
-        if (Constants.SAS_SERVICE_VERSION >= "V2020_06_12") {
+        if (Constants.SAS_SERVICE_VERSION >= "2020-12-06") {
             allPermissions
                 .setPermanentDeletePermission(true)
         }
