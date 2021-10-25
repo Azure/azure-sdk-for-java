@@ -85,7 +85,6 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private final TextMapPropagator traceContextFormat = W3CTraceContextPropagator.getInstance();
 
     @Override
-    @SuppressWarnings("try")
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if ((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false)) {
             return next.process();
@@ -93,7 +92,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
         // OpenTelemetry reactor instrumentation needs a bit of help
         // to pick up Azure SDK context. While we're working on explicit
-        // context propagation, this is the workaround
+        // context propagation, ScalarPropagatingMono.INSTANCE is the workaround
         return ScalarPropagatingMono.INSTANCE
                 .flatMap(ignored -> next.process())
                 .doOnEach(OpenTelemetryHttpPolicy::handleResponse)
@@ -211,7 +210,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
      */
     private static io.opentelemetry.context.Context getTraceContextOrCurrent(HttpPipelineCallContext azContext) {
         final Optional<Object> traceContextOpt = azContext.getData(PARENT_TRACE_CONTEXT_KEY);
-        if (traceContextOpt.isPresent()) {
+        if (traceContextOpt.isPresent() && Context.class.isAssignableFrom(traceContextOpt.get().getClass())) {
             return (io.opentelemetry.context.Context) traceContextOpt.get();
         }
 
@@ -231,7 +230,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
      * to pick it up and correlate lower levels of instrumentation and logs
      * to logical/HTTP spans.
      *
-     * OpenTelemetry reactor auto-instrumentation will take care of cold path.
+     * OpenTelemetry reactor auto-instrumentation will take care of the cold path.
      */
     static final class ScalarPropagatingMono extends Mono<Object> {
         public static final Mono<Object> INSTANCE = new ScalarPropagatingMono();
@@ -239,24 +238,18 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         private final Object value = new Object();
 
         private ScalarPropagatingMono() {
-
         }
 
         @Override
-        @SuppressWarnings("try")
         public void subscribe(CoreSubscriber<? super Object> actual) {
             Context traceContext = actual.currentContext().getOrDefault(REACTOR_PARENT_TRACE_CONTEXT_KEY, null);
             if (traceContext != null) {
                 Object agentContext = OpenTelemetrySpanSuppressionHelper.registerClientSpan(traceContext);
                 AutoCloseable closeable = OpenTelemetrySpanSuppressionHelper.makeCurrent(agentContext, traceContext);
+                actual.onSubscribe(Operators.scalarSubscription(actual, value));
                 try {
-                    actual.onSubscribe(Operators.scalarSubscription(actual, value));
-                } finally {
-                    try {
-                        closeable.close();
-                    } catch (Exception e) {
-                        // ignored
-                    }
+                    closeable.close();
+                } catch (Throwable ignored) {
                 }
             } else {
                 actual.onSubscribe(Operators.scalarSubscription(actual, value));
