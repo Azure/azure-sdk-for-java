@@ -85,8 +85,8 @@ public class UtilsTest {
             }
             return version;
         } catch (Exception ex) {
-            //Consumed the exception we got during parsing
-            //For unknown version we wil mark it as -1
+            // Consumed the exception we got during parsing
+            // For unknown version we wil mark it as -1
             return version;
         }
     }
