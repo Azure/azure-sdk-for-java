@@ -2,6 +2,10 @@
 
 ## 1.0.0-beta.2 (Unreleased)
 
+
+
+## 1.0.0-beta.2 (2021-10-15)
+
 ### Breaking Changes
 
 This is a new version of LLC SDK. Changes are
