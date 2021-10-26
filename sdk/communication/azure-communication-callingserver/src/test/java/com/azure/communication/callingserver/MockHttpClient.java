@@ -3,6 +3,8 @@
 
 package com.azure.communication.callingserver;
 
+import static com.azure.communication.callingserver.CallingServerResponseMocker.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.AbstractMap.SimpleEntry;
@@ -34,14 +36,14 @@ public class MockHttpClient extends NoOpHttpClient {
         if (responses.size() > 0) {
             SimpleEntry<String, Integer> entry = responses.get(0);
             responses.remove(entry);
-            HttpResponse response = CallingServerResponseMocker.generateMockResponse(entry.getKey(), request, entry.getValue());
+            HttpResponse response = generateMockResponse(entry.getKey(), request, entry.getValue());
             if (entry.getKey().startsWith(THROW_TEST_EXCEPTION)) {
                 return Mono.error(new CallingServerErrorException("Mock error", response));
             }
 
-            return Mono.just(CallingServerResponseMocker.generateMockResponse(entry.getKey(), request, entry.getValue()));
+            return Mono.just(generateMockResponse(entry.getKey(), request, entry.getValue()));
         }
 
-        return Mono.just(CallingServerResponseMocker.generateMockResponse("", request, 500));
-    }    
+        return Mono.just(generateMockResponse("", request, 500));
+    }
 }

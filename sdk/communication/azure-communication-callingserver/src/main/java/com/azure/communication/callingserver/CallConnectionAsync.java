@@ -252,8 +252,7 @@ public final class CallConnectionAsync {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal
                     .cancelAllMediaOperationsWithResponseAsync(callConnectionId, contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                    .flatMap(result -> Mono.empty());
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -290,19 +289,6 @@ public final class CallConnectionAsync {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    private AddParticipantRequest getAddParticipantRequest(
-        CommunicationIdentifier participant,
-        String alternateCallerId,
-        String operationContext,
-        URI callbackUri) {
-        AddParticipantRequest request = new AddParticipantRequest()
-            .setParticipant(CommunicationIdentifierConverter.convert(participant))
-            .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
-            .setOperationContext(operationContext)
-            .setCallbackUri(callbackUri.toString());
-        return request;
     }
 
     /**
@@ -349,6 +335,19 @@ public final class CallConnectionAsync {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    private AddParticipantRequest getAddParticipantRequest(
+        CommunicationIdentifier participant,
+        String alternateCallerId,
+        String operationContext,
+        URI callbackUri) {
+        AddParticipantRequest request = new AddParticipantRequest()
+            .setParticipant(CommunicationIdentifierConverter.convert(participant))
+            .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
+            .setOperationContext(operationContext)
+            .setCallbackUri(callbackUri.toString());
+        return request;
     }
 
     /**
