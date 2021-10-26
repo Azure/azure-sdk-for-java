@@ -21,12 +21,7 @@ import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollChannelOption;
-import io.netty.channel.epoll.EpollEventLoopGroup;
-import io.netty.channel.epoll.EpollSocketChannel;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.util.concurrent.DefaultEventExecutor;
@@ -134,8 +129,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         checkNotNull(eventLoopGroup, "expected non-null eventLoopGroup");
         checkNotNull(config, "expected non-null config");
 
+        RntbdEventLoop rntbdEventLoop = RntbdEventLoopNativeDetector.INSTANCE;
         Bootstrap bootstrap = new Bootstrap()
             .group(eventLoopGroup)
+            .channel(rntbdEventLoop.getChannelClass())
             .option(ChannelOption.ALLOCATOR, config.allocator())
             .option(ChannelOption.AUTO_READ, true)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
@@ -143,14 +140,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.SO_KEEPALIVE, true)
             .remoteAddress(this.serverKey.getHost(), this.serverKey.getPort());
 
-        if (eventLoopGroup instanceof EpollEventLoopGroup) {
+        if (rntbdEventLoop instanceof RntbdEventLoopEpoll) {
             // Override the default Linux os config for tcp keep-alive, so a broken connection can be detected faster.
             // see man 7 tcp for more details.
-            bootstrap.channel(EpollSocketChannel.class)
+            bootstrap
                 .option(EpollChannelOption.TCP_KEEPINTVL, 1) // default value 75s
                 .option(EpollChannelOption.TCP_KEEPIDLE, 30); // default value 2hrs
-        } else {
-            bootstrap.channel(NioSocketChannel.class);
         }
 
         return bootstrap;
@@ -519,17 +514,14 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private EventLoopGroup getEventLoopGroup(Options options) {
             checkNotNull(options, "expected non-null options");
 
-            final DefaultThreadFactory threadFactory =
+            RntbdEventLoop rntbdEventLoop = RntbdEventLoopNativeDetector.INSTANCE;
+            DefaultThreadFactory threadFactory =
                 new DefaultThreadFactory(
-                    "cosmos-rntbd-nio",
+                    "cosmos-rntbd-" + rntbdEventLoop.getName(),
                     true,
                     options.ioThreadPriority());
 
-            if (Epoll.isAvailable()) {
-                return new EpollEventLoopGroup(options.threadCount(), threadFactory);
-            }
-
-            return new NioEventLoopGroup(options.threadCount(), threadFactory);
+            return rntbdEventLoop.newEventLoopGroup(options.threadCount(), threadFactory);
         }
 
         @Override
