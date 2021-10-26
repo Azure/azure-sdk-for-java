@@ -51,6 +51,21 @@ public class CallingServerAsyncUnitTests {
     }
 
     @Test
+    public void answerCallAsync() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateAnswerCallResult(CALL_CONNECTION_ID), 200)
+            )));
+
+        AnswerCallOptions answerCallOptions = new AnswerCallOptions(
+            CALLBACK_URI,
+            Collections.singletonList(CallMediaType.VIDEO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
+        CallConnectionAsync callConnectionAsync = callingServerAsyncClient.answerCall(INCOMING_CALL_CONTEXT, answerCallOptions).block();
+        assertNotNull(callConnectionAsync);
+    }
+
+    @Test
     public void joinCallAsync() {
         CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -443,7 +458,7 @@ public class CallingServerAsyncUnitTests {
         );
 
         callingServerAsyncClient.redirectCall(
-            INCOMINGCALL_CONTEXT,
+            INCOMING_CALL_CONTEXT,
             Arrays.asList(COMMUNICATION_USER),
             URI.create("audioFileUri"),
             TIMEOUT
@@ -459,7 +474,7 @@ public class CallingServerAsyncUnitTests {
         );
 
         Response<Void> redirectCallResponse = callingServerAsyncClient.redirectCallWithResponse(
-            INCOMINGCALL_CONTEXT,
+            INCOMING_CALL_CONTEXT,
             Arrays.asList(COMMUNICATION_USER),
             URI.create("audioFileUri"),
             TIMEOUT
@@ -477,7 +492,7 @@ public class CallingServerAsyncUnitTests {
         );
 
         callingServerAsyncClient.rejectCall(
-            INCOMINGCALL_CONTEXT,
+            INCOMING_CALL_CONTEXT,
             URI.create("audioFileUri"),
             CallRejectReason.BUSY
         ).block();
@@ -492,7 +507,7 @@ public class CallingServerAsyncUnitTests {
         );
 
         Response<Void> rejectCallResponse = callingServerAsyncClient.rejectCallWithResponse(
-            INCOMINGCALL_CONTEXT,
+            INCOMING_CALL_CONTEXT,
             URI.create("audioFileUri"),
             CallRejectReason.BUSY
         ).block();

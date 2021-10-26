@@ -12,11 +12,6 @@ import java.util.List;
 /** The options for answer call. */
 @Fluent
 public final class AnswerCallOptions {
-    /*
-     * The incoming call context.
-     */
-    @JsonProperty(value = "incomingCallContext")
-    private String incomingCallContext;
 
     /*
      * The callback URI.
@@ -28,33 +23,13 @@ public final class AnswerCallOptions {
      * The requested MediaTypes.
      */
     @JsonProperty(value = "requestedMediaTypes", required = true)
-    private List<MediaType> requestedMediaTypes;
+    private List<CallMediaType> requestedMediaTypes;
 
     /*
      * The requested call events to subscribe to.
      */
     @JsonProperty(value = "requestedCallEvents", required = true)
-    private List<EventSubscriptionType> requestedCallEvents;
-
-    /**
-     * Get the incomingCallContext property: The incomingCallContext.
-     *
-     * @return the incomingCallContext value.
-     */
-    public String getIncomingCallContext() {
-        return incomingCallContext;
-    }
-
-    /**
-     * Set the incomingCallContext property: The incomingCallContext.
-     *
-     * @param incomingCallContext the incomingCallContext value to set.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setIncomingCallContext(String incomingCallContext) {
-        this.incomingCallContext = incomingCallContext;
-        return this;
-    }
+    private List<CallingEventSubscriptionType> requestedCallEvents;
 
     /**
      * Get the callbackUri property: The callback URI.
@@ -81,7 +56,7 @@ public final class AnswerCallOptions {
      *
      * @return the requestedMediaTypes value.
      */
-    public List<MediaType> getRequestedMediaTypes() {
+    public List<CallMediaType> getRequestedMediaTypes() {
         return requestedMediaTypes;
     }
 
@@ -91,7 +66,7 @@ public final class AnswerCallOptions {
      * @param requestedMediaTypes the requestedModalities value to set.
      * @return the AnswerCallOptions object itself.
      */
-    public AnswerCallOptions setRequestedMediaTypes(List<MediaType> requestedMediaTypes) {
+    public AnswerCallOptions setRequestedMediaTypes(List<CallMediaType> requestedMediaTypes) {
         this.requestedMediaTypes = requestedMediaTypes;
         return this;
     }
@@ -102,7 +77,7 @@ public final class AnswerCallOptions {
      *
      * @return the requestedCallEvents value.
      */
-    public List<EventSubscriptionType> getRequestedCallEvents() {
+    public List<CallingEventSubscriptionType> getRequestedCallEvents() {
         return requestedCallEvents;
     }
 
@@ -113,7 +88,7 @@ public final class AnswerCallOptions {
      * @param requestedCallEvents the requestedCallEvents value to set.
      * @return the AnswerCallOptions object itself.
      */
-    public AnswerCallOptions setRequestedCallEvents(List<EventSubscriptionType> requestedCallEvents) {
+    public AnswerCallOptions setRequestedCallEvents(List<CallingEventSubscriptionType> requestedCallEvents) {
         this.requestedCallEvents = requestedCallEvents;
         return this;
     }
@@ -127,13 +102,9 @@ public final class AnswerCallOptions {
      * @throws IllegalArgumentException if any parameters are null.
      */
     public AnswerCallOptions(
-        String incomingCallContext,
         URI callbackUri,
-        List<MediaType> requestedMediaTypes,
-        List<EventSubscriptionType> requestedCallEvents) {
-        if (incomingCallContext == null) {
-            throw new IllegalArgumentException("object incomingCallContext cannot be null");
-        }
+        List<CallMediaType> requestedMediaTypes,
+        List<CallingEventSubscriptionType> requestedCallEvents) {
         if (callbackUri == null) {
         throw new IllegalArgumentException("object callbackUri cannot be null");
         }
@@ -143,7 +114,6 @@ public final class AnswerCallOptions {
         if (requestedCallEvents == null) {
             throw new IllegalArgumentException("object requestedCallEvents cannot be null");
         }
-        this.incomingCallContext = incomingCallContext;
         this.callbackUri = callbackUri;
         this.requestedMediaTypes = requestedMediaTypes;
         this.requestedCallEvents = requestedCallEvents;

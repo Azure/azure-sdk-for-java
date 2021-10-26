@@ -310,6 +310,7 @@ public final class CallingServerAsyncClient {
     /**
      * Answer a Call
      *
+     * @param incomingCallContext The incoming call context.
      * @param answerCallOptions Answer call options.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -317,11 +318,12 @@ public final class CallingServerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionAsync> answerCall(
+        String incomingCallContext,
         AnswerCallOptions answerCallOptions) {
         try {
-            Objects.requireNonNull(answerCallOptions, "'answerCallOptions' cannot be null.");
+            Objects.requireNonNull(incomingCallContext, "'incomingCallContext' cannot be null.");
             return serverCallInternal
-                .answerCallAsync(AnswerCallRequestConverter.convert(answerCallOptions))
+                .answerCallAsync(AnswerCallRequestConverter.convert(incomingCallContext, answerCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(response -> Mono.just(new CallConnectionAsync(response.getCallConnectionId(), callConnectionInternal)));
         } catch (RuntimeException ex) {
@@ -333,6 +335,7 @@ public final class CallingServerAsyncClient {
      * Answer a Call
      *
      * @param source Source identity.
+     * @param incomingCallContext The incoming call context.
      * @param answerCallOptions Answer call options.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -340,11 +343,12 @@ public final class CallingServerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionAsync>> answerCallWithResponse(
+        String incomingCallContext,
         AnswerCallOptions answerCallOptions) {
         try {
-            Objects.requireNonNull(answerCallOptions, "'answerCallOptions' cannot be null.");
+            Objects.requireNonNull(incomingCallContext, "'incomingCallContext' cannot be null.");
             return serverCallInternal
-                .answerCallWithResponseAsync(AnswerCallRequestConverter.convert(answerCallOptions))
+                .answerCallWithResponseAsync(AnswerCallRequestConverter.convert(incomingCallContext, answerCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .map(response -> new SimpleResponse<>(response,
                     new CallConnectionAsync(response.getValue().getCallConnectionId(), callConnectionInternal)));
@@ -354,11 +358,12 @@ public final class CallingServerAsyncClient {
     }
 
     Mono<CallConnection> answerInternal(
+        String incomingCallContext,
         AnswerCallOptions answerCallOptions) {
         try {
-            Objects.requireNonNull(answerCallOptions, "'answerCallOptions' cannot be null.");
+            Objects.requireNonNull(incomingCallContext, "'incomingCallContext' cannot be null.");
             return serverCallInternal
-                .answerCallAsync(AnswerCallRequestConverter.convert(answerCallOptions))
+                .answerCallAsync(AnswerCallRequestConverter.convert(incomingCallContext, answerCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(response ->
                     Mono.just(new CallConnection(new CallConnectionAsync(response.getCallConnectionId(),
@@ -369,15 +374,16 @@ public final class CallingServerAsyncClient {
     }
 
     Mono<Response<CallConnection>>answerWithResponseInternal(
+        String incomingCallContext,
         AnswerCallOptions answerCallOptions,
         Context context) {
         try {
-            Objects.requireNonNull(answerCallOptions, "'answerCallOptions' cannot be null.");
+            Objects.requireNonNull(incomingCallContext, "'incomingCallContext' cannot be null.");
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal
-                    .answerCallWithResponseAsync(AnswerCallRequestConverter.convert(answerCallOptions), contextValue)
+                    .answerCallWithResponseAsync(AnswerCallRequestConverter.convert(incomingCallContext, answerCallOptions), contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
                         new SimpleResponse<>(

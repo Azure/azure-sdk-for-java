@@ -32,7 +32,7 @@ public class CallingServerResponseMocker {
     public static final String OPERATION_ID = "operationId";
     public static final String AUDIOROUTING_GROUPID = "audioRoutingGroupId";
     public static final String OPERATION_CONTEXT = "operationContext";
-    public static final String INCOMINGCALL_CONTEXT = "incomingCallContext";
+    public static final String INCOMING_CALL_CONTEXT = "incomingCallContext";
     public static final int TIMEOUT = 3;
     public static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbG";
     public static final String NEW_PARTICIPANT_ID = "newParticipantId";
@@ -126,6 +126,13 @@ public class CallingServerResponseMocker {
 
     public static String generateJoinCallResult(String callConnectionId) {
         JoinCallResultInternal result = new JoinCallResultInternal()
+            .setCallConnectionId(callConnectionId);
+
+        return serializeObject(result);
+    }
+
+    public static String generateAnswerCallResult(String callConnectionId) {
+        AnswerCallResultInternal result = new AnswerCallResultInternal()
             .setCallConnectionId(callConnectionId);
 
         return serializeObject(result);

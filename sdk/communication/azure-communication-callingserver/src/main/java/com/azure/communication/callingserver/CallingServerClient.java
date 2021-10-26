@@ -134,6 +134,7 @@ public final class CallingServerClient {
     /**
      * Answer a call
      *
+     * @param incomingCallContext The incoming call context.
      * @param answerCallOptions to answer Call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -141,13 +142,15 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnection answerCall(
+        String incomingCallContext,
         AnswerCallOptions answerCallOptions) {
-        return callingServerAsyncClient.answerInternal(answerCallOptions).block();
+        return callingServerAsyncClient.answerInternal(incomingCallContext, answerCallOptions).block();
     }
 
     /**
      * Answer a call
      *
+     * @param incomingCallContext The incoming call context.
      * @param answerCallOptions to answer Call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -156,9 +159,10 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallConnection> answerCallWithResponse(
+        String incomingCallContext,
         AnswerCallOptions answerCallOptions,
         Context context) {
-        return callingServerAsyncClient.answerWithResponseInternal(answerCallOptions, context).block();
+        return callingServerAsyncClient.answerWithResponseInternal(incomingCallContext, answerCallOptions, context).block();
     }
 
     /**
