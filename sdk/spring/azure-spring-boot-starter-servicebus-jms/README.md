@@ -47,6 +47,12 @@ spring.jms.servicebus.listener.reply-qos-settings.*|Configure the QosSettings to
 spring.jms.servicebus.listener.subscription-durable|Whether to make the subscription durable. Only works for the bean of topicJmsListenerContainerFactory. The default value is true.|Boolean|
 spring.jms.servicebus.listener.subscription-durable|Whether to make the subscription shared. Only works for the bean of topicJmsListenerContainerFactory.|Boolean|
 spring.jms.servicebus.listener.phase|Specify the phase in which this container should be started and stopped.|Integer|
+spring.jms.servicebus.prefetch-policy.all|Specify the default value for all prefetchPolicy fields.|Integer|
+spring.jms.servicebus.durable-topic-prefetch|Specify durable topic prefetch value.|Integer|
+spring.jms.servicebus.queue-browser-prefetch|Specify the queueBrowserPrefetch value.|Integer|
+spring.jms.servicebus.queue-prefetch|Specify the queuePrefetch value.|Integer|
+spring.jms.servicebus.topic-prefetch|Specify the topicPrefetch value.|Integer|
+
 
 Note: `JmsListenerContainerFactory` beans also support all [Spring native application properties of JmsListener][Spring_jms_configuration].
 
