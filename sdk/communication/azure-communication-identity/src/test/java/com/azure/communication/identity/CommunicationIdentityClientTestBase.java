@@ -64,6 +64,9 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     private static final String COMMUNICATION_MSAL_PASSWORD = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_MSAL_PASSWORD", "Sanitized");
 
+    private static final String COMMUNICATION_SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST = Configuration.getGlobalConfiguration()
+        .get("SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST", "false");
+
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("token");
@@ -211,4 +214,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         assertFalse(issuedToken.getExpiresAt().toString().isEmpty());
     }
 
+    public static boolean skipExchangeAadTeamsTokenTest() {
+        return Boolean.parseBoolean(COMMUNICATION_SKIP_INT_IDENTITY_EXCHANGE_TOKEN_TEST);
+    }
 }

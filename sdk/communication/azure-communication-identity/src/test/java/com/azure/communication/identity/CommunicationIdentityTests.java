@@ -427,6 +427,10 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsUserAadTokenWithValidToken(HttpClient httpClient) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "exchangeTeamsUserAadTokenWithValidTokenSync");
@@ -444,6 +448,10 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsUserAadTokenWithValidTokenWithResponse(HttpClient httpClient) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         client = setupClient(builder, "exchangeTeamsUserAadTokenWithValidTokenWithResponseSync");
@@ -461,6 +469,10 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsUserAadTokenUsingManagedIdentity(HttpClient httpClient) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "exchangeTeamsUserAadTokenUsingManagedIdentitySync");
@@ -477,6 +489,10 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsUserAadTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "exchangeTeamsUserAadTokenWithResponseUsingManagedIdentitySync");

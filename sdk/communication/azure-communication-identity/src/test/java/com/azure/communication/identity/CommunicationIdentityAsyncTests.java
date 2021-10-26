@@ -370,6 +370,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsUserAadToken(HttpClient httpClient) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsUserAadToken");
@@ -388,6 +392,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsUserAadTokenWithEmptyToken(HttpClient httpClient) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsUserAadTokenWithEmptyToken");
@@ -403,6 +411,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsUserAadTokenWithNull(HttpClient httpClient) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsUserAadTokenWithNull");
@@ -418,6 +430,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsUserAadTokenWithInvalidToken(HttpClient httpClient) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsUserAadTokenWithInvalidToken");
@@ -433,6 +449,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsUserAadTokenWithResponse(HttpClient httpClient) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsUserAadTokenWithResponse");
@@ -603,6 +623,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsUserAadTokenUsingManagedIdentity(HttpClient httpClient) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsUserAadTokenUsingManagedIdentity");
@@ -621,6 +645,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void exchangeTeamsUserAadTokenWithResponseUsingManagedIdentity(HttpClient httpClient) {
+        if (skipExchangeAadTeamsTokenTest()) {
+            return;
+        }
+
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
         asyncClient = setupAsyncClient(builder, "exchangeTeamsUserAadTokenWithResponseUsingManagedIdentity");
