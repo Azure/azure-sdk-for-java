@@ -86,7 +86,7 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         if (proxyOptions != null) {
             consumeProxyOptions().accept(builder, proxyOptions);
         } else {
-            LOGGER.warn("Invalid AMQP proxy configuration properties.");
+            LOGGER.debug("No AMQP proxy properties available.");
         }
     }
 

@@ -16,6 +16,7 @@ import com.azure.spring.core.converter.AzureHttpProxyOptionsConverter;
 import com.azure.spring.core.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.client.HttpClientProperties;
+import com.azure.spring.core.properties.proxy.HttpProxyProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,12 +72,12 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     @Override
     protected void configureProxy(T builder) {
         final ProxyProperties proxyProperties = getAzureProperties().getProxy();
-        if (proxyProperties != null) {
-            ProxyOptions proxyOptions = proxyOptionsConverter.convert(proxyProperties);
+        if (proxyProperties != null && proxyProperties instanceof HttpProxyProperties) {
+            ProxyOptions proxyOptions = proxyOptionsConverter.convert((HttpProxyProperties) proxyProperties);
             if (proxyOptions != null) {
-                this.httpClientOptions.setProxyOptions(proxyOptionsConverter.convert(proxyProperties));
+                this.httpClientOptions.setProxyOptions(proxyOptions);
             } else {
-                LOGGER.warn("Invalid http proxyProperties configuration properties.");
+                LOGGER.debug("No HTTP proxy properties available.");
             }
         }
     }

@@ -5,19 +5,18 @@ package com.azure.spring.core.converter;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.StringUtils;
 
 import java.net.InetSocketAddress;
 
 /**
- * Converts a {@link ProxyProperties} to a {@link ProxyOptions}.
+ * Converts a {@link HttpProxyProperties} to a {@link ProxyOptions}.
  */
-public final class AzureHttpProxyOptionsConverter implements Converter<ProxyProperties, ProxyOptions> {
+public final class AzureHttpProxyOptionsConverter implements Converter<HttpProxyProperties, ProxyOptions> {
 
     @Override
-    public ProxyOptions convert(ProxyProperties proxyProperties) {
+    public ProxyOptions convert(HttpProxyProperties proxyProperties) {
         if (!StringUtils.hasText(proxyProperties.getHostname())) {
             return null;
         }
@@ -35,11 +34,8 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyProp
         if (StringUtils.hasText(proxyProperties.getUsername()) && StringUtils.hasText(proxyProperties.getPassword())) {
             proxyOptions.setCredentials(proxyProperties.getUsername(), proxyProperties.getPassword());
         }
-        if (proxyProperties instanceof HttpProxyProperties) {
-            HttpProxyProperties httpProxyProperties = (HttpProxyProperties) proxyProperties;
-            if (StringUtils.hasText(httpProxyProperties.getNonProxyHosts())) {
-                proxyOptions.setNonProxyHosts(httpProxyProperties.getNonProxyHosts());
-            }
+        if (StringUtils.hasText(proxyProperties.getNonProxyHosts())) {
+            proxyOptions.setNonProxyHosts(proxyProperties.getNonProxyHosts());
         }
         return proxyOptions;
     }
