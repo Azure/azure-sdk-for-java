@@ -57,6 +57,46 @@ public class CallingServerUnitTests {
     }
 
     @Test
+    public void answerCall() {
+        CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateAnswerCallResult(CALL_CONNECTION_ID), 201)
+            )));
+
+        AnswerCallOptions answerCallOptions = new AnswerCallOptions(
+            CALLBACK_URI,
+            Collections.singletonList(CallMediaType.VIDEO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
+        CallConnection callConnection = callingServerClient.answerCall(
+            INCOMING_CALL_CONTEXT,
+            answerCallOptions
+        );
+
+        assertNotNull(callConnection);
+    }
+
+    @Test
+    public void answerCallWithResponse() {
+        CallingServerClient callingServerAsyncClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateAnswerCallResult(CALL_CONNECTION_ID), 201)
+            )));
+
+        AnswerCallOptions options = new AnswerCallOptions(
+            CALLBACK_URI,
+            Collections.singletonList(CallMediaType.VIDEO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
+        Response<CallConnection> callConnectionResponse = callingServerAsyncClient.answerCallWithResponse(
+            INCOMING_CALL_CONTEXT,
+            options,
+            Context.NONE
+        );
+
+        assertEquals(201, callConnectionResponse.getStatusCode());
+        assertNotNull(callConnectionResponse.getValue());
+    }
+
+    @Test
     public void joinCall() {
         CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -463,7 +503,7 @@ public class CallingServerUnitTests {
         );
 
         callingServerClient.redirectCall(
-            INCOMINGCALL_CONTEXT,
+            INCOMING_CALL_CONTEXT,
             Arrays.asList(COMMUNICATION_USER),
             URI.create("audioFileUri"),
             TIMEOUT
@@ -479,7 +519,7 @@ public class CallingServerUnitTests {
         );
 
         Response<Void> redirectCallResponse = callingServerClient.redirectCallWithResponse(
-            INCOMINGCALL_CONTEXT,
+            INCOMING_CALL_CONTEXT,
             Arrays.asList(COMMUNICATION_USER),
             URI.create("audioFileUri"),
             TIMEOUT,
@@ -498,7 +538,7 @@ public class CallingServerUnitTests {
         );
 
         callingServerClient.rejectCall(
-            INCOMINGCALL_CONTEXT,
+            INCOMING_CALL_CONTEXT,
             URI.create("audioFileUri"),
             CallRejectReason.BUSY
         );
@@ -513,7 +553,7 @@ public class CallingServerUnitTests {
         );
 
         Response<Void> rejectCallResponse = callingServerClient.rejectCallWithResponse(
-            INCOMINGCALL_CONTEXT,
+            INCOMING_CALL_CONTEXT,
             URI.create("audioFileUri"),
             CallRejectReason.BUSY,
             Context.NONE
