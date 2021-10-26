@@ -1,0 +1,558 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/74d60a21accd443?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:33 GMT",
+      "content-length" : "317",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "02bd4c5d-d08e-4835-b698-55eb5d243802",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065133Z:02bd4c5d-d08e-4835-b698-55eb5d243802",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "02bd4c5d-d08e-4835-b698-55eb5d243802",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443\",\"name\":\"74d60a21accd443\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"tags\":{\"date\":\"2020-08-07T06:51:30.573143500Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:40 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "547",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "6c501e06-e691-41ed-b444-e38aba84a608",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11997",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065141Z:6c501e06-e691-41ed-b444-e38aba84a608",
+      "x-powered-by" : "ASP.NET",
+      "etag" : "00000002-0000-0000-db50-5333876cd601",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "4956b16d-c310-42eb-858b-361d73dc0957",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/74d60a21accd443\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosoz98306367.com\",\"name\":\"www.contosoz98306367.com\",\"type\":\"Microsoft.Network\\/dnszones\",\"etag\":\"00000002-0000-0000-db50-5333876cd601\",\"location\":\"global\",\"tags\":{},\"properties\":{\"maxNumberOfRecordSets\":10000,\"maxNumberOfRecordsPerRecordSet\":null,\"nameServers\":[\"ns1-07.azure-dns.com.\",\"ns2-07.azure-dns.net.\",\"ns3-07.azure-dns.org.\",\"ns4-07.azure-dns.info.\"],\"numberOfRecordSets\":2,\"zoneType\":\"Public\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/AAAA/www?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:43 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "471",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "e52a49c0-4ab7-40bb-a3ae-e92afae36802",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11998",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065143Z:e52a49c0-4ab7-40bb-a3ae-e92afae36802",
+      "x-powered-by" : "ASP.NET",
+      "etag" : "23ebf783-3b34-4c9d-a749-cfe4a0f688b5",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "29e50963-fb55-42da-8345-fc00a0f70005",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/74d60a21accd443\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosoz98306367.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/dnszones\\/AAAA\",\"etag\":\"23ebf783-3b34-4c9d-a749-cfe4a0f688b5\",\"properties\":{\"fqdn\":\"www.www.contosoz98306367.com.\",\"TTL\":3600,\"AAAARecords\":[{\"ipv6Address\":\"2001:0db8:85a3:0000:0000:8a2e:0370:7334\"},{\"ipv6Address\":\"2002:0db9:85a4:0000:0000:8a2e:0371:7335\"}]}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/A/www?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:43 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "408",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-correlation-request-id" : "7f891396-cf98-43a5-bb68-9955f5b3e493",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11997",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065144Z:7f891396-cf98-43a5-bb68-9955f5b3e493",
+      "x-powered-by" : "ASP.NET",
+      "etag" : "852104c5-4b83-4637-a1eb-c01071f00d01",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "26e33d8d-25b1-4934-8b9f-5a3b902c58f0",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/74d60a21accd443\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosoz98306367.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/dnszones\\/A\",\"etag\":\"852104c5-4b83-4637-a1eb-c01071f00d01\",\"properties\":{\"fqdn\":\"www.www.contosoz98306367.com.\",\"TTL\":7200,\"ARecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}]}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/A?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:45 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "420",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "92261d06-9d13-43bd-8554-b6c29c2d0f58",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "492",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065145Z:92261d06-9d13-43bd-8554-b6c29c2d0f58",
+      "x-powered-by" : "ASP.NET",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59995",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "90a4a369-cfbc-4f0a-8804-d9e669009317",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/74d60a21accd443\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosoz98306367.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/dnszones\\/A\",\"etag\":\"852104c5-4b83-4637-a1eb-c01071f00d01\",\"properties\":{\"fqdn\":\"www.www.contosoz98306367.com.\",\"TTL\":7200,\"ARecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}]}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/A?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:46 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "420",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "a81381ef-88a0-435d-8dd1-282a6cb52936",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "497",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065146Z:a81381ef-88a0-435d-8dd1-282a6cb52936",
+      "x-powered-by" : "ASP.NET",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "6ef0c1a5-c4fb-4f05-b770-0d727100ce25",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/74d60a21accd443\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosoz98306367.com\\/A\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/dnszones\\/A\",\"etag\":\"852104c5-4b83-4637-a1eb-c01071f00d01\",\"properties\":{\"fqdn\":\"www.www.contosoz98306367.com.\",\"TTL\":7200,\"ARecords\":[{\"ipv4Address\":\"23.96.104.40\"},{\"ipv4Address\":\"24.97.105.41\"}]}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/AAAA?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:48 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "461",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "26143665-31d3-4ebf-8024-a73f8af93fcc",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "498",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065148Z:26143665-31d3-4ebf-8024-a73f8af93fcc",
+      "x-powered-by" : "ASP.NET",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "e507c841-a5b5-44f9-9b2a-9de9352198fc",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/74d60a21accd443\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosoz98306367.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/dnszones\\/AAAA\",\"etag\":\"23ebf783-3b34-4c9d-a749-cfe4a0f688b5\",\"properties\":{\"fqdn\":\"www.www.contosoz98306367.com.\",\"TTL\":3600,\"AAAARecords\":[{\"ipv6Address\":\"2001:db8:85a3::8a2e:370:7334\"},{\"ipv6Address\":\"2002:db9:85a4::8a2e:371:7335\"}]}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/AAAA?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:49 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "461",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "2b334492-2fa1-44d3-b2b4-f39410f375d8",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "497",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065149Z:2b334492-2fa1-44d3-b2b4-f39410f375d8",
+      "x-powered-by" : "ASP.NET",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59997",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "76393b18-0f52-4322-bfb4-e245d413b625",
+      "Body" : "{\"value\":[{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/74d60a21accd443\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosoz98306367.com\\/AAAA\\/www\",\"name\":\"www\",\"type\":\"Microsoft.Network\\/dnszones\\/AAAA\",\"etag\":\"23ebf783-3b34-4c9d-a749-cfe4a0f688b5\",\"properties\":{\"fqdn\":\"www.www.contosoz98306367.com.\",\"TTL\":3600,\"AAAARecords\":[{\"ipv6Address\":\"2001:db8:85a3::8a2e:370:7334\"},{\"ipv6Address\":\"2002:db9:85a4::8a2e:371:7335\"}]}}]}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:52 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "547",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "9efedf00-7203-4894-b5ca-ca78f8dc3781",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11987",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065152Z:9efedf00-7203-4894-b5ca-ca78f8dc3781",
+      "x-powered-by" : "ASP.NET",
+      "etag" : "00000003-0000-0000-db50-5333876cd601",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "5f5ac36d-8edd-4e84-ad64-e33e33487020",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/74d60a21accd443\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosoz98306367.com\",\"name\":\"www.contosoz98306367.com\",\"type\":\"Microsoft.Network\\/dnszones\",\"etag\":\"00000003-0000-0000-db50-5333876cd601\",\"location\":\"global\",\"tags\":{},\"properties\":{\"maxNumberOfRecordSets\":10000,\"maxNumberOfRecordsPerRecordSet\":null,\"nameServers\":[\"ns1-07.azure-dns.com.\",\"ns2-07.azure-dns.net.\",\"ns3-07.azure-dns.org.\",\"ns4-07.azure-dns.info.\"],\"numberOfRecordSets\":4,\"zoneType\":\"Public\"}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/A/www?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:52 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "95",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a9b94a0c-4a1a-41f7-b54c-2cf44d017ad2",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11998",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065153Z:a9b94a0c-4a1a-41f7-b54c-2cf44d017ad2",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "9e2497f1-625f-4fa4-b21d-c03bef597086",
+      "Body" : "{\"code\":\"PreconditionFailed\",\"message\":\"The Record set www has been modified (etag mismatch).\"}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/AAAA/www?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:53 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "95",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4887719d-5cc3-4418-b123-81510ebce37e",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11999",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065153Z:4887719d-5cc3-4418-b123-81510ebce37e",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "dce1f9e5-7124-4c3d-acce-03e6dc6c11b7",
+      "Body" : "{\"code\":\"PreconditionFailed\",\"message\":\"The Record set www has been modified (etag mismatch).\"}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:56 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "547",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "f4a8111a-37cb-4e29-bfe3-c5bc2bdd6393",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11986",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065156Z:f4a8111a-37cb-4e29-bfe3-c5bc2bdd6393",
+      "x-powered-by" : "ASP.NET",
+      "etag" : "00000004-0000-0000-db50-5333876cd601",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "d1fe3c12-9699-4814-944e-061f8d7ee9fe",
+      "Body" : "{\"id\":\"\\/subscriptions\\/00000000-0000-0000-0000-000000000000\\/resourceGroups\\/74d60a21accd443\\/providers\\/Microsoft.Network\\/dnszones\\/www.contosoz98306367.com\",\"name\":\"www.contosoz98306367.com\",\"type\":\"Microsoft.Network\\/dnszones\",\"etag\":\"00000004-0000-0000-db50-5333876cd601\",\"location\":\"global\",\"tags\":{},\"properties\":{\"maxNumberOfRecordSets\":10000,\"maxNumberOfRecordsPerRecordSet\":null,\"nameServers\":[\"ns1-07.azure-dns.com.\",\"ns2-07.azure-dns.net.\",\"ns3-07.azure-dns.org.\",\"ns4-07.azure-dns.info.\"],\"numberOfRecordSets\":4,\"zoneType\":\"Public\"}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/A/www?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:57 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "7cdaa1b6-ccff-44be-95a3-81d203df84a7",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11997",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065157Z:7cdaa1b6-ccff-44be-95a3-81d203df84a7",
+      "x-powered-by" : "ASP.NET",
+      "cache-control" : "private",
+      "x-ms-request-id" : "f3b5c44b-e838-4c50-9b95-648e6c366f02",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/AAAA/www?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:57 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "7f4e77f4-a146-41c8-bbd1-08185bb9c081",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "11998",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065158Z:7f4e77f4-a146-41c8-bbd1-08185bb9c081",
+      "x-powered-by" : "ASP.NET",
+      "cache-control" : "private",
+      "x-ms-request-id" : "0c6ec70a-9720-4bf4-972a-2d113d8ff19d",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/A?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:51:59 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "12",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "e448ccd8-0394-4abc-ae6e-4429e7a8c2ed",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "497",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065159Z:e448ccd8-0394-4abc-ae6e-4429e7a8c2ed",
+      "x-powered-by" : "ASP.NET",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59998",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "9f4cd136-3dc3-446f-84ff-402d35677f8a",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/74d60a21accd443/providers/Microsoft.Network/dnsZones/www.contosoz98306367.com/AAAA?api-version=2018-03-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.dns/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:52:00 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "12",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-correlation-request-id" : "e62c6bb1-0e32-434c-bd70-12e30ffa7c16",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "496",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065200Z:e62c6bb1-0e32-434c-bd70-12e30ffa7c16",
+      "x-powered-by" : "ASP.NET",
+      "x-ms-ratelimit-remaining-subscription-resource-entities-read" : "59997",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "private",
+      "x-ms-request-id" : "0474b7d8-54d4-4ec7-a40a-ed777e33e67a",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/74d60a21accd443?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:52:04 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14996",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b0e60c81-e2ad-4fb9-b8ff-d36eba3d3a08",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065204Z:b0e60c81-e2ad-4fb9-b8ff-d36eba3d3a08",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b0e60c81-e2ad-4fb9-b8ff-d36eba3d3a08",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:52:20 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11987",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "53ac7d29-80da-44a3-8510-9cbe38009b60",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065220Z:53ac7d29-80da-44a3-8510-9cbe38009b60",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "53ac7d29-80da-44a3-8510-9cbe38009b60",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:52:36 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11987",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d012e244-6460-4c6e-8648-60c1c053ecbd",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065236Z:d012e244-6460-4c6e-8648-60c1c053ecbd",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d012e244-6460-4c6e-8648-60c1c053ecbd",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:52:52 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11985",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "385950b2-74d6-47a3-9297-5718426bfa62",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065252Z:385950b2-74d6-47a3-9297-5718426bfa62",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "385950b2-74d6-47a3-9297-5718426bfa62",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:53:07 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c33d19af-7176-4e4a-8f4d-1a6f1f0f2e33",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065308Z:c33d19af-7176-4e4a-8f4d-1a6f1f0f2e33",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c33d19af-7176-4e4a-8f4d-1a6f1f0f2e33",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:53:23 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11982",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "23534a41-aa1e-4c55-a15b-3ad9d692ef1c",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065324Z:23534a41-aa1e-4c55-a15b-3ad9d692ef1c",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "23534a41-aa1e-4c55-a15b-3ad9d692ef1c",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi03NEQ2MEEyMUFDQ0Q0NDMtRUFTVFVTIiwiam9iTG9jYXRpb24iOiJlYXN0dXMifQ?api-version=2020-06-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Fri, 07 Aug 2020 06:53:39 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11980",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "1bf0038d-b42b-4502-962c-072f1ef0481d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200807T065340Z:1bf0038d-b42b-4502-962c-072f1ef0481d",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "1bf0038d-b42b-4502-962c-072f1ef0481d",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "74d60a21accd443", "z98306367" ]
+}

@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions?$filter=roleName%20eq%20%27Contributor%27&api-version=2018-01-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.authorization/2.2.0-beta.1 (11.0.3; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "23aa61f9-15be-489a-99df-08d957f1b3b6",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "200",
+      "Date" : "Mon, 04 Jan 2021 05:07:35 GMT",
+      "x-ms-correlation-request-id" : "b2906408-9b9d-46e5-bd2a-789b3db8533a",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210104T050735Z:b2906408-9b9d-46e5-bd2a-789b3db8533a",
+      "Set-Cookie" : "x-ms-gateway-slice=Production; path=/; secure; samesite=none; httponly",
+      "Expires" : "-1",
+      "Content-Length" : "984",
+      "x-ms-request-id" : "7be45320-3bca-4aa9-82ff-3c1f14a4e683",
+      "Body" : "{\"value\":[{\"properties\":{\"roleName\":\"Contributor\",\"type\":\"BuiltInRole\",\"description\":\"Grants full access to manage all resources, but does not allow you to assign roles in Azure RBAC, manage assignments in Azure Blueprints, or share image galleries.\",\"assignableScopes\":[\"/\"],\"permissions\":[{\"actions\":[\"*\"],\"notActions\":[\"Microsoft.Authorization/*/Delete\",\"Microsoft.Authorization/*/Write\",\"Microsoft.Authorization/elevateAccess/Action\",\"Microsoft.Blueprint/blueprintAssignments/write\",\"Microsoft.Blueprint/blueprintAssignments/delete\",\"Microsoft.Compute/galleries/share/action\"],\"dataActions\":[],\"notDataActions\":[]}],\"createdOn\":\"2015-02-02T21:55:09.8806423Z\",\"updatedOn\":\"2020-12-04T00:34:54.8501087Z\",\"createdBy\":null,\"updatedBy\":null},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c\",\"type\":\"Microsoft.Authorization/roleDefinitions\",\"name\":\"b24988ac-6180-42a0-ab88-20f7382dd24c\"}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

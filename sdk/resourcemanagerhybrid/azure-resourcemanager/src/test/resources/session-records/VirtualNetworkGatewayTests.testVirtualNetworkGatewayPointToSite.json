@@ -1,0 +1,1573 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:45:42 GMT",
+      "content-length" : "2140",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5d5aae6a-852a-429d-b7e8-fb2ed7eb8abc",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064543Z:5d5aae6a-852a-429d-b7e8-fb2ed7eb8abc",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5d5aae6a-852a-429d-b7e8-fb2ed7eb8abc",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/subscriptionScrubber\",\"name\":\"subscriptionScrubber\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"centralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-weidxu\",\"name\":\"rg-weidxu\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus2\",\"tags\":{\"aaa\":\"bbb\",\"ccc\":\"ddd\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/lenatest\",\"name\":\"lenatest\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgac6642161bef4\",\"name\":\"rgac6642161bef4\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tanyi\",\"name\":\"tanyi\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azfluent\",\"name\":\"azfluent\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javanwmrg98079\",\"name\":\"javanwmrg98079\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"tags\":{\"date\":\"2020-07-28T06:34:23.514322300Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Deleting\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/NetworkWatcherRG\",\"name\":\"NetworkWatcherRG\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgRCCDN8333\",\"name\":\"rgRCCDN8333\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"southeastasia\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/subscriptionScrubber/providers/Microsoft.Network/virtualNetworkGateways?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:45:42 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "94ceb820-2ca2-4819-9ade-8d852e926ffd",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064543Z:94ceb820-2ca2-4819-9ade-8d852e926ffd",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "94ceb820-2ca2-4819-9ade-8d852e926ffd",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-weidxu/providers/Microsoft.Network/virtualNetworkGateways?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:45:53 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11986",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ae2dc937-9d51-41ce-96e7-ccdc99f24410",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064553Z:ae2dc937-9d51-41ce-96e7-ccdc99f24410",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ae2dc937-9d51-41ce-96e7-ccdc99f24410",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg677518?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:45:55 GMT",
+      "content-length" : "308",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1191",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "eb6b9e1c-798e-4536-971e-1cbf19d4247b",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064555Z:eb6b9e1c-798e-4536-971e-1cbf19d4247b",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eb6b9e1c-798e-4536-971e-1cbf19d4247b",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518\",\"name\":\"rg677518\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"northcentralus\",\"tags\":{\"date\":\"2020-07-28T06:45:53.480281Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:03 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "azure-asyncnotification" : "Enabled",
+      "content-length" : "2577",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1171",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c1b6bd55-393e-4377-91bf-b36ae118415a",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "8f21a3b2-c527-4581-88f4-fb7836a1d251",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064603Z:c1b6bd55-393e-4377-91bf-b36ae118415a",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "cb78d2c7-2c99-4f36-9ff1-f11dd346c43a",
+      "Body" : "{\r\n  \"name\": \"nw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518\",\r\n  \"etag\": \"W/\\\"e641aa7e-39e1-411a-857b-58e333051d51\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"984d39d7-c2a0-42dc-8de8-52bc2099bdff\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"192.168.0.0/16\",\r\n        \"10.254.0.0/16\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"BackEnd\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/BackEnd\",\r\n        \"etag\": \"W/\\\"e641aa7e-39e1-411a-857b-58e333051d51\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"10.254.1.0/24\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      },\r\n      {\r\n        \"name\": \"FrontEnd\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/FrontEnd\",\r\n        \"etag\": \"W/\\\"e641aa7e-39e1-411a-857b-58e333051d51\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"192.168.1.0/24\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      },\r\n      {\r\n        \"name\": \"GatewaySubnet\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\",\r\n        \"etag\": \"W/\\\"e641aa7e-39e1-411a-857b-58e333051d51\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"addressPrefix\": \"192.168.200.0/24\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false,\r\n    \"enableVmProtection\": false\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/cb78d2c7-2c99-4f36-9ff1-f11dd346c43a?api-version=2020-05-01"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/cb78d2c7-2c99-4f36-9ff1-f11dd346c43a?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:07 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "29",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11966",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ba92f941-cb6b-4bcd-8978-7c2b27647966",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "d2ce33a7-7603-4878-9551-d617d4bd653c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064607Z:ba92f941-cb6b-4bcd-8978-7c2b27647966",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "bb126857-5b1e-4280-ad63-e227b901227b",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:07 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "2581",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11963",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "dd8a581d-feb2-4203-8da6-d130926d3e15",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "2ab79bd1-06ce-4758-98a4-633da0e4b4c4",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064608Z:dd8a581d-feb2-4203-8da6-d130926d3e15",
+      "etag" : "W/\"24447f7c-82d6-40b2-8c9b-a655d3062dca\"",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6afdd30e-086b-447d-92d7-85f700d03ec9",
+      "Body" : "{\r\n  \"name\": \"nw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518\",\r\n  \"etag\": \"W/\\\"24447f7c-82d6-40b2-8c9b-a655d3062dca\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworks\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"984d39d7-c2a0-42dc-8de8-52bc2099bdff\",\r\n    \"addressSpace\": {\r\n      \"addressPrefixes\": [\r\n        \"192.168.0.0/16\",\r\n        \"10.254.0.0/16\"\r\n      ]\r\n    },\r\n    \"dhcpOptions\": {\r\n      \"dnsServers\": []\r\n    },\r\n    \"subnets\": [\r\n      {\r\n        \"name\": \"BackEnd\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/BackEnd\",\r\n        \"etag\": \"W/\\\"24447f7c-82d6-40b2-8c9b-a655d3062dca\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"addressPrefix\": \"10.254.1.0/24\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      },\r\n      {\r\n        \"name\": \"FrontEnd\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/FrontEnd\",\r\n        \"etag\": \"W/\\\"24447f7c-82d6-40b2-8c9b-a655d3062dca\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"addressPrefix\": \"192.168.1.0/24\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      },\r\n      {\r\n        \"name\": \"GatewaySubnet\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\",\r\n        \"etag\": \"W/\\\"24447f7c-82d6-40b2-8c9b-a655d3062dca\\\"\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"addressPrefix\": \"192.168.200.0/24\",\r\n          \"delegations\": [],\r\n          \"privateEndpointNetworkPolicies\": \"Enabled\",\r\n          \"privateLinkServiceNetworkPolicies\": \"Enabled\"\r\n        },\r\n        \"type\": \"Microsoft.Network/virtualNetworks/subnets\"\r\n      }\r\n    ],\r\n    \"virtualNetworkPeerings\": [],\r\n    \"enableDdosProtection\": false,\r\n    \"enableVmProtection\": false\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:12 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "azure-asyncnotification" : "Enabled",
+      "content-length" : "620",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1184",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "79afbb7c-9eaf-4a40-8278-765df5393e1b",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "6559d393-e063-447b-9d3c-ab1446e015c9",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064612Z:79afbb7c-9eaf-4a40-8278-765df5393e1b",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a82ca470-025b-457a-8b2c-a1b65e6654be",
+      "Body" : "{\r\n  \"name\": \"pip49745\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\",\r\n  \"etag\": \"W/\\\"9b0530d6-acde-461d-86ba-69da00d6a788\\\"\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"043acbd8-5d7c-4240-89b4-bedef1ce8027\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 4,\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/a82ca470-025b-457a-8b2c-a1b65e6654be?api-version=2020-05-01"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/a82ca470-025b-457a-8b2c-a1b65e6654be?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:13 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "29",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11959",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "49f19d06-e6bb-43dd-9dc5-7d78ba726306",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "813e12b8-48f4-49f8-badb-a1e1d6520bda",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064614Z:49f19d06-e6bb-43dd-9dc5-7d78ba726306",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "8a905a46-b5f6-4e37-90d5-2469011d1f42",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:14 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "621",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11930",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "e6478123-40ea-4869-bd44-88480296145d",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "97fd5f31-12cc-4afc-a579-065248dd04ad",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064614Z:e6478123-40ea-4869-bd44-88480296145d",
+      "etag" : "W/\"83b27264-6abf-4a95-aa16-84b5f21729cb\"",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5045b81a-6c5b-41cf-9576-5bbd0deb6f97",
+      "Body" : "{\r\n  \"name\": \"pip49745\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\",\r\n  \"etag\": \"W/\\\"83b27264-6abf-4a95-aa16-84b5f21729cb\\\"\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"043acbd8-5d7c-4240-89b4-bedef1ce8027\",\r\n    \"publicIPAddressVersion\": \"IPv4\",\r\n    \"publicIPAllocationMethod\": \"Dynamic\",\r\n    \"idleTimeoutInMinutes\": 4,\r\n    \"ipTags\": []\r\n  },\r\n  \"type\": \"Microsoft.Network/publicIPAddresses\",\r\n  \"sku\": {\r\n    \"name\": \"Basic\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:17 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "azure-asyncnotification" : "Enabled",
+      "content-length" : "2416",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1161",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b763af54-5007-46b4-acb3-87fe2e0476a1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "c7eaf5b4-dc20-4f49-96bd-8e1a9b8b9b97",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064618Z:b763af54-5007-46b4-acb3-87fe2e0476a1",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b5c5da67-ed47-45ff-9deb-ea0bd18bca6d",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"90d62f99-a167-4329-bc8d-e1c56cd4f0cf\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"90d62f99-a167-4329-bc8d-e1c56cd4f0cf\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientProtocols\": [\r\n        \"OpenVPN\",\r\n        \"IkeV2\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [],\r\n      \"vpnClientRevokedCertificates\": [],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 0,\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [],\r\n          \"customBgpIpAddresses\": []\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:28 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11933",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "dfa8b339-cd5b-4762-9dec-38b7fdf74c94",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "58ae592b-67c8-45ea-9fc8-6f3608273c67",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064628Z:dfa8b339-cd5b-4762-9dec-38b7fdf74c94",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c46eb90b-9b7c-4e67-91af-3fa4a7b7f730",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:38 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11935",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "689ba7f3-ef73-4455-94fa-e5042d302bf0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "c08adb9d-96f3-443a-b80d-7e145edf5555",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064639Z:689ba7f3-ef73-4455-94fa-e5042d302bf0",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b5bf5fad-7e17-4e1a-ad3e-091df0f5e663",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:46:59 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11915",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ba04c22d-eab5-4ac8-a4b4-3d4ad1dbfdb9",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "b5c63c09-08c7-4072-9f53-c85f1e2b84c6",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064659Z:ba04c22d-eab5-4ac8-a4b4-3d4ad1dbfdb9",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4440bb5d-d33c-4bb2-b634-695cbe3babac",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:47:20 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11864",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c4252ca8-586f-4cac-a258-cdcca685db6d",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "a2d67592-4778-43ba-842f-32781367a1e2",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064720Z:c4252ca8-586f-4cac-a258-cdcca685db6d",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "106eafd7-32a7-43c0-9612-1a7cb9b9160f",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:48:00 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11862",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "47be8e27-b153-45d9-ab35-d49c891573dc",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "98e5d598-c2fd-42f2-8d59-398fa7432f30",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064801Z:47be8e27-b153-45d9-ab35-d49c891573dc",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b262d33d-7bd5-4ef2-8a0f-5f9b28266c70",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:49:24 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11343",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "e278b9fa-2941-4b36-8dfe-2f5f99bbcf41",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "dd35a040-2539-4e05-bd07-3ebf8aa6407e",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T064924Z:e278b9fa-2941-4b36-8dfe-2f5f99bbcf41",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9f71e941-196e-4239-b372-af2be71b8867",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:51:31 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "10224",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f00cdce1-ed35-4324-b21c-88fa37fbcee0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "104323a5-80f9-4c37-8832-11696dd03e3a",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T065132Z:f00cdce1-ed35-4324-b21c-88fa37fbcee0",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "33366704-adb2-4f61-a86f-b4a2e65f5d84",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:53:41 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "9072",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "70e6714f-7286-42eb-9360-d1e2625a2ad1",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "af8520ea-dd50-479b-a576-7beaa163bb1c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T065342Z:70e6714f-7286-42eb-9360-d1e2625a2ad1",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e904799f-4fad-483e-97be-6497479d3c37",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:56:11 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "8693",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d41573d5-4a72-4c6c-85cd-baeecf5dc09c",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "4634d350-6a71-4694-8f3b-52e25932a8db",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T065612Z:d41573d5-4a72-4c6c-85cd-baeecf5dc09c",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2757174f-0e13-4555-8d16-2e3dd723bde5",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:57:53 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "5674",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "7bfcf8c3-4fd7-4c64-932c-60ddfdff538d",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "5f5d0949-35d6-404a-9539-f0e3a6bf0e07",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T065754Z:7bfcf8c3-4fd7-4c64-932c-60ddfdff538d",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b5cef865-32fa-412d-b3c8-5e18a6a1cd87",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 06:59:35 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "5874",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "25978691-89b0-4108-8005-2142b888bf8e",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "3e708108-c311-4ac9-8320-f0cf50d8dcdf",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T065935Z:25978691-89b0-4108-8005-2142b888bf8e",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "175f344a-582b-4af6-8d31-cf4862247d0e",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:01:14 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "7205",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b6d3a22d-8f20-4f15-a1e8-1e025b2bb8cf",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "d0f7e991-c823-4125-b06f-6f187e593b80",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070115Z:b6d3a22d-8f20-4f15-a1e8-1e025b2bb8cf",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ef3fd70b-ba69-4b69-bf91-ca1eed152abd",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/b5c5da67-ed47-45ff-9deb-ea0bd18bca6d?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:02:56 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "29",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4461",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "019c38dc-ab79-4ef8-adde-11b57777cdd0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "046ccbc3-cf8f-4cb0-b41b-84458f72c74e",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070256Z:019c38dc-ab79-4ef8-adde-11b57777cdd0",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2b932824-3411-4cda-b923-077efa0af6ea",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:02:56 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "2324",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "3724",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "bafe82fa-4163-4e10-ac93-0590054daf2d",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "6caaeb42-8ff7-455e-8eb4-464e91ee046d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070257Z:bafe82fa-4163-4e10-ac93-0590054daf2d",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "57ee0a41-160c-48b9-a293-97b36e37898a",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"94f49726-28be-4b36-a071-0e035d2734d0\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"94f49726-28be-4b36-a071-0e035d2734d0\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:02:58 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4303",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1101",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "29637b80-1c7d-41f6-8622-cf1990ec3a94",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "e715040b-0a3b-453e-839a-0df4bc28f6b9",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070259Z:29637b80-1c7d-41f6-8622-cf1990ec3a94",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "264601a6-dc27-462a-b957-d2819b62d845",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"OpenVPN\",\r\n        \"IkeV2\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/264601a6-dc27-462a-b957-d2819b62d845?api-version=2020-05-01"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:03:09 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4303",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "5803",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c081ee70-1d46-448a-aefd-4ed9d4c613c3",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "e18d6cba-67f1-4b9f-8af3-c671a8fc938e",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070310Z:c081ee70-1d46-448a-aefd-4ed9d4c613c3",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c6ddac89-4559-4e16-af0a-8d2d045c10e1",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"OpenVPN\",\r\n        \"IkeV2\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:03:39 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4303",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "7181",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "1006ef64-2b1b-4209-9a83-4da9d8437593",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "d5e7432c-bd98-4821-97f8-e1cd2a9164a4",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070340Z:1006ef64-2b1b-4209-9a83-4da9d8437593",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "8f3c2f50-cee6-438f-9a16-41cf9bef3a31",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"OpenVPN\",\r\n        \"IkeV2\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:04:11 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4303",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "5791",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ad5be225-aa07-47df-9a00-68a9d9598f5f",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "77019a37-2c22-4492-a508-541e2c4b796a",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070411Z:ad5be225-aa07-47df-9a00-68a9d9598f5f",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d7f318b5-04f0-401d-ba4c-10cfea0260b6",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"OpenVPN\",\r\n        \"IkeV2\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:04:42 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4303",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "3696",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "435e037d-4e82-47bf-bade-b623e100f92a",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "92cce8d7-79e3-4f4d-831a-68b50597263a",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070442Z:435e037d-4e82-47bf-bade-b623e100f92a",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "cf78b3b2-9393-4e89-b67e-96be9df4a3fa",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"OpenVPN\",\r\n        \"IkeV2\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ea097843-f3e5-418f-b7bf-c1454ab51210\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:05:13 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4481",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4427",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "2c929c16-b330-4ed7-83be-2130d67cdb9f",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "a0edd5ea-57fd-4c61-a5e9-436141c23243",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070513Z:2c929c16-b330-4ed7-83be-2130d67cdb9f",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "aeb29b0c-2edb-4c66-8249-b5074d984780",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"2f4d7519-9293-4746-9fb4-dba197d5bcaf\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"2f4d7519-9293-4746-9fb4-dba197d5bcaf\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"2f4d7519-9293-4746-9fb4-dba197d5bcaf\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Succeeded\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [],\r\n      \"vpnClientConnectionHealth\": {\r\n        \"vpnClientConnectionsCount\": 0,\r\n        \"totalIngressBytesTransferred\": 0,\r\n        \"totalEgressBytesTransferred\": 0\r\n      },\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/generatevpnprofile?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:05:13 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1189",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3b691362-1e63-4c9d-86cb-3bb3dd3bf896",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "20836b73-2cb0-4e67-83c5-13e1c9404f4e",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070514Z:3b691362-1e63-4c9d-86cb-3bb3dd3bf896",
+      "content-type" : "application/json; charset=utf-8",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operationResults/c48dd2ff-f52c-42d7-a9a6-235aa8790aca?api-version=2020-05-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c48dd2ff-f52c-42d7-a9a6-235aa8790aca",
+      "Body" : "null"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operationResults/c48dd2ff-f52c-42d7-a9a6-235aa8790aca?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:05:24 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "327",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "5769",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "3b691362-1e63-4c9d-86cb-3bb3dd3bf896",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "20836b73-2cb0-4e67-83c5-13e1c9404f4e",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070524Z:6bc977cf-fac2-401d-9f18-f077e783ef27",
+      "content-type" : "application/json; charset=utf-8",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operationResults/c48dd2ff-f52c-42d7-a9a6-235aa8790aca?api-version=2020-05-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c48dd2ff-f52c-42d7-a9a6-235aa8790aca",
+      "Body" : "\"https://nfvprodsuppch.blob.core.windows.net/vpnprofileimmutable/49cf007a-4408-4644-a5a6-10193ef737ae/vpnprofile/a50d7b10-95a2-476f-81db-97ab1a88496f/vpnclientconfiguration.zip?sv=2018-03-28&sr=b&sig=***REMOVED***&st=2020-07-28T07%3A00%3A19Z&se=2020-07-28T08%3A00%3A19Z&sp=r&fileExtension=.zip\""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:05:24 GMT",
+      "content-length" : "8495",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "3679",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "a7d3c34f-f66f-4c36-806f-e6e06991efea",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070525Z:a7d3c34f-f66f-4c36-806f-e6e06991efea",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a7d3c34f-f66f-4c36-806f-e6e06991efea",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/subscriptionScrubber\",\"name\":\"subscriptionScrubber\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"centralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-weidxu\",\"name\":\"rg-weidxu\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus2\",\"tags\":{\"aaa\":\"bbb\",\"ccc\":\"ddd\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/lenatest\",\"name\":\"lenatest\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgac6642161bef4\",\"name\":\"rgac6642161bef4\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus2\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/tanyi\",\"name\":\"tanyi\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/azfluent\",\"name\":\"azfluent\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg35079b\",\"name\":\"rg35079b\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"northcentralus\",\"tags\":{\"date\":\"2020-07-28T06:45:49.746937100Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Deleting\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg054498\",\"name\":\"rg054498\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"northcentralus\",\"tags\":{\"date\":\"2020-07-28T06:46:03.918381900Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518\",\"name\":\"rg677518\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"northcentralus\",\"tags\":{\"date\":\"2020-07-28T06:45:53.480281Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/vngw696223group\",\"name\":\"vngw696223group\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"northcentralus\",\"tags\":{\"date\":\"2020-07-28T06:46:02.278763Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg79523a\",\"name\":\"rg79523a\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"northcentralus\",\"tags\":{\"date\":\"2020-07-28T06:46:03.688992400Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg126387\",\"name\":\"rg126387\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"northcentralus\",\"tags\":{\"date\":\"2020-07-28T06:46:28.785126200Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Deleting\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg65475e\",\"name\":\"rg65475e\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"northcentralus\",\"tags\":{\"date\":\"2020-07-28T06:52:01.330799400Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Deleting\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg25919e\",\"name\":\"rg25919e\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"northcentralus\",\"tags\":{\"date\":\"2020-07-28T07:00:13.356414500Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Deleting\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg459275\",\"name\":\"rg459275\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"northcentralus\",\"tags\":{\"date\":\"2020-07-28T06:59:38.349595500Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Deleting\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/NetworkWatcherRG\",\"name\":\"NetworkWatcherRG\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg95c171243\",\"name\":\"rg95c171243\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"tags\":{\"date\":\"2020-07-28T06:45:42.894233300Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg86c58163c\",\"name\":\"rg86c58163c\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"tags\":{\"date\":\"2020-07-28T06:45:43.018899800Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/aks22864egroup\",\"name\":\"aks22864egroup\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"tags\":{\"date\":\"2020-07-28T06:45:52.648180100Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MC_aks22864egroup_aks22864e_eastus\",\"name\":\"MC_aks22864egroup_aks22864e_eastus\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"managedBy\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/aks22864egroup/providers/Microsoft.ContainerService/managedClusters/aks22864e\",\"tags\":{\"tag2\":\"value2\",\"tag3\":\"value3\"},\"properties\":{\"provisioningState\":\"Deleting\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg8d565679682\",\"name\":\"rg8d565679682\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"tags\":{\"date\":\"2020-07-28T06:51:17.766477100Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgaci95013\",\"name\":\"rgaci95013\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"tags\":{\"date\":\"2020-07-28T06:45:42.051487600Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg635253\",\"name\":\"rg635253\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"tags\":{\"date\":\"2020-07-28T06:45:45.238961800Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg02948e\",\"name\":\"rg02948e\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"tags\":{\"date\":\"2020-07-28T06:45:47.799114Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg906452\",\"name\":\"rg906452\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"tags\":{\"date\":\"2020-07-28T06:45:51.108296200Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg637516\",\"name\":\"rg637516\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"tags\":{\"date\":\"2020-07-28T06:46:00.362380300Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg427333\",\"name\":\"rg427333\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"tags\":{\"date\":\"2020-07-28T06:46:02.942987500Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Deleting\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/docdb53796fgroup\",\"name\":\"docdb53796fgroup\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"tags\":{\"date\":\"2020-07-28T06:46:05.267777400Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}},{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgRCCDN8333\",\"name\":\"rgRCCDN8333\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"southeastasia\",\"properties\":{\"provisioningState\":\"Succeeded\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/subscriptionScrubber/providers/Microsoft.Network/virtualNetworkGateways?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:05:25 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4417",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ee439587-7160-4e56-850b-30d45e55a4b5",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070525Z:ee439587-7160-4e56-850b-30d45e55a4b5",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ee439587-7160-4e56-850b-30d45e55a4b5",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-weidxu/providers/Microsoft.Network/virtualNetworkGateways?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:05:26 GMT",
+      "content-length" : "12",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4416",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d6e6982e-fa77-4f5e-b0fc-5027e249a988",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070526Z:d6e6982e-fa77-4f5e-b0fc-5027e249a988",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "d6e6982e-fa77-4f5e-b0fc-5027e249a988",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:05:27 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4481",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "3677",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "bdb31ccc-e950-4328-a19c-42d14abb6c72",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "a8d284b2-2974-451a-9b83-8d9ec0ef4573",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070527Z:bdb31ccc-e950-4328-a19c-42d14abb6c72",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "02467712-14d5-4439-9d5e-9a0523e87f06",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"4fdb9041-ebb1-431f-a985-7950dcd6019f\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"4fdb9041-ebb1-431f-a985-7950dcd6019f\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"4fdb9041-ebb1-431f-a985-7950dcd6019f\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Succeeded\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [],\r\n      \"vpnClientConnectionHealth\": {\r\n        \"vpnClientConnectionsCount\": 0,\r\n        \"totalIngressBytesTransferred\": 0,\r\n        \"totalEgressBytesTransferred\": 0\r\n      },\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:05:28 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4481",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4415",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "7a227791-d911-4f5b-ab98-c9b9636e8d70",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "27c474ac-dcec-412d-9972-b2dd9508ef72",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070528Z:7a227791-d911-4f5b-ab98-c9b9636e8d70",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "e3cd22b3-8d4e-46f6-b324-8306c393686f",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"4fdb9041-ebb1-431f-a985-7950dcd6019f\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"4fdb9041-ebb1-431f-a985-7950dcd6019f\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"4fdb9041-ebb1-431f-a985-7950dcd6019f\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Succeeded\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [],\r\n      \"vpnClientConnectionHealth\": {\r\n        \"vpnClientConnectionsCount\": 0,\r\n        \"totalIngressBytesTransferred\": 0,\r\n        \"totalEgressBytesTransferred\": 0\r\n      },\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:05:30 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4879",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1103",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "cdb0d474-3906-49b7-8e7f-596a59a2b6ff",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "4c24187b-7de1-4a5a-8155-dfd906f6b86d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070530Z:cdb0d474-3906-49b7-8e7f-596a59a2b6ff",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "896deb0a-62e7-4ced-9cbb-c7a3f196e16e",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/896deb0a-62e7-4ced-9cbb-c7a3f196e16e?api-version=2020-05-01"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:05:40 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4879",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4412",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "dc058565-383a-4408-a22c-1b9729e98969",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "bef8be50-df44-456c-ac61-4ccb3341fc6d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070541Z:dc058565-383a-4408-a22c-1b9729e98969",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "bc8a2dda-2275-4764-a537-5182373ee53f",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:06:11 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4879",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4404",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "dffafb1b-f375-4e0e-8b5e-900d83b474a4",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "a25047d8-9b79-40d5-b83c-c2c46678410b",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070611Z:dffafb1b-f375-4e0e-8b5e-900d83b474a4",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3b694b0c-4779-45c7-af95-9afd8d329b3e",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:06:42 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4879",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "3658",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5bc3a5fa-bc4f-4417-90f3-2148427fa090",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "7aa229eb-b46b-4a0f-ad72-d5dfce81e3bd",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070642Z:5bc3a5fa-bc4f-4417-90f3-2148427fa090",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b4d82386-82a2-48fe-b3aa-8368ddad20fa",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:07:12 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "4879",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "5750",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5157cadf-fe3d-49f4-9e7f-556117368a08",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "07030151-e28c-45b2-b10c-722d1c0ac563",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070713Z:5157cadf-fe3d-49f4-9e7f-556117368a08",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "888aee34-160c-4d87-b567-3e4e14897597",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ca826966-2218-47f9-832a-72659fa42b61\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:07:43 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "5058",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "5744",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "16fccbc9-454c-4377-9ba4-97363cb99eeb",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "62c20a80-2e35-4b8c-b153-4cf479883602",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070744Z:16fccbc9-454c-4377-9ba4-97363cb99eeb",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "df7668d8-825b-4174-8096-da6311e340ca",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"97e69f40-0611-424b-85d4-5987646c244c\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"97e69f40-0611-424b-85d4-5987646c244c\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRootCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"97e69f40-0611-424b-85d4-5987646c244c\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Succeeded\",\r\n            \"publicCertData\": \"\\r\\nMIIC5zCCAc+gAwIBAgIQIdPU05rC0ZZPmYfzuGdI2TANBgkqhkiG9w0BAQsFADAW\\r\\nMRQwEgYDVQQDDAtQMlNSb290Q2VydDAeFw0xOTA4MTQwMTQwMzVaFw0yMDA4MTQw\\r\\nMjAwMzVaMBYxFDASBgNVBAMMC1AyU1Jvb3RDZXJ0MIIBIjANBgkqhkiG9w0BAQEF\\r\\nAAOCAQ8AMIIBCgKCAQEAwDj3Y8k1GUVusuf20r6KMXkv3cw7Hta3WjVP5cg8bdqa\\r\\nk52QkOr+vylZxdhXjmt3+7AtYj0tSzhwpKWKNmsumQY+vkKmwtUyWxnNkjw+U/ns\\r\\nCJyeTq/Ho4/Lvqq+uofAOCYAhiYN8wenKJCEkrRGuCbiWe/JreUiLyFQB9GX2mEe\\r\\nNLhu+0xmM6qLAGkmy2VrJMv1qsOMW/eGA2P6azbd5INj7BhNdD6ZgBVSkkBt15h8\\r\\nfp2ldjFPkFIe5CfBUt3kYSubo8yLoswX5kobdStRWyPTtExf+aAz19E6nRo8TYm1\\r\\nMA7YkTiEWkq7Q6H5ZRiG9fE7YbE8vHrQLOhUBDBnoQIDAQABozEwLzAOBgNVHQ8B\\r\\nAf8EBAMCAgQwHQYDVR0OBBYEFHf4D9sCBGhgyuQTDf2Y6MECBNPtMA0GCSqGSIb3\\r\\nDQEBCwUAA4IBAQAy24orF87u3L4K00LsFtsIhr0YW7Eb6SPHKVEoKzDsiDF5eOh6\\r\\n/ERkdAeYir/laTYa3tbCXGgLx/opAEbSNhtoGK1x7KwGGV+y6Tquxnv+rTEat2rY\\r\\nDz8X0lQTlHY9EJWj4D7M9GdrOMZr83xeMwlqzhYSqmBH50otcR3e+rOAsGXL77hX\\r\\nnVxAVg2LYtXniCjDxYiSUinnn9ViV6mZp5RieyMWF88Y/i+6mqDPAqmvH8d8x/JD\\r\\nMKUPA8+ABD0cdx5kSjQxsY07k9zAEM3RTOaHHqqcENnyE25yOUHanRf7xT60+F4a\\r\\nFDA9SSdljEFrx2abboa1Ngy3ilJDkkrBhcP/\\r\\n\\r\\n\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRootCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"97e69f40-0611-424b-85d4-5987646c244c\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Succeeded\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientConnectionHealth\": {\r\n        \"vpnClientConnectionsCount\": 0,\r\n        \"totalIngressBytesTransferred\": 0,\r\n        \"totalEgressBytesTransferred\": 0\r\n      },\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:07:45 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "3277",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1098",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "e176c7f4-a0ff-40b1-8627-be99ad66e097",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "3e6dfa42-e0d9-4160-8d04-96f1e6bf0b39",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070745Z:e176c7f4-a0ff-40b1-8627-be99ad66e097",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "47081400-e7f0-454f-a597-722605f071b8",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/47081400-e7f0-454f-a597-722605f071b8?api-version=2020-05-01"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:07:55 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "3277",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4384",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "d6aa3999-0a7f-4c29-8e68-390460f078bd",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "093d335b-4c15-4f61-83a3-5759c2a3efe9",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070755Z:d6aa3999-0a7f-4c29-8e68-390460f078bd",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "ade8aac1-314d-4013-b6b4-67d396bfe194",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:08:26 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "3277",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "7133",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "4c722554-75d7-4ea7-bc6a-917a462d6425",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "9a570aec-e51b-4ec5-8011-28d40cbab944",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070826Z:4c722554-75d7-4ea7-bc6a-917a462d6425",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "921998b7-b2c7-4d5b-bee6-d8e0c73aeac0",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:08:56 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "3277",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "7130",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "006c99ac-c7d0-4331-b16e-9f4d7ea5eecc",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "13bf3091-645d-49be-a732-864dda8ef8bd",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070856Z:006c99ac-c7d0-4331-b16e-9f4d7ea5eecc",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7587e2ca-9154-4258-8ba5-3e4f3b466e18",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:09:27 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "3277",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "7124",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ba6b4149-fb12-4f30-9c6b-201170c721cc",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "f9724032-71df-4d02-aa2d-2ba1c5c7e54c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070927Z:ba6b4149-fb12-4f30-9c6b-201170c721cc",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "de538855-2f68-4b37-b8dd-0d495b286f1b",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Updating\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Updating\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"ea1fd373-ce0e-4ca2-9b8c-1976623fc25e\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Updating\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:09:57 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "3455",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "3615",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "20a46717-47d2-4c7f-b69b-aacd973d9a80",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "0ab027d3-e7df-4ab2-a2e8-ae9532c31292",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T070958Z:20a46717-47d2-4c7f-b69b-aacd973d9a80",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "44b66e5c-690c-4a1b-b9a9-1d6537f72176",
+      "Body" : "{\r\n  \"name\": \"vngw677518\",\r\n  \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518\",\r\n  \"etag\": \"W/\\\"0731d0be-c3e2-4a97-bb0e-8f1c0430e496\\\"\",\r\n  \"type\": \"Microsoft.Network/virtualNetworkGateways\",\r\n  \"location\": \"northcentralus\",\r\n  \"tags\": {},\r\n  \"properties\": {\r\n    \"provisioningState\": \"Succeeded\",\r\n    \"resourceGuid\": \"c4643f20-658b-4082-8523-17863e9da7cc\",\r\n    \"packetCaptureDiagnosticState\": \"None\",\r\n    \"enablePrivateIpAddress\": false,\r\n    \"ipConfigurations\": [\r\n      {\r\n        \"name\": \"ipcfg47860\",\r\n        \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n        \"etag\": \"W/\\\"0731d0be-c3e2-4a97-bb0e-8f1c0430e496\\\"\",\r\n        \"type\": \"Microsoft.Network/virtualNetworkGateways/ipConfigurations\",\r\n        \"properties\": {\r\n          \"provisioningState\": \"Succeeded\",\r\n          \"privateIPAllocationMethod\": \"Dynamic\",\r\n          \"publicIPAddress\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/publicIPAddresses/pip49745\"\r\n          },\r\n          \"subnet\": {\r\n            \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworks/nw677518/subnets/GatewaySubnet\"\r\n          }\r\n        }\r\n      }\r\n    ],\r\n    \"sku\": {\r\n      \"name\": \"VpnGw1\",\r\n      \"tier\": \"VpnGw1\",\r\n      \"capacity\": 2\r\n    },\r\n    \"gatewayType\": \"Vpn\",\r\n    \"vpnType\": \"RouteBased\",\r\n    \"enableBgp\": false,\r\n    \"activeActive\": false,\r\n    \"vpnClientConfiguration\": {\r\n      \"vpnClientAddressPool\": {\r\n        \"addressPrefixes\": [\r\n          \"172.16.201.0/24\"\r\n        ]\r\n      },\r\n      \"vpnClientProtocols\": [\r\n        \"IkeV2\",\r\n        \"OpenVPN\"\r\n      ],\r\n      \"vpnClientRootCertificates\": [],\r\n      \"vpnClientRevokedCertificates\": [\r\n        {\r\n          \"name\": \"myTest3.cer\",\r\n          \"id\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/vpnClientRevokedCertificates/myTest3.cer\",\r\n          \"etag\": \"W/\\\"0731d0be-c3e2-4a97-bb0e-8f1c0430e496\\\"\",\r\n          \"properties\": {\r\n            \"provisioningState\": \"Succeeded\",\r\n            \"thumbprint\": \"bdf834528f0fff6eaae4c154e06b54322769276c\"\r\n          },\r\n          \"type\": \"Microsoft.Network/virtualNetworkGateways/vpnClientRevokedCertificates\"\r\n        }\r\n      ],\r\n      \"vpnClientConnectionHealth\": {\r\n        \"vpnClientConnectionsCount\": 0,\r\n        \"totalIngressBytesTransferred\": 0,\r\n        \"totalEgressBytesTransferred\": 0\r\n      },\r\n      \"radiusServers\": [],\r\n      \"vpnClientIpsecPolicies\": []\r\n    },\r\n    \"bgpSettings\": {\r\n      \"asn\": 65515,\r\n      \"bgpPeeringAddress\": \"192.168.200.254\",\r\n      \"peerWeight\": 0,\r\n      \"bgpPeeringAddresses\": [\r\n        {\r\n          \"ipconfigurationId\": \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518/ipConfigurations/ipcfg47860\",\r\n          \"defaultBgpIpAddresses\": [\r\n            \"192.168.200.254\"\r\n          ],\r\n          \"customBgpIpAddresses\": [],\r\n          \"tunnelIpAddresses\": [\r\n            \"52.237.172.216\"\r\n          ]\r\n        }\r\n      ]\r\n    },\r\n    \"vpnGatewayGeneration\": \"Generation1\"\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg677518/providers/Microsoft.Network/virtualNetworkGateways/vngw677518?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.network/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:09:59 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "azure-asyncnotification" : "Enabled",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14984",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "bbea938c-7e08-467a-bab7-151f17f2ba36",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "46767b9c-8cd8-4ada-8d21-4946979b42c2",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071000Z:bbea938c-7e08-467a-bab7-151f17f2ba36",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operationResults/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "634b6dca-46ed-45a3-a19e-f745cb8ee2fa",
+      "Body" : "",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:10:11 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "5720",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "458d4937-689b-4309-b320-e40ce636c943",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "cd33fa48-2741-42d3-9ce5-1247a315f2d7",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071011Z:458d4937-689b-4309-b320-e40ce636c943",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4daef90a-62a3-465b-82af-4e5b5a326ea5",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:10:21 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "3611",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "815a3be4-bc29-4f14-960d-391cda8bc5e4",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "3838265b-da45-4ff2-b27e-132d0f330557",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071022Z:815a3be4-bc29-4f14-960d-391cda8bc5e4",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7eaea01b-8140-4548-afc3-d803118dfb03",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:10:43 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4349",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "29b166f1-87db-469f-a831-eb6bc03add2b",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "3cb87f74-6d42-4d86-b5aa-8de0d386e11c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071043Z:29b166f1-87db-469f-a831-eb6bc03add2b",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "853c8481-be48-4fa3-a404-b0ae9c7f8534",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:11:03 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4345",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "49f0c31e-47ae-43b3-9c49-27632f73463d",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "2d1f7d61-a3ed-4a75-a7b8-4a2958a0ebe1",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071103Z:49f0c31e-47ae-43b3-9c49-27632f73463d",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9fcf94d9-9611-416f-ac29-cbdb4bd65f5c",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:11:44 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "7108",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f97394b9-4ac4-4ec7-8a1e-79a143ae89e5",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "0e766e72-d8dd-44c8-88f4-a539c766d401",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071144Z:f97394b9-4ac4-4ec7-8a1e-79a143ae89e5",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4fb82236-1986-4352-9d09-503ad5121385",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:12:25 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4329",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "eca9ae83-438f-49cd-9947-e00e7a90ee8c",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "1879ae17-4e5e-4d44-8bcb-e99d6eb71974",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071225Z:eca9ae83-438f-49cd-9947-e00e7a90ee8c",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "bdb24bfe-ef2f-403d-8ca7-37d1ab44c70c",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:14:06 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "5685",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "93296680-e918-4b10-bf9c-c8de5c436c54",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "09e668ec-9668-4dfc-bd83-031b88f3712c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071407Z:93296680-e918-4b10-bf9c-c8de5c436c54",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "993565a5-5909-43cc-9f66-e1d8c3bcc507",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:15:48 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "30",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "5676",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "edc14b7e-1801-4cc3-b636-a5a31aa79650",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "4c08bbb8-8ec1-4f5c-8ea3-90519d3b35af",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071548Z:edc14b7e-1801-4cc3-b636-a5a31aa79650",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "9e7fcb01-358e-4742-910d-7de807485b37",
+      "Body" : "{\r\n  \"status\": \"InProgress\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:17:29 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "content-length" : "29",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4294",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f30c1d0f-96c7-4f64-9bbd-2d831a95b77b",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "99742db5-b1b6-4c60-b7e8-b8ef4df2fd5d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071729Z:f30c1d0f-96c7-4f64-9bbd-2d831a95b77b",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "34de9b93-1104-442a-a21e-026f39f86e4f",
+      "Body" : "{\r\n  \"status\": \"Succeeded\"\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operationResults/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:17:30 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "azure-asyncnotification" : "Enabled",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "4293",
+      "StatusCode" : "204",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "bbea938c-7e08-467a-bab7-151f17f2ba36",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-arm-service-request-id" : "46767b9c-8cd8-4ada-8d21-4946979b42c2",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071730Z:c6caff6f-2fe4-4926-95ff-91a25d53f7ac",
+      "content-type" : "application/json; charset=utf-8",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operationResults/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "634b6dca-46ed-45a3-a19e-f745cb8ee2fa",
+      "Body" : "",
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/northcentralus/operations/634b6dca-46ed-45a3-a19e-f745cb8ee2fa?api-version=2020-05-01"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg677518?api-version=2021-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.0.0-beta.4 (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Tue, 28 Jul 2020 07:17:33 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14982",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "0e727fa1-4ce4-4d05-90da-983cd9c68a30",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "KOREASOUTH:20200728T071734Z:0e727fa1-4ce4-4d05-90da-983cd9c68a30",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzY3NzUxOC1OT1JUSENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoibm9ydGhjZW50cmFsdXMifQ?api-version=2020-06-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "0e727fa1-4ce4-4d05-90da-983cd9c68a30",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "55236b", "677518", "ipcfg47860", "pip49745" ]
+}
