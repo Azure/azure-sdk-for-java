@@ -5,9 +5,12 @@ package com.azure.spring.autoconfigure.storage;
 
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.spring.autoconfigure.storage.resource.AzureStorageProtocolResolver;
+import com.azure.spring.autoconfigure.storage.resource.AzureStorageResourcePatternResolver;
 import com.azure.spring.utils.ApplicationId;
+import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -53,6 +56,24 @@ public class StorageAutoConfiguration {
             .endpoint(storageProperties.getFileEndpoint())
             .credential(new StorageSharedKeyCredential(accountName, accountKey))
             .httpLogOptions(new HttpLogOptions().setApplicationId(ApplicationId.AZURE_SPRING_STORAGE_FILES));
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty({ "azure.storage.blob-endpoint", "azure.storage.file-endpoint" })
+    public AzureStorageResourcePatternResolver ResourceLoader(BlobServiceClientBuilder blobServiceClientBuilder,
+                                                              ShareServiceClientBuilder shareServiceClientBuilder) {
+
+        BlobServiceClient blobServiceClient = null;
+        ShareServiceClient shareServiceClient = null;
+
+        if (blobServiceClientBuilder != null) {
+            blobServiceClient = blobServiceClientBuilder.buildClient();
+        }
+        if (shareServiceClientBuilder != null) {
+            shareServiceClient = shareServiceClientBuilder.buildClient();
+        }
+        return new AzureStorageResourcePatternResolver(blobServiceClient, shareServiceClient);
     }
 
     @Configuration
