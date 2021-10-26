@@ -60,7 +60,7 @@ public class CallingServerUnitTests {
     public void answerCall() {
         CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(generateAnswerCallResult(CALL_CONNECTION_ID), 200)
+                new SimpleEntry<String, Integer>(generateAnswerCallResult(CALL_CONNECTION_ID), 201)
             )));
 
         AnswerCallOptions answerCallOptions = new AnswerCallOptions(
@@ -79,7 +79,7 @@ public class CallingServerUnitTests {
     public void answerCallWithResponse() {
         CallingServerClient callingServerAsyncClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(generateAnswerCallResult(CALL_CONNECTION_ID), 200)
+                new SimpleEntry<String, Integer>(generateAnswerCallResult(CALL_CONNECTION_ID), 201)
             )));
 
         AnswerCallOptions options = new AnswerCallOptions(
@@ -92,7 +92,7 @@ public class CallingServerUnitTests {
             Context.NONE
         );
 
-        assertEquals(200, callConnectionResponse.getStatusCode());
+        assertEquals(201, callConnectionResponse.getStatusCode());
         assertNotNull(callConnectionResponse.getValue());
     }
 

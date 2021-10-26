@@ -54,7 +54,7 @@ public class CallingServerAsyncUnitTests {
     public void answerCallAsync() {
         CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(generateAnswerCallResult(CALL_CONNECTION_ID), 200)
+                new SimpleEntry<String, Integer>(generateAnswerCallResult(CALL_CONNECTION_ID), 201)
             )));
 
         AnswerCallOptions answerCallOptions = new AnswerCallOptions(
@@ -63,6 +63,27 @@ public class CallingServerAsyncUnitTests {
             Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
         CallConnectionAsync callConnectionAsync = callingServerAsyncClient.answerCall(INCOMING_CALL_CONTEXT, answerCallOptions).block();
         assertNotNull(callConnectionAsync);
+    }
+
+    @Test
+    public void answerCallAsyncWithResponse() {
+        CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateAnswerCallResult(CALL_CONNECTION_ID), 201)
+            )));
+
+        AnswerCallOptions answerCallOptions = new AnswerCallOptions(
+            CALLBACK_URI,
+            Collections.singletonList(CallMediaType.VIDEO),
+            Collections.singletonList(CallingEventSubscriptionType.PARTICIPANTS_UPDATED));
+
+        Response<CallConnectionAsync> callConnectionAsyncResponse = callingServerAsyncClient.answerCallWithResponse(
+            INCOMING_CALL_CONTEXT,
+            answerCallOptions
+        ).block();
+
+        assertEquals(201, callConnectionAsyncResponse.getStatusCode());
+        assertNotNull(callConnectionAsyncResponse.getValue());
     }
 
     @Test
