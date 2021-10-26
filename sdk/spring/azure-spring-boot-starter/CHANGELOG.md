@@ -12,6 +12,7 @@ Add property for JmsDefaultPrefetchPolicy.([#24304](https://github.com/Azure/azu
 
 
 ### Breaking Changes
+For standard tier in ServiceBus, the default value of prefetch number has been changed from 1000 to 0.
 
 ### Bugs Fixed
 
