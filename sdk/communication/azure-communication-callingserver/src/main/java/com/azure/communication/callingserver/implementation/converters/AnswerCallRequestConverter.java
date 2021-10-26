@@ -22,7 +22,7 @@ public final class AnswerCallRequestConverter {
         }
 
         AnswerCallRequest answerCallRequest = new AnswerCallRequest()
-        .setIncomingCallContext(incomingCallContext);
+            .setIncomingCallContext(incomingCallContext);
         if (answerCallOptions != null)
         {
             if (answerCallOptions.getCallbackUri() != null)

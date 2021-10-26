@@ -138,7 +138,7 @@ public final class CallingServerClient {
      * @param answerCallOptions to answer Call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return CallConnection for a successful join request.
+     * @return CallConnection for a successful answer request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallConnection answerCall(

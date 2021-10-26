@@ -106,7 +106,7 @@ public final class AnswerCallOptions {
         List<CallMediaType> requestedMediaTypes,
         List<CallingEventSubscriptionType> requestedCallEvents) {
         if (callbackUri == null) {
-        throw new IllegalArgumentException("object callbackUri cannot be null");
+            throw new IllegalArgumentException("object callbackUri cannot be null");
         }
         if (requestedMediaTypes == null) {
             throw new IllegalArgumentException("object requestedMediaTypes cannot be null");
