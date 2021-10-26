@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.Configs;
 import io.netty.channel.epoll.Epoll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.netty.resources.LoopResources;
 
 /**
  * Provides a RntbdLoop instance based on the native transports.
@@ -19,7 +19,7 @@ public class RntbdEventLoopNativeDetector {
         RntbdEventLoop defaultLoop;
         try{
             Class.forName("io.netty.channel.epoll.Epoll");
-            if (Epoll.isAvailable() && LoopResources.DEFAULT_NATIVE) {
+            if (Epoll.isAvailable() && Configs.useTcpNative()) {
                 defaultLoop = new RntbdEventLoopEpoll();
             } else {
                 defaultLoop = new RntbdEventLoopNIO();

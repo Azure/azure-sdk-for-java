@@ -99,6 +99,10 @@ public class Configs {
     private static final String OPEN_CONNECTIONS_RETRIES_COUNT_NAME = "COSMOS.OPEN_CONNECTIONS_RETRIES_COUNT";
     private static final int DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT = 1;
 
+    // Whether to use native transport on Rntbd
+    private static final String USE_TCP_NATIVE_NAME = "COSMOS.USE_TCP_NATIVE";
+    private static final boolean DEFAULT_USE_TCP_NATIVE = true;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -270,6 +274,10 @@ public class Configs {
         return getJVMConfigAsInt(
             OPEN_CONNECTIONS_RETRIES_COUNT_NAME,
             DEFAULT_OPEN_CONNECTIONS_RETRIES_COUNT);
+    }
+
+    public static boolean useTcpNative() {
+        return getJVMConfigAsBoolean(USE_TCP_NATIVE_NAME, DEFAULT_USE_TCP_NATIVE);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {
