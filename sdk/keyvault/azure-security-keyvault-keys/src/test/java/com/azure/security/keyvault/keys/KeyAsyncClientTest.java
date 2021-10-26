@@ -20,6 +20,7 @@ import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.api.Assertions;
@@ -139,21 +140,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void updateKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
-        updateKeyRunner((original, updated) -> {
-            StepVerifier.create(client.createKey(original))
-                .assertNext(response -> assertKeyEquals(original, response))
-                .verifyComplete();
+        updateKeyRunner((createKeyOptions, updateKeyOptions) -> {
+            StepVerifier.create(client.createKey(createKeyOptions)
+                    .flatMap(createdKey -> {
+                        assertKeyEquals(createKeyOptions, createdKey);
 
-            StepVerifier.create(client.getKey(original.getName())
-                    .flatMap(keyToUpdate ->
-                        client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()))))
-                .assertNext(response -> {
-                    assertNotNull(response);
-                    assertEquals(original.getName(), response.getName());
-                }).verifyComplete();
-
-            StepVerifier.create(client.getKey(original.getName()))
-                .assertNext(updatedKeyResponse -> assertKeyEquals(updated, updatedKeyResponse))
+                        return client.updateKeyProperties(createdKey.getProperties()
+                            .setExpiresOn(updateKeyOptions.getExpiresOn()));
+                    }))
+                .assertNext(updatedKey -> assertKeyEquals(updateKeyOptions, updatedKey))
                 .verifyComplete();
         });
     }
@@ -165,21 +160,15 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void updateDisabledKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyAsyncClient(httpClient, serviceVersion);
-        updateDisabledKeyRunner((original, updated) -> {
-            StepVerifier.create(client.createKey(original))
-                .assertNext(response -> assertKeyEquals(original, response))
-                .verifyComplete();
+        updateDisabledKeyRunner((createKeyOptions, updateKeyOptions) -> {
+            StepVerifier.create(client.createKey(createKeyOptions)
+                    .flatMap(createdKey -> {
+                        assertKeyEquals(createKeyOptions, createdKey);
 
-            StepVerifier.create(client.getKey(original.getName())
-                    .flatMap(keyToUpdate ->
-                        client.updateKeyProperties(keyToUpdate.getProperties().setExpiresOn(updated.getExpiresOn()))))
-                .assertNext(response -> {
-                    assertNotNull(response);
-                    assertEquals(original.getName(), response.getName());
-                }).verifyComplete();
-
-            StepVerifier.create(client.getKey(original.getName()))
-                .assertNext(updatedKeyResponse -> assertKeyEquals(updated, updatedKeyResponse))
+                        return client.updateKeyProperties(createdKey.getProperties()
+                            .setExpiresOn(updateKeyOptions.getExpiresOn()));
+                    }))
+                .assertNext(updatedKey -> assertKeyEquals(updateKeyOptions, updatedKey))
                 .verifyComplete();
         });
     }
@@ -554,25 +543,6 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     /**
-     * Tests that an RSA key with a public exponent can be created in the key vault.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void createRsaKeyWithPublicExponent(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        createKeyAsyncClient(httpClient, serviceVersion);
-        createRsaKeyWithPublicExponentRunner((createRsaKeyOptions) ->
-            StepVerifier.create(client.createRsaKey(createRsaKeyOptions))
-                .assertNext(rsaKey -> {
-                    assertKeyEquals(createRsaKeyOptions, rsaKey);
-                    // TODO: Investigate why the KV service sets the JWK's "e" parameter to "AQAB" instead of "Aw".
-                    /*assertEquals(BigInteger.valueOf(createRsaKeyOptions.getPublicExponent()),
-                        toBigInteger(rsaKey.getKey().getE()));*/
-                    assertEquals(createRsaKeyOptions.getKeySize(), rsaKey.getKey().getN().length * 8);
-                })
-                .verifyComplete());
-    }
-
-    /**
      * Tests that fetching the key rotation policy of a non-existent key throws.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -608,7 +578,10 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 assertNull(keyRotationPolicy.getCreatedOn());
                 assertNull(keyRotationPolicy.getUpdatedOn());
                 assertNull(keyRotationPolicy.getExpiryTime());
-                assertNull(keyRotationPolicy.getLifetimeActions());
+                assertEquals(1, keyRotationPolicy.getLifetimeActions().size());
+                assertEquals(KeyRotationPolicyAction.NOTIFY, keyRotationPolicy.getLifetimeActions().get(0).getType());
+                assertEquals("P30D", keyRotationPolicy.getLifetimeActions().get(0).getTimeBeforeExpiry());
+                assertNull(keyRotationPolicy.getLifetimeActions().get(0).getTimeAfterCreate());
             })
             .verifyComplete();
     }

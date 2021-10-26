@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 1.1.1 (2021-10-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` to 1.0.5
+- Upgraded `azure-communication-identity` to 1.1.3
+- Upgraded `azure-core` to 1.21.0
+
 ## 1.1.0 (2021-09-15)
 - Added javadoc code samples
 - Removed redundant overload `ChatThreadAsyncClient.sendTypingNotification(TypingNotificationOptions options)`

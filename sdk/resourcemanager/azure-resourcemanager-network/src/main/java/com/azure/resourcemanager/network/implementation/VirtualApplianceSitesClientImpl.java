@@ -266,7 +266,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkVirtualApplianceName, String siteName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -288,7 +288,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String networkVirtualApplianceName, String siteName, Context context) {
         context = this.client.mergeContext(context);
@@ -310,7 +310,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkVirtualApplianceName, String siteName) {
         return beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName).getSyncPoller();
@@ -328,7 +328,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkVirtualApplianceName, String siteName, Context context) {
         return beginDeleteAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).getSyncPoller();
@@ -720,7 +720,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -751,7 +751,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -784,7 +784,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkVirtualApplianceName,
@@ -807,7 +807,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkVirtualApplianceName,

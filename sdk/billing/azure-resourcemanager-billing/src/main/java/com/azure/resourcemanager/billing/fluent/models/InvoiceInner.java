@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.billing.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
@@ -22,174 +21,24 @@ import java.util.List;
 import java.util.Map;
 
 /** An invoice. */
-@JsonFlatten
-@Immutable
-public class InvoiceInner extends ProxyResource {
+@Fluent
+public final class InvoiceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceInner.class);
 
     /*
-     * The due date for the invoice.
+     * An invoice.
      */
-    @JsonProperty(value = "properties.dueDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime dueDate;
+    @JsonProperty(value = "properties")
+    private InvoiceProperties innerProperties;
 
-    /*
-     * The date when the invoice was generated.
+    /**
+     * Get the innerProperties property: An invoice.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.invoiceDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime invoiceDate;
-
-    /*
-     * The current status of the invoice.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private InvoiceStatus status;
-
-    /*
-     * The amount due as of now.
-     */
-    @JsonProperty(value = "properties.amountDue", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount amountDue;
-
-    /*
-     * The amount of Azure prepayment applied to the charges. This field is
-     * applicable to billing accounts with agreement type Microsoft Customer
-     * Agreement.
-     */
-    @JsonProperty(value = "properties.azurePrepaymentApplied", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount azurePrepaymentApplied;
-
-    /*
-     * The total charges for the invoice billing period.
-     */
-    @JsonProperty(value = "properties.billedAmount", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount billedAmount;
-
-    /*
-     * The total refund for returns and cancellations during the invoice
-     * billing period. This field is applicable to billing accounts with
-     * agreement type Microsoft Customer Agreement.
-     */
-    @JsonProperty(value = "properties.creditAmount", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount creditAmount;
-
-    /*
-     * The amount of free Azure credits applied to the charges. This field is
-     * applicable to billing accounts with agreement type Microsoft Customer
-     * Agreement.
-     */
-    @JsonProperty(value = "properties.freeAzureCreditApplied", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount freeAzureCreditApplied;
-
-    /*
-     * The pre-tax amount due. This field is applicable to billing accounts
-     * with agreement type Microsoft Customer Agreement.
-     */
-    @JsonProperty(value = "properties.subTotal", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount subTotal;
-
-    /*
-     * The amount of tax charged for the billing period. This field is
-     * applicable to billing accounts with agreement type Microsoft Customer
-     * Agreement.
-     */
-    @JsonProperty(value = "properties.taxAmount", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount taxAmount;
-
-    /*
-     * The amount due when the invoice was generated. This field is applicable
-     * to billing accounts with agreement type Microsoft Customer Agreement.
-     */
-    @JsonProperty(value = "properties.totalAmount", access = JsonProperty.Access.WRITE_ONLY)
-    private Amount totalAmount;
-
-    /*
-     * The start date of the billing period for which the invoice is generated.
-     */
-    @JsonProperty(value = "properties.invoicePeriodStartDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime invoicePeriodStartDate;
-
-    /*
-     * The end date of the billing period for which the invoice is generated.
-     */
-    @JsonProperty(value = "properties.invoicePeriodEndDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime invoicePeriodEndDate;
-
-    /*
-     * Invoice type.
-     */
-    @JsonProperty(value = "properties.invoiceType", access = JsonProperty.Access.WRITE_ONLY)
-    private InvoiceType invoiceType;
-
-    /*
-     * Specifies if the invoice is generated as part of monthly invoicing cycle
-     * or not. This field is applicable to billing accounts with agreement type
-     * Microsoft Customer Agreement.
-     */
-    @JsonProperty(value = "properties.isMonthlyInvoice", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isMonthlyInvoice;
-
-    /*
-     * The ID of the billing profile for which the invoice is generated.
-     */
-    @JsonProperty(value = "properties.billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileId;
-
-    /*
-     * The name of the billing profile for which the invoice is generated.
-     */
-    @JsonProperty(value = "properties.billingProfileDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingProfileDisplayName;
-
-    /*
-     * An optional purchase order number for the invoice.
-     */
-    @JsonProperty(value = "properties.purchaseOrderNumber", access = JsonProperty.Access.WRITE_ONLY)
-    private String purchaseOrderNumber;
-
-    /*
-     * List of documents available to download such as invoice and tax receipt.
-     */
-    @JsonProperty(value = "properties.documents", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Document> documents;
-
-    /*
-     * List of payments.
-     */
-    @JsonProperty(value = "properties.payments", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PaymentProperties> payments;
-
-    /*
-     * Rebill details for an invoice.
-     */
-    @JsonProperty(value = "properties.rebillDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, RebillDetails> rebillDetails;
-
-    /*
-     * The type of the document.
-     */
-    @JsonProperty(value = "properties.documentType", access = JsonProperty.Access.WRITE_ONLY)
-    private InvoiceDocumentType documentType;
-
-    /*
-     * The Id of the active invoice which is originally billed after this
-     * invoice was voided. This field is applicable to the void invoices only.
-     */
-    @JsonProperty(value = "properties.billedDocumentId", access = JsonProperty.Access.WRITE_ONLY)
-    private String billedDocumentId;
-
-    /*
-     * The Id of the invoice which got voided and this credit note was issued
-     * as a result. This field is applicable to the credit notes only.
-     */
-    @JsonProperty(value = "properties.creditForDocumentId", access = JsonProperty.Access.WRITE_ONLY)
-    private String creditForDocumentId;
-
-    /*
-     * The ID of the subscription for which the invoice is generated.
-     */
-    @JsonProperty(value = "properties.subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
-    private String subscriptionId;
+    private InvoiceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the dueDate property: The due date for the invoice.
@@ -197,7 +46,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the dueDate value.
      */
     public OffsetDateTime dueDate() {
-        return this.dueDate;
+        return this.innerProperties() == null ? null : this.innerProperties().dueDate();
     }
 
     /**
@@ -206,7 +55,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the invoiceDate value.
      */
     public OffsetDateTime invoiceDate() {
-        return this.invoiceDate;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceDate();
     }
 
     /**
@@ -215,7 +64,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the status value.
      */
     public InvoiceStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -224,7 +73,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the amountDue value.
      */
     public Amount amountDue() {
-        return this.amountDue;
+        return this.innerProperties() == null ? null : this.innerProperties().amountDue();
     }
 
     /**
@@ -234,7 +83,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the azurePrepaymentApplied value.
      */
     public Amount azurePrepaymentApplied() {
-        return this.azurePrepaymentApplied;
+        return this.innerProperties() == null ? null : this.innerProperties().azurePrepaymentApplied();
     }
 
     /**
@@ -243,7 +92,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the billedAmount value.
      */
     public Amount billedAmount() {
-        return this.billedAmount;
+        return this.innerProperties() == null ? null : this.innerProperties().billedAmount();
     }
 
     /**
@@ -253,7 +102,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the creditAmount value.
      */
     public Amount creditAmount() {
-        return this.creditAmount;
+        return this.innerProperties() == null ? null : this.innerProperties().creditAmount();
     }
 
     /**
@@ -263,7 +112,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the freeAzureCreditApplied value.
      */
     public Amount freeAzureCreditApplied() {
-        return this.freeAzureCreditApplied;
+        return this.innerProperties() == null ? null : this.innerProperties().freeAzureCreditApplied();
     }
 
     /**
@@ -273,7 +122,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the subTotal value.
      */
     public Amount subTotal() {
-        return this.subTotal;
+        return this.innerProperties() == null ? null : this.innerProperties().subTotal();
     }
 
     /**
@@ -283,7 +132,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the taxAmount value.
      */
     public Amount taxAmount() {
-        return this.taxAmount;
+        return this.innerProperties() == null ? null : this.innerProperties().taxAmount();
     }
 
     /**
@@ -293,7 +142,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the totalAmount value.
      */
     public Amount totalAmount() {
-        return this.totalAmount;
+        return this.innerProperties() == null ? null : this.innerProperties().totalAmount();
     }
 
     /**
@@ -302,7 +151,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the invoicePeriodStartDate value.
      */
     public OffsetDateTime invoicePeriodStartDate() {
-        return this.invoicePeriodStartDate;
+        return this.innerProperties() == null ? null : this.innerProperties().invoicePeriodStartDate();
     }
 
     /**
@@ -311,7 +160,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the invoicePeriodEndDate value.
      */
     public OffsetDateTime invoicePeriodEndDate() {
-        return this.invoicePeriodEndDate;
+        return this.innerProperties() == null ? null : this.innerProperties().invoicePeriodEndDate();
     }
 
     /**
@@ -320,7 +169,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the invoiceType value.
      */
     public InvoiceType invoiceType() {
-        return this.invoiceType;
+        return this.innerProperties() == null ? null : this.innerProperties().invoiceType();
     }
 
     /**
@@ -330,7 +179,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the isMonthlyInvoice value.
      */
     public Boolean isMonthlyInvoice() {
-        return this.isMonthlyInvoice;
+        return this.innerProperties() == null ? null : this.innerProperties().isMonthlyInvoice();
     }
 
     /**
@@ -339,7 +188,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
-        return this.billingProfileId;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileId();
     }
 
     /**
@@ -348,7 +197,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the billingProfileDisplayName value.
      */
     public String billingProfileDisplayName() {
-        return this.billingProfileDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().billingProfileDisplayName();
     }
 
     /**
@@ -357,7 +206,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the purchaseOrderNumber value.
      */
     public String purchaseOrderNumber() {
-        return this.purchaseOrderNumber;
+        return this.innerProperties() == null ? null : this.innerProperties().purchaseOrderNumber();
     }
 
     /**
@@ -366,7 +215,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the documents value.
      */
     public List<Document> documents() {
-        return this.documents;
+        return this.innerProperties() == null ? null : this.innerProperties().documents();
     }
 
     /**
@@ -375,7 +224,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the payments value.
      */
     public List<PaymentProperties> payments() {
-        return this.payments;
+        return this.innerProperties() == null ? null : this.innerProperties().payments();
     }
 
     /**
@@ -384,7 +233,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the rebillDetails value.
      */
     public Map<String, RebillDetails> rebillDetails() {
-        return this.rebillDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().rebillDetails();
     }
 
     /**
@@ -393,7 +242,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the documentType value.
      */
     public InvoiceDocumentType documentType() {
-        return this.documentType;
+        return this.innerProperties() == null ? null : this.innerProperties().documentType();
     }
 
     /**
@@ -403,7 +252,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the billedDocumentId value.
      */
     public String billedDocumentId() {
-        return this.billedDocumentId;
+        return this.innerProperties() == null ? null : this.innerProperties().billedDocumentId();
     }
 
     /**
@@ -413,7 +262,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the creditForDocumentId value.
      */
     public String creditForDocumentId() {
-        return this.creditForDocumentId;
+        return this.innerProperties() == null ? null : this.innerProperties().creditForDocumentId();
     }
 
     /**
@@ -422,7 +271,7 @@ public class InvoiceInner extends ProxyResource {
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
-        return this.subscriptionId;
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionId();
     }
 
     /**
@@ -431,45 +280,8 @@ public class InvoiceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (amountDue() != null) {
-            amountDue().validate();
-        }
-        if (azurePrepaymentApplied() != null) {
-            azurePrepaymentApplied().validate();
-        }
-        if (billedAmount() != null) {
-            billedAmount().validate();
-        }
-        if (creditAmount() != null) {
-            creditAmount().validate();
-        }
-        if (freeAzureCreditApplied() != null) {
-            freeAzureCreditApplied().validate();
-        }
-        if (subTotal() != null) {
-            subTotal().validate();
-        }
-        if (taxAmount() != null) {
-            taxAmount().validate();
-        }
-        if (totalAmount() != null) {
-            totalAmount().validate();
-        }
-        if (documents() != null) {
-            documents().forEach(e -> e.validate());
-        }
-        if (payments() != null) {
-            payments().forEach(e -> e.validate());
-        }
-        if (rebillDetails() != null) {
-            rebillDetails()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

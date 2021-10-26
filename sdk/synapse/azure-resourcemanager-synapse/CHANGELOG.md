@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,198 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2021-10-09)
+
+- Azure Resource Manager Synapse client library for Java. This package contains Microsoft Azure SDK for Synapse Management SDK. Azure Synapse Analytics Management Client. Package tag package-composite-v2. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.DefaultPrincipalsModificationKind` was added
+
+* `models.DataConnectionCheckNameRequest` was added
+
+* `models.AttachedDatabaseConfiguration` was added
+
+* `models.KustoPoolDatabasePrincipalAssignments` was added
+
+* `models.ClusterPrincipalAssignmentCheckNameRequest` was added
+
+* `models.KustoPool$UpdateStages` was added
+
+* `models.ResourceProvisioningState` was added
+
+* `models.SkuName` was added
+
+* `models.AzureCapacity` was added
+
+* `models.KustoPool$DefinitionStages` was added
+
+* `models.DatabasePrincipalAssignmentCheckNameRequest` was added
+
+* `models.DataConnectionValidationResult` was added
+
+* `models.KustoPool$Update` was added
+
+* `models.AzureScaleType` was added
+
+* `models.DatabaseStatistics` was added
+
+* `models.EventHubDataFormat` was added
+
+* `models.KustoPoolPrincipalAssignments` was added
+
+* `models.KustoPoolsOperations` was added
+
+* `models.DataConnection` was added
+
+* `models.Compression` was added
+
+* `models.AttachedDatabaseConfiguration$Update` was added
+
+* `models.SkuDescription` was added
+
+* `models.DatabasePrincipalAssignment$Update` was added
+
+* `models.Database` was added
+
+* `models.LanguageExtension` was added
+
+* `models.ClusterPrincipalAssignment$Update` was added
+
+* `models.PrincipalType` was added
+
+* `models.Kind` was added
+
+* `models.KustoPoolListResult` was added
+
+* `models.DatabasePrincipalAssignment` was added
+
+* `models.Operation` was added
+
+* `models.SkuSize` was added
+
+* `models.KustoPoolUpdate` was added
+
+* `models.IotHubDataConnection` was added
+
+* `models.KustoPools` was added
+
+* `models.EventGridDataConnection` was added
+
+* `models.AzureSku` was added
+
+* `models.DatabasePrincipalAssignment$UpdateStages` was added
+
+* `models.ClusterPrincipalAssignment$UpdateStages` was added
+
+* `models.AttachedDatabaseConfigurationListResult` was added
+
+* `models.OperationDisplay` was added
+
+* `models.ClusterPrincipalAssignmentListResult` was added
+
+* `models.DatabaseCheckNameRequest` was added
+
+* `models.AttachedDatabaseConfiguration$DefinitionStages` was added
+
+* `models.KustoPoolCheckNameRequest` was added
+
+* `models.KustoPool$Definition` was added
+
+* `models.LanguageExtensionsList` was added
+
+* `models.DatabasePrincipalAssignment$DefinitionStages` was added
+
+* `models.DataConnectionKind` was added
+
+* `models.DatabasePrincipalAssignment$Definition` was added
+
+* `models.ClusterPrincipalAssignment$DefinitionStages` was added
+
+* `models.AttachedDatabaseConfiguration$UpdateStages` was added
+
+* `models.FollowerDatabaseListResult` was added
+
+* `models.EventHubDataConnection` was added
+
+* `models.SkuLocationInfoItem` was added
+
+* `models.DataConnectionValidationListResult` was added
+
+* `models.OptimizedAutoscale` was added
+
+* `models.KustoPoolChildResources` was added
+
+* `models.FollowerDatabaseDefinition` was added
+
+* `models.Reason` was added
+
+* `models.ClusterPrincipalAssignment$Definition` was added
+
+* `models.State` was added
+
+* `models.DataConnectionListResult` was added
+
+* `models.DataConnectionValidation` was added
+
+* `models.CheckNameResult` was added
+
+* `models.DatabasePrincipalAssignmentListResult` was added
+
+* `models.KustoPoolDataConnections` was added
+
+* `models.OperationListResult` was added
+
+* `models.EventGridDataFormat` was added
+
+* `models.IotHubDataFormat` was added
+
+* `models.AttachedDatabaseConfiguration$Definition` was added
+
+* `models.ClusterPrincipalAssignment` was added
+
+* `models.KustoPoolAttachedDatabaseConfigurations` was added
+
+* `models.SkuDescriptionList` was added
+
+* `models.TableLevelSharingProperties` was added
+
+* `models.LanguageExtensionName` was added
+
+* `models.ClusterPrincipalRole` was added
+
+* `models.BlobStorageEventType` was added
+
+* `models.Type` was added
+
+* `models.KustoPoolDatabases` was added
+
+* `models.DatabaseListResult` was added
+
+* `models.KustoOperations` was added
+
+* `models.ReadWriteDatabase` was added
+
+* `models.AzureResourceSku` was added
+
+* `models.DatabasePrincipalRole` was added
+
+* `models.KustoPool` was added
+
+* `models.ListResourceSkusResult` was added
+
+#### `SynapseManager` was modified
+
+* `kustoPoolDatabases()` was added
+* `kustoPoolAttachedDatabaseConfigurations()` was added
+* `kustoPools()` was added
+* `kustoPoolChildResources()` was added
+* `kustoPoolDatabasePrincipalAssignments()` was added
+* `kustoPoolDataConnections()` was added
+* `kustoPoolsOperations()` was added
+* `kustoPoolPrincipalAssignments()` was added
+* `kustoOperations()` was added
 
 ## 1.0.0-beta.2 (2021-09-13)
 

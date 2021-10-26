@@ -21,7 +21,7 @@ import reactor.test.StepVerifier;
 public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBase {
     private CommunicationRelayAsyncClient asyncClient;
     private CommunicationUserIdentifier user;
-    
+
     private void setupTest(HttpClient httpClient) {
         CommunicationIdentityClient communicationIdentityClient = createIdentityClientBuilder(httpClient).buildClient();
         user = communicationIdentityClient.createUser();
@@ -33,14 +33,39 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
         // Arrange
         setupTest(httpClient);
         CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        asyncClient = setupAsyncClient(builder, "createRelayClientUsingManagedIdentitySync");
-        
+        asyncClient = setupAsyncClient(builder, "createRelayClientUsingManagedIdentityAsync");
+
         // Action & Assert
-        assertNotNull(asyncClient);        
+        assertNotNull(asyncClient);
         assertNotNull(user.getId());
-        
+
         if (user != null) {
             Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration(user);
+
+            StepVerifier.create(relayResponse)
+            .assertNext(relayConfig -> {
+                assertNotNull(relayConfig.getIceServers());
+                for (CommunicationIceServer iceS : relayConfig.getIceServers()) {
+                    assertNotNull(iceS.getUsername());
+                    assertNotNull(iceS.getCredential());
+                }
+            }).verifyComplete();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRelayClientWithoutUserIdUsingManagedIdentity(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient);
+        CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
+        asyncClient = setupAsyncClient(builder, "createRelayClientUsingManagedIdentityAsync");
+
+        // Action & Assert
+        assertNotNull(asyncClient);
+
+        if (user != null) {
+            Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration();
 
             StepVerifier.create(relayResponse)
             .assertNext(relayConfig -> {
@@ -59,8 +84,8 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
         // Arrange
         setupTest(httpClient);
         CommunicationRelayClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
-        asyncClient = setupAsyncClient(builder, "createIdentityClientUsingConnectionStringSync");
-       
+        asyncClient = setupAsyncClient(builder, "createIdentityClientUsingConnectionStringAsync");
+
         // Action & Assert
         assertNotNull(asyncClient);
         assertNotNull(user.getId());
@@ -81,18 +106,70 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRelayClientWithoutUserIdUsingConnectionString(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient);
+        CommunicationRelayClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
+        asyncClient = setupAsyncClient(builder, "createIdentityClientUsingConnectionStringAsync");
+
+        // Action & Assert
+        assertNotNull(asyncClient);
+        if (user != null) {
+            Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration();
+
+            StepVerifier.create(relayResponse)
+            .assertNext(relayConfig -> {
+                assertNotNull(relayConfig.getIceServers());
+                for (CommunicationIceServer iceS : relayConfig.getIceServers()) {
+                    assertNotNull(iceS.getUrls());
+                    assertNotNull(iceS.getUsername());
+                    assertNotNull(iceS.getCredential());
+                }
+            }).verifyComplete();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getRelayConfigWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
         CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        asyncClient = setupAsyncClient(builder, "createRelayClientUsingManagedIdentitySync");
-        
+        asyncClient = setupAsyncClient(builder, "createRelayClientUsingManagedIdentityAsync");
+
         // Action & Assert
         assertNotNull(asyncClient);
         assertNotNull(user.getId());
 
         if (user != null) {
             Mono<Response<CommunicationRelayConfiguration>> relayConfig = asyncClient.getRelayConfigurationWithResponse(user);
+
+            StepVerifier.create(relayConfig)
+            .assertNext(response -> {
+                assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
+                assertNotNull(response.getValue().getIceServers());
+                for (CommunicationIceServer iceS : response.getValue().getIceServers()) {
+                    assertNotNull(iceS.getUrls());
+                    assertNotNull(iceS.getUsername());
+                    assertNotNull(iceS.getCredential());
+                }
+            }).verifyComplete();
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getRelayConfigWithoutUserIdWithResponse(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient);
+        CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
+        asyncClient = setupAsyncClient(builder, "createRelayClientUsingManagedIdentityAsync");
+
+        // Action & Assert
+        assertNotNull(asyncClient);
+
+        if (user != null) {
+            Mono<Response<CommunicationRelayConfiguration>> relayConfig = asyncClient.getRelayConfigurationWithResponse();
 
             StepVerifier.create(relayConfig)
             .assertNext(response -> {

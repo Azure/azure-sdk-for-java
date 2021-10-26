@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.1.2 (2021-10-06)
+
+### Other Changes
+
+#### Dependency updates
+
+- Updated azure-core to 1.21.0.
+- Updated azure-core-http-netty to 1.11.1.
+
 ## 1.1.1 (2021-09-13)
 
 ### Other changes
