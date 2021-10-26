@@ -569,10 +569,17 @@ function GetExistingPackageVersions ($PackageName, $GroupId=$null)
 {
   try {
     $Uri = 'https://search.maven.org/solrsearch/select?q=g:"' + $GroupId + '"+AND+a:"' + $PackageName +'"&core=gav&rows=20&wt=json'
-    $existingVersion = Invoke-RestMethod -Method GET -Uri $Uri
-    $existingVersion = $existingVersion.response.docs.v
-    [Array]::Reverse($existingVersion)
-    return $existingVersion
+    $response = (Invoke-RestMethod -Method GET -Uri $Uri).response
+    if($response.numFound -ne 0)
+    {
+      $existingVersion = $response.docs.v
+      if ($existingVersion.Count -gt 0) 
+      {
+        [Array]::Reverse($existingVersion)
+        return $existingVersion
+      }
+    }
+    return $null
   }
   catch {
     LogError "Failed to retrieve package versions. `n$_"
