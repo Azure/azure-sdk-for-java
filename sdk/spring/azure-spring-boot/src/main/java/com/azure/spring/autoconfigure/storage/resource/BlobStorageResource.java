@@ -123,10 +123,10 @@ public class BlobStorageResource extends AzureStorageResource {
     public String getDescription() {
         StringBuilder sb = new StringBuilder();
         sb.append("Azure storage account blob resource [container='")
-          .append(this.blockBlobClient.getContainerName())
-          .append("', blob='")
-          .append(blockBlobClient.getBlobName())
-          .append("'");
+            .append(this.blockBlobClient.getContainerName())
+            .append("', blob='")
+            .append(blockBlobClient.getBlobName())
+            .append("'");
         sb.append("]");
         return sb.toString();
     }

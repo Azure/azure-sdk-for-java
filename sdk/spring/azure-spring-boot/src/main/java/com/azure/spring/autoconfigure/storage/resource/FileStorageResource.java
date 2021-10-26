@@ -46,7 +46,10 @@ public class FileStorageResource extends AzureStorageResource {
     public FileStorageResource(ShareServiceClient shareServiceClient, String location, Boolean autoCreateFiles) {
         this(shareServiceClient, location, autoCreateFiles, null);
     }
-    public FileStorageResource(ShareServiceClient shareServiceClient, String location, Boolean autoCreateFiles,String contentType) {
+
+    public FileStorageResource(ShareServiceClient shareServiceClient, String location, Boolean autoCreateFiles,
+                               String contentType) {
+
         assertIsAzureStorageLocation(location);
         this.autoCreateFiles = autoCreateFiles != null && autoCreateFiles;
         this.location = location;

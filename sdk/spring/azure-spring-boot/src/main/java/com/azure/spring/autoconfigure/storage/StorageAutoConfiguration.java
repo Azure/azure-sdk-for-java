@@ -61,7 +61,7 @@ public class StorageAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty({ "azure.storage.blob-endpoint", "azure.storage.file-endpoint" })
-    public AzureStorageResourcePatternResolver ResourceLoader(BlobServiceClientBuilder blobServiceClientBuilder,
+    public AzureStorageResourcePatternResolver resourceLoader(BlobServiceClientBuilder blobServiceClientBuilder,
                                                               ShareServiceClientBuilder shareServiceClientBuilder) {
 
         BlobServiceClient blobServiceClient = null;

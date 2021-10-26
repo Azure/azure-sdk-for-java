@@ -130,7 +130,7 @@ public class AzureBlobStorageTests {
     public void testGetContentType(ArgumentsAccessor arguments) {
         String contentType = arguments.getString(1);
         String location = arguments.getString(0);
-        AzureStorageResource storageResource = new BlobStorageResource(this.blobServiceClient,location);
+        AzureStorageResource storageResource = new BlobStorageResource(this.blobServiceClient, location);
         Assertions.assertEquals(contentType, storageResource.getContentType(location));
     }
 
