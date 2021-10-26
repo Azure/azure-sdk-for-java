@@ -334,7 +334,6 @@ public final class CallingServerAsyncClient {
     /**
      * Answer a Call
      *
-     * @param source Source identity.
      * @param incomingCallContext The incoming call context.
      * @param answerCallOptions Answer call options.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
