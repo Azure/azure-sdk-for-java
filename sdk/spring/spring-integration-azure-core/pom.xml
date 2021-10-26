@@ -68,7 +68,6 @@
       <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>
