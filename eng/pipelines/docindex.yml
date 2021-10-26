@@ -71,7 +71,6 @@ jobs:
           Copy-Item "./eng/repo-docs/docms/daily.update.setting.xml" -Destination "~/.m2/settings.xml"
         displayName: 'Configure mvn'
         workingDirectory: $(Build.SourcesDirectory)
-        condition: and(succeeded(), or(startsWith(variables['Build.SourceBranchName'], 'daily/'), eq(variables['Force.SettingUpdate'], 'true')))
 
       - task: Powershell@2
         inputs:

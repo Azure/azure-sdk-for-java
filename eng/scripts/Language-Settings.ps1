@@ -262,6 +262,7 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
 
 $PackageExclusions = @{
   "azure-core-experimental" = "Don't want to include an experimental package.";
+  "azure-sdk-bom" = "Don't want to include the sdk bom.";
 }
 
 # Validates if the package will succeed in the CI build by validating the
