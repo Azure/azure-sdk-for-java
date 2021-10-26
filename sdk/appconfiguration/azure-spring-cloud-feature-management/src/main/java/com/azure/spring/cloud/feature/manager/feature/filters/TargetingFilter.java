@@ -212,7 +212,7 @@ public class TargetingFilter implements FeatureFilter, IFeatureVariantAssigner {
         TargetingFilterSettings settings = new TargetingFilterSettings();
 
         List<FeatureVariant> variants = featureDefinition.getVariants();
-        
+
         HashMap<String, Double> totalGroupPerentages = new HashMap<>();
         double totalDefaultPercentage = 0;
 
@@ -252,7 +252,7 @@ public class TargetingFilter implements FeatureFilter, IFeatureVariantAssigner {
                         String audienceContextId = targetingContext.getUserId() + "\n" + featureDefinition.getName()
                             + "\n"
                             + group;
-                        
+
                         double chance = totalGroupPerentages.getOrDefault(group, (double) 0);
 
                         if (isTargetedPercentage(audienceContextId) < groupRollout.get().getRolloutPercentage() +
