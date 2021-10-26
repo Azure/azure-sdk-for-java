@@ -4,26 +4,26 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollSocketChannel;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.util.concurrent.ThreadFactory;
 
-public class RntbdEventLoopNIO implements RntbdEventLoop {
+public class RntbdLoopEpoll implements RntbdLoop {
 
     @Override
     public String getName() {
-        return "nio";
+        return "epoll";
     }
 
     @Override
     public EventLoopGroup newEventLoopGroup(int threads, ThreadFactory threadFactory) {
-        return new NioEventLoopGroup(threads, threadFactory);
+        return new EpollEventLoopGroup(threads, threadFactory);
     }
 
     @Override
     public Class<? extends SocketChannel> getChannelClass() {
-        return NioSocketChannel.class;
+        return EpollSocketChannel.class;
     }
 }

@@ -129,10 +129,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         checkNotNull(eventLoopGroup, "expected non-null eventLoopGroup");
         checkNotNull(config, "expected non-null config");
 
-        RntbdEventLoop rntbdEventLoop = RntbdEventLoopNativeDetector.INSTANCE;
+        RntbdLoop rntbdLoop = RntbdLoopNativeDetector.getRntbdLoop(config.preferTcpNative());
         Bootstrap bootstrap = new Bootstrap()
             .group(eventLoopGroup)
-            .channel(rntbdEventLoop.getChannelClass())
+            .channel(rntbdLoop.getChannelClass())
             .option(ChannelOption.ALLOCATOR, config.allocator())
             .option(ChannelOption.AUTO_READ, true)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
@@ -140,12 +140,12 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .option(ChannelOption.SO_KEEPALIVE, true)
             .remoteAddress(this.serverKey.getHost(), this.serverKey.getPort());
 
-        if (rntbdEventLoop instanceof RntbdEventLoopEpoll) {
+        if (rntbdLoop instanceof RntbdLoopEpoll) {
             // Override the default Linux os config for tcp keep-alive, so a broken connection can be detected faster.
             // see man 7 tcp for more details.
             bootstrap
-                .option(EpollChannelOption.TCP_KEEPINTVL, 1) // default value 75s
-                .option(EpollChannelOption.TCP_KEEPIDLE, 30); // default value 2hrs
+                .option(EpollChannelOption.TCP_KEEPINTVL, config.tcpKeepIntvl()) // default value 75s
+                .option(EpollChannelOption.TCP_KEEPIDLE, config.tcpKeepIdle()); // default value 2hrs
         }
 
         return bootstrap;
@@ -514,7 +514,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private EventLoopGroup getEventLoopGroup(Options options) {
             checkNotNull(options, "expected non-null options");
 
-            RntbdEventLoop rntbdEventLoop = RntbdEventLoopNativeDetector.INSTANCE;
+            RntbdLoop rntbdEventLoop = RntbdLoopNativeDetector.getRntbdLoop(options.preferTcpNative());
             DefaultThreadFactory threadFactory =
                 new DefaultThreadFactory(
                     "cosmos-rntbd-" + rntbdEventLoop.getName(),

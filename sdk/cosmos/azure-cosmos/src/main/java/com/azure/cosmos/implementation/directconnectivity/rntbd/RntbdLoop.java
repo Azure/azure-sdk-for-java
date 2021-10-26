@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadFactory;
 /**
  * Rntbd loop with EventLoopGroup factory.
  */
-public interface RntbdEventLoop {
+public interface RntbdLoop {
 
     /**
      * Get the name of the rntbd loop which will be used as part of the thread name.
