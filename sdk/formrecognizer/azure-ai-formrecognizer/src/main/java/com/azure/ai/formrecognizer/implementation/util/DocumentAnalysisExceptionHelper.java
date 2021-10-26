@@ -3,11 +3,11 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
-import com.azure.ai.formrecognizer.models.DocumentAnalysisException;
-import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
+import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 
 /**
- * The helper class to set the non-public properties of an {@link DocumentAnalysisException} instance.
+ * The helper class to set the non-public properties of an {@link DocumentModelOperationException} instance.
  */
 public final class DocumentAnalysisExceptionHelper {
     private static DocumentAnalysisExceptionAccessor accessor;
@@ -16,14 +16,14 @@ public final class DocumentAnalysisExceptionHelper {
     }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link DocumentAnalysisException} instance.
+     * Type defining the methods to set the non-public properties of an {@link DocumentModelOperationException} instance.
      */
     public interface DocumentAnalysisExceptionAccessor {
-        void setErrorInformation(DocumentAnalysisException documentAnalysisException, FormRecognizerError formRecognizerError);
+        void setErrorInformation(DocumentModelOperationException documentModelOperationException, DocumentModelOperationError documentModelOperationError);
     }
 
     /**
-     * The method called from {@link DocumentAnalysisException} to set it's accessor.
+     * The method called from {@link DocumentModelOperationException} to set it's accessor.
      *
      * @param documentAnalysisExceptionAccessor The accessor.
      */
@@ -31,7 +31,7 @@ public final class DocumentAnalysisExceptionHelper {
         accessor = documentAnalysisExceptionAccessor;
     }
 
-    static void setErrorInformation(DocumentAnalysisException documentAnalysisException, FormRecognizerError formRecognizerError) {
-        accessor.setErrorInformation(documentAnalysisException, formRecognizerError);
+    static void setErrorInformation(DocumentModelOperationException documentModelOperationException, DocumentModelOperationError documentModelOperationError) {
+        accessor.setErrorInformation(documentModelOperationException, documentModelOperationError);
     }
 }
