@@ -58,12 +58,14 @@ public class ContextJavaDocCodeSnippets {
      */
     public void addDataToContext() {
         // BEGIN: com.azure.core.util.context.addData#object-object
-        // Users can send parent span information and pass additional metadata to attach to spans of the calling methods
-        // using the Context object
+        // Users can pass parent trace context information and additional metadata to attach to spans create by SDKs
+        // using the com.azure.core.util.Context object.
         final String hostNameValue = "host-name-value";
         final String entityPathValue = "entity-path-value";
-        final String userParentSpan = "user-parent-span";
-        Context parentSpanContext = new Context(PARENT_TRACE_CONTEXT_KEY, userParentSpan);
+
+        // TraceContext represents tracing solution context type - io.opentelemetry.context.Context for for OpenTelemetry.
+        final TraceContext parentContext = TraceContext.root();
+        Context parentSpanContext = new Context(PARENT_TRACE_CONTEXT_KEY, parentContext);
 
         // Add a new key value pair to the existing context object.
         Context updatedContext = parentSpanContext.addData(HOST_NAME_KEY, hostNameValue)
@@ -122,5 +124,11 @@ public class ContextJavaDocCodeSnippets {
             System.out.println("Key2 does not exist.");
         }
         // END: com.azure.core.util.Context.getValues
+    }
+
+    static class TraceContext {
+        public static TraceContext root() {
+            return new TraceContext();
+        }
     }
 }

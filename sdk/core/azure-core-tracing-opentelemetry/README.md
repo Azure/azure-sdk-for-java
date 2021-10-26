@@ -101,7 +101,10 @@ private static void doClientWork() {
     Span span = TRACER.spanBuilder("user-span").startSpan();
     try (Scope scope = TRACER.withSpan(span)) {
         EventData event1 = new EventData("1".getBytes(UTF_8));
-        event1.addContext(PARENT_TRACE_CONTEXT_KEY, context.current());
+
+        // you may pass context explicitly, if you don't pass any, implicit 
+        // Context.current() will be used
+        // event1.addContext(PARENT_TRACE_CONTEXT_KEY, Context.current());
 
         EventDataBatch eventDataBatch = producer.createBatch();
 

@@ -16,7 +16,6 @@ import com.azure.core.util.CoreUtils;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanKind;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
@@ -113,18 +112,13 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             .setSpanKind(SpanKind.CLIENT)
             .startSpan();
 
-        // If span is sampled in, add additional attributes
         if (span.isRecording()) {
             addPostSamplingAttributes(span, request, azContext);
         }
 
-        // For no-op tracer, SpanContext is INVALID; inject valid span headers onto outgoing request
-        SpanContext spanContext = span.getSpanContext();
-        if (spanContext.isValid()) {
-            traceContextFormat.inject(parentContext.with(span), request, contextSetter);
-        }
-
-        return parentContext.with(span);
+        Context traceContext = parentContext.with(span);
+        traceContextFormat.inject(traceContext, request, contextSetter);
+        return traceContext;
     }
 
     private static void addPostSamplingAttributes(Span span, HttpRequest request,
@@ -210,7 +204,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
      */
     private static io.opentelemetry.context.Context getTraceContextOrCurrent(HttpPipelineCallContext azContext) {
         final Optional<Object> traceContextOpt = azContext.getData(PARENT_TRACE_CONTEXT_KEY);
-        if (traceContextOpt.isPresent() && Context.class.isAssignableFrom(traceContextOpt.get().getClass())) {
+        if (traceContextOpt.isPresent() && traceContextOpt.get() instanceof Context) {
             return (io.opentelemetry.context.Context) traceContextOpt.get();
         }
 
