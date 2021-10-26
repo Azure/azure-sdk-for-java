@@ -1,0 +1,18 @@
+[
+  {
+    "name": "io.netty.internal.tcnative.SSL",
+    "allDeclaredFields": true,
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name":"com.azure.core.amqp.models.CbsAuthorizationType",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+
+
+  {
+    "name":"org.springframework.messaging.handler.annotation.Header",
+    "allDeclaredMethods":true
+  }
+]
