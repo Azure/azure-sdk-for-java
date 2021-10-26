@@ -39,16 +39,14 @@ private object SparkUtils {
         new SqlParameter("@param", UUID.randomUUID().toString)
       )
 
-      val res = container.queryItems(sqlQuery,
+      container.queryItems(sqlQuery,
         new CosmosQueryRequestOptions(),
         classOf[ObjectNode])
         .collectList()
         .block()
 
-      res.clear()
     } catch {
       case e: Exception => {
-        e.printStackTrace()
         logger("ignoring openConnectionsAndInitCaches failure", e)
       }
     }
