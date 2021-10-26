@@ -46,7 +46,7 @@ public interface PrivateDnsZoneGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName);
 
@@ -61,7 +61,7 @@ public interface PrivateDnsZoneGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName);
 
@@ -77,7 +77,7 @@ public interface PrivateDnsZoneGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateEndpointName, String privateDnsZoneGroupName, Context context);
 
@@ -213,7 +213,7 @@ public interface PrivateDnsZoneGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private dns zone group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String privateEndpointName,
@@ -232,7 +232,7 @@ public interface PrivateDnsZoneGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private dns zone group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateEndpointName,
@@ -252,7 +252,7 @@ public interface PrivateDnsZoneGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private dns zone group resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateDnsZoneGroupInner>, PrivateDnsZoneGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateEndpointName,

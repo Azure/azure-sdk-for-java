@@ -447,7 +447,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String loadBalancerName, String inboundNatRuleName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -469,7 +469,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String loadBalancerName, String inboundNatRuleName, Context context) {
         context = this.client.mergeContext(context);
@@ -491,7 +491,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String loadBalancerName, String inboundNatRuleName) {
         return beginDeleteAsync(resourceGroupName, loadBalancerName, inboundNatRuleName).getSyncPoller();
@@ -509,7 +509,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String loadBalancerName, String inboundNatRuleName, Context context) {
         return beginDeleteAsync(resourceGroupName, loadBalancerName, inboundNatRuleName, context).getSyncPoller();
@@ -933,7 +933,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return inbound NAT rule of the load balancer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String loadBalancerName,
@@ -965,7 +965,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return inbound NAT rule of the load balancer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String loadBalancerName,
@@ -994,7 +994,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return inbound NAT rule of the load balancer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String loadBalancerName,
@@ -1018,7 +1018,7 @@ public final class InboundNatRulesClientImpl implements InboundNatRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return inbound NAT rule of the load balancer.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(
         String resourceGroupName,
         String loadBalancerName,

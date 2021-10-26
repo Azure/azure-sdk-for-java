@@ -51,6 +51,9 @@ private case class ChangeFeedPartitionReader
   private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
   SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
+  private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
+  private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
+
   private val changeFeedRequestOptions = {
 
     val startLsn =
@@ -93,7 +96,7 @@ private case class ChangeFeedPartitionReader
 
   override def get(): InternalRow = {
     val objectNode = this.iterator.next()
-    CosmosRowConverter.fromObjectNodeToInternalRow(
+    cosmosRowConverter.fromObjectNodeToInternalRow(
       readSchema,
       rowSerializer,
       objectNode,

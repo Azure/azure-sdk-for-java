@@ -65,7 +65,7 @@ public interface IntegrationRuntimeObjectMetadatasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner> beginRefresh(
         String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
@@ -81,7 +81,7 @@ public interface IntegrationRuntimeObjectMetadatasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner> beginRefresh(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 

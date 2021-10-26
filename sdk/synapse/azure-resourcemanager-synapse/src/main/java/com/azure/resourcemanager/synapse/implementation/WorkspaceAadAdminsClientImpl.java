@@ -381,7 +381,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace active directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -408,7 +408,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace active directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
         context = this.client.mergeContext(context);
@@ -435,7 +435,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace active directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, aadAdminInfo).getSyncPoller();
@@ -453,7 +453,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace active directory administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, aadAdminInfo, context).getSyncPoller();
@@ -638,7 +638,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName);
         return this
@@ -657,7 +657,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String workspaceName, Context context) {
         context = this.client.mergeContext(context);
@@ -677,7 +677,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName) {
         return beginDeleteAsync(resourceGroupName, workspaceName).getSyncPoller();
     }
@@ -693,7 +693,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, Context context) {
         return beginDeleteAsync(resourceGroupName, workspaceName, context).getSyncPoller();

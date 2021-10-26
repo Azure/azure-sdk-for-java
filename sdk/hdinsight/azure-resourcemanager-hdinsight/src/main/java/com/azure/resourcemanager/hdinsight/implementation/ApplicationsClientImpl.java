@@ -640,7 +640,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HDInsight cluster application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApplicationInner>, ApplicationInner> beginCreateAsync(
         String resourceGroupName, String clusterName, String applicationName, ApplicationInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -664,7 +664,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HDInsight cluster application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApplicationInner>, ApplicationInner> beginCreateAsync(
         String resourceGroupName,
         String clusterName,
@@ -692,7 +692,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HDInsight cluster application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreate(
         String resourceGroupName, String clusterName, String applicationName, ApplicationInner parameters) {
         return beginCreateAsync(resourceGroupName, clusterName, applicationName, parameters).getSyncPoller();
@@ -711,7 +711,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the HDInsight cluster application.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationInner>, ApplicationInner> beginCreate(
         String resourceGroupName,
         String clusterName,
@@ -924,7 +924,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String applicationName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -946,7 +946,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String clusterName, String applicationName, Context context) {
         context = this.client.mergeContext(context);
@@ -968,7 +968,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String applicationName) {
         return beginDeleteAsync(resourceGroupName, clusterName, applicationName).getSyncPoller();
@@ -986,7 +986,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String applicationName, Context context) {
         return beginDeleteAsync(resourceGroupName, clusterName, applicationName, context).getSyncPoller();

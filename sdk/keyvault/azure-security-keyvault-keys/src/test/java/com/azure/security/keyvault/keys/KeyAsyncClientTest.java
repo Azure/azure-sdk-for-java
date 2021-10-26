@@ -20,6 +20,7 @@ import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyProperties;
+import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.api.Assertions;
@@ -577,7 +578,10 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                 assertNull(keyRotationPolicy.getCreatedOn());
                 assertNull(keyRotationPolicy.getUpdatedOn());
                 assertNull(keyRotationPolicy.getExpiryTime());
-                assertNull(keyRotationPolicy.getLifetimeActions());
+                assertEquals(1, keyRotationPolicy.getLifetimeActions().size());
+                assertEquals(KeyRotationPolicyAction.NOTIFY, keyRotationPolicy.getLifetimeActions().get(0).getType());
+                assertEquals("P30D", keyRotationPolicy.getLifetimeActions().get(0).getTimeBeforeExpiry());
+                assertNull(keyRotationPolicy.getLifetimeActions().get(0).getTimeAfterCreate());
             })
             .verifyComplete();
     }

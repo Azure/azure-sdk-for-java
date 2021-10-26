@@ -728,8 +728,8 @@ public class ShareFileAsyncClient {
     private Mono<Response<ShareFileProperties>> downloadResponseInChunk(Response<ShareFileProperties> response,
         AsynchronousFileChannel channel, ShareFileRange range, ShareRequestConditions requestConditions,
         Context context) {
-        return Mono.justOrEmpty(range).switchIfEmpty(Mono.just(new ShareFileRange(0, response.getValue()
-            .getContentLength())))
+        return Mono.justOrEmpty(range).switchIfEmpty(Mono.defer(() -> Mono.just(new ShareFileRange(0, response.getValue()
+            .getContentLength()))))
             .map(currentRange -> {
                 List<ShareFileRange> chunks = new ArrayList<>();
                 for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += FILE_DEFAULT_BLOCK_SIZE) {
@@ -925,7 +925,7 @@ public class ShareFileAsyncClient {
                     },
                     retryOptions.getMaxRetryRequests(),
                     range.getStart()
-                ).switchIfEmpty(Flux.just(ByteBuffer.wrap(new byte[0])));
+                ).switchIfEmpty(Flux.defer(() -> Flux.just(ByteBuffer.wrap(new byte[0]))));
 
                 return new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), bufferFlux, headers);

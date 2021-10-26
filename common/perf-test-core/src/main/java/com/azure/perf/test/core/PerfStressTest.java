@@ -41,7 +41,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     protected final HttpClient httpClient;
     protected final Iterable<HttpPipelinePolicy> policies;
 
-    private static final AtomicInteger globalParallelIndex = new AtomicInteger();
+    private static final AtomicInteger GLOBAL_PARALLEL_INDEX = new AtomicInteger();
     protected final int parallelIndex;
 
     /**
@@ -51,7 +51,7 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
      */
     public PerfStressTest(TOptions options) {
         this.options = options;
-        this.parallelIndex = globalParallelIndex.getAndIncrement();
+        this.parallelIndex = GLOBAL_PARALLEL_INDEX.getAndIncrement();
 
         final SslContext sslContext;
 
@@ -137,32 +137,30 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> {
     }
 
     /**
-     * Records responses and starts async tests in playback mode.
-     * @return An empty {@link Mono}.
+     * Records responses and starts tests in playback mode.
      */
-    public Mono<Void> recordAndStartPlaybackAsync() {
+    public void recordAndStartPlayback() {
         // Make one call to Run() before starting recording, to avoid capturing one-time setup like authorization requests.
-        return runSyncOrAsync()
-                .then(startRecordingAsync())
-                .doOnSuccess(x -> {
-                    testProxyPolicy.setRecordingId(recordingId);
-                    testProxyPolicy.setMode("record");
-                })
-                // Must use Mono.defer() to ensure fields are set from prior requests
-                .then(Mono.defer(() -> runSyncOrAsync()))
-                .then(Mono.defer(() -> stopRecordingAsync()))
-                .then(Mono.defer(() -> startPlaybackAsync()))
-                .doOnSuccess(x -> {
-                    testProxyPolicy.setRecordingId(recordingId);
-                    testProxyPolicy.setMode("playback");
-                });
+        runSyncOrAsync();
+
+        startRecordingAsync().block();
+
+        testProxyPolicy.setRecordingId(recordingId);
+        testProxyPolicy.setMode("record");
+
+        runSyncOrAsync();
+        stopRecordingAsync().block();
+        startPlaybackAsync().block();
+
+        testProxyPolicy.setRecordingId(recordingId);
+        testProxyPolicy.setMode("playback");
     }
 
-    private Mono<Void> runSyncOrAsync() {
+    private void runSyncOrAsync() {
         if (options.isSync()) {
-            return Mono.empty().then().doOnSuccess(x -> run());
+            run();
         } else {
-            return runAsync();
+            runAsync().block();
         }
     }
 

@@ -33,15 +33,14 @@ public final class DomainProperties {
     private DomainProvisioningState provisioningState;
 
     /*
-     * Endpoint for the Event Grid Domain Resource which is used for publishing
-     * the events.
+     * Endpoint for the domain.
      */
     @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
     /*
      * This determines the format that Event Grid should expect for incoming
-     * events published to the Event Grid Domain Resource.
+     * events published to the domain.
      */
     @JsonProperty(value = "inputSchema")
     private InputSchema inputSchema;
@@ -54,7 +53,7 @@ public final class DomainProperties {
     private InputSchemaMapping inputSchemaMapping;
 
     /*
-     * Metric resource id for the Event Grid Domain Resource.
+     * Metric resource id for the domain.
      */
     @JsonProperty(value = "metricResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricResourceId;
@@ -151,7 +150,7 @@ public final class DomainProperties {
     }
 
     /**
-     * Get the endpoint property: Endpoint for the Event Grid Domain Resource which is used for publishing the events.
+     * Get the endpoint property: Endpoint for the domain.
      *
      * @return the endpoint value.
      */
@@ -161,7 +160,7 @@ public final class DomainProperties {
 
     /**
      * Get the inputSchema property: This determines the format that Event Grid should expect for incoming events
-     * published to the Event Grid Domain Resource.
+     * published to the domain.
      *
      * @return the inputSchema value.
      */
@@ -171,7 +170,7 @@ public final class DomainProperties {
 
     /**
      * Set the inputSchema property: This determines the format that Event Grid should expect for incoming events
-     * published to the Event Grid Domain Resource.
+     * published to the domain.
      *
      * @param inputSchema the inputSchema value to set.
      * @return the DomainProperties object itself.
@@ -204,7 +203,7 @@ public final class DomainProperties {
     }
 
     /**
-     * Get the metricResourceId property: Metric resource id for the Event Grid Domain Resource.
+     * Get the metricResourceId property: Metric resource id for the domain.
      *
      * @return the metricResourceId value.
      */

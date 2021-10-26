@@ -52,7 +52,7 @@ public interface ExpressRoutePortsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String expressRoutePortName);
 
     /**
@@ -65,7 +65,7 @@ public interface ExpressRoutePortsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRoutePortName);
 
     /**
@@ -79,7 +79,7 @@ public interface ExpressRoutePortsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String expressRoutePortName, Context context);
 
@@ -202,7 +202,7 @@ public interface ExpressRoutePortsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute Port.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String expressRoutePortName, ExpressRoutePortInner parameters);
 
@@ -217,7 +217,7 @@ public interface ExpressRoutePortsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute Port.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginCreateOrUpdate(
         String resourceGroupName, String expressRoutePortName, ExpressRoutePortInner parameters);
 
@@ -233,7 +233,7 @@ public interface ExpressRoutePortsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute Port.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginCreateOrUpdate(
         String resourceGroupName, String expressRoutePortName, ExpressRoutePortInner parameters, Context context);
 
