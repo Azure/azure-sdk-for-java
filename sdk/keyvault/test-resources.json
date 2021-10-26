@@ -147,7 +147,7 @@
     "attestationSite": "[concat(parameters('baseName'), 'site')]",
     "attestationImageUri": "[concat('DOCKER|azsdkengsys.azurecr.io/', parameters('attestationImage'))]",
     "kvName": "[parameters('baseName')]",
-    "hsmApiVersion": "2020-04-01-preview",
+    "hsmApiVersion": "2021-06-01-preview",
     "hsmName": "[concat(parameters('baseName'), 'hsm')]",
     "mgmtApiVersion": "2019-04-01",
     "blobContainerName": "backup",
