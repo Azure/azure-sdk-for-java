@@ -23,19 +23,19 @@ public final class StartCallRecordingWithCallLocatorRequest {
     private String recordingStateCallbackUri;
 
     /*
-     * Content type of call recording.
+     * The content type of call recording.
      */
     @JsonProperty(value = "recordingContentType")
     private RecordingContent recordingContentType;
 
     /*
-     * Channel type of call recording.
+     * The channel type of call recording.
      */
     @JsonProperty(value = "recordingChannelType")
     private RecordingChannel recordingChannelType;
 
     /*
-     * Format type of call recording.
+     * The format type of call recording.
      */
     @JsonProperty(value = "recordingFormatType")
     private RecordingFormat recordingFormatType;
@@ -81,7 +81,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
     }
 
     /**
-     * Get the recordingContentType property: Content type of call recording.
+     * Get the recordingContentType property: The content type of call recording.
      *
      * @return the recordingContentType value.
      */
@@ -90,7 +90,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
     }
 
     /**
-     * Set the recordingContentType property: Content type of call recording.
+     * Set the recordingContentType property: The content type of call recording.
      *
      * @param recordingContentType the recordingContentType value to set.
      * @return the StartCallRecordingWithCallLocatorRequest object itself.
@@ -101,7 +101,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
     }
 
     /**
-     * Get the recordingChannelType property: Channel type of call recording.
+     * Get the recordingChannelType property: The channel type of call recording.
      *
      * @return the recordingChannelType value.
      */
@@ -110,7 +110,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
     }
 
     /**
-     * Set the recordingChannelType property: Channel type of call recording.
+     * Set the recordingChannelType property: The channel type of call recording.
      *
      * @param recordingChannelType the recordingChannelType value to set.
      * @return the StartCallRecordingWithCallLocatorRequest object itself.
@@ -121,7 +121,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
     }
 
     /**
-     * Get the recordingFormatType property: Format type of call recording.
+     * Get the recordingFormatType property: The format type of call recording.
      *
      * @return the recordingFormatType value.
      */
@@ -130,7 +130,7 @@ public final class StartCallRecordingWithCallLocatorRequest {
     }
 
     /**
-     * Set the recordingFormatType property: Format type of call recording.
+     * Set the recordingFormatType property: The format type of call recording.
      *
      * @param recordingFormatType the recordingFormatType value to set.
      * @return the StartCallRecordingWithCallLocatorRequest object itself.

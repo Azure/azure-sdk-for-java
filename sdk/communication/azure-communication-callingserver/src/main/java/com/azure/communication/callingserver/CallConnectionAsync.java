@@ -33,6 +33,7 @@ import com.azure.communication.callingserver.implementation.models.ResumeMeeting
 import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.UpdateAudioRoutingGroupRequest;
 import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
+import com.azure.communication.callingserver.implementation.models.TransferCallResult;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.AudioRoutingMode;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
@@ -406,7 +407,7 @@ public final class CallConnectionAsync {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> transferCall(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
+    public Mono<TransferCallResult> transferCall(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
         try {
             TransferCallRequest request = TransferCallRequestConverter.convert(targetParticipant, targetCallConnectionId, userToUserInformation);
             return callConnectionInternal.transferAsync(callConnectionId, request)
@@ -428,11 +429,11 @@ public final class CallConnectionAsync {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> transferToParticipantWithResponse(CommunicationIdentifier participant, String targetCallConnectionId, String userToUserInformation) {
+    public Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier participant, String targetCallConnectionId, String userToUserInformation) {
         return transferCallWithResponse(participant, userToUserInformation, targetCallConnectionId, Context.NONE);
     }
 
-    Mono<Response<Void>> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
+    Mono<Response<TransferCallResult>> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
         try {
             TransferCallRequest request = TransferCallRequestConverter.convert(targetParticipant, targetCallConnectionId, userToUserInformation);
             return withContext(contextValue -> {

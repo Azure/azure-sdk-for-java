@@ -6,6 +6,7 @@ package com.azure.communication.callingserver;
 import java.net.URI;
 import java.util.List;
 
+import com.azure.communication.callingserver.implementation.models.TransferCallResult;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.AudioRoutingMode;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
@@ -210,8 +211,8 @@ public final class CallConnection {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void transferCall(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
-        callConnectionAsync.transferCall(targetParticipant, targetCallConnectionId, userToUserInformation).block();
+    public TransferCallResult transferCall(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
+        return callConnectionAsync.transferCall(targetParticipant, targetCallConnectionId, userToUserInformation).block();
     }
 
     /**
@@ -226,7 +227,7 @@ public final class CallConnection {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
+    public Response<TransferCallResult> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
         return callConnectionAsync.transferCallWithResponse(targetParticipant, targetCallConnectionId, userToUserInformation, context).block();
     }
 

@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.AbstractMap.SimpleEntry;
 
+import com.azure.communication.callingserver.implementation.models.TransferCallResult;
 import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -239,7 +240,7 @@ public class CallConnectionUnitTests {
                 new SimpleEntry<String, Integer>("", 202)
             )));
 
-        Response<Void> transferCallResponse = callConnection.transferCallWithResponse(
+        Response<TransferCallResult> transferCallResponse = callConnection.transferCallWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             CALL_CONNECTION_ID,
             "",

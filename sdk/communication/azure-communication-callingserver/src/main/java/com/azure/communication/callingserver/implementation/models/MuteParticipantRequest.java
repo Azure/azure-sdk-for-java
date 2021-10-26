@@ -16,6 +16,12 @@ public final class MuteParticipantRequest {
     @JsonProperty(value = "identifier", required = true)
     private CommunicationIdentifierModel identifier;
 
+    /*
+     * The operation context.
+     */
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
+
     /**
      * Get the identifier property: The identifier of the participant to be muted in the call.
      *
@@ -33,6 +39,26 @@ public final class MuteParticipantRequest {
      */
     public MuteParticipantRequest setIdentifier(CommunicationIdentifierModel identifier) {
         this.identifier = identifier;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: The operation context.
+     *
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The operation context.
+     *
+     * @param operationContext the operationContext value to set.
+     * @return the MuteParticipantRequest object itself.
+     */
+    public MuteParticipantRequest setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 }

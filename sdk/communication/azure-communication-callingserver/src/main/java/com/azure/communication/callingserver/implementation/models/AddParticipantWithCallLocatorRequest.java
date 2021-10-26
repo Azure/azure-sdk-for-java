@@ -25,7 +25,7 @@ public final class AddParticipantWithCallLocatorRequest {
     /*
      * The participant to be added to the call.
      */
-    @JsonProperty(value = "participant")
+    @JsonProperty(value = "participant", required = true)
     private CommunicationIdentifierModel participant;
 
     /*

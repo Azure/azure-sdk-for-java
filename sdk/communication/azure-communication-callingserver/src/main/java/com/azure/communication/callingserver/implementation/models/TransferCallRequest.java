@@ -35,12 +35,6 @@ public final class TransferCallRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /*
-     * The callback URI.
-     */
-    @JsonProperty(value = "callbackUri")
-    private String callbackUri;
-
     /**
      * Get the targetParticipant property: The identity of the target where call should be transfer to.
      *
@@ -120,26 +114,6 @@ public final class TransferCallRequest {
      */
     public TransferCallRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Get the callbackUri property: The callback URI.
-     *
-     * @return the callbackUri value.
-     */
-    public String getCallbackUri() {
-        return this.callbackUri;
-    }
-
-    /**
-     * Set the callbackUri property: The callback URI.
-     *
-     * @param callbackUri the callbackUri value to set.
-     * @return the TransferCallRequest object itself.
-     */
-    public TransferCallRequest setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
         return this;
     }
 }

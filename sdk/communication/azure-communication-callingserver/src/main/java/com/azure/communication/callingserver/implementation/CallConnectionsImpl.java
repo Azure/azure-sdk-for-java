@@ -24,6 +24,7 @@ import com.azure.communication.callingserver.implementation.models.PlayAudioToPa
 import com.azure.communication.callingserver.implementation.models.RemoveParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.ResumeMeetingAudioRequest;
 import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
+import com.azure.communication.callingserver.implementation.models.TransferCallResult;
 import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.UpdateAudioRoutingGroupRequest;
 import com.azure.core.annotation.BodyParam;
@@ -155,7 +156,7 @@ public final class CallConnectionsImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") PlayAudioRequest request,
+                @BodyParam("application/json") PlayAudioRequest playAudioRequest,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -182,7 +183,7 @@ public final class CallConnectionsImpl {
         @Post("/calling/callConnections/{callConnectionId}/:transfer")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> transfer(
+        Mono<Response<TransferCallResult>> transfer(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -1117,7 +1118,7 @@ public final class CallConnectionsImpl {
      * Play audio in the call.
      *
      * @param callConnectionId The call connection id.
-     * @param request Play audio request.
+     * @param playAudioRequest The play audio request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1125,7 +1126,7 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PlayAudioResultInternal>> playAudioWithResponseAsync(
-            String callConnectionId, PlayAudioRequest request) {
+            String callConnectionId, PlayAudioRequest playAudioRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1133,7 +1134,7 @@ public final class CallConnectionsImpl {
                                 this.client.getEndpoint(),
                                 callConnectionId,
                                 this.client.getApiVersion(),
-                                request,
+                                playAudioRequest,
                                 accept,
                                 context));
     }
@@ -1142,7 +1143,7 @@ public final class CallConnectionsImpl {
      * Play audio in the call.
      *
      * @param callConnectionId The call connection id.
-     * @param request Play audio request.
+     * @param playAudioRequest The play audio request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1151,25 +1152,30 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PlayAudioResultInternal>> playAudioWithResponseAsync(
-            String callConnectionId, PlayAudioRequest request, Context context) {
+            String callConnectionId, PlayAudioRequest playAudioRequest, Context context) {
         final String accept = "application/json";
         return service.playAudio(
-                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), request, accept, context);
+                this.client.getEndpoint(),
+                callConnectionId,
+                this.client.getApiVersion(),
+                playAudioRequest,
+                accept,
+                context);
     }
 
     /**
      * Play audio in the call.
      *
      * @param callConnectionId The call connection id.
-     * @param request Play audio request.
+     * @param playAudioRequest The play audio request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PlayAudioResultInternal> playAudioAsync(String callConnectionId, PlayAudioRequest request) {
-        return playAudioWithResponseAsync(callConnectionId, request)
+    public Mono<PlayAudioResultInternal> playAudioAsync(String callConnectionId, PlayAudioRequest playAudioRequest) {
+        return playAudioWithResponseAsync(callConnectionId, playAudioRequest)
                 .flatMap(
                         (Response<PlayAudioResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -1184,7 +1190,7 @@ public final class CallConnectionsImpl {
      * Play audio in the call.
      *
      * @param callConnectionId The call connection id.
-     * @param request Play audio request.
+     * @param playAudioRequest The play audio request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1193,8 +1199,8 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PlayAudioResultInternal> playAudioAsync(
-            String callConnectionId, PlayAudioRequest request, Context context) {
-        return playAudioWithResponseAsync(callConnectionId, request, context)
+            String callConnectionId, PlayAudioRequest playAudioRequest, Context context) {
+        return playAudioWithResponseAsync(callConnectionId, playAudioRequest, context)
                 .flatMap(
                         (Response<PlayAudioResultInternal> res) -> {
                             if (res.getValue() != null) {
@@ -1209,22 +1215,22 @@ public final class CallConnectionsImpl {
      * Play audio in the call.
      *
      * @param callConnectionId The call connection id.
-     * @param request Play audio request.
+     * @param playAudioRequest The play audio request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PlayAudioResultInternal playAudio(String callConnectionId, PlayAudioRequest request) {
-        return playAudioAsync(callConnectionId, request).block();
+    public PlayAudioResultInternal playAudio(String callConnectionId, PlayAudioRequest playAudioRequest) {
+        return playAudioAsync(callConnectionId, playAudioRequest).block();
     }
 
     /**
      * Play audio in the call.
      *
      * @param callConnectionId The call connection id.
-     * @param request Play audio request.
+     * @param playAudioRequest The play audio request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1233,8 +1239,8 @@ public final class CallConnectionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PlayAudioResultInternal> playAudioWithResponse(
-            String callConnectionId, PlayAudioRequest request, Context context) {
-        return playAudioWithResponseAsync(callConnectionId, request, context).block();
+            String callConnectionId, PlayAudioRequest playAudioRequest, Context context) {
+        return playAudioWithResponseAsync(callConnectionId, playAudioRequest, context).block();
     }
 
     /**
@@ -1439,10 +1445,10 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> transferWithResponseAsync(
+    public Mono<Response<TransferCallResult>> transferWithResponseAsync(
             String callConnectionId, TransferCallRequest transferCallRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -1465,10 +1471,10 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> transferWithResponseAsync(
+    public Mono<Response<TransferCallResult>> transferWithResponseAsync(
             String callConnectionId, TransferCallRequest transferCallRequest, Context context) {
         final String accept = "application/json";
         return service.transfer(
@@ -1488,12 +1494,19 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> transferAsync(String callConnectionId, TransferCallRequest transferCallRequest) {
+    public Mono<TransferCallResult> transferAsync(String callConnectionId, TransferCallRequest transferCallRequest) {
         return transferWithResponseAsync(callConnectionId, transferCallRequest)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(
+                        (Response<TransferCallResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1505,12 +1518,20 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> transferAsync(String callConnectionId, TransferCallRequest transferCallRequest, Context context) {
+    public Mono<TransferCallResult> transferAsync(
+            String callConnectionId, TransferCallRequest transferCallRequest, Context context) {
         return transferWithResponseAsync(callConnectionId, transferCallRequest, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(
+                        (Response<TransferCallResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -1521,10 +1542,11 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void transfer(String callConnectionId, TransferCallRequest transferCallRequest) {
-        transferAsync(callConnectionId, transferCallRequest).block();
+    public TransferCallResult transfer(String callConnectionId, TransferCallRequest transferCallRequest) {
+        return transferAsync(callConnectionId, transferCallRequest).block();
     }
 
     /**
@@ -1536,10 +1558,10 @@ public final class CallConnectionsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response payload for transfer call operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> transferWithResponse(
+    public Response<TransferCallResult> transferWithResponse(
             String callConnectionId, TransferCallRequest transferCallRequest, Context context) {
         return transferWithResponseAsync(callConnectionId, transferCallRequest, context).block();
     }
