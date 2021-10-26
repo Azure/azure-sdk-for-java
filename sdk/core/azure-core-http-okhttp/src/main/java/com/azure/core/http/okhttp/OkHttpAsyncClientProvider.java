@@ -19,8 +19,8 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
 
     @Override
     public HttpClient createInstance() {
+        // by default use a singleton instance of http client
         DEFAULT_HTTP_CLIENT.compareAndSet(null, new OkHttpAsyncHttpClientBuilder().build());
-
         return DEFAULT_HTTP_CLIENT.get();
     }
 
@@ -34,9 +34,10 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
                 .writeTimeout(clientOptions.getWriteTimeout())
                 .readTimeout(clientOptions.getReadTimeout());
 
-            int maximumConnectionPoolSize = (clientOptions.getMaximumConnectionPoolSize() == 0)
-                ? 5 // By default OkHttp uses a maximum idle connection count of 5.
-                : clientOptions.getMaximumConnectionPoolSize();
+            Integer poolSize = clientOptions.getMaximumConnectionPoolSize();
+            int maximumConnectionPoolSize = (poolSize != null && poolSize > 0)
+                ? poolSize
+                : 5; // By default, OkHttp uses a maximum idle connection count of 5.
 
             ConnectionPool connectionPool = new ConnectionPool(maximumConnectionPoolSize,
                 clientOptions.getConnectionIdleTimeout().toMillis(), TimeUnit.MILLISECONDS);
