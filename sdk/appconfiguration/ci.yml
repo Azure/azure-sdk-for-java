@@ -6,6 +6,7 @@ trigger:
       - main
       - hotfix/*
       - release/*
+      - azconfigFeature/*
   paths:
     include:
       - sdk/appconfiguration/ci.yml
@@ -47,6 +48,7 @@ pr:
       - feature/*
       - hotfix/*
       - release/*
+      - azconfigFeature/*
   paths:
     include:
       - sdk/appconfiguration/ci.yml
