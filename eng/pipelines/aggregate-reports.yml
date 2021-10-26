@@ -163,7 +163,7 @@ stages:
             parameters:
               ExclusionDataBaseFileName: "JavaPoliCheckExclusion"
               PublishAnalysisLogs: false
-          
+
           - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
             displayName: 'Run CredScan'
             inputs:
@@ -176,7 +176,6 @@ stages:
               GdnBreakAllTools: false
               GdnBreakGdnToolCredScan: true
               GdnBreakGdnToolCredScanSeverity: Error
-              GdnBreakBaselineFiles: $(Build.SourcesDirectory)\eng\java.gdnbaselines
               GdnBreakBaselines: baseline
               # Used for generating baseline file.
               # GdnBreakOutputBaselineFile: java

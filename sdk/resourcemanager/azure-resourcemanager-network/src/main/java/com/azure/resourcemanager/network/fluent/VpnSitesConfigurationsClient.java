@@ -44,7 +44,7 @@ public interface VpnSitesConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDownloadAsync(
         String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request);
 
@@ -59,7 +59,7 @@ public interface VpnSitesConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDownload(
         String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request);
 
@@ -75,7 +75,7 @@ public interface VpnSitesConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDownload(
         String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context);
 

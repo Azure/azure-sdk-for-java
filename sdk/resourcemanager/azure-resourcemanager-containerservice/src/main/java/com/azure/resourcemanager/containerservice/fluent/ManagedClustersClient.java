@@ -598,7 +598,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String resourceName, ManagedClusterInner parameters);
 
@@ -613,7 +613,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, ManagedClusterInner parameters);
 
@@ -629,7 +629,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context);
 
@@ -704,7 +704,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTagsAsync(
         String resourceGroupName, String resourceName, TagsObject parameters);
 
@@ -719,7 +719,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(
         String resourceGroupName, String resourceName, TagsObject parameters);
 
@@ -735,7 +735,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed cluster.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(
         String resourceGroupName, String resourceName, TagsObject parameters, Context context);
 
@@ -806,7 +806,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName);
 
     /**
@@ -819,7 +819,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName);
 
     /**
@@ -833,7 +833,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
 
     /**
@@ -900,7 +900,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginResetServicePrincipalProfileAsync(
         String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
 
@@ -915,7 +915,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(
         String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters);
 
@@ -931,7 +931,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(
         String resourceGroupName,
         String resourceName,
@@ -1011,7 +1011,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginResetAadProfileAsync(
         String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters);
 
@@ -1026,7 +1026,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResetAadProfile(
         String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters);
 
@@ -1042,7 +1042,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResetAadProfile(
         String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context);
 
@@ -1114,7 +1114,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRotateClusterCertificatesAsync(
         String resourceGroupName, String resourceName);
 
@@ -1129,7 +1129,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(String resourceGroupName, String resourceName);
 
     /**
@@ -1144,7 +1144,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(
         String resourceGroupName, String resourceName, Context context);
 
@@ -1218,7 +1218,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String resourceName);
 
     /**
@@ -1234,7 +1234,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String resourceName);
 
     /**
@@ -1251,7 +1251,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String resourceName, Context context);
 
     /**
@@ -1326,7 +1326,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String resourceName);
 
     /**
@@ -1340,7 +1340,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String resourceName);
 
     /**
@@ -1355,7 +1355,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String resourceName, Context context);
 
     /**
@@ -1427,7 +1427,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run command result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload);
 
@@ -1443,7 +1443,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run command result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload);
 
@@ -1460,7 +1460,7 @@ public interface ManagedClustersClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run command result.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
         String resourceGroupName, String resourceName, RunCommandRequest requestPayload, Context context);
 

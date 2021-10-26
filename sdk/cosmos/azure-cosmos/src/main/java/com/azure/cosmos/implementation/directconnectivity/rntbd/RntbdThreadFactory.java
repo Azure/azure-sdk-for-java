@@ -18,18 +18,10 @@ class RntbdThreadFactory implements ThreadFactory {
     private final boolean daemon;
     private final String name;
     private final int priority;
-    private final ThreadGroup threadGroup;
     private final AtomicInteger threadCount;
 
     @SuppressWarnings("removal")
     RntbdThreadFactory(final String name, final boolean daemon, final int priority) {
-
-        final SecurityManager securityManager = System.getSecurityManager();
-
-        this.threadGroup = securityManager != null
-            ? securityManager.getThreadGroup()
-            : Thread.currentThread().getThreadGroup();
-
         this.daemon = daemon;
         this.name = name;
         this.priority = priority;
@@ -40,7 +32,7 @@ class RntbdThreadFactory implements ThreadFactory {
     public Thread newThread(final Runnable runnable) {
 
         final String name = lenientFormat(NAME_TEMPLATE, this.name, this.threadCount.incrementAndGet());
-        final Thread thread = new Thread(this.threadGroup, runnable, name, 0);
+        final Thread thread = new Thread(runnable, name);
 
         if (thread.isDaemon() != this.daemon) {
             thread.setDaemon(this.daemon);

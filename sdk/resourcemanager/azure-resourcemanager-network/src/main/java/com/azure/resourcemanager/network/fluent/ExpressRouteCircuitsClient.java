@@ -54,7 +54,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String circuitName);
 
     /**
@@ -67,7 +67,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String circuitName);
 
     /**
@@ -81,7 +81,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String circuitName, Context context);
 
     /**
@@ -203,7 +203,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
 
@@ -218,7 +218,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdate(
         String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
 
@@ -234,7 +234,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRouteCircuit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdate(
         String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, Context context);
 
@@ -371,7 +371,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
@@ -387,7 +387,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
@@ -404,7 +404,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
         beginListArpTable(
             String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
@@ -486,7 +486,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
@@ -503,7 +503,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath);
@@ -521,7 +521,7 @@ public interface ExpressRouteCircuitsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
         beginListRoutesTable(
@@ -606,7 +606,7 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table summary associated with the express route circuit in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
             PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>,
             ExpressRouteCircuitsRoutesTableSummaryListResultInner>
@@ -626,7 +626,7 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table summary associated with the express route circuit in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>,
             ExpressRouteCircuitsRoutesTableSummaryListResultInner>
@@ -647,7 +647,7 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table summary associated with the express route circuit in a resource
      *     group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>,
             ExpressRouteCircuitsRoutesTableSummaryListResultInner>
