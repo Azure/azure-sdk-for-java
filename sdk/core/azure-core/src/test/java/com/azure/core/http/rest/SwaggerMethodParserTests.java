@@ -12,6 +12,7 @@ import com.azure.core.annotation.Head;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Options;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
@@ -73,6 +74,9 @@ public class SwaggerMethodParserTests {
 
         @Patch("test")
         void patchMethod();
+
+        @Options("test")
+        void optionsMethod();
     }
 
     @Test
@@ -94,20 +98,23 @@ public class SwaggerMethodParserTests {
 
     private static Stream<Arguments> httpMethodSupplier() throws NoSuchMethodException {
         Class<OperationMethods> clazz = OperationMethods.class;
+        String clazzName = clazz.getName();
 
         return Stream.of(
             Arguments.of(clazz.getDeclaredMethod("getMethod"), HttpMethod.GET, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.getMethod"),
+                clazzName + ".getMethod"),
             Arguments.of(clazz.getDeclaredMethod("putMethod"), HttpMethod.PUT, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.putMethod"),
+                clazzName + ".putMethod"),
             Arguments.of(clazz.getDeclaredMethod("headMethod"), HttpMethod.HEAD, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.headMethod"),
+                clazzName + ".headMethod"),
             Arguments.of(clazz.getDeclaredMethod("deleteMethod"), HttpMethod.DELETE, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.deleteMethod"),
+                clazzName + ".deleteMethod"),
             Arguments.of(clazz.getDeclaredMethod("postMethod"), HttpMethod.POST, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.postMethod"),
+                clazzName + ".postMethod"),
             Arguments.of(clazz.getDeclaredMethod("patchMethod"), HttpMethod.PATCH, "test",
-                "com.azure.core.http.rest.SwaggerMethodParserTests$OperationMethods.patchMethod")
+                clazzName + ".patchMethod"),
+            Arguments.of(clazz.getDeclaredMethod("optionsMethod"), HttpMethod.OPTIONS, "test",
+                clazzName + ".optionsMethod")
         );
     }
 
