@@ -55,7 +55,7 @@ spring.jms.servicebus.topic-prefetch|Specify the topicPrefetch value. Default=0|
 
 
 Note: `JmsListenerContainerFactory` beans also support all [Spring native application properties of JmsListener][Spring_jms_configuration].    
-For more infomation about prefetch, please refer to this [doc](https://docs.microsoft.com/en-gb/azure/service-bus-messaging/service-bus-prefetch?tabs=java).
+For more infomation about prefetch, please refer to this [doc](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-prefetch?tabs=java).
 
 ### Implement basic Service Bus functionality
 
