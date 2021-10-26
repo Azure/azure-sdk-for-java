@@ -4,10 +4,12 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncContainer
+import com.azure.cosmos.models.{CosmosQueryRequestOptions, SqlParameter, SqlQuerySpec}
 import com.azure.cosmos.spark.diagnostics.ILogger
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
+import java.util.UUID
 import java.util.concurrent.ThreadFactory
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -33,9 +35,20 @@ private object SparkUtils {
 
   def safeOpenConnectionInitCaches(container: CosmosAsyncContainer, logger: (String, Exception) => Unit): Unit = {
     try {
-      container.openConnectionsAndInitCaches().block()
+      val sqlQuery = new SqlQuerySpec(s"SELECT * FROM r WHERE r['${UUID.randomUUID().toString}'] = @param",
+        new SqlParameter("@param", UUID.randomUUID().toString)
+      )
+
+      val res = container.queryItems(sqlQuery,
+        new CosmosQueryRequestOptions(),
+        classOf[ObjectNode])
+        .collectList()
+        .block()
+
+      res.clear()
     } catch {
       case e: Exception => {
+        e.printStackTrace()
         logger("ignoring openConnectionsAndInitCaches failure", e)
       }
     }
