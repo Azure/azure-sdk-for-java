@@ -61,7 +61,7 @@ directive:
           }
         }
       }
-    }    
+    }
 ```
 
 ### Customization
