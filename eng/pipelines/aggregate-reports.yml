@@ -39,13 +39,20 @@ stages:
           displayName: 'Build All Libraries'
           inputs:
             mavenPomFile: pom.xml
-            options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Paggregatereports'
+            options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
             jdkVersionOption: $(JavaBuildVersion)
             jdkArchitectureOption: 'x64'
             publishJUnitResults: false
             goals: 'clean install'
+
+        - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+          # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
+          # builds should be sufficient.
+          # Only run if building all libraries succeeded.
+          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+          displayName: 'Component Detection'
 
         - task: Maven@3
           displayName: 'Generate Reports'
@@ -131,13 +138,6 @@ stages:
           # CredScan build task is Windows only (https://aka.ms/credscan).
           vmImage: 'windows-2019'
         steps:
-        - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-          # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
-          # builds should be sufficient.
-          # Only run if building all libraries succeeded.
-          condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-          displayName: 'Component Detection'
-
         # Run link verification at the end as it will run no matter the pipeline passing or failing.
         # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
         - template: /eng/common/pipelines/templates/steps/verify-links.yml
