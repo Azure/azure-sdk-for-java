@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.21.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.20.1 (2021-10-27)
 #### Key Bug Fixes
 * Removed `AfterBurner` module for Java version 16+.
