@@ -12,12 +12,8 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A converter to turn a {@link Message} to {@link EventData} and vice versa.
@@ -28,14 +24,8 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubMessageConverter.class);
 
-    private static final Set<String> SYSTEM_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        EventHubHeaders.PARTITION_KEY,
-        EventHubHeaders.ENQUEUED_TIME,
-        EventHubHeaders.OFFSET,
-        EventHubHeaders.SEQUENCE_NUMBER)));
-
     @Override
-    protected byte[] getPayload(EventData azureMessage) {
+    protected Object getPayload(EventData azureMessage) {
         return azureMessage.getBody();
     }
 
@@ -67,7 +57,6 @@ public class EventHubMessageConverter extends AbstractAzureMessageConverter<Even
         Map<String, Object> headers = super.buildCustomHeaders(azureMessage);
 
         headers.putAll(getSystemProperties(azureMessage));
-
         headers.putAll(azureMessage.getProperties());
         return headers;
     }

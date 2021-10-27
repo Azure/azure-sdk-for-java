@@ -15,6 +15,7 @@ import com.azure.resourcemanager.videoanalyzer.models.SkuName;
 import com.azure.resourcemanager.videoanalyzer.models.UnsecuredEndpoint;
 import com.azure.resourcemanager.videoanalyzer.models.UsernamePasswordCredentials;
 import com.azure.resourcemanager.videoanalyzer.models.VideoCreationProperties;
+import com.azure.resourcemanager.videoanalyzer.models.VideoPublishingOptions;
 import com.azure.resourcemanager.videoanalyzer.models.VideoSink;
 import java.util.Arrays;
 
@@ -74,7 +75,11 @@ public final class PipelineTopologiesCreateOrUpdateSamples {
                                 new VideoCreationProperties()
                                     .withTitle("Parking Lot (Camera 1)")
                                     .withDescription("Parking lot south entrance")
-                                    .withSegmentLength("PT30S"))))
+                                    .withSegmentLength("PT30S"))
+                            .withVideoPublishingOptions(
+                                new VideoPublishingOptions()
+                                    .withDisableArchive("false")
+                                    .withDisableRtspPublishing("true"))))
             .create();
     }
 }
