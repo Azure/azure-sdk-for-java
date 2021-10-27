@@ -6,6 +6,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -125,6 +126,11 @@ public final class ShareProperties {
      */
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
+
+    /*
+     * The provisioned bandwidth.
+     */
+    private Integer provisionedBandwidthMiBps;
 
     /**
      * Get the lastModified property: The lastModified property.
@@ -254,6 +260,26 @@ public final class ShareProperties {
      */
     public ShareProperties setProvisionedEgressMBps(Integer provisionedEgressMBps) {
         this.provisionedEgressMBps = provisionedEgressMBps;
+        return this;
+    }
+
+    /**
+     * Get the provisionedBandwidthMiBps property: The ProvisionedBandwidthMiBps property.
+     *
+     * @return the provisionedBandwidthMiBps value.
+     */
+    public Integer getProvisionedBandwidthMiBps() {
+        return this.provisionedBandwidthMiBps;
+    }
+
+    /**
+     * Set the provisionedBandwidthMiBps property: The ProvisionedBandwidthMiBps property.
+     *
+     * @param provisionedBandwidthMiBps the provisionedBandwidthMiBps value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setProvisionedBandwidthMiBps(Integer provisionedBandwidthMiBps) {
+        this.provisionedBandwidthMiBps = provisionedBandwidthMiBps;
         return this;
     }
 
