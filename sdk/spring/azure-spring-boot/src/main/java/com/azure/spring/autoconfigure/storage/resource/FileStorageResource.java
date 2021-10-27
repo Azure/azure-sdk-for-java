@@ -148,7 +148,7 @@ public class FileStorageResource extends AzureStorageResource {
         }
         if (!shareFileClient.exists()) {
             ShareFileHttpHeaders header = null;
-            if(StringUtils.hasText(contentType)){
+            if (StringUtils.hasText(contentType)) {
                 header = new ShareFileHttpHeaders();
                 header.setContentType(contentType);
             }
