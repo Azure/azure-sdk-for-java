@@ -392,7 +392,7 @@ public final class EdgeModulesListProvisioningTokenSamples {
                 "testaccount2",
                 "edgeModule1",
                 new ListProvisioningTokenInput()
-                    .withExpirationDate(OffsetDateTime.parse("3021-01-23T11:04:49.0526841-08:00")),
+                    .withExpirationDate(OffsetDateTime.parse("2023-01-23T11:04:49.0526841-08:00")),
                 Context.NONE);
     }
 }
@@ -768,7 +768,8 @@ public final class PipelineJobsCreateOrUpdateSamples {
                     .asList(
                         new ParameterDefinition()
                             .withName("timesequences")
-                            .withValue("[[2020-10-05T03:30:00Z, 2020-10-05T04:30:00Z]]")))
+                            .withValue("[[\"2020-10-05T03:30:00Z\", \"2020-10-05T04:30:00Z\"]]"),
+                        new ParameterDefinition().withName("videoSourceName").withValue("camera001")))
             .create();
     }
 }
@@ -875,6 +876,7 @@ import com.azure.resourcemanager.videoanalyzer.models.SkuName;
 import com.azure.resourcemanager.videoanalyzer.models.UnsecuredEndpoint;
 import com.azure.resourcemanager.videoanalyzer.models.UsernamePasswordCredentials;
 import com.azure.resourcemanager.videoanalyzer.models.VideoCreationProperties;
+import com.azure.resourcemanager.videoanalyzer.models.VideoPublishingOptions;
 import com.azure.resourcemanager.videoanalyzer.models.VideoSink;
 import java.util.Arrays;
 
@@ -934,7 +936,11 @@ public final class PipelineTopologiesCreateOrUpdateSamples {
                                 new VideoCreationProperties()
                                     .withTitle("Parking Lot (Camera 1)")
                                     .withDescription("Parking lot south entrance")
-                                    .withSegmentLength("PT30S"))))
+                                    .withSegmentLength("PT30S"))
+                            .withVideoPublishingOptions(
+                                new VideoPublishingOptions()
+                                    .withDisableArchive("false")
+                                    .withDisableRtspPublishing("true"))))
             .create();
     }
 }

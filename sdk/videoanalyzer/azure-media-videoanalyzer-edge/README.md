@@ -1,6 +1,6 @@
 # Azure Video Analyzer Edge client library for Java
 
-Azure Video Analyzer provides a platform to build intelligent video applications that span the edge and the cloud. The platform offers the capability to capture, record, and analyze live video along with publishing the results, video and video analytics, to Azure services in the cloud or the edge. It is designed to be an extensible platform, enabling you to connect different video analysis edge modules (such as Cognitive services containers, custom edge modules built by you with open-source machine learning models or custom models trained with your own data) to it and use them to analyze live video without worrying about the complexity of building and running a live video pipeline.
+Azure Video Analyzer is an [Azure Applied AI Service][applied-ai-service] that provides a platform for you to build intelligent video applications that can span both edge and cloud infrastructures. The platform offers the capability to capture, record, and analyze live video along with publishing the results, video and video analytics, to Azure services at the edge or in the cloud. It is designed to be an extensible platform, enabling you to connect different video inferencing edge modules such as Cognitive services modules, or custom inferencing modules that have been trained with your own data using either open-source machine learning or [Azure Machine Learning][machine-learning].
 
 Use the client library for Video Analyzer Edge to:
 
@@ -40,7 +40,11 @@ Install the Azure Video Analyzer Edge client library for Java with Maven:
 
     | SDK          | Video Analyzer edge module |
     | ------------ | -------------------------- |
-    | 1.0.0-beta.x | 1.0                        |
+    | 1.0.0-beta.5 | 1.1                        |
+    | 1.0.0-beta.4 | 1.0                        |
+    | 1.0.0-beta.3 | 1.0                        |
+    | 1.0.0-beta.2 | 1.0                        |
+    | 1.0.0-beta.1 | 1.0                        |
 
 ### Creating a pipeline topology and making requests
 
@@ -58,39 +62,40 @@ A _pipeline topology_ is a blueprint or template for creating live pipelines. It
 
 To create a pipeline topology you need to define sources and sinks.
 
-<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L25-L72 -->
-
+<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L30-L79 -->
 ```java
 private static PipelineTopology buildPipeLineTopology() {
     IotHubMessageSource msgSource = new IotHubMessageSource("iotMsgSource")
-        .setHubInputName("${hubSourceInput}");
+    .setHubInputName("${hubSourceInput}");
 
     UsernamePasswordCredentials creds = new UsernamePasswordCredentials("${rtspUsername}", "${rtspPassword}");
 
     UnsecuredEndpoint endpoint = new UnsecuredEndpoint("${rtspUrl}")
-        .setCredentials(creds);
+    .setCredentials(creds);
 
     RtspSource rtspSource = new RtspSource("rtspSource", endpoint);
 
     NodeInput rtspInput = new NodeInput("rtspSource");
 
     OutputSelector rtspOutputSelector = new OutputSelector()
-        .setProperty(OutputSelectorProperty.MEDIA_TYPE)
-        .setOperator(OutputSelectorOperator.IS)
-        .setValue("video");
+    .setProperty(OutputSelectorProperty.MEDIA_TYPE)
+    .setOperator(OutputSelectorOperator.IS)
+    .setValue("video");
     ImageScale imageScale = new ImageScale()
-        .setMode(ImageScaleMode.PRESERVE_ASPECT_RATIO)
-        .setHeight("416")
-        .setWidth("416");
+    .setMode(ImageScaleMode.PRESERVE_ASPECT_RATIO)
+    .setHeight("416")
+    .setWidth("416");
     ImageFormatBmp imageFormat = new ImageFormatBmp();
     ImageProperties image = new ImageProperties()
-        .setScale(imageScale)
-        .setFormat(imageFormat);
+    .setScale(imageScale)
+    .setFormat(imageFormat);
     ExtensionProcessorBase httpExtension = new HttpExtension("inferenceClient", Arrays.asList(rtspInput), endpoint, image);
 
     NodeInput nodeInput = new NodeInput("inferenceClient");
 
-    IotHubMessageSink msgSink = new IotHubMessageSink("msgSink", Arrays.asList(nodeInput),"${hubSinkOutputName}");
+    IotHubMessageSink msgSink = new IotHubMessageSink("msgSink",
+    Arrays.asList(nodeInput),
+    "${hubSinkOutputName}");
 
     ParameterDeclaration userName = new ParameterDeclaration("rtspUserName", ParameterType.STRING);
 
@@ -99,13 +104,13 @@ private static PipelineTopology buildPipeLineTopology() {
     ParameterDeclaration hubOutput = new ParameterDeclaration("hubSinkOutputName", ParameterType.STRING);
 
     PipelineTopologyProperties pipeProps = new PipelineTopologyProperties()
-        .setParameters(Arrays.asList(userName, password, url, hubOutput))
-        .setSources(Arrays.asList(rtspSource))
-        .setSinks(Arrays.asList(msgSink))
-        .setProcessors(Arrays.asList(httpExtension));
+    .setParameters(Arrays.asList(userName, password, url, hubOutput))
+    .setSources(Arrays.asList(rtspSource))
+    .setSinks(Arrays.asList(msgSink))
+    .setProcessors(Arrays.asList(httpExtension));
 
     PipelineTopology pipelineTopology = new PipelineTopology(TOPOLOGY_NAME)
-        .setProperties(pipeProps);
+    .setProperties(pipeProps);
 
     return pipelineTopology;
 }
@@ -115,25 +120,24 @@ private static PipelineTopology buildPipeLineTopology() {
 
 To create a live pipeline, you need to have an existing pipeline topology.
 
-<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L74-L92 -->
-
+<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L85-L103 -->
 ```java
 private static LivePipeline buildLivePipeline() {
     ParameterDefinition hubParam = new ParameterDefinition("hubSinkOutputName")
-        .setValue("testHubOutput");
+    .setValue("testHubOutput");
     ParameterDefinition userParam = new ParameterDefinition("rtspUserName")
-        .setValue("testuser");
+    .setValue("testuser");
     ParameterDefinition urlParam = new ParameterDefinition("rtspUrl")
-        .setValue("rtsp://sample-url-from-camera");
+    .setValue("rtsp://sample-url-from-camera");
     ParameterDefinition passParam = new ParameterDefinition("rtspPassword")
-        .setValue("testpass");
+    .setValue("testpass");
 
     LivePipelineProperties livePipelineProps = new LivePipelineProperties()
-        .setParameters(Arrays.asList(urlParam, userParam, passParam, hubParam))
-        .setTopologyName(TOPOLOGY_NAME);
+    .setParameters(Arrays.asList(urlParam, userParam, passParam, hubParam))
+    .setTopologyName(TOPOLOGY_NAME);
 
     LivePipeline livePipeline = new LivePipeline(LIVE_PIPELINE_NAME)
-        .setProperties(livePipelineProps);
+    .setProperties(livePipelineProps);
 
     return livePipeline;
 }
@@ -141,8 +145,7 @@ private static LivePipeline buildLivePipeline() {
 
 ### Invoking a direct method
 
-<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L94-L104 -->
-
+<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L132-L142 -->
 ```java
 private static MethodResult invokeDirectMethodHelper(DeviceMethod client, String methodName, String payload) throws IOException, IotHubException {
     MethodResult result = null;
@@ -157,8 +160,7 @@ private static MethodResult invokeDirectMethodHelper(DeviceMethod client, String
 }
 ```
 
-<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L111-L112 -->
-
+<!-- embedme C:\azure-sdk-for-java\sdk\videoanalyzer\azure-media-videoanalyzer-edge\src\samples\java\com\azure\media\videoanalyzer\edge\LvaInvokeModuleSample.java#L160-L161 -->
 ```java
 PipelineTopologySetRequest setPipelineTopologyRequest = new PipelineTopologySetRequest(pipelineTopology);
 MethodResult setPipelineResult = invokeDirectMethodHelper(dClient, setPipelineTopologyRequest.getMethodName(), setPipelineTopologyRequest.getPayloadAsJson());
@@ -211,5 +213,7 @@ additional questions or comments.
 [iot-device-sdk]: https://search.maven.org/search?q=a:iot-service-client
 [iot-hub-sdk]: https://github.com/Azure/azure-iot-sdk-java
 [github-page-issues]: https://github.com/Azure/azure-sdk-for-java/issues
+[applied-ai-service]: https://azure.microsoft.com/product-categories/applied-ai-services/#services
+[machine-learning]: https://azure.microsoft.com/services/machine-learning
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fvideoanalyzer%2Fazure-media-videoanalyzer-edge%2FREADME.png)
