@@ -2,6 +2,11 @@
 
 ## 2.10.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Enum `KeyType` changed to subclass of `ExpandableStringEnum`.
+- `RegionsClient` removed.
+
 ### Other Changes
 
 #### Dependency Updates
