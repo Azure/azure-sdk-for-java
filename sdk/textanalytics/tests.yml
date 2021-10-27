@@ -12,8 +12,6 @@ extends:
         - name: azure-ai-textanalytics
           groupId: com.azure
           safeName: azureaitextanalytics
-      # resource creation is disabled because we are trying to test the persistent endpoint.
-      DisableAzureResourceCreation: true
       # temporary env vars for custom text features
       EnvVars:
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
