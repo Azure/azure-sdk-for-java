@@ -182,6 +182,11 @@ public final class VideoEntityImpl implements VideoEntity, VideoEntity.Definitio
         return this;
     }
 
+    public VideoEntityImpl withMediaInfo(VideoMediaInfo mediaInfo) {
+        this.innerModel().withMediaInfo(mediaInfo);
+        return this;
+    }
+
     public VideoEntityImpl withArchival(VideoArchival archival) {
         this.innerModel().withArchival(archival);
         return this;
