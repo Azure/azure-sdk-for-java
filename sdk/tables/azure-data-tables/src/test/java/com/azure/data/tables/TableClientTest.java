@@ -3,11 +3,9 @@
 
 package com.azure.data.tables;
 
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -53,37 +51,8 @@ import static org.junit.jupiter.api.Assertions.fail;
  * Tests {@link TableClient}.
  */
 public class TableClientTest extends TableClientTestBase {
-    private static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
-    private static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
-
     private TableClient tableClient;
-    private HttpPipelinePolicy recordPolicy;
-    private HttpClient playbackClient;
 
-    private TableClientBuilder getClientBuilder(String tableName, String connectionString) {
-        final TableClientBuilder builder = new TableClientBuilder()
-            .connectionString(connectionString)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .tableName(tableName);
-
-        if (interceptorManager.isPlaybackMode()) {
-            playbackClient = interceptorManager.getPlaybackClient();
-
-            builder.httpClient(playbackClient);
-        } else {
-            builder.httpClient(DEFAULT_HTTP_CLIENT);
-
-            if (!interceptorManager.isLiveMode()) {
-                recordPolicy = interceptorManager.getRecordPolicy();
-
-                builder.addPolicy(recordPolicy);
-            }
-        }
-
-        return builder;
-    }
-
-    @Test
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
@@ -508,14 +477,12 @@ public class TableClientTest extends TableClientTestBase {
 
     @Test
     public void updateEntityWithResponseReplace() {
-        updateEntityWithResponseImpl(TableEntityUpdateMode.REPLACE, testResourceNamer.randomName("partitionKey", 20),
-            testResourceNamer.randomName("rowKey", 20));
+        updateEntityWithResponseImpl(TableEntityUpdateMode.REPLACE, "partitionKey", "rowKey");
     }
 
     @Test
     public void updateEntityWithResponseMerge() {
-        updateEntityWithResponseImpl(TableEntityUpdateMode.MERGE, testResourceNamer.randomName("partitionKey", 20),
-            testResourceNamer.randomName("rowKey", 20));
+        updateEntityWithResponseImpl(TableEntityUpdateMode.MERGE, "partitionKey", "rowKey");
     }
 
     /**
@@ -706,23 +673,9 @@ public class TableClientTest extends TableClientTestBase {
 
     @Test
     public void submitTransaction() {
-        submitTransactionImpl("partitionKey", "rowKey");
-    }
-
-    @Test
-    public void submitTransactionForEntitiesWithSingleQuotesInPartitionKey() {
-        submitTransactionImpl("partition'Key", "rowKey");
-    }
-
-    @Test
-    public void submitTransactionForEntitiesWithSingleQuotesInRowKey() {
-        submitTransactionImpl("partitionKey", "row'Key");
-    }
-
-    private void submitTransactionImpl(String partitionKeyPrefix, String rowKeyPrefix) {
-        String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
-        String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
-        String rowKeyValue2 = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
         int expectedBatchStatusCode = 202;
         int expectedOperationStatusCode = 204;
 
@@ -759,15 +712,29 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     @Test
-    public void submitTransactionAsyncAllActions() {
-        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        String rowKeyValueCreate = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueUpsertInsert = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueUpsertMerge = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueUpsertReplace = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueUpdateMerge = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueUpdateReplace = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValueDelete = testResourceNamer.randomName("rowKey", 20);
+    public void submitTransactionAllActions() {
+        submitTransactionAllActionsImpl("partitionKey", "rowKey");
+    }
+
+    @Test
+    public void submitTransactionAllActionsForEntitiesWithSingleQuotesInPartitionKey() {
+        submitTransactionAllActionsImpl("partition'Key", "rowKey");
+    }
+
+    @Test
+    public void submitTransactionAllActionsForEntitiesWithSingleQuotesInRowKey() {
+        submitTransactionAllActionsImpl("partitionKey", "row'Key");
+    }
+
+    private void submitTransactionAllActionsImpl(String partitionKeyPrefix, String rowKeyPrefix) {
+        String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        String rowKeyValueCreate = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueUpsertInsert = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueUpsertMerge = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueUpsertReplace = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueUpdateMerge = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueUpdateReplace = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValueDelete = testResourceNamer.randomName(rowKeyPrefix, 20);
 
         int expectedBatchStatusCode = 202;
         int expectedOperationStatusCode = 204;
@@ -819,7 +786,7 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     @Test
-    public void submitTransactionAsyncWithFailingAction() {
+    public void submitTransactionWithFailingAction() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
         String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
@@ -848,7 +815,7 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     @Test
-    public void submitTransactionAsyncWithSameRowKeys() {
+    public void submitTransactionWithSameRowKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
 
@@ -882,7 +849,7 @@ public class TableClientTest extends TableClientTestBase {
     }
 
     @Test
-    public void submitTransactionAsyncWithDifferentPartitionKeys() {
+    public void submitTransactionWithDifferentPartitionKeys() {
         String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
         String partitionKeyValue2 = testResourceNamer.randomName("partitionKey", 20);
         String rowKeyValue = testResourceNamer.randomName("rowKey", 20);

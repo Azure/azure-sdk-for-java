@@ -13,6 +13,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
@@ -92,6 +93,8 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
 @ServiceClient(builder = TableClientBuilder.class, isAsync = true)
 public final class TableAsyncClient {
     private static final String DELIMITER_CONTINUATION_TOKEN = ";";
+    static final String DO_NOT_ESCAPE_SINGLE_QUOTES =
+        "AZURE_DATA_TABLES_DO_NOT_ESCAPE_SINGLE_QUOTES_IN_PARTITION_OR_ROW_KEYS";
     private final ClientLogger logger = new ClientLogger(TableAsyncClient.class);
     private final String tableName;
     private final AzureTableImpl tablesImplementation;
@@ -444,21 +447,32 @@ public final class TableAsyncClient {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
 
+        boolean doNotEscapeSingleQuotes =
+            Configuration.getGlobalConfiguration().get(DO_NOT_ESCAPE_SINGLE_QUOTES, false);
+
+        String partitionKey = entity.getPartitionKey();
+        String rowKey = entity.getRowKey();
+
+        if (!doNotEscapeSingleQuotes) {
+            partitionKey = partitionKey.replace("'", "''");
+            rowKey = rowKey.replace("'", "''");
+        }
+
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return tablesImplementation.getTables()
-                    .updateEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null,
-                        null, null, entity.getProperties(), null, context)
+                    .updateEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, null,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
                 return tablesImplementation.getTables()
-                    .mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null, null,
-                        null, entity.getProperties(), null, context)
+                    .mergeEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, null,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -565,22 +579,33 @@ public final class TableAsyncClient {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
 
+        boolean doNotEscapeSingleQuotes =
+            Configuration.getGlobalConfiguration().get(DO_NOT_ESCAPE_SINGLE_QUOTES, false);
+
+        String partitionKey = entity.getPartitionKey();
+        String rowKey = entity.getRowKey();
+
+        if (!doNotEscapeSingleQuotes) {
+            partitionKey = partitionKey.replace("'", "''");
+            rowKey = rowKey.replace("'", "''");
+        }
+
         String eTag = ifUnchanged ? entity.getETag() : "*";
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return tablesImplementation.getTables()
-                    .updateEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null,
-                        null, eTag, entity.getProperties(), null, context)
+                    .updateEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, eTag,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                             null));
             } else {
                 return tablesImplementation.getTables()
-                    .mergeEntityWithResponseAsync(tableName, entity.getPartitionKey(), entity.getRowKey(), null, null,
-                        eTag, entity.getProperties(), null, context)
+                    .mergeEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, eTag,
+                        entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                     .map(response ->
                         new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -664,9 +689,17 @@ public final class TableAsyncClient {
             return monoError(logger, new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }
 
+        boolean doNotEscapeSingleQuotes =
+            Configuration.getGlobalConfiguration().get(DO_NOT_ESCAPE_SINGLE_QUOTES, false);
+
+        if (!doNotEscapeSingleQuotes) {
+            partitionKey = partitionKey.replace("'", "''");
+            rowKey = rowKey.replace("'", "''");
+        }
+
         try {
             return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName, partitionKey, rowKey, eTag,
-                null, null, null, context)
+                    null, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -908,7 +941,18 @@ public final class TableAsyncClient {
             return monoError(logger, new IllegalArgumentException("'partitionKey' and 'rowKey' cannot be null."));
         }
 
+        boolean doNotEscapeSingleQuotes =
+            Configuration.getGlobalConfiguration().get(DO_NOT_ESCAPE_SINGLE_QUOTES, false);
+
+        if (!doNotEscapeSingleQuotes) {
+            partitionKey = partitionKey.replace("'", "''");
+            rowKey = rowKey.replace("'", "''");
+        }
+
         try {
+            String finalPartitionKey = partitionKey;
+            String finalRowKey = rowKey;
+
             return tablesImplementation.getTables().queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName,
                 partitionKey, rowKey, null, null, queryOptions, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
@@ -917,7 +961,7 @@ public final class TableAsyncClient {
 
                     if (matchingEntity == null || matchingEntity.isEmpty()) {
                         logger.info("There was no matching entity. Table: {}, partition key: {}, row key: {}.",
-                            tableName, partitionKey, rowKey);
+                            tableName, finalPartitionKey, finalRowKey);
 
                         sink.complete();
 

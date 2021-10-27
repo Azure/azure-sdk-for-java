@@ -3,10 +3,43 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import org.junit.jupiter.api.Test;
 
 public abstract class TableClientTestBase extends TestBase {
+    protected static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+    protected static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
+
+    protected HttpPipelinePolicy recordPolicy;
+    protected HttpClient playbackClient;
+
+    protected TableClientBuilder getClientBuilder(String tableName, String connectionString) {
+        final TableClientBuilder builder = new TableClientBuilder()
+            .connectionString(connectionString)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .tableName(tableName);
+
+        if (interceptorManager.isPlaybackMode()) {
+            playbackClient = interceptorManager.getPlaybackClient();
+
+            builder.httpClient(playbackClient);
+        } else {
+            builder.httpClient(DEFAULT_HTTP_CLIENT);
+
+            if (!interceptorManager.isLiveMode()) {
+                recordPolicy = interceptorManager.getRecordPolicy();
+
+                builder.addPolicy(recordPolicy);
+            }
+        }
+
+        return builder;
+    }
+
     @Test
     public abstract void createTable();
 
@@ -119,22 +152,22 @@ public abstract class TableClientTestBase extends TestBase {
     public abstract void submitTransaction();
 
     @Test
-    public abstract void submitTransactionForEntitiesWithSingleQuotesInPartitionKey();
+    public abstract void submitTransactionAllActions();
 
     @Test
-    public abstract void submitTransactionForEntitiesWithSingleQuotesInRowKey();
+    public abstract void submitTransactionAllActionsForEntitiesWithSingleQuotesInPartitionKey();
 
     @Test
-    public abstract void submitTransactionAsyncAllActions();
+    public abstract void submitTransactionAllActionsForEntitiesWithSingleQuotesInRowKey();
 
     @Test
-    public abstract void submitTransactionAsyncWithFailingAction();
+    public abstract void submitTransactionWithFailingAction();
 
     @Test
-    public abstract void submitTransactionAsyncWithSameRowKeys();
+    public abstract void submitTransactionWithSameRowKeys();
 
     @Test
-    public abstract void submitTransactionAsyncWithDifferentPartitionKeys();
+    public abstract void submitTransactionWithDifferentPartitionKeys();
 
     @Test
     public abstract void generateSasTokenWithMinimumParameters();
