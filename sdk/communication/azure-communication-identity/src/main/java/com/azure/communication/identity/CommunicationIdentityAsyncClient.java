@@ -290,7 +290,7 @@ public final class CommunicationIdentityAsyncClient {
      * @return Communication Identity access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AccessToken> exchangeTeamsUserAadToken(String teamsUserAadToken) {
+    public Mono<AccessToken> getTokenForTeamsUser(String teamsUserAadToken) {
         try {
             TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
             requestBody.setToken(teamsUserAadToken);
@@ -311,7 +311,7 @@ public final class CommunicationIdentityAsyncClient {
      * @return Communication Identity access token with response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AccessToken>> exchangeTeamsUserAadTokenWithResponse(String teamsUserAadToken) {
+    public Mono<Response<AccessToken>> getTokenForTeamsUserWithResponse(String teamsUserAadToken) {
         try {
             TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
             requestBody.setToken(teamsUserAadToken);

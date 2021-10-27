@@ -9,12 +9,13 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.spring.integration.core.api.BatchConsumerConfig;
 import com.azure.spring.integration.core.api.CheckpointConfig;
 import com.azure.spring.integration.core.api.CheckpointMode;
 import com.azure.spring.integration.core.api.PartitionSupplier;
 import com.azure.spring.integration.core.api.StartPosition;
-import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
 import com.azure.spring.integration.eventhub.api.EventHubClientFactory;
+import com.azure.spring.integration.eventhub.converter.EventHubMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -22,11 +23,11 @@ import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
-import java.util.List;
-import java.util.HashMap;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -44,12 +45,14 @@ public class AbstractEventHubTemplate {
 
     private final EventHubClientFactory clientFactory;
 
-    private EventHubMessageConverter messageConverter = new EventHubMessageConverter();
+    protected EventHubMessageConverter messageConverter = new EventHubMessageConverter();
 
     private StartPosition startPosition = StartPosition.LATEST;
 
     private CheckpointConfig checkpointConfig = CheckpointConfig.builder()
         .checkpointMode(CheckpointMode.RECORD).build();
+
+    private BatchConsumerConfig batchConsumerConfig;
 
     AbstractEventHubTemplate(EventHubClientFactory clientFactory) {
         this.clientFactory = clientFactory;
@@ -99,7 +102,7 @@ public class AbstractEventHubTemplate {
 
     protected void createEventProcessorClient(String name, String consumerGroup, EventHubProcessor eventHubProcessor) {
         eventHubProcessor.setEventPosition(buildEventPosition(startPosition));
-        this.clientFactory.createEventProcessorClient(name, consumerGroup, eventHubProcessor);
+        this.clientFactory.createEventProcessorClient(name, consumerGroup, eventHubProcessor, batchConsumerConfig);
     }
 
     protected void startEventProcessorClient(String name, String consumerGroup) {
@@ -145,6 +148,14 @@ public class AbstractEventHubTemplate {
     public void setCheckpointConfig(CheckpointConfig checkpointConfig) {
         LOGGER.info("EventHubTemplate checkpoint config becomes: {}", checkpointConfig);
         this.checkpointConfig = checkpointConfig;
+    }
+
+    public BatchConsumerConfig getBatchConsumerConfig() {
+        return batchConsumerConfig;
+    }
+
+    public void setBatchConsumerConfig(BatchConsumerConfig batchConsumerConfig) {
+        this.batchConsumerConfig = batchConsumerConfig;
     }
 
 }
