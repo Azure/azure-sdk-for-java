@@ -38,6 +38,10 @@
 - [ListRegionalBySubscriptionForTopicType](#eventsubscriptions_listregionalbysubscriptionfortopictype)
 - [Update](#eventsubscriptions_update)
 
+## ExtensionTopics
+
+- [Get](#extensiontopics_get)
+
 ## Operations
 
 - [List](#operations_list)
@@ -1229,6 +1233,31 @@ public final class EventSubscriptionsUpdateSamples {
                     .withIsSubjectCaseSensitive(true))
             .withLabels(Arrays.asList("label1", "label2"))
             .apply();
+    }
+}
+```
+
+### ExtensionTopics_Get
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for ExtensionTopics Get. */
+public final class ExtensionTopicsGetSamples {
+    /*
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/ExtensionTopics_Get.json
+     */
+    /**
+     * Sample code: ExtensionTopics_Get.
+     *
+     * @param manager Entry point to EventGridManager.
+     */
+    public static void extensionTopicsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager
+            .extensionTopics()
+            .getWithResponse(
+                "subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/microsoft.storage/storageaccounts/exampleResourceName/providers/Microsoft.eventgrid/extensionTopics/default",
+                Context.NONE);
     }
 }
 ```

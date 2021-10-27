@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.DocumentAnalysisClient;
 import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
-import com.azure.ai.formrecognizer.models.DocumentAnalysisException;
+import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.administration.models.AccountProperties;
@@ -86,7 +86,7 @@ public final class DocumentModelAdministrationClient {
      *
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the trained {@link DocumentModel custom document analysis model}.
-     * @throws DocumentAnalysisException If building model fails with {@link OperationStatus#FAILED} is created.
+     * @throws DocumentModelOperationException If building model fails with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -118,7 +118,7 @@ public final class DocumentModelAdministrationClient {
      *
      * @return A {@link SyncPoller} that polls the building model operation until it has completed, has failed, or has
      * been cancelled. The completed operation returns the built {@link DocumentModel custom document analysis model}.
-     * @throws DocumentAnalysisException If building the model fails with {@link OperationStatus#FAILED} is created.
+     * @throws DocumentModelOperationException If building the model fails with {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If {@code trainingFilesUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -245,7 +245,7 @@ public final class DocumentModelAdministrationClient {
      *
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModel composed model}.
-     * @throws DocumentAnalysisException If create composed model operation fails and model with
+     * @throws DocumentModelOperationException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code modelIDs} is null or empty.
      */
@@ -275,7 +275,7 @@ public final class DocumentModelAdministrationClient {
      *
      * @return A {@link SyncPoller} that polls the create composed model operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns the {@link DocumentModel composed model}.
-     * @throws DocumentAnalysisException If create composed model operation fails and model with
+     * @throws DocumentModelOperationException If create composed model operation fails and model with
      * {@link OperationStatus#FAILED} is created.
      * @throws NullPointerException If the list of {@code modelIDs} is null or empty.
      */

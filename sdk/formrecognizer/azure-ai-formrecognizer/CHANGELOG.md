@@ -3,8 +3,12 @@
 ## 4.0.0-beta.2 (Unreleased)
 
 ### Features Added
+- Update `HttpResponseException` to use azure-core `ResponseError`.
+- Added client validation to check for empty modelId passed by the user for `beginAnalyzeDocument` methods.
 
 ### Breaking Changes
+- Rename `DocumentAnalysisException`, `FormRecognizerError`, `InnerError` to 
+`DocumentModelOperationException`, `DocumentModelOperationError`, `DocumentModelOperationInnerError` respectively. 
 
 ### Bugs Fixed
 

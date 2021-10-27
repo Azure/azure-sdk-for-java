@@ -11,7 +11,7 @@ import com.azure.ai.formrecognizer.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.DocumentAnalysisException;
+import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -79,7 +79,7 @@ public final class DocumentAnalysisAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}..
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
@@ -105,7 +105,7 @@ public final class DocumentAnalysisAsyncClient {
      * that may be passed when analyzing documents.
      * @return A {@link PollerFlux} that polls progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
@@ -124,7 +124,8 @@ public final class DocumentAnalysisAsyncClient {
             if (CoreUtils.isNullOrEmpty(documentUrl)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
                     + " be null or empty"));
-            }            if (CoreUtils.isNullOrEmpty(modelId)) {
+            }
+            if (CoreUtils.isNullOrEmpty(modelId)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                     + " be null or empty"));
             }
@@ -142,7 +143,7 @@ public final class DocumentAnalysisAsyncClient {
                                 new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                                 context)
                             .map(analyzeDocumentResponse ->
-                                Transforms.toFormRecognizerOperationResult(
+                                Transforms.toDocumentOperationResult(
                                     analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
                     logger),
                 pollingOperation(resultId ->
@@ -182,7 +183,7 @@ public final class DocumentAnalysisAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
@@ -213,8 +214,8 @@ public final class DocumentAnalysisAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
-     * with an {@link OperationStatus#FAILED}..
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -250,7 +251,7 @@ public final class DocumentAnalysisAsyncClient {
                             document,
                             length,
                             context)
-                        .map(analyzeDocumentResponse -> Transforms.toFormRecognizerOperationResult(
+                        .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
                             analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
                     logger),
                 pollingOperation(
@@ -319,7 +320,7 @@ public final class DocumentAnalysisAsyncClient {
             case FAILED:
                 // TODO (Revisit error logic https://github.com/Azure/azure-sdk-for-java-pr/issues/1337)
                 throw logger.logExceptionAsError(
-                    Transforms.toDocumentAnalysisException(analyzeResultOperationResponse.getValue().getError()));
+                    Transforms.toDocumentModelOperationException(analyzeResultOperationResponse.getValue().getError()));
             default:
                 status = LongRunningOperationStatus.fromString(
                     analyzeResultOperationResponse.getValue().getStatus().toString(), true);
