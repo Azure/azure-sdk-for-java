@@ -179,6 +179,11 @@ public class BlobStorageCustomization extends Customization {
 
         customization.getRawEditor().removeFile(fileName);
         customization.getRawEditor().addFile(fileName, updatedCode);
+
+        ClassCustomization listBlobsIncludeItem = models.getClass("ListBlobsIncludeItem");
+        listBlobsIncludeItem.renameEnumMember("IMMUTABILITYPOLICY", "IMMUTABILITY_POLICY")
+            .renameEnumMember("LEGALHOLD", "LEGAL_HOLD")
+            .renameEnumMember("DELETEDWITHVERSIONS", "DELETED_WITH_VERSIONS");
     }
 
     private void modifyUnexpectedResponseExceptionType(MethodCustomization method) {

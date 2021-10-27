@@ -31,6 +31,7 @@ import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.TaggedBlobItem;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
@@ -262,7 +263,10 @@ public class ModelHelper {
      */
     public static BlobItem populateBlobItem(BlobItemInternal blobItemInternal) {
         BlobItem blobItem = new BlobItem();
-        blobItem.setName(blobItemInternal.getName());
+        String blobName = blobItemInternal.getName().isEncoded()
+            ? Utility.urlDecode(blobItemInternal.getName().getContent())
+            : blobItemInternal.getName().getContent();
+        blobItem.setName(blobName);
         blobItem.setDeleted(blobItemInternal.isDeleted());
         blobItem.setSnapshot(blobItemInternal.getSnapshot());
         blobItem.setProperties(populateBlobItemProperties(blobItemInternal.getProperties()));

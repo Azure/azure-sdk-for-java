@@ -5,6 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.blob.implementation.models.BlobName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -16,14 +17,14 @@ public final class BlobPrefix {
      * The Name property.
      */
     @JsonProperty(value = "Name", required = true)
-    private String name;
+    private BlobName name;
 
     /**
      * Get the name property: The Name property.
      *
      * @return the name value.
      */
-    public String getName() {
+    public BlobName getName() {
         return this.name;
     }
 
@@ -33,7 +34,7 @@ public final class BlobPrefix {
      * @param name the name value to set.
      * @return the BlobPrefix object itself.
      */
-    public BlobPrefix setName(String name) {
+    public BlobPrefix setName(BlobName name) {
         this.name = name;
         return this;
     }
