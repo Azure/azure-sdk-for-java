@@ -8,6 +8,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
@@ -31,6 +32,7 @@ import java.io.FileNotFoundException;
 import java.io.OutputStream;
 
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -195,11 +197,14 @@ public class AzureBlobStorageTests {
             when(blockBlob.getProperties()).thenReturn(blobProperties);
             when(blobProperties.getBlobSize()).thenReturn(CONTENT_LENGTH);
 
-            // mock data for testGetContentType()
+            // mock data for method testGetContentType()
             when(blobContainer.getBlobClient("b/a.pdf")).thenReturn(blob);
             when(blobContainer.getBlobClient("b/a.txt")).thenReturn(blob);
             when(blobContainer.getBlobClient("b/a.jpg")).thenReturn(blob);
             when(blobContainer.getBlobClient("b.unknown")).thenReturn(blob);
+
+            when(blockBlob.getBlobOutputStream(any(BlockBlobOutputStreamOptions.class)))
+                          .thenReturn(mock(BlobOutputStream.class));
 
             return serviceClientBuilder;
         }
