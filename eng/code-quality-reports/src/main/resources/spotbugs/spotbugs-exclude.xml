@@ -1310,6 +1310,13 @@
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
+    <!-- Exception is required to handle when getting java version  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Utils"/>
+    <Method name="getJavaVersion"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
   <!-- Exception is required to handle and fallback to default pair  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
