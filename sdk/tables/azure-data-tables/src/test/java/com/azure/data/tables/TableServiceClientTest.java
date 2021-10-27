@@ -254,7 +254,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         TableClient tableClient = serviceClient.getTableClient(tableName);
 
         // Act & Assert
-        TableClientTest.getEntityWithResponseImpl(tableClient, this.testResourceNamer);
+        TableClientTest.getEntityWithResponseImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
     @Test

@@ -301,7 +301,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         TableAsyncClient tableClient = serviceClient.getTableClient(tableName);
 
         // Act & Assert
-        TableAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, this.testResourceNamer);
+        TableAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
     @Test

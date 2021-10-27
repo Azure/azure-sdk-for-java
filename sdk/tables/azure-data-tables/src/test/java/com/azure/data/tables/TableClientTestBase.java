@@ -17,6 +17,12 @@ public abstract class TableClientTestBase extends TestBase {
     public abstract void createEntity();
 
     @Test
+    public abstract void createEntityWithSingleQuotesInPartitionKey();
+
+    @Test
+    public abstract void createEntityWithSingleQuotesInRowKey();
+
+    @Test
     public abstract void createEntityWithResponse();
 
     @Test
@@ -41,6 +47,12 @@ public abstract class TableClientTestBase extends TestBase {
     public abstract void deleteEntity();
 
     @Test
+    public abstract void deleteEntityWithSingleQuotesInPartitionKey();
+
+    @Test
+    public abstract void deleteEntityWithSingleQuotesInRowKey();
+
+    @Test
     public abstract void deleteNonExistingEntity();
 
     @Test
@@ -53,6 +65,12 @@ public abstract class TableClientTestBase extends TestBase {
     public abstract void deleteEntityWithResponseMatchETag();
 
     @Test
+    public abstract void getEntityWithSingleQuotesInPartitionKey();
+
+    @Test
+    public abstract void getEntityWithSingleQuotesInRowKey();
+
+    @Test
     public abstract void getEntityWithResponse();
 
     @Test
@@ -60,6 +78,12 @@ public abstract class TableClientTestBase extends TestBase {
 
     /*@Test
     public abstract void getEntityWithResponseSubclass();*/
+
+    @Test
+    public abstract void updateEntityWithSingleQuotesInPartitionKey();
+
+    @Test
+    public abstract void updateEntityWithSingleQuotesInRowKey();
 
     @Test
     public abstract void updateEntityWithResponseReplace();
@@ -72,6 +96,12 @@ public abstract class TableClientTestBase extends TestBase {
 
     @Test
     public abstract void listEntities();
+
+    @Test
+    public abstract void listEntitiesWithSingleQuotesInPartitionKey();
+
+    @Test
+    public abstract void listEntitiesWithSingleQuotesInRowKey();
 
     @Test
     public abstract void listEntitiesWithFilter();
@@ -87,6 +117,12 @@ public abstract class TableClientTestBase extends TestBase {
 
     @Test
     public abstract void submitTransaction();
+
+    @Test
+    public abstract void submitTransactionForEntitiesWithSingleQuotesInPartitionKey();
+
+    @Test
+    public abstract void submitTransactionForEntitiesWithSingleQuotesInRowKey();
 
     @Test
     public abstract void submitTransactionAsyncAllActions();

@@ -93,7 +93,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         StepVerifier.resetDefaultTimeout();
     }
 
-    @Override
+    @Test
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
@@ -135,9 +135,23 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
     @Test
     public void createEntity() {
+        createEntityImpl("partitionKey", "rowKey");
+    }
+
+    @Test
+    public void createEntityWithSingleQuotesInPartitionKey() {
+        createEntityImpl("partition'Key", "rowKey");
+    }
+
+    @Test
+    public void createEntityWithSingleQuotesInRowKey() {
+        createEntityImpl("partitionKey", "row'Key");
+    }
+
+    private void createEntityImpl(String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
 
         // Act & Assert
@@ -304,9 +318,23 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
     @Test
     public void deleteEntity() {
+        deleteEntityImpl("partitionKey", "rowKey");
+    }
+
+    @Test
+    public void deleteEntityWithSingleQuotesInPartitionKey() {
+        deleteEntityImpl("partition'Key", "rowKey");
+    }
+
+    @Test
+    public void deleteEntityWithSingleQuotesInRowKey() {
+        deleteEntityImpl("partitionKey", "row'Key");
+    }
+
+    private void deleteEntityImpl(String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
 
         tableClient.createEntity(tableEntity).block(TIMEOUT);
@@ -388,14 +416,25 @@ public class TableAsyncClientTest extends TableClientTestBase {
     }
 
     @Test
-    public void getEntityWithResponse() {
-        getEntityWithResponseAsyncImpl(this.tableClient, this.testResourceNamer);
+    public void getEntityWithSingleQuotesInPartitionKey() {
+        getEntityWithResponseAsyncImpl(this.tableClient, this.testResourceNamer, "partition'Key", "rowKey");
     }
 
-    static void getEntityWithResponseAsyncImpl(TableAsyncClient tableClient, TestResourceNamer testResourceNamer) {
+    @Test
+    public void getEntityWithSingleQuotesInRowKey() {
+        getEntityWithResponseAsyncImpl(this.tableClient, this.testResourceNamer, "partitionKey", "row'Key");
+    }
+
+    @Test
+    public void getEntityWithResponse() {
+        getEntityWithResponseAsyncImpl(this.tableClient, this.testResourceNamer, "partitionKey", "rowKey");
+    }
+
+    static void getEntityWithResponseAsyncImpl(TableAsyncClient tableClient, TestResourceNamer testResourceNamer,
+                                               String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
         final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
         final int expectedStatusCode = 200;
         tableClient.createEntity(tableEntity).block(TIMEOUT);
@@ -445,6 +484,16 @@ public class TableAsyncClientTest extends TableClientTestBase {
             })
             .expectComplete()
             .verify();
+    }
+
+    @Test
+    public void updateEntityWithSingleQuotesInPartitionKey() {
+        updateEntityWithResponseAsync(TableEntityUpdateMode.REPLACE, "partition'Key", "rowKey");
+    }
+
+    @Test
+    public void updateEntityWithSingleQuotesInRowKey() {
+        updateEntityWithResponseAsync(TableEntityUpdateMode.REPLACE, "partitionKey", "row'Key");
     }
 
     // Will not be supporting subclasses of TableEntity for the time being.
@@ -509,23 +558,23 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
     @Test
     public void updateEntityWithResponseReplace() {
-        updateEntityWithResponseAsync(TableEntityUpdateMode.REPLACE);
+        updateEntityWithResponseAsync(TableEntityUpdateMode.REPLACE, "partitionKey", "rowKey");
     }
 
     @Test
     public void updateEntityWithResponseMerge() {
-        updateEntityWithResponseAsync(TableEntityUpdateMode.MERGE);
+        updateEntityWithResponseAsync(TableEntityUpdateMode.MERGE, "partitionKey", "rowKey");
     }
 
     /**
      * In the case of {@link TableEntityUpdateMode#MERGE}, we expect both properties to exist.
      * In the case of {@link TableEntityUpdateMode#REPLACE}, we only expect {@code newPropertyKey} to exist.
      */
-    void updateEntityWithResponseAsync(TableEntityUpdateMode mode) {
+    void updateEntityWithResponseAsync(TableEntityUpdateMode mode, String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
         final boolean expectOldProperty = mode == TableEntityUpdateMode.MERGE;
-        final String partitionKeyValue = testResourceNamer.randomName("APartitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("ARowKey", 20);
+        final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
         final int expectedStatusCode = 204;
         final String oldPropertyKey = "propertyA";
         final String newPropertyKey = "propertyB";
@@ -586,10 +635,24 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
     @Test
     public void listEntities() {
+        listEntitiesImpl("partitionKey", "rowKey");
+    }
+
+    @Test
+    public void listEntitiesWithSingleQuotesInPartitionKey() {
+        listEntitiesImpl("partition'Key", "rowKey");
+    }
+
+    @Test
+    public void listEntitiesWithSingleQuotesInRowKey() {
+        listEntitiesImpl("partitionKey", "row'Key");
+    }
+
+    private void listEntitiesImpl(String partitionKeyPrefix, String rowKeyPrefix) {
         // Arrange
-        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        final String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+        final String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        final String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
+        final String rowKeyValue2 = testResourceNamer.randomName(rowKeyPrefix, 20);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue)).block(TIMEOUT);
         tableClient.createEntity(new TableEntity(partitionKeyValue, rowKeyValue2)).block(TIMEOUT);
 
@@ -689,9 +752,23 @@ public class TableAsyncClientTest extends TableClientTestBase {
 
     @Test
     public void submitTransaction() {
-        String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
-        String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
-        String rowKeyValue2 = testResourceNamer.randomName("rowKey", 20);
+        submitTransactionImpl("partitionKey", "rowKey");
+    }
+
+    @Test
+    public void submitTransactionForEntitiesWithSingleQuotesInPartitionKey() {
+        submitTransactionImpl("partition'Key", "rowKey");
+    }
+
+    @Test
+    public void submitTransactionForEntitiesWithSingleQuotesInRowKey() {
+        submitTransactionImpl("partitionKey", "row'Key");
+    }
+
+    private void submitTransactionImpl(String partitionKeyPrefix, String rowKeyPrefix) {
+        String partitionKeyValue = testResourceNamer.randomName(partitionKeyPrefix, 20);
+        String rowKeyValue = testResourceNamer.randomName(rowKeyPrefix, 20);
+        String rowKeyValue2 = testResourceNamer.randomName(rowKeyPrefix, 20);
         int expectedBatchStatusCode = 202;
         int expectedOperationStatusCode = 204;
 
