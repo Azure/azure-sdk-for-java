@@ -1,5 +1,6 @@
 name: Microsoft Azure SDK for Java
 on:
+  workflow_dispatch:
   push:
     branches: [ main ]
     paths-ignore:
