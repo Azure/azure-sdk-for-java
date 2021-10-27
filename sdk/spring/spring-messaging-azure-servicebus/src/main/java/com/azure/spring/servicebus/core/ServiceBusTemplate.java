@@ -5,15 +5,15 @@ package com.azure.spring.servicebus.core;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
+import com.azure.spring.servicebus.health.Instrumentation;
+import com.azure.spring.servicebus.health.InstrumentationManager;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
-import com.azure.spring.servicebus.health.Instrumentation;
-import com.azure.spring.servicebus.health.InstrumentationManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -36,7 +36,7 @@ import static com.azure.spring.messaging.checkpoint.CheckpointMode.RECORD;
 public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements SendOperation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTemplate.class);
-    private static final CheckpointConfig CHECKPOINT_RECORD = CheckpointConfig.builder().checkpointMode(RECORD).build();
+    private static final CheckpointConfig CHECKPOINT_RECORD = new CheckpointConfig(RECORD);
     private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();
     protected InstrumentationManager instrumentationManager = new InstrumentationManager();
     protected final T clientFactory;
@@ -92,7 +92,7 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
         if (checkpointConfig == null) {
             return;
         }
-        Assert.state(isValidCheckpointMode(checkpointConfig.getCheckpointMode()),
+        Assert.state(isValidCheckpointMode(checkpointConfig.getMode()),
             "Only MANUAL or RECORD checkpoint " + "mode is supported " + "in " + "ServiceBusTemplate");
         this.checkpointConfig = checkpointConfig;
         LOGGER.info("ServiceBusTemplate checkpoint config becomes: {}", this.checkpointConfig);

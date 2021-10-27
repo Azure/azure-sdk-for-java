@@ -11,7 +11,6 @@ import java.util.function.Consumer;
 /**
  * Operations for subscribing to a destination with a consumer group.
  *
- * @author Warren Zhu
  */
 public interface SubscribeByGroupOperation extends Checkpointable {
 

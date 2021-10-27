@@ -3,15 +3,22 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
+import com.azure.messaging.eventhubs.CheckpointStore;
+import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubChannelProvisioner;
-import com.azure.spring.eventhubs.core.EventHubOperation;
-import com.azure.spring.eventhubs.support.StartPosition;
+import com.azure.spring.eventhubs.core.EventHubProcessorContainer;
+import com.azure.spring.eventhubs.core.EventHubsTemplate;
+import com.azure.spring.eventhubs.core.processor.DefaultEventHubNamespaceProcessorFactory;
+import com.azure.spring.eventhubs.core.producer.DefaultEventHubNamespaceProducerFactory;
+import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
+import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
+import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.integration.eventhubs.inbound.EventHubInboundChannelAdapter;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.messaging.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.PropertiesSupplier;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
@@ -27,14 +34,17 @@ import org.springframework.integration.expression.FunctionExpression;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * @author Warren Zhu
+ *
  */
 public class EventHubMessageChannelBinder extends
     // @formatter:off
@@ -44,17 +54,17 @@ public class EventHubMessageChannelBinder extends
     ExtendedPropertiesBinder<MessageChannel, EventHubConsumerProperties, EventHubProducerProperties> {
 
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
-    
-    private final EventHubOperation eventHubOperation;
 
+    private NamespaceProperties namespaceProperties;
+    private EventHubsTemplate eventHubsTemplate;
+    private CheckpointStore checkpointStore;
+    private EventHubProcessorContainer processorContainer;
     private EventHubExtendedBindingProperties bindingProperties = new EventHubExtendedBindingProperties();
 
     private final Map<String, EventHubInformation> eventHubsInUse = new ConcurrentHashMap<>();
 
-    public EventHubMessageChannelBinder(String[] headersToEmbed, EventHubChannelProvisioner provisioningProvider,
-            EventHubOperation eventHubOperation) {
+    public EventHubMessageChannelBinder(String[] headersToEmbed, EventHubChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
-        this.eventHubOperation = eventHubOperation;
     }
 
     @Override
@@ -62,10 +72,11 @@ public class EventHubMessageChannelBinder extends
         ProducerDestination destination,
         ExtendedProducerProperties<EventHubProducerProperties> producerProperties,
         MessageChannel errorChannel) {
+        Assert.notNull(getEventHubTemplate(), "eventHubsTemplate can't be null when create a producer");
 
         eventHubsInUse.put(destination.getName(), new EventHubInformation(null));
 
-        DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), this.eventHubOperation);
+        DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), this.eventHubsTemplate);
 
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
@@ -84,26 +95,23 @@ public class EventHubMessageChannelBinder extends
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
             ExtendedConsumerProperties<EventHubConsumerProperties> properties) {
-        eventHubsInUse.put(destination.getName(), new EventHubInformation(group));
+        Assert.notNull(getProcessorContainer(), "eventProcessorsContainer can't be null when create a consumer");
 
-        this.eventHubOperation.setStartPosition(properties.getExtension().getStartPosition());
-        CheckpointConfig checkpointConfig =
-                CheckpointConfig.builder().checkpointMode(properties.getExtension().getCheckpointMode())
-                                .checkpointCount(properties.getExtension().getCheckpointCount())
-                                .checkpointInterval(properties.getExtension().getCheckpointInterval())
-                                .build();
-        this.eventHubOperation.setCheckpointConfig(checkpointConfig);
+        eventHubsInUse.put(destination.getName(), new EventHubInformation(group));
 
         boolean anonymous = !StringUtils.hasText(group);
         if (anonymous) {
-            group = "anonymous." + UUID.randomUUID().toString();
-            this.eventHubOperation.setStartPosition(StartPosition.LATEST);
+            group = "anonymous." + UUID.randomUUID();
         }
-        EventHubInboundChannelAdapter inboundAdapter =
-                new EventHubInboundChannelAdapter(destination.getName(), this.eventHubOperation, group);
+
+        EventHubInboundChannelAdapter inboundAdapter = new EventHubInboundChannelAdapter(this.processorContainer,
+            destination.getName(), group, properties.getExtension().getCheckpoint());
+
         inboundAdapter.setBeanFactory(getBeanFactory());
+
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, group, properties);
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
+
         return inboundAdapter;
     }
 
@@ -148,4 +156,51 @@ public class EventHubMessageChannelBinder extends
         }
     }
 
+    private PropertiesSupplier<String, ProducerProperties> getProducerPropertiesSupplier() {
+        return key -> {
+            Map<String, EventHubBindingProperties> bindings = bindingProperties.getBindings();
+            for (Map.Entry<String, EventHubBindingProperties> entry : bindings.entrySet()) {
+                ProducerProperties properties = bindings.get(entry.getKey()).getProducer().getProducer();
+                if (key.equalsIgnoreCase(properties.getEventHubName())) {
+                    return properties;
+                }
+            }
+            return null;
+        };
+    }
+
+    private PropertiesSupplier<Tuple2<String, String>, ProcessorProperties> getProcessorPropertiesSupplier() {
+        return key -> {
+            Map<String, EventHubBindingProperties> bindings = bindingProperties.getBindings();
+            for (Map.Entry<String, EventHubBindingProperties> entry : bindings.entrySet()) {
+                ProcessorProperties properties = bindings.get(entry.getKey()).getConsumer().getProcessor();
+                if (key.equals(Tuples.of(properties.getEventHubName(), properties.getConsumerGroup()))) {
+                    return properties;
+                }
+            }
+            return null;
+        };
+    }
+
+    private EventHubsTemplate getEventHubTemplate() {
+        if (this.eventHubsTemplate == null) {
+            this.eventHubsTemplate = new EventHubsTemplate(new DefaultEventHubNamespaceProducerFactory(this.namespaceProperties, getProducerPropertiesSupplier()));
+        }
+        return this.eventHubsTemplate;
+    }
+
+    private EventHubProcessorContainer getProcessorContainer() {
+        if (this.processorContainer == null) {
+            this.processorContainer = new EventHubProcessorContainer(new DefaultEventHubNamespaceProcessorFactory(this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier()));
+        }
+        return this.processorContainer;
+    }
+
+    public void setNamespaceProperties(NamespaceProperties namespaceProperties) {
+        this.namespaceProperties = namespaceProperties;
+    }
+
+    public void setCheckpointStore(CheckpointStore checkpointStore) {
+        this.checkpointStore = checkpointStore;
+    }
 }

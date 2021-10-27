@@ -3,14 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
-import com.azure.messaging.eventhubs.LoadBalancingStrategy;
-import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobProperties;
 import com.azure.spring.core.properties.AzurePropertiesUtils;
-import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubProcessorProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubConsumerDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubNamespaceDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubProcessorDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubProducerDescriptor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.properties.PropertyMapper;
 
@@ -21,7 +19,7 @@ import java.util.Map;
 /**
  * Azure Event Hub related properties.
  */
-public class AzureEventHubProperties extends AzureEventHubCommonProperties implements EventHubProperties {
+public class AzureEventHubProperties extends AzureEventHubCommonProperties implements EventHubNamespaceDescriptor {
 
     public static final String PREFIX = "spring.cloud.azure.eventhubs";
 
@@ -42,14 +40,12 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
         propertyMapper.from(this.getEventHubName()).to(properties::setEventHubName);
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.getPrefetchCount()).to(properties::setPrefetchCount);
 
         propertyMapper.from(this.producer.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.producer.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.producer.getEventHubName()).to(properties::setEventHubName);
         propertyMapper.from(this.producer.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.producer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.producer.getPrefetchCount()).to(properties::setPrefetchCount);
 
         return properties;
     }
@@ -66,7 +62,6 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
         propertyMapper.from(this.getEventHubName()).to(properties::setEventHubName);
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.getPrefetchCount()).to(properties::setPrefetchCount);
 
         propertyMapper.from(this.consumer.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.consumer.getNamespace()).to(properties::setNamespace);
@@ -91,7 +86,6 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
         propertyMapper.from(this.getEventHubName()).to(properties::setEventHubName);
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-        propertyMapper.from(this.getPrefetchCount()).to(properties::setPrefetchCount);
 
         propertyMapper.from(this.processor.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.processor.getNamespace()).to(properties::setNamespace);
@@ -104,10 +98,10 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
         propertyMapper.from(this.processor.trackLastEnqueuedEventProperties).to(properties::setTrackLastEnqueuedEventProperties);
         propertyMapper.from(this.processor.initialPartitionEventPosition).to(properties::setInitialPartitionEventPosition);
         propertyMapper.from(this.processor.partitionOwnershipExpirationInterval).to(properties::setPartitionOwnershipExpirationInterval);
-        propertyMapper.from(this.processor.batch.maxSize).to(properties.batch::setMaxSize);
-        propertyMapper.from(this.processor.batch.maxWaitTime).to(properties.batch::setMaxWaitTime);
-        propertyMapper.from(this.processor.loadBalancing.strategy).to(properties.loadBalancing::setStrategy);
-        propertyMapper.from(this.processor.loadBalancing.updateInterval).to(properties.loadBalancing::setUpdateInterval);
+        propertyMapper.from(this.processor.batch.getMaxSize()).to(properties.batch::setMaxSize);
+        propertyMapper.from(this.processor.batch.getMaxWaitTime()).to(properties.batch::setMaxWaitTime);
+        propertyMapper.from(this.processor.loadBalancing.getStrategy()).to(properties.loadBalancing::setStrategy);
+        propertyMapper.from(this.processor.loadBalancing.getUpdateInterval()).to(properties.loadBalancing::setUpdateInterval);
 
         AzurePropertiesUtils.copyAzureCommonProperties(this.processor.checkpointStore, properties.checkpointStore);
         BeanUtils.copyProperties(this.processor.checkpointStore, properties.checkpointStore);
@@ -138,24 +132,42 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
     /**
      * Properties of an Event Hub producer.
      */
-    public static class Producer extends AzureEventHubCommonProperties implements EventHubProducerProperties {
+    public static class Producer extends AzureEventHubCommonProperties implements EventHubProducerDescriptor {
 
     }
 
     /**
      * Properties of an Event Hub consumer.
      */
-    public static class Consumer extends AzureEventHubConsumerProperties implements EventHubConsumerProperties {
+    public static class Consumer extends AzureEventHubCommonProperties implements EventHubConsumerDescriptor {
+        protected String consumerGroup;
 
+        protected Integer prefetchCount;
+
+        public String getConsumerGroup() {
+            return consumerGroup;
+        }
+
+        public void setConsumerGroup(String consumerGroup) {
+            this.consumerGroup = consumerGroup;
+        }
+
+        public Integer getPrefetchCount() {
+            return prefetchCount;
+        }
+
+        public void setPrefetchCount(Integer prefetchCount) {
+            this.prefetchCount = prefetchCount;
+        }
     }
 
     /**
      * Properties of an Event Hub processor.
      */
-    public static class Processor extends AzureEventHubConsumerProperties implements EventHubProcessorProperties {
+    public static class Processor extends Consumer implements EventHubProcessorDescriptor {
 
         private Boolean trackLastEnqueuedEventProperties;
-        private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
+        private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
         private Duration partitionOwnershipExpirationInterval;
         private final Batch batch = new Batch();
         private final LoadBalancing loadBalancing = new LoadBalancing();
@@ -169,11 +181,11 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
             this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
         }
 
-        public Map<String, EventPosition> getInitialPartitionEventPosition() {
+        public Map<String, StartPosition> getInitialPartitionEventPosition() {
             return initialPartitionEventPosition;
         }
 
-        public void setInitialPartitionEventPosition(Map<String, EventPosition> initialPartitionEventPosition) {
+        public void setInitialPartitionEventPosition(Map<String, StartPosition> initialPartitionEventPosition) {
             this.initialPartitionEventPosition = initialPartitionEventPosition;
         }
 
@@ -200,49 +212,15 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
         /**
          * Event processor load balancing properties.
          */
-        public static class LoadBalancing implements EventHubProcessorProperties.LoadBalancing {
-            private Duration updateInterval;
-            private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
+        public static class LoadBalancing extends EventHubProcessorDescriptor.LoadBalancing {
 
-            public Duration getUpdateInterval() {
-                return updateInterval;
-            }
-
-            public void setUpdateInterval(Duration updateInterval) {
-                this.updateInterval = updateInterval;
-            }
-
-            public LoadBalancingStrategy getStrategy() {
-                return strategy;
-            }
-
-            public void setStrategy(LoadBalancingStrategy strategy) {
-                this.strategy = strategy;
-            }
         }
 
         /**
          * Event processor batch properties.
          */
-        public static class Batch implements EventHubProcessorProperties.Batch {
-            private Duration maxWaitTime;
-            private Integer maxSize;
+        public static class Batch extends EventHubProcessorDescriptor.Batch {
 
-            public Duration getMaxWaitTime() {
-                return maxWaitTime;
-            }
-
-            public void setMaxWaitTime(Duration maxWaitTime) {
-                this.maxWaitTime = maxWaitTime;
-            }
-
-            public Integer getMaxSize() {
-                return maxSize;
-            }
-
-            public void setMaxSize(Integer maxSize) {
-                this.maxSize = maxSize;
-            }
         }
 
         /**

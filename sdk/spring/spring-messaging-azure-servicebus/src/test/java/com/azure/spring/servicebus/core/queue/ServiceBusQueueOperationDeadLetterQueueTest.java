@@ -36,7 +36,7 @@ public class ServiceBusQueueOperationDeadLetterQueueTest extends ServiceBusQueue
 
     @Test
     public void testSendDeadLetterQueueWithManualCheckpointModel() {
-        setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.MANUAL).build());
+        setCheckpointConfig(new CheckpointConfig(CheckpointMode.MANUAL));
 
         subscribe(destination, m -> sendSubscribeOperation.deadLetter(destination, m, "reason", "desc"), User.class);
 

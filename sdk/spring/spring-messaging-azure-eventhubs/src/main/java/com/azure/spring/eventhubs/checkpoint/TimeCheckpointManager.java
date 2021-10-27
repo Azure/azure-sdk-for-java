@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Do checkpoint when the time since last successful checkpoint exceeds {@link CheckpointConfig#getCheckpointInterval()}
+ * Do checkpoint when the time since last successful checkpoint exceeds {@link CheckpointConfig#getInterval()} ()}
  * for one partition. Effective when {@link CheckpointMode#PARTITION_COUNT}
  *
  * @author Warren Zhu
@@ -27,14 +27,14 @@ class TimeCheckpointManager extends CheckpointManager {
 
     TimeCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
-        Assert.isTrue(this.checkpointConfig.getCheckpointMode() == CheckpointMode.TIME,
+        Assert.isTrue(this.checkpointConfig.getMode() == CheckpointMode.TIME,
             () -> "TimeCheckpointManager should have checkpointMode time");
     }
 
     public void onMessage(EventContext context, EventData eventData) {
         LocalDateTime now = LocalDateTime.now();
         if (Duration.between(this.lastCheckpointTime.get(), now)
-            .compareTo(this.checkpointConfig.getCheckpointInterval()) > 0) {
+            .compareTo(this.checkpointConfig.getInterval()) > 0) {
             context.updateCheckpointAsync()
                 .doOnError(t -> logCheckpointFail(context, eventData, t))
                 .doOnSuccess(v -> {

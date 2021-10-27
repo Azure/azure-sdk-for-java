@@ -17,9 +17,9 @@ import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.core.PropertyMapper;
-import com.azure.spring.service.eventhubs.properties.EventHubCommonProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubCommonDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubConsumerDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubNamespaceDescriptor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,9 +31,9 @@ import java.util.function.BiConsumer;
  */
 public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventHubClientBuilder> {
 
-    private final EventHubCommonProperties eventHubProperties;
+    private final EventHubCommonDescriptor eventHubProperties;
 
-    public EventHubClientBuilderFactory(EventHubCommonProperties eventHubProperties) {
+    public EventHubClientBuilderFactory(EventHubCommonDescriptor eventHubProperties) {
         this.eventHubProperties = eventHubProperties;
     }
 
@@ -92,21 +92,18 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
     protected void configureService(EventHubClientBuilder builder) {
         PropertyMapper mapper = new PropertyMapper();
 
-        mapper.from(eventHubProperties.getPrefetchCount()).to(builder::prefetchCount);
         mapper.from(eventHubProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
 
-        if (this.eventHubProperties instanceof EventHubProperties) {
-            mapper.from(((EventHubProperties) this.eventHubProperties).getSharedConnection())
+        if (this.eventHubProperties instanceof EventHubNamespaceDescriptor) {
+            mapper.from(((EventHubNamespaceDescriptor) this.eventHubProperties).getSharedConnection())
                   .whenTrue()
                   .to(t -> builder.shareConnection());
-
-            mapper.from(((EventHubProperties) this.eventHubProperties).getConsumer().getConsumerGroup())
-                .to(builder::consumerGroup);
         }
 
-        if (this.eventHubProperties instanceof EventHubConsumerProperties) {
-            mapper.from(((EventHubConsumerProperties) eventHubProperties).getConsumerGroup())
-                  .to(builder::consumerGroup);
+        if (this.eventHubProperties instanceof EventHubConsumerDescriptor) {
+            EventHubConsumerDescriptor consumerProperties = (EventHubConsumerDescriptor) this.eventHubProperties;
+            mapper.from(consumerProperties.getConsumerGroup()).to(builder::consumerGroup);
+            mapper.from(consumerProperties.getPrefetchCount()).to(builder::prefetchCount);
         }
     }
 

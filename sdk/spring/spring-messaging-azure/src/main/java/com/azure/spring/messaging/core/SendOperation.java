@@ -11,7 +11,6 @@ import reactor.core.publisher.Mono;
 /**
  * Operations for sending {@link Message} to a destination.
  *
- * @author Xiaolu Dai
  */
 public interface SendOperation {
 
