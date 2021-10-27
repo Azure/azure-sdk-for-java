@@ -143,7 +143,7 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
       "apiVersion": "2018-01-01-preview",
-      "name": "[concat(variables('namespaces_name_standard'), '/sub001')]",
+      "name": "[concat(variables('namespaces_name_standard'), '/topic001/sub001')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('namespaces_name_standard'), 'topic001')]",
@@ -185,7 +185,7 @@
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
       "apiVersion": "2018-01-01-preview",
-      "name": "[concat(variables('namespaces_name_premium'), '/sub001')]",
+      "name": "[concat(variables('namespaces_name_premium'), '/topic001/sub001')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces/topics', variables('namespaces_name_premium'), 'topic001')]",
