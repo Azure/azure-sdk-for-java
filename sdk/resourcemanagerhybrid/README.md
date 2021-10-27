@@ -1,6 +1,6 @@
-# Azure management client library for Java
+# Azure management client library for Java (Hybrid)
 
-The Azure Management Libraries for Java is a higher-level, object-oriented API for *managing* Azure resources,
+The Azure Management Libraries for Java (Hybrid) is a higher-level, object-oriented API for *managing* Azure resources,
 that is optimized for ease of use, succinctness and consistency.
 
 ## We'd love to hear your feedback
@@ -38,7 +38,7 @@ For your convenience, we have provided a multi-service package that includes som
 <dependency>
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager</artifactId>
-  <version>2.7.0</version>
+  <version>1.0.0-hybrid</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -50,27 +50,16 @@ The services available via `azure-resourcemanager` are listed as below:
 
 - App Services
 - Authorization
-- CDN
 - Compute
-- Container Instance
 - Container Registry
 - Container Services (AKS)
-- Cosmos DB
 - DNS
 - Event Hubs
 - Insight (Monitor)
 - Key Vault
-- Managed Identity
 - Network
-- Private DNS
-- Redis
 - Resources
-- Search
-- Service Bus
-- Spring Cloud
-- SQL
 - Storage
-- Traffic Manager
 </details>
 
 In the case where you are interested in certain service above or the service not included in the multi-service package, you can choose to use the single-service package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
@@ -384,12 +373,12 @@ mvn dependency:tree -Dverbose=true -Dincludes=com.azure:azure-core
 [INFO] |  +- com.azure:azure-core:jar:1.12.0:compile
 [INFO] |  \- com.azure:azure-core-http-netty:jar:1.7.1:compile
 [INFO] |     \- (com.azure:azure-core:jar:1.12.0:compile - omitted for duplicate)
-[INFO] +- com.azure.resourcemanager:azure-resourcemanager:jar:2.2.0:compile
-[INFO] |  +- com.azure.resourcemanager:azure-resourcemanager-resources:jar:2.2.0:compile
+[INFO] +- com.azure.resourcemanager:azure-resourcemanager:jar:1.0.0:compile
+[INFO] |  +- com.azure.resourcemanager:azure-resourcemanager-resources:jar:1.0.0:compile
 [INFO] |  |  +- (com.azure:azure-core:jar:1.13.0:compile - omitted for conflict with 1.12.0)
 [INFO] |  |  \- com.azure:azure-core-management:jar:1.1.1:compile
 [INFO] |  |     \- (com.azure:azure-core:jar:1.13.0:compile - omitted for conflict with 1.12.0)
-[INFO] |  \- com.azure.resourcemanager:azure-resourcemanager-keyvault:jar:2.2.0:compile
+[INFO] |  \- com.azure.resourcemanager:azure-resourcemanager-keyvault:jar:1.0.0:compile
 [INFO] |     +- com.azure:azure-security-keyvault-keys:jar:4.2.5:compile
 [INFO] |     |  \- (com.azure:azure-core:jar:1.13.0:compile - omitted for conflict with 1.12.0)
 [INFO] |     \- com.azure:azure-security-keyvault-secrets:jar:4.2.5:compile
@@ -430,7 +419,7 @@ Here is a sample dependency management section in maven POM.
 ```
 
 To a lesser extent, similar problem could occur in runtime for `azure-core-management` library, when one module depends on multiple Azure Java management SDKs with different versions.
-For example, `azure-resourcemanager` 2.6.0 would require `azure-core-management` 1.3.0 or above, relying on `ArmChallengeAuthenticationPolicy` class for continuous access evaluation support.
+For example, `azure-resourcemanager` 1.0.0 would require `azure-core-management` 1.3.0 or above, relying on `ArmChallengeAuthenticationPolicy` class for continuous access evaluation support.
 
 ### ARM throttling
 
