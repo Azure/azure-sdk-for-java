@@ -1,5 +1,4 @@
-name: GCToolKit build with Maven
-
+name: Microsoft Azure SDK for Java
 on:
   push:
     branches: [ main ]
