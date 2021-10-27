@@ -1,6 +1,6 @@
-# Azure Resource Manager Compute client library for Java
+# Azure Resource Manager Compute client library for Java (Hybrid)
 
-Azure Resource Manager Compute client library for Java
+Azure Resource Manager Compute client library for Java (Hybrid)
 
 For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -18,7 +18,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-compute</artifactId>
-    <version>2.7.0</version>
+    <version>1.0.0-hybrid</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

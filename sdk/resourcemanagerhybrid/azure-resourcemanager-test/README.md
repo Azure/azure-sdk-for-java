@@ -1,6 +1,6 @@
-# Azure Resource Manager Test shared library for Java
+# Azure Resource Manager Test shared library for Java (Hybrid)
 
-Azure Resource Manager test library for Java
+Azure Resource Manager test library for Java (Hybrid)
 
 For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -17,7 +17,7 @@ For documentation on how to use this package, please see [Azure Management Libra
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-test</artifactId>
-    <version>2.0.0-beta.1</version>
+    <version>1.0.0-hybridbeta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
