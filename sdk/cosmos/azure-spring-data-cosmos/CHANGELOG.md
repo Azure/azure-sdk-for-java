@@ -1,14 +1,10 @@
 ## Release History
 
-### 3.14.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+### 3.13.1 (2021-10-27)
+#### Key Bug Fixes
+* Fixed support for slice query in annotated `@Query` queries.
+* Fixed issue with preserving priority for closed queries.
+* Updated `azure-cosmos` to version `4.20.1`.
 
 ### 3.13.0 (2021-10-14)
 #### New Features
