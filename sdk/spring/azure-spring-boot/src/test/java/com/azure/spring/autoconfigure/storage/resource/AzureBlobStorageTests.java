@@ -141,10 +141,10 @@ public class AzureBlobStorageTests {
      */
     static Stream<Arguments> contentTypeProvider() {
         return Stream.of(
-            arguments("azure-blob://c/b/a.pdf", "application/pdf"),
-            arguments("azure-BLOB://c/b/a.txt", "text/plain"),
-            arguments("AZURE-BLOB://c/b/a.jpg", "image/jpeg"),
-            arguments("azure-blob://c/b.unknown", null)
+            arguments("azure-blob://" + CONTAINER_NAME + "/b/a.pdf", "application/pdf"),
+            arguments("azure-BLOB://" + CONTAINER_NAME + "/b/a.txt", "text/plain"),
+            arguments("AZURE-BLOB://" + CONTAINER_NAME + "/b/a.jpg", "image/jpeg"),
+            arguments("azure-blob://" + CONTAINER_NAME + "/b.unknown", null)
         );
     }
 
@@ -194,6 +194,12 @@ public class AzureBlobStorageTests {
 
             when(blockBlob.getProperties()).thenReturn(blobProperties);
             when(blobProperties.getBlobSize()).thenReturn(CONTENT_LENGTH);
+
+            // mock data for testGetContentType()
+            when(blobContainer.getBlobClient("b/a.pdf")).thenReturn(blob);
+            when(blobContainer.getBlobClient("b/a.txt")).thenReturn(blob);
+            when(blobContainer.getBlobClient("b/a.jpg")).thenReturn(blob);
+            when(blobContainer.getBlobClient("b.unknown")).thenReturn(blob);
 
             return serviceClientBuilder;
         }
