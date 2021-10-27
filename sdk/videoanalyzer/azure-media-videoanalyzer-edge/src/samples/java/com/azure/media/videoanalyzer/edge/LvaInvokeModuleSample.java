@@ -3,12 +3,12 @@
 package com.azure.media.videoanalyzer.edge;
 
 import com.azure.media.videoanalyzer.edge.models.*;
-
+import com.microsoft.azure.sdk.iot.service.Device;
 import com.microsoft.azure.sdk.iot.service.devicetwin.DeviceMethod;
 import com.microsoft.azure.sdk.iot.service.devicetwin.MethodResult;
 import java.io.IOException;
 import com.microsoft.azure.sdk.iot.service.exceptions.IotHubException;
-
+import com.microsoft.azure.sdk.iot.service.RegistryManager;
 import java.util.Arrays;
 
 /***
@@ -16,11 +16,12 @@ import java.util.Arrays;
  */
 public class LvaInvokeModuleSample {
 
-    private static final String CONNECTION_STRING = "connectionString";
-    private static final String DEVICE_ID = "lva-sample-device";
-    private static final String MODULE_ID = "mediaEdge";
+    private static String iothubConnectionstring = System.getenv("iothub_connectionstring");
+    private static String iothubDeviceid = System.getenv("iothub_deviceid");
+    private static String iothubModuleid = System.getenv("iothub_moduleid");
     private static final String TOPOLOGY_NAME = "javaPipelineTopology";
     private static final String LIVE_PIPELINE_NAME = "javaLivePipeline";
+    private static final String REMOTE_DEVICE_ADAPTER_NAME = "RemoteDeviceAdapterSample1";
 
     /***
      * Build a pipeLine topology including its parameters, sources, and sinks
@@ -101,6 +102,24 @@ public class LvaInvokeModuleSample {
         return livePipeline;
     }
 
+    private static RemoteDeviceAdapter createRemoteDeviceAdapter(String remoteDeviceName, String iotDeviceName) throws IOException, IotHubException {
+        RegistryManager registryManager = new RegistryManager(iothubConnectionstring);
+        Device iotDevice;
+        try {
+            iotDevice = registryManager.getDevice(iotDeviceName);
+        } catch (IllegalArgumentException e) {
+            iotDevice = registryManager.addDevice(Device.createFromId(iotDeviceName, null, null));
+        }
+
+        IotHubDeviceConnection iotHubDeviceConnection = new IotHubDeviceConnection(iotDeviceName)
+            .setCredentials(new SymmetricKeyCredentials(iotDevice.getPrimaryKey()));
+
+        RemoteDeviceAdapterProperties remoteDeviceAdapterProperties = new RemoteDeviceAdapterProperties(new RemoteDeviceAdapterTarget("camerasimulator"), iotHubDeviceConnection);
+        RemoteDeviceAdapter remoteDeviceAdapter = new RemoteDeviceAdapter(remoteDeviceName)
+            .setProperties(remoteDeviceAdapterProperties);
+
+        return remoteDeviceAdapter;
+    }
     /***
      * Helper method to invoke module method on iot hub device
      * @param client Iot Hub Service Client
@@ -113,7 +132,7 @@ public class LvaInvokeModuleSample {
     private static MethodResult invokeDirectMethodHelper(DeviceMethod client, String methodName, String payload) throws IOException, IotHubException {
         MethodResult result = null;
         try {
-            result = client.invoke(DEVICE_ID, MODULE_ID, methodName, null, null, payload);
+            result = client.invoke(iothubDeviceid, iothubModuleid, methodName, null, null, payload);
         } catch (IotHubException e) {
             System.out.println("An error has occurred.");
             System.out.println(e.toString());
@@ -122,6 +141,11 @@ public class LvaInvokeModuleSample {
         return result;
     }
 
+    private static void initializeIotHubCredentials() {
+        iothubConnectionstring = System.getenv("iothub_connectionstring");
+        iothubDeviceid = System.getenv("iothub_deviceid");
+        iothubModuleid = System.getenv("iothub_moduleid");
+    }
     /***
      * Main method to run sample
      * @param args args
@@ -131,11 +155,11 @@ public class LvaInvokeModuleSample {
     public static void main(String[] args) throws IOException, IotHubException {
         PipelineTopology pipelineTopology = buildPipeLineTopology();
         LivePipeline livePipeline = buildLivePipeline();
-        DeviceMethod dClient = DeviceMethod.createFromConnectionString(CONNECTION_STRING);
+        DeviceMethod dClient = new DeviceMethod(iothubConnectionstring);
 
         PipelineTopologySetRequest setPipelineTopologyRequest = new PipelineTopologySetRequest(pipelineTopology);
         MethodResult setPipelineResult = invokeDirectMethodHelper(dClient, setPipelineTopologyRequest.getMethodName(), setPipelineTopologyRequest.getPayloadAsJson());
-        System.out.println(setPipelineResult);
+        System.out.println(setPipelineResult.getPayload());
 
         PipelineTopologyGetRequest getTopologyRequest = new PipelineTopologyGetRequest(pipelineTopology.getName());
         MethodResult getTopologyResult = invokeDirectMethodHelper(dClient, getTopologyRequest.getMethodName(), getTopologyRequest.getPayloadAsJson());
@@ -167,5 +191,24 @@ public class LvaInvokeModuleSample {
         PipelineTopologyDeleteRequest deletePipelineRequest = new PipelineTopologyDeleteRequest(livePipeline.getName());
         MethodResult deletePipelineResult = invokeDirectMethodHelper(dClient, deletePipelineRequest.getMethodName(), deleteLivePipelineRequest.getPayloadAsJson());
 
+        RemoteDeviceAdapter remoteDeviceAdapter = createRemoteDeviceAdapter(REMOTE_DEVICE_ADAPTER_NAME, "iotDeviceSample");
+        RemoteDeviceAdapterSetRequest remoteDeviceAdapterSetRequest = new RemoteDeviceAdapterSetRequest(remoteDeviceAdapter);
+        MethodResult remoteDeviceAdapterSetResult = invokeDirectMethodHelper(dClient, remoteDeviceAdapterSetRequest.getMethodName(), remoteDeviceAdapterSetRequest.getPayloadAsJson());
+        System.out.println(remoteDeviceAdapterSetResult);
+
+        RemoteDeviceAdapterGetRequest remoteDeviceGetRequest = new RemoteDeviceAdapterGetRequest(REMOTE_DEVICE_ADAPTER_NAME);
+        MethodResult remoteDeviceGetResult = invokeDirectMethodHelper(dClient, remoteDeviceGetRequest.getMethodName(), remoteDeviceGetRequest.getPayloadAsJson());
+
+        RemoteDeviceAdapterListRequest remoteDeviceAdapterListRequest = new RemoteDeviceAdapterListRequest();
+        MethodResult remoteDeviceAdapterListResult = invokeDirectMethodHelper(dClient, remoteDeviceAdapterListRequest.getMethodName(), remoteDeviceAdapterListRequest.getPayloadAsJson());
+
+        RemoteDeviceAdapterDeleteRequest remoteDeviceAdapterDeleteRequest = new RemoteDeviceAdapterDeleteRequest(REMOTE_DEVICE_ADAPTER_NAME);
+        MethodResult remoteDeviceAdapterDeleteResult =  invokeDirectMethodHelper(dClient, remoteDeviceAdapterDeleteRequest.getMethodName(), remoteDeviceAdapterDeleteRequest.getPayloadAsJson());
+
+        OnvifDeviceGetRequest onvifDeviceGetRequest = new OnvifDeviceGetRequest(new UnsecuredEndpoint("rtsp://camerasimulator:554"));
+        MethodResult onvifDeviceGetResult = invokeDirectMethodHelper(dClient, onvifDeviceGetRequest.getMethodName(), onvifDeviceGetRequest.getPayloadAsJson());
+
+        OnvifDeviceDiscoverRequest onvifDeviceDiscoverRequest = new OnvifDeviceDiscoverRequest();
+        MethodResult onvifDeviceDiscoverResult = invokeDirectMethodHelper(dClient, onvifDeviceDiscoverRequest.getMethodName(), onvifDeviceGetRequest.getPayloadAsJson());
     }
 }
