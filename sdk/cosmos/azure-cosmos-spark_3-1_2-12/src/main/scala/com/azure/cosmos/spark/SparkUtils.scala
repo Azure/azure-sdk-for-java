@@ -35,6 +35,10 @@ private object SparkUtils {
 
   def safeOpenConnectionInitCaches(container: CosmosAsyncContainer, logger: (String, Exception) => Unit): Unit = {
     try {
+
+      // this results in a cross partition query with one single query plan request
+      // resulting in warming up all caches and connections
+      // once container.openConnectionsAndInitCaches() is fixed we can switch back.
       val sqlQuery = new SqlQuerySpec(s"SELECT * FROM r WHERE r['${UUID.randomUUID().toString}'] = @param",
         new SqlParameter("@param", UUID.randomUUID().toString)
       )
