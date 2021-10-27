@@ -19,6 +19,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Header;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -232,6 +233,13 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void clientBuilderWithAAD(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        clientBuilderWithAadRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
+            validatePrimaryLanguage(output, clientBuilder.buildClient().detectLanguage(input)));
+    }
+
     @Test
     @DoNotRecord
     public void applicationIdFallsBackToLogOptions() {
@@ -382,6 +390,23 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
                 getEndpoint(), new AzureKeyCredential(getApiKey())).defaultLanguage("FR"))
             .accept(KEY_PHRASE_FRENCH_INPUTS,
                 Arrays.asList(Arrays.asList("Bonjour", "monde"), Collections.singletonList("Mondly")));
+    }
+
+    void clientBuilderWithAadRunner(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion,
+        Function<TextAnalyticsClientBuilder, BiConsumer<String, DetectedLanguage>> testRunner) {
+
+        final TextAnalyticsClientBuilder clientBuilder =
+            new TextAnalyticsClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint(getEndpoint())
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+                .serviceVersion(serviceVersion);
+
+        if (!interceptorManager.isPlaybackMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        testRunner.apply(clientBuilder).accept(DETECT_LANGUAGE_INPUTS.get(0), DETECTED_LANGUAGE_ENGLISH);
     }
 
     String getEndpoint() {
