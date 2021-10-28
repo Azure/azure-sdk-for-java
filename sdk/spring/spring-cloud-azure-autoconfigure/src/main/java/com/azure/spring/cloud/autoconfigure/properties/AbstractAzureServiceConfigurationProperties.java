@@ -22,9 +22,6 @@ public abstract class AbstractAzureServiceConfigurationProperties implements Azu
     protected final ProxyProperties proxy = new ProxyProperties();
 
     @NestedConfigurationProperty
-    protected final RetryProperties retry = new RetryProperties();
-
-    @NestedConfigurationProperty
     protected final TokenCredentialProperties credential = new TokenCredentialProperties();
 
     @NestedConfigurationProperty
@@ -44,11 +41,6 @@ public abstract class AbstractAzureServiceConfigurationProperties implements Azu
     @Override
     public ProxyProperties getProxy() {
         return proxy;
-    }
-
-    @Override
-    public RetryProperties getRetry() {
-        return retry;
     }
 
     @Override

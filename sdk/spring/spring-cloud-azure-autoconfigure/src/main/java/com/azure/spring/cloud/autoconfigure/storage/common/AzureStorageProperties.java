@@ -4,7 +4,10 @@
 package com.azure.spring.cloud.autoconfigure.storage.common;
 
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpConfigurationProperties;
+import com.azure.spring.core.properties.retry.HttpRetryProperties;
+import com.azure.spring.core.properties.retry.StorageRetryProperties;
 import com.azure.spring.service.storage.common.StorageProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Common properties for all Azure Storage services.
@@ -20,6 +23,14 @@ public class AzureStorageProperties extends AbstractAzureHttpConfigurationProper
     protected String connectionString;
 
     protected String accountName;
+
+    @NestedConfigurationProperty
+    protected final StorageRetryProperties retry = new StorageRetryProperties();
+
+    @Override
+    public StorageRetryProperties getRetry() {
+        return retry;
+    }
 
     public String getEndpoint() {
         return endpoint;

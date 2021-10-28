@@ -5,6 +5,8 @@ package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpConfigurationProperties;
+import com.azure.spring.core.properties.retry.HttpRetryProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
 import java.util.List;
@@ -28,6 +30,14 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
     private Boolean caseSensitive;
     private List<String> secretKeys;
     private Duration refreshInterval = DEFAULT_REFRESH_INTERVAL;
+
+    @NestedConfigurationProperty
+    private final HttpRetryProperties retry = new HttpRetryProperties();
+
+    @Override
+    public HttpRetryProperties getRetry() {
+        return retry;
+    }
 
     public String getName() {
         return name;

@@ -18,6 +18,7 @@ import com.azure.spring.service.core.PropertyMapper;
 import com.azure.spring.service.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.common.policy.RequestRetryOptions;
 
 import java.util.Arrays;
 import java.util.List;
@@ -105,5 +106,10 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureHttpClientBuil
     @Override
     protected String getApplicationId() {
         return AZURE_SPRING_STORAGE_BLOB + VERSION;
+    }
+
+    @Override
+    protected BiConsumer<BlobServiceClientBuilder, RequestRetryOptions> consumeRequestRetryOptions() {
+        return BlobServiceClientBuilder::retryOptions;
     }
 }

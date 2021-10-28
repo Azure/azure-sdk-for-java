@@ -5,7 +5,9 @@ package com.azure.spring.cloud.autoconfigure.appconfiguration;
 
 import com.azure.data.appconfiguration.ConfigurationServiceVersion;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpConfigurationProperties;
+import com.azure.spring.core.properties.retry.HttpRetryProperties;
 import com.azure.spring.service.appconfiguration.AppConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Properties for Azure App Configuration.
@@ -18,6 +20,14 @@ public class AzureAppConfigurationProperties extends AbstractAzureHttpConfigurat
     private String endpoint;
     private String connectionString;
     private ConfigurationServiceVersion serviceVersion;
+
+    @NestedConfigurationProperty
+    private final HttpRetryProperties retry = new HttpRetryProperties();
+
+    @Override
+    public HttpRetryProperties getRetry() {
+        return retry;
+    }
 
     public String getEndpoint() {
         return endpoint;

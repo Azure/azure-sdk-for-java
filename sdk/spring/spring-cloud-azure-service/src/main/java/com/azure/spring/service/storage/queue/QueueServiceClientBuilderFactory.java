@@ -16,6 +16,7 @@ import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.core.PropertyMapper;
 import com.azure.spring.service.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
+import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 
@@ -108,5 +109,10 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureHttpClientBui
         return QueueMessageEncoding.BASE64
             .name()
             .equalsIgnoreCase(messageEncoding) ? QueueMessageEncoding.BASE64 : QueueMessageEncoding.NONE;
+    }
+
+    @Override
+    protected BiConsumer<QueueServiceClientBuilder, RequestRetryOptions> consumeRequestRetryOptions() {
+        return QueueServiceClientBuilder::retryOptions;
     }
 }

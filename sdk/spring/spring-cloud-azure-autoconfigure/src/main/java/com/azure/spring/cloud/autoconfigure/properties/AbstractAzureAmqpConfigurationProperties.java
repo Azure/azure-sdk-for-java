@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.properties;
 
+import com.azure.spring.core.properties.retry.HttpRetryProperties;
+import com.azure.spring.core.properties.retry.RetryProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
@@ -13,8 +15,16 @@ public abstract class AbstractAzureAmqpConfigurationProperties extends AbstractA
     @NestedConfigurationProperty
     protected final AmqpClientConfigurationProperties client = new AmqpClientConfigurationProperties();
 
+    @NestedConfigurationProperty
+    protected final RetryProperties retry = new RetryProperties();
+
     @Override
     public AmqpClientConfigurationProperties getClient() {
         return client;
+    }
+
+    @Override
+    public RetryProperties getRetry() {
+        return retry;
     }
 }

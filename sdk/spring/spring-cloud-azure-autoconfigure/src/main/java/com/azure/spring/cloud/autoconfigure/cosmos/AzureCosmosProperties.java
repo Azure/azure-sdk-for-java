@@ -11,7 +11,9 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
+import com.azure.spring.core.properties.retry.RetryProperties;
 import com.azure.spring.service.cosmos.CosmosProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
@@ -64,6 +66,13 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
      */
     private boolean populateQueryMetrics;
 
+    @NestedConfigurationProperty
+    private final RetryProperties retry = new RetryProperties();
+
+    @Override
+    public RetryProperties getRetry() {
+        return retry;
+    }
 
     @Override
     public ClientProperties getClient() {
