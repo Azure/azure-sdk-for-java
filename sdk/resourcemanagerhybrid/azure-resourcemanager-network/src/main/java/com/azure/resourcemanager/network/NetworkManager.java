@@ -19,7 +19,6 @@ import com.azure.resourcemanager.network.implementation.NetworkSecurityGroupsImp
 import com.azure.resourcemanager.network.implementation.NetworkUsagesImpl;
 import com.azure.resourcemanager.network.implementation.NetworkWatchersImpl;
 import com.azure.resourcemanager.network.implementation.NetworksImpl;
-import com.azure.resourcemanager.network.implementation.PrivateEndpointsImpl;
 import com.azure.resourcemanager.network.implementation.PublicIpAddressesImpl;
 import com.azure.resourcemanager.network.implementation.PublicIpPrefixesImpl;
 import com.azure.resourcemanager.network.implementation.RouteFiltersImpl;
@@ -38,7 +37,6 @@ import com.azure.resourcemanager.network.models.NetworkSecurityGroups;
 import com.azure.resourcemanager.network.models.NetworkUsages;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.network.models.Networks;
-import com.azure.resourcemanager.network.models.PrivateEndpoints;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.resourcemanager.network.models.RouteFilters;
@@ -71,7 +69,6 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
     private RouteFilters routeFilters;
     private DdosProtectionPlans ddosProtectionPlans;
     private ExpressRouteCrossConnections expressRouteCrossConnections;
-    private PrivateEndpoints privateEndpoints;
     private NetworkProfiles networkProfiles;
 
     /**
@@ -270,14 +267,6 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
             this.expressRouteCrossConnections = new ExpressRouteCrossConnectionsImpl(this);
         }
         return this.expressRouteCrossConnections;
-    }
-
-    /** @return entry point to private endpoints management */
-    public PrivateEndpoints privateEndpoints() {
-        if (this.privateEndpoints == null) {
-            this.privateEndpoints = new PrivateEndpointsImpl(this);
-        }
-        return this.privateEndpoints;
     }
 
     /** @return entry point to network profiles management */

@@ -96,7 +96,7 @@ class EventHubConsumerGroupImpl
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
                         this.name(),
-                        this.innerModel().userMetadata())
+                        new ConsumerGroupInner().withUserMetadata(this.innerModel().userMetadata()))
                 .map(innerToFluentMap(this));
     }
 

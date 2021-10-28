@@ -82,7 +82,7 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
 
     @Override
     protected Mono<UserInner> getInnerAsync() {
-        return manager.serviceClient().getUsers().getAsync(this.id());
+        return manager.serviceClient().getUsers().getAsync(this.id(), this.manager.tenantId());
     }
 
     @Override
@@ -98,7 +98,7 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
                 manager()
                     .serviceClient()
                     .getDomains()
-                    .listAsync(null)
+                    .listAsync(this.manager.tenantId())
                     .map(
                         domainInner -> {
                             if (domainInner.isVerified() && domainInner.isDefault()) {
@@ -114,7 +114,8 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
             domain = Mono.just(this);
         }
         return domain
-            .flatMap(activeDirectoryUser -> manager().serviceClient().getUsers().createAsync(createParameters))
+            .flatMap(activeDirectoryUser ->
+                manager().serviceClient().getUsers().createAsync(this.manager.tenantId(), createParameters))
             .map(innerToFluentMap(this));
     }
 
@@ -122,7 +123,7 @@ class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser
         return manager()
             .serviceClient()
             .getUsers()
-            .updateAsync(id(), updateParameters)
+            .updateAsync(id(), this.manager.tenantId(), updateParameters)
             .then(ActiveDirectoryUserImpl.this.refreshAsync());
     }
 

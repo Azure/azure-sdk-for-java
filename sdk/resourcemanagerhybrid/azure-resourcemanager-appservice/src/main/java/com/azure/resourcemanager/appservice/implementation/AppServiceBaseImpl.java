@@ -17,8 +17,6 @@ import com.azure.resourcemanager.appservice.models.HostnameBinding;
 import com.azure.resourcemanager.appservice.models.MSDeploy;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
@@ -512,26 +510,8 @@ abstract class AppServiceBaseImpl<
     }
 
     @Override
-    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
-        Mono<Response<List<PrivateLinkResource>>> retList = this.manager().serviceClient().getWebApps()
-            .getPrivateLinkResourcesWithResponseAsync(this.resourceGroupName(), this.name())
-            .map(response -> new SimpleResponse<>(response, response.getValue().value().stream()
-                .map(PrivateLinkResourceImpl::new)
-                .collect(Collectors.toList())));
-
-        return PagedConverter.convertListToPagedFlux(retList);
-    }
-
-    @Override
     public PagedIterable<PrivateEndpointConnection> listPrivateEndpointConnections() {
         return new PagedIterable<>(listPrivateEndpointConnectionsAsync());
-    }
-
-    @Override
-    public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getWebApps()
-            .getPrivateEndpointConnectionListAsync(this.resourceGroupName(), this.name()),
-            PrivateEndpointConnectionImpl::new);
     }
 
     @Override
@@ -540,31 +520,9 @@ abstract class AppServiceBaseImpl<
     }
 
     @Override
-    public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return this.manager().serviceClient().getWebApps()
-            .approveOrRejectPrivateEndpointConnectionAsync(this.resourceGroupName(), this.name(),
-                privateEndpointConnectionName,
-                new PrivateLinkConnectionApprovalRequestResource().withPrivateLinkServiceConnectionState(
-                    new PrivateLinkConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED.toString())
-                ))
-            .then();
-    }
-
-    @Override
     public void rejectPrivateEndpointConnection(String privateEndpointConnectionName) {
         rejectPrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
     }
 
-    @Override
-    public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return this.manager().serviceClient().getWebApps()
-            .approveOrRejectPrivateEndpointConnectionAsync(this.resourceGroupName(), this.name(),
-                privateEndpointConnectionName,
-                new PrivateLinkConnectionApprovalRequestResource().withPrivateLinkServiceConnectionState(
-                    new PrivateLinkConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED.toString())
-                ))
-            .then();
-    }
+   
 }

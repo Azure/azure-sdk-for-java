@@ -107,7 +107,6 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
             new GraphRbacManagementClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getGraphEndpoint())
-                .tenantId(profile.getTenantId())
                 .buildClient();
         this.authorizationManagementClient =
             new AuthorizationManagementClientBuilder()

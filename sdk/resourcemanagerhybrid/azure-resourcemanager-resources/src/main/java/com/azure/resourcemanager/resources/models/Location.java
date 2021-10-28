@@ -42,24 +42,4 @@ public interface Location extends
      * @return the longitude of the location
      */
     String longitude();
-
-    /**
-     * @return the type of the region.
-     */
-    RegionType regionType();
-
-    /**
-     * @return the category of the region.
-     */
-    RegionCategory regionCategory();
-
-    /**
-     * @return the geography group.
-     */
-    String geographyGroup();
-
-    /**
-     * @return the physical location.
-     */
-    String physicalLocation();
 }
