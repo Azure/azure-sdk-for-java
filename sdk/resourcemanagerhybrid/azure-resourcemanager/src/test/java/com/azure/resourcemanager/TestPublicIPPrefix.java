@@ -20,11 +20,11 @@ public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPre
         PublicIpPrefix pip = pips.define(newPipName)
             .withRegion(Region.US_WEST)
             .withNewResourceGroup()
-            .withPrefixLength(28)
+            .withPrefixLength(30)
             .withSku(new PublicIpPrefixSku().withName(PublicIpPrefixSkuName.STANDARD))
             .create();
 
-        Assertions.assertEquals(pip.prefixLength(), (Integer) 28);
+        Assertions.assertEquals(pip.prefixLength(), (Integer) 30);
         Assertions.assertEquals(pip.sku().name().toString(), "Standard");
         Assertions.assertTrue(pip.publicIpAddressVersion() == IpVersion.IPV4);
         return pip;

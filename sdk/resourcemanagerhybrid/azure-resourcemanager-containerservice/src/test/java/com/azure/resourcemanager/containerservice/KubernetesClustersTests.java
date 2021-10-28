@@ -12,7 +12,6 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.Code;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
-import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
 import com.azure.core.management.Region;
@@ -21,6 +20,7 @@ import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -91,7 +91,6 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                     .withAgentPoolVirtualMachineCount(1)
                     .withOSDiskSizeInGB(30)
                     .withOSDiskType(OSDiskType.EPHEMERAL)
-                    .withKubeletDiskType(KubeletDiskType.TEMPORARY)
                     .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
                     .withAgentPoolMode(AgentPoolMode.SYSTEM)
                     .attach()
@@ -116,7 +115,6 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(AgentPoolMode.SYSTEM, agentPool.mode());
         Assertions.assertEquals(OSDiskType.EPHEMERAL, agentPool.osDiskType());
         Assertions.assertEquals(30, agentPool.osDiskSizeInGB());
-        Assertions.assertEquals(KubeletDiskType.TEMPORARY, agentPool.kubeletDiskType());
 
         agentPool = kubernetesCluster.agentPools().get(agentPoolName1);
         Assertions.assertNotNull(agentPool);
@@ -143,7 +141,6 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .updateAgentPool(agentPoolName1)
                     .withAgentPoolMode(AgentPoolMode.SYSTEM)
                     .withAgentPoolVirtualMachineCount(2)
-                    .withKubeletDiskType(KubeletDiskType.OS)
                     .parent()
                 .defineAgentPool(agentPoolName2)
                     .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
@@ -159,7 +156,6 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         agentPool = kubernetesCluster.agentPools().get(agentPoolName1);
         Assertions.assertEquals(2, agentPool.count());
         Assertions.assertEquals(AgentPoolMode.SYSTEM, agentPool.mode());
-        Assertions.assertEquals(KubeletDiskType.OS, agentPool.kubeletDiskType());
 
         agentPool = kubernetesCluster.agentPools().get(agentPoolName2);
         Assertions.assertNotNull(agentPool);
@@ -286,6 +282,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
     }
 
     @Test
+    @Disabled("Azure Spot VMs are not guaranteed to be scheduled.")
     public void canCreateClusterWithSpotVM() throws Exception {
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);

@@ -22,7 +22,7 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
     public void canListEventsAndMetrics() throws Exception {
         // make sure there exists a VM
 
-        OffsetDateTime now = OffsetDateTime.parse("2020-12-28T21:44:57.424+08:00");
+        OffsetDateTime now = OffsetDateTime.parse("2021-10-28T15:19:33.617526800-07:00");
         if (!this.isPlaybackMode()) {
             now = OffsetDateTime.now();
             System.out.println("record timestamp: " + now);

@@ -260,7 +260,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D5_V2)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D1_V2)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
                 .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
                 .withoutPrimaryInternalLoadBalancer()
