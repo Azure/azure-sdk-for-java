@@ -5,12 +5,9 @@ package com.azure.spring.autoconfigure.storage;
 
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.spring.autoconfigure.storage.resource.AzureStorageProtocolResolver;
-import com.azure.spring.autoconfigure.storage.resource.AzureStorageResourcePatternResolver;
 import com.azure.spring.utils.ApplicationId;
-import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
