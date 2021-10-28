@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.ParameterizedType;
@@ -42,6 +46,7 @@ public final class ObjectMapperShim {
     private static final int CACHE_SIZE_LIMIT = 10000;
 
     private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, MethodHandle> HEADER_TYPE_TO_CONSTRUCTOR_CACHE = new ConcurrentHashMap<>();
 
     /**
      * Creates and configures JSON {@code ObjectMapper} capable of serializing azure.core types, with flattening and additional properties support.
@@ -275,19 +280,32 @@ public final class ObjectMapperShim {
                 javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
             }
 
-            return getFromCache(type, t -> mapper.getTypeFactory()
+            return getFromCache(TYPE_TO_JAVA_TYPE_CACHE, type, t -> mapper.getTypeFactory()
                 .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments));
         } else {
-            return getFromCache(type, t -> mapper.getTypeFactory().constructType(t));
+            return getFromCache(TYPE_TO_JAVA_TYPE_CACHE, type, t -> mapper.getTypeFactory().constructType(t));
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <T> T deserialize(HttpHeaders headers, Type deserializedHeadersType) throws IOException {
         if (deserializedHeadersType == null) {
             return null;
         }
 
-        T deserializedHeaders = mapper.convertValue(headers, createJavaType(deserializedHeadersType));
+        JavaType headerType = createJavaType(deserializedHeadersType);
+        try {
+            MethodHandle constructorHandle = getFromCache(HEADER_TYPE_TO_CONSTRUCTOR_CACHE, headerType.getRawClass(),
+                ObjectMapperShim::getConstructorHandle);
+
+            return (T) constructorHandle.invoke(headers);
+        } catch (NoSuchMethodException ex) {
+            // Ignore not being able to find a method that doesn't exist.
+        } catch (Throwable ex) {
+            throw new RuntimeException(LOGGER.logThrowableAsError(ex));
+        }
+
+        T deserializedHeaders = mapper.convertValue(headers, headerType);
 
         final Class<?> deserializedHeadersClass = TypeUtil.getRawClass(deserializedHeadersType);
         final Field[] declaredFields = deserializedHeadersClass.getDeclaredFields();
@@ -380,14 +398,29 @@ public final class ObjectMapperShim {
         }
     }
 
+    private static MethodHandle getConstructorHandle(Class<?> headerClass) {
+        try {
+            return MethodHandles.lookup().findConstructor(headerClass,
+                MethodType.methodType(void.class, HttpHeaders.class));
+        } catch (ReflectiveOperationException ex) {
+            sneakyThrow(ex);
+            return null;
+        }
+    }
+
     /*
      * Helper method that gets the value for the given key from the cache.
      */
-    private static JavaType getFromCache(Type key, Function<Type, JavaType> compute) {
-        if (TYPE_TO_JAVA_TYPE_CACHE.size() >= CACHE_SIZE_LIMIT) {
-            TYPE_TO_JAVA_TYPE_CACHE.clear();
+    private static <K, V> V getFromCache(Map<K, V> map, K key, Function<K, V> compute) {
+        if (map.size() >= CACHE_SIZE_LIMIT) {
+            map.clear();
         }
 
-        return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(key, compute);
+        return map.computeIfAbsent(key, compute);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <E extends Throwable> void sneakyThrow(Throwable e) throws E {
+        throw (E) e;
     }
 }

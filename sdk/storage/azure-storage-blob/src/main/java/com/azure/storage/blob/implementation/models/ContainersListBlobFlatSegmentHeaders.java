@@ -5,44 +5,31 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import reactor.core.Exceptions;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 
-/** The ContainersListBlobFlatSegmentHeaders model. */
+/**
+ * The ContainersListBlobFlatSegmentHeaders model.
+ */
 @JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class ContainersListBlobFlatSegmentHeaders {
-    /*
-     * The x-ms-version property.
-     */
-    @JsonProperty(value = "x-ms-version")
-    private String xMsVersion;
+    private final HttpHeaders rawHeaders;
 
-    /*
-     * The x-ms-request-id property.
-     */
-    @JsonProperty(value = "x-ms-request-id")
-    private String xMsRequestId;
+    public ContainersListBlobFlatSegmentHeaders(HttpHeaders rawHeaders) {
+        this.rawHeaders = rawHeaders;
+    }
 
-    /*
-     * The x-ms-client-request-id property.
-     */
-    @JsonProperty(value = "x-ms-client-request-id")
-    private String xMsClientRequestId;
-
-    /*
-     * The Date property.
-     */
-    @JsonProperty(value = "Date")
+    private boolean datePropertySet = false;
     private DateTimeRfc1123 dateProperty;
-
-    /*
-     * The Content-Type property.
-     */
-    @JsonProperty(value = "Content-Type")
-    private String contentType;
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
@@ -50,18 +37,7 @@ public final class ContainersListBlobFlatSegmentHeaders {
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     *
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the ContainersListBlobFlatSegmentHeaders object itself.
-     */
-    public ContainersListBlobFlatSegmentHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
-        return this;
+        return rawHeaders.getValue("x-ms-version");
     }
 
     /**
@@ -70,18 +46,7 @@ public final class ContainersListBlobFlatSegmentHeaders {
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
-        return this.xMsRequestId;
-    }
-
-    /**
-     * Set the xMsRequestId property: The x-ms-request-id property.
-     *
-     * @param xMsRequestId the xMsRequestId value to set.
-     * @return the ContainersListBlobFlatSegmentHeaders object itself.
-     */
-    public ContainersListBlobFlatSegmentHeaders setXMsRequestId(String xMsRequestId) {
-        this.xMsRequestId = xMsRequestId;
-        return this;
+        return rawHeaders.getValue("x-ms-request-id");
     }
 
     /**
@@ -90,18 +55,7 @@ public final class ContainersListBlobFlatSegmentHeaders {
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
-        return this.xMsClientRequestId;
-    }
-
-    /**
-     * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
-     * @param xMsClientRequestId the xMsClientRequestId value to set.
-     * @return the ContainersListBlobFlatSegmentHeaders object itself.
-     */
-    public ContainersListBlobFlatSegmentHeaders setXMsClientRequestId(String xMsClientRequestId) {
-        this.xMsClientRequestId = xMsClientRequestId;
-        return this;
+        return rawHeaders.getValue("x-ms-client-request-id");
     }
 
     /**
@@ -110,25 +64,21 @@ public final class ContainersListBlobFlatSegmentHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+        if (!this.datePropertySet) {
+            try {
+                this.dateProperty = JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserialize(rawHeaders.getValue("Date"), DateTimeRfc1123.class, SerializerEncoding.JSON);
+                this.datePropertySet = true;
+            } catch (IOException ex) {
+                throw Exceptions.propagate(new UncheckedIOException(ex));
+            }
+        }
+
+        if (dateProperty == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
-    }
 
-    /**
-     * Set the dateProperty property: The Date property.
-     *
-     * @param dateProperty the dateProperty value to set.
-     * @return the ContainersListBlobFlatSegmentHeaders object itself.
-     */
-    public ContainersListBlobFlatSegmentHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
-        } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
-        }
-        return this;
+        return dateProperty.getDateTime();
     }
 
     /**
@@ -137,17 +87,6 @@ public final class ContainersListBlobFlatSegmentHeaders {
      * @return the contentType value.
      */
     public String getContentType() {
-        return this.contentType;
-    }
-
-    /**
-     * Set the contentType property: The Content-Type property.
-     *
-     * @param contentType the contentType value to set.
-     * @return the ContainersListBlobFlatSegmentHeaders object itself.
-     */
-    public ContainersListBlobFlatSegmentHeaders setContentType(String contentType) {
-        this.contentType = contentType;
-        return this;
+        return rawHeaders.getValue("Content-Type");
     }
 }

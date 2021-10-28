@@ -41,10 +41,7 @@ public class JacksonAdapter implements SerializerAdapter {
     private ObjectMapper rawOuterMapper;
     private ObjectMapper rawInnerMapper;
 
-    /*
-     * The lazily-created serializer for this ServiceClient.
-     */
-    private static SerializerAdapter serializerAdapter;
+    private static final SerializerAdapter SERIALIZER_ADAPTER = new JacksonAdapter();
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
@@ -106,11 +103,8 @@ public class JacksonAdapter implements SerializerAdapter {
      *
      * @return the default serializer
      */
-    public static synchronized SerializerAdapter createDefaultSerializerAdapter() {
-        if (serializerAdapter == null) {
-            serializerAdapter = new JacksonAdapter();
-        }
-        return serializerAdapter;
+    public static SerializerAdapter createDefaultSerializerAdapter() {
+        return SERIALIZER_ADAPTER;
     }
 
     /**
