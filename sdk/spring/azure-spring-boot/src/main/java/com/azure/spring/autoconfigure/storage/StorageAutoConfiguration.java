@@ -58,24 +58,6 @@ public class StorageAutoConfiguration {
             .httpLogOptions(new HttpLogOptions().setApplicationId(ApplicationId.AZURE_SPRING_STORAGE_FILES));
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty({ "azure.storage.blob-endpoint", "azure.storage.file-endpoint" })
-    public AzureStorageResourcePatternResolver resourceLoader(BlobServiceClientBuilder blobServiceClientBuilder,
-                                                              ShareServiceClientBuilder shareServiceClientBuilder) {
-
-        BlobServiceClient blobServiceClient = null;
-        ShareServiceClient shareServiceClient = null;
-
-        if (blobServiceClientBuilder != null) {
-            blobServiceClient = blobServiceClientBuilder.buildClient();
-        }
-        if (shareServiceClientBuilder != null) {
-            shareServiceClient = shareServiceClientBuilder.buildClient();
-        }
-        return new AzureStorageResourcePatternResolver(blobServiceClient, shareServiceClient);
-    }
-
     @Configuration
     @ConditionalOnClass(AzureStorageProtocolResolver.class)
     @Import(AzureStorageProtocolResolver.class)
