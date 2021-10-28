@@ -199,7 +199,7 @@ public interface DiagnosticsClientContext {
             }
             return Strings.lenientFormat("(cto:%s, rto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cer:%s)",
                 rntbdOptions.connectTimeout(),
-                rntbdOptions.networkRequestTimeout(),
+                rntbdOptions.tcpNetworkRequestTimeout(),
                 rntbdOptions.idleChannelTimeout(),
                 rntbdOptions.idleEndpointTimeout(),
                 rntbdOptions.maxChannelsPerEndpoint(),

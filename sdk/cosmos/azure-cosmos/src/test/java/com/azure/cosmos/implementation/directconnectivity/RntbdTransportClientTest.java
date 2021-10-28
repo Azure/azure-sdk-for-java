@@ -978,7 +978,7 @@ public final class RntbdTransportClientTest {
             Provider(RntbdTransportClient.Options options, SslContext sslContext, RntbdResponse expected, IAddressResolver addressResolver) {
                 this.config = new Config(options, sslContext, LogLevel.WARN);
                 this.timer = new RntbdRequestTimer(
-                    config.networkRequestTimeoutInNanos(),
+                    config.tcpNetworkRequestTimeoutInNanos(),
                     config.requestTimerResolutionInNanos());
                 this.expected = expected;
                 this.addressResolver = addressResolver;

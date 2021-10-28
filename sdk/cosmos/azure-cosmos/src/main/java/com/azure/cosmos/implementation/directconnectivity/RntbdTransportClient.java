@@ -557,7 +557,7 @@ public class RntbdTransportClient extends TransportClient {
             return this.receiveHangDetectionTime;
         }
 
-        public Duration networkRequestTimeout() {
+        public Duration tcpNetworkRequestTimeout() {
             return this.tcpNetworkRequestTimeout;
         }
 

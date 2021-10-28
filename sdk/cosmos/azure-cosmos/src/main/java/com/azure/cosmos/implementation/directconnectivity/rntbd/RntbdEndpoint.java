@@ -191,8 +191,8 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
-        public long networkRequestTimeoutInNanos() {
-            return this.options.networkRequestTimeout().toNanos();
+        public long tcpNetworkRequestTimeoutInNanos() {
+            return this.options.tcpNetworkRequestTimeout().toNanos();
         }
 
         @JsonProperty
