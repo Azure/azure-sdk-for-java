@@ -1,5 +1,15 @@
 ## Release History
 
+### 3.14.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 3.13.1 (2021-10-27)
 #### Key Bug Fixes
 * Fixed support for slice query in annotated `@Query` queries.
