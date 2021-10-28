@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 /**
  * Configurations that allow callers to specify details about how to execute a single-label classification action
  * in a set of documents.
+ *
+ * See the service documentation for regional support of custom single classification:
+ * https://aka.ms/azsdk/textanalytics/customfunctionalities
  */
 @Fluent
 public final class SingleCategoryClassifyAction {
