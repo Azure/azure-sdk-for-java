@@ -232,7 +232,8 @@ public interface AsyncDocumentClient {
                 sessionCapturingOverride,
                 transportClientSharing,
                 contentResponseOnWriteEnabled,
-                state);
+                state,
+                apiType);
 
             client.init(state, null);
             return client;

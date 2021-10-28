@@ -108,6 +108,7 @@ public class CosmosClientBuilder {
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
     private boolean clientTelemetryEnabled = false;
+    private string apiType = "Sql";
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -128,6 +129,13 @@ public class CosmosClientBuilder {
     CosmosClientMetadataCachesSnapshot metadataCaches() {
         return this.state;
     }
+
+    CosmosClientBuilder setApiType(string apiType){
+        this.apiType = apiType;
+        return this;
+    }
+
+    string apiType(){ return this.apiType; }
 
     /**
      * Session capturing is enabled by default for {@link ConsistencyLevel#SESSION}.
@@ -846,6 +854,22 @@ public class CosmosClientBuilder {
                 @Override
                 public CosmosClientMetadataCachesSnapshot getCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder) {
                     return builder.metadataCaches();
+                }
+            });
+    }
+
+    static {
+        CosmosClientBuilderHelper.setCosmosClientBuilderAccessor(
+            new CosmosClientBuilderHelper.CosmosClientBuilderApiType() {
+
+                @Override
+                public void setCosmosClientApiType(CosmosClientBuilder builder, string apiType) {
+                    builder.setApiType(apiType);
+                }
+
+                @Override
+                public string getCosmosClientApiType(CosmosClientBuilder builder) {
+                    return builder.apiType();
                 }
             });
     }

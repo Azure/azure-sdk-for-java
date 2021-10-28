@@ -48,6 +48,7 @@ public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
     public static final class CosmosClientBuilderHelper {
         private static CosmosClientBuilderAccessor accessor;
+        private static CosmosClientBuilderApiType apiType;
 
         private CosmosClientBuilderHelper() {}
         static {
@@ -62,7 +63,19 @@ public class ImplementationBridgeHelpers {
             accessor = newAccessor;
         }
 
-        static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
+        static CosmosClientBuilderApiType getCosmosClientBuilderAccessor() {
+            if (apiType == null) {
+                throw new IllegalStateException("CosmosClientBuilder apiType is not initialized yet!");
+            }
+
+            return apiType;
+        }
+
+        public static void getCosmosClientBuilderApiType(final CosmosClientBuilderApiType finalApiType) {
+            apiType = finalApiType;
+        }
+
+        static CosmosClientBuilderAccessor getCosmosClientBuilderApiType() {
             if (accessor == null) {
                 throw new IllegalStateException("CosmosClientBuilder accessor is not initialized yet!");
             }
@@ -75,6 +88,12 @@ public class ImplementationBridgeHelpers {
                                                        CosmosClientMetadataCachesSnapshot metadataCache);
             CosmosClientMetadataCachesSnapshot getCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder);
 
+        }
+
+        public interface CosmosClientBuilderApiType{
+            void setCosmosClientApiType(CosmosClientBuilder builder,
+                                        string apiType);
+            string getCosmosClientApiType(CosmosClientBuilder builder);
         }
     }
 

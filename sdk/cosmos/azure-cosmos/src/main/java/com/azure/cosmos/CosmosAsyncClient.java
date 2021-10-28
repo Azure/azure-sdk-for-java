@@ -69,6 +69,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final TracerProvider tracerProvider;
     private final boolean contentResponseOnWriteEnabled;
     private static final Tracer TRACER;
+    private final string apiType;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -95,6 +96,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.clientTelemetryEnabled = builder.isClientTelemetryEnabled();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(TRACER);
+        this.apiType = builder.apiType();
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
