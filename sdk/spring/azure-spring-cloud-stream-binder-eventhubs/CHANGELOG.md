@@ -3,7 +3,7 @@
 ## 2.10.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Support batch consumers.
 ### Breaking Changes
 
 ### Bugs Fixed

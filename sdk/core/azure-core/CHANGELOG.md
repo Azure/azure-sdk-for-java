@@ -3,6 +3,7 @@
 ## 1.22.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added `getJavaClass` method to retrieve the representing instance of the `TypeReference` created.
 
 ### Breaking Changes
 
