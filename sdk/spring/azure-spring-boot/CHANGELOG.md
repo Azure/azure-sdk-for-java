@@ -3,8 +3,15 @@
 ## 3.10.0-beta.1 (Unreleased)
 
 ### Features Added
+Add property for JmsDefaultPrefetchPolicy.([#24304](https://github.com/Azure/azure-sdk-for-java/issues/24304))
+- Add property `spring.jms.servicebus.prefetch-policy.all` to configure all prefetchPolicy values.
+- Add property `spring.jms.servicebus.durable-topic-prefetch` to configure the durable topic prefetch value.
+- Add property `spring.jms.servicebus.queue-browser-prefetch` to configure the queueBrowserPrefetch value.
+- Add property `spring.jms.servicebus.queue-prefetch` to configure the queuePrefetch value.
+- Add property `spring.jms.servicebus.topic-prefetch` to configure the topicPrefetch value.
 
 ### Breaking Changes
+For standard tier in ServiceBus, the default value of prefetch number has been changed from 1000 to 0.
 
 ### Bugs Fixed
 
