@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public final class GatewayConnectionConfig {
     //  Constants
-    private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5);
+    private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
 
@@ -50,7 +50,7 @@ public final class GatewayConnectionConfig {
 
     /**
      * Sets the network request timeout (time to wait for response from network peer).
-     * The default is 5 seconds.
+     * The default is 60 seconds.
      *
      * @param networkRequestTimeout the network request timeout duration.
      * @return the {@link GatewayConnectionConfig}.
