@@ -12,6 +12,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
+import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
@@ -263,10 +264,7 @@ public class ModelHelper {
      */
     public static BlobItem populateBlobItem(BlobItemInternal blobItemInternal) {
         BlobItem blobItem = new BlobItem();
-        String blobName = blobItemInternal.getName().isEncoded()
-            ? Utility.urlDecode(blobItemInternal.getName().getContent())
-            : blobItemInternal.getName().getContent();
-        blobItem.setName(blobName);
+        blobItem.setName(toBlobNameString(blobItemInternal.getName()));
         blobItem.setDeleted(blobItemInternal.isDeleted());
         blobItem.setSnapshot(blobItemInternal.getSnapshot());
         blobItem.setProperties(populateBlobItemProperties(blobItemInternal.getProperties()));
@@ -283,6 +281,12 @@ public class ModelHelper {
         blobItem.setHasVersionsOnly(blobItemInternal.isHasVersionsOnly());
 
         return blobItem;
+    }
+
+    public static String toBlobNameString(BlobName blobName) {
+        return blobName.isEncoded()
+            ? Utility.urlDecode(blobName.getContent())
+            : blobName.getContent();
     }
 
     public static TaggedBlobItem populateTaggedBlobItem(FilterBlobItem filterBlobItem) {
