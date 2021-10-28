@@ -73,27 +73,6 @@ public interface RoleAssignmentsClient
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource.
      * @param resourceName The name of the resource to get role assignments for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentInner> listForResource(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName);
-
-    /**
-     * Gets role assignments for a resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource.
-     * @param resourceName The name of the resource to get role assignments for.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
@@ -112,6 +91,27 @@ public interface RoleAssignmentsClient
         String resourceName,
         String filter,
         Context context);
+
+    /**
+     * Gets role assignments for a resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource.
+     * @param resourceName The name of the resource to get role assignments for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RoleAssignmentInner> listForResource(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName);
 
     /**
      * Gets role assignments for a resource group.
@@ -144,18 +144,6 @@ public interface RoleAssignmentsClient
      * Gets role assignments for a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName);
-
-    /**
-     * Gets role assignments for a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
@@ -167,6 +155,18 @@ public interface RoleAssignmentsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName, String filter, Context context);
+
+    /**
+     * Gets role assignments for a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Deletes a role assignment.
@@ -230,7 +230,7 @@ public interface RoleAssignmentsClient
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @param parameters Parameters for the role assignment.
+     * @param parameters Role assignment create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -249,7 +249,7 @@ public interface RoleAssignmentsClient
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @param parameters Parameters for the role assignment.
+     * @param parameters Role assignment create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -268,7 +268,7 @@ public interface RoleAssignmentsClient
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @param parameters Parameters for the role assignment.
+     * @param parameters Role assignment create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -286,7 +286,7 @@ public interface RoleAssignmentsClient
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @param parameters Parameters for the role assignment.
+     * @param parameters Role assignment create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -403,7 +403,7 @@ public interface RoleAssignmentsClient
      * Creates a role assignment by ID.
      *
      * @param roleId The ID of the role assignment to create.
-     * @param parameters Parameters for the role assignment.
+     * @param parameters Role assignment create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -417,7 +417,7 @@ public interface RoleAssignmentsClient
      * Creates a role assignment by ID.
      *
      * @param roleId The ID of the role assignment to create.
-     * @param parameters Parameters for the role assignment.
+     * @param parameters Role assignment create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -430,7 +430,7 @@ public interface RoleAssignmentsClient
      * Creates a role assignment by ID.
      *
      * @param roleId The ID of the role assignment to create.
-     * @param parameters Parameters for the role assignment.
+     * @param parameters Role assignment create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -443,7 +443,7 @@ public interface RoleAssignmentsClient
      * Creates a role assignment by ID.
      *
      * @param roleId The ID of the role assignment to create.
-     * @param parameters Parameters for the role assignment.
+     * @param parameters Role assignment create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -530,16 +530,6 @@ public interface RoleAssignmentsClient
     /**
      * Gets all role assignments for the subscription.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role assignments for the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentInner> list();
-
-    /**
-     * Gets all role assignments for the subscription.
-     *
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
@@ -551,6 +541,16 @@ public interface RoleAssignmentsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> list(String filter, Context context);
+
+    /**
+     * Gets all role assignments for the subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role assignments for the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RoleAssignmentInner> list();
 
     /**
      * Gets role assignments for a scope.
@@ -583,18 +583,6 @@ public interface RoleAssignmentsClient
      * Gets role assignments for a scope.
      *
      * @param scope The scope of the role assignments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a scope.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleAssignmentInner> listForScope(String scope);
-
-    /**
-     * Gets role assignments for a scope.
-     *
-     * @param scope The scope of the role assignments.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
@@ -606,4 +594,16 @@ public interface RoleAssignmentsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleAssignmentInner> listForScope(String scope, String filter, Context context);
+
+    /**
+     * Gets role assignments for a scope.
+     *
+     * @param scope The scope of the role assignments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a scope.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RoleAssignmentInner> listForScope(String scope);
 }

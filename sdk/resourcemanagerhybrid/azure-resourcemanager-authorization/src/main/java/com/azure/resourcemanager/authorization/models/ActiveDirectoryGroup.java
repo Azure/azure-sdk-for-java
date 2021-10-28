@@ -5,7 +5,7 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphGroupInner;
+import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
@@ -16,7 +16,7 @@ import java.util.List;
 /** An immutable client-side representation of an Azure AD group. */
 @Fluent
 public interface ActiveDirectoryGroup
-    extends ActiveDirectoryObject, HasInnerModel<MicrosoftGraphGroupInner>, Updatable<ActiveDirectoryGroup.Update> {
+    extends ActiveDirectoryObject, HasInnerModel<ADGroupInner>, Updatable<ActiveDirectoryGroup.Update> {
     /** @return security enabled field. */
     boolean securityEnabled();
 

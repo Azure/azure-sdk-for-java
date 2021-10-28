@@ -9,5337 +9,661 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.authorization.fluent.models.GroupsAssignLicenseRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.GroupsCheckMemberGroupsRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.GroupsCheckMemberObjectsRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.GroupsGetAvailableExtensionPropertiesRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.GroupsGetByIdsRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.GroupsGetMemberGroupsRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.GroupsGetMemberObjectsRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.GroupsOrderby;
-import com.azure.resourcemanager.authorization.fluent.models.GroupsSelect;
-import com.azure.resourcemanager.authorization.fluent.models.GroupsValidatePropertiesRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphAppRoleAssignmentInner;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDirectoryObjectInner;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphExtensionInner;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphExtensionPropertyInner;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphGroupInner;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphProfilePhotoInner;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphResourceSpecificPermissionGrantInner;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.Map;
-import reactor.core.publisher.Flux;
+import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
+import com.azure.resourcemanager.authorization.fluent.models.CheckGroupMembershipResultInner;
+import com.azure.resourcemanager.authorization.fluent.models.DirectoryObjectInner;
+import com.azure.resourcemanager.authorization.models.CheckGroupMembershipParameters;
+import com.azure.resourcemanager.authorization.models.GroupCreateParameters;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GroupsClient. */
 public interface GroupsClient {
     /**
-     * Get appRoleAssignments from groups.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
      *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
+     * @param parameters Request parameters for IsMemberOf API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appRoleAssignments from groups.
+     * @return server response for IsMemberOf API call.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignmentsAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CheckGroupMembershipResultInner>> isMemberOfWithResponseAsync(
+        CheckGroupMembershipParameters parameters);
 
     /**
-     * Get appRoleAssignments from groups.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
      *
-     * @param groupId key: id of group.
+     * @param parameters Request parameters for IsMemberOf API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appRoleAssignments from groups.
+     * @return server response for IsMemberOf API call.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignmentsAsync(String groupId);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CheckGroupMembershipResultInner> isMemberOfAsync(CheckGroupMembershipParameters parameters);
 
     /**
-     * Get appRoleAssignments from groups.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
      *
-     * @param groupId key: id of group.
+     * @param parameters Request parameters for IsMemberOf API call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appRoleAssignments from groups.
+     * @return server response for IsMemberOf API call.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignments(String groupId);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckGroupMembershipResultInner isMemberOf(CheckGroupMembershipParameters parameters);
 
     /**
-     * Get appRoleAssignments from groups.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
      *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
+     * @param parameters Request parameters for IsMemberOf API call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appRoleAssignments from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignments(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Create new navigation property to appRoleAssignments for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphAppRoleAssignmentInner>> createAppRoleAssignmentsWithResponseAsync(
-        String groupId, MicrosoftGraphAppRoleAssignmentInner body);
+    Response<CheckGroupMembershipResultInner> isMemberOfWithResponse(
+        CheckGroupMembershipParameters parameters, Context context);
 
     /**
-     * Create new navigation property to appRoleAssignments for groups.
+     * Remove a member from a group.
      *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
+     * @param groupObjectId The object ID of the group from which to remove the member.
+     * @param memberObjectId Member object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphAppRoleAssignmentInner> createAppRoleAssignmentsAsync(
-        String groupId, MicrosoftGraphAppRoleAssignmentInner body);
-
-    /**
-     * Create new navigation property to appRoleAssignments for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphAppRoleAssignmentInner createAppRoleAssignments(
-        String groupId, MicrosoftGraphAppRoleAssignmentInner body);
-
-    /**
-     * Create new navigation property to appRoleAssignments for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphAppRoleAssignmentInner> createAppRoleAssignmentsWithResponse(
-        String groupId, MicrosoftGraphAppRoleAssignmentInner body, Context context);
-
-    /**
-     * Get appRoleAssignments from groups.
-     *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appRoleAssignments from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphAppRoleAssignmentInner>> getAppRoleAssignmentsWithResponseAsync(
-        String groupId, String appRoleAssignmentId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get appRoleAssignments from groups.
-     *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appRoleAssignments from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphAppRoleAssignmentInner> getAppRoleAssignmentsAsync(
-        String groupId, String appRoleAssignmentId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get appRoleAssignments from groups.
-     *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appRoleAssignments from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphAppRoleAssignmentInner> getAppRoleAssignmentsAsync(String groupId, String appRoleAssignmentId);
-
-    /**
-     * Get appRoleAssignments from groups.
-     *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appRoleAssignments from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphAppRoleAssignmentInner getAppRoleAssignments(String groupId, String appRoleAssignmentId);
-
-    /**
-     * Get appRoleAssignments from groups.
-     *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return appRoleAssignments from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphAppRoleAssignmentInner> getAppRoleAssignmentsWithResponse(
-        String groupId, String appRoleAssignmentId, List<GroupsSelect> select, List<String> expand, Context context);
-
-    /**
-     * Update the navigation property appRoleAssignments in groups.
-     *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateAppRoleAssignmentsWithResponseAsync(
-        String groupId, String appRoleAssignmentId, MicrosoftGraphAppRoleAssignmentInner body);
+    Mono<Response<Void>> removeMemberWithResponseAsync(String groupObjectId, String memberObjectId);
 
     /**
-     * Update the navigation property appRoleAssignments in groups.
+     * Remove a member from a group.
      *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @param body New navigation property values.
+     * @param groupObjectId The object ID of the group from which to remove the member.
+     * @param memberObjectId Member object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updateAppRoleAssignmentsAsync(
-        String groupId, String appRoleAssignmentId, MicrosoftGraphAppRoleAssignmentInner body);
+    Mono<Void> removeMemberAsync(String groupObjectId, String memberObjectId);
 
     /**
-     * Update the navigation property appRoleAssignments in groups.
+     * Remove a member from a group.
      *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @param body New navigation property values.
+     * @param groupObjectId The object ID of the group from which to remove the member.
+     * @param memberObjectId Member object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateAppRoleAssignments(
-        String groupId, String appRoleAssignmentId, MicrosoftGraphAppRoleAssignmentInner body);
+    void removeMember(String groupObjectId, String memberObjectId);
 
     /**
-     * Update the navigation property appRoleAssignments in groups.
+     * Remove a member from a group.
      *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @param body New navigation property values.
+     * @param groupObjectId The object ID of the group from which to remove the member.
+     * @param memberObjectId Member object id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateAppRoleAssignmentsWithResponse(
-        String groupId, String appRoleAssignmentId, MicrosoftGraphAppRoleAssignmentInner body, Context context);
+    Response<Void> removeMemberWithResponse(String groupObjectId, String memberObjectId, Context context);
 
     /**
-     * Delete navigation property appRoleAssignments for groups.
+     * Add a member to a group.
      *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @param ifMatch ETag.
+     * @param groupObjectId The object ID of the group to which to add the member.
+     * @param url A member object URL, such as
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
+     *     the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteAppRoleAssignmentsWithResponseAsync(
-        String groupId, String appRoleAssignmentId, String ifMatch);
+    Mono<Response<Void>> addMemberWithResponseAsync(String groupObjectId, String url);
 
     /**
-     * Delete navigation property appRoleAssignments for groups.
+     * Add a member to a group.
      *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @param ifMatch ETag.
+     * @param groupObjectId The object ID of the group to which to add the member.
+     * @param url A member object URL, such as
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
+     *     the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAppRoleAssignmentsAsync(String groupId, String appRoleAssignmentId, String ifMatch);
+    Mono<Void> addMemberAsync(String groupObjectId, String url);
 
     /**
-     * Delete navigation property appRoleAssignments for groups.
+     * Add a member to a group.
      *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param groupObjectId The object ID of the group to which to add the member.
+     * @param url A member object URL, such as
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
+     *     the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAppRoleAssignmentsAsync(String groupId, String appRoleAssignmentId);
-
-    /**
-     * Delete navigation property appRoleAssignments for groups.
-     *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteAppRoleAssignments(String groupId, String appRoleAssignmentId);
+    void addMember(String groupObjectId, String url);
 
     /**
-     * Delete navigation property appRoleAssignments for groups.
+     * Add a member to a group.
      *
-     * @param groupId key: id of group.
-     * @param appRoleAssignmentId key: id of appRoleAssignment.
-     * @param ifMatch ETag.
+     * @param groupObjectId The object ID of the group to which to add the member.
+     * @param url A member object URL, such as
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
+     *     the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteAppRoleAssignmentsWithResponse(
-        String groupId, String appRoleAssignmentId, String ifMatch, Context context);
+    Response<Void> addMemberWithResponse(String groupObjectId, String url, Context context);
 
     /**
-     * Get acceptedSenders from groups.
+     * Create a group in the directory.
      *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
+     * @param parameters Request parameters for creating a new group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return acceptedSenders from groups.
+     * @return active Directory group information.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listAcceptedSendersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ADGroupInner>> createWithResponseAsync(GroupCreateParameters parameters);
 
     /**
-     * Get acceptedSenders from groups.
+     * Create a group in the directory.
      *
-     * @param groupId key: id of group.
+     * @param parameters Request parameters for creating a new group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return acceptedSenders from groups.
+     * @return active Directory group information.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listAcceptedSendersAsync(String groupId);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ADGroupInner> createAsync(GroupCreateParameters parameters);
 
     /**
-     * Get acceptedSenders from groups.
+     * Create a group in the directory.
      *
-     * @param groupId key: id of group.
+     * @param parameters Request parameters for creating a new group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return acceptedSenders from groups.
+     * @return active Directory group information.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listAcceptedSenders(String groupId);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ADGroupInner create(GroupCreateParameters parameters);
 
     /**
-     * Get acceptedSenders from groups.
+     * Create a group in the directory.
      *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
+     * @param parameters Request parameters for creating a new group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return acceptedSenders from groups.
+     * @return active Directory group information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ADGroupInner> createWithResponse(GroupCreateParameters parameters, Context context);
+
+    /**
+     * Gets list of groups for the current tenant.
+     *
+     * @param filter The filter to apply to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of groups for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listAcceptedSenders(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
+    PagedFlux<ADGroupInner> listAsync(String filter);
 
     /**
-     * Create new navigation property to acceptedSenders for groups.
+     * Gets list of groups for the current tenant.
      *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return list of groups for the current tenant.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphDirectoryObjectInner>> createAcceptedSendersWithResponseAsync(
-        String groupId, MicrosoftGraphDirectoryObjectInner body);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ADGroupInner> listAsync();
 
     /**
-     * Create new navigation property to acceptedSenders for groups.
+     * Gets list of groups for the current tenant.
      *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphDirectoryObjectInner> createAcceptedSendersAsync(
-        String groupId, MicrosoftGraphDirectoryObjectInner body);
-
-    /**
-     * Create new navigation property to acceptedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphDirectoryObjectInner createAcceptedSenders(String groupId, MicrosoftGraphDirectoryObjectInner body);
-
-    /**
-     * Create new navigation property to acceptedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
+     * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return list of groups for the current tenant.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphDirectoryObjectInner> createAcceptedSendersWithResponse(
-        String groupId, MicrosoftGraphDirectoryObjectInner body, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ADGroupInner> list(String filter, Context context);
 
     /**
-     * Get acceptedSenders from groups.
+     * Gets list of groups for the current tenant.
      *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of groups for the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ADGroupInner> list();
+
+    /**
+     * Gets the members of a group.
+     *
+     * @param objectId The object ID of the group whose members should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return acceptedSenders from groups.
+     * @return the members of a group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphDirectoryObjectInner>> getAcceptedSendersWithResponseAsync(
-        String groupId, String directoryObjectId, List<GroupsSelect> select, List<String> expand);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DirectoryObjectInner> getGroupMembersAsync(String objectId);
 
     /**
-     * Get acceptedSenders from groups.
+     * Gets the members of a group.
      *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
+     * @param objectId The object ID of the group whose members should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return acceptedSenders from groups.
+     * @return the members of a group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphDirectoryObjectInner> getAcceptedSendersAsync(
-        String groupId, String directoryObjectId, List<GroupsSelect> select, List<String> expand);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DirectoryObjectInner> getGroupMembers(String objectId);
 
     /**
-     * Get acceptedSenders from groups.
+     * Gets the members of a group.
      *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return acceptedSenders from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphDirectoryObjectInner> getAcceptedSendersAsync(String groupId, String directoryObjectId);
-
-    /**
-     * Get acceptedSenders from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return acceptedSenders from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphDirectoryObjectInner getAcceptedSenders(String groupId, String directoryObjectId);
-
-    /**
-     * Get acceptedSenders from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
+     * @param objectId The object ID of the group whose members should be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return acceptedSenders from groups.
+     * @return the members of a group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphDirectoryObjectInner> getAcceptedSendersWithResponse(
-        String groupId, String directoryObjectId, List<GroupsSelect> select, List<String> expand, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DirectoryObjectInner> getGroupMembers(String objectId, Context context);
 
     /**
-     * Update the navigation property acceptedSenders in groups.
+     * Gets group information from the directory.
      *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param body New navigation property values.
+     * @param objectId The object ID of the user for which to get group information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group information from the directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ADGroupInner>> getWithResponseAsync(String objectId);
+
+    /**
+     * Gets group information from the directory.
+     *
+     * @param objectId The object ID of the user for which to get group information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group information from the directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ADGroupInner> getAsync(String objectId);
+
+    /**
+     * Gets group information from the directory.
+     *
+     * @param objectId The object ID of the user for which to get group information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group information from the directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ADGroupInner get(String objectId);
+
+    /**
+     * Gets group information from the directory.
+     *
+     * @param objectId The object ID of the user for which to get group information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group information from the directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ADGroupInner> getWithResponse(String objectId, Context context);
+
+    /**
+     * Delete a group from the directory.
+     *
+     * @param objectId The object ID of the group to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateAcceptedSendersWithResponseAsync(
-        String groupId, String directoryObjectId, MicrosoftGraphDirectoryObjectInner body);
+    Mono<Response<Void>> deleteWithResponseAsync(String objectId);
 
     /**
-     * Update the navigation property acceptedSenders in groups.
+     * Delete a group from the directory.
      *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param body New navigation property values.
+     * @param objectId The object ID of the group to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updateAcceptedSendersAsync(
-        String groupId, String directoryObjectId, MicrosoftGraphDirectoryObjectInner body);
+    Mono<Void> deleteAsync(String objectId);
 
     /**
-     * Update the navigation property acceptedSenders in groups.
+     * Delete a group from the directory.
      *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param body New navigation property values.
+     * @param objectId The object ID of the group to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateAcceptedSenders(String groupId, String directoryObjectId, MicrosoftGraphDirectoryObjectInner body);
+    void delete(String objectId);
 
     /**
-     * Update the navigation property acceptedSenders in groups.
+     * Delete a group from the directory.
      *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param body New navigation property values.
+     * @param objectId The object ID of the group to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateAcceptedSendersWithResponse(
-        String groupId, String directoryObjectId, MicrosoftGraphDirectoryObjectInner body, Context context);
+    Response<Void> deleteWithResponse(String objectId, Context context);
 
     /**
-     * Delete navigation property acceptedSenders for groups.
+     * Gets a collection of object IDs of groups of which the specified group is a member.
      *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param ifMatch ETag.
+     * @param objectId The object ID of the group for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
+     *     membership in all groups should be checked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return a collection of object IDs of groups of which the specified group is a member.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteAcceptedSendersWithResponseAsync(
-        String groupId, String directoryObjectId, String ifMatch);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly);
 
     /**
-     * Delete navigation property acceptedSenders for groups.
+     * Gets a collection of object IDs of groups of which the specified group is a member.
      *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param ifMatch ETag.
+     * @param objectId The object ID of the group for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
+     *     membership in all groups should be checked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return a collection of object IDs of groups of which the specified group is a member.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAcceptedSendersAsync(String groupId, String directoryObjectId, String ifMatch);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly);
 
     /**
-     * Delete navigation property acceptedSenders for groups.
+     * Gets a collection of object IDs of groups of which the specified group is a member.
      *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAcceptedSendersAsync(String groupId, String directoryObjectId);
-
-    /**
-     * Delete navigation property acceptedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteAcceptedSenders(String groupId, String directoryObjectId);
-
-    /**
-     * Delete navigation property acceptedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param ifMatch ETag.
+     * @param objectId The object ID of the group for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
+     *     membership in all groups should be checked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of object IDs of groups of which the specified group is a member.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly, Context context);
+
+    /**
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param objectId The object ID of the group for which to get owners.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId);
+
+    /**
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param objectId The object ID of the group for which to get owners.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DirectoryObjectInner> listOwners(String objectId);
+
+    /**
+     * The owners are a set of non-admin users who are allowed to modify this object.
+     *
+     * @param objectId The object ID of the group for which to get owners.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<DirectoryObjectInner> listOwners(String objectId, Context context);
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
+     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> addOwnerWithResponseAsync(String objectId, String url);
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
+     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> addOwnerAsync(String objectId, String url);
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
+     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void addOwner(String objectId, String url);
+
+    /**
+     * Add an owner to a group.
+     *
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as
+     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
+         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
+     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
+     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteAcceptedSendersWithResponse(
-        String groupId, String directoryObjectId, String ifMatch, Context context);
+    Response<Void> addOwnerWithResponse(String objectId, String url, Context context);
 
     /**
-     * Get createdOnBehalfOf from groups.
+     * Remove a member from owners.
      *
-     * @param groupId key: id of group.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
+     * @param objectId The object ID of the group from which to remove the owner.
+     * @param ownerObjectId Owner object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphDirectoryObjectInner>> getCreatedOnBehalfOfWithResponseAsync(
-        String groupId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get createdOnBehalfOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphDirectoryObjectInner> getCreatedOnBehalfOfAsync(
-        String groupId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get createdOnBehalfOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphDirectoryObjectInner> getCreatedOnBehalfOfAsync(String groupId);
-
-    /**
-     * Get createdOnBehalfOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphDirectoryObjectInner getCreatedOnBehalfOf(String groupId);
-
-    /**
-     * Get createdOnBehalfOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphDirectoryObjectInner> getCreatedOnBehalfOfWithResponse(
-        String groupId, List<GroupsSelect> select, List<String> expand, Context context);
-
-    /**
-     * Get ref of createdOnBehalfOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of createdOnBehalfOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<String>> getRefCreatedOnBehalfOfWithResponseAsync(String groupId);
-
-    /**
-     * Get ref of createdOnBehalfOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of createdOnBehalfOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<String> getRefCreatedOnBehalfOfAsync(String groupId);
-
-    /**
-     * Get ref of createdOnBehalfOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of createdOnBehalfOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    String getRefCreatedOnBehalfOf(String groupId);
-
-    /**
-     * Get ref of createdOnBehalfOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of createdOnBehalfOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<String> getRefCreatedOnBehalfOfWithResponse(String groupId, Context context);
-
-    /**
-     * Update the ref of navigation property createdOnBehalfOf in groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> setRefCreatedOnBehalfOfWithResponseAsync(String groupId, Map<String, Object> body);
+    Mono<Response<Void>> removeOwnerWithResponseAsync(String objectId, String ownerObjectId);
 
     /**
-     * Update the ref of navigation property createdOnBehalfOf in groups.
+     * Remove a member from owners.
      *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref values.
+     * @param objectId The object ID of the group from which to remove the owner.
+     * @param ownerObjectId Owner object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> setRefCreatedOnBehalfOfAsync(String groupId, Map<String, Object> body);
+    Mono<Void> removeOwnerAsync(String objectId, String ownerObjectId);
 
     /**
-     * Update the ref of navigation property createdOnBehalfOf in groups.
+     * Remove a member from owners.
      *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref values.
+     * @param objectId The object ID of the group from which to remove the owner.
+     * @param ownerObjectId Owner object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void setRefCreatedOnBehalfOf(String groupId, Map<String, Object> body);
+    void removeOwner(String objectId, String ownerObjectId);
 
     /**
-     * Update the ref of navigation property createdOnBehalfOf in groups.
+     * Remove a member from owners.
      *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref values.
+     * @param objectId The object ID of the group from which to remove the owner.
+     * @param ownerObjectId Owner object id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> setRefCreatedOnBehalfOfWithResponse(String groupId, Map<String, Object> body, Context context);
-
-    /**
-     * Delete ref of navigation property createdOnBehalfOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteRefCreatedOnBehalfOfWithResponseAsync(String groupId, String ifMatch);
-
-    /**
-     * Delete ref of navigation property createdOnBehalfOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteRefCreatedOnBehalfOfAsync(String groupId, String ifMatch);
-
-    /**
-     * Delete ref of navigation property createdOnBehalfOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteRefCreatedOnBehalfOfAsync(String groupId);
-
-    /**
-     * Delete ref of navigation property createdOnBehalfOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteRefCreatedOnBehalfOf(String groupId);
-
-    /**
-     * Delete ref of navigation property createdOnBehalfOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @param ifMatch ETag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteRefCreatedOnBehalfOfWithResponse(String groupId, String ifMatch, Context context);
-
-    /**
-     * Get extensions from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensions from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphExtensionInner> listExtensionsAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<String> select,
-        List<String> expand);
-
-    /**
-     * Get extensions from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensions from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphExtensionInner> listExtensionsAsync(String groupId);
-
-    /**
-     * Get extensions from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensions from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphExtensionInner> listExtensions(String groupId);
-
-    /**
-     * Get extensions from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensions from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphExtensionInner> listExtensions(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<String> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Create new navigation property to extensions for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphExtensionInner>> createExtensionsWithResponseAsync(
-        String groupId, MicrosoftGraphExtensionInner body);
-
-    /**
-     * Create new navigation property to extensions for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphExtensionInner> createExtensionsAsync(String groupId, MicrosoftGraphExtensionInner body);
-
-    /**
-     * Create new navigation property to extensions for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphExtensionInner createExtensions(String groupId, MicrosoftGraphExtensionInner body);
-
-    /**
-     * Create new navigation property to extensions for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extension.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphExtensionInner> createExtensionsWithResponse(
-        String groupId, MicrosoftGraphExtensionInner body, Context context);
-
-    /**
-     * Get extensions from groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensions from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphExtensionInner>> getExtensionsWithResponseAsync(
-        String groupId, String extensionId, List<String> select, List<String> expand);
-
-    /**
-     * Get extensions from groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensions from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphExtensionInner> getExtensionsAsync(
-        String groupId, String extensionId, List<String> select, List<String> expand);
-
-    /**
-     * Get extensions from groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensions from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphExtensionInner> getExtensionsAsync(String groupId, String extensionId);
-
-    /**
-     * Get extensions from groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensions from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphExtensionInner getExtensions(String groupId, String extensionId);
-
-    /**
-     * Get extensions from groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensions from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphExtensionInner> getExtensionsWithResponse(
-        String groupId, String extensionId, List<String> select, List<String> expand, Context context);
-
-    /**
-     * Update the navigation property extensions in groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateExtensionsWithResponseAsync(
-        String groupId, String extensionId, MicrosoftGraphExtensionInner body);
-
-    /**
-     * Update the navigation property extensions in groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updateExtensionsAsync(String groupId, String extensionId, MicrosoftGraphExtensionInner body);
-
-    /**
-     * Update the navigation property extensions in groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateExtensions(String groupId, String extensionId, MicrosoftGraphExtensionInner body);
-
-    /**
-     * Update the navigation property extensions in groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @param body New navigation property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateExtensionsWithResponse(
-        String groupId, String extensionId, MicrosoftGraphExtensionInner body, Context context);
-
-    /**
-     * Delete navigation property extensions for groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteExtensionsWithResponseAsync(String groupId, String extensionId, String ifMatch);
-
-    /**
-     * Delete navigation property extensions for groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteExtensionsAsync(String groupId, String extensionId, String ifMatch);
-
-    /**
-     * Delete navigation property extensions for groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteExtensionsAsync(String groupId, String extensionId);
-
-    /**
-     * Delete navigation property extensions for groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteExtensions(String groupId, String extensionId);
-
-    /**
-     * Delete navigation property extensions for groups.
-     *
-     * @param groupId key: id of group.
-     * @param extensionId key: id of extension.
-     * @param ifMatch ETag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteExtensionsWithResponse(String groupId, String extensionId, String ifMatch, Context context);
-
-    /**
-     * Get memberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return memberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listMemberOfAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand);
-
-    /**
-     * Get memberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return memberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listMemberOfAsync(String groupId);
-
-    /**
-     * Get memberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return memberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listMemberOf(String groupId);
-
-    /**
-     * Get memberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return memberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listMemberOf(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Get ref of memberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of memberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefMemberOfAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby);
-
-    /**
-     * Get ref of memberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of memberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefMemberOfAsync(String groupId);
-
-    /**
-     * Get ref of memberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of memberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefMemberOf(String groupId);
-
-    /**
-     * Get ref of memberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of memberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefMemberOf(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        Context context);
-
-    /**
-     * Create new navigation property ref to memberOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Map<String, Object>>> createRefMemberOfWithResponseAsync(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to memberOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Map<String, Object>> createRefMemberOfAsync(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to memberOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, Object> createRefMemberOf(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to memberOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, Object>> createRefMemberOfWithResponse(
-        String groupId, Map<String, Object> body, Context context);
-
-    /**
-     * Get members from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return members from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listMembersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand);
-
-    /**
-     * Get members from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return members from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listMembersAsync(String groupId);
-
-    /**
-     * Get members from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return members from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listMembers(String groupId);
-
-    /**
-     * Get members from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return members from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listMembers(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Get ref of members from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of members from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefMembersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby);
-
-    /**
-     * Get ref of members from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of members from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefMembersAsync(String groupId);
-
-    /**
-     * Get ref of members from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of members from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefMembers(String groupId);
-
-    /**
-     * Get ref of members from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of members from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefMembers(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        Context context);
-
-    /**
-     * Create new navigation property ref to members for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> createRefMembersWithResponseAsync(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to members for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> createRefMembersAsync(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to members for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void createRefMembers(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to members for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> createRefMembersWithResponse(String groupId, Map<String, Object> body, Context context);
-
-    /**
-     * Delete ref of member from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: directoryObject-id.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteRefMemberWithResponseAsync(String groupId, String directoryObjectId, String ifMatch);
-
-    /**
-     * Delete ref of member from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: directoryObject-id.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteRefMemberAsync(String groupId, String directoryObjectId, String ifMatch);
-
-    /**
-     * Delete ref of member from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: directoryObject-id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteRefMemberAsync(String groupId, String directoryObjectId);
-
-    /**
-     * Delete ref of member from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: directoryObject-id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteRefMember(String groupId, String directoryObjectId);
-
-    /**
-     * Delete ref of member from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: directoryObject-id.
-     * @param ifMatch ETag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteRefMemberWithResponse(
-        String groupId, String directoryObjectId, String ifMatch, Context context);
-
-    /**
-     * Get membersWithLicenseErrors from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return membersWithLicenseErrors from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listMembersWithLicenseErrorsAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand);
-
-    /**
-     * Get membersWithLicenseErrors from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return membersWithLicenseErrors from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listMembersWithLicenseErrorsAsync(String groupId);
-
-    /**
-     * Get membersWithLicenseErrors from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return membersWithLicenseErrors from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listMembersWithLicenseErrors(String groupId);
-
-    /**
-     * Get membersWithLicenseErrors from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return membersWithLicenseErrors from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listMembersWithLicenseErrors(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Get ref of membersWithLicenseErrors from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of membersWithLicenseErrors from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefMembersWithLicenseErrorsAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby);
-
-    /**
-     * Get ref of membersWithLicenseErrors from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of membersWithLicenseErrors from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefMembersWithLicenseErrorsAsync(String groupId);
-
-    /**
-     * Get ref of membersWithLicenseErrors from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of membersWithLicenseErrors from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefMembersWithLicenseErrors(String groupId);
-
-    /**
-     * Get ref of membersWithLicenseErrors from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of membersWithLicenseErrors from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefMembersWithLicenseErrors(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        Context context);
-
-    /**
-     * Create new navigation property ref to membersWithLicenseErrors for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Map<String, Object>>> createRefMembersWithLicenseErrorsWithResponseAsync(
-        String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to membersWithLicenseErrors for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Map<String, Object>> createRefMembersWithLicenseErrorsAsync(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to membersWithLicenseErrors for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, Object> createRefMembersWithLicenseErrors(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to membersWithLicenseErrors for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, Object>> createRefMembersWithLicenseErrorsWithResponse(
-        String groupId, Map<String, Object> body, Context context);
-
-    /**
-     * Invoke action addFavorite.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> addFavoriteWithResponseAsync(String groupId);
-
-    /**
-     * Invoke action addFavorite.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> addFavoriteAsync(String groupId);
-
-    /**
-     * Invoke action addFavorite.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void addFavorite(String groupId);
-
-    /**
-     * Invoke action addFavorite.
-     *
-     * @param groupId key: id of group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> addFavoriteWithResponse(String groupId, Context context);
-
-    /**
-     * Invoke action assignLicense.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphGroupInner>> assignLicenseWithResponseAsync(
-        String groupId, GroupsAssignLicenseRequestBody body);
-
-    /**
-     * Invoke action assignLicense.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphGroupInner> assignLicenseAsync(String groupId, GroupsAssignLicenseRequestBody body);
-
-    /**
-     * Invoke action assignLicense.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphGroupInner assignLicense(String groupId, GroupsAssignLicenseRequestBody body);
-
-    /**
-     * Invoke action assignLicense.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphGroupInner> assignLicenseWithResponse(
-        String groupId, GroupsAssignLicenseRequestBody body, Context context);
-
-    /**
-     * Invoke action checkGrantedPermissionsForApp.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<MicrosoftGraphResourceSpecificPermissionGrantInner>>>
-        checkGrantedPermissionsForAppWithResponseAsync(String groupId);
-
-    /**
-     * Invoke action checkGrantedPermissionsForApp.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<MicrosoftGraphResourceSpecificPermissionGrantInner>> checkGrantedPermissionsForAppAsync(String groupId);
-
-    /**
-     * Invoke action checkGrantedPermissionsForApp.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<MicrosoftGraphResourceSpecificPermissionGrantInner> checkGrantedPermissionsForApp(String groupId);
-
-    /**
-     * Invoke action checkGrantedPermissionsForApp.
-     *
-     * @param groupId key: id of group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<MicrosoftGraphResourceSpecificPermissionGrantInner>> checkGrantedPermissionsForAppWithResponse(
-        String groupId, Context context);
-
-    /**
-     * Invoke action checkMemberGroups.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<String>>> checkMemberGroupsWithResponseAsync(
-        String groupId, GroupsCheckMemberGroupsRequestBody body);
-
-    /**
-     * Invoke action checkMemberGroups.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<String>> checkMemberGroupsAsync(String groupId, GroupsCheckMemberGroupsRequestBody body);
-
-    /**
-     * Invoke action checkMemberGroups.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<String> checkMemberGroups(String groupId, GroupsCheckMemberGroupsRequestBody body);
-
-    /**
-     * Invoke action checkMemberGroups.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<String>> checkMemberGroupsWithResponse(
-        String groupId, GroupsCheckMemberGroupsRequestBody body, Context context);
-
-    /**
-     * Invoke action checkMemberObjects.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<String>>> checkMemberObjectsWithResponseAsync(
-        String groupId, GroupsCheckMemberObjectsRequestBody body);
-
-    /**
-     * Invoke action checkMemberObjects.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<String>> checkMemberObjectsAsync(String groupId, GroupsCheckMemberObjectsRequestBody body);
-
-    /**
-     * Invoke action checkMemberObjects.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<String> checkMemberObjects(String groupId, GroupsCheckMemberObjectsRequestBody body);
-
-    /**
-     * Invoke action checkMemberObjects.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<String>> checkMemberObjectsWithResponse(
-        String groupId, GroupsCheckMemberObjectsRequestBody body, Context context);
-
-    /**
-     * Invoke action getMemberGroups.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<String>>> getMemberGroupsWithResponseAsync(
-        String groupId, GroupsGetMemberGroupsRequestBody body);
-
-    /**
-     * Invoke action getMemberGroups.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<String>> getMemberGroupsAsync(String groupId, GroupsGetMemberGroupsRequestBody body);
-
-    /**
-     * Invoke action getMemberGroups.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<String> getMemberGroups(String groupId, GroupsGetMemberGroupsRequestBody body);
-
-    /**
-     * Invoke action getMemberGroups.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<String>> getMemberGroupsWithResponse(
-        String groupId, GroupsGetMemberGroupsRequestBody body, Context context);
-
-    /**
-     * Invoke action getMemberObjects.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<String>>> getMemberObjectsWithResponseAsync(
-        String groupId, GroupsGetMemberObjectsRequestBody body);
-
-    /**
-     * Invoke action getMemberObjects.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<String>> getMemberObjectsAsync(String groupId, GroupsGetMemberObjectsRequestBody body);
-
-    /**
-     * Invoke action getMemberObjects.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<String> getMemberObjects(String groupId, GroupsGetMemberObjectsRequestBody body);
-
-    /**
-     * Invoke action getMemberObjects.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<String>> getMemberObjectsWithResponse(
-        String groupId, GroupsGetMemberObjectsRequestBody body, Context context);
-
-    /**
-     * Invoke action removeFavorite.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> removeFavoriteWithResponseAsync(String groupId);
-
-    /**
-     * Invoke action removeFavorite.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> removeFavoriteAsync(String groupId);
-
-    /**
-     * Invoke action removeFavorite.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void removeFavorite(String groupId);
-
-    /**
-     * Invoke action removeFavorite.
-     *
-     * @param groupId key: id of group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> removeFavoriteWithResponse(String groupId, Context context);
-
-    /**
-     * Invoke action renew.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> renewWithResponseAsync(String groupId);
-
-    /**
-     * Invoke action renew.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> renewAsync(String groupId);
-
-    /**
-     * Invoke action renew.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void renew(String groupId);
-
-    /**
-     * Invoke action renew.
-     *
-     * @param groupId key: id of group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> renewWithResponse(String groupId, Context context);
-
-    /**
-     * Invoke action resetUnseenCount.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> resetUnseenCountWithResponseAsync(String groupId);
-
-    /**
-     * Invoke action resetUnseenCount.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> resetUnseenCountAsync(String groupId);
-
-    /**
-     * Invoke action resetUnseenCount.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void resetUnseenCount(String groupId);
-
-    /**
-     * Invoke action resetUnseenCount.
-     *
-     * @param groupId key: id of group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> resetUnseenCountWithResponse(String groupId, Context context);
-
-    /**
-     * Invoke action restore.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphDirectoryObjectInner>> restoreWithResponseAsync(String groupId);
-
-    /**
-     * Invoke action restore.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphDirectoryObjectInner> restoreAsync(String groupId);
-
-    /**
-     * Invoke action restore.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphDirectoryObjectInner restore(String groupId);
-
-    /**
-     * Invoke action restore.
-     *
-     * @param groupId key: id of group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphDirectoryObjectInner> restoreWithResponse(String groupId, Context context);
-
-    /**
-     * Invoke action subscribeByMail.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> subscribeByMailWithResponseAsync(String groupId);
-
-    /**
-     * Invoke action subscribeByMail.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> subscribeByMailAsync(String groupId);
-
-    /**
-     * Invoke action subscribeByMail.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void subscribeByMail(String groupId);
-
-    /**
-     * Invoke action subscribeByMail.
-     *
-     * @param groupId key: id of group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> subscribeByMailWithResponse(String groupId, Context context);
-
-    /**
-     * Invoke action unsubscribeByMail.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> unsubscribeByMailWithResponseAsync(String groupId);
-
-    /**
-     * Invoke action unsubscribeByMail.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> unsubscribeByMailAsync(String groupId);
-
-    /**
-     * Invoke action unsubscribeByMail.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void unsubscribeByMail(String groupId);
-
-    /**
-     * Invoke action unsubscribeByMail.
-     *
-     * @param groupId key: id of group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> unsubscribeByMailWithResponse(String groupId, Context context);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> validatePropertiesWithResponseAsync(String groupId, GroupsValidatePropertiesRequestBody body);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> validatePropertiesAsync(String groupId, GroupsValidatePropertiesRequestBody body);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void validateProperties(String groupId, GroupsValidatePropertiesRequestBody body);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param groupId key: id of group.
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> validatePropertiesWithResponse(
-        String groupId, GroupsValidatePropertiesRequestBody body, Context context);
-
-    /**
-     * Get owners from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listOwnersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand);
-
-    /**
-     * Get owners from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listOwnersAsync(String groupId);
-
-    /**
-     * Get owners from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listOwners(String groupId);
-
-    /**
-     * Get owners from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listOwners(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Get ref of owners from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefOwnersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby);
-
-    /**
-     * Get ref of owners from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefOwnersAsync(String groupId);
-
-    /**
-     * Get ref of owners from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefOwners(String groupId);
-
-    /**
-     * Get ref of owners from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefOwners(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        Context context);
-
-    /**
-     * Create new navigation property ref to owners for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Map<String, Object>>> createRefOwnersWithResponseAsync(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to owners for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Map<String, Object>> createRefOwnersAsync(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to owners for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, Object> createRefOwners(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to owners for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, Object>> createRefOwnersWithResponse(
-        String groupId, Map<String, Object> body, Context context);
-
-    /**
-     * Get permissionGrants from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissionGrants from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphResourceSpecificPermissionGrantInner> listPermissionGrantsAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand);
-
-    /**
-     * Get permissionGrants from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissionGrants from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphResourceSpecificPermissionGrantInner> listPermissionGrantsAsync(String groupId);
-
-    /**
-     * Get permissionGrants from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissionGrants from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphResourceSpecificPermissionGrantInner> listPermissionGrants(String groupId);
-
-    /**
-     * Get permissionGrants from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissionGrants from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphResourceSpecificPermissionGrantInner> listPermissionGrants(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Create new navigation property to permissionGrants for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphResourceSpecificPermissionGrantInner>> createPermissionGrantsWithResponseAsync(
-        String groupId, MicrosoftGraphResourceSpecificPermissionGrantInner body);
-
-    /**
-     * Create new navigation property to permissionGrants for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphResourceSpecificPermissionGrantInner> createPermissionGrantsAsync(
-        String groupId, MicrosoftGraphResourceSpecificPermissionGrantInner body);
-
-    /**
-     * Create new navigation property to permissionGrants for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphResourceSpecificPermissionGrantInner createPermissionGrants(
-        String groupId, MicrosoftGraphResourceSpecificPermissionGrantInner body);
-
-    /**
-     * Create new navigation property to permissionGrants for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphResourceSpecificPermissionGrantInner> createPermissionGrantsWithResponse(
-        String groupId, MicrosoftGraphResourceSpecificPermissionGrantInner body, Context context);
-
-    /**
-     * Get permissionGrants from groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissionGrants from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphResourceSpecificPermissionGrantInner>> getPermissionGrantsWithResponseAsync(
-        String groupId, String resourceSpecificPermissionGrantId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get permissionGrants from groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissionGrants from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphResourceSpecificPermissionGrantInner> getPermissionGrantsAsync(
-        String groupId, String resourceSpecificPermissionGrantId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get permissionGrants from groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissionGrants from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphResourceSpecificPermissionGrantInner> getPermissionGrantsAsync(
-        String groupId, String resourceSpecificPermissionGrantId);
-
-    /**
-     * Get permissionGrants from groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissionGrants from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphResourceSpecificPermissionGrantInner getPermissionGrants(
-        String groupId, String resourceSpecificPermissionGrantId);
-
-    /**
-     * Get permissionGrants from groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return permissionGrants from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphResourceSpecificPermissionGrantInner> getPermissionGrantsWithResponse(
-        String groupId,
-        String resourceSpecificPermissionGrantId,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Update the navigation property permissionGrants in groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updatePermissionGrantsWithResponseAsync(
-        String groupId,
-        String resourceSpecificPermissionGrantId,
-        MicrosoftGraphResourceSpecificPermissionGrantInner body);
-
-    /**
-     * Update the navigation property permissionGrants in groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updatePermissionGrantsAsync(
-        String groupId,
-        String resourceSpecificPermissionGrantId,
-        MicrosoftGraphResourceSpecificPermissionGrantInner body);
-
-    /**
-     * Update the navigation property permissionGrants in groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updatePermissionGrants(
-        String groupId,
-        String resourceSpecificPermissionGrantId,
-        MicrosoftGraphResourceSpecificPermissionGrantInner body);
-
-    /**
-     * Update the navigation property permissionGrants in groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @param body New navigation property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updatePermissionGrantsWithResponse(
-        String groupId,
-        String resourceSpecificPermissionGrantId,
-        MicrosoftGraphResourceSpecificPermissionGrantInner body,
-        Context context);
-
-    /**
-     * Delete navigation property permissionGrants for groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deletePermissionGrantsWithResponseAsync(
-        String groupId, String resourceSpecificPermissionGrantId, String ifMatch);
-
-    /**
-     * Delete navigation property permissionGrants for groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deletePermissionGrantsAsync(String groupId, String resourceSpecificPermissionGrantId, String ifMatch);
-
-    /**
-     * Delete navigation property permissionGrants for groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deletePermissionGrantsAsync(String groupId, String resourceSpecificPermissionGrantId);
-
-    /**
-     * Delete navigation property permissionGrants for groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deletePermissionGrants(String groupId, String resourceSpecificPermissionGrantId);
-
-    /**
-     * Delete navigation property permissionGrants for groups.
-     *
-     * @param groupId key: id of group.
-     * @param resourceSpecificPermissionGrantId key: id of resourceSpecificPermissionGrant.
-     * @param ifMatch ETag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deletePermissionGrantsWithResponse(
-        String groupId, String resourceSpecificPermissionGrantId, String ifMatch, Context context);
-
-    /**
-     * Get photo from groups.
-     *
-     * @param groupId key: id of group.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photo from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphProfilePhotoInner>> getPhotoWithResponseAsync(
-        String groupId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get photo from groups.
-     *
-     * @param groupId key: id of group.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photo from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphProfilePhotoInner> getPhotoAsync(String groupId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get photo from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photo from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphProfilePhotoInner> getPhotoAsync(String groupId);
-
-    /**
-     * Get photo from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photo from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphProfilePhotoInner getPhoto(String groupId);
-
-    /**
-     * Get photo from groups.
-     *
-     * @param groupId key: id of group.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photo from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphProfilePhotoInner> getPhotoWithResponse(
-        String groupId, List<GroupsSelect> select, List<String> expand, Context context);
-
-    /**
-     * Update the navigation property photo in groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updatePhotoWithResponseAsync(String groupId, MicrosoftGraphProfilePhotoInner body);
-
-    /**
-     * Update the navigation property photo in groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updatePhotoAsync(String groupId, MicrosoftGraphProfilePhotoInner body);
-
-    /**
-     * Update the navigation property photo in groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updatePhoto(String groupId, MicrosoftGraphProfilePhotoInner body);
-
-    /**
-     * Update the navigation property photo in groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updatePhotoWithResponse(String groupId, MicrosoftGraphProfilePhotoInner body, Context context);
-
-    /**
-     * Delete navigation property photo for groups.
-     *
-     * @param groupId key: id of group.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deletePhotoWithResponseAsync(String groupId, String ifMatch);
-
-    /**
-     * Delete navigation property photo for groups.
-     *
-     * @param groupId key: id of group.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deletePhotoAsync(String groupId, String ifMatch);
-
-    /**
-     * Delete navigation property photo for groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deletePhotoAsync(String groupId);
-
-    /**
-     * Delete navigation property photo for groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deletePhoto(String groupId);
-
-    /**
-     * Delete navigation property photo for groups.
-     *
-     * @param groupId key: id of group.
-     * @param ifMatch ETag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deletePhotoWithResponse(String groupId, String ifMatch, Context context);
-
-    /**
-     * Get media content for the navigation property photo from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for the navigation property photo from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StreamResponse> getPhotoContentWithResponseAsync(String groupId);
-
-    /**
-     * Get media content for the navigation property photo from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for the navigation property photo from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Flux<ByteBuffer> getPhotoContentAsync(String groupId);
-
-    /**
-     * Get media content for the navigation property photo from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for the navigation property photo from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    InputStream getPhotoContent(String groupId);
-
-    /**
-     * Get media content for the navigation property photo from groups.
-     *
-     * @param groupId key: id of group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for the navigation property photo from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamResponse getPhotoContentWithResponse(String groupId, Context context);
-
-    /**
-     * Update media content for the navigation property photo in groups.
-     *
-     * @param groupId key: id of group.
-     * @param data New media content.
-     * @param contentLength The contentLength parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> setPhotoContentWithResponseAsync(String groupId, Flux<ByteBuffer> data, long contentLength);
-
-    /**
-     * Update media content for the navigation property photo in groups.
-     *
-     * @param groupId key: id of group.
-     * @param data New media content.
-     * @param contentLength The contentLength parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> setPhotoContentAsync(String groupId, Flux<ByteBuffer> data, long contentLength);
-
-    /**
-     * Update media content for the navigation property photo in groups.
-     *
-     * @param groupId key: id of group.
-     * @param data New media content.
-     * @param contentLength The contentLength parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void setPhotoContent(String groupId, Flux<ByteBuffer> data, long contentLength);
-
-    /**
-     * Update media content for the navigation property photo in groups.
-     *
-     * @param groupId key: id of group.
-     * @param data New media content.
-     * @param contentLength The contentLength parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> setPhotoContentWithResponse(
-        String groupId, Flux<ByteBuffer> data, long contentLength, Context context);
-
-    /**
-     * Get photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphProfilePhotoInner> listPhotosAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand);
-
-    /**
-     * Get photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphProfilePhotoInner> listPhotosAsync(String groupId);
-
-    /**
-     * Get photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphProfilePhotoInner> listPhotos(String groupId);
-
-    /**
-     * Get photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphProfilePhotoInner> listPhotos(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Create new navigation property to photos for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return profilePhoto.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphProfilePhotoInner>> createPhotosWithResponseAsync(
-        String groupId, MicrosoftGraphProfilePhotoInner body);
-
-    /**
-     * Create new navigation property to photos for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return profilePhoto.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphProfilePhotoInner> createPhotosAsync(String groupId, MicrosoftGraphProfilePhotoInner body);
-
-    /**
-     * Create new navigation property to photos for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return profilePhoto.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphProfilePhotoInner createPhotos(String groupId, MicrosoftGraphProfilePhotoInner body);
-
-    /**
-     * Create new navigation property to photos for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return profilePhoto.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphProfilePhotoInner> createPhotosWithResponse(
-        String groupId, MicrosoftGraphProfilePhotoInner body, Context context);
-
-    /**
-     * Get photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphProfilePhotoInner>> getPhotosWithResponseAsync(
-        String groupId, String profilePhotoId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphProfilePhotoInner> getPhotosAsync(
-        String groupId, String profilePhotoId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphProfilePhotoInner> getPhotosAsync(String groupId, String profilePhotoId);
-
-    /**
-     * Get photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphProfilePhotoInner getPhotos(String groupId, String profilePhotoId);
-
-    /**
-     * Get photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphProfilePhotoInner> getPhotosWithResponse(
-        String groupId, String profilePhotoId, List<GroupsSelect> select, List<String> expand, Context context);
-
-    /**
-     * Update the navigation property photos in groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updatePhotosWithResponseAsync(
-        String groupId, String profilePhotoId, MicrosoftGraphProfilePhotoInner body);
-
-    /**
-     * Update the navigation property photos in groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updatePhotosAsync(String groupId, String profilePhotoId, MicrosoftGraphProfilePhotoInner body);
-
-    /**
-     * Update the navigation property photos in groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updatePhotos(String groupId, String profilePhotoId, MicrosoftGraphProfilePhotoInner body);
-
-    /**
-     * Update the navigation property photos in groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param body New navigation property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updatePhotosWithResponse(
-        String groupId, String profilePhotoId, MicrosoftGraphProfilePhotoInner body, Context context);
-
-    /**
-     * Delete navigation property photos for groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deletePhotosWithResponseAsync(String groupId, String profilePhotoId, String ifMatch);
-
-    /**
-     * Delete navigation property photos for groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deletePhotosAsync(String groupId, String profilePhotoId, String ifMatch);
-
-    /**
-     * Delete navigation property photos for groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deletePhotosAsync(String groupId, String profilePhotoId);
-
-    /**
-     * Delete navigation property photos for groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deletePhotos(String groupId, String profilePhotoId);
-
-    /**
-     * Delete navigation property photos for groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param ifMatch ETag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deletePhotosWithResponse(String groupId, String profilePhotoId, String ifMatch, Context context);
-
-    /**
-     * Get media content for the navigation property photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for the navigation property photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<StreamResponse> getPhotosContentWithResponseAsync(String groupId, String profilePhotoId);
-
-    /**
-     * Get media content for the navigation property photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for the navigation property photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Flux<ByteBuffer> getPhotosContentAsync(String groupId, String profilePhotoId);
-
-    /**
-     * Get media content for the navigation property photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for the navigation property photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    InputStream getPhotosContent(String groupId, String profilePhotoId);
-
-    /**
-     * Get media content for the navigation property photos from groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for the navigation property photos from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamResponse getPhotosContentWithResponse(String groupId, String profilePhotoId, Context context);
-
-    /**
-     * Update media content for the navigation property photos in groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param data New media content.
-     * @param contentLength The contentLength parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> setPhotosContentWithResponseAsync(
-        String groupId, String profilePhotoId, Flux<ByteBuffer> data, long contentLength);
-
-    /**
-     * Update media content for the navigation property photos in groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param data New media content.
-     * @param contentLength The contentLength parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> setPhotosContentAsync(String groupId, String profilePhotoId, Flux<ByteBuffer> data, long contentLength);
-
-    /**
-     * Update media content for the navigation property photos in groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param data New media content.
-     * @param contentLength The contentLength parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void setPhotosContent(String groupId, String profilePhotoId, Flux<ByteBuffer> data, long contentLength);
-
-    /**
-     * Update media content for the navigation property photos in groups.
-     *
-     * @param groupId key: id of group.
-     * @param profilePhotoId key: id of profilePhoto.
-     * @param data New media content.
-     * @param contentLength The contentLength parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> setPhotosContentWithResponse(
-        String groupId, String profilePhotoId, Flux<ByteBuffer> data, long contentLength, Context context);
-
-    /**
-     * Get rejectedSenders from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rejectedSenders from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listRejectedSendersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand);
-
-    /**
-     * Get rejectedSenders from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rejectedSenders from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listRejectedSendersAsync(String groupId);
-
-    /**
-     * Get rejectedSenders from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rejectedSenders from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listRejectedSenders(String groupId);
-
-    /**
-     * Get rejectedSenders from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rejectedSenders from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listRejectedSenders(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Create new navigation property to rejectedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphDirectoryObjectInner>> createRejectedSendersWithResponseAsync(
-        String groupId, MicrosoftGraphDirectoryObjectInner body);
-
-    /**
-     * Create new navigation property to rejectedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphDirectoryObjectInner> createRejectedSendersAsync(
-        String groupId, MicrosoftGraphDirectoryObjectInner body);
-
-    /**
-     * Create new navigation property to rejectedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphDirectoryObjectInner createRejectedSenders(String groupId, MicrosoftGraphDirectoryObjectInner body);
-
-    /**
-     * Create new navigation property to rejectedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphDirectoryObjectInner> createRejectedSendersWithResponse(
-        String groupId, MicrosoftGraphDirectoryObjectInner body, Context context);
-
-    /**
-     * Get rejectedSenders from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rejectedSenders from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<MicrosoftGraphDirectoryObjectInner>> getRejectedSendersWithResponseAsync(
-        String groupId, String directoryObjectId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get rejectedSenders from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rejectedSenders from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphDirectoryObjectInner> getRejectedSendersAsync(
-        String groupId, String directoryObjectId, List<GroupsSelect> select, List<String> expand);
-
-    /**
-     * Get rejectedSenders from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rejectedSenders from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphDirectoryObjectInner> getRejectedSendersAsync(String groupId, String directoryObjectId);
-
-    /**
-     * Get rejectedSenders from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rejectedSenders from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphDirectoryObjectInner getRejectedSenders(String groupId, String directoryObjectId);
-
-    /**
-     * Get rejectedSenders from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return rejectedSenders from groups.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MicrosoftGraphDirectoryObjectInner> getRejectedSendersWithResponse(
-        String groupId, String directoryObjectId, List<GroupsSelect> select, List<String> expand, Context context);
-
-    /**
-     * Update the navigation property rejectedSenders in groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateRejectedSendersWithResponseAsync(
-        String groupId, String directoryObjectId, MicrosoftGraphDirectoryObjectInner body);
-
-    /**
-     * Update the navigation property rejectedSenders in groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updateRejectedSendersAsync(
-        String groupId, String directoryObjectId, MicrosoftGraphDirectoryObjectInner body);
-
-    /**
-     * Update the navigation property rejectedSenders in groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param body New navigation property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateRejectedSenders(String groupId, String directoryObjectId, MicrosoftGraphDirectoryObjectInner body);
-
-    /**
-     * Update the navigation property rejectedSenders in groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param body New navigation property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateRejectedSendersWithResponse(
-        String groupId, String directoryObjectId, MicrosoftGraphDirectoryObjectInner body, Context context);
-
-    /**
-     * Delete navigation property rejectedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteRejectedSendersWithResponseAsync(
-        String groupId, String directoryObjectId, String ifMatch);
-
-    /**
-     * Delete navigation property rejectedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteRejectedSendersAsync(String groupId, String directoryObjectId, String ifMatch);
-
-    /**
-     * Delete navigation property rejectedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteRejectedSendersAsync(String groupId, String directoryObjectId);
-
-    /**
-     * Delete navigation property rejectedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteRejectedSenders(String groupId, String directoryObjectId);
-
-    /**
-     * Delete navigation property rejectedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: id of directoryObject.
-     * @param ifMatch ETag.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteRejectedSendersWithResponse(
-        String groupId, String directoryObjectId, String ifMatch, Context context);
-
-    /**
-     * Get transitiveMemberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitiveMemberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listTransitiveMemberOfAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand);
-
-    /**
-     * Get transitiveMemberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitiveMemberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listTransitiveMemberOfAsync(String groupId);
-
-    /**
-     * Get transitiveMemberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitiveMemberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listTransitiveMemberOf(String groupId);
-
-    /**
-     * Get transitiveMemberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitiveMemberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listTransitiveMemberOf(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Get ref of transitiveMemberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of transitiveMemberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefTransitiveMemberOfAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby);
-
-    /**
-     * Get ref of transitiveMemberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of transitiveMemberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefTransitiveMemberOfAsync(String groupId);
-
-    /**
-     * Get ref of transitiveMemberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of transitiveMemberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefTransitiveMemberOf(String groupId);
-
-    /**
-     * Get ref of transitiveMemberOf from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of transitiveMemberOf from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefTransitiveMemberOf(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        Context context);
-
-    /**
-     * Create new navigation property ref to transitiveMemberOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Map<String, Object>>> createRefTransitiveMemberOfWithResponseAsync(
-        String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to transitiveMemberOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Map<String, Object>> createRefTransitiveMemberOfAsync(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to transitiveMemberOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, Object> createRefTransitiveMemberOf(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to transitiveMemberOf for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, Object>> createRefTransitiveMemberOfWithResponse(
-        String groupId, Map<String, Object> body, Context context);
-
-    /**
-     * Get transitiveMembers from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitiveMembers from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listTransitiveMembersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand);
-
-    /**
-     * Get transitiveMembers from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitiveMembers from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MicrosoftGraphDirectoryObjectInner> listTransitiveMembersAsync(String groupId);
-
-    /**
-     * Get transitiveMembers from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitiveMembers from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listTransitiveMembers(String groupId);
-
-    /**
-     * Get transitiveMembers from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return transitiveMembers from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MicrosoftGraphDirectoryObjectInner> listTransitiveMembers(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context);
-
-    /**
-     * Get ref of transitiveMembers from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of transitiveMembers from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefTransitiveMembersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby);
-
-    /**
-     * Get ref of transitiveMembers from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of transitiveMembers from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> listRefTransitiveMembersAsync(String groupId);
-
-    /**
-     * Get ref of transitiveMembers from groups.
-     *
-     * @param groupId key: id of group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of transitiveMembers from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefTransitiveMembers(String groupId);
-
-    /**
-     * Get ref of transitiveMembers from groups.
-     *
-     * @param groupId key: id of group.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of transitiveMembers from groups.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> listRefTransitiveMembers(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        Context context);
-
-    /**
-     * Create new navigation property ref to transitiveMembers for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Map<String, Object>>> createRefTransitiveMembersWithResponseAsync(
-        String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to transitiveMembers for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Map<String, Object>> createRefTransitiveMembersAsync(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to transitiveMembers for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, Object> createRefTransitiveMembers(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to transitiveMembers for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, Object>> createRefTransitiveMembersWithResponse(
-        String groupId, Map<String, Object> body, Context context);
-
-    /**
-     * Invoke function delta.
-     *
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<MicrosoftGraphGroupInner>>> deltaWithResponseAsync();
-
-    /**
-     * Invoke function delta.
-     *
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<MicrosoftGraphGroupInner>> deltaAsync();
-
-    /**
-     * Invoke function delta.
-     *
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<MicrosoftGraphGroupInner> delta();
-
-    /**
-     * Invoke function delta.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<MicrosoftGraphGroupInner>> deltaWithResponse(Context context);
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<MicrosoftGraphExtensionPropertyInner>>> getAvailableExtensionPropertiesWithResponseAsync(
-        GroupsGetAvailableExtensionPropertiesRequestBody body);
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<MicrosoftGraphExtensionPropertyInner>> getAvailableExtensionPropertiesAsync(
-        GroupsGetAvailableExtensionPropertiesRequestBody body);
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<MicrosoftGraphExtensionPropertyInner> getAvailableExtensionProperties(
-        GroupsGetAvailableExtensionPropertiesRequestBody body);
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<MicrosoftGraphExtensionPropertyInner>> getAvailableExtensionPropertiesWithResponse(
-        GroupsGetAvailableExtensionPropertiesRequestBody body, Context context);
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<MicrosoftGraphDirectoryObjectInner>>> getByIdsWithResponseAsync(GroupsGetByIdsRequestBody body);
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<MicrosoftGraphDirectoryObjectInner>> getByIdsAsync(GroupsGetByIdsRequestBody body);
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<MicrosoftGraphDirectoryObjectInner> getByIds(GroupsGetByIdsRequestBody body);
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<MicrosoftGraphDirectoryObjectInner>> getByIdsWithResponse(
-        GroupsGetByIdsRequestBody body, Context context);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> validatePropertiesWithResponseAsync(GroupsValidatePropertiesRequestBody body);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> validatePropertiesAsync(GroupsValidatePropertiesRequestBody body);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void validateProperties(GroupsValidatePropertiesRequestBody body);
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> validatePropertiesWithResponse(GroupsValidatePropertiesRequestBody body, Context context);
+    Response<Void> removeOwnerWithResponse(String objectId, String ownerObjectId, Context context);
 }

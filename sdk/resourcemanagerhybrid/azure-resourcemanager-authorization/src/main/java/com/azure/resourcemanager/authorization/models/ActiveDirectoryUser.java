@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphUserInner;
+import com.azure.resourcemanager.authorization.fluent.models.UserInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -14,9 +14,12 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 /** An immutable client-side representation of an Azure AD user. */
 @Fluent
 public interface ActiveDirectoryUser
-    extends ActiveDirectoryObject, HasInnerModel<MicrosoftGraphUserInner>, Updatable<ActiveDirectoryUser.Update> {
+    extends ActiveDirectoryObject, HasInnerModel<UserInner>, Updatable<ActiveDirectoryUser.Update> {
     /** @return user principal name */
     String userPrincipalName();
+
+    /** @return user signIn name */
+    String signInName();
 
     /** @return user mail */
     String mail();

@@ -55,7 +55,6 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Test base for resource manager SDK.
@@ -76,9 +75,17 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static final AzureProfile PLAYBACK_PROFILE = new AzureProfile(
         ZERO_TENANT,
         ZERO_SUBSCRIPTION,
-        new AzureEnvironment(Arrays.stream(AzureEnvironment.Endpoint.values())
-            .collect(Collectors.toMap(AzureEnvironment.Endpoint::identifier, endpoint -> PLAYBACK_URI)))
-    );
+        new AzureEnvironment(
+            new HashMap<String, String>() {
+                {
+                    put("managementEndpointUrl", PLAYBACK_URI);
+                    put("resourceManagerEndpointUrl", PLAYBACK_URI);
+                    put("sqlManagementEndpointUrl", PLAYBACK_URI);
+                    put("galleryEndpointUrl", PLAYBACK_URI);
+                    put("activeDirectoryEndpointUrl", PLAYBACK_URI);
+                    put("activeDirectoryResourceId", PLAYBACK_URI);
+                    put("activeDirectoryGraphResourceId", PLAYBACK_URI);
+                }}));
     private static final OutputStream EMPTY_OUTPUT_STREAM = new OutputStream() {
         @Override
         public void write(int b) {
@@ -258,7 +265,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
             textReplacementRules.put(testProfile.getSubscriptionId(), ZERO_SUBSCRIPTION);
             textReplacementRules.put(testProfile.getTenantId(), ZERO_TENANT);
             textReplacementRules.put(AzureEnvironment.AZURE.getResourceManagerEndpoint(), PLAYBACK_URI + "/");
-            textReplacementRules.put(AzureEnvironment.AZURE.getMicrosoftGraphEndpoint(), PLAYBACK_URI + "/");
+            textReplacementRules.put(AzureEnvironment.AZURE.getGraphEndpoint(), PLAYBACK_URI + "/");
             addTextReplacementRules(textReplacementRules);
         }
         initializeClients(httpPipeline, testProfile);

@@ -6,22 +6,26 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.fluent.ServicePrincipalsServicePrincipalsClient;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphServicePrincipalInner;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.authorization.models.ServicePrincipals;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
+import com.azure.resourcemanager.authorization.fluent.ServicePrincipalsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of ServicePrincipals and its parent interfaces. */
 public class ServicePrincipalsImpl
-    extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, MicrosoftGraphServicePrincipalInner>
+    extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, ServicePrincipalInner>
     implements ServicePrincipals, HasManager<AuthorizationManager> {
-    private final AuthorizationManager manager;
+    private ServicePrincipalsClient innerCollection;
+    private AuthorizationManager manager;
 
-    public ServicePrincipalsImpl(final AuthorizationManager authorizationManager) {
+    public ServicePrincipalsImpl(
+        final ServicePrincipalsClient client, final AuthorizationManager authorizationManager) {
+        this.innerCollection = client;
         this.manager = authorizationManager;
     }
 
@@ -32,11 +36,14 @@ public class ServicePrincipalsImpl
 
     @Override
     public PagedFlux<ServicePrincipal> listAsync() {
-        return PagedConverter.mapPage(inner().listServicePrincipalAsync(), this::wrapModel);
+        return PagedConverter.flatMapPage(inner().listAsync(), servicePrincipalInner -> {
+            ServicePrincipalImpl servicePrincipal = this.wrapModel(servicePrincipalInner);
+            return servicePrincipal.refreshCredentialsAsync().thenReturn(servicePrincipal);
+        });
     }
 
     @Override
-    protected ServicePrincipalImpl wrapModel(MicrosoftGraphServicePrincipalInner servicePrincipalInner) {
+    protected ServicePrincipalImpl wrapModel(ServicePrincipalInner servicePrincipalInner) {
         if (servicePrincipalInner == null) {
             return null;
         }
@@ -50,9 +57,11 @@ public class ServicePrincipalsImpl
 
     @Override
     public Mono<ServicePrincipal> getByIdAsync(String id) {
-        return inner()
-            .getServicePrincipalAsync(id)
-            .map(this::wrapModel);
+        return innerCollection
+            .getAsync(id)
+            .flatMap(
+                servicePrincipalInner ->
+                    new ServicePrincipalImpl(servicePrincipalInner, manager()).refreshCredentialsAsync());
     }
 
     @Override
@@ -62,25 +71,28 @@ public class ServicePrincipalsImpl
 
     @Override
     public Mono<ServicePrincipal> getByNameAsync(final String name) {
-        return listByFilterAsync(String.format("displayName eq '%s'", name))
+        return inner()
+            .listAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", name))
             .singleOrEmpty()
             .switchIfEmpty(
-                listByFilterAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", name)).singleOrEmpty());
+                Mono.defer(() -> inner().listAsync(String.format("displayName eq '%s'", name)).singleOrEmpty()))
+            .map(servicePrincipalInner -> new ServicePrincipalImpl(servicePrincipalInner, manager()))
+            .flatMap(servicePrincipal -> servicePrincipal.refreshCredentialsAsync());
     }
 
     @Override
     public ServicePrincipalImpl define(String name) {
-        return new ServicePrincipalImpl(new MicrosoftGraphServicePrincipalInner().withDisplayName(name), manager());
+        return new ServicePrincipalImpl(new ServicePrincipalInner().withDisplayName(name), manager());
     }
 
     @Override
     protected ServicePrincipalImpl wrapModel(String name) {
-        return new ServicePrincipalImpl(new MicrosoftGraphServicePrincipalInner().withDisplayName(name), manager());
+        return new ServicePrincipalImpl(new ServicePrincipalInner().withDisplayName(name), manager());
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return inner().deleteServicePrincipalAsync(id);
+        return inner().deleteAsync(id);
     }
 
     @Override
@@ -88,8 +100,8 @@ public class ServicePrincipalsImpl
         return this.manager;
     }
 
-    public ServicePrincipalsServicePrincipalsClient inner() {
-        return manager().serviceClient().getServicePrincipalsServicePrincipals();
+    public ServicePrincipalsClient inner() {
+        return manager().serviceClient().getServicePrincipals();
     }
 
     @Override
@@ -99,7 +111,9 @@ public class ServicePrincipalsImpl
 
     @Override
     public PagedFlux<ServicePrincipal> listByFilterAsync(String filter) {
-        return PagedConverter.mapPage(inner().listServicePrincipalAsync(null, null, null, null, filter, null, null, null, null),
-            this::wrapModel);
+        return PagedConverter.flatMapPage(inner().listAsync(filter), servicePrincipalInner -> {
+            ServicePrincipalImpl servicePrincipal = this.wrapModel(servicePrincipalInner);
+            return servicePrincipal.refreshCredentialsAsync().thenReturn(servicePrincipal);
+        });
     }
 }
