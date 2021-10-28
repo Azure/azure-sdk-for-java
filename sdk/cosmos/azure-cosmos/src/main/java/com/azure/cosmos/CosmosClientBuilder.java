@@ -762,7 +762,7 @@ public class CosmosClientBuilder {
                 this.connectionPolicy.setMaxConnectionPoolSize(this.gatewayConnectionConfig.getMaxConnectionPoolSize());
                 //  TODO(kuthapar): potential bug - when we expose requestTimeout from direct and gateway connection config,
                 //   as gateway connection config will overwrite direct connection config settings
-                this.connectionPolicy.setRequestTimeout(this.gatewayConnectionConfig.getRequestTimeout());
+                this.connectionPolicy.setNetworkRequestTimeout(this.gatewayConnectionConfig.getNetworkRequestTimeout());
                 this.connectionPolicy.setIdleHttpConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
                 this.connectionPolicy.setProxy(this.gatewayConnectionConfig.getProxy());
             }

@@ -91,7 +91,7 @@ public class CilentConfigDiagnosticsTest {
         HttpClientConfig httpConfig = new HttpClientConfig(new Configs());
         httpConfig.withPoolSize(500);
         httpConfig.withMaxIdleConnectionTimeout(Duration.ofSeconds(17));
-        httpConfig.withRequestTimeout(Duration.ofSeconds(18));
+        httpConfig.withNetworkRequestTimeout(Duration.ofSeconds(18));
         diagnosticsClientConfig.withGatewayHttpClientConfig(httpConfig);
 
         Mockito.doReturn(diagnosticsClientConfig).when(clientContext).getConfig();
@@ -122,7 +122,7 @@ public class CilentConfigDiagnosticsTest {
         HttpClientConfig httpConfig = new HttpClientConfig(new Configs());
         httpConfig.withPoolSize(500);
         httpConfig.withMaxIdleConnectionTimeout(Duration.ofSeconds(17));
-        httpConfig.withRequestTimeout(Duration.ofSeconds(18));
+        httpConfig.withNetworkRequestTimeout(Duration.ofSeconds(18));
         diagnosticsClientConfig.withGatewayHttpClientConfig(httpConfig);
         diagnosticsClientConfig.withPreferredRegions(ImmutableList.of("west us 1", "west us 2"));
         diagnosticsClientConfig.withConnectionSharingAcrossClientsEnabled(true);

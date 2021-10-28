@@ -20,7 +20,7 @@ public final class DirectConnectionConfig {
     private static final Boolean DEFAULT_CONNECTION_ENDPOINT_REDISCOVERY_ENABLED = false;
     private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofHours(1l);
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(5L);
-    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
+    private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5L);
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 130;
     private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 30;
 
@@ -28,7 +28,7 @@ public final class DirectConnectionConfig {
     private Duration connectTimeout;
     private Duration idleConnectionTimeout;
     private Duration idleEndpointTimeout;
-    private Duration requestTimeout;
+    private Duration networkRequestTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
 
@@ -42,7 +42,7 @@ public final class DirectConnectionConfig {
         this.idleEndpointTimeout = DEFAULT_IDLE_ENDPOINT_TIMEOUT;
         this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
         this.maxRequestsPerConnection = DEFAULT_MAX_REQUESTS_PER_CONNECTION;
-        this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
+        this.networkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
     }
 
     /**
@@ -234,28 +234,28 @@ public final class DirectConnectionConfig {
     }
 
     /**
-     * Gets the request timeout interval
-     * This represents the timeout interval for requests
-     *
-     * Default value is 60 seconds
-     *
-     * @return the request timeout interval
-     */
-    Duration getRequestTimeout() {
-        return requestTimeout;
-    }
-
-    /**
-     * Sets the request timeout interval
-     * This represents the timeout interval for requests
+     * Gets the network request timeout interval
+     * This represents the time to wait for response from network peer
      *
      * Default value is 5 seconds
      *
-     * @param requestTimeout the request timeout interval
+     * @return the network request timeout interval
+     */
+    public Duration getNetworkRequestTimeout() {
+        return networkRequestTimeout;
+    }
+
+    /**
+     * Sets the network request timeout interval
+     * This represents the time to wait for response from network peer
+     *
+     * Default value is 5 seconds
+     *
+     * @param networkRequestTimeout the network request timeout interval
      * @return the {@link DirectConnectionConfig}
      */
-    DirectConnectionConfig setRequestTimeout(Duration requestTimeout) {
-        this.requestTimeout = requestTimeout;
+    public DirectConnectionConfig setNetworkRequestTimeout(Duration networkRequestTimeout) {
+        this.networkRequestTimeout = networkRequestTimeout;
         return this;
     }
 
@@ -267,6 +267,7 @@ public final class DirectConnectionConfig {
             ", idleEndpointTimeout=" + idleEndpointTimeout +
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
+            ", networkRequestTimeout=" + networkRequestTimeout +
             '}';
     }
 }

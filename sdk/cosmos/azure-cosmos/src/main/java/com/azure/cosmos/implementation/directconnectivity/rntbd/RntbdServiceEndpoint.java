@@ -500,7 +500,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.config = new Config(options, sslContext, wireLogLevel);
 
             this.requestTimer = new RntbdRequestTimer(
-                config.requestTimeoutInNanos(),
+                config.networkRequestTimeoutInNanos(),
                 config.requestTimerResolutionInNanos());
 
             this.eventLoopGroup = this.getEventLoopGroup(options);

@@ -32,7 +32,7 @@ public final class ConnectionPolicy {
 
     //  Gateway connection config properties
     private int maxConnectionPoolSize;
-    private Duration requestTimeout;
+    private Duration networkRequestTimeout;
     private ProxyOptions proxy;
     private Duration idleHttpConnectionTimeout;
 
@@ -55,7 +55,7 @@ public final class ConnectionPolicy {
         this(ConnectionMode.GATEWAY);
         this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
-        this.requestTimeout = BridgeInternal.getRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
+        this.networkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
         this.proxy = gatewayConnectionConfig.getProxy();
         this.tcpConnectionEndpointRediscoveryEnabled = false;
     }
@@ -67,7 +67,7 @@ public final class ConnectionPolicy {
         this.idleTcpEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
         this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
-        this.requestTimeout = BridgeInternal.getRequestTimeoutFromDirectConnectionConfig(directConnectionConfig);
+        this.networkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromDirectConnectionConfig(directConnectionConfig);
         this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
     }
 
@@ -112,23 +112,23 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the request timeout (time to wait for response from network peer).
+     * Gets the network request timeout (time to wait for response from network peer).
      *
      * @return the request timeout duration.
      */
-    public Duration getRequestTimeout() {
-        return this.requestTimeout;
+    public Duration getNetworkRequestTimeout() {
+        return this.networkRequestTimeout;
     }
 
     /**
-     * Sets the request timeout (time to wait for response from network peer).
-     * The default is 60 seconds.
+     * Sets the network request timeout (time to wait for response from network peer).
+     * The default is 5 seconds.
      *
-     * @param requestTimeout the request timeout duration.
+     * @param networkRequestTimeout the request timeout duration.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setRequestTimeout(Duration requestTimeout) {
-        this.requestTimeout = requestTimeout;
+    public ConnectionPolicy setNetworkRequestTimeout(Duration networkRequestTimeout) {
+        this.networkRequestTimeout = networkRequestTimeout;
         return this;
     }
 
@@ -511,7 +511,7 @@ public final class ConnectionPolicy {
     @Override
     public String toString() {
         return "ConnectionPolicy{" +
-            "requestTimeout=" + requestTimeout +
+            "networkRequestTimeout=" + networkRequestTimeout +
             ", connectionMode=" + connectionMode +
             ", maxConnectionPoolSize=" + maxConnectionPoolSize +
             ", idleHttpConnectionTimeout=" + idleHttpConnectionTimeout +

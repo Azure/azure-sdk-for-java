@@ -12,11 +12,11 @@ import java.time.Duration;
  */
 public final class GatewayConnectionConfig {
     //  Constants
-    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(5);
+    private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(5);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
 
-    private Duration requestTimeout;
+    private Duration networkRequestTimeout;
     private int maxConnectionPoolSize;
     private Duration idleConnectionTimeout;
     private ProxyOptions proxy;
@@ -27,7 +27,7 @@ public final class GatewayConnectionConfig {
     public GatewayConnectionConfig() {
         this.idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
         this.maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
-        this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
+        this.networkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
     }
 
     /**
@@ -40,23 +40,23 @@ public final class GatewayConnectionConfig {
     }
 
     /**
-     * Gets the request timeout (time to wait for response from network peer).
+     * Gets the network request timeout (time to wait for response from network peer).
      *
-     * @return the request timeout duration.
+     * @return the network request timeout duration.
      */
-    Duration getRequestTimeout() {
-        return this.requestTimeout;
+    public Duration getNetworkRequestTimeout() {
+        return this.networkRequestTimeout;
     }
 
     /**
-     * Sets the request timeout (time to wait for response from network peer).
+     * Sets the network request timeout (time to wait for response from network peer).
      * The default is 5 seconds.
      *
-     * @param requestTimeout the request timeout duration.
+     * @param networkRequestTimeout the network request timeout duration.
      * @return the {@link GatewayConnectionConfig}.
      */
-    GatewayConnectionConfig setRequestTimeout(Duration requestTimeout) {
-        this.requestTimeout = requestTimeout;
+    public GatewayConnectionConfig setNetworkRequestTimeout(Duration networkRequestTimeout) {
+        this.networkRequestTimeout = networkRequestTimeout;
         return this;
     }
 
@@ -138,6 +138,7 @@ public final class GatewayConnectionConfig {
         return "GatewayConnectionConfig{" +
             ", maxConnectionPoolSize=" + maxConnectionPoolSize +
             ", idleConnectionTimeout=" + idleConnectionTimeout +
+            ", networkRequestTimeout=" + networkRequestTimeout +
             ", proxyType=" + proxyType +
             ", inetSocketProxyAddress=" + proxyAddress +
             '}';
