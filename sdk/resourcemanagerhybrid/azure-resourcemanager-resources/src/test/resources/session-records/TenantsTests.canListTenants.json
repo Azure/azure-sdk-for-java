@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/tenants?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/tenants?api-version=2016-06-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.5.0-beta.1 (15.0.1; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e8cead85-2709-4d74-99e0-c89e38ad01bc",
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.8.0-beta.1 (11.0.12; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e8b58c31-78ca-4e55-b901-f64335a1cdd3",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "140",
+      "content-length" : "116",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "e9409a13-e5d6-431c-8132-54f12746e189",
-      "Date" : "Tue, 11 May 2021 02:12:54 GMT",
+      "x-ms-correlation-request-id" : "0429c667-61ac-450a-a2ea-915dc7771968",
+      "Date" : "Wed, 29 Sep 2021 02:28:55 GMT",
       "x-ms-ratelimit-remaining-tenant-reads" : "11999",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-routing-request-id" : "SOUTHEASTASIA:20210511T021255Z:e9409a13-e5d6-431c-8132-54f12746e189",
+      "x-ms-routing-request-id" : "WESTUS2:20210929T022856Z:0429c667-61ac-450a-a2ea-915dc7771968",
       "Expires" : "-1",
-      "x-ms-request-id" : "e9409a13-e5d6-431c-8132-54f12746e189",
-      "Body" : "{\"value\":[{\"id\":\"/tenants/00000000-0000-0000-0000-000000000000\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"tenantCategory\":\"Home\"}]}",
+      "x-ms-request-id" : "0429c667-61ac-450a-a2ea-915dc7771968",
+      "Body" : "{\"value\":[{\"id\":\"/tenants/00000000-0000-0000-0000-000000000000\",\"tenantId\":\"00000000-0000-0000-0000-000000000000\"}]}",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
