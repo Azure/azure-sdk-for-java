@@ -51,7 +51,7 @@ public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase
 
     protected static class ListEnrichmentStatusOutput {
         static final ListEnrichmentStatusOutput INSTANCE = new ListEnrichmentStatusOutput();
-        final int expectedStatuses = 12;
+        final int expectedStatuses = 17;
     }
 
     static void validateEnrichmentStatus(EnrichmentStatus actualEnrichmentStatus) {

@@ -29,7 +29,7 @@ public abstract class IncidentDetectedTestBase extends MetricsAdvisorClientTestB
 
     protected static class ListIncidentsDetectedOutput {
         static final ListIncidentsDetectedOutput INSTANCE = new ListIncidentsDetectedOutput();
-        final int expectedIncidents = 230;
+        final int expectedIncidents = 268;
     }
 
     protected void assertListIncidentsDetectedOutput(AnomalyIncident anomalyIncident) {

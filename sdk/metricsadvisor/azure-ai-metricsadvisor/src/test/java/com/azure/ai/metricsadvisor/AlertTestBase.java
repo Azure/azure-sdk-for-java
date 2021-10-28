@@ -32,7 +32,7 @@ public abstract class AlertTestBase extends MetricsAdvisorClientTestBase {
 
     protected static class ListAlertsOutput {
         static final ListAlertsOutput INSTANCE = new ListAlertsOutput();
-        final int expectedAlerts = 3;
+        final int expectedAlerts = 11;
     }
 
     protected void assertAlertOutput(AnomalyAlert anomalyAlert) {
