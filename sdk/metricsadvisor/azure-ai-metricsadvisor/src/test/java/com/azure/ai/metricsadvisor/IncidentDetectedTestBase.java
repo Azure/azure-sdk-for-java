@@ -27,11 +27,6 @@ public abstract class IncidentDetectedTestBase extends MetricsAdvisorClientTestB
         final String detectionConfigurationId = DETECTION_CONFIGURATION_ID;
     }
 
-    protected static class ListIncidentsDetectedOutput {
-        static final ListIncidentsDetectedOutput INSTANCE = new ListIncidentsDetectedOutput();
-        final int expectedIncidents = 268;
-    }
-
     protected void assertListIncidentsDetectedOutput(AnomalyIncident anomalyIncident) {
         Assertions.assertNotNull(anomalyIncident);
         Assertions.assertNotNull(anomalyIncident.getId());

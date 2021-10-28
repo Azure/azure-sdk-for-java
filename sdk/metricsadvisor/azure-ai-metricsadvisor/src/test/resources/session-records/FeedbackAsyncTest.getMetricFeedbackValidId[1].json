@@ -4,61 +4,61 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "daebd9f7-b3d8-4dfc-aba2-16d4c099d952",
+      "x-ms-client-request-id" : "642d1e9f-5e3a-4b6f-a6e3-9c8fb32455ba",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "30fb662e-091d-4481-8e48-9dace6b5d0ae",
+      "x-request-id" : "9650cfa7-392e-4298-bb5d-250a9b73cfcb",
       "content-length" : "0",
-      "x-envoy-upstream-service-time" : "5511",
+      "x-envoy-upstream-service-time" : "325",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "30fb662e-091d-4481-8e48-9dace6b5d0ae",
+      "apim-request-id" : "9650cfa7-392e-4298-bb5d-250a9b73cfcb",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 13 Oct 2021 21:21:05 GMT",
-      "Location" : "https://ga-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/4e0a9734-b880-4e5c-ac19-e07e84057eb1"
+      "Date" : "Thu, 28 Oct 2021 22:36:54 GMT",
+      "Location" : "https://ga-metrics-advisor.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/90f5fe3e-1e0e-4e6a-9833-b773bef0b7cc"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/4e0a9734-b880-4e5c-ac19-e07e84057eb1",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/90f5fe3e-1e0e-4e6a-9833-b773bef0b7cc",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c70dbd25-bdd2-45fd-92ea-da23e214bb35"
+      "x-ms-client-request-id" : "bf9b1f1d-fb30-43bd-8576-a01a46b7ed27"
     },
     "Response" : {
-      "x-request-id" : "0c794bc9-c76e-44d1-837e-0684682fb554",
+      "x-request-id" : "8650d409-3b5a-41ad-844b-3b7af23052cf",
       "content-length" : "427",
-      "x-envoy-upstream-service-time" : "10258",
+      "x-envoy-upstream-service-time" : "55",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "0c794bc9-c76e-44d1-837e-0684682fb554",
+      "apim-request-id" : "8650d409-3b5a-41ad-844b-3b7af23052cf",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"feedbackId\":\"4e0a9734-b880-4e5c-ac19-e07e84057eb1\",\"createdTime\":\"2021-10-13T21:21:04.938Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}",
-      "Date" : "Wed, 13 Oct 2021 21:21:15 GMT",
+      "Body" : "{\"feedbackId\":\"90f5fe3e-1e0e-4e6a-9833-b773bef0b7cc\",\"createdTime\":\"2021-10-28T22:36:54.475Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}",
+      "Date" : "Thu, 28 Oct 2021 22:36:54 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/4e0a9734-b880-4e5c-ac19-e07e84057eb1",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/feedback/metric/90f5fe3e-1e0e-4e6a-9833-b773bef0b7cc",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "23902811-5bb4-49c0-affd-f765f61509ca"
+      "x-ms-client-request-id" : "e938be15-0e7d-472d-a94e-876fc020f560"
     },
     "Response" : {
-      "x-request-id" : "aab1dd04-be38-45ce-82f4-142bec4a0967",
+      "x-request-id" : "2f79e356-0086-4da1-af97-ccf5f136df23",
       "content-length" : "427",
-      "x-envoy-upstream-service-time" : "168",
+      "x-envoy-upstream-service-time" : "44",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "aab1dd04-be38-45ce-82f4-142bec4a0967",
+      "apim-request-id" : "2f79e356-0086-4da1-af97-ccf5f136df23",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"feedbackId\":\"4e0a9734-b880-4e5c-ac19-e07e84057eb1\",\"createdTime\":\"2021-10-13T21:21:04.938Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}",
-      "Date" : "Wed, 13 Oct 2021 21:21:15 GMT",
+      "Body" : "{\"feedbackId\":\"90f5fe3e-1e0e-4e6a-9833-b773bef0b7cc\",\"createdTime\":\"2021-10-28T22:36:54.475Z\",\"userPrincipal\":\"f850650c-1fcf-4489-b46f-71af2e30d360\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimensionFilter\":{\"dimension\":{\"region\":\"Miami\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"feedbackType\":\"Comment\",\"startTime\":\"2021-08-05T00:00:00Z\",\"endTime\":\"2021-08-07T00:00:00Z\",\"value\":{\"commentValue\":\"Not an anomaly.\"}}",
+      "Date" : "Thu, 28 Oct 2021 22:36:53 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

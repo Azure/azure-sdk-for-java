@@ -299,9 +299,10 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 client.listDataFeeds(
                     new ListDataFeedOptions()
                         .setListDataFeedFilter(new ListDataFeedFilter()
-                            .setName(filterName)), Context.NONE)
+                            .setName("test_filter_by_name")), Context.NONE)
                     .stream().iterator().forEachRemaining(dataFeed ->
-                    assertEquals(filterName, createdDataFeed.getName()));
+                        assertEquals(filterName, createdDataFeed.getName()));
+
             }, SQL_SERVER_DB);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {

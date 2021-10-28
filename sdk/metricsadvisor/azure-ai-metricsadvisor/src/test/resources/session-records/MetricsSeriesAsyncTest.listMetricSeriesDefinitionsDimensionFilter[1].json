@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/390d1139-98fb-45af-b831-8d5ad61b150a/series/query",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "133676be-b8f7-407a-97c9-b9b203690578",
+      "x-ms-client-request-id" : "d4ba5942-723f-4396-b3f6-fc4e738c9616",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-request-id" : "5c7610e4-fed1-4b15-904d-7b699b621174",
+      "x-request-id" : "a4b84fd1-cf64-4917-9774-52843aaf52ff",
       "content-length" : "926",
-      "x-envoy-upstream-service-time" : "198",
+      "x-envoy-upstream-service-time" : "57",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "5c7610e4-fed1-4b15-904d-7b699b621174",
+      "apim-request-id" : "a4b84fd1-cf64-4917-9774-52843aaf52ff",
       "retry-after" : "0",
       "StatusCode" : "200",
       "Body" : "{\"value\":[{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"__SUM__\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Handmade\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Home & Garden\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Office Products\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Shoes Handbags & Sunglasses\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Consumer)\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Electronics (Accessories)\",\"region\":\"Miami\"}},{\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"dimension\":{\"category\":\"Grocery & Gourmet Food\",\"region\":\"Miami\"}}]}",
-      "Date" : "Wed, 13 Oct 2021 21:54:37 GMT",
+      "Date" : "Thu, 28 Oct 2021 22:36:43 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

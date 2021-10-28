@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b32325ed-5b1c-4ac3-b5cd-f3d7f3083c8c",
+      "x-ms-client-request-id" : "c9536697-c554-4c4c-a5fc-db5c90a31e6d",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -17,7 +17,7 @@
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b32325ed-5b1c-4ac3-b5cd-f3d7f3083c8c",
+      "x-ms-client-request-id" : "c9536697-c554-4c4c-a5fc-db5c90a31e6d",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -30,7 +30,7 @@
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b32325ed-5b1c-4ac3-b5cd-f3d7f3083c8c",
+      "x-ms-client-request-id" : "c9536697-c554-4c4c-a5fc-db5c90a31e6d",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -43,7 +43,7 @@
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b32325ed-5b1c-4ac3-b5cd-f3d7f3083c8c",
+      "x-ms-client-request-id" : "c9536697-c554-4c4c-a5fc-db5c90a31e6d",
       "Content-Type" : "application/json"
     },
     "Response" : null,
