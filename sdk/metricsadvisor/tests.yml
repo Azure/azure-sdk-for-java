@@ -33,3 +33,5 @@ stages:
         AZURE_METRICS_ADVISOR_LOG_ANALYTICS_WORKSPACE_ID: $(metricsadvisor-test-loganalytics-workspace-id)
         AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_ID: $(metricsadvisor-test-loganalytics-client-id)
         AZURE_METRICS_ADVISOR_LOG_ANALYTICS_CLIENT_SECRET: $(metricsadvisor-test-loganalytics-client-secret)
+        AZURE_LOG_LEVEL: 2
+        AZURE_HTTP_LOG_DETAIL_LEVEL: 'body_and_headers'
