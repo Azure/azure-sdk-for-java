@@ -47,6 +47,9 @@ parameters:
 - name: SkipAggregateReports
   type: boolean
   default: false
+- name: PreBuildSteps
+  type: object
+  default: []
 
 stages:
   - stage: Build
@@ -78,6 +81,7 @@ stages:
             - TestGoals=.*/verify
             - TestOptions=.*/-am
           - AZURE_TEST.*=.*/
+        PreBuildSteps: ${{ parameters.PreBuildSteps }}
 
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.

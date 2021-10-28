@@ -37,6 +37,9 @@ parameters:
   - name: SkipAggregateReports
     type: boolean
     default: false
+  - name: PreBuildSteps
+    type: object
+    default: []
 
 jobs:
   - job: 'Test'
@@ -67,6 +70,8 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
 
       - template: ../steps/install-reporting-tools.yml
+
+      - ${{ parameters.PreBuildSteps }}
 
       - ${{ parameters.PreTestSteps }}
 
