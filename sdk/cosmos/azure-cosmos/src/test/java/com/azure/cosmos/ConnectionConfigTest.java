@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConnectionConfigTest extends TestSuiteBase {
 
-    private static final Duration REQUEST_TIME_OUT = Duration.ofSeconds(15);
+    private static final Duration NETWORK_REQUEST_TIME_OUT = Duration.ofSeconds(15);
     private static final Duration IDLE_CONNECTION_TIME_OUT = Duration.ofSeconds(30);
     private static final Duration CONNECTION_TIMEOUT = Duration.ofSeconds(100);
     private static final Duration IDLE_CHANNEL_TIMEOUT = Duration.ofSeconds(10);
@@ -51,7 +51,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         final List<String> preferredRegions = new ArrayList<>();
         preferredRegions.add("West US");
         gatewayConnectionConfig.setIdleConnectionTimeout(IDLE_CONNECTION_TIME_OUT);
-        gatewayConnectionConfig.setNetworkRequestTimeout(REQUEST_TIME_OUT);
+        gatewayConnectionConfig.setNetworkRequestTimeout(NETWORK_REQUEST_TIME_OUT);
         gatewayConnectionConfig.setMaxConnectionPoolSize(MAX_CONNECTION_POOL_SIZE);
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -125,7 +125,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         gatewayConnectionConfig.setMaxConnectionPoolSize(MAX_CONNECTION_POOL_SIZE);
-        gatewayConnectionConfig.setNetworkRequestTimeout(REQUEST_TIME_OUT);
+        gatewayConnectionConfig.setNetworkRequestTimeout(NETWORK_REQUEST_TIME_OUT);
         gatewayConnectionConfig.setIdleConnectionTimeout(IDLE_CONNECTION_TIME_OUT);
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -146,7 +146,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         gatewayConnectionConfig.setMaxConnectionPoolSize(MAX_CONNECTION_POOL_SIZE);
-        gatewayConnectionConfig.setNetworkRequestTimeout(REQUEST_TIME_OUT);
+        gatewayConnectionConfig.setNetworkRequestTimeout(NETWORK_REQUEST_TIME_OUT);
         gatewayConnectionConfig.setIdleConnectionTimeout(IDLE_CONNECTION_TIME_OUT);
         gatewayConnectionConfig.setProxy(proxyOptions);
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()

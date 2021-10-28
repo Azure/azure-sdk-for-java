@@ -644,6 +644,7 @@ public class RntbdTransportClient extends TransportClient {
          *   "maxRequestsPerChannel": 30,
          *   "maxConcurrentRequestsPerEndpointOverride": -1,
          *   "receiveHangDetectionTime": "PT1M5S",
+         *   "requestTimeout": "PT5S",
          *   "requestTimerResolution": "PT100MS",
          *   "sendHangDetectionTime": "PT10S",
          *   "shutdownTimeout": "PT15S",
