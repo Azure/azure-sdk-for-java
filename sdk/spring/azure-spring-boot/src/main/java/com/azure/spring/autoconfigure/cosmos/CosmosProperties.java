@@ -151,10 +151,10 @@ public class CosmosProperties implements InitializingBean {
     }
 
     private void validateUri() {
-        if (Pattern.matches(LOCAL_URI_REGEX, uri.toLowerCase())) {
+        if (Pattern.matches(LOCAL_URI_REGEX, uri)) {
             return;
         }
-        if (!Pattern.matches(URI_REGEX, uri.toLowerCase())) {
+        if (!Pattern.matches(URI_REGEX, uri)) {
             LOGGER.error("the uri's pattern specified in 'azure.cosmos.uri' is not supported, "
                 + "only sql/core api is supported, please check https://docs.microsoft.com/en-us/azure/cosmos-db/ "
                 + "for more info.");
