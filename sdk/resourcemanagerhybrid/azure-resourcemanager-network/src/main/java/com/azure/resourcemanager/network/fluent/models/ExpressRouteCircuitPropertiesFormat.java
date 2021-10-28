@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,7 +19,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPropertiesFormat.class);
 
     /*
-     * Allow classic operations.
+     * Allow classic operations
      */
     @JsonProperty(value = "allowClassicOperations")
     private Boolean allowClassicOperations;
@@ -32,7 +31,9 @@ public final class ExpressRouteCircuitPropertiesFormat {
     private String circuitProvisioningState;
 
     /*
-     * The ServiceProviderProvisioningState state of the resource.
+     * The ServiceProviderProvisioningState state of the resource. Possible
+     * values are 'NotProvisioned', 'Provisioning', 'Provisioned', and
+     * 'Deprovisioning'.
      */
     @JsonProperty(value = "serviceProviderProvisioningState")
     private ServiceProviderProvisioningState serviceProviderProvisioningState;
@@ -88,10 +89,11 @@ public final class ExpressRouteCircuitPropertiesFormat {
     private Integer stag;
 
     /*
-     * The provisioning state of the express route circuit resource.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /*
      * The GatewayManager Etag.
@@ -100,10 +102,10 @@ public final class ExpressRouteCircuitPropertiesFormat {
     private String gatewayManagerEtag;
 
     /*
-     * Flag denoting global reach status.
+     * Flag to enable Global Reach on the circuit.
      */
-    @JsonProperty(value = "globalReachEnabled")
-    private Boolean globalReachEnabled;
+    @JsonProperty(value = "allowGlobalReach")
+    private Boolean allowGlobalReach;
 
     /**
      * Get the allowClassicOperations property: Allow classic operations.
@@ -147,6 +149,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the serviceProviderProvisioningState property: The ServiceProviderProvisioningState state of the resource.
+     * Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned', and 'Deprovisioning'.
      *
      * @return the serviceProviderProvisioningState value.
      */
@@ -156,6 +159,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the serviceProviderProvisioningState property: The ServiceProviderProvisioningState state of the resource.
+     * Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned', and 'Deprovisioning'.
      *
      * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
@@ -322,12 +326,25 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route circuit resource.
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ExpressRouteCircuitPropertiesFormat object itself.
+     */
+    public ExpressRouteCircuitPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -351,22 +368,22 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Get the globalReachEnabled property: Flag denoting global reach status.
+     * Get the allowGlobalReach property: Flag to enable Global Reach on the circuit.
      *
-     * @return the globalReachEnabled value.
+     * @return the allowGlobalReach value.
      */
-    public Boolean globalReachEnabled() {
-        return this.globalReachEnabled;
+    public Boolean allowGlobalReach() {
+        return this.allowGlobalReach;
     }
 
     /**
-     * Set the globalReachEnabled property: Flag denoting global reach status.
+     * Set the allowGlobalReach property: Flag to enable Global Reach on the circuit.
      *
-     * @param globalReachEnabled the globalReachEnabled value to set.
+     * @param allowGlobalReach the allowGlobalReach value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitPropertiesFormat withGlobalReachEnabled(Boolean globalReachEnabled) {
-        this.globalReachEnabled = globalReachEnabled;
+    public ExpressRouteCircuitPropertiesFormat withAllowGlobalReach(Boolean allowGlobalReach) {
+        this.allowGlobalReach = allowGlobalReach;
         return this;
     }
 

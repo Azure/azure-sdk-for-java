@@ -17,7 +17,7 @@ public final class BgpPeerStatusListResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpPeerStatusListResultInner.class);
 
     /*
-     * List of BGP peers.
+     * List of BGP peers
      */
     @JsonProperty(value = "value")
     private List<BgpPeerStatus> value;

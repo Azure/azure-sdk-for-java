@@ -15,13 +15,13 @@ public final class ExpressRouteCircuitArpTable {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitArpTable.class);
 
     /*
-     * Entry age in minutes.
+     * Entry age in minutes
      */
     @JsonProperty(value = "age")
     private Integer age;
 
     /*
-     * Interface address.
+     * Interface address
      */
     @JsonProperty(value = "interface")
     private String interfaceProperty;

@@ -5,19 +5,17 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ExpressRouteConnectionId;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the express route circuit peering. */
+/** The ExpressRouteCircuitPeeringPropertiesFormat model. */
 @Fluent
 public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     @JsonIgnore
@@ -90,16 +88,17 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     private ExpressRouteCircuitPeeringConfig microsoftPeeringConfig;
 
     /*
-     * The peering stats of express route circuit.
+     * Gets peering stats.
      */
     @JsonProperty(value = "stats")
     private ExpressRouteCircuitStatsInner stats;
 
     /*
-     * The provisioning state of the express route circuit peering resource.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /*
      * The GatewayManager Etag.
@@ -108,16 +107,16 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     private String gatewayManagerEtag;
 
     /*
-     * Who was the last to modify the peering.
+     * Gets whether the provider or the customer last modified the peering.
      */
-    @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lastModifiedBy")
     private String lastModifiedBy;
 
     /*
-     * The reference to the RouteFilter resource.
+     * The reference of the RouteFilter resource.
      */
     @JsonProperty(value = "routeFilter")
-    private SubResource routeFilter;
+    private RouteFilterInner routeFilter;
 
     /*
      * The IPv6 peering configuration.
@@ -137,13 +136,6 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
      */
     @JsonProperty(value = "connections")
     private List<ExpressRouteCircuitConnectionInner> connections;
-
-    /*
-     * The list of peered circuit connections associated with Azure Private
-     * Peering for this circuit.
-     */
-    @JsonProperty(value = "peeredConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<PeerExpressRouteCircuitConnectionInner> peeredConnections;
 
     /**
      * Get the peeringType property: The peering type.
@@ -369,7 +361,7 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     }
 
     /**
-     * Get the stats property: The peering stats of express route circuit.
+     * Get the stats property: Gets peering stats.
      *
      * @return the stats value.
      */
@@ -378,7 +370,7 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     }
 
     /**
-     * Set the stats property: The peering stats of express route circuit.
+     * Set the stats property: Gets peering stats.
      *
      * @param stats the stats value to set.
      * @return the ExpressRouteCircuitPeeringPropertiesFormatInner object itself.
@@ -389,12 +381,25 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route circuit peering resource.
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ExpressRouteCircuitPeeringPropertiesFormatInner object itself.
+     */
+    public ExpressRouteCircuitPeeringPropertiesFormatInner withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -418,7 +423,7 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     }
 
     /**
-     * Get the lastModifiedBy property: Who was the last to modify the peering.
+     * Get the lastModifiedBy property: Gets whether the provider or the customer last modified the peering.
      *
      * @return the lastModifiedBy value.
      */
@@ -427,21 +432,32 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     }
 
     /**
-     * Get the routeFilter property: The reference to the RouteFilter resource.
+     * Set the lastModifiedBy property: Gets whether the provider or the customer last modified the peering.
+     *
+     * @param lastModifiedBy the lastModifiedBy value to set.
+     * @return the ExpressRouteCircuitPeeringPropertiesFormatInner object itself.
+     */
+    public ExpressRouteCircuitPeeringPropertiesFormatInner withLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+        return this;
+    }
+
+    /**
+     * Get the routeFilter property: The reference of the RouteFilter resource.
      *
      * @return the routeFilter value.
      */
-    public SubResource routeFilter() {
+    public RouteFilterInner routeFilter() {
         return this.routeFilter;
     }
 
     /**
-     * Set the routeFilter property: The reference to the RouteFilter resource.
+     * Set the routeFilter property: The reference of the RouteFilter resource.
      *
      * @param routeFilter the routeFilter value to set.
      * @return the ExpressRouteCircuitPeeringPropertiesFormatInner object itself.
      */
-    public ExpressRouteCircuitPeeringPropertiesFormatInner withRouteFilter(SubResource routeFilter) {
+    public ExpressRouteCircuitPeeringPropertiesFormatInner withRouteFilter(RouteFilterInner routeFilter) {
         this.routeFilter = routeFilter;
         return this;
     }
@@ -512,16 +528,6 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     }
 
     /**
-     * Get the peeredConnections property: The list of peered circuit connections associated with Azure Private Peering
-     * for this circuit.
-     *
-     * @return the peeredConnections value.
-     */
-    public List<PeerExpressRouteCircuitConnectionInner> peeredConnections() {
-        return this.peeredConnections;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -533,6 +539,9 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
         if (stats() != null) {
             stats().validate();
         }
+        if (routeFilter() != null) {
+            routeFilter().validate();
+        }
         if (ipv6PeeringConfig() != null) {
             ipv6PeeringConfig().validate();
         }
@@ -541,9 +550,6 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
         }
         if (connections() != null) {
             connections().forEach(e -> e.validate());
-        }
-        if (peeredConnections() != null) {
-            peeredConnections().forEach(e -> e.validate());
         }
     }
 }

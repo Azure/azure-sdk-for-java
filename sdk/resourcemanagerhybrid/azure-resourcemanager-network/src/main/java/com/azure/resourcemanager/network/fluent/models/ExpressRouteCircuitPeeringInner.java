@@ -12,7 +12,6 @@ import com.azure.resourcemanager.network.models.ExpressRouteConnectionId;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -23,13 +22,13 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringInner.class);
 
     /*
-     * Properties of the express route circuit peering.
+     * The properties property.
      */
     @JsonProperty(value = "properties")
     private ExpressRouteCircuitPeeringPropertiesFormatInner innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
+     * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
@@ -41,14 +40,8 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * Type of the resource.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
-
     /**
-     * Get the innerProperties property: Properties of the express route circuit peering.
+     * Get the innerProperties property: The properties property.
      *
      * @return the innerProperties value.
      */
@@ -57,7 +50,7 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * Get the name property: Gets name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
      *
      * @return the name value.
@@ -67,7 +60,7 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * Set the name property: Gets name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
      *
      * @param name the name value to set.
@@ -85,15 +78,6 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the type property: Type of the resource.
-     *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
     }
 
     /** {@inheritDoc} */
@@ -358,7 +342,7 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
-     * Get the stats property: The peering stats of express route circuit.
+     * Get the stats property: Gets peering stats.
      *
      * @return the stats value.
      */
@@ -367,7 +351,7 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
-     * Set the stats property: The peering stats of express route circuit.
+     * Set the stats property: Gets peering stats.
      *
      * @param stats the stats value to set.
      * @return the ExpressRouteCircuitPeeringInner object itself.
@@ -381,12 +365,28 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route circuit peering resource.
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitPeeringPropertiesFormatInner();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**
@@ -413,7 +413,7 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
-     * Get the lastModifiedBy property: Who was the last to modify the peering.
+     * Get the lastModifiedBy property: Gets whether the provider or the customer last modified the peering.
      *
      * @return the lastModifiedBy value.
      */
@@ -422,21 +422,35 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
-     * Get the routeFilter property: The reference to the RouteFilter resource.
+     * Set the lastModifiedBy property: Gets whether the provider or the customer last modified the peering.
+     *
+     * @param lastModifiedBy the lastModifiedBy value to set.
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withLastModifiedBy(String lastModifiedBy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitPeeringPropertiesFormatInner();
+        }
+        this.innerProperties().withLastModifiedBy(lastModifiedBy);
+        return this;
+    }
+
+    /**
+     * Get the routeFilter property: The reference of the RouteFilter resource.
      *
      * @return the routeFilter value.
      */
-    public SubResource routeFilter() {
+    public RouteFilterInner routeFilter() {
         return this.innerProperties() == null ? null : this.innerProperties().routeFilter();
     }
 
     /**
-     * Set the routeFilter property: The reference to the RouteFilter resource.
+     * Set the routeFilter property: The reference of the RouteFilter resource.
      *
      * @param routeFilter the routeFilter value to set.
      * @return the ExpressRouteCircuitPeeringInner object itself.
      */
-    public ExpressRouteCircuitPeeringInner withRouteFilter(SubResource routeFilter) {
+    public ExpressRouteCircuitPeeringInner withRouteFilter(RouteFilterInner routeFilter) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteCircuitPeeringPropertiesFormatInner();
         }
@@ -514,16 +528,6 @@ public final class ExpressRouteCircuitPeeringInner extends SubResource {
         }
         this.innerProperties().withConnections(connections);
         return this;
-    }
-
-    /**
-     * Get the peeredConnections property: The list of peered circuit connections associated with Azure Private Peering
-     * for this circuit.
-     *
-     * @return the peeredConnections value.
-     */
-    public List<PeerExpressRouteCircuitConnectionInner> peeredConnections() {
-        return this.innerProperties() == null ? null : this.innerProperties().peeredConnections();
     }
 
     /**

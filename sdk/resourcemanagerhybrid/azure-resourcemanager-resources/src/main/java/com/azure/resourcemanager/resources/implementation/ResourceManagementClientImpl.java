@@ -12,7 +12,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.DeploymentOperationsClient;
 import com.azure.resourcemanager.resources.fluent.DeploymentsClient;
 import com.azure.resourcemanager.resources.fluent.OperationsClient;
-import com.azure.resourcemanager.resources.fluent.ProviderResourceTypesClient;
 import com.azure.resourcemanager.resources.fluent.ProvidersClient;
 import com.azure.resourcemanager.resources.fluent.ResourceGroupsClient;
 import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
@@ -134,18 +133,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
         return this.providers;
     }
 
-    /** The ProviderResourceTypesClient object to access its operations. */
-    private final ProviderResourceTypesClient providerResourceTypes;
-
-    /**
-     * Gets the ProviderResourceTypesClient object to access its operations.
-     *
-     * @return the ProviderResourceTypesClient object.
-     */
-    public ProviderResourceTypesClient getProviderResourceTypes() {
-        return this.providerResourceTypes;
-    }
-
     /** The ResourcesClient object to access its operations. */
     private final ResourcesClient resources;
 
@@ -217,11 +204,10 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-01-01";
+        this.apiVersion = "2019-10-01";
         this.operations = new OperationsClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);
         this.providers = new ProvidersClientImpl(this);
-        this.providerResourceTypes = new ProviderResourceTypesClientImpl(this);
         this.resources = new ResourcesClientImpl(this);
         this.resourceGroups = new ResourceGroupsClientImpl(this);
         this.tagOperations = new TagOperationsClientImpl(this);

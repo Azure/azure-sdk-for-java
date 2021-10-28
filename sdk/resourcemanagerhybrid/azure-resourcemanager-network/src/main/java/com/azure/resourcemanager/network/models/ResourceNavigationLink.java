@@ -35,12 +35,6 @@ public final class ResourceNavigationLink extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * Resource type.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
-
     /**
      * Get the innerProperties property: Resource navigation link properties format.
      *
@@ -79,15 +73,6 @@ public final class ResourceNavigationLink extends SubResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the type property: Resource type.
-     *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
     }
 
     /** {@inheritDoc} */
@@ -144,11 +129,11 @@ public final class ResourceNavigationLink extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource navigation link resource.
+     * Get the provisioningState property: Provisioning state of the ResourceNavigationLink resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

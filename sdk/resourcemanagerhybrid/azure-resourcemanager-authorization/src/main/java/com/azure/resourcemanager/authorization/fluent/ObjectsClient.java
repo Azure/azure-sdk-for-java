@@ -18,33 +18,36 @@ public interface ObjectsClient {
      * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
      * (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
-     * @param parameters Request parameters for the GetObjectsByObjectIds API.
+     * @param tenantId The tenant ID.
+     * @param parameters Objects filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the directory objects specified in a list of object IDs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DirectoryObjectInner> getObjectsByObjectIdsAsync(GetObjectsParameters parameters);
+    PagedFlux<DirectoryObjectInner> getObjectsByObjectIdsAsync(String tenantId, GetObjectsParameters parameters);
 
     /**
      * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
      * (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
-     * @param parameters Request parameters for the GetObjectsByObjectIds API.
+     * @param tenantId The tenant ID.
+     * @param parameters Objects filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the directory objects specified in a list of object IDs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(GetObjectsParameters parameters);
+    PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(String tenantId, GetObjectsParameters parameters);
 
     /**
      * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
      * (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
-     * @param parameters Request parameters for the GetObjectsByObjectIds API.
+     * @param tenantId The tenant ID.
+     * @param parameters Objects filtering parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,5 +55,6 @@ public interface ObjectsClient {
      * @return the directory objects specified in a list of object IDs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(GetObjectsParameters parameters, Context context);
+    PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(
+        String tenantId, GetObjectsParameters parameters, Context context);
 }

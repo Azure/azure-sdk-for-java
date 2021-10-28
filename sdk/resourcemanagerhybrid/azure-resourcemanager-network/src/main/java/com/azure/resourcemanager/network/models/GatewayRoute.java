@@ -15,43 +15,43 @@ public final class GatewayRoute {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayRoute.class);
 
     /*
-     * The gateway's local address.
+     * The gateway's local address
      */
     @JsonProperty(value = "localAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String localAddress;
 
     /*
-     * The route's network prefix.
+     * The route's network prefix
      */
     @JsonProperty(value = "network", access = JsonProperty.Access.WRITE_ONLY)
     private String network;
 
     /*
-     * The route's next hop.
+     * The route's next hop
      */
     @JsonProperty(value = "nextHop", access = JsonProperty.Access.WRITE_ONLY)
     private String nextHop;
 
     /*
-     * The peer this route was learned from.
+     * The peer this route was learned from
      */
     @JsonProperty(value = "sourcePeer", access = JsonProperty.Access.WRITE_ONLY)
     private String sourcePeer;
 
     /*
-     * The source this route was learned from.
+     * The source this route was learned from
      */
     @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private String origin;
 
     /*
-     * The route's AS path sequence.
+     * The route's AS path sequence
      */
     @JsonProperty(value = "asPath", access = JsonProperty.Access.WRITE_ONLY)
     private String asPath;
 
     /*
-     * The route's weight.
+     * The route's weight
      */
     @JsonProperty(value = "weight", access = JsonProperty.Access.WRITE_ONLY)
     private Integer weight;

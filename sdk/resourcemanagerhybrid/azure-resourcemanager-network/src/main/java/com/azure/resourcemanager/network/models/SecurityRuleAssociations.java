@@ -17,13 +17,13 @@ public final class SecurityRuleAssociations {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRuleAssociations.class);
 
     /*
-     * Network interface and it's custom security rules.
+     * Network interface and its custom security rules.
      */
     @JsonProperty(value = "networkInterfaceAssociation")
     private NetworkInterfaceAssociation networkInterfaceAssociation;
 
     /*
-     * Subnet and it's custom security rules.
+     * Network interface and its custom security rules.
      */
     @JsonProperty(value = "subnetAssociation")
     private SubnetAssociation subnetAssociation;
@@ -41,7 +41,7 @@ public final class SecurityRuleAssociations {
     private List<EffectiveNetworkSecurityRule> effectiveSecurityRules;
 
     /**
-     * Get the networkInterfaceAssociation property: Network interface and it's custom security rules.
+     * Get the networkInterfaceAssociation property: Network interface and its custom security rules.
      *
      * @return the networkInterfaceAssociation value.
      */
@@ -50,7 +50,7 @@ public final class SecurityRuleAssociations {
     }
 
     /**
-     * Set the networkInterfaceAssociation property: Network interface and it's custom security rules.
+     * Set the networkInterfaceAssociation property: Network interface and its custom security rules.
      *
      * @param networkInterfaceAssociation the networkInterfaceAssociation value to set.
      * @return the SecurityRuleAssociations object itself.
@@ -62,7 +62,7 @@ public final class SecurityRuleAssociations {
     }
 
     /**
-     * Get the subnetAssociation property: Subnet and it's custom security rules.
+     * Get the subnetAssociation property: Network interface and its custom security rules.
      *
      * @return the subnetAssociation value.
      */
@@ -71,7 +71,7 @@ public final class SecurityRuleAssociations {
     }
 
     /**
-     * Set the subnetAssociation property: Subnet and it's custom security rules.
+     * Set the subnetAssociation property: Network interface and its custom security rules.
      *
      * @param subnetAssociation the subnetAssociation value to set.
      * @return the SecurityRuleAssociations object itself.

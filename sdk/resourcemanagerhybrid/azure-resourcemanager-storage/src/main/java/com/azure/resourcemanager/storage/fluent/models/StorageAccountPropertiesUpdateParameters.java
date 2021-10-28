@@ -10,12 +10,10 @@ import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.Encryption;
-import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
-import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -39,18 +37,6 @@ public final class StorageAccountPropertiesUpdateParameters {
      */
     @JsonProperty(value = "encryption")
     private Encryption encryption;
-
-    /*
-     * SasPolicy assigned to the storage account.
-     */
-    @JsonProperty(value = "sasPolicy")
-    private SasPolicy sasPolicy;
-
-    /*
-     * KeyPolicy assigned to the storage account.
-     */
-    @JsonProperty(value = "keyPolicy")
-    private KeyPolicy keyPolicy;
 
     /*
      * Required for storage accounts where kind = BlobStorage. The access tier
@@ -115,13 +101,6 @@ public final class StorageAccountPropertiesUpdateParameters {
     @JsonProperty(value = "allowSharedKeyAccess")
     private Boolean allowSharedKeyAccess;
 
-    /*
-     * Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     */
-    @JsonProperty(value = "allowCrossTenantReplication")
-    private Boolean allowCrossTenantReplication;
-
     /**
      * Get the customDomain property: Custom domain assigned to the storage account by the user. Name is the CNAME
      * source. Only one custom domain is supported per storage account at this time. To clear the existing custom
@@ -163,46 +142,6 @@ public final class StorageAccountPropertiesUpdateParameters {
      */
     public StorageAccountPropertiesUpdateParameters withEncryption(Encryption encryption) {
         this.encryption = encryption;
-        return this;
-    }
-
-    /**
-     * Get the sasPolicy property: SasPolicy assigned to the storage account.
-     *
-     * @return the sasPolicy value.
-     */
-    public SasPolicy sasPolicy() {
-        return this.sasPolicy;
-    }
-
-    /**
-     * Set the sasPolicy property: SasPolicy assigned to the storage account.
-     *
-     * @param sasPolicy the sasPolicy value to set.
-     * @return the StorageAccountPropertiesUpdateParameters object itself.
-     */
-    public StorageAccountPropertiesUpdateParameters withSasPolicy(SasPolicy sasPolicy) {
-        this.sasPolicy = sasPolicy;
-        return this;
-    }
-
-    /**
-     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
-     * @return the keyPolicy value.
-     */
-    public KeyPolicy keyPolicy() {
-        return this.keyPolicy;
-    }
-
-    /**
-     * Set the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
-     * @param keyPolicy the keyPolicy value to set.
-     * @return the StorageAccountPropertiesUpdateParameters object itself.
-     */
-    public StorageAccountPropertiesUpdateParameters withKeyPolicy(KeyPolicy keyPolicy) {
-        this.keyPolicy = keyPolicy;
         return this;
     }
 
@@ -405,29 +344,6 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @return the allowCrossTenantReplication value.
-     */
-    public Boolean allowCrossTenantReplication() {
-        return this.allowCrossTenantReplication;
-    }
-
-    /**
-     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
-     * @return the StorageAccountPropertiesUpdateParameters object itself.
-     */
-    public StorageAccountPropertiesUpdateParameters withAllowCrossTenantReplication(
-        Boolean allowCrossTenantReplication) {
-        this.allowCrossTenantReplication = allowCrossTenantReplication;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -438,12 +354,6 @@ public final class StorageAccountPropertiesUpdateParameters {
         }
         if (encryption() != null) {
             encryption().validate();
-        }
-        if (sasPolicy() != null) {
-            sasPolicy().validate();
-        }
-        if (keyPolicy() != null) {
-            keyPolicy().validate();
         }
         if (azureFilesIdentityBasedAuthentication() != null) {
             azureFilesIdentityBasedAuthentication().validate();

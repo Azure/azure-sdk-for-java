@@ -9,9 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
-import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
-import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -78,10 +76,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /*
      * Whether to force strictly even Virtual Machine distribution cross
-     * x-zones in case there is zone outage. zoneBalance property can only be
-     * set if the zones property of the scale set contains more than one zone.
-     * If there are no zones or only one zone specified, then zoneBalance
-     * property should not be set.
+     * x-zones in case there is zone outage.
      */
     @JsonProperty(value = "zoneBalance")
     private Boolean zoneBalance;
@@ -117,23 +112,11 @@ public final class VirtualMachineScaleSetProperties {
     private AdditionalCapabilities additionalCapabilities;
 
     /*
-     * Specifies the policies applied when scaling in Virtual Machines in the
-     * Virtual Machine Scale Set.
+     * Specifies the scale-in policy that decides which virtual machines are
+     * chosen for removal when a Virtual Machine Scale Set is scaled-in.
      */
     @JsonProperty(value = "scaleInPolicy")
     private ScaleInPolicy scaleInPolicy;
-
-    /*
-     * Specifies the orchestration mode for the virtual machine scale set.
-     */
-    @JsonProperty(value = "orchestrationMode")
-    private OrchestrationMode orchestrationMode;
-
-    /*
-     * Specifies the Spot Restore properties for the virtual machine scale set.
-     */
-    @JsonProperty(value = "spotRestorePolicy")
-    private SpotRestorePolicy spotRestorePolicy;
 
     /**
      * Get the upgradePolicy property: The upgrade policy.
@@ -285,8 +268,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Get the zoneBalance property: Whether to force strictly even Virtual Machine distribution cross x-zones in case
-     * there is zone outage. zoneBalance property can only be set if the zones property of the scale set contains more
-     * than one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
+     * there is zone outage.
      *
      * @return the zoneBalance value.
      */
@@ -296,8 +278,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Set the zoneBalance property: Whether to force strictly even Virtual Machine distribution cross x-zones in case
-     * there is zone outage. zoneBalance property can only be set if the zones property of the scale set contains more
-     * than one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
+     * there is zone outage.
      *
      * @param zoneBalance the zoneBalance value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
@@ -396,8 +377,8 @@ public final class VirtualMachineScaleSetProperties {
     }
 
     /**
-     * Get the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
-     * Machine Scale Set.
+     * Get the scaleInPolicy property: Specifies the scale-in policy that decides which virtual machines are chosen for
+     * removal when a Virtual Machine Scale Set is scaled-in.
      *
      * @return the scaleInPolicy value.
      */
@@ -406,54 +387,14 @@ public final class VirtualMachineScaleSetProperties {
     }
 
     /**
-     * Set the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
-     * Machine Scale Set.
+     * Set the scaleInPolicy property: Specifies the scale-in policy that decides which virtual machines are chosen for
+     * removal when a Virtual Machine Scale Set is scaled-in.
      *
      * @param scaleInPolicy the scaleInPolicy value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
     public VirtualMachineScaleSetProperties withScaleInPolicy(ScaleInPolicy scaleInPolicy) {
         this.scaleInPolicy = scaleInPolicy;
-        return this;
-    }
-
-    /**
-     * Get the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
-     *
-     * @return the orchestrationMode value.
-     */
-    public OrchestrationMode orchestrationMode() {
-        return this.orchestrationMode;
-    }
-
-    /**
-     * Set the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
-     *
-     * @param orchestrationMode the orchestrationMode value to set.
-     * @return the VirtualMachineScaleSetProperties object itself.
-     */
-    public VirtualMachineScaleSetProperties withOrchestrationMode(OrchestrationMode orchestrationMode) {
-        this.orchestrationMode = orchestrationMode;
-        return this;
-    }
-
-    /**
-     * Get the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
-     *
-     * @return the spotRestorePolicy value.
-     */
-    public SpotRestorePolicy spotRestorePolicy() {
-        return this.spotRestorePolicy;
-    }
-
-    /**
-     * Set the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
-     *
-     * @param spotRestorePolicy the spotRestorePolicy value to set.
-     * @return the VirtualMachineScaleSetProperties object itself.
-     */
-    public VirtualMachineScaleSetProperties withSpotRestorePolicy(SpotRestorePolicy spotRestorePolicy) {
-        this.spotRestorePolicy = spotRestorePolicy;
         return this;
     }
 
@@ -477,9 +418,6 @@ public final class VirtualMachineScaleSetProperties {
         }
         if (scaleInPolicy() != null) {
             scaleInPolicy().validate();
-        }
-        if (spotRestorePolicy() != null) {
-            spotRestorePolicy().validate();
         }
     }
 }

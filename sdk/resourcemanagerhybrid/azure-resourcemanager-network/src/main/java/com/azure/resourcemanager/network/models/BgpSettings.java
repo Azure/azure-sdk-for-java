@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** BGP settings details. */
 @Fluent
@@ -32,13 +31,6 @@ public final class BgpSettings {
      */
     @JsonProperty(value = "peerWeight")
     private Integer peerWeight;
-
-    /*
-     * BGP peering address with IP configuration ID for virtual network
-     * gateway.
-     */
-    @JsonProperty(value = "bgpPeeringAddresses")
-    private List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses;
 
     /**
      * Get the asn property: The BGP speaker's ASN.
@@ -101,33 +93,10 @@ public final class BgpSettings {
     }
 
     /**
-     * Get the bgpPeeringAddresses property: BGP peering address with IP configuration ID for virtual network gateway.
-     *
-     * @return the bgpPeeringAddresses value.
-     */
-    public List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses() {
-        return this.bgpPeeringAddresses;
-    }
-
-    /**
-     * Set the bgpPeeringAddresses property: BGP peering address with IP configuration ID for virtual network gateway.
-     *
-     * @param bgpPeeringAddresses the bgpPeeringAddresses value to set.
-     * @return the BgpSettings object itself.
-     */
-    public BgpSettings withBgpPeeringAddresses(List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses) {
-        this.bgpPeeringAddresses = bgpPeeringAddresses;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (bgpPeeringAddresses() != null) {
-            bgpPeeringAddresses().forEach(e -> e.validate());
-        }
     }
 }

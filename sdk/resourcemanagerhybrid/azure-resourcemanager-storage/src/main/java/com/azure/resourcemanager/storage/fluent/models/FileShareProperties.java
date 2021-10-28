@@ -7,17 +7,12 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.EnabledProtocols;
-import com.azure.resourcemanager.storage.models.LeaseDuration;
-import com.azure.resourcemanager.storage.models.LeaseState;
-import com.azure.resourcemanager.storage.models.LeaseStatus;
 import com.azure.resourcemanager.storage.models.RootSquashType;
 import com.azure.resourcemanager.storage.models.ShareAccessTier;
-import com.azure.resourcemanager.storage.models.SignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Map;
 
 /** The properties of the file share. */
@@ -109,38 +104,6 @@ public final class FileShareProperties {
      */
     @JsonProperty(value = "shareUsageBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long shareUsageBytes;
-
-    /*
-     * The lease status of the share.
-     */
-    @JsonProperty(value = "leaseStatus", access = JsonProperty.Access.WRITE_ONLY)
-    private LeaseStatus leaseStatus;
-
-    /*
-     * Lease state of the share.
-     */
-    @JsonProperty(value = "leaseState", access = JsonProperty.Access.WRITE_ONLY)
-    private LeaseState leaseState;
-
-    /*
-     * Specifies whether the lease on a share is of infinite or fixed duration,
-     * only when the share is leased.
-     */
-    @JsonProperty(value = "leaseDuration", access = JsonProperty.Access.WRITE_ONLY)
-    private LeaseDuration leaseDuration;
-
-    /*
-     * List of stored access policies specified on the share.
-     */
-    @JsonProperty(value = "signedIdentifiers")
-    private List<SignedIdentifier> signedIdentifiers;
-
-    /*
-     * Creation time of share snapshot returned in the response of list shares
-     * with expand param "snapshots".
-     */
-    @JsonProperty(value = "snapshotTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime snapshotTime;
 
     /**
      * Get the lastModifiedTime property: Returns the date and time the share was last modified.
@@ -322,71 +285,10 @@ public final class FileShareProperties {
     }
 
     /**
-     * Get the leaseStatus property: The lease status of the share.
-     *
-     * @return the leaseStatus value.
-     */
-    public LeaseStatus leaseStatus() {
-        return this.leaseStatus;
-    }
-
-    /**
-     * Get the leaseState property: Lease state of the share.
-     *
-     * @return the leaseState value.
-     */
-    public LeaseState leaseState() {
-        return this.leaseState;
-    }
-
-    /**
-     * Get the leaseDuration property: Specifies whether the lease on a share is of infinite or fixed duration, only
-     * when the share is leased.
-     *
-     * @return the leaseDuration value.
-     */
-    public LeaseDuration leaseDuration() {
-        return this.leaseDuration;
-    }
-
-    /**
-     * Get the signedIdentifiers property: List of stored access policies specified on the share.
-     *
-     * @return the signedIdentifiers value.
-     */
-    public List<SignedIdentifier> signedIdentifiers() {
-        return this.signedIdentifiers;
-    }
-
-    /**
-     * Set the signedIdentifiers property: List of stored access policies specified on the share.
-     *
-     * @param signedIdentifiers the signedIdentifiers value to set.
-     * @return the FileShareProperties object itself.
-     */
-    public FileShareProperties withSignedIdentifiers(List<SignedIdentifier> signedIdentifiers) {
-        this.signedIdentifiers = signedIdentifiers;
-        return this;
-    }
-
-    /**
-     * Get the snapshotTime property: Creation time of share snapshot returned in the response of list shares with
-     * expand param "snapshots".
-     *
-     * @return the snapshotTime value.
-     */
-    public OffsetDateTime snapshotTime() {
-        return this.snapshotTime;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (signedIdentifiers() != null) {
-            signedIdentifiers().forEach(e -> e.validate());
-        }
     }
 }

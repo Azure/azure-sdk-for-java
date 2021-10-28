@@ -8,11 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
-import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
-import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -24,12 +20,6 @@ public final class NetworkInterfaceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceInner.class);
 
     /*
-     * The extended location of the network interface.
-     */
-    @JsonProperty(value = "extendedLocation")
-    private ExtendedLocation extendedLocation;
-
-    /*
      * Properties of the network interface.
      */
     @JsonProperty(value = "properties")
@@ -38,7 +28,7 @@ public final class NetworkInterfaceInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
@@ -46,26 +36,6 @@ public final class NetworkInterfaceInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
-
-    /**
-     * Get the extendedLocation property: The extended location of the network interface.
-     *
-     * @return the extendedLocation value.
-     */
-    public ExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
-
-    /**
-     * Set the extendedLocation property: The extended location of the network interface.
-     *
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the NetworkInterfaceInner object itself.
-     */
-    public NetworkInterfaceInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
-        return this;
-    }
 
     /**
      * Get the innerProperties property: Properties of the network interface.
@@ -83,6 +53,17 @@ public final class NetworkInterfaceInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
@@ -120,7 +101,7 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Get the virtualMachine property: The reference to a virtual machine.
+     * Get the virtualMachine property: The reference of a virtual machine.
      *
      * @return the virtualMachine value.
      */
@@ -129,7 +110,7 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Get the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
+     * Get the networkSecurityGroup property: The reference of the NetworkSecurityGroup resource.
      *
      * @return the networkSecurityGroup value.
      */
@@ -138,7 +119,7 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Set the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
+     * Set the networkSecurityGroup property: The reference of the NetworkSecurityGroup resource.
      *
      * @param networkSecurityGroup the networkSecurityGroup value to set.
      * @return the NetworkInterfaceInner object itself.
@@ -152,12 +133,13 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Get the privateEndpoint property: A reference to the private endpoint to which the network interface is linked.
+     * Get the interfaceEndpoint property: A reference to the interface endpoint to which the network interface is
+     * linked.
      *
-     * @return the privateEndpoint value.
+     * @return the interfaceEndpoint value.
      */
-    public PrivateEndpointInner privateEndpoint() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpoint();
+    public InterfaceEndpointInner interfaceEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().interfaceEndpoint();
     }
 
     /**
@@ -193,6 +175,20 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
+     * Set the tapConfigurations property: A list of TapConfigurations of the network interface.
+     *
+     * @param tapConfigurations the tapConfigurations value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withTapConfigurations(List<NetworkInterfaceTapConfigurationInner> tapConfigurations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
+        }
+        this.innerProperties().withTapConfigurations(tapConfigurations);
+        return this;
+    }
+
+    /**
      * Get the dnsSettings property: The DNS settings in network interface.
      *
      * @return the dnsSettings value.
@@ -225,12 +221,40 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Get the primary property: Whether this is a primary network interface on a virtual machine.
+     * Set the macAddress property: The MAC address of the network interface.
+     *
+     * @param macAddress the macAddress value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withMacAddress(String macAddress) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
+        }
+        this.innerProperties().withMacAddress(macAddress);
+        return this;
+    }
+
+    /**
+     * Get the primary property: Gets whether this is a primary network interface on a virtual machine.
      *
      * @return the primary value.
      */
     public Boolean primary() {
         return this.innerProperties() == null ? null : this.innerProperties().primary();
+    }
+
+    /**
+     * Set the primary property: Gets whether this is a primary network interface on a virtual machine.
+     *
+     * @param primary the primary value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withPrimary(Boolean primary) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
+        }
+        this.innerProperties().withPrimary(primary);
+        return this;
     }
 
     /**
@@ -289,16 +313,6 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Get the dscpConfiguration property: A reference to the dscp configuration to which the network interface is
-     * linked.
-     *
-     * @return the dscpConfiguration value.
-     */
-    public SubResource dscpConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().dscpConfiguration();
-    }
-
-    /**
      * Get the resourceGuid property: The resource GUID property of the network interface resource.
      *
      * @return the resourceGuid value.
@@ -308,103 +322,41 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the network interface resource.
+     * Set the resourceGuid property: The resource GUID property of the network interface resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withResourceGuid(String resourceGuid) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
+        }
+        this.innerProperties().withResourceGuid(resourceGuid);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
+     * Set the provisioningState property: The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
-     * @return the workloadType value.
-     */
-    public String workloadType() {
-        return this.innerProperties() == null ? null : this.innerProperties().workloadType();
-    }
-
-    /**
-     * Set the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
-     *
-     * @param workloadType the workloadType value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the NetworkInterfaceInner object itself.
      */
-    public NetworkInterfaceInner withWorkloadType(String workloadType) {
+    public NetworkInterfaceInner withProvisioningState(String provisioningState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkInterfacePropertiesFormatInner();
         }
-        this.innerProperties().withWorkloadType(workloadType);
-        return this;
-    }
-
-    /**
-     * Get the nicType property: Type of Network Interface resource.
-     *
-     * @return the nicType value.
-     */
-    public NetworkInterfaceNicType nicType() {
-        return this.innerProperties() == null ? null : this.innerProperties().nicType();
-    }
-
-    /**
-     * Set the nicType property: Type of Network Interface resource.
-     *
-     * @param nicType the nicType value to set.
-     * @return the NetworkInterfaceInner object itself.
-     */
-    public NetworkInterfaceInner withNicType(NetworkInterfaceNicType nicType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
-        }
-        this.innerProperties().withNicType(nicType);
-        return this;
-    }
-
-    /**
-     * Get the privateLinkService property: Privatelinkservice of the network interface resource.
-     *
-     * @return the privateLinkService value.
-     */
-    public PrivateLinkServiceInner privateLinkService() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateLinkService();
-    }
-
-    /**
-     * Set the privateLinkService property: Privatelinkservice of the network interface resource.
-     *
-     * @param privateLinkService the privateLinkService value to set.
-     * @return the NetworkInterfaceInner object itself.
-     */
-    public NetworkInterfaceInner withPrivateLinkService(PrivateLinkServiceInner privateLinkService) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
-        }
-        this.innerProperties().withPrivateLinkService(privateLinkService);
-        return this;
-    }
-
-    /**
-     * Get the migrationPhase property: Migration phase of Network Interface resource.
-     *
-     * @return the migrationPhase value.
-     */
-    public NetworkInterfaceMigrationPhase migrationPhase() {
-        return this.innerProperties() == null ? null : this.innerProperties().migrationPhase();
-    }
-
-    /**
-     * Set the migrationPhase property: Migration phase of Network Interface resource.
-     *
-     * @param migrationPhase the migrationPhase value to set.
-     * @return the NetworkInterfaceInner object itself.
-     */
-    public NetworkInterfaceInner withMigrationPhase(NetworkInterfaceMigrationPhase migrationPhase) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
-        }
-        this.innerProperties().withMigrationPhase(migrationPhase);
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -414,9 +366,6 @@ public final class NetworkInterfaceInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

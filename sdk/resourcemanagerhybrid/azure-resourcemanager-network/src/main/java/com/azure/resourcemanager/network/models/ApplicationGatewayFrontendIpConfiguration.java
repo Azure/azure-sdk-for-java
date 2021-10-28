@@ -17,7 +17,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFrontendIpConfiguration.class);
 
     /*
-     * Properties of the application gateway frontend IP configuration.
+     * Properties of Frontend IP configuration of an application gateway.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayFrontendIpConfigurationPropertiesFormat innerProperties;
@@ -32,17 +32,17 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type")
     private String type;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway frontend IP configuration.
+     * Get the innerProperties property: Properties of Frontend IP configuration of an application gateway.
      *
      * @return the innerProperties value.
      */
@@ -80,12 +80,34 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     }
 
     /**
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
+     */
+    public ApplicationGatewayFrontendIpConfiguration withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the type property: Type of the resource.
      *
      * @return the type value.
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Set the type property: Type of the resource.
+     *
+     * @param type the type value to set.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
+     */
+    public ApplicationGatewayFrontendIpConfiguration withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -119,7 +141,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     }
 
     /**
-     * Get the privateIpAllocationMethod property: The private IP address allocation method.
+     * Get the privateIpAllocationMethod property: PrivateIP allocation method.
      *
      * @return the privateIpAllocationMethod value.
      */
@@ -128,7 +150,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     }
 
     /**
-     * Set the privateIpAllocationMethod property: The private IP address allocation method.
+     * Set the privateIpAllocationMethod property: PrivateIP allocation method.
      *
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the ApplicationGatewayFrontendIpConfiguration object itself.
@@ -143,7 +165,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     }
 
     /**
-     * Get the subnet property: Reference to the subnet resource.
+     * Get the subnet property: Reference of the subnet resource.
      *
      * @return the subnet value.
      */
@@ -152,7 +174,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     }
 
     /**
-     * Set the subnet property: Reference to the subnet resource.
+     * Set the subnet property: Reference of the subnet resource.
      *
      * @param subnet the subnet value to set.
      * @return the ApplicationGatewayFrontendIpConfiguration object itself.
@@ -166,7 +188,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     }
 
     /**
-     * Get the publicIpAddress property: Reference to the PublicIP resource.
+     * Get the publicIpAddress property: Reference of the PublicIP resource.
      *
      * @return the publicIpAddress value.
      */
@@ -175,7 +197,7 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     }
 
     /**
-     * Set the publicIpAddress property: Reference to the PublicIP resource.
+     * Set the publicIpAddress property: Reference of the PublicIP resource.
      *
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the ApplicationGatewayFrontendIpConfiguration object itself.
@@ -189,36 +211,28 @@ public final class ApplicationGatewayFrontendIpConfiguration extends SubResource
     }
 
     /**
-     * Get the privateLinkConfiguration property: Reference to the application gateway private link configuration.
-     *
-     * @return the privateLinkConfiguration value.
-     */
-    public SubResource privateLinkConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateLinkConfiguration();
-    }
-
-    /**
-     * Set the privateLinkConfiguration property: Reference to the application gateway private link configuration.
-     *
-     * @param privateLinkConfiguration the privateLinkConfiguration value to set.
-     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
-     */
-    public ApplicationGatewayFrontendIpConfiguration withPrivateLinkConfiguration(
-        SubResource privateLinkConfiguration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayFrontendIpConfigurationPropertiesFormat();
-        }
-        this.innerProperties().withPrivateLinkConfiguration(privateLinkConfiguration);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the frontend IP configuration resource.
+     * Get the provisioningState property: Provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
+     */
+    public ApplicationGatewayFrontendIpConfiguration withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayFrontendIpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

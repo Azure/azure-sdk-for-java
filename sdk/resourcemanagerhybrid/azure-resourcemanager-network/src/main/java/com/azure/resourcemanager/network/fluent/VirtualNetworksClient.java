@@ -312,8 +312,54 @@ public interface VirtualNetworksClient
      * @return virtual Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualNetworkInner>> updateTagsWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String virtualNetworkName, TagsObject parameters);
+
+    /**
+     * Updates a virtual network tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to update virtual network tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual Network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginUpdateTagsAsync(
+        String resourceGroupName, String virtualNetworkName, TagsObject parameters);
+
+    /**
+     * Updates a virtual network tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to update virtual network tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual Network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginUpdateTags(
+        String resourceGroupName, String virtualNetworkName, TagsObject parameters);
+
+    /**
+     * Updates a virtual network tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param parameters Parameters supplied to update virtual network tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual Network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginUpdateTags(
+        String resourceGroupName, String virtualNetworkName, TagsObject parameters, Context context);
 
     /**
      * Updates a virtual network tags.
@@ -357,7 +403,7 @@ public interface VirtualNetworksClient
      * @return virtual Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkInner> updateTagsWithResponse(
+    VirtualNetworkInner updateTags(
         String resourceGroupName, String virtualNetworkName, TagsObject parameters, Context context);
 
     /**

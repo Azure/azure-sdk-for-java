@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteServiceProviderBandwidthsOffered;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,7 +19,7 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderInner.class);
 
     /*
-     * Properties of the express route service provider.
+     * Properties of ExpressRouteServiceProvider.
      */
     @JsonProperty(value = "properties")
     private ExpressRouteServiceProviderPropertiesFormat innerProperties;
@@ -32,7 +31,7 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the express route service provider.
+     * Get the innerProperties property: Properties of ExpressRouteServiceProvider.
      *
      * @return the innerProperties value.
      */
@@ -75,7 +74,7 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Get the peeringLocations property: A list of peering locations.
+     * Get the peeringLocations property: Get a list of peering locations.
      *
      * @return the peeringLocations value.
      */
@@ -84,7 +83,7 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Set the peeringLocations property: A list of peering locations.
+     * Set the peeringLocations property: Get a list of peering locations.
      *
      * @param peeringLocations the peeringLocations value to set.
      * @return the ExpressRouteServiceProviderInner object itself.
@@ -98,7 +97,7 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Get the bandwidthsOffered property: A list of bandwidths offered.
+     * Get the bandwidthsOffered property: Gets bandwidths offered.
      *
      * @return the bandwidthsOffered value.
      */
@@ -107,7 +106,7 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Set the bandwidthsOffered property: A list of bandwidths offered.
+     * Set the bandwidthsOffered property: Gets bandwidths offered.
      *
      * @param bandwidthsOffered the bandwidthsOffered value to set.
      * @return the ExpressRouteServiceProviderInner object itself.
@@ -122,12 +121,26 @@ public final class ExpressRouteServiceProviderInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route service provider resource.
+     * Get the provisioningState property: Gets the provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the resource.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ExpressRouteServiceProviderInner object itself.
+     */
+    public ExpressRouteServiceProviderInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteServiceProviderPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

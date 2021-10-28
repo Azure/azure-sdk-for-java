@@ -9,11 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AutomaticOSUpgradeProperties;
 import com.azure.resourcemanager.compute.models.DataDiskImage;
 import com.azure.resourcemanager.compute.models.DisallowedConfiguration;
-import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
-import com.azure.resourcemanager.compute.models.VirtualMachineImageFeature;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -57,13 +55,6 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
     @Override
     public VirtualMachineImageInner withTags(Map<String, String> tags) {
         super.withTags(tags);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VirtualMachineImageInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        super.withExtendedLocation(extendedLocation);
         return this;
     }
 
@@ -210,29 +201,6 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
             this.innerProperties = new VirtualMachineImageProperties();
         }
         this.innerProperties().withDisallowed(disallowed);
-        return this;
-    }
-
-    /**
-     * Get the features property: The features property.
-     *
-     * @return the features value.
-     */
-    public List<VirtualMachineImageFeature> features() {
-        return this.innerProperties() == null ? null : this.innerProperties().features();
-    }
-
-    /**
-     * Set the features property: The features property.
-     *
-     * @param features the features value to set.
-     * @return the VirtualMachineImageInner object itself.
-     */
-    public VirtualMachineImageInner withFeatures(List<VirtualMachineImageFeature> features) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineImageProperties();
-        }
-        this.innerProperties().withFeatures(features);
         return this;
     }
 

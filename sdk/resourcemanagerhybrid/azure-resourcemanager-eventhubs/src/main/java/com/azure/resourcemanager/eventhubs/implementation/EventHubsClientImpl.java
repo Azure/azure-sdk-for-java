@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -33,11 +34,9 @@ import com.azure.resourcemanager.eventhubs.fluent.EventHubsClient;
 import com.azure.resourcemanager.eventhubs.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.eventhubs.fluent.models.AuthorizationRuleInner;
 import com.azure.resourcemanager.eventhubs.fluent.models.EventhubInner;
-import com.azure.resourcemanager.eventhubs.models.AccessRights;
 import com.azure.resourcemanager.eventhubs.models.AuthorizationRuleListResult;
 import com.azure.resourcemanager.eventhubs.models.EventHubListResult;
 import com.azure.resourcemanager.eventhubs.models.RegenerateAccessKeyParameters;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EventHubsClient. */
@@ -68,7 +67,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
     @Host("{$host}")
     @ServiceInterface(name = "EventHubManagementCl")
     private interface EventHubsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}/authorizationRules")
@@ -81,9 +80,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
             @PathParam("eventHubName") String eventHubName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}")
@@ -98,9 +98,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") AuthorizationRuleInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}")
@@ -114,9 +115,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
             @PathParam("authorizationRuleName") String authorizationRuleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}")
@@ -130,9 +132,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
             @PathParam("authorizationRuleName") String authorizationRuleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}/listKeys")
@@ -146,9 +149,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
             @PathParam("authorizationRuleName") String authorizationRuleName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}/authorizationRules/{authorizationRuleName}/regenerateKeys")
@@ -163,9 +167,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RegenerateAccessKeyParameters parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs")
@@ -179,9 +184,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$skip") Integer skip,
             @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}")
@@ -195,9 +201,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") EventhubInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}")
@@ -210,9 +217,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
             @PathParam("eventHubName") String eventHubName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}")
@@ -225,21 +233,28 @@ public final class EventHubsClientImpl implements EventHubsClient {
             @PathParam("eventHubName") String eventHubName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AuthorizationRuleListResult>> listAuthorizationRulesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventHubListResult>> listByNamespaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -278,6 +293,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -287,8 +304,9 @@ public final class EventHubsClientImpl implements EventHubsClient {
                             resourceGroupName,
                             namespaceName,
                             eventHubName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<AuthorizationRuleInner>>map(
                 res ->
@@ -299,7 +317,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -339,6 +357,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listAuthorizationRules(
@@ -346,8 +366,9 @@ public final class EventHubsClientImpl implements EventHubsClient {
                 resourceGroupName,
                 namespaceName,
                 eventHubName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -443,7 +464,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param authorizationRuleName The authorization rule name.
-     * @param rights The rights associated with the rule.
+     * @param parameters The shared access AuthorizationRule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -455,7 +476,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
         String namespaceName,
         String eventHubName,
         String authorizationRuleName,
-        List<AccessRights> rights) {
+        AuthorizationRuleInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -482,8 +503,13 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        AuthorizationRuleInner parameters = new AuthorizationRuleInner();
-        parameters.withRights(rights);
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -494,11 +520,12 @@ public final class EventHubsClientImpl implements EventHubsClient {
                             namespaceName,
                             eventHubName,
                             authorizationRuleName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -509,7 +536,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param authorizationRuleName The authorization rule name.
-     * @param rights The rights associated with the rule.
+     * @param parameters The shared access AuthorizationRule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -522,7 +549,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
         String namespaceName,
         String eventHubName,
         String authorizationRuleName,
-        List<AccessRights> rights,
+        AuthorizationRuleInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -550,8 +577,13 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        AuthorizationRuleInner parameters = new AuthorizationRuleInner();
-        parameters.withRights(rights);
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdateAuthorizationRule(
@@ -560,9 +592,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
                 namespaceName,
                 eventHubName,
                 authorizationRuleName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -574,7 +607,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param authorizationRuleName The authorization rule name.
-     * @param rights The rights associated with the rule.
+     * @param parameters The shared access AuthorizationRule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -586,9 +619,9 @@ public final class EventHubsClientImpl implements EventHubsClient {
         String namespaceName,
         String eventHubName,
         String authorizationRuleName,
-        List<AccessRights> rights) {
+        AuthorizationRuleInner parameters) {
         return createOrUpdateAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, eventHubName, authorizationRuleName, rights)
+                resourceGroupName, namespaceName, eventHubName, authorizationRuleName, parameters)
             .flatMap(
                 (Response<AuthorizationRuleInner> res) -> {
                     if (res.getValue() != null) {
@@ -607,35 +640,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param authorizationRuleName The authorization rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in a List or Get AuthorizationRule operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AuthorizationRuleInner> createOrUpdateAuthorizationRuleAsync(
-        String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
-        final List<AccessRights> rights = null;
-        return createOrUpdateAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, eventHubName, authorizationRuleName, rights)
-            .flatMap(
-                (Response<AuthorizationRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates an AuthorizationRule for the specified Event Hub. Creation/update of the AuthorizationRule
-     * will take a few seconds to take effect.
-     *
-     * @param resourceGroupName Name of the resource group within the azure subscription.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param authorizationRuleName The authorization rule name.
+     * @param parameters The shared access AuthorizationRule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -643,10 +648,13 @@ public final class EventHubsClientImpl implements EventHubsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AuthorizationRuleInner createOrUpdateAuthorizationRule(
-        String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
-        final List<AccessRights> rights = null;
+        String resourceGroupName,
+        String namespaceName,
+        String eventHubName,
+        String authorizationRuleName,
+        AuthorizationRuleInner parameters) {
         return createOrUpdateAuthorizationRuleAsync(
-                resourceGroupName, namespaceName, eventHubName, authorizationRuleName, rights)
+                resourceGroupName, namespaceName, eventHubName, authorizationRuleName, parameters)
             .block();
     }
 
@@ -658,7 +666,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param authorizationRuleName The authorization rule name.
-     * @param rights The rights associated with the rule.
+     * @param parameters The shared access AuthorizationRule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -671,10 +679,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
         String namespaceName,
         String eventHubName,
         String authorizationRuleName,
-        List<AccessRights> rights,
+        AuthorizationRuleInner parameters,
         Context context) {
         return createOrUpdateAuthorizationRuleWithResponseAsync(
-                resourceGroupName, namespaceName, eventHubName, authorizationRuleName, rights, context)
+                resourceGroupName, namespaceName, eventHubName, authorizationRuleName, parameters, context)
             .block();
     }
 
@@ -719,6 +727,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -729,10 +739,11 @@ public final class EventHubsClientImpl implements EventHubsClient {
                             namespaceName,
                             eventHubName,
                             authorizationRuleName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -781,6 +792,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getAuthorizationRule(
@@ -789,8 +802,9 @@ public final class EventHubsClientImpl implements EventHubsClient {
                 namespaceName,
                 eventHubName,
                 authorizationRuleName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -905,6 +919,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -915,10 +931,11 @@ public final class EventHubsClientImpl implements EventHubsClient {
                             namespaceName,
                             eventHubName,
                             authorizationRuleName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -967,6 +984,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteAuthorizationRule(
@@ -975,8 +994,9 @@ public final class EventHubsClientImpl implements EventHubsClient {
                 namespaceName,
                 eventHubName,
                 authorizationRuleName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1083,6 +1103,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1093,10 +1115,11 @@ public final class EventHubsClientImpl implements EventHubsClient {
                             namespaceName,
                             eventHubName,
                             authorizationRuleName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1145,6 +1168,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listKeys(
@@ -1153,8 +1178,9 @@ public final class EventHubsClientImpl implements EventHubsClient {
                 namespaceName,
                 eventHubName,
                 authorizationRuleName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1233,8 +1259,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Regenerate Authorization Rule operation, specifies which key needs
-     *     to be reset.
+     * @param parameters Parameters supplied to regenerate the AuthorizationRule Keys (PrimaryKey/SecondaryKey).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1278,6 +1303,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1288,11 +1315,12 @@ public final class EventHubsClientImpl implements EventHubsClient {
                             namespaceName,
                             eventHubName,
                             authorizationRuleName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1302,8 +1330,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Regenerate Authorization Rule operation, specifies which key needs
-     *     to be reset.
+     * @param parameters Parameters supplied to regenerate the AuthorizationRule Keys (PrimaryKey/SecondaryKey).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1349,6 +1376,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .regenerateKeys(
@@ -1357,9 +1386,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
                 namespaceName,
                 eventHubName,
                 authorizationRuleName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -1370,8 +1400,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Regenerate Authorization Rule operation, specifies which key needs
-     *     to be reset.
+     * @param parameters Parameters supplied to regenerate the AuthorizationRule Keys (PrimaryKey/SecondaryKey).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1403,8 +1432,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Regenerate Authorization Rule operation, specifies which key needs
-     *     to be reset.
+     * @param parameters Parameters supplied to regenerate the AuthorizationRule Keys (PrimaryKey/SecondaryKey).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1428,8 +1456,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param authorizationRuleName The authorization rule name.
-     * @param parameters Parameters supplied to the Regenerate Authorization Rule operation, specifies which key needs
-     *     to be reset.
+     * @param parameters Parameters supplied to regenerate the AuthorizationRule Keys (PrimaryKey/SecondaryKey).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1485,6 +1512,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1493,10 +1522,11 @@ public final class EventHubsClientImpl implements EventHubsClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             namespaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             skip,
                             top,
+                            accept,
                             context))
             .<PagedResponse<EventhubInner>>map(
                 res ->
@@ -1507,7 +1537,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1547,16 +1577,19 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByNamespace(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 namespaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 skip,
                 top,
+                accept,
                 context)
             .map(
                 res ->
@@ -1638,6 +1671,23 @@ public final class EventHubsClientImpl implements EventHubsClient {
      *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the Event Hubs in a Namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<EventhubInner> listByNamespace(String resourceGroupName, String namespaceName) {
+        final Integer skip = null;
+        final Integer top = null;
+        return new PagedIterable<>(listByNamespaceAsync(resourceGroupName, namespaceName, skip, top));
+    }
+
+    /**
+     * Gets all the Event Hubs in a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name.
      * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
      *     a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
      *     point to use for subsequent calls.
@@ -1655,29 +1705,12 @@ public final class EventHubsClientImpl implements EventHubsClient {
     }
 
     /**
-     * Gets all the Event Hubs in a Namespace.
-     *
-     * @param resourceGroupName Name of the resource group within the azure subscription.
-     * @param namespaceName The Namespace name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Event Hubs in a Namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventhubInner> listByNamespace(String resourceGroupName, String namespaceName) {
-        final Integer skip = null;
-        final Integer top = null;
-        return new PagedIterable<>(listByNamespaceAsync(resourceGroupName, namespaceName, skip, top));
-    }
-
-    /**
      * Creates or updates a new Event Hub as a nested resource within a Namespace.
      *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
-     * @param parameters Single item in List or Get Event Hub operation.
+     * @param parameters Parameters supplied to create an Event Hub resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1713,6 +1746,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1722,11 +1757,12 @@ public final class EventHubsClientImpl implements EventHubsClient {
                             resourceGroupName,
                             namespaceName,
                             eventHubName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1735,7 +1771,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
-     * @param parameters Single item in List or Get Event Hub operation.
+     * @param parameters Parameters supplied to create an Event Hub resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1776,6 +1812,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -1783,9 +1821,10 @@ public final class EventHubsClientImpl implements EventHubsClient {
                 resourceGroupName,
                 namespaceName,
                 eventHubName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -1795,7 +1834,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
-     * @param parameters Single item in List or Get Event Hub operation.
+     * @param parameters Parameters supplied to create an Event Hub resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1821,7 +1860,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
-     * @param parameters Single item in List or Get Event Hub operation.
+     * @param parameters Parameters supplied to create an Event Hub resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1839,7 +1878,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
-     * @param parameters Single item in List or Get Event Hub operation.
+     * @param parameters Parameters supplied to create an Event Hub resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1893,6 +1932,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1902,10 +1943,11 @@ public final class EventHubsClientImpl implements EventHubsClient {
                             resourceGroupName,
                             namespaceName,
                             eventHubName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1945,6 +1987,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1952,8 +1996,9 @@ public final class EventHubsClientImpl implements EventHubsClient {
                 resourceGroupName,
                 namespaceName,
                 eventHubName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -2043,6 +2088,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2052,10 +2099,11 @@ public final class EventHubsClientImpl implements EventHubsClient {
                             resourceGroupName,
                             namespaceName,
                             eventHubName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2095,6 +2143,8 @@ public final class EventHubsClientImpl implements EventHubsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -2102,8 +2152,9 @@ public final class EventHubsClientImpl implements EventHubsClient {
                 resourceGroupName,
                 namespaceName,
                 eventHubName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -2179,8 +2230,16 @@ public final class EventHubsClientImpl implements EventHubsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listAuthorizationRulesNext(nextLink, context))
+            .withContext(
+                context -> service.listAuthorizationRulesNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<AuthorizationRuleInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2190,7 +2249,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2209,9 +2268,16 @@ public final class EventHubsClientImpl implements EventHubsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAuthorizationRulesNext(nextLink, context)
+            .listAuthorizationRulesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2237,8 +2303,15 @@ public final class EventHubsClientImpl implements EventHubsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByNamespaceNext(nextLink, context))
+            .withContext(context -> service.listByNamespaceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<EventhubInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2248,7 +2321,7 @@ public final class EventHubsClientImpl implements EventHubsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2266,9 +2339,16 @@ public final class EventHubsClientImpl implements EventHubsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByNamespaceNext(nextLink, context)
+            .listByNamespaceNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

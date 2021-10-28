@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Subnet and it's custom security rules. */
+/** Network interface and its custom security rules. */
 @Fluent
 public final class SubnetAssociation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetAssociation.class);

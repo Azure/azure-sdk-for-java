@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterface;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -21,7 +20,7 @@ public final class NetworkProfilePropertiesFormat {
     /*
      * List of child container network interfaces.
      */
-    @JsonProperty(value = "containerNetworkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "containerNetworkInterfaces")
     private List<ContainerNetworkInterface> containerNetworkInterfaces;
 
     /*
@@ -31,16 +30,16 @@ public final class NetworkProfilePropertiesFormat {
     private List<ContainerNetworkInterfaceConfiguration> containerNetworkInterfaceConfigurations;
 
     /*
-     * The resource GUID property of the network profile resource.
+     * The resource GUID property of the network interface resource.
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
-     * The provisioning state of the network profile resource.
+     * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the containerNetworkInterfaces property: List of child container network interfaces.
@@ -49,6 +48,18 @@ public final class NetworkProfilePropertiesFormat {
      */
     public List<ContainerNetworkInterface> containerNetworkInterfaces() {
         return this.containerNetworkInterfaces;
+    }
+
+    /**
+     * Set the containerNetworkInterfaces property: List of child container network interfaces.
+     *
+     * @param containerNetworkInterfaces the containerNetworkInterfaces value to set.
+     * @return the NetworkProfilePropertiesFormat object itself.
+     */
+    public NetworkProfilePropertiesFormat withContainerNetworkInterfaces(
+        List<ContainerNetworkInterface> containerNetworkInterfaces) {
+        this.containerNetworkInterfaces = containerNetworkInterfaces;
+        return this;
     }
 
     /**
@@ -75,7 +86,7 @@ public final class NetworkProfilePropertiesFormat {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the network profile resource.
+     * Get the resourceGuid property: The resource GUID property of the network interface resource.
      *
      * @return the resourceGuid value.
      */
@@ -84,11 +95,11 @@ public final class NetworkProfilePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the network profile resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

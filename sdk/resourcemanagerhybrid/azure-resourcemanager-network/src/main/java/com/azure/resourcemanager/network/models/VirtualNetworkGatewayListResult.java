@@ -17,7 +17,7 @@ public final class VirtualNetworkGatewayListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayListResult.class);
 
     /*
-     * A list of VirtualNetworkGateway resources that exists in a resource
+     * Gets a list of VirtualNetworkGateway resources that exists in a resource
      * group.
      */
     @JsonProperty(value = "value")
@@ -30,7 +30,7 @@ public final class VirtualNetworkGatewayListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of VirtualNetworkGateway resources that exists in a resource group.
+     * Get the value property: Gets a list of VirtualNetworkGateway resources that exists in a resource group.
      *
      * @return the value value.
      */
@@ -39,7 +39,7 @@ public final class VirtualNetworkGatewayListResult {
     }
 
     /**
-     * Set the value property: A list of VirtualNetworkGateway resources that exists in a resource group.
+     * Set the value property: Gets a list of VirtualNetworkGateway resources that exists in a resource group.
      *
      * @param value the value value to set.
      * @return the VirtualNetworkGatewayListResult object itself.

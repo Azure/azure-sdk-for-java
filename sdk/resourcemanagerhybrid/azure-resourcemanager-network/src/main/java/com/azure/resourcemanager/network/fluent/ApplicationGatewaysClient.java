@@ -16,10 +16,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayAvailableSslOptionsInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayAvailableWafRuleSetsResultInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackendHealthInner;
-import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackendHealthOnDemandInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslPredefinedPolicyInner;
-import com.azure.resourcemanager.network.models.ApplicationGatewayOnDemandProbe;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -300,8 +298,54 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ApplicationGatewayInner>> updateTagsWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String applicationGatewayName, TagsObject parameters);
+
+    /**
+     * Updates the specified application gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to update application gateway tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application gateway resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginUpdateTagsAsync(
+        String resourceGroupName, String applicationGatewayName, TagsObject parameters);
+
+    /**
+     * Updates the specified application gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to update application gateway tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application gateway resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginUpdateTags(
+        String resourceGroupName, String applicationGatewayName, TagsObject parameters);
+
+    /**
+     * Updates the specified application gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to update application gateway tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application gateway resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginUpdateTags(
+        String resourceGroupName, String applicationGatewayName, TagsObject parameters, Context context);
 
     /**
      * Updates the specified application gateway tags.
@@ -345,7 +389,7 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationGatewayInner> updateTagsWithResponse(
+    ApplicationGatewayInner updateTags(
         String resourceGroupName, String applicationGatewayName, TagsObject parameters, Context context);
 
     /**
@@ -734,194 +778,6 @@ public interface ApplicationGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     ApplicationGatewayBackendHealthInner backendHealth(
         String resourceGroupName, String applicationGatewayName, String expand, Context context);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> backendHealthOnDemandWithResponseAsync(
-        String resourceGroupName,
-        String applicationGatewayName,
-        ApplicationGatewayOnDemandProbe probeRequest,
-        String expand);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
-        beginBackendHealthOnDemandAsync(
-            String resourceGroupName,
-            String applicationGatewayName,
-            ApplicationGatewayOnDemandProbe probeRequest,
-            String expand);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
-        beginBackendHealthOnDemand(
-            String resourceGroupName,
-            String applicationGatewayName,
-            ApplicationGatewayOnDemandProbe probeRequest,
-            String expand);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
-        beginBackendHealthOnDemand(
-            String resourceGroupName,
-            String applicationGatewayName,
-            ApplicationGatewayOnDemandProbe probeRequest,
-            String expand,
-            Context context);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationGatewayBackendHealthOnDemandInner> backendHealthOnDemandAsync(
-        String resourceGroupName,
-        String applicationGatewayName,
-        ApplicationGatewayOnDemandProbe probeRequest,
-        String expand);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationGatewayBackendHealthOnDemandInner> backendHealthOnDemandAsync(
-        String resourceGroupName, String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayBackendHealthOnDemandInner backendHealthOnDemand(
-        String resourceGroupName,
-        String applicationGatewayName,
-        ApplicationGatewayOnDemandProbe probeRequest,
-        String expand);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayBackendHealthOnDemandInner backendHealthOnDemand(
-        String resourceGroupName, String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayBackendHealthOnDemandInner backendHealthOnDemand(
-        String resourceGroupName,
-        String applicationGatewayName,
-        ApplicationGatewayOnDemandProbe probeRequest,
-        String expand,
-        Context context);
 
     /**
      * Lists all available server variables.

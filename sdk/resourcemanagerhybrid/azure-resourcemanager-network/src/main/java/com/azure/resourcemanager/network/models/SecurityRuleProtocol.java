@@ -16,17 +16,8 @@ public final class SecurityRuleProtocol extends ExpandableStringEnum<SecurityRul
     /** Static value Udp for SecurityRuleProtocol. */
     public static final SecurityRuleProtocol UDP = fromString("Udp");
 
-    /** Static value Icmp for SecurityRuleProtocol. */
-    public static final SecurityRuleProtocol ICMP = fromString("Icmp");
-
-    /** Static value Esp for SecurityRuleProtocol. */
-    public static final SecurityRuleProtocol ESP = fromString("Esp");
-
     /** Static value * for SecurityRuleProtocol. */
     public static final SecurityRuleProtocol ASTERISK = fromString("*");
-
-    /** Static value Ah for SecurityRuleProtocol. */
-    public static final SecurityRuleProtocol AH = fromString("Ah");
 
     /**
      * Creates or finds a SecurityRuleProtocol from its string representation.

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 
 /** An access key for the storage account. */
 @Immutable
@@ -32,12 +31,6 @@ public final class StorageAccountKey {
      */
     @JsonProperty(value = "permissions", access = JsonProperty.Access.WRITE_ONLY)
     private KeyPermission permissions;
-
-    /*
-     * Creation time of the key, in round trip date format.
-     */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
 
     /**
      * Get the keyName property: Name of the key.
@@ -64,15 +57,6 @@ public final class StorageAccountKey {
      */
     public KeyPermission permissions() {
         return this.permissions;
-    }
-
-    /**
-     * Get the creationTime property: Creation time of the key, in round trip date format.
-     *
-     * @return the creationTime value.
-     */
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
     }
 
     /**

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProtocolCustomSettingsFormat;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -27,10 +26,11 @@ public final class DdosCustomPolicyPropertiesFormat {
     private String resourceGuid;
 
     /*
-     * The provisioning state of the DDoS custom policy resource.
+     * The provisioning state of the DDoS custom policy resource. Possible
+     * values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /*
      * The list of public IPs associated with the DDoS custom policy resource.
@@ -57,11 +57,12 @@ public final class DdosCustomPolicyPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the DDoS custom policy resource.
+     * Get the provisioningState property: The provisioning state of the DDoS custom policy resource. Possible values
+     * are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

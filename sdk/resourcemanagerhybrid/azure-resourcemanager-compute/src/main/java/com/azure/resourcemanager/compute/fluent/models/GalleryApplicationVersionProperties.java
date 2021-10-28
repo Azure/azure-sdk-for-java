@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a gallery image version. */
+/** Describes the properties of a gallery Image Version. */
 @Fluent
 public final class GalleryApplicationVersionProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionProperties.class);
@@ -31,7 +31,7 @@ public final class GalleryApplicationVersionProperties {
     private GalleryApplicationVersionPropertiesProvisioningState provisioningState;
 
     /*
-     * This is the replication status of the gallery image version.
+     * This is the replication status of the gallery Image Version.
      */
     @JsonProperty(value = "replicationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationStatus replicationStatus;
@@ -68,7 +68,7 @@ public final class GalleryApplicationVersionProperties {
     }
 
     /**
-     * Get the replicationStatus property: This is the replication status of the gallery image version.
+     * Get the replicationStatus property: This is the replication status of the gallery Image Version.
      *
      * @return the replicationStatus value.
      */

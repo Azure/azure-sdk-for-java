@@ -46,19 +46,16 @@ public final class DeploymentOperationProperties {
     private String serviceRequestId;
 
     /*
-     * Operation status code from the resource provider. This property may not
-     * be set if a response has not yet been received.
+     * Operation status code.
      */
     @JsonProperty(value = "statusCode", access = JsonProperty.Access.WRITE_ONLY)
     private String statusCode;
 
     /*
-     * Operation status message from the resource provider. This property is
-     * optional.  It will only be provided if an error was received from the
-     * resource provider.
+     * Operation status message.
      */
     @JsonProperty(value = "statusMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private StatusMessage statusMessage;
+    private Object statusMessage;
 
     /*
      * The target resource.
@@ -124,8 +121,7 @@ public final class DeploymentOperationProperties {
     }
 
     /**
-     * Get the statusCode property: Operation status code from the resource provider. This property may not be set if a
-     * response has not yet been received.
+     * Get the statusCode property: Operation status code.
      *
      * @return the statusCode value.
      */
@@ -134,12 +130,11 @@ public final class DeploymentOperationProperties {
     }
 
     /**
-     * Get the statusMessage property: Operation status message from the resource provider. This property is optional.
-     * It will only be provided if an error was received from the resource provider.
+     * Get the statusMessage property: Operation status message.
      *
      * @return the statusMessage value.
      */
-    public StatusMessage statusMessage() {
+    public Object statusMessage() {
         return this.statusMessage;
     }
 
@@ -176,9 +171,6 @@ public final class DeploymentOperationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (statusMessage() != null) {
-            statusMessage().validate();
-        }
         if (targetResource() != null) {
             targetResource().validate();
         }

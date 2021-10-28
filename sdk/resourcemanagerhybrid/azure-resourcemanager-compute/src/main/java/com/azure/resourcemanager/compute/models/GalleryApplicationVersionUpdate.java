@@ -17,13 +17,13 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionUpdate.class);
 
     /*
-     * Describes the properties of a gallery image version.
+     * Describes the properties of a gallery Image Version.
      */
     @JsonProperty(value = "properties")
     private GalleryApplicationVersionProperties innerProperties;
 
     /**
-     * Get the innerProperties property: Describes the properties of a gallery image version.
+     * Get the innerProperties property: Describes the properties of a gallery Image Version.
      *
      * @return the innerProperties value.
      */
@@ -73,7 +73,7 @@ public final class GalleryApplicationVersionUpdate extends UpdateResourceDefinit
     }
 
     /**
-     * Get the replicationStatus property: This is the replication status of the gallery image version.
+     * Get the replicationStatus property: This is the replication status of the gallery Image Version.
      *
      * @return the replicationStatus value.
      */

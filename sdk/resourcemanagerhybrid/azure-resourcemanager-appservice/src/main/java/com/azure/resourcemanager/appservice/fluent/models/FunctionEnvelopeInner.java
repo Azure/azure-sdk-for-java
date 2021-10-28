@@ -315,7 +315,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isDisabled property: Gets or sets a value indicating whether the function is disabled.
+     * Get the isDisabled property: Value indicating whether the function is disabled.
      *
      * @return the isDisabled value.
      */
@@ -324,7 +324,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isDisabled property: Gets or sets a value indicating whether the function is disabled.
+     * Set the isDisabled property: Value indicating whether the function is disabled.
      *
      * @param isDisabled the isDisabled value to set.
      * @return the FunctionEnvelopeInner object itself.

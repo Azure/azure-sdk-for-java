@@ -9,8 +9,6 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.RoutingConfiguration;
-import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,7 +21,7 @@ public final class VpnConnectionInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnConnectionInner.class);
 
     /*
-     * Properties of the VPN connection.
+     * Parameters for VpnConnection
      */
     @JsonProperty(value = "properties")
     private VpnConnectionProperties innerProperties;
@@ -36,13 +34,14 @@ public final class VpnConnectionInner extends SubResource {
     private String name;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the VPN connection.
+     * Get the innerProperties property: Parameters for VpnConnection.
      *
      * @return the innerProperties value.
      */
@@ -73,7 +72,7 @@ public final class VpnConnectionInner extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -112,7 +111,7 @@ public final class VpnConnectionInner extends SubResource {
     }
 
     /**
-     * Get the routingWeight property: Routing weight for vpn connection.
+     * Get the routingWeight property: routing weight for vpn connection.
      *
      * @return the routingWeight value.
      */
@@ -121,7 +120,7 @@ public final class VpnConnectionInner extends SubResource {
     }
 
     /**
-     * Set the routingWeight property: Routing weight for vpn connection.
+     * Set the routingWeight property: routing weight for vpn connection.
      *
      * @param routingWeight the routingWeight value to set.
      * @return the VpnConnectionInner object itself.
@@ -131,29 +130,6 @@ public final class VpnConnectionInner extends SubResource {
             this.innerProperties = new VpnConnectionProperties();
         }
         this.innerProperties().withRoutingWeight(routingWeight);
-        return this;
-    }
-
-    /**
-     * Get the dpdTimeoutSeconds property: DPD timeout in seconds for vpn connection.
-     *
-     * @return the dpdTimeoutSeconds value.
-     */
-    public Integer dpdTimeoutSeconds() {
-        return this.innerProperties() == null ? null : this.innerProperties().dpdTimeoutSeconds();
-    }
-
-    /**
-     * Set the dpdTimeoutSeconds property: DPD timeout in seconds for vpn connection.
-     *
-     * @param dpdTimeoutSeconds the dpdTimeoutSeconds value to set.
-     * @return the VpnConnectionInner object itself.
-     */
-    public VpnConnectionInner withDpdTimeoutSeconds(Integer dpdTimeoutSeconds) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VpnConnectionProperties();
-        }
-        this.innerProperties().withDpdTimeoutSeconds(dpdTimeoutSeconds);
         return this;
     }
 
@@ -278,29 +254,6 @@ public final class VpnConnectionInner extends SubResource {
     }
 
     /**
-     * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
-     * @return the usePolicyBasedTrafficSelectors value.
-     */
-    public Boolean usePolicyBasedTrafficSelectors() {
-        return this.innerProperties() == null ? null : this.innerProperties().usePolicyBasedTrafficSelectors();
-    }
-
-    /**
-     * Set the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
-     * @param usePolicyBasedTrafficSelectors the usePolicyBasedTrafficSelectors value to set.
-     * @return the VpnConnectionInner object itself.
-     */
-    public VpnConnectionInner withUsePolicyBasedTrafficSelectors(Boolean usePolicyBasedTrafficSelectors) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VpnConnectionProperties();
-        }
-        this.innerProperties().withUsePolicyBasedTrafficSelectors(usePolicyBasedTrafficSelectors);
-        return this;
-    }
-
-    /**
      * Get the ipsecPolicies property: The IPSec Policies to be considered by this connection.
      *
      * @return the ipsecPolicies value.
@@ -320,29 +273,6 @@ public final class VpnConnectionInner extends SubResource {
             this.innerProperties = new VpnConnectionProperties();
         }
         this.innerProperties().withIpsecPolicies(ipsecPolicies);
-        return this;
-    }
-
-    /**
-     * Get the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
-     * @return the trafficSelectorPolicies value.
-     */
-    public List<TrafficSelectorPolicy> trafficSelectorPolicies() {
-        return this.innerProperties() == null ? null : this.innerProperties().trafficSelectorPolicies();
-    }
-
-    /**
-     * Set the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
-     * @param trafficSelectorPolicies the trafficSelectorPolicies value to set.
-     * @return the VpnConnectionInner object itself.
-     */
-    public VpnConnectionInner withTrafficSelectorPolicies(List<TrafficSelectorPolicy> trafficSelectorPolicies) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VpnConnectionProperties();
-        }
-        this.innerProperties().withTrafficSelectorPolicies(trafficSelectorPolicies);
         return this;
     }
 
@@ -393,30 +323,7 @@ public final class VpnConnectionInner extends SubResource {
     }
 
     /**
-     * Get the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
-     * @return the useLocalAzureIpAddress value.
-     */
-    public Boolean useLocalAzureIpAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().useLocalAzureIpAddress();
-    }
-
-    /**
-     * Set the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
-     * @param useLocalAzureIpAddress the useLocalAzureIpAddress value to set.
-     * @return the VpnConnectionInner object itself.
-     */
-    public VpnConnectionInner withUseLocalAzureIpAddress(Boolean useLocalAzureIpAddress) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VpnConnectionProperties();
-        }
-        this.innerProperties().withUseLocalAzureIpAddress(useLocalAzureIpAddress);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the VPN connection resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -425,50 +332,16 @@ public final class VpnConnectionInner extends SubResource {
     }
 
     /**
-     * Get the vpnLinkConnections property: List of all vpn site link connections to the gateway.
+     * Set the provisioningState property: The provisioning state of the resource.
      *
-     * @return the vpnLinkConnections value.
-     */
-    public List<VpnSiteLinkConnectionInner> vpnLinkConnections() {
-        return this.innerProperties() == null ? null : this.innerProperties().vpnLinkConnections();
-    }
-
-    /**
-     * Set the vpnLinkConnections property: List of all vpn site link connections to the gateway.
-     *
-     * @param vpnLinkConnections the vpnLinkConnections value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the VpnConnectionInner object itself.
      */
-    public VpnConnectionInner withVpnLinkConnections(List<VpnSiteLinkConnectionInner> vpnLinkConnections) {
+    public VpnConnectionInner withProvisioningState(ProvisioningState provisioningState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VpnConnectionProperties();
         }
-        this.innerProperties().withVpnLinkConnections(vpnLinkConnections);
-        return this;
-    }
-
-    /**
-     * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @return the routingConfiguration value.
-     */
-    public RoutingConfiguration routingConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().routingConfiguration();
-    }
-
-    /**
-     * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @param routingConfiguration the routingConfiguration value to set.
-     * @return the VpnConnectionInner object itself.
-     */
-    public VpnConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VpnConnectionProperties();
-        }
-        this.innerProperties().withRoutingConfiguration(routingConfiguration);
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 

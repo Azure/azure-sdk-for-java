@@ -23,9 +23,9 @@ public final class GetVpnSitesConfigurationRequest {
     private List<String> vpnSites;
 
     /*
-     * The sas-url to download the configurations for vpn-sites.
+     * The sas-url to download the configurations for vpn-sites
      */
-    @JsonProperty(value = "outputBlobSasUrl", required = true)
+    @JsonProperty(value = "outputBlobSasUrl")
     private String outputBlobSasUrl;
 
     /**
@@ -74,11 +74,5 @@ public final class GetVpnSitesConfigurationRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (outputBlobSasUrl() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property outputBlobSasUrl in model GetVpnSitesConfigurationRequest"));
-        }
     }
 }

@@ -10,7 +10,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ServiceAssociationLinkPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** ServiceAssociationLink resource. */
 @Fluent
@@ -35,12 +34,6 @@ public final class ServiceAssociationLink extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
-
-    /*
-     * Resource type.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /**
      * Get the innerProperties property: Resource navigation link properties format.
@@ -80,15 +73,6 @@ public final class ServiceAssociationLink extends SubResource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the type property: Resource type.
-     *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
     }
 
     /** {@inheritDoc} */
@@ -145,58 +129,12 @@ public final class ServiceAssociationLink extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the service association link resource.
+     * Get the provisioningState property: Provisioning state of the ServiceAssociationLink resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the allowDelete property: If true, the resource can be deleted.
-     *
-     * @return the allowDelete value.
-     */
-    public Boolean allowDelete() {
-        return this.innerProperties() == null ? null : this.innerProperties().allowDelete();
-    }
-
-    /**
-     * Set the allowDelete property: If true, the resource can be deleted.
-     *
-     * @param allowDelete the allowDelete value to set.
-     * @return the ServiceAssociationLink object itself.
-     */
-    public ServiceAssociationLink withAllowDelete(Boolean allowDelete) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceAssociationLinkPropertiesFormat();
-        }
-        this.innerProperties().withAllowDelete(allowDelete);
-        return this;
-    }
-
-    /**
-     * Get the locations property: A list of locations.
-     *
-     * @return the locations value.
-     */
-    public List<String> locations() {
-        return this.innerProperties() == null ? null : this.innerProperties().locations();
-    }
-
-    /**
-     * Set the locations property: A list of locations.
-     *
-     * @param locations the locations value to set.
-     * @return the ServiceAssociationLink object itself.
-     */
-    public ServiceAssociationLink withLocations(List<String> locations) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceAssociationLinkPropertiesFormat();
-        }
-        this.innerProperties().withLocations(locations);
-        return this;
     }
 
     /**

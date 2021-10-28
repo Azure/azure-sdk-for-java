@@ -17,7 +17,7 @@ public final class TrafficAnalyticsProperties {
     /*
      * Parameters that define the configuration of traffic analytics.
      */
-    @JsonProperty(value = "networkWatcherFlowAnalyticsConfiguration")
+    @JsonProperty(value = "networkWatcherFlowAnalyticsConfiguration", required = true)
     private TrafficAnalyticsConfigurationProperties networkWatcherFlowAnalyticsConfiguration;
 
     /**
@@ -49,7 +49,13 @@ public final class TrafficAnalyticsProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (networkWatcherFlowAnalyticsConfiguration() != null) {
+        if (networkWatcherFlowAnalyticsConfiguration() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property networkWatcherFlowAnalyticsConfiguration in model"
+                            + " TrafficAnalyticsProperties"));
+        } else {
             networkWatcherFlowAnalyticsConfiguration().validate();
         }
     }

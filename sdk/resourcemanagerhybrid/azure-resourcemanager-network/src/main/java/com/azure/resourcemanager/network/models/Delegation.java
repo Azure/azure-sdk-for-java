@@ -33,14 +33,8 @@ public final class Delegation extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * Resource type.
-     */
-    @JsonProperty(value = "type")
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of the subnet.
@@ -83,22 +77,13 @@ public final class Delegation extends SubResource {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: Resource type.
-     *
-     * @param type the type value to set.
+     * @param etag the etag value to set.
      * @return the Delegation object itself.
      */
-    public Delegation withType(String type) {
-        this.type = type;
+    public Delegation withEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 
@@ -135,7 +120,7 @@ public final class Delegation extends SubResource {
     }
 
     /**
-     * Get the actions property: The actions permitted to the service upon delegation.
+     * Get the actions property: Describes the actions permitted to the service upon delegation.
      *
      * @return the actions value.
      */
@@ -144,11 +129,25 @@ public final class Delegation extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the service delegation resource.
+     * Set the actions property: Describes the actions permitted to the service upon delegation.
+     *
+     * @param actions the actions value to set.
+     * @return the Delegation object itself.
+     */
+    public Delegation withActions(List<String> actions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceDelegationPropertiesFormat();
+        }
+        this.innerProperties().withActions(actions);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

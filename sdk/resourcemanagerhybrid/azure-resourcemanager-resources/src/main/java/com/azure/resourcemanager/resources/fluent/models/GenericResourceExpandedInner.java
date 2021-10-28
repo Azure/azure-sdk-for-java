@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.models.ExtendedLocation;
 import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.models.Sku;
@@ -110,13 +109,6 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
     @Override
     public GenericResourceExpandedInner withIdentity(Identity identity) {
         super.withIdentity(identity);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public GenericResourceExpandedInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        super.withExtendedLocation(extendedLocation);
         return this;
     }
 

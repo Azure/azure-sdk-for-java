@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -19,7 +18,7 @@ public final class NetworkSecurityGroupInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkSecurityGroupInner.class);
 
     /*
-     * Properties of the network security group.
+     * Properties of the network security group
      */
     @JsonProperty(value = "properties")
     private NetworkSecurityGroupPropertiesFormat innerProperties;
@@ -27,7 +26,7 @@ public final class NetworkSecurityGroupInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
@@ -52,6 +51,17 @@ public final class NetworkSecurityGroupInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the NetworkSecurityGroupInner object itself.
+     */
+    public NetworkSecurityGroupInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
@@ -121,6 +131,20 @@ public final class NetworkSecurityGroupInner extends Resource {
     }
 
     /**
+     * Set the defaultSecurityRules property: The default security rules of network security group.
+     *
+     * @param defaultSecurityRules the defaultSecurityRules value to set.
+     * @return the NetworkSecurityGroupInner object itself.
+     */
+    public NetworkSecurityGroupInner withDefaultSecurityRules(List<SecurityRuleInner> defaultSecurityRules) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkSecurityGroupPropertiesFormat();
+        }
+        this.innerProperties().withDefaultSecurityRules(defaultSecurityRules);
+        return this;
+    }
+
+    /**
      * Get the networkInterfaces property: A collection of references to network interfaces.
      *
      * @return the networkInterfaces value.
@@ -139,15 +163,6 @@ public final class NetworkSecurityGroupInner extends Resource {
     }
 
     /**
-     * Get the flowLogs property: A collection of references to flow log resources.
-     *
-     * @return the flowLogs value.
-     */
-    public List<FlowLogInner> flowLogs() {
-        return this.innerProperties() == null ? null : this.innerProperties().flowLogs();
-    }
-
-    /**
      * Get the resourceGuid property: The resource GUID property of the network security group resource.
      *
      * @return the resourceGuid value.
@@ -157,12 +172,42 @@ public final class NetworkSecurityGroupInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the network security group resource.
+     * Set the resourceGuid property: The resource GUID property of the network security group resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the NetworkSecurityGroupInner object itself.
+     */
+    public NetworkSecurityGroupInner withResourceGuid(String resourceGuid) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkSecurityGroupPropertiesFormat();
+        }
+        this.innerProperties().withResourceGuid(resourceGuid);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the NetworkSecurityGroupInner object itself.
+     */
+    public NetworkSecurityGroupInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkSecurityGroupPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

@@ -22,7 +22,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayAvailableSslOptionsInner.class);
 
     /*
-     * Properties of the application gateway available SSL options.
+     * Properties of ApplicationGatewayAvailableSslOptions
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayAvailableSslOptionsPropertiesFormat innerProperties;
@@ -34,7 +34,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway available SSL options.
+     * Get the innerProperties property: Properties of ApplicationGatewayAvailableSslOptions.
      *
      * @return the innerProperties value.
      */

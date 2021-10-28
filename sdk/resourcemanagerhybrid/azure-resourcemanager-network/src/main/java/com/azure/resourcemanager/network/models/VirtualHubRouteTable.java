@@ -16,13 +16,13 @@ public final class VirtualHubRouteTable {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubRouteTable.class);
 
     /*
-     * List of all routes.
+     * list of all routes.
      */
     @JsonProperty(value = "routes")
     private List<VirtualHubRoute> routes;
 
     /**
-     * Get the routes property: List of all routes.
+     * Get the routes property: list of all routes.
      *
      * @return the routes value.
      */
@@ -31,7 +31,7 @@ public final class VirtualHubRouteTable {
     }
 
     /**
-     * Set the routes property: List of all routes.
+     * Set the routes property: list of all routes.
      *
      * @param routes the routes value to set.
      * @return the VirtualHubRouteTable object itself.

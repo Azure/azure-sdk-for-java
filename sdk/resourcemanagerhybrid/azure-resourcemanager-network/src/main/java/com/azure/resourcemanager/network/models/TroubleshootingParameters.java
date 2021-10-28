@@ -22,7 +22,7 @@ public final class TroubleshootingParameters {
     private String targetResourceId;
 
     /*
-     * Properties of the troubleshooting resource.
+     * Storage location provided for troubleshoot.
      */
     @JsonProperty(value = "properties", required = true)
     private TroubleshootingProperties innerProperties = new TroubleshootingProperties();
@@ -48,7 +48,7 @@ public final class TroubleshootingParameters {
     }
 
     /**
-     * Get the innerProperties property: Properties of the troubleshooting resource.
+     * Get the innerProperties property: Storage location provided for troubleshoot.
      *
      * @return the innerProperties value.
      */

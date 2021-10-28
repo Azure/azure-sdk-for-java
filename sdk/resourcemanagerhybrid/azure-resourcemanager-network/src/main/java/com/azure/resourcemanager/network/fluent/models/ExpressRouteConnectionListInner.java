@@ -16,7 +16,7 @@ public final class ExpressRouteConnectionListInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionListInner.class);
 
     /*
-     * The list of ExpressRoute connections.
+     * The list of ExpressRoute connections
      */
     @JsonProperty(value = "value")
     private List<ExpressRouteConnectionInner> value;

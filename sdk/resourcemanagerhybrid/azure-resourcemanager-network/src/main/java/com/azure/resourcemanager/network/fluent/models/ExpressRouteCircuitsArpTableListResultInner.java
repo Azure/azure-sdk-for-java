@@ -17,7 +17,7 @@ public final class ExpressRouteCircuitsArpTableListResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitsArpTableListResultInner.class);
 
     /*
-     * A list of the ARP tables.
+     * Gets list of the ARP table.
      */
     @JsonProperty(value = "value")
     private List<ExpressRouteCircuitArpTable> value;
@@ -29,7 +29,7 @@ public final class ExpressRouteCircuitsArpTableListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: A list of the ARP tables.
+     * Get the value property: Gets list of the ARP table.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class ExpressRouteCircuitsArpTableListResultInner {
     }
 
     /**
-     * Set the value property: A list of the ARP tables.
+     * Set the value property: Gets list of the ARP table.
      *
      * @param value the value value to set.
      * @return the ExpressRouteCircuitsArpTableListResultInner object itself.

@@ -18,10 +18,6 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
     public static final EncryptionType ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY =
         fromString("EncryptionAtRestWithCustomerKey");
 
-    /** Static value EncryptionAtRestWithPlatformAndCustomerKeys for EncryptionType. */
-    public static final EncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_AND_CUSTOMER_KEYS =
-        fromString("EncryptionAtRestWithPlatformAndCustomerKeys");
-
     /**
      * Creates or finds a EncryptionType from its string representation.
      *

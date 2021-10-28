@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,9 +23,8 @@ public final class InboundNatRuleInner extends SubResource {
     private InboundNatRulePropertiesFormatInner innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of inbound NAT
-     * rules used by the load balancer. This name can be used to access the
-     * resource.
+     * Gets name of the resource that is unique within a resource group. This
+     * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -34,14 +32,8 @@ public final class InboundNatRuleInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * Type of the resource.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of load balancer inbound nat rule.
@@ -53,8 +45,8 @@ public final class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within the set of inbound NAT rules used by the
-     * load balancer. This name can be used to access the resource.
+     * Get the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @return the name value.
      */
@@ -63,8 +55,8 @@ public final class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within the set of inbound NAT rules used by the
-     * load balancer. This name can be used to access the resource.
+     * Set the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @param name the name value to set.
      * @return the InboundNatRuleInner object itself.
@@ -84,12 +76,14 @@ public final class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the type property: Type of the resource.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
+     * @param etag the etag value to set.
+     * @return the InboundNatRuleInner object itself.
      */
-    public String type() {
-        return this.type;
+    public InboundNatRuleInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -133,7 +127,7 @@ public final class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the protocol property: The reference to the transport protocol used by the load balancing rule.
+     * Get the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
      *
      * @return the protocol value.
      */
@@ -142,7 +136,7 @@ public final class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Set the protocol property: The reference to the transport protocol used by the load balancing rule.
+     * Set the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
      *
      * @param protocol the protocol value to set.
      * @return the InboundNatRuleInner object itself.
@@ -281,89 +275,28 @@ public final class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the frontendPortRangeStart property: The port range start for the external endpoint. This property is used
-     * together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be
-     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
-     * @return the frontendPortRangeStart value.
-     */
-    public Integer frontendPortRangeStart() {
-        return this.innerProperties() == null ? null : this.innerProperties().frontendPortRangeStart();
-    }
-
-    /**
-     * Set the frontendPortRangeStart property: The port range start for the external endpoint. This property is used
-     * together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be
-     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
-     * @param frontendPortRangeStart the frontendPortRangeStart value to set.
-     * @return the InboundNatRuleInner object itself.
-     */
-    public InboundNatRuleInner withFrontendPortRangeStart(Integer frontendPortRangeStart) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InboundNatRulePropertiesFormatInner();
-        }
-        this.innerProperties().withFrontendPortRangeStart(frontendPortRangeStart);
-        return this;
-    }
-
-    /**
-     * Get the frontendPortRangeEnd property: The port range end for the external endpoint. This property is used
-     * together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be
-     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
-     * @return the frontendPortRangeEnd value.
-     */
-    public Integer frontendPortRangeEnd() {
-        return this.innerProperties() == null ? null : this.innerProperties().frontendPortRangeEnd();
-    }
-
-    /**
-     * Set the frontendPortRangeEnd property: The port range end for the external endpoint. This property is used
-     * together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be
-     * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
-     * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
-     * @return the InboundNatRuleInner object itself.
-     */
-    public InboundNatRuleInner withFrontendPortRangeEnd(Integer frontendPortRangeEnd) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InboundNatRulePropertiesFormatInner();
-        }
-        this.innerProperties().withFrontendPortRangeEnd(frontendPortRangeEnd);
-        return this;
-    }
-
-    /**
-     * Get the backendAddressPool property: A reference to backendAddressPool resource.
-     *
-     * @return the backendAddressPool value.
-     */
-    public SubResource backendAddressPool() {
-        return this.innerProperties() == null ? null : this.innerProperties().backendAddressPool();
-    }
-
-    /**
-     * Set the backendAddressPool property: A reference to backendAddressPool resource.
-     *
-     * @param backendAddressPool the backendAddressPool value to set.
-     * @return the InboundNatRuleInner object itself.
-     */
-    public InboundNatRuleInner withBackendAddressPool(SubResource backendAddressPool) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InboundNatRulePropertiesFormatInner();
-        }
-        this.innerProperties().withBackendAddressPool(backendAddressPool);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the inbound NAT rule resource.
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the InboundNatRuleInner object itself.
+     */
+    public InboundNatRuleInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatRulePropertiesFormatInner();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

@@ -89,14 +89,6 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public DeploymentWhatIfProperties withExpressionEvaluationOptions(
-        ExpressionEvaluationOptions expressionEvaluationOptions) {
-        super.withExpressionEvaluationOptions(expressionEvaluationOptions);
-        return this;
-    }
-
     /**
      * Validates the instance.
      *

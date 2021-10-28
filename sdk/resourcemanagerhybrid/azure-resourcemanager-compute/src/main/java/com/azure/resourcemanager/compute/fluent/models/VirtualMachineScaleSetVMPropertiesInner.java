@@ -99,12 +99,12 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      * Specifies information about the availability set that the virtual
      * machine should be assigned to. Virtual machines specified in the same
      * availability set are allocated to different nodes to maximize
-     * availability. For more information about availability sets, see
-     * [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview).
-     * <br><br> For more information on Azure planned maintenance, see
-     * [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates)
+     * availability. For more information about availability sets, see [Manage
+     * the availability of virtual
+     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * <br><br> For more information on Azure planned maintenance, see [Planned
+     * maintenance for virtual machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
      * <br><br> Currently, a VM can only be added to availability set at
      * creation time. An existing VM cannot be added to an availability set.
      */
@@ -145,13 +145,6 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
      */
     @JsonProperty(value = "protectionPolicy")
     private VirtualMachineScaleSetVMProtectionPolicy protectionPolicy;
-
-    /*
-     * UserData for the VM, which must be base-64 encoded. Customer should not
-     * pass any secrets in here. <br><br>Minimum api-version: 2021-03-01
-     */
-    @JsonProperty(value = "userData")
-    private String userData;
 
     /**
      * Get the latestModelApplied property: Specifies whether the latest model has been applied to the virtual machine.
@@ -351,12 +344,13 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     /**
      * Get the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
-     * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
-     * set.
+     * to maximize availability. For more information about availability sets, see [Manage the availability of virtual
+     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
+     * machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
+     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM
+     * cannot be added to an availability set.
      *
      * @return the availabilitySet value.
      */
@@ -367,12 +361,13 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     /**
      * Set the availabilitySet property: Specifies information about the availability set that the virtual machine
      * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
-     * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. An existing VM cannot be added to an availability
-     * set.
+     * to maximize availability. For more information about availability sets, see [Manage the availability of virtual
+     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see [Planned maintenance for virtual
+     * machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
+     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set at creation time. An existing VM
+     * cannot be added to an availability set.
      *
      * @param availabilitySet the availabilitySet value to set.
      * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
@@ -455,28 +450,6 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     public VirtualMachineScaleSetVMPropertiesInner withProtectionPolicy(
         VirtualMachineScaleSetVMProtectionPolicy protectionPolicy) {
         this.protectionPolicy = protectionPolicy;
-        return this;
-    }
-
-    /**
-     * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     *
-     * @return the userData value.
-     */
-    public String userData() {
-        return this.userData;
-    }
-
-    /**
-     * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     *
-     * @param userData the userData value to set.
-     * @return the VirtualMachineScaleSetVMPropertiesInner object itself.
-     */
-    public VirtualMachineScaleSetVMPropertiesInner withUserData(String userData) {
-        this.userData = userData;
         return this;
     }
 

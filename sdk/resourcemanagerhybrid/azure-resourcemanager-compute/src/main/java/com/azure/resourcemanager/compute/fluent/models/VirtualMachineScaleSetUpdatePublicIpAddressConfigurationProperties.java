@@ -6,7 +6,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,12 +28,6 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationPrope
      */
     @JsonProperty(value = "dnsSettings")
     private VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings;
-
-    /*
-     * Specify what happens to the public IP when the VM is deleted
-     */
-    @JsonProperty(value = "deleteOption")
-    private DeleteOptions deleteOption;
 
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the public IP address.
@@ -75,27 +68,6 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationPrope
     public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties withDnsSettings(
         VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
-        return this;
-    }
-
-    /**
-     * Get the deleteOption property: Specify what happens to the public IP when the VM is deleted.
-     *
-     * @return the deleteOption value.
-     */
-    public DeleteOptions deleteOption() {
-        return this.deleteOption;
-    }
-
-    /**
-     * Set the deleteOption property: Specify what happens to the public IP when the VM is deleted.
-     *
-     * @param deleteOption the deleteOption value to set.
-     * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties object itself.
-     */
-    public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties withDeleteOption(
-        DeleteOptions deleteOption) {
-        this.deleteOption = deleteOption;
         return this;
     }
 

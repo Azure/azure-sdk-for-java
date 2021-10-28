@@ -14,47 +14,51 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
 public interface PrivateLinkResourcesClient {
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(
         String resourceGroupName, String resourceName);
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PrivateLinkResourcesListResultInner> listAsync(String resourceGroupName, String resourceName);
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateLinkResourcesListResultInner list(String resourceGroupName, String resourceName);
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -62,7 +66,7 @@ public interface PrivateLinkResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateLinkResourcesListResultInner> listWithResponse(

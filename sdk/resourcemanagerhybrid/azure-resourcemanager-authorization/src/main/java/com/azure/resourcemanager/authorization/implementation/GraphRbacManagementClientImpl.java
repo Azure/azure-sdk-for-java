@@ -27,18 +27,6 @@ import java.time.Duration;
 public final class GraphRbacManagementClientImpl extends AzureServiceClient implements GraphRbacManagementClient {
     private final ClientLogger logger = new ClientLogger(GraphRbacManagementClientImpl.class);
 
-    /** The tenant ID. */
-    private final String tenantId;
-
-    /**
-     * Gets The tenant ID.
-     *
-     * @return the tenantId value.
-     */
-    public String getTenantId() {
-        return this.tenantId;
-    }
-
     /** server parameter. */
     private final String endpoint;
 
@@ -214,7 +202,6 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient impl
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param tenantId The tenant ID.
      * @param endpoint server parameter.
      */
     GraphRbacManagementClientImpl(
@@ -222,13 +209,11 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient impl
         SerializerAdapter serializerAdapter,
         Duration defaultPollInterval,
         AzureEnvironment environment,
-        String tenantId,
         String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
-        this.tenantId = tenantId;
         this.endpoint = endpoint;
         this.apiVersion = "1.6";
         this.signedInUsers = new SignedInUsersClientImpl(this);

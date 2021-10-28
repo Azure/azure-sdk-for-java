@@ -19,7 +19,7 @@ public final class BgpServiceCommunityInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpServiceCommunityInner.class);
 
     /*
-     * Properties of the BGP service community.
+     * Properties of Service Community.
      */
     @JsonProperty(value = "properties")
     private BgpServiceCommunityPropertiesFormat innerProperties;
@@ -31,7 +31,7 @@ public final class BgpServiceCommunityInner extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the BGP service community.
+     * Get the innerProperties property: Properties of Service Community.
      *
      * @return the innerProperties value.
      */
@@ -97,7 +97,7 @@ public final class BgpServiceCommunityInner extends Resource {
     }
 
     /**
-     * Get the bgpCommunities property: A list of bgp communities.
+     * Get the bgpCommunities property: Get a list of bgp communities.
      *
      * @return the bgpCommunities value.
      */
@@ -106,7 +106,7 @@ public final class BgpServiceCommunityInner extends Resource {
     }
 
     /**
-     * Set the bgpCommunities property: A list of bgp communities.
+     * Set the bgpCommunities property: Get a list of bgp communities.
      *
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the BgpServiceCommunityInner object itself.

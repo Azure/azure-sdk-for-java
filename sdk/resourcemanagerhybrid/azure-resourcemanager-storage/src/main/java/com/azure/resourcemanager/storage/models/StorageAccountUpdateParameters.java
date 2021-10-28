@@ -205,52 +205,6 @@ public final class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the sasPolicy property: SasPolicy assigned to the storage account.
-     *
-     * @return the sasPolicy value.
-     */
-    public SasPolicy sasPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().sasPolicy();
-    }
-
-    /**
-     * Set the sasPolicy property: SasPolicy assigned to the storage account.
-     *
-     * @param sasPolicy the sasPolicy value to set.
-     * @return the StorageAccountUpdateParameters object itself.
-     */
-    public StorageAccountUpdateParameters withSasPolicy(SasPolicy sasPolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
-        }
-        this.innerProperties().withSasPolicy(sasPolicy);
-        return this;
-    }
-
-    /**
-     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
-     * @return the keyPolicy value.
-     */
-    public KeyPolicy keyPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().keyPolicy();
-    }
-
-    /**
-     * Set the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
-     * @param keyPolicy the keyPolicy value to set.
-     * @return the StorageAccountUpdateParameters object itself.
-     */
-    public StorageAccountUpdateParameters withKeyPolicy(KeyPolicy keyPolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
-        }
-        this.innerProperties().withKeyPolicy(keyPolicy);
-        return this;
-    }
-
-    /**
      * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
      * billing.
      *
@@ -471,31 +425,6 @@ public final class StorageAccountUpdateParameters {
             this.innerProperties = new StorageAccountPropertiesUpdateParameters();
         }
         this.innerProperties().withAllowSharedKeyAccess(allowSharedKeyAccess);
-        return this;
-    }
-
-    /**
-     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @return the allowCrossTenantReplication value.
-     */
-    public Boolean allowCrossTenantReplication() {
-        return this.innerProperties() == null ? null : this.innerProperties().allowCrossTenantReplication();
-    }
-
-    /**
-     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
-     * @return the StorageAccountUpdateParameters object itself.
-     */
-    public StorageAccountUpdateParameters withAllowCrossTenantReplication(Boolean allowCrossTenantReplication) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageAccountPropertiesUpdateParameters();
-        }
-        this.innerProperties().withAllowCrossTenantReplication(allowCrossTenantReplication);
         return this;
     }
 

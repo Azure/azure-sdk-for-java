@@ -10,7 +10,6 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitSku;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,13 +28,14 @@ public final class ExpressRouteCircuitInner extends Resource {
     private ExpressRouteCircuitSku sku;
 
     /*
-     * Properties of the express route circuit.
+     * Properties of ExpressRouteCircuit.
      */
     @JsonProperty(value = "properties")
     private ExpressRouteCircuitPropertiesFormat innerProperties;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -67,7 +67,7 @@ public final class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Properties of the express route circuit.
+     * Get the innerProperties property: Properties of ExpressRouteCircuit.
      *
      * @return the innerProperties value.
      */
@@ -76,7 +76,7 @@ public final class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -166,6 +166,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Get the serviceProviderProvisioningState property: The ServiceProviderProvisioningState state of the resource.
+     * Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned', and 'Deprovisioning'.
      *
      * @return the serviceProviderProvisioningState value.
      */
@@ -175,6 +176,7 @@ public final class ExpressRouteCircuitInner extends Resource {
 
     /**
      * Set the serviceProviderProvisioningState property: The ServiceProviderProvisioningState state of the resource.
+     * Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned', and 'Deprovisioning'.
      *
      * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
      * @return the ExpressRouteCircuitInner object itself.
@@ -364,12 +366,28 @@ public final class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route circuit resource.
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCircuitPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**
@@ -396,25 +414,25 @@ public final class ExpressRouteCircuitInner extends Resource {
     }
 
     /**
-     * Get the globalReachEnabled property: Flag denoting global reach status.
+     * Get the allowGlobalReach property: Flag to enable Global Reach on the circuit.
      *
-     * @return the globalReachEnabled value.
+     * @return the allowGlobalReach value.
      */
-    public Boolean globalReachEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().globalReachEnabled();
+    public Boolean allowGlobalReach() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowGlobalReach();
     }
 
     /**
-     * Set the globalReachEnabled property: Flag denoting global reach status.
+     * Set the allowGlobalReach property: Flag to enable Global Reach on the circuit.
      *
-     * @param globalReachEnabled the globalReachEnabled value to set.
+     * @param allowGlobalReach the allowGlobalReach value to set.
      * @return the ExpressRouteCircuitInner object itself.
      */
-    public ExpressRouteCircuitInner withGlobalReachEnabled(Boolean globalReachEnabled) {
+    public ExpressRouteCircuitInner withAllowGlobalReach(Boolean allowGlobalReach) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteCircuitPropertiesFormat();
         }
-        this.innerProperties().withGlobalReachEnabled(globalReachEnabled);
+        this.innerProperties().withAllowGlobalReach(allowGlobalReach);
         return this;
     }
 

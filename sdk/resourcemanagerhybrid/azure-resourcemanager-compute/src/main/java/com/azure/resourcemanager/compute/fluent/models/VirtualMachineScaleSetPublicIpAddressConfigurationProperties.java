@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.IpVersion;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpTag;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings;
@@ -53,12 +52,6 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
      */
     @JsonProperty(value = "publicIPAddressVersion")
     private IpVersion publicIpAddressVersion;
-
-    /*
-     * Specify what happens to the public IP when the VM is deleted
-     */
-    @JsonProperty(value = "deleteOption")
-    private DeleteOptions deleteOption;
 
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the public IP address.
@@ -163,26 +156,6 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationProperties 
     public VirtualMachineScaleSetPublicIpAddressConfigurationProperties withPublicIpAddressVersion(
         IpVersion publicIpAddressVersion) {
         this.publicIpAddressVersion = publicIpAddressVersion;
-        return this;
-    }
-
-    /**
-     * Get the deleteOption property: Specify what happens to the public IP when the VM is deleted.
-     *
-     * @return the deleteOption value.
-     */
-    public DeleteOptions deleteOption() {
-        return this.deleteOption;
-    }
-
-    /**
-     * Set the deleteOption property: Specify what happens to the public IP when the VM is deleted.
-     *
-     * @param deleteOption the deleteOption value to set.
-     * @return the VirtualMachineScaleSetPublicIpAddressConfigurationProperties object itself.
-     */
-    public VirtualMachineScaleSetPublicIpAddressConfigurationProperties withDeleteOption(DeleteOptions deleteOption) {
-        this.deleteOption = deleteOption;
         return this;
     }
 

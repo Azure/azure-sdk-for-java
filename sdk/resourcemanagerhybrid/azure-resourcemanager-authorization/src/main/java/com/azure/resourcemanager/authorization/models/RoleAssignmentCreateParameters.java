@@ -5,36 +5,30 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Role assignment create parameters. */
-@JsonFlatten
 @Fluent
-public class RoleAssignmentCreateParameters {
+public final class RoleAssignmentCreateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentCreateParameters.class);
 
     /*
-     * The role definition ID used in the role assignment.
+     * Role assignment properties.
      */
-    @JsonProperty(value = "properties.roleDefinitionId", required = true)
-    private String roleDefinitionId;
+    @JsonProperty(value = "properties", required = true)
+    private RoleAssignmentProperties innerProperties = new RoleAssignmentProperties();
 
-    /*
-     * The principal ID assigned to the role. This maps to the ID inside the
-     * Active Directory. It can point to a user, service principal, or security
-     * group.
+    /**
+     * Get the innerProperties property: Role assignment properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.principalId", required = true)
-    private String principalId;
-
-    /*
-     * The delegation flag used for creating a role assignment
-     */
-    @JsonProperty(value = "properties.canDelegate")
-    private Boolean canDelegate;
+    private RoleAssignmentProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the roleDefinitionId property: The role definition ID used in the role assignment.
@@ -42,7 +36,7 @@ public class RoleAssignmentCreateParameters {
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
-        return this.roleDefinitionId;
+        return this.innerProperties() == null ? null : this.innerProperties().roleDefinitionId();
     }
 
     /**
@@ -52,7 +46,10 @@ public class RoleAssignmentCreateParameters {
      * @return the RoleAssignmentCreateParameters object itself.
      */
     public RoleAssignmentCreateParameters withRoleDefinitionId(String roleDefinitionId) {
-        this.roleDefinitionId = roleDefinitionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignmentProperties();
+        }
+        this.innerProperties().withRoleDefinitionId(roleDefinitionId);
         return this;
     }
 
@@ -63,7 +60,7 @@ public class RoleAssignmentCreateParameters {
      * @return the principalId value.
      */
     public String principalId() {
-        return this.principalId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalId();
     }
 
     /**
@@ -74,27 +71,10 @@ public class RoleAssignmentCreateParameters {
      * @return the RoleAssignmentCreateParameters object itself.
      */
     public RoleAssignmentCreateParameters withPrincipalId(String principalId) {
-        this.principalId = principalId;
-        return this;
-    }
-
-    /**
-     * Get the canDelegate property: The delegation flag used for creating a role assignment.
-     *
-     * @return the canDelegate value.
-     */
-    public Boolean canDelegate() {
-        return this.canDelegate;
-    }
-
-    /**
-     * Set the canDelegate property: The delegation flag used for creating a role assignment.
-     *
-     * @param canDelegate the canDelegate value to set.
-     * @return the RoleAssignmentCreateParameters object itself.
-     */
-    public RoleAssignmentCreateParameters withCanDelegate(Boolean canDelegate) {
-        this.canDelegate = canDelegate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignmentProperties();
+        }
+        this.innerProperties().withPrincipalId(principalId);
         return this;
     }
 
@@ -104,17 +84,13 @@ public class RoleAssignmentCreateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (roleDefinitionId() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property roleDefinitionId in model RoleAssignmentCreateParameters"));
-        }
-        if (principalId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model RoleAssignmentCreateParameters"));
+                        "Missing required property innerProperties in model RoleAssignmentCreateParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

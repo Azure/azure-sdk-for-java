@@ -107,29 +107,6 @@ public final class VnetParameters extends ProxyOnlyResource {
     }
 
     /**
-     * Get the subnetResourceId property: The ARM Resource ID of the subnet to validate.
-     *
-     * @return the subnetResourceId value.
-     */
-    public String subnetResourceId() {
-        return this.innerProperties() == null ? null : this.innerProperties().subnetResourceId();
-    }
-
-    /**
-     * Set the subnetResourceId property: The ARM Resource ID of the subnet to validate.
-     *
-     * @param subnetResourceId the subnetResourceId value to set.
-     * @return the VnetParameters object itself.
-     */
-    public VnetParameters withSubnetResourceId(String subnetResourceId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VnetParametersProperties();
-        }
-        this.innerProperties().withSubnetResourceId(subnetResourceId);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

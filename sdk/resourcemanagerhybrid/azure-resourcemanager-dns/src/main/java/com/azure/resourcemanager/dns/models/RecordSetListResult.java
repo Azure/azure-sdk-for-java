@@ -25,7 +25,7 @@ public final class RecordSetListResult {
     /*
      * The continuation token for the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -55,6 +55,17 @@ public final class RecordSetListResult {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The continuation token for the next page of results.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the RecordSetListResult object itself.
+     */
+    public RecordSetListResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
     }
 
     /**

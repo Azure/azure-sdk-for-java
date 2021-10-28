@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,9 +22,10 @@ public final class VpnClientRootCertificatePropertiesFormat {
 
     /*
      * The provisioning state of the VPN client root certificate resource.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the publicCertData property: The certificate public data.
@@ -48,11 +48,12 @@ public final class VpnClientRootCertificatePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the VPN client root certificate resource.
+     * Get the provisioningState property: The provisioning state of the VPN client root certificate resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

@@ -123,7 +123,7 @@ public interface NetworkProfilesClient
      * Gets the specified network profile in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -138,7 +138,7 @@ public interface NetworkProfilesClient
      * Gets the specified network profile in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -153,7 +153,7 @@ public interface NetworkProfilesClient
      * Gets the specified network profile in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -166,7 +166,7 @@ public interface NetworkProfilesClient
      * Gets the specified network profile in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -179,7 +179,7 @@ public interface NetworkProfilesClient
      * Gets the specified network profile in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

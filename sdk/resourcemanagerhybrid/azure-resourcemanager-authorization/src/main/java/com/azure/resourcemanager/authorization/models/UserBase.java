@@ -56,7 +56,7 @@ public class UserBase {
     private UserType userType;
 
     /*
-     * Dictionary of <any>
+     * Dictionary of <AnyObject>
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
@@ -171,7 +171,7 @@ public class UserBase {
     }
 
     /**
-     * Get the additionalProperties property: Dictionary of &lt;any&gt;.
+     * Get the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
      *
      * @return the additionalProperties value.
      */
@@ -181,7 +181,7 @@ public class UserBase {
     }
 
     /**
-     * Set the additionalProperties property: Dictionary of &lt;any&gt;.
+     * Set the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the UserBase object itself.

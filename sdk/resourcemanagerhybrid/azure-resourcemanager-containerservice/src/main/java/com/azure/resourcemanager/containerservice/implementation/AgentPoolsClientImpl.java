@@ -193,7 +193,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets a list of agent pools in the specified managed cluster.
+     * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -223,7 +223,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -250,7 +250,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets a list of agent pools in the specified managed cluster.
+     * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -282,7 +282,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -306,7 +306,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets a list of agent pools in the specified managed cluster.
+     * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -322,7 +322,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets a list of agent pools in the specified managed cluster.
+     * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -340,7 +340,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets a list of agent pools in the specified managed cluster.
+     * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -355,7 +355,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets a list of agent pools in the specified managed cluster.
+     * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -371,7 +371,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets the specified managed cluster agent pool.
+     * Gets the details of the agent pool by managed cluster and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -379,7 +379,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed cluster agent pool.
+     * @return the details of the agent pool by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AgentPoolInner>> getWithResponseAsync(
@@ -406,7 +406,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -425,7 +425,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets the specified managed cluster agent pool.
+     * Gets the details of the agent pool by managed cluster and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -434,7 +434,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed cluster agent pool.
+     * @return the details of the agent pool by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentPoolInner>> getWithResponseAsync(
@@ -461,7 +461,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -477,7 +477,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets the specified managed cluster agent pool.
+     * Gets the details of the agent pool by managed cluster and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -485,7 +485,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed cluster agent pool.
+     * @return the details of the agent pool by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolInner> getAsync(String resourceGroupName, String resourceName, String agentPoolName) {
@@ -501,7 +501,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets the specified managed cluster agent pool.
+     * Gets the details of the agent pool by managed cluster and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -509,7 +509,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed cluster agent pool.
+     * @return the details of the agent pool by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolInner get(String resourceGroupName, String resourceName, String agentPoolName) {
@@ -517,7 +517,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets the specified managed cluster agent pool.
+     * Gets the details of the agent pool by managed cluster and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -526,7 +526,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified managed cluster agent pool.
+     * @return the details of the agent pool by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentPoolInner> getWithResponse(
@@ -540,7 +540,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
+     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -576,7 +576,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -601,7 +601,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
+     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -642,7 +642,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -664,7 +664,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
+     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -687,7 +687,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
+     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -716,7 +716,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
+     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -734,7 +734,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
+     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -758,7 +758,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
+     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -778,7 +778,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
+     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -803,7 +803,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
+     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -821,7 +821,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
-     * @param parameters The agent pool to create or update.
+     * @param parameters Parameters supplied to the Create or Update an agent pool operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -839,7 +839,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Deletes an agent pool in the specified managed cluster.
+     * Deletes the agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -874,7 +874,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -893,7 +893,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Deletes an agent pool in the specified managed cluster.
+     * Deletes the agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -929,7 +929,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -945,7 +945,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Deletes an agent pool in the specified managed cluster.
+     * Deletes the agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -965,7 +965,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Deletes an agent pool in the specified managed cluster.
+     * Deletes the agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -988,7 +988,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Deletes an agent pool in the specified managed cluster.
+     * Deletes the agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1005,7 +1005,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Deletes an agent pool in the specified managed cluster.
+     * Deletes the agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1023,7 +1023,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Deletes an agent pool in the specified managed cluster.
+     * Deletes the agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1041,7 +1041,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Deletes an agent pool in the specified managed cluster.
+     * Deletes the agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1061,7 +1061,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Deletes an agent pool in the specified managed cluster.
+     * Deletes the agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1076,7 +1076,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Deletes an agent pool in the specified managed cluster.
+     * Deletes the agent pool in the specified managed cluster.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1092,7 +1092,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets the upgrade profile for an agent pool.
+     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     * name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1100,7 +1101,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile for an agent pool.
+     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AgentPoolUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(
@@ -1127,7 +1129,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1146,7 +1148,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets the upgrade profile for an agent pool.
+     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     * name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1155,7 +1158,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile for an agent pool.
+     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentPoolUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(
@@ -1182,7 +1186,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1198,7 +1202,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets the upgrade profile for an agent pool.
+     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     * name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1206,7 +1211,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile for an agent pool.
+     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolUpgradeProfileInner> getUpgradeProfileAsync(
@@ -1223,7 +1229,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets the upgrade profile for an agent pool.
+     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     * name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1231,7 +1238,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile for an agent pool.
+     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolUpgradeProfileInner getUpgradeProfile(
@@ -1240,7 +1248,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Gets the upgrade profile for an agent pool.
+     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     * name.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1249,7 +1258,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upgrade profile for an agent pool.
+     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentPoolUpgradeProfileInner> getUpgradeProfileWithResponse(
@@ -1258,15 +1268,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported versions for the specified agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available versions for an agent pool.
+     * @return a list of supported versions for the specified agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AgentPoolAvailableVersionsInner>> getAvailableAgentPoolVersionsWithResponseAsync(
@@ -1290,7 +1299,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1308,8 +1317,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported versions for the specified agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1317,7 +1325,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available versions for an agent pool.
+     * @return a list of supported versions for the specified agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AgentPoolAvailableVersionsInner>> getAvailableAgentPoolVersionsWithResponseAsync(
@@ -1341,7 +1349,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1356,15 +1364,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported versions for the specified agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available versions for an agent pool.
+     * @return a list of supported versions for the specified agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsAsync(
@@ -1381,15 +1388,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported versions for the specified agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available versions for an agent pool.
+     * @return a list of supported versions for the specified agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AgentPoolAvailableVersionsInner getAvailableAgentPoolVersions(
@@ -1398,8 +1404,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * See [supported Kubernetes versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more
-     * details about the version lifecycle.
+     * Gets a list of supported versions for the specified agent pool.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1407,7 +1412,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of available versions for an agent pool.
+     * @return a list of supported versions for the specified agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsWithResponse(
@@ -1416,9 +1421,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
+     * Upgrade node image version of an agent pool to the latest.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1453,7 +1456,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1472,9 +1475,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
+     * Upgrade node image version of an agent pool to the latest.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1510,7 +1511,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         if (agentPoolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1526,9 +1527,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
+     * Upgrade node image version of an agent pool to the latest.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1550,9 +1549,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
+     * Upgrade node image version of an agent pool to the latest.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1576,9 +1573,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
+     * Upgrade node image version of an agent pool to the latest.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1595,9 +1590,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
+     * Upgrade node image version of an agent pool to the latest.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1616,9 +1609,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
+     * Upgrade node image version of an agent pool to the latest.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1637,9 +1628,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
+     * Upgrade node image version of an agent pool to the latest.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1659,9 +1648,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
+     * Upgrade node image version of an agent pool to the latest.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -1677,9 +1664,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     }
 
     /**
-     * Upgrading the node image version of an agent pool applies the newest OS and runtime updates to the nodes. AKS
-     * provides one new image per week with the latest updates. For more details on node image versions, see:
-     * https://docs.microsoft.com/azure/aks/node-image-upgrade.
+     * Upgrade node image version of an agent pool to the latest.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.

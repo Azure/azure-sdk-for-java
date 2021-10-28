@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -18,13 +17,14 @@ public final class AzureFirewallFqdnTagInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallFqdnTagInner.class);
 
     /*
-     * Properties of the azure firewall FQDN tag.
+     * Azure Firewall FQDN Tag Properties
      */
     @JsonProperty(value = "properties")
     private AzureFirewallFqdnTagPropertiesFormat innerProperties;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -36,7 +36,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the azure firewall FQDN tag.
+     * Get the innerProperties property: Azure Firewall FQDN Tag Properties.
      *
      * @return the innerProperties value.
      */
@@ -45,7 +45,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -88,11 +88,11 @@ public final class AzureFirewallFqdnTagInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the Azure firewall FQDN tag resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

@@ -9,31 +9,31 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a Operation value. */
+/** Describes the properties of a Compute Operation value. */
 @Fluent
 public final class OperationValueInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationValueInner.class);
 
     /*
-     * The origin of the operation.
+     * The origin of the compute operation.
      */
     @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private String origin;
 
     /*
-     * The name of the operation.
+     * The name of the compute operation.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Describes the properties of a Operation Value Display.
+     * Describes the properties of a Compute Operation Value Display.
      */
     @JsonProperty(value = "display")
     private OperationValueDisplay innerDisplay;
 
     /**
-     * Get the origin property: The origin of the operation.
+     * Get the origin property: The origin of the compute operation.
      *
      * @return the origin value.
      */
@@ -42,7 +42,7 @@ public final class OperationValueInner {
     }
 
     /**
-     * Get the name property: The name of the operation.
+     * Get the name property: The name of the compute operation.
      *
      * @return the name value.
      */
@@ -51,7 +51,7 @@ public final class OperationValueInner {
     }
 
     /**
-     * Get the innerDisplay property: Describes the properties of a Operation Value Display.
+     * Get the innerDisplay property: Describes the properties of a Compute Operation Value Display.
      *
      * @return the innerDisplay value.
      */
@@ -60,7 +60,7 @@ public final class OperationValueInner {
     }
 
     /**
-     * Get the operation property: The display name of the operation.
+     * Get the operation property: The display name of the compute operation.
      *
      * @return the operation value.
      */

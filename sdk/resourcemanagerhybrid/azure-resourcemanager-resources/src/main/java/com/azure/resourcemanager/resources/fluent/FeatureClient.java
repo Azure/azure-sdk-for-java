@@ -16,7 +16,7 @@ import java.time.Duration;
 /** The interface for FeatureClient class. */
 public interface FeatureClient {
     /**
-     * Gets The Azure subscription ID.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -58,18 +58,11 @@ public interface FeatureClient {
     FeaturesClient getFeatures();
 
     /**
-     * Gets the SubscriptionFeatureRegistrationsClient object to access its operations.
-     *
-     * @return the SubscriptionFeatureRegistrationsClient object.
-     */
-    SubscriptionFeatureRegistrationsClient getSubscriptionFeatureRegistrations();
-
-    /**
      * Lists all of the available Microsoft.Features REST API operations.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<OperationInner> listOperationsAsync();
@@ -79,7 +72,7 @@ public interface FeatureClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationInner> listOperations();
@@ -91,7 +84,7 @@ public interface FeatureClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.
+     * @return result of the request to list Microsoft.Features operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationInner> listOperations(Context context);

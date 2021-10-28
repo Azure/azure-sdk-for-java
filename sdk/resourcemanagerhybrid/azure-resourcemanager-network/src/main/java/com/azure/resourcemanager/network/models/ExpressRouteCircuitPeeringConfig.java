@@ -16,21 +16,22 @@ public final class ExpressRouteCircuitPeeringConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringConfig.class);
 
     /*
-     * The reference to AdvertisedPublicPrefixes.
+     * The reference of AdvertisedPublicPrefixes.
      */
     @JsonProperty(value = "advertisedPublicPrefixes")
     private List<String> advertisedPublicPrefixes;
 
     /*
-     * The communities of bgp peering. Specified for microsoft peering.
+     * The communities of bgp peering. Specified for microsoft peering
      */
     @JsonProperty(value = "advertisedCommunities")
     private List<String> advertisedCommunities;
 
     /*
-     * The advertised public prefix state of the Peering resource.
+     * AdvertisedPublicPrefixState of the Peering resource. Possible values are
+     * 'NotConfigured', 'Configuring', 'Configured', and 'ValidationNeeded'.
      */
-    @JsonProperty(value = "advertisedPublicPrefixesState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "advertisedPublicPrefixesState")
     private ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState;
 
     /*
@@ -52,7 +53,7 @@ public final class ExpressRouteCircuitPeeringConfig {
     private String routingRegistryName;
 
     /**
-     * Get the advertisedPublicPrefixes property: The reference to AdvertisedPublicPrefixes.
+     * Get the advertisedPublicPrefixes property: The reference of AdvertisedPublicPrefixes.
      *
      * @return the advertisedPublicPrefixes value.
      */
@@ -61,7 +62,7 @@ public final class ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Set the advertisedPublicPrefixes property: The reference to AdvertisedPublicPrefixes.
+     * Set the advertisedPublicPrefixes property: The reference of AdvertisedPublicPrefixes.
      *
      * @param advertisedPublicPrefixes the advertisedPublicPrefixes value to set.
      * @return the ExpressRouteCircuitPeeringConfig object itself.
@@ -92,12 +93,26 @@ public final class ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Get the advertisedPublicPrefixesState property: The advertised public prefix state of the Peering resource.
+     * Get the advertisedPublicPrefixesState property: AdvertisedPublicPrefixState of the Peering resource. Possible
+     * values are 'NotConfigured', 'Configuring', 'Configured', and 'ValidationNeeded'.
      *
      * @return the advertisedPublicPrefixesState value.
      */
     public ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState() {
         return this.advertisedPublicPrefixesState;
+    }
+
+    /**
+     * Set the advertisedPublicPrefixesState property: AdvertisedPublicPrefixState of the Peering resource. Possible
+     * values are 'NotConfigured', 'Configuring', 'Configured', and 'ValidationNeeded'.
+     *
+     * @param advertisedPublicPrefixesState the advertisedPublicPrefixesState value to set.
+     * @return the ExpressRouteCircuitPeeringConfig object itself.
+     */
+    public ExpressRouteCircuitPeeringConfig withAdvertisedPublicPrefixesState(
+        ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState) {
+        this.advertisedPublicPrefixesState = advertisedPublicPrefixesState;
+        return this;
     }
 
     /**

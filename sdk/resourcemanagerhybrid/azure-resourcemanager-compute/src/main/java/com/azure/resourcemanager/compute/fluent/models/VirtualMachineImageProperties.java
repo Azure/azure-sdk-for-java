@@ -12,7 +12,6 @@ import com.azure.resourcemanager.compute.models.DisallowedConfiguration;
 import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
-import com.azure.resourcemanager.compute.models.VirtualMachineImageFeature;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -59,12 +58,6 @@ public final class VirtualMachineImageProperties {
      */
     @JsonProperty(value = "disallowed")
     private DisallowedConfiguration disallowed;
-
-    /*
-     * The features property.
-     */
-    @JsonProperty(value = "features")
-    private List<VirtualMachineImageFeature> features;
 
     /**
      * Get the plan property: Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
@@ -188,26 +181,6 @@ public final class VirtualMachineImageProperties {
     }
 
     /**
-     * Get the features property: The features property.
-     *
-     * @return the features value.
-     */
-    public List<VirtualMachineImageFeature> features() {
-        return this.features;
-    }
-
-    /**
-     * Set the features property: The features property.
-     *
-     * @param features the features value to set.
-     * @return the VirtualMachineImageProperties object itself.
-     */
-    public VirtualMachineImageProperties withFeatures(List<VirtualMachineImageFeature> features) {
-        this.features = features;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -227,9 +200,6 @@ public final class VirtualMachineImageProperties {
         }
         if (disallowed() != null) {
             disallowed().validate();
-        }
-        if (features() != null) {
-            features().forEach(e -> e.validate());
         }
     }
 }

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,7 +23,8 @@ public final class InboundNatPoolPropertiesFormat {
     private SubResource frontendIpConfiguration;
 
     /*
-     * The reference to the transport protocol used by the inbound NAT pool.
+     * The transport protocol for the endpoint. Possible values are 'Udp' or
+     * 'Tcp' or 'All'.
      */
     @JsonProperty(value = "protocol", required = true)
     private TransportProtocol protocol;
@@ -78,10 +78,11 @@ public final class InboundNatPoolPropertiesFormat {
     private Boolean enableTcpReset;
 
     /*
-     * The provisioning state of the inbound NAT pool resource.
+     * Gets the provisioning state of the PublicIP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
@@ -104,7 +105,7 @@ public final class InboundNatPoolPropertiesFormat {
     }
 
     /**
-     * Get the protocol property: The reference to the transport protocol used by the inbound NAT pool.
+     * Get the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
      *
      * @return the protocol value.
      */
@@ -113,7 +114,7 @@ public final class InboundNatPoolPropertiesFormat {
     }
 
     /**
-     * Set the protocol property: The reference to the transport protocol used by the inbound NAT pool.
+     * Set the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
      *
      * @param protocol the protocol value to set.
      * @return the InboundNatPoolPropertiesFormat object itself.
@@ -258,12 +259,25 @@ public final class InboundNatPoolPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the inbound NAT pool resource.
+     * Get the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the InboundNatPoolPropertiesFormat object itself.
+     */
+    public InboundNatPoolPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

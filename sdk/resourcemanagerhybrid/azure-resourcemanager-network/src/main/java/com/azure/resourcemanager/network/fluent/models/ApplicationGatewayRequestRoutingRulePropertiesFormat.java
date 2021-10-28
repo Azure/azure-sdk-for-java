@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleType;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -23,12 +22,6 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
      */
     @JsonProperty(value = "ruleType")
     private ApplicationGatewayRequestRoutingRuleType ruleType;
-
-    /*
-     * Priority of the request routing rule.
-     */
-    @JsonProperty(value = "priority")
-    private Integer priority;
 
     /*
      * Backend address pool resource of the application gateway.
@@ -67,16 +60,11 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     private SubResource redirectConfiguration;
 
     /*
-     * Load Distribution Policy resource of the application gateway.
+     * Provisioning state of the request routing rule resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "loadDistributionPolicy")
-    private SubResource loadDistributionPolicy;
-
-    /*
-     * The provisioning state of the request routing rule resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the ruleType property: Rule type.
@@ -96,26 +84,6 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     public ApplicationGatewayRequestRoutingRulePropertiesFormat withRuleType(
         ApplicationGatewayRequestRoutingRuleType ruleType) {
         this.ruleType = ruleType;
-        return this;
-    }
-
-    /**
-     * Get the priority property: Priority of the request routing rule.
-     *
-     * @return the priority value.
-     */
-    public Integer priority() {
-        return this.priority;
-    }
-
-    /**
-     * Set the priority property: Priority of the request routing rule.
-     *
-     * @param priority the priority value to set.
-     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
-     */
-    public ApplicationGatewayRequestRoutingRulePropertiesFormat withPriority(Integer priority) {
-        this.priority = priority;
         return this;
     }
 
@@ -242,33 +210,25 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Get the loadDistributionPolicy property: Load Distribution Policy resource of the application gateway.
-     *
-     * @return the loadDistributionPolicy value.
-     */
-    public SubResource loadDistributionPolicy() {
-        return this.loadDistributionPolicy;
-    }
-
-    /**
-     * Set the loadDistributionPolicy property: Load Distribution Policy resource of the application gateway.
-     *
-     * @param loadDistributionPolicy the loadDistributionPolicy value to set.
-     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
-     */
-    public ApplicationGatewayRequestRoutingRulePropertiesFormat withLoadDistributionPolicy(
-        SubResource loadDistributionPolicy) {
-        this.loadDistributionPolicy = loadDistributionPolicy;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the request routing rule resource.
+     * Get the provisioningState property: Provisioning state of the request routing rule resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the request routing rule resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
+     */
+    public ApplicationGatewayRequestRoutingRulePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

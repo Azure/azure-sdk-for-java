@@ -26,7 +26,7 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
     private Integer priority;
 
     /*
-     * The action type of a rule collection.
+     * The action type of a rule collection
      */
     @JsonProperty(value = "action")
     private AzureFirewallRCAction action;
@@ -38,9 +38,9 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
     private List<AzureFirewallNetworkRule> rules;
 
     /*
-     * The provisioning state of the network rule collection resource.
+     * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /**
@@ -104,12 +104,24 @@ public final class AzureFirewallNetworkRuleCollectionPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the network rule collection resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the AzureFirewallNetworkRuleCollectionPropertiesFormat object itself.
+     */
+    public AzureFirewallNetworkRuleCollectionPropertiesFormat withProvisioningState(
+        ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

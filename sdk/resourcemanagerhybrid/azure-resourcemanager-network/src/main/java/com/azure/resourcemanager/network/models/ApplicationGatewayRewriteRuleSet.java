@@ -18,7 +18,7 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRuleSet.class);
 
     /*
-     * Properties of the application gateway rewrite rule set.
+     * Properties of rewrite rule set of the application gateway.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayRewriteRuleSetPropertiesFormat innerProperties;
@@ -37,7 +37,7 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway rewrite rule set.
+     * Get the innerProperties property: Properties of rewrite rule set of the application gateway.
      *
      * @return the innerProperties value.
      */
@@ -105,11 +105,12 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the rewrite rule set resource.
+     * Get the provisioningState property: Provisioning state of the rewrite rule set resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

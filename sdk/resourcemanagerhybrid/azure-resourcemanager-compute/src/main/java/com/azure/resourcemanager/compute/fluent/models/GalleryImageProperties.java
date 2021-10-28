@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.Disallowed;
-import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryImagePropertiesProvisioningState;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
@@ -18,22 +17,21 @@ import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.List;
 
-/** Describes the properties of a gallery image definition. */
+/** Describes the properties of a gallery Image Definition. */
 @Fluent
 public final class GalleryImageProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageProperties.class);
 
     /*
-     * The description of this gallery image definition resource. This property
+     * The description of this gallery Image Definition resource. This property
      * is updatable.
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * The Eula agreement for the gallery image definition.
+     * The Eula agreement for the gallery Image Definition.
      */
     @JsonProperty(value = "eula")
     private String eula;
@@ -73,14 +71,14 @@ public final class GalleryImageProperties {
     private HyperVGeneration hyperVGeneration;
 
     /*
-     * The end of life date of the gallery image definition. This property can
+     * The end of life date of the gallery Image Definition. This property can
      * be used for decommissioning purposes. This property is updatable.
      */
     @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
-     * This is the gallery image definition identifier.
+     * This is the gallery Image Definition identifier.
      */
     @JsonProperty(value = "identifier", required = true)
     private GalleryImageIdentifier identifier;
@@ -99,27 +97,21 @@ public final class GalleryImageProperties {
     private Disallowed disallowed;
 
     /*
-     * Describes the gallery image definition purchase plan. This is used by
+     * Describes the gallery Image Definition purchase plan. This is used by
      * marketplace images.
      */
     @JsonProperty(value = "purchasePlan")
     private ImagePurchasePlan purchasePlan;
 
     /*
-     * The current state of the gallery image definition. The provisioning
+     * The current state of the gallery Image Definition. The provisioning
      * state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryImagePropertiesProvisioningState provisioningState;
 
-    /*
-     * A list of gallery image features.
-     */
-    @JsonProperty(value = "features")
-    private List<GalleryImageFeature> features;
-
     /**
-     * Get the description property: The description of this gallery image definition resource. This property is
+     * Get the description property: The description of this gallery Image Definition resource. This property is
      * updatable.
      *
      * @return the description value.
@@ -129,7 +121,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Set the description property: The description of this gallery image definition resource. This property is
+     * Set the description property: The description of this gallery Image Definition resource. This property is
      * updatable.
      *
      * @param description the description value to set.
@@ -141,7 +133,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Get the eula property: The Eula agreement for the gallery image definition.
+     * Get the eula property: The Eula agreement for the gallery Image Definition.
      *
      * @return the eula value.
      */
@@ -150,7 +142,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Set the eula property: The Eula agreement for the gallery image definition.
+     * Set the eula property: The Eula agreement for the gallery Image Definition.
      *
      * @param eula the eula value to set.
      * @return the GalleryImageProperties object itself.
@@ -267,7 +259,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Get the endOfLifeDate property: The end of life date of the gallery image definition. This property can be used
+     * Get the endOfLifeDate property: The end of life date of the gallery Image Definition. This property can be used
      * for decommissioning purposes. This property is updatable.
      *
      * @return the endOfLifeDate value.
@@ -277,7 +269,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Set the endOfLifeDate property: The end of life date of the gallery image definition. This property can be used
+     * Set the endOfLifeDate property: The end of life date of the gallery Image Definition. This property can be used
      * for decommissioning purposes. This property is updatable.
      *
      * @param endOfLifeDate the endOfLifeDate value to set.
@@ -289,7 +281,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Get the identifier property: This is the gallery image definition identifier.
+     * Get the identifier property: This is the gallery Image Definition identifier.
      *
      * @return the identifier value.
      */
@@ -298,7 +290,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Set the identifier property: This is the gallery image definition identifier.
+     * Set the identifier property: This is the gallery Image Definition identifier.
      *
      * @param identifier the identifier value to set.
      * @return the GalleryImageProperties object itself.
@@ -351,7 +343,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Get the purchasePlan property: Describes the gallery image definition purchase plan. This is used by marketplace
+     * Get the purchasePlan property: Describes the gallery Image Definition purchase plan. This is used by marketplace
      * images.
      *
      * @return the purchasePlan value.
@@ -361,7 +353,7 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Set the purchasePlan property: Describes the gallery image definition purchase plan. This is used by marketplace
+     * Set the purchasePlan property: Describes the gallery Image Definition purchase plan. This is used by marketplace
      * images.
      *
      * @param purchasePlan the purchasePlan value to set.
@@ -373,33 +365,13 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery image definition. The provisioning state,
+     * Get the provisioningState property: The current state of the gallery Image Definition. The provisioning state,
      * which only appears in the response.
      *
      * @return the provisioningState value.
      */
     public GalleryImagePropertiesProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the features property: A list of gallery image features.
-     *
-     * @return the features value.
-     */
-    public List<GalleryImageFeature> features() {
-        return this.features;
-    }
-
-    /**
-     * Set the features property: A list of gallery image features.
-     *
-     * @param features the features value to set.
-     * @return the GalleryImageProperties object itself.
-     */
-    public GalleryImageProperties withFeatures(List<GalleryImageFeature> features) {
-        this.features = features;
-        return this;
     }
 
     /**
@@ -434,9 +406,6 @@ public final class GalleryImageProperties {
         }
         if (purchasePlan() != null) {
             purchasePlan().validate();
-        }
-        if (features() != null) {
-            features().forEach(e -> e.validate());
         }
     }
 }

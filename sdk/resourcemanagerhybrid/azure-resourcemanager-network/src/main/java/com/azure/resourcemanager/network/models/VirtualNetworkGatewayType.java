@@ -16,9 +16,6 @@ public final class VirtualNetworkGatewayType extends ExpandableStringEnum<Virtua
     /** Static value ExpressRoute for VirtualNetworkGatewayType. */
     public static final VirtualNetworkGatewayType EXPRESS_ROUTE = fromString("ExpressRoute");
 
-    /** Static value LocalGateway for VirtualNetworkGatewayType. */
-    public static final VirtualNetworkGatewayType LOCAL_GATEWAY = fromString("LocalGateway");
-
     /**
      * Creates or finds a VirtualNetworkGatewayType from its string representation.
      *

@@ -8,14 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
-import com.azure.resourcemanager.network.models.ExtendedLocation;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.models.VpnClientConfiguration;
-import com.azure.resourcemanager.network.models.VpnGatewayGeneration;
 import com.azure.resourcemanager.network.models.VpnType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -34,15 +30,10 @@ public final class VirtualNetworkGatewayInner extends Resource {
     private VirtualNetworkGatewayPropertiesFormat innerProperties = new VirtualNetworkGatewayPropertiesFormat();
 
     /*
-     * The extended location of type local virtual network gateway.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
-    @JsonProperty(value = "extendedLocation")
-    private ExtendedLocation extendedLocation;
-
-    /*
-     * A unique read-only string that changes whenever the resource is updated.
-     */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
@@ -61,32 +52,23 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the extendedLocation property: The extended location of type local virtual network gateway.
-     *
-     * @return the extendedLocation value.
-     */
-    public ExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
-
-    /**
-     * Set the extendedLocation property: The extended location of type local virtual network gateway.
-     *
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the VirtualNetworkGatewayInner object itself.
-     */
-    public VirtualNetworkGatewayInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
-        return this;
-    }
-
-    /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Set the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
@@ -148,7 +130,8 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the gatewayType property: The type of this virtual network gateway.
+     * Get the gatewayType property: The type of this virtual network gateway. Possible values are: 'Vpn' and
+     * 'ExpressRoute'.
      *
      * @return the gatewayType value.
      */
@@ -157,7 +140,8 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the gatewayType property: The type of this virtual network gateway.
+     * Set the gatewayType property: The type of this virtual network gateway. Possible values are: 'Vpn' and
+     * 'ExpressRoute'.
      *
      * @param gatewayType the gatewayType value to set.
      * @return the VirtualNetworkGatewayInner object itself.
@@ -171,7 +155,8 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the vpnType property: The type of this virtual network gateway.
+     * Get the vpnType property: The type of this virtual network gateway. Possible values are: 'PolicyBased' and
+     * 'RouteBased'.
      *
      * @return the vpnType value.
      */
@@ -180,7 +165,8 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the vpnType property: The type of this virtual network gateway.
+     * Set the vpnType property: The type of this virtual network gateway. Possible values are: 'PolicyBased' and
+     * 'RouteBased'.
      *
      * @param vpnType the vpnType value to set.
      * @return the VirtualNetworkGatewayInner object itself.
@@ -190,31 +176,6 @@ public final class VirtualNetworkGatewayInner extends Resource {
             this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
         }
         this.innerProperties().withVpnType(vpnType);
-        return this;
-    }
-
-    /**
-     * Get the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if gatewayType
-     * is not VPN.
-     *
-     * @return the vpnGatewayGeneration value.
-     */
-    public VpnGatewayGeneration vpnGatewayGeneration() {
-        return this.innerProperties() == null ? null : this.innerProperties().vpnGatewayGeneration();
-    }
-
-    /**
-     * Set the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if gatewayType
-     * is not VPN.
-     *
-     * @param vpnGatewayGeneration the vpnGatewayGeneration value to set.
-     * @return the VirtualNetworkGatewayInner object itself.
-     */
-    public VirtualNetworkGatewayInner withVpnGatewayGeneration(VpnGatewayGeneration vpnGatewayGeneration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
-        }
-        this.innerProperties().withVpnGatewayGeneration(vpnGatewayGeneration);
         return this;
     }
 
@@ -242,31 +203,6 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the enablePrivateIpAddress property: Whether private IP needs to be enabled on this gateway for connections
-     * or not.
-     *
-     * @return the enablePrivateIpAddress value.
-     */
-    public Boolean enablePrivateIpAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().enablePrivateIpAddress();
-    }
-
-    /**
-     * Set the enablePrivateIpAddress property: Whether private IP needs to be enabled on this gateway for connections
-     * or not.
-     *
-     * @param enablePrivateIpAddress the enablePrivateIpAddress value to set.
-     * @return the VirtualNetworkGatewayInner object itself.
-     */
-    public VirtualNetworkGatewayInner withEnablePrivateIpAddress(Boolean enablePrivateIpAddress) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
-        }
-        this.innerProperties().withEnablePrivateIpAddress(enablePrivateIpAddress);
-        return this;
-    }
-
-    /**
      * Get the active property: ActiveActive flag.
      *
      * @return the active value.
@@ -290,7 +226,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the gatewayDefaultSite property: The reference to the LocalNetworkGateway resource which represents local
+     * Get the gatewayDefaultSite property: The reference of the LocalNetworkGateway resource which represents local
      * network site having default routes. Assign Null value in case of removing existing default site setting.
      *
      * @return the gatewayDefaultSite value.
@@ -300,7 +236,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the gatewayDefaultSite property: The reference to the LocalNetworkGateway resource which represents local
+     * Set the gatewayDefaultSite property: The reference of the LocalNetworkGateway resource which represents local
      * network site having default routes. Assign Null value in case of removing existing default site setting.
      *
      * @param gatewayDefaultSite the gatewayDefaultSite value to set.
@@ -315,7 +251,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the sku property: The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected
+     * Get the sku property: The reference of the VirtualNetworkGatewaySku resource which represents the SKU selected
      * for Virtual network gateway.
      *
      * @return the sku value.
@@ -325,7 +261,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the sku property: The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected
+     * Set the sku property: The reference of the VirtualNetworkGatewaySku resource which represents the SKU selected
      * for Virtual network gateway.
      *
      * @param sku the sku value to set.
@@ -340,7 +276,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the vpnClientConfiguration property: The reference to the VpnClientConfiguration resource which represents
+     * Get the vpnClientConfiguration property: The reference of the VpnClientConfiguration resource which represents
      * the P2S VpnClient configurations.
      *
      * @return the vpnClientConfiguration value.
@@ -350,7 +286,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the vpnClientConfiguration property: The reference to the VpnClientConfiguration resource which represents
+     * Set the vpnClientConfiguration property: The reference of the VpnClientConfiguration resource which represents
      * the P2S VpnClient configurations.
      *
      * @param vpnClientConfiguration the vpnClientConfiguration value to set.
@@ -388,32 +324,7 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the customRoutes property: The reference to the address space resource which represents the custom routes
-     * address space specified by the customer for virtual network gateway and VpnClient.
-     *
-     * @return the customRoutes value.
-     */
-    public AddressSpace customRoutes() {
-        return this.innerProperties() == null ? null : this.innerProperties().customRoutes();
-    }
-
-    /**
-     * Set the customRoutes property: The reference to the address space resource which represents the custom routes
-     * address space specified by the customer for virtual network gateway and VpnClient.
-     *
-     * @param customRoutes the customRoutes value to set.
-     * @return the VirtualNetworkGatewayInner object itself.
-     */
-    public VirtualNetworkGatewayInner withCustomRoutes(AddressSpace customRoutes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
-        }
-        this.innerProperties().withCustomRoutes(customRoutes);
-        return this;
-    }
-
-    /**
-     * Get the resourceGuid property: The resource GUID property of the virtual network gateway resource.
+     * Get the resourceGuid property: The resource GUID property of the VirtualNetworkGateway resource.
      *
      * @return the resourceGuid value.
      */
@@ -422,116 +333,27 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the virtual network gateway resource.
+     * Set the resourceGuid property: The resource GUID property of the VirtualNetworkGateway resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withResourceGuid(String resourceGuid) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withResourceGuid(resourceGuid);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the VirtualNetworkGateway resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the enableDnsForwarding property: Whether dns forwarding is enabled or not.
-     *
-     * @return the enableDnsForwarding value.
-     */
-    public Boolean enableDnsForwarding() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableDnsForwarding();
-    }
-
-    /**
-     * Set the enableDnsForwarding property: Whether dns forwarding is enabled or not.
-     *
-     * @param enableDnsForwarding the enableDnsForwarding value to set.
-     * @return the VirtualNetworkGatewayInner object itself.
-     */
-    public VirtualNetworkGatewayInner withEnableDnsForwarding(Boolean enableDnsForwarding) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
-        }
-        this.innerProperties().withEnableDnsForwarding(enableDnsForwarding);
-        return this;
-    }
-
-    /**
-     * Get the inboundDnsForwardingEndpoint property: The IP address allocated by the gateway to which dns requests can
-     * be sent.
-     *
-     * @return the inboundDnsForwardingEndpoint value.
-     */
-    public String inboundDnsForwardingEndpoint() {
-        return this.innerProperties() == null ? null : this.innerProperties().inboundDnsForwardingEndpoint();
-    }
-
-    /**
-     * Get the vNetExtendedLocationResourceId property: Customer vnet resource id. VirtualNetworkGateway of type local
-     * gateway is associated with the customer vnet.
-     *
-     * @return the vNetExtendedLocationResourceId value.
-     */
-    public String vNetExtendedLocationResourceId() {
-        return this.innerProperties() == null ? null : this.innerProperties().vNetExtendedLocationResourceId();
-    }
-
-    /**
-     * Set the vNetExtendedLocationResourceId property: Customer vnet resource id. VirtualNetworkGateway of type local
-     * gateway is associated with the customer vnet.
-     *
-     * @param vNetExtendedLocationResourceId the vNetExtendedLocationResourceId value to set.
-     * @return the VirtualNetworkGatewayInner object itself.
-     */
-    public VirtualNetworkGatewayInner withVNetExtendedLocationResourceId(String vNetExtendedLocationResourceId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
-        }
-        this.innerProperties().withVNetExtendedLocationResourceId(vNetExtendedLocationResourceId);
-        return this;
-    }
-
-    /**
-     * Get the natRules property: NatRules for virtual network gateway.
-     *
-     * @return the natRules value.
-     */
-    public List<VirtualNetworkGatewayNatRuleInner> natRules() {
-        return this.innerProperties() == null ? null : this.innerProperties().natRules();
-    }
-
-    /**
-     * Set the natRules property: NatRules for virtual network gateway.
-     *
-     * @param natRules the natRules value to set.
-     * @return the VirtualNetworkGatewayInner object itself.
-     */
-    public VirtualNetworkGatewayInner withNatRules(List<VirtualNetworkGatewayNatRuleInner> natRules) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
-        }
-        this.innerProperties().withNatRules(natRules);
-        return this;
-    }
-
-    /**
-     * Get the enableBgpRouteTranslationForNat property: EnableBgpRouteTranslationForNat flag.
-     *
-     * @return the enableBgpRouteTranslationForNat value.
-     */
-    public Boolean enableBgpRouteTranslationForNat() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableBgpRouteTranslationForNat();
-    }
-
-    /**
-     * Set the enableBgpRouteTranslationForNat property: EnableBgpRouteTranslationForNat flag.
-     *
-     * @param enableBgpRouteTranslationForNat the enableBgpRouteTranslationForNat value to set.
-     * @return the VirtualNetworkGatewayInner object itself.
-     */
-    public VirtualNetworkGatewayInner withEnableBgpRouteTranslationForNat(Boolean enableBgpRouteTranslationForNat) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
-        }
-        this.innerProperties().withEnableBgpRouteTranslationForNat(enableBgpRouteTranslationForNat);
-        return this;
     }
 
     /**
@@ -547,9 +369,6 @@ public final class VirtualNetworkGatewayInner extends Resource {
                         "Missing required property innerProperties in model VirtualNetworkGatewayInner"));
         } else {
             innerProperties().validate();
-        }
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
         }
     }
 }

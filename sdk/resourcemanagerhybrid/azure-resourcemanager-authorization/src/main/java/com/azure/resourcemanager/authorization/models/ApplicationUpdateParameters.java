@@ -6,6 +6,8 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -64,6 +66,210 @@ public final class ApplicationUpdateParameters extends ApplicationBase {
      */
     public ApplicationUpdateParameters withIdentifierUris(List<String> identifierUris) {
         this.identifierUris = identifierUris;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withAllowGuestsSignIn(Boolean allowGuestsSignIn) {
+        super.withAllowGuestsSignIn(allowGuestsSignIn);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withAllowPassthroughUsers(Boolean allowPassthroughUsers) {
+        super.withAllowPassthroughUsers(allowPassthroughUsers);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withAppLogoUrl(String appLogoUrl) {
+        super.withAppLogoUrl(appLogoUrl);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withAppRoles(List<AppRole> appRoles) {
+        super.withAppRoles(appRoles);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withAppPermissions(List<String> appPermissions) {
+        super.withAppPermissions(appPermissions);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withAvailableToOtherTenants(Boolean availableToOtherTenants) {
+        super.withAvailableToOtherTenants(availableToOtherTenants);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withErrorUrl(String errorUrl) {
+        super.withErrorUrl(errorUrl);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withGroupMembershipClaims(GroupMembershipClaimTypes groupMembershipClaims) {
+        super.withGroupMembershipClaims(groupMembershipClaims);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withHomepage(String homepage) {
+        super.withHomepage(homepage);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withInformationalUrls(InformationalUrl informationalUrls) {
+        super.withInformationalUrls(informationalUrls);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withIsDeviceOnlyAuthSupported(Boolean isDeviceOnlyAuthSupported) {
+        super.withIsDeviceOnlyAuthSupported(isDeviceOnlyAuthSupported);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+        super.withKeyCredentials(keyCredentials);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withKnownClientApplications(List<String> knownClientApplications) {
+        super.withKnownClientApplications(knownClientApplications);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withLogoutUrl(String logoutUrl) {
+        super.withLogoutUrl(logoutUrl);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withOauth2AllowImplicitFlow(Boolean oauth2AllowImplicitFlow) {
+        super.withOauth2AllowImplicitFlow(oauth2AllowImplicitFlow);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withOauth2AllowUrlPathMatching(Boolean oauth2AllowUrlPathMatching) {
+        super.withOauth2AllowUrlPathMatching(oauth2AllowUrlPathMatching);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withOauth2Permissions(List<OAuth2Permission> oauth2Permissions) {
+        super.withOauth2Permissions(oauth2Permissions);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withOauth2RequirePostResponse(Boolean oauth2RequirePostResponse) {
+        super.withOauth2RequirePostResponse(oauth2RequirePostResponse);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withOrgRestrictions(List<String> orgRestrictions) {
+        super.withOrgRestrictions(orgRestrictions);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withOptionalClaims(OptionalClaims optionalClaims) {
+        super.withOptionalClaims(optionalClaims);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+        super.withPasswordCredentials(passwordCredentials);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withPreAuthorizedApplications(
+        List<PreAuthorizedApplication> preAuthorizedApplications) {
+        super.withPreAuthorizedApplications(preAuthorizedApplications);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withPublicClient(Boolean publicClient) {
+        super.withPublicClient(publicClient);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withPublisherDomain(String publisherDomain) {
+        super.withPublisherDomain(publisherDomain);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withReplyUrls(List<String> replyUrls) {
+        super.withReplyUrls(replyUrls);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withRequiredResourceAccess(List<RequiredResourceAccess> requiredResourceAccess) {
+        super.withRequiredResourceAccess(requiredResourceAccess);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withSamlMetadataUrl(String samlMetadataUrl) {
+        super.withSamlMetadataUrl(samlMetadataUrl);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withSignInAudience(String signInAudience) {
+        super.withSignInAudience(signInAudience);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationUpdateParameters withWwwHomepage(String wwwHomepage) {
+        super.withWwwHomepage(wwwHomepage);
         return this;
     }
 

@@ -31,10 +31,16 @@ public final class VirtualWanProperties {
     private List<SubResource> virtualHubs;
 
     /*
-     * List of VpnSites in the VirtualWAN.
+     * The vpnSites property.
      */
     @JsonProperty(value = "vpnSites", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> vpnSites;
+
+    /*
+     * The Security Provider name.
+     */
+    @JsonProperty(value = "securityProviderName")
+    private String securityProviderName;
 
     /*
      * True if branch to branch traffic is allowed.
@@ -55,16 +61,16 @@ public final class VirtualWanProperties {
     private OfficeTrafficCategory office365LocalBreakoutCategory;
 
     /*
-     * The provisioning state of the virtual WAN resource.
+     * list of all P2SVpnServerConfigurations associated with the virtual wan.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "p2SVpnServerConfigurations")
+    private List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations;
 
     /*
-     * The type of the VirtualWAN.
+     * The provisioning state of the resource.
      */
-    @JsonProperty(value = "type")
-    private String type;
+    @JsonProperty(value = "provisioningState")
+    private ProvisioningState provisioningState;
 
     /**
      * Get the disableVpnEncryption property: Vpn encryption to be disabled or not.
@@ -96,12 +102,32 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Get the vpnSites property: List of VpnSites in the VirtualWAN.
+     * Get the vpnSites property: The vpnSites property.
      *
      * @return the vpnSites value.
      */
     public List<SubResource> vpnSites() {
         return this.vpnSites;
+    }
+
+    /**
+     * Get the securityProviderName property: The Security Provider name.
+     *
+     * @return the securityProviderName value.
+     */
+    public String securityProviderName() {
+        return this.securityProviderName;
+    }
+
+    /**
+     * Set the securityProviderName property: The Security Provider name.
+     *
+     * @param securityProviderName the securityProviderName value to set.
+     * @return the VirtualWanProperties object itself.
+     */
+    public VirtualWanProperties withSecurityProviderName(String securityProviderName) {
+        this.securityProviderName = securityProviderName;
+        return this;
     }
 
     /**
@@ -154,7 +180,30 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the virtual WAN resource.
+     * Get the p2SVpnServerConfigurations property: list of all P2SVpnServerConfigurations associated with the virtual
+     * wan.
+     *
+     * @return the p2SVpnServerConfigurations value.
+     */
+    public List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations() {
+        return this.p2SVpnServerConfigurations;
+    }
+
+    /**
+     * Set the p2SVpnServerConfigurations property: list of all P2SVpnServerConfigurations associated with the virtual
+     * wan.
+     *
+     * @param p2SVpnServerConfigurations the p2SVpnServerConfigurations value to set.
+     * @return the VirtualWanProperties object itself.
+     */
+    public VirtualWanProperties withP2SVpnServerConfigurations(
+        List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations) {
+        this.p2SVpnServerConfigurations = p2SVpnServerConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -163,22 +212,13 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Get the type property: The type of the VirtualWAN.
+     * Set the provisioningState property: The provisioning state of the resource.
      *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: The type of the VirtualWAN.
-     *
-     * @param type the type value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the VirtualWanProperties object itself.
      */
-    public VirtualWanProperties withType(String type) {
-        this.type = type;
+    public VirtualWanProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
         return this;
     }
 
@@ -188,5 +228,8 @@ public final class VirtualWanProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (p2SVpnServerConfigurations() != null) {
+            p2SVpnServerConfigurations().forEach(e -> e.validate());
+        }
     }
 }

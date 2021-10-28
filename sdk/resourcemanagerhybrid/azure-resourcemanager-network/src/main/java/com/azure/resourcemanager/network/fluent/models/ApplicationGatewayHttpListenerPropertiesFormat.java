@@ -9,7 +9,6 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCustomError;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -33,7 +32,7 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     private SubResource frontendPort;
 
     /*
-     * Protocol of the HTTP listener.
+     * Protocol of the HTTP listener. Possible values are 'Http' and 'Https'.
      */
     @JsonProperty(value = "protocol")
     private ApplicationGatewayProtocol protocol;
@@ -51,41 +50,23 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     private SubResource sslCertificate;
 
     /*
-     * SSL profile resource of the application gateway.
-     */
-    @JsonProperty(value = "sslProfile")
-    private SubResource sslProfile;
-
-    /*
      * Applicable only if protocol is https. Enables SNI for multi-hosting.
      */
     @JsonProperty(value = "requireServerNameIndication")
     private Boolean requireServerNameIndication;
 
     /*
-     * The provisioning state of the HTTP listener resource.
+     * Provisioning state of the HTTP listener resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /*
      * Custom error configurations of the HTTP listener.
      */
     @JsonProperty(value = "customErrorConfigurations")
     private List<ApplicationGatewayCustomError> customErrorConfigurations;
-
-    /*
-     * Reference to the FirewallPolicy resource.
-     */
-    @JsonProperty(value = "firewallPolicy")
-    private SubResource firewallPolicy;
-
-    /*
-     * List of Host names for HTTP Listener that allows special wildcard
-     * characters as well.
-     */
-    @JsonProperty(value = "hostNames")
-    private List<String> hostNames;
 
     /**
      * Get the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
@@ -129,7 +110,7 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Get the protocol property: Protocol of the HTTP listener.
+     * Get the protocol property: Protocol of the HTTP listener. Possible values are 'Http' and 'Https'.
      *
      * @return the protocol value.
      */
@@ -138,7 +119,7 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Set the protocol property: Protocol of the HTTP listener.
+     * Set the protocol property: Protocol of the HTTP listener. Possible values are 'Http' and 'Https'.
      *
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
@@ -189,26 +170,6 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Get the sslProfile property: SSL profile resource of the application gateway.
-     *
-     * @return the sslProfile value.
-     */
-    public SubResource sslProfile() {
-        return this.sslProfile;
-    }
-
-    /**
-     * Set the sslProfile property: SSL profile resource of the application gateway.
-     *
-     * @param sslProfile the sslProfile value to set.
-     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
-     */
-    public ApplicationGatewayHttpListenerPropertiesFormat withSslProfile(SubResource sslProfile) {
-        this.sslProfile = sslProfile;
-        return this;
-    }
-
-    /**
      * Get the requireServerNameIndication property: Applicable only if protocol is https. Enables SNI for
      * multi-hosting.
      *
@@ -232,12 +193,25 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the HTTP listener resource.
+     * Get the provisioningState property: Provisioning state of the HTTP listener resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the HTTP listener resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
+     */
+    public ApplicationGatewayHttpListenerPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -258,46 +232,6 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     public ApplicationGatewayHttpListenerPropertiesFormat withCustomErrorConfigurations(
         List<ApplicationGatewayCustomError> customErrorConfigurations) {
         this.customErrorConfigurations = customErrorConfigurations;
-        return this;
-    }
-
-    /**
-     * Get the firewallPolicy property: Reference to the FirewallPolicy resource.
-     *
-     * @return the firewallPolicy value.
-     */
-    public SubResource firewallPolicy() {
-        return this.firewallPolicy;
-    }
-
-    /**
-     * Set the firewallPolicy property: Reference to the FirewallPolicy resource.
-     *
-     * @param firewallPolicy the firewallPolicy value to set.
-     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
-     */
-    public ApplicationGatewayHttpListenerPropertiesFormat withFirewallPolicy(SubResource firewallPolicy) {
-        this.firewallPolicy = firewallPolicy;
-        return this;
-    }
-
-    /**
-     * Get the hostNames property: List of Host names for HTTP Listener that allows special wildcard characters as well.
-     *
-     * @return the hostNames value.
-     */
-    public List<String> hostNames() {
-        return this.hostNames;
-    }
-
-    /**
-     * Set the hostNames property: List of Host names for HTTP Listener that allows special wildcard characters as well.
-     *
-     * @param hostNames the hostNames value to set.
-     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
-     */
-    public ApplicationGatewayHttpListenerPropertiesFormat withHostNames(List<String> hostNames) {
-        this.hostNames = hostNames;
         return this;
     }
 

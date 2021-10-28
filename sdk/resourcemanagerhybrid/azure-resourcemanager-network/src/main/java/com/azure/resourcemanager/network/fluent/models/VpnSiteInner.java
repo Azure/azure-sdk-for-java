@@ -11,11 +11,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
-import com.azure.resourcemanager.network.models.O365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.util.Map;
 
 /** VpnSite Resource. */
@@ -24,13 +22,14 @@ public final class VpnSiteInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnSiteInner.class);
 
     /*
-     * Properties of the VPN site.
+     * Parameters for VpnSite
      */
     @JsonProperty(value = "properties")
     private VpnSiteProperties innerProperties;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -42,7 +41,7 @@ public final class VpnSiteInner extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the VPN site.
+     * Get the innerProperties property: Parameters for VpnSite.
      *
      * @return the innerProperties value.
      */
@@ -51,7 +50,7 @@ public final class VpnSiteInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -232,12 +231,26 @@ public final class VpnSiteInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the VPN site resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the VpnSiteInner object itself.
+     */
+    public VpnSiteInner withProvisioningState(ProvisioningState provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnSiteProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**
@@ -260,52 +273,6 @@ public final class VpnSiteInner extends Resource {
             this.innerProperties = new VpnSiteProperties();
         }
         this.innerProperties().withIsSecuritySite(isSecuritySite);
-        return this;
-    }
-
-    /**
-     * Get the vpnSiteLinks property: List of all vpn site links.
-     *
-     * @return the vpnSiteLinks value.
-     */
-    public List<VpnSiteLinkInner> vpnSiteLinks() {
-        return this.innerProperties() == null ? null : this.innerProperties().vpnSiteLinks();
-    }
-
-    /**
-     * Set the vpnSiteLinks property: List of all vpn site links.
-     *
-     * @param vpnSiteLinks the vpnSiteLinks value to set.
-     * @return the VpnSiteInner object itself.
-     */
-    public VpnSiteInner withVpnSiteLinks(List<VpnSiteLinkInner> vpnSiteLinks) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VpnSiteProperties();
-        }
-        this.innerProperties().withVpnSiteLinks(vpnSiteLinks);
-        return this;
-    }
-
-    /**
-     * Get the o365Policy property: Office365 Policy.
-     *
-     * @return the o365Policy value.
-     */
-    public O365PolicyProperties o365Policy() {
-        return this.innerProperties() == null ? null : this.innerProperties().o365Policy();
-    }
-
-    /**
-     * Set the o365Policy property: Office365 Policy.
-     *
-     * @param o365Policy the o365Policy value to set.
-     * @return the VpnSiteInner object itself.
-     */
-    public VpnSiteInner withO365Policy(O365PolicyProperties o365Policy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VpnSiteProperties();
-        }
-        this.innerProperties().withO365Policy(o365Policy);
         return this;
     }
 

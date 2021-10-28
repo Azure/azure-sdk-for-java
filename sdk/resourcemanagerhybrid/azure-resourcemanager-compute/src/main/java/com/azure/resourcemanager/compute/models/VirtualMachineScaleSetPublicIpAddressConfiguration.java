@@ -31,12 +31,6 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetPublicIpAddressConfigurationProperties innerProperties;
 
-    /*
-     * Describes the public IP Sku
-     */
-    @JsonProperty(value = "sku")
-    private PublicIpAddressSku sku;
-
     /**
      * Get the name property: The publicIP address configuration name.
      *
@@ -65,26 +59,6 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      */
     private VirtualMachineScaleSetPublicIpAddressConfigurationProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the sku property: Describes the public IP Sku.
-     *
-     * @return the sku value.
-     */
-    public PublicIpAddressSku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: Describes the public IP Sku.
-     *
-     * @param sku the sku value to set.
-     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
-     */
-    public VirtualMachineScaleSetPublicIpAddressConfiguration withSku(PublicIpAddressSku sku) {
-        this.sku = sku;
-        return this;
     }
 
     /**
@@ -207,29 +181,6 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Get the deleteOption property: Specify what happens to the public IP when the VM is deleted.
-     *
-     * @return the deleteOption value.
-     */
-    public DeleteOptions deleteOption() {
-        return this.innerProperties() == null ? null : this.innerProperties().deleteOption();
-    }
-
-    /**
-     * Set the deleteOption property: Specify what happens to the public IP when the VM is deleted.
-     *
-     * @param deleteOption the deleteOption value to set.
-     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
-     */
-    public VirtualMachineScaleSetPublicIpAddressConfiguration withDeleteOption(DeleteOptions deleteOption) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
-        }
-        this.innerProperties().withDeleteOption(deleteOption);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -243,9 +194,6 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
         }
         if (innerProperties() != null) {
             innerProperties().validate();
-        }
-        if (sku() != null) {
-            sku().validate();
         }
     }
 }

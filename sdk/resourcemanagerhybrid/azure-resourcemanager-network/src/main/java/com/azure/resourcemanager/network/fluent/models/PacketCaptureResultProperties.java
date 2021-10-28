@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of a packet capture session. */
+/** Describes the properties of a packet capture session. */
 @Fluent
 public final class PacketCaptureResultProperties extends PacketCaptureParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureResultProperties.class);
@@ -21,7 +21,7 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
     /*
      * The provisioning state of the packet capture session.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /**
@@ -33,6 +33,17 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
         return this.provisioningState;
     }
 
+    /**
+     * Set the provisioningState property: The provisioning state of the packet capture session.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the PacketCaptureResultProperties object itself.
+     */
+    public PacketCaptureResultProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public PacketCaptureResultProperties withTarget(String target) {
@@ -42,14 +53,14 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
 
     /** {@inheritDoc} */
     @Override
-    public PacketCaptureResultProperties withBytesToCapturePerPacket(Long bytesToCapturePerPacket) {
+    public PacketCaptureResultProperties withBytesToCapturePerPacket(Integer bytesToCapturePerPacket) {
         super.withBytesToCapturePerPacket(bytesToCapturePerPacket);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public PacketCaptureResultProperties withTotalBytesPerSession(Long totalBytesPerSession) {
+    public PacketCaptureResultProperties withTotalBytesPerSession(Integer totalBytesPerSession) {
         super.withTotalBytesPerSession(totalBytesPerSession);
         return this;
     }

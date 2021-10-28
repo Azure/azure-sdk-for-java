@@ -18,31 +18,31 @@ public final class AgentPoolUpgradeProfileInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolUpgradeProfileInner.class);
 
     /*
-     * The ID of the agent pool upgrade profile.
+     * Id of the agent pool upgrade profile.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The name of the agent pool upgrade profile.
+     * Name of the agent pool upgrade profile.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * The type of the agent pool upgrade profile.
+     * Type of the agent pool upgrade profile.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
-     * The properties of the agent pool upgrade profile.
+     * Properties of agent pool upgrade profile.
      */
     @JsonProperty(value = "properties", required = true)
     private AgentPoolUpgradeProfileProperties innerProperties = new AgentPoolUpgradeProfileProperties();
 
     /**
-     * Get the id property: The ID of the agent pool upgrade profile.
+     * Get the id property: Id of the agent pool upgrade profile.
      *
      * @return the id value.
      */
@@ -51,7 +51,7 @@ public final class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Get the name property: The name of the agent pool upgrade profile.
+     * Get the name property: Name of the agent pool upgrade profile.
      *
      * @return the name value.
      */
@@ -60,7 +60,7 @@ public final class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Get the type property: The type of the agent pool upgrade profile.
+     * Get the type property: Type of the agent pool upgrade profile.
      *
      * @return the type value.
      */
@@ -69,7 +69,7 @@ public final class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Get the innerProperties property: The properties of the agent pool upgrade profile.
+     * Get the innerProperties property: Properties of agent pool upgrade profile.
      *
      * @return the innerProperties value.
      */
@@ -78,7 +78,7 @@ public final class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
+     * Get the kubernetesVersion property: Kubernetes version (major, minor, patch).
      *
      * @return the kubernetesVersion value.
      */
@@ -87,7 +87,7 @@ public final class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Set the kubernetesVersion property: The Kubernetes version (major.minor.patch).
+     * Set the kubernetesVersion property: Kubernetes version (major, minor, patch).
      *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the AgentPoolUpgradeProfileInner object itself.
@@ -147,7 +147,7 @@ public final class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Get the latestNodeImageVersion property: The latest AKS supported node image version.
+     * Get the latestNodeImageVersion property: LatestNodeImageVersion is the latest AKS supported node image version.
      *
      * @return the latestNodeImageVersion value.
      */
@@ -156,7 +156,7 @@ public final class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Set the latestNodeImageVersion property: The latest AKS supported node image version.
+     * Set the latestNodeImageVersion property: LatestNodeImageVersion is the latest AKS supported node image version.
      *
      * @param latestNodeImageVersion the latestNodeImageVersion value to set.
      * @return the AgentPoolUpgradeProfileInner object itself.

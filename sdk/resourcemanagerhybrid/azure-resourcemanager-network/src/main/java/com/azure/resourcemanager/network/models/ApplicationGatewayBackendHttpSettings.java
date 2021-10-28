@@ -18,7 +18,7 @@ public final class ApplicationGatewayBackendHttpSettings extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHttpSettings.class);
 
     /*
-     * Properties of the application gateway backend HTTP settings.
+     * Properties of Backend address pool settings of an application gateway.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayBackendHttpSettingsPropertiesFormat innerProperties;
@@ -33,17 +33,17 @@ public final class ApplicationGatewayBackendHttpSettings extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type")
     private String type;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway backend HTTP settings.
+     * Get the innerProperties property: Properties of Backend address pool settings of an application gateway.
      *
      * @return the innerProperties value.
      */
@@ -81,12 +81,34 @@ public final class ApplicationGatewayBackendHttpSettings extends SubResource {
     }
 
     /**
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the ApplicationGatewayBackendHttpSettings object itself.
+     */
+    public ApplicationGatewayBackendHttpSettings withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the type property: Type of the resource.
      *
      * @return the type value.
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Set the type property: Type of the resource.
+     *
+     * @param type the type value to set.
+     * @return the ApplicationGatewayBackendHttpSettings object itself.
+     */
+    public ApplicationGatewayBackendHttpSettings withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -120,7 +142,8 @@ public final class ApplicationGatewayBackendHttpSettings extends SubResource {
     }
 
     /**
-     * Get the protocol property: The protocol used to communicate with the backend.
+     * Get the protocol property: The protocol used to communicate with the backend. Possible values are 'Http' and
+     * 'Https'.
      *
      * @return the protocol value.
      */
@@ -129,7 +152,8 @@ public final class ApplicationGatewayBackendHttpSettings extends SubResource {
     }
 
     /**
-     * Set the protocol property: The protocol used to communicate with the backend.
+     * Set the protocol property: The protocol used to communicate with the backend. Possible values are 'Http' and
+     * 'Https'.
      *
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayBackendHttpSettings object itself.
@@ -409,12 +433,28 @@ public final class ApplicationGatewayBackendHttpSettings extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the backend HTTP settings resource.
+     * Get the provisioningState property: Provisioning state of the backend http settings resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the backend http settings resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayBackendHttpSettings object itself.
+     */
+    public ApplicationGatewayBackendHttpSettings withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayBackendHttpSettingsPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

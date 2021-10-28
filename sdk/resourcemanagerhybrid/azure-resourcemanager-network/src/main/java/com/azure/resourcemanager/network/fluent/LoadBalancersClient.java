@@ -14,7 +14,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
-import com.azure.resourcemanager.network.models.LoadBalancerVipSwapRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -306,8 +305,54 @@ public interface LoadBalancersClient
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LoadBalancerInner>> updateTagsWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String loadBalancerName, TagsObject parameters);
+
+    /**
+     * Updates a load balancer tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to update load balancer tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return loadBalancer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTagsAsync(
+        String resourceGroupName, String loadBalancerName, TagsObject parameters);
+
+    /**
+     * Updates a load balancer tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to update load balancer tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return loadBalancer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTags(
+        String resourceGroupName, String loadBalancerName, TagsObject parameters);
+
+    /**
+     * Updates a load balancer tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to update load balancer tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return loadBalancer resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTags(
+        String resourceGroupName, String loadBalancerName, TagsObject parameters, Context context);
 
     /**
      * Updates a load balancer tags.
@@ -350,7 +395,7 @@ public interface LoadBalancersClient
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoadBalancerInner> updateTagsWithResponse(
+    LoadBalancerInner updateTags(
         String resourceGroupName, String loadBalancerName, TagsObject parameters, Context context);
 
     /**
@@ -421,99 +466,4 @@ public interface LoadBalancersClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LoadBalancerInner> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * Swaps VIPs between two load balancers.
-     *
-     * @param location The region where load balancers are located at.
-     * @param parameters Parameters that define which VIPs should be swapped.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> swapPublicIpAddressesWithResponseAsync(
-        String location, LoadBalancerVipSwapRequest parameters);
-
-    /**
-     * Swaps VIPs between two load balancers.
-     *
-     * @param location The region where load balancers are located at.
-     * @param parameters Parameters that define which VIPs should be swapped.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginSwapPublicIpAddressesAsync(
-        String location, LoadBalancerVipSwapRequest parameters);
-
-    /**
-     * Swaps VIPs between two load balancers.
-     *
-     * @param location The region where load balancers are located at.
-     * @param parameters Parameters that define which VIPs should be swapped.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(
-        String location, LoadBalancerVipSwapRequest parameters);
-
-    /**
-     * Swaps VIPs between two load balancers.
-     *
-     * @param location The region where load balancers are located at.
-     * @param parameters Parameters that define which VIPs should be swapped.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginSwapPublicIpAddresses(
-        String location, LoadBalancerVipSwapRequest parameters, Context context);
-
-    /**
-     * Swaps VIPs between two load balancers.
-     *
-     * @param location The region where load balancers are located at.
-     * @param parameters Parameters that define which VIPs should be swapped.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> swapPublicIpAddressesAsync(String location, LoadBalancerVipSwapRequest parameters);
-
-    /**
-     * Swaps VIPs between two load balancers.
-     *
-     * @param location The region where load balancers are located at.
-     * @param parameters Parameters that define which VIPs should be swapped.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void swapPublicIpAddresses(String location, LoadBalancerVipSwapRequest parameters);
-
-    /**
-     * Swaps VIPs between two load balancers.
-     *
-     * @param location The region where load balancers are located at.
-     * @param parameters Parameters that define which VIPs should be swapped.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void swapPublicIpAddresses(String location, LoadBalancerVipSwapRequest parameters, Context context);
 }

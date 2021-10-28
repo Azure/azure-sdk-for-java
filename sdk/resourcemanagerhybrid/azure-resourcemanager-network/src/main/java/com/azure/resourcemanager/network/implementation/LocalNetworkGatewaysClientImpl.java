@@ -104,7 +104,7 @@ public final class LocalNetworkGatewaysClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/localNetworkGateways/{localNetworkGatewayName}")
@@ -116,7 +116,6 @@ public final class LocalNetworkGatewaysClientImpl
             @PathParam("localNetworkGatewayName") String localNetworkGatewayName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -125,7 +124,7 @@ public final class LocalNetworkGatewaysClientImpl
                 + "/localNetworkGateways/{localNetworkGatewayName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LocalNetworkGatewayInner>> updateTags(
+        Mono<Response<Flux<ByteBuffer>>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("localNetworkGatewayName") String localNetworkGatewayName,
@@ -200,7 +199,7 @@ public final class LocalNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -262,7 +261,7 @@ public final class LocalNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -487,7 +486,7 @@ public final class LocalNetworkGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -539,7 +538,7 @@ public final class LocalNetworkGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -643,8 +642,7 @@ public final class LocalNetworkGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -655,7 +653,6 @@ public final class LocalNetworkGatewaysClientImpl
                             localNetworkGatewayName,
                             apiVersion,
                             this.client.getSubscriptionId(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -695,8 +692,7 @@ public final class LocalNetworkGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -705,7 +701,6 @@ public final class LocalNetworkGatewaysClientImpl
                 localNetworkGatewayName,
                 apiVersion,
                 this.client.getSubscriptionId(),
-                accept,
                 context);
     }
 
@@ -858,7 +853,7 @@ public final class LocalNetworkGatewaysClientImpl
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<LocalNetworkGatewayInner>> updateTagsWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String localNetworkGatewayName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -886,7 +881,7 @@ public final class LocalNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -917,7 +912,7 @@ public final class LocalNetworkGatewaysClientImpl
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LocalNetworkGatewayInner>> updateTagsWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String localNetworkGatewayName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -945,7 +940,7 @@ public final class LocalNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -972,17 +967,120 @@ public final class LocalNetworkGatewaysClientImpl
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<LocalNetworkGatewayInner>, LocalNetworkGatewayInner> beginUpdateTagsAsync(
+        String resourceGroupName, String localNetworkGatewayName, TagsObject parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, localNetworkGatewayName, parameters);
+        return this
+            .client
+            .<LocalNetworkGatewayInner, LocalNetworkGatewayInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                LocalNetworkGatewayInner.class,
+                LocalNetworkGatewayInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Updates a local network gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @param parameters Parameters supplied to update local network gateway tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<LocalNetworkGatewayInner>, LocalNetworkGatewayInner> beginUpdateTagsAsync(
+        String resourceGroupName, String localNetworkGatewayName, TagsObject parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, localNetworkGatewayName, parameters, context);
+        return this
+            .client
+            .<LocalNetworkGatewayInner, LocalNetworkGatewayInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                LocalNetworkGatewayInner.class,
+                LocalNetworkGatewayInner.class,
+                context);
+    }
+
+    /**
+     * Updates a local network gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @param parameters Parameters supplied to update local network gateway tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LocalNetworkGatewayInner>, LocalNetworkGatewayInner> beginUpdateTags(
+        String resourceGroupName, String localNetworkGatewayName, TagsObject parameters) {
+        return beginUpdateTagsAsync(resourceGroupName, localNetworkGatewayName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Updates a local network gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @param parameters Parameters supplied to update local network gateway tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<LocalNetworkGatewayInner>, LocalNetworkGatewayInner> beginUpdateTags(
+        String resourceGroupName, String localNetworkGatewayName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, localNetworkGatewayName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Updates a local network gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @param parameters Parameters supplied to update local network gateway tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LocalNetworkGatewayInner> updateTagsAsync(
         String resourceGroupName, String localNetworkGatewayName, TagsObject parameters) {
-        return updateTagsWithResponseAsync(resourceGroupName, localNetworkGatewayName, parameters)
-            .flatMap(
-                (Response<LocalNetworkGatewayInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateTagsAsync(resourceGroupName, localNetworkGatewayName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates a local network gateway tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param localNetworkGatewayName The name of the local network gateway.
+     * @param parameters Parameters supplied to update local network gateway tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LocalNetworkGatewayInner> updateTagsAsync(
+        String resourceGroupName, String localNetworkGatewayName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, localNetworkGatewayName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1015,9 +1113,9 @@ public final class LocalNetworkGatewaysClientImpl
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LocalNetworkGatewayInner> updateTagsWithResponse(
+    public LocalNetworkGatewayInner updateTags(
         String resourceGroupName, String localNetworkGatewayName, TagsObject parameters, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, localNetworkGatewayName, parameters, context).block();
+        return updateTagsAsync(resourceGroupName, localNetworkGatewayName, parameters, context).block();
     }
 
     /**
@@ -1047,7 +1145,7 @@ public final class LocalNetworkGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1101,7 +1199,7 @@ public final class LocalNetworkGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

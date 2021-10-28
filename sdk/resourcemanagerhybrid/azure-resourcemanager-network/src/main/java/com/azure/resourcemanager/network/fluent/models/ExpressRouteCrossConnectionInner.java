@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitReference;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,13 +20,14 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionInner.class);
 
     /*
-     * Properties of the express route cross connection.
+     * Properties of ExpressRouteCrossConnection.
      */
     @JsonProperty(value = "properties")
     private ExpressRouteCrossConnectionProperties innerProperties;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -39,7 +39,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the express route cross connection.
+     * Get the innerProperties property: Properties of ExpressRouteCrossConnection.
      *
      * @return the innerProperties value.
      */
@@ -48,7 +48,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -127,12 +127,40 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
+     * Set the peeringLocation property: The peering location of the ExpressRoute circuit.
+     *
+     * @param peeringLocation the peeringLocation value to set.
+     * @return the ExpressRouteCrossConnectionInner object itself.
+     */
+    public ExpressRouteCrossConnectionInner withPeeringLocation(String peeringLocation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionProperties();
+        }
+        this.innerProperties().withPeeringLocation(peeringLocation);
+        return this;
+    }
+
+    /**
      * Get the bandwidthInMbps property: The circuit bandwidth In Mbps.
      *
      * @return the bandwidthInMbps value.
      */
     public Integer bandwidthInMbps() {
         return this.innerProperties() == null ? null : this.innerProperties().bandwidthInMbps();
+    }
+
+    /**
+     * Set the bandwidthInMbps property: The circuit bandwidth In Mbps.
+     *
+     * @param bandwidthInMbps the bandwidthInMbps value to set.
+     * @return the ExpressRouteCrossConnectionInner object itself.
+     */
+    public ExpressRouteCrossConnectionInner withBandwidthInMbps(Integer bandwidthInMbps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionProperties();
+        }
+        this.innerProperties().withBandwidthInMbps(bandwidthInMbps);
+        return this;
     }
 
     /**
@@ -160,7 +188,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Get the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
-     * provider system.
+     * provider system. Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned'.
      *
      * @return the serviceProviderProvisioningState value.
      */
@@ -170,7 +198,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Set the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
-     * provider system.
+     * provider system. Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned'.
      *
      * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
      * @return the ExpressRouteCrossConnectionInner object itself.
@@ -208,11 +236,12 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route cross connection resource.
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

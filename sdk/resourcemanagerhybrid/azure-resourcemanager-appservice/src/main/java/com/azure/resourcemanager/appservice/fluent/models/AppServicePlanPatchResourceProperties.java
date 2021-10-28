@@ -7,7 +7,6 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
-import com.azure.resourcemanager.appservice.models.KubeEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.StatusOptions;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -65,13 +64,6 @@ public final class AppServicePlanPatchResourceProperties {
      */
     @JsonProperty(value = "perSiteScaling")
     private Boolean perSiteScaling;
-
-    /*
-     * ServerFarm supports ElasticScale. Apps in this plan will scale as if the
-     * ServerFarm was ElasticPremium sku
-     */
-    @JsonProperty(value = "elasticScaleEnabled")
-    private Boolean elasticScaleEnabled;
 
     /*
      * Maximum number of total workers allowed for this ElasticScaleEnabled App
@@ -145,26 +137,10 @@ public final class AppServicePlanPatchResourceProperties {
     private Integer targetWorkerSizeId;
 
     /*
-     * Provisioning state of the App Service Plan.
+     * Provisioning state of the App Service Environment.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
-
-    /*
-     * Specification for the Kubernetes Environment to use for the App Service
-     * plan.
-     */
-    @JsonProperty(value = "kubeEnvironmentProfile")
-    private KubeEnvironmentProfile kubeEnvironmentProfile;
-
-    /*
-     * If <code>true</code>, this App Service Plan will perform availability
-     * zone balancing.
-     * If <code>false</code>, this App Service Plan will not perform
-     * availability zone balancing.
-     */
-    @JsonProperty(value = "zoneRedundant")
-    private Boolean zoneRedundant;
 
     /**
      * Get the workerTierName property: Target worker tier assigned to the App Service plan.
@@ -267,28 +243,6 @@ public final class AppServicePlanPatchResourceProperties {
      */
     public AppServicePlanPatchResourceProperties withPerSiteScaling(Boolean perSiteScaling) {
         this.perSiteScaling = perSiteScaling;
-        return this;
-    }
-
-    /**
-     * Get the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
-     * ServerFarm was ElasticPremium sku.
-     *
-     * @return the elasticScaleEnabled value.
-     */
-    public Boolean elasticScaleEnabled() {
-        return this.elasticScaleEnabled;
-    }
-
-    /**
-     * Set the elasticScaleEnabled property: ServerFarm supports ElasticScale. Apps in this plan will scale as if the
-     * ServerFarm was ElasticPremium sku.
-     *
-     * @param elasticScaleEnabled the elasticScaleEnabled value to set.
-     * @return the AppServicePlanPatchResourceProperties object itself.
-     */
-    public AppServicePlanPatchResourceProperties withElasticScaleEnabled(Boolean elasticScaleEnabled) {
-        this.elasticScaleEnabled = elasticScaleEnabled;
         return this;
     }
 
@@ -501,59 +455,12 @@ public final class AppServicePlanPatchResourceProperties {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the App Service Plan.
+     * Get the provisioningState property: Provisioning state of the App Service Environment.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
-     * plan.
-     *
-     * @return the kubeEnvironmentProfile value.
-     */
-    public KubeEnvironmentProfile kubeEnvironmentProfile() {
-        return this.kubeEnvironmentProfile;
-    }
-
-    /**
-     * Set the kubeEnvironmentProfile property: Specification for the Kubernetes Environment to use for the App Service
-     * plan.
-     *
-     * @param kubeEnvironmentProfile the kubeEnvironmentProfile value to set.
-     * @return the AppServicePlanPatchResourceProperties object itself.
-     */
-    public AppServicePlanPatchResourceProperties withKubeEnvironmentProfile(
-        KubeEnvironmentProfile kubeEnvironmentProfile) {
-        this.kubeEnvironmentProfile = kubeEnvironmentProfile;
-        return this;
-    }
-
-    /**
-     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
-     * zone balancing. If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone
-     * balancing.
-     *
-     * @return the zoneRedundant value.
-     */
-    public Boolean zoneRedundant() {
-        return this.zoneRedundant;
-    }
-
-    /**
-     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
-     * zone balancing. If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone
-     * balancing.
-     *
-     * @param zoneRedundant the zoneRedundant value to set.
-     * @return the AppServicePlanPatchResourceProperties object itself.
-     */
-    public AppServicePlanPatchResourceProperties withZoneRedundant(Boolean zoneRedundant) {
-        this.zoneRedundant = zoneRedundant;
-        return this;
     }
 
     /**
@@ -564,9 +471,6 @@ public final class AppServicePlanPatchResourceProperties {
     public void validate() {
         if (hostingEnvironmentProfile() != null) {
             hostingEnvironmentProfile().validate();
-        }
-        if (kubeEnvironmentProfile() != null) {
-            kubeEnvironmentProfile().validate();
         }
     }
 }

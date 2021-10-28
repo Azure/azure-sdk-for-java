@@ -6,6 +6,7 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -59,7 +60,7 @@ public final class ObjectsClientImpl implements ObjectsClient {
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementC")
     private interface ObjectsService {
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/{tenantID}/getObjectsByObjectIds")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -68,9 +69,10 @@ public final class ObjectsClientImpl implements ObjectsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
             @BodyParam("application/json") GetObjectsParameters parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -79,6 +81,7 @@ public final class ObjectsClientImpl implements ObjectsClient {
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,
             @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -86,7 +89,8 @@ public final class ObjectsClientImpl implements ObjectsClient {
      * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
      * (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
-     * @param parameters Request parameters for the GetObjectsByObjectIds API.
+     * @param tenantId The tenant ID.
+     * @param parameters Objects filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -94,24 +98,22 @@ public final class ObjectsClientImpl implements ObjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DirectoryObjectInner>> getObjectsByObjectIdsSinglePageAsync(
-        GetObjectsParameters parameters) {
+        String tenantId, GetObjectsParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -119,8 +121,9 @@ public final class ObjectsClientImpl implements ObjectsClient {
                         .getObjectsByObjectIds(
                             this.client.getEndpoint(),
                             this.client.getApiVersion(),
-                            this.client.getTenantId(),
+                            tenantId,
                             parameters,
+                            accept,
                             context))
             .<PagedResponse<DirectoryObjectInner>>map(
                 res ->
@@ -131,14 +134,15 @@ public final class ObjectsClientImpl implements ObjectsClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
      * (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
-     * @param parameters Request parameters for the GetObjectsByObjectIds API.
+     * @param tenantId The tenant ID.
+     * @param parameters Objects filtering parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -147,28 +151,26 @@ public final class ObjectsClientImpl implements ObjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DirectoryObjectInner>> getObjectsByObjectIdsSinglePageAsync(
-        GetObjectsParameters parameters, Context context) {
+        String tenantId, GetObjectsParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
             .getObjectsByObjectIds(
-                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context)
+                this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -184,24 +186,27 @@ public final class ObjectsClientImpl implements ObjectsClient {
      * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
      * (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
-     * @param parameters Request parameters for the GetObjectsByObjectIds API.
+     * @param tenantId The tenant ID.
+     * @param parameters Objects filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the directory objects specified in a list of object IDs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DirectoryObjectInner> getObjectsByObjectIdsAsync(GetObjectsParameters parameters) {
+    public PagedFlux<DirectoryObjectInner> getObjectsByObjectIdsAsync(
+        String tenantId, GetObjectsParameters parameters) {
         return new PagedFlux<>(
-            () -> getObjectsByObjectIdsSinglePageAsync(parameters),
-            nextLink -> getObjectsByObjectIdsNextSinglePageAsync(nextLink));
+            () -> getObjectsByObjectIdsSinglePageAsync(tenantId, parameters),
+            nextLink -> getObjectsByObjectIdsNextSinglePageAsync(nextLink, tenantId));
     }
 
     /**
      * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
      * (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
-     * @param parameters Request parameters for the GetObjectsByObjectIds API.
+     * @param tenantId The tenant ID.
+     * @param parameters Objects filtering parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -210,32 +215,34 @@ public final class ObjectsClientImpl implements ObjectsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DirectoryObjectInner> getObjectsByObjectIdsAsync(
-        GetObjectsParameters parameters, Context context) {
+        String tenantId, GetObjectsParameters parameters, Context context) {
         return new PagedFlux<>(
-            () -> getObjectsByObjectIdsSinglePageAsync(parameters, context),
-            nextLink -> getObjectsByObjectIdsNextSinglePageAsync(nextLink, context));
+            () -> getObjectsByObjectIdsSinglePageAsync(tenantId, parameters, context),
+            nextLink -> getObjectsByObjectIdsNextSinglePageAsync(nextLink, tenantId, context));
     }
 
     /**
      * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
      * (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
-     * @param parameters Request parameters for the GetObjectsByObjectIds API.
+     * @param tenantId The tenant ID.
+     * @param parameters Objects filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the directory objects specified in a list of object IDs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(GetObjectsParameters parameters) {
-        return new PagedIterable<>(getObjectsByObjectIdsAsync(parameters));
+    public PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(String tenantId, GetObjectsParameters parameters) {
+        return new PagedIterable<>(getObjectsByObjectIdsAsync(tenantId, parameters));
     }
 
     /**
      * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
      * (users, groups, etc.) should be searched by specifying the optional types parameter.
      *
-     * @param parameters Request parameters for the GetObjectsByObjectIds API.
+     * @param tenantId The tenant ID.
+     * @param parameters Objects filtering parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -243,21 +250,24 @@ public final class ObjectsClientImpl implements ObjectsClient {
      * @return the directory objects specified in a list of object IDs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(GetObjectsParameters parameters, Context context) {
-        return new PagedIterable<>(getObjectsByObjectIdsAsync(parameters, context));
+    public PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(
+        String tenantId, GetObjectsParameters parameters, Context context) {
+        return new PagedIterable<>(getObjectsByObjectIdsAsync(tenantId, parameters, context));
     }
 
     /**
      * Gets AD group membership for the specified AD object IDs.
      *
      * @param nextLink Next link for the list operation.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return aD group membership for the specified AD object IDs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> getObjectsByObjectIdsNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<DirectoryObjectInner>> getObjectsByObjectIdsNextSinglePageAsync(
+        String nextLink, String tenantId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -267,12 +277,10 @@ public final class ObjectsClientImpl implements ObjectsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -281,7 +289,8 @@ public final class ObjectsClientImpl implements ObjectsClient {
                             this.client.getEndpoint(),
                             nextLink,
                             this.client.getApiVersion(),
-                            this.client.getTenantId(),
+                            tenantId,
+                            accept,
                             context))
             .<PagedResponse<DirectoryObjectInner>>map(
                 res ->
@@ -292,13 +301,14 @@ public final class ObjectsClientImpl implements ObjectsClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets AD group membership for the specified AD object IDs.
      *
      * @param nextLink Next link for the list operation.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -307,7 +317,7 @@ public final class ObjectsClientImpl implements ObjectsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DirectoryObjectInner>> getObjectsByObjectIdsNextSinglePageAsync(
-        String nextLink, Context context) {
+        String nextLink, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -317,16 +327,14 @@ public final class ObjectsClientImpl implements ObjectsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
         return service
             .getObjectsByObjectIdsNext(
-                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
+                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

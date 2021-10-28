@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Access;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteFilterRuleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,32 +18,33 @@ public final class RouteFilterRulePropertiesFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterRulePropertiesFormat.class);
 
     /*
-     * The access type of the rule.
+     * The access type of the rule. Valid values are: 'Allow', 'Deny'
      */
     @JsonProperty(value = "access", required = true)
     private Access access;
 
     /*
-     * The rule type of the rule.
+     * The rule type of the rule. Valid value is: 'Community'
      */
     @JsonProperty(value = "routeFilterRuleType", required = true)
     private RouteFilterRuleType routeFilterRuleType;
 
     /*
      * The collection for bgp community values to filter on. e.g.
-     * ['12076:5010','12076:5020'].
+     * ['12076:5010','12076:5020']
      */
     @JsonProperty(value = "communities", required = true)
     private List<String> communities;
 
     /*
-     * The provisioning state of the route filter rule resource.
+     * The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', 'Succeeded' and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
-     * Get the access property: The access type of the rule.
+     * Get the access property: The access type of the rule. Valid values are: 'Allow', 'Deny'.
      *
      * @return the access value.
      */
@@ -53,7 +53,7 @@ public final class RouteFilterRulePropertiesFormat {
     }
 
     /**
-     * Set the access property: The access type of the rule.
+     * Set the access property: The access type of the rule. Valid values are: 'Allow', 'Deny'.
      *
      * @param access the access value to set.
      * @return the RouteFilterRulePropertiesFormat object itself.
@@ -64,7 +64,7 @@ public final class RouteFilterRulePropertiesFormat {
     }
 
     /**
-     * Get the routeFilterRuleType property: The rule type of the rule.
+     * Get the routeFilterRuleType property: The rule type of the rule. Valid value is: 'Community'.
      *
      * @return the routeFilterRuleType value.
      */
@@ -73,7 +73,7 @@ public final class RouteFilterRulePropertiesFormat {
     }
 
     /**
-     * Set the routeFilterRuleType property: The rule type of the rule.
+     * Set the routeFilterRuleType property: The rule type of the rule. Valid value is: 'Community'.
      *
      * @param routeFilterRuleType the routeFilterRuleType value to set.
      * @return the RouteFilterRulePropertiesFormat object itself.
@@ -106,11 +106,12 @@ public final class RouteFilterRulePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the route filter rule resource.
+     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', 'Succeeded' and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

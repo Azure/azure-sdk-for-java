@@ -10,10 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * AADProfile specifies attributes for Azure Active Directory integration. For more details see [managed AAD on
- * AKS](https://docs.microsoft.com/azure/aks/managed-aad).
- */
+/** AADProfile specifies attributes for Azure Active Directory integration. */
 @Fluent
 public final class ManagedClusterAadProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAadProfile.class);
@@ -31,8 +28,7 @@ public final class ManagedClusterAadProfile {
     private Boolean enableAzureRbac;
 
     /*
-     * The list of AAD group object IDs that will have admin role of the
-     * cluster.
+     * AAD group object IDs that will have admin role of the cluster.
      */
     @JsonProperty(value = "adminGroupObjectIDs")
     private List<String> adminGroupObjectIDs;
@@ -103,7 +99,7 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Get the adminGroupObjectIDs property: The list of AAD group object IDs that will have admin role of the cluster.
+     * Get the adminGroupObjectIDs property: AAD group object IDs that will have admin role of the cluster.
      *
      * @return the adminGroupObjectIDs value.
      */
@@ -112,7 +108,7 @@ public final class ManagedClusterAadProfile {
     }
 
     /**
-     * Set the adminGroupObjectIDs property: The list of AAD group object IDs that will have admin role of the cluster.
+     * Set the adminGroupObjectIDs property: AAD group object IDs that will have admin role of the cluster.
      *
      * @param adminGroupObjectIDs the adminGroupObjectIDs value to set.
      * @return the ManagedClusterAadProfile object itself.

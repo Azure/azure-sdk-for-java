@@ -21,19 +21,19 @@ public final class TunnelConnectionHealth {
     private String tunnel;
 
     /*
-     * Virtual Network Gateway connection status.
+     * Virtual network Gateway connection status
      */
     @JsonProperty(value = "connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkGatewayConnectionStatus connectionStatus;
 
     /*
-     * The Ingress Bytes Transferred in this connection.
+     * The Ingress Bytes Transferred in this connection
      */
     @JsonProperty(value = "ingressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long ingressBytesTransferred;
 
     /*
-     * The Egress Bytes Transferred in this connection.
+     * The Egress Bytes Transferred in this connection
      */
     @JsonProperty(value = "egressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long egressBytesTransferred;
@@ -54,7 +54,7 @@ public final class TunnelConnectionHealth {
     }
 
     /**
-     * Get the connectionStatus property: Virtual Network Gateway connection status.
+     * Get the connectionStatus property: Virtual network Gateway connection status.
      *
      * @return the connectionStatus value.
      */

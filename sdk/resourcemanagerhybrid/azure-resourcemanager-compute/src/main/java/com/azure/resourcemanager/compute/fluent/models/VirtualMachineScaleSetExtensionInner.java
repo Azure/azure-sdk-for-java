@@ -301,33 +301,6 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     }
 
     /**
-     * Get the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
-     * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
-     * default is false.
-     *
-     * @return the suppressFailures value.
-     */
-    public Boolean suppressFailures() {
-        return this.innerProperties() == null ? null : this.innerProperties().suppressFailures();
-    }
-
-    /**
-     * Set the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
-     * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
-     * default is false.
-     *
-     * @param suppressFailures the suppressFailures value to set.
-     * @return the VirtualMachineScaleSetExtensionInner object itself.
-     */
-    public VirtualMachineScaleSetExtensionInner withSuppressFailures(Boolean suppressFailures) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineScaleSetExtensionProperties();
-        }
-        this.innerProperties().withSuppressFailures(suppressFailures);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

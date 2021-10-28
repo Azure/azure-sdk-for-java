@@ -5,15 +5,14 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventhubs.fluent.models.DestinationProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Capture storage details for capture description. */
-@JsonFlatten
 @Fluent
-public class Destination {
+public final class Destination {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Destination.class);
 
     /*
@@ -23,25 +22,11 @@ public class Destination {
     private String name;
 
     /*
-     * Resource id of the storage account to be used to create the blobs
+     * Properties describing the storage account, blob container and archive
+     * name format for capture destination
      */
-    @JsonProperty(value = "properties.storageAccountResourceId")
-    private String storageAccountResourceId;
-
-    /*
-     * Blob container Name
-     */
-    @JsonProperty(value = "properties.blobContainer")
-    private String blobContainer;
-
-    /*
-     * Blob naming convention for archive, e.g.
-     * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}.
-     * Here all the parameters (Namespace,EventHub .. etc) are mandatory
-     * irrespective of order
-     */
-    @JsonProperty(value = "properties.archiveNameFormat")
-    private String archiveNameFormat;
+    @JsonProperty(value = "properties")
+    private DestinationProperties innerProperties;
 
     /**
      * Get the name property: Name for capture destination.
@@ -64,12 +49,22 @@ public class Destination {
     }
 
     /**
+     * Get the innerProperties property: Properties describing the storage account, blob container and archive name
+     * format for capture destination.
+     *
+     * @return the innerProperties value.
+     */
+    private DestinationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the storageAccountResourceId property: Resource id of the storage account to be used to create the blobs.
      *
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
-        return this.storageAccountResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountResourceId();
     }
 
     /**
@@ -79,7 +74,10 @@ public class Destination {
      * @return the Destination object itself.
      */
     public Destination withStorageAccountResourceId(String storageAccountResourceId) {
-        this.storageAccountResourceId = storageAccountResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DestinationProperties();
+        }
+        this.innerProperties().withStorageAccountResourceId(storageAccountResourceId);
         return this;
     }
 
@@ -89,7 +87,7 @@ public class Destination {
      * @return the blobContainer value.
      */
     public String blobContainer() {
-        return this.blobContainer;
+        return this.innerProperties() == null ? null : this.innerProperties().blobContainer();
     }
 
     /**
@@ -99,7 +97,10 @@ public class Destination {
      * @return the Destination object itself.
      */
     public Destination withBlobContainer(String blobContainer) {
-        this.blobContainer = blobContainer;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DestinationProperties();
+        }
+        this.innerProperties().withBlobContainer(blobContainer);
         return this;
     }
 
@@ -111,7 +112,7 @@ public class Destination {
      * @return the archiveNameFormat value.
      */
     public String archiveNameFormat() {
-        return this.archiveNameFormat;
+        return this.innerProperties() == null ? null : this.innerProperties().archiveNameFormat();
     }
 
     /**
@@ -123,7 +124,10 @@ public class Destination {
      * @return the Destination object itself.
      */
     public Destination withArchiveNameFormat(String archiveNameFormat) {
-        this.archiveNameFormat = archiveNameFormat;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DestinationProperties();
+        }
+        this.innerProperties().withArchiveNameFormat(archiveNameFormat);
         return this;
     }
 
@@ -133,5 +137,8 @@ public class Destination {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

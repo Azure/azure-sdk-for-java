@@ -22,7 +22,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
     private String address;
 
     /*
-     * Reference to IP configuration of backend server.
+     * Reference of IP configuration of backend server.
      */
     @JsonProperty(value = "ipConfiguration")
     private NetworkInterfaceIpConfigurationInner ipConfiguration;
@@ -32,12 +32,6 @@ public final class ApplicationGatewayBackendHealthServerInner {
      */
     @JsonProperty(value = "health")
     private ApplicationGatewayBackendHealthServerHealth health;
-
-    /*
-     * Health Probe Log.
-     */
-    @JsonProperty(value = "healthProbeLog")
-    private String healthProbeLog;
 
     /**
      * Get the address property: IP address or FQDN of backend server.
@@ -60,7 +54,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
     }
 
     /**
-     * Get the ipConfiguration property: Reference to IP configuration of backend server.
+     * Get the ipConfiguration property: Reference of IP configuration of backend server.
      *
      * @return the ipConfiguration value.
      */
@@ -69,7 +63,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
     }
 
     /**
-     * Set the ipConfiguration property: Reference to IP configuration of backend server.
+     * Set the ipConfiguration property: Reference of IP configuration of backend server.
      *
      * @param ipConfiguration the ipConfiguration value to set.
      * @return the ApplicationGatewayBackendHealthServerInner object itself.
@@ -97,26 +91,6 @@ public final class ApplicationGatewayBackendHealthServerInner {
      */
     public ApplicationGatewayBackendHealthServerInner withHealth(ApplicationGatewayBackendHealthServerHealth health) {
         this.health = health;
-        return this;
-    }
-
-    /**
-     * Get the healthProbeLog property: Health Probe Log.
-     *
-     * @return the healthProbeLog value.
-     */
-    public String healthProbeLog() {
-        return this.healthProbeLog;
-    }
-
-    /**
-     * Set the healthProbeLog property: Health Probe Log.
-     *
-     * @param healthProbeLog the healthProbeLog value to set.
-     * @return the ApplicationGatewayBackendHealthServerInner object itself.
-     */
-    public ApplicationGatewayBackendHealthServerInner withHealthProbeLog(String healthProbeLog) {
-        this.healthProbeLog = healthProbeLog;
         return this;
     }
 

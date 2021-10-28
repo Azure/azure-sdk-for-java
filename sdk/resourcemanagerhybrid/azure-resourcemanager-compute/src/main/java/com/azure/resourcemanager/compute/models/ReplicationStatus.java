@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** This is the replication status of the gallery image version. */
+/** This is the replication status of the gallery Image Version. */
 @Immutable
 public final class ReplicationStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationStatus.class);

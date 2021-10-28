@@ -9,8 +9,6 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkAdminState;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkConnectorType;
-import com.azure.resourcemanager.network.models.ExpressRouteLinkMacSecConfig;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,7 +18,7 @@ public final class ExpressRouteLinkInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteLinkInner.class);
 
     /*
-     * ExpressRouteLink Resource Properties ExpressRouteLink properties.
+     * ExpressRouteLink Resource Properties ExpressRouteLink properties
      */
     @JsonProperty(value = "properties")
     private ExpressRouteLinkPropertiesFormat innerProperties;
@@ -152,35 +150,13 @@ public final class ExpressRouteLinkInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route link resource.
+     * Get the provisioningState property: The provisioning state of the ExpressRouteLink resource. Possible values are:
+     * 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration. MacSec configuration.
-     *
-     * @return the macSecConfig value.
-     */
-    public ExpressRouteLinkMacSecConfig macSecConfig() {
-        return this.innerProperties() == null ? null : this.innerProperties().macSecConfig();
-    }
-
-    /**
-     * Set the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration. MacSec configuration.
-     *
-     * @param macSecConfig the macSecConfig value to set.
-     * @return the ExpressRouteLinkInner object itself.
-     */
-    public ExpressRouteLinkInner withMacSecConfig(ExpressRouteLinkMacSecConfig macSecConfig) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteLinkPropertiesFormat();
-        }
-        this.innerProperties().withMacSecConfig(macSecConfig);
-        return this;
     }
 
     /**

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfigurationDnsSettings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -63,12 +62,6 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties {
      */
     @JsonProperty(value = "enableIPForwarding")
     private Boolean enableIpForwarding;
-
-    /*
-     * Specify what happens to the network interface when the VM is deleted
-     */
-    @JsonProperty(value = "deleteOption")
-    private DeleteOptions deleteOption;
 
     /**
      * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
@@ -215,26 +208,6 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties {
      */
     public VirtualMachineScaleSetNetworkConfigurationProperties withEnableIpForwarding(Boolean enableIpForwarding) {
         this.enableIpForwarding = enableIpForwarding;
-        return this;
-    }
-
-    /**
-     * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
-     * @return the deleteOption value.
-     */
-    public DeleteOptions deleteOption() {
-        return this.deleteOption;
-    }
-
-    /**
-     * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
-     * @param deleteOption the deleteOption value to set.
-     * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
-     */
-    public VirtualMachineScaleSetNetworkConfigurationProperties withDeleteOption(DeleteOptions deleteOption) {
-        this.deleteOption = deleteOption;
         return this;
     }
 

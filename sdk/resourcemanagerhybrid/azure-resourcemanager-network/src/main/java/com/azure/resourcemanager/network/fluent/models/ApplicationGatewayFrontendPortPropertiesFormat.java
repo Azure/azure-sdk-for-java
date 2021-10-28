@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,16 +16,17 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
     private final ClientLogger logger = new ClientLogger(ApplicationGatewayFrontendPortPropertiesFormat.class);
 
     /*
-     * Frontend port.
+     * Frontend port
      */
     @JsonProperty(value = "port")
     private Integer port;
 
     /*
-     * The provisioning state of the frontend port resource.
+     * Provisioning state of the frontend port resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the port property: Frontend port.
@@ -49,12 +49,25 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the frontend port resource.
+     * Get the provisioningState property: Provisioning state of the frontend port resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the frontend port resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayFrontendPortPropertiesFormat object itself.
+     */
+    public ApplicationGatewayFrontendPortPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

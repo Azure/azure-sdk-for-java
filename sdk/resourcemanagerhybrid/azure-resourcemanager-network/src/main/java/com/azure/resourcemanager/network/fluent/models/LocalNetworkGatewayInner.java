@@ -9,7 +9,6 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -28,7 +27,7 @@ public final class LocalNetworkGatewayInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
@@ -53,6 +52,17 @@ public final class LocalNetworkGatewayInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the LocalNetworkGatewayInner object itself.
+     */
+    public LocalNetworkGatewayInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
@@ -136,29 +146,6 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the fqdn property: FQDN of local network gateway.
-     *
-     * @return the fqdn value.
-     */
-    public String fqdn() {
-        return this.innerProperties() == null ? null : this.innerProperties().fqdn();
-    }
-
-    /**
-     * Set the fqdn property: FQDN of local network gateway.
-     *
-     * @param fqdn the fqdn value to set.
-     * @return the LocalNetworkGatewayInner object itself.
-     */
-    public LocalNetworkGatewayInner withFqdn(String fqdn) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LocalNetworkGatewayPropertiesFormat();
-        }
-        this.innerProperties().withFqdn(fqdn);
-        return this;
-    }
-
-    /**
      * Get the bgpSettings property: Local network gateway's BGP speaker settings.
      *
      * @return the bgpSettings value.
@@ -182,7 +169,7 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the local network gateway resource.
+     * Get the resourceGuid property: The resource GUID property of the LocalNetworkGateway resource.
      *
      * @return the resourceGuid value.
      */
@@ -191,11 +178,26 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the local network gateway resource.
+     * Set the resourceGuid property: The resource GUID property of the LocalNetworkGateway resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the LocalNetworkGatewayInner object itself.
+     */
+    public LocalNetworkGatewayInner withResourceGuid(String resourceGuid) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LocalNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withResourceGuid(resourceGuid);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the LocalNetworkGateway resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

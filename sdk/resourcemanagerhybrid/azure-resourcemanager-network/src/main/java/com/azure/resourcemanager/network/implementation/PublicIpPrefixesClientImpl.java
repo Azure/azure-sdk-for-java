@@ -76,7 +76,7 @@ public final class PublicIpPrefixesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface PublicIpPrefixesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/publicIPPrefixes/{publicIpPrefixName}")
@@ -88,7 +88,6 @@ public final class PublicIpPrefixesClientImpl
             @PathParam("publicIpPrefixName") String publicIpPrefixName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -129,7 +128,7 @@ public final class PublicIpPrefixesClientImpl
                 + "/publicIPPrefixes/{publicIpPrefixName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PublicIpPrefixInner>> updateTags(
+        Mono<Response<Flux<ByteBuffer>>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("publicIpPrefixName") String publicIpPrefixName,
@@ -218,8 +217,7 @@ public final class PublicIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -230,7 +228,6 @@ public final class PublicIpPrefixesClientImpl
                             publicIpPrefixName,
                             apiVersion,
                             this.client.getSubscriptionId(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -269,8 +266,7 @@ public final class PublicIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -279,7 +275,6 @@ public final class PublicIpPrefixesClientImpl
                 publicIpPrefixName,
                 apiVersion,
                 this.client.getSubscriptionId(),
-                accept,
                 context);
     }
 
@@ -422,7 +417,7 @@ public final class PublicIpPrefixesClientImpl
      * Gets the specified public IP prefix in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpPrefixName The name of the public IP prefix.
+     * @param publicIpPrefixName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -452,7 +447,7 @@ public final class PublicIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -474,7 +469,7 @@ public final class PublicIpPrefixesClientImpl
      * Gets the specified public IP prefix in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpPrefixName The name of the public IP prefix.
+     * @param publicIpPrefixName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -505,7 +500,7 @@ public final class PublicIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -524,7 +519,7 @@ public final class PublicIpPrefixesClientImpl
      * Gets the specified public IP prefix in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpPrefixName The name of the public IP prefix.
+     * @param publicIpPrefixName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -549,7 +544,7 @@ public final class PublicIpPrefixesClientImpl
      * Gets the specified public IP prefix in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpPrefixName The name of the public IP prefix.
+     * @param publicIpPrefixName The name of the PublicIPPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -573,7 +568,7 @@ public final class PublicIpPrefixesClientImpl
      * Gets the specified public IP prefix in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpPrefixName The name of the public IP prefix.
+     * @param publicIpPrefixName The name of the PublicIPPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -589,7 +584,7 @@ public final class PublicIpPrefixesClientImpl
      * Gets the specified public IP prefix in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param publicIpPrefixName The name of the public IP prefix.
+     * @param publicIpPrefixName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,7 +637,7 @@ public final class PublicIpPrefixesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -700,7 +695,7 @@ public final class PublicIpPrefixesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -886,7 +881,7 @@ public final class PublicIpPrefixesClientImpl
      * @return public IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PublicIpPrefixInner>> updateTagsWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String publicIpPrefixName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -913,7 +908,7 @@ public final class PublicIpPrefixesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -944,7 +939,7 @@ public final class PublicIpPrefixesClientImpl
      * @return public IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PublicIpPrefixInner>> updateTagsWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String publicIpPrefixName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -971,7 +966,7 @@ public final class PublicIpPrefixesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -998,17 +993,116 @@ public final class PublicIpPrefixesClientImpl
      * @return public IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<PublicIpPrefixInner>, PublicIpPrefixInner> beginUpdateTagsAsync(
+        String resourceGroupName, String publicIpPrefixName, TagsObject parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, publicIpPrefixName, parameters);
+        return this
+            .client
+            .<PublicIpPrefixInner, PublicIpPrefixInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                PublicIpPrefixInner.class,
+                PublicIpPrefixInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Updates public IP prefix tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpPrefixName The name of the public IP prefix.
+     * @param parameters Parameters supplied to update public IP prefix tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP prefix resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<PublicIpPrefixInner>, PublicIpPrefixInner> beginUpdateTagsAsync(
+        String resourceGroupName, String publicIpPrefixName, TagsObject parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, publicIpPrefixName, parameters, context);
+        return this
+            .client
+            .<PublicIpPrefixInner, PublicIpPrefixInner>getLroResult(
+                mono, this.client.getHttpPipeline(), PublicIpPrefixInner.class, PublicIpPrefixInner.class, context);
+    }
+
+    /**
+     * Updates public IP prefix tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpPrefixName The name of the public IP prefix.
+     * @param parameters Parameters supplied to update public IP prefix tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP prefix resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PublicIpPrefixInner>, PublicIpPrefixInner> beginUpdateTags(
+        String resourceGroupName, String publicIpPrefixName, TagsObject parameters) {
+        return beginUpdateTagsAsync(resourceGroupName, publicIpPrefixName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Updates public IP prefix tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpPrefixName The name of the public IP prefix.
+     * @param parameters Parameters supplied to update public IP prefix tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP prefix resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<PublicIpPrefixInner>, PublicIpPrefixInner> beginUpdateTags(
+        String resourceGroupName, String publicIpPrefixName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, publicIpPrefixName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Updates public IP prefix tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpPrefixName The name of the public IP prefix.
+     * @param parameters Parameters supplied to update public IP prefix tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP prefix resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PublicIpPrefixInner> updateTagsAsync(
         String resourceGroupName, String publicIpPrefixName, TagsObject parameters) {
-        return updateTagsWithResponseAsync(resourceGroupName, publicIpPrefixName, parameters)
-            .flatMap(
-                (Response<PublicIpPrefixInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateTagsAsync(resourceGroupName, publicIpPrefixName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates public IP prefix tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpPrefixName The name of the public IP prefix.
+     * @param parameters Parameters supplied to update public IP prefix tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP prefix resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PublicIpPrefixInner> updateTagsAsync(
+        String resourceGroupName, String publicIpPrefixName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, publicIpPrefixName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1040,9 +1134,9 @@ public final class PublicIpPrefixesClientImpl
      * @return public IP prefix resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PublicIpPrefixInner> updateTagsWithResponse(
+    public PublicIpPrefixInner updateTags(
         String resourceGroupName, String publicIpPrefixName, TagsObject parameters, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, publicIpPrefixName, parameters, context).block();
+        return updateTagsAsync(resourceGroupName, publicIpPrefixName, parameters, context).block();
     }
 
     /**
@@ -1066,7 +1160,7 @@ public final class PublicIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1108,7 +1202,7 @@ public final class PublicIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1204,7 +1298,7 @@ public final class PublicIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1258,7 +1352,7 @@ public final class PublicIpPrefixesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

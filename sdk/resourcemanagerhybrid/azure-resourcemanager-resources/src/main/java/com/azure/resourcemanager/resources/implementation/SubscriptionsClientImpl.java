@@ -69,7 +69,6 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @QueryParam("includeExtendedLocations") Boolean includeExtendedLocations,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -110,15 +109,13 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
-     * @param includeExtendedLocations Whether to include extended locations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(
-        String subscriptionId, Boolean includeExtendedLocations) {
+    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -134,12 +131,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
                 context ->
                     service
                         .listLocations(
-                            this.client.getEndpoint(),
-                            subscriptionId,
-                            this.client.getApiVersion(),
-                            includeExtendedLocations,
-                            accept,
-                            context))
+                            this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), accept, context))
             .<PagedResponse<LocationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -152,7 +144,6 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
-     * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -160,8 +151,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(
-        String subscriptionId, Boolean includeExtendedLocations, Context context) {
+    private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -174,33 +164,11 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listLocations(
-                this.client.getEndpoint(),
-                subscriptionId,
-                this.client.getApiVersion(),
-                includeExtendedLocations,
-                accept,
-                context)
+            .listLocations(this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
-    }
-
-    /**
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     *
-     * @param subscriptionId The ID of the target subscription.
-     * @param includeExtendedLocations Whether to include extended locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Boolean includeExtendedLocations) {
-        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId, includeExtendedLocations));
     }
 
     /**
@@ -215,8 +183,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LocationInner> listLocationsAsync(String subscriptionId) {
-        final Boolean includeExtendedLocations = null;
-        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId, includeExtendedLocations));
+        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId));
     }
 
     /**
@@ -224,7 +191,6 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
-     * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -232,9 +198,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LocationInner> listLocationsAsync(
-        String subscriptionId, Boolean includeExtendedLocations, Context context) {
-        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId, includeExtendedLocations, context));
+    private PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Context context) {
+        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId, context));
     }
 
     /**
@@ -249,8 +214,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationInner> listLocations(String subscriptionId) {
-        final Boolean includeExtendedLocations = null;
-        return new PagedIterable<>(listLocationsAsync(subscriptionId, includeExtendedLocations));
+        return new PagedIterable<>(listLocationsAsync(subscriptionId));
     }
 
     /**
@@ -258,7 +222,6 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
-     * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -266,9 +229,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LocationInner> listLocations(
-        String subscriptionId, Boolean includeExtendedLocations, Context context) {
-        return new PagedIterable<>(listLocationsAsync(subscriptionId, includeExtendedLocations, context));
+    public PagedIterable<LocationInner> listLocations(String subscriptionId, Context context) {
+        return new PagedIterable<>(listLocationsAsync(subscriptionId, context));
     }
 
     /**

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
@@ -26,27 +25,28 @@ public final class SecurityRulePropertiesFormat {
     private String description;
 
     /*
-     * Network protocol this rule applies to.
+     * Network protocol this rule applies to. Possible values are 'Tcp', 'Udp',
+     * and '*'.
      */
     @JsonProperty(value = "protocol", required = true)
     private SecurityRuleProtocol protocol;
 
     /*
-     * The source port or range. Integer or range between 0 and 65535. Asterisk
-     * '*' can also be used to match all ports.
+     * The source port or range. Integer or range between 0 and 65535.
+     * Asterisks '*' can also be used to match all ports.
      */
     @JsonProperty(value = "sourcePortRange")
     private String sourcePortRange;
 
     /*
      * The destination port or range. Integer or range between 0 and 65535.
-     * Asterisk '*' can also be used to match all ports.
+     * Asterisks '*' can also be used to match all ports.
      */
     @JsonProperty(value = "destinationPortRange")
     private String destinationPortRange;
 
     /*
-     * The CIDR or source IP range. Asterisk '*' can also be used to match all
+     * The CIDR or source IP range. Asterisks '*' can also be used to match all
      * source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer'
      * and 'Internet' can also be used. If this is an ingress rule, specifies
      * where network traffic originates from.
@@ -67,7 +67,7 @@ public final class SecurityRulePropertiesFormat {
     private List<ApplicationSecurityGroupInner> sourceApplicationSecurityGroups;
 
     /*
-     * The destination address prefix. CIDR or destination IP range. Asterisk
+     * The destination address prefix. CIDR or destination IP range. Asterisks
      * '*' can also be used to match all source IPs. Default tags such as
      * 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
      */
@@ -99,7 +99,8 @@ public final class SecurityRulePropertiesFormat {
     private List<String> destinationPortRanges;
 
     /*
-     * The network traffic is allowed or denied.
+     * The network traffic is allowed or denied. Possible values are: 'Allow'
+     * and 'Deny'.
      */
     @JsonProperty(value = "access", required = true)
     private SecurityRuleAccess access;
@@ -114,16 +115,18 @@ public final class SecurityRulePropertiesFormat {
 
     /*
      * The direction of the rule. The direction specifies if rule will be
-     * evaluated on incoming or outgoing traffic.
+     * evaluated on incoming or outgoing traffic. Possible values are:
+     * 'Inbound' and 'Outbound'.
      */
     @JsonProperty(value = "direction", required = true)
     private SecurityRuleDirection direction;
 
     /*
-     * The provisioning state of the security rule resource.
+     * The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
@@ -146,7 +149,7 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Get the protocol property: Network protocol this rule applies to.
+     * Get the protocol property: Network protocol this rule applies to. Possible values are 'Tcp', 'Udp', and '*'.
      *
      * @return the protocol value.
      */
@@ -155,7 +158,7 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Set the protocol property: Network protocol this rule applies to.
+     * Set the protocol property: Network protocol this rule applies to. Possible values are 'Tcp', 'Udp', and '*'.
      *
      * @param protocol the protocol value to set.
      * @return the SecurityRulePropertiesFormat object itself.
@@ -166,7 +169,7 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Get the sourcePortRange property: The source port or range. Integer or range between 0 and 65535. Asterisk '*'
+     * Get the sourcePortRange property: The source port or range. Integer or range between 0 and 65535. Asterisks '*'
      * can also be used to match all ports.
      *
      * @return the sourcePortRange value.
@@ -176,7 +179,7 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Set the sourcePortRange property: The source port or range. Integer or range between 0 and 65535. Asterisk '*'
+     * Set the sourcePortRange property: The source port or range. Integer or range between 0 and 65535. Asterisks '*'
      * can also be used to match all ports.
      *
      * @param sourcePortRange the sourcePortRange value to set.
@@ -189,7 +192,7 @@ public final class SecurityRulePropertiesFormat {
 
     /**
      * Get the destinationPortRange property: The destination port or range. Integer or range between 0 and 65535.
-     * Asterisk '*' can also be used to match all ports.
+     * Asterisks '*' can also be used to match all ports.
      *
      * @return the destinationPortRange value.
      */
@@ -199,7 +202,7 @@ public final class SecurityRulePropertiesFormat {
 
     /**
      * Set the destinationPortRange property: The destination port or range. Integer or range between 0 and 65535.
-     * Asterisk '*' can also be used to match all ports.
+     * Asterisks '*' can also be used to match all ports.
      *
      * @param destinationPortRange the destinationPortRange value to set.
      * @return the SecurityRulePropertiesFormat object itself.
@@ -210,7 +213,7 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Get the sourceAddressPrefix property: The CIDR or source IP range. Asterisk '*' can also be used to match all
+     * Get the sourceAddressPrefix property: The CIDR or source IP range. Asterisks '*' can also be used to match all
      * source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this
      * is an ingress rule, specifies where network traffic originates from.
      *
@@ -221,7 +224,7 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Set the sourceAddressPrefix property: The CIDR or source IP range. Asterisk '*' can also be used to match all
+     * Set the sourceAddressPrefix property: The CIDR or source IP range. Asterisks '*' can also be used to match all
      * source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this
      * is an ingress rule, specifies where network traffic originates from.
      *
@@ -275,9 +278,9 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Get the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range. Asterisk
-     * '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and
-     * 'Internet' can also be used.
+     * Get the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range.
+     * Asterisks '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork',
+     * 'AzureLoadBalancer' and 'Internet' can also be used.
      *
      * @return the destinationAddressPrefix value.
      */
@@ -286,9 +289,9 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Set the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range. Asterisk
-     * '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and
-     * 'Internet' can also be used.
+     * Set the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range.
+     * Asterisks '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork',
+     * 'AzureLoadBalancer' and 'Internet' can also be used.
      *
      * @param destinationAddressPrefix the destinationAddressPrefix value to set.
      * @return the SecurityRulePropertiesFormat object itself.
@@ -380,7 +383,7 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Get the access property: The network traffic is allowed or denied.
+     * Get the access property: The network traffic is allowed or denied. Possible values are: 'Allow' and 'Deny'.
      *
      * @return the access value.
      */
@@ -389,7 +392,7 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Set the access property: The network traffic is allowed or denied.
+     * Set the access property: The network traffic is allowed or denied. Possible values are: 'Allow' and 'Deny'.
      *
      * @param access the access value to set.
      * @return the SecurityRulePropertiesFormat object itself.
@@ -425,7 +428,7 @@ public final class SecurityRulePropertiesFormat {
 
     /**
      * Get the direction property: The direction of the rule. The direction specifies if rule will be evaluated on
-     * incoming or outgoing traffic.
+     * incoming or outgoing traffic. Possible values are: 'Inbound' and 'Outbound'.
      *
      * @return the direction value.
      */
@@ -435,7 +438,7 @@ public final class SecurityRulePropertiesFormat {
 
     /**
      * Set the direction property: The direction of the rule. The direction specifies if rule will be evaluated on
-     * incoming or outgoing traffic.
+     * incoming or outgoing traffic. Possible values are: 'Inbound' and 'Outbound'.
      *
      * @param direction the direction value to set.
      * @return the SecurityRulePropertiesFormat object itself.
@@ -446,12 +449,25 @@ public final class SecurityRulePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the security rule resource.
+     * Get the provisioningState property: The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the SecurityRulePropertiesFormat object itself.
+     */
+    public SecurityRulePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

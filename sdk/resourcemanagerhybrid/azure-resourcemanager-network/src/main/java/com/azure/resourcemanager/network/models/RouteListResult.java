@@ -17,7 +17,7 @@ public final class RouteListResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteListResult.class);
 
     /*
-     * A list of routes in a resource group.
+     * Gets a list of routes in a resource group.
      */
     @JsonProperty(value = "value")
     private List<RouteInner> value;
@@ -29,7 +29,7 @@ public final class RouteListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of routes in a resource group.
+     * Get the value property: Gets a list of routes in a resource group.
      *
      * @return the value value.
      */
@@ -38,7 +38,7 @@ public final class RouteListResult {
     }
 
     /**
-     * Set the value property: A list of routes in a resource group.
+     * Set the value property: Gets a list of routes in a resource group.
      *
      * @param value the value value to set.
      * @return the RouteListResult object itself.

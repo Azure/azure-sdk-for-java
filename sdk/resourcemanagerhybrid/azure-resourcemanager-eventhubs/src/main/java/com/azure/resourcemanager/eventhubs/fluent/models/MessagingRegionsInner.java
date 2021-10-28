@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.MessagingRegionsProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Messaging Region. */
 @Fluent
@@ -39,6 +40,20 @@ public final class MessagingRegionsInner extends Resource {
      */
     public MessagingRegionsInner withProperties(MessagingRegionsProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MessagingRegionsInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MessagingRegionsInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

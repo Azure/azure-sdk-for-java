@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyProperties;
-import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
 import com.azure.resourcemanager.storage.models.LeaseDuration;
 import com.azure.resourcemanager.storage.models.LeaseState;
 import com.azure.resourcemanager.storage.models.LeaseStatus;
@@ -129,14 +128,6 @@ public final class ContainerProperties {
      */
     @JsonProperty(value = "hasImmutabilityPolicy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasImmutabilityPolicy;
-
-    /*
-     * The object level immutability property of the container. The property is
-     * immutable and can only be set to true at the container creation time.
-     * Existing containers must undergo a migration process.
-     */
-    @JsonProperty(value = "immutableStorageWithVersioning")
-    private ImmutableStorageWithVersioning immutableStorageWithVersioning;
 
     /**
      * Get the version property: The version of the deleted blob container.
@@ -334,31 +325,6 @@ public final class ContainerProperties {
     }
 
     /**
-     * Get the immutableStorageWithVersioning property: The object level immutability property of the container. The
-     * property is immutable and can only be set to true at the container creation time. Existing containers must
-     * undergo a migration process.
-     *
-     * @return the immutableStorageWithVersioning value.
-     */
-    public ImmutableStorageWithVersioning immutableStorageWithVersioning() {
-        return this.immutableStorageWithVersioning;
-    }
-
-    /**
-     * Set the immutableStorageWithVersioning property: The object level immutability property of the container. The
-     * property is immutable and can only be set to true at the container creation time. Existing containers must
-     * undergo a migration process.
-     *
-     * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
-     * @return the ContainerProperties object itself.
-     */
-    public ContainerProperties withImmutableStorageWithVersioning(
-        ImmutableStorageWithVersioning immutableStorageWithVersioning) {
-        this.immutableStorageWithVersioning = immutableStorageWithVersioning;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -369,9 +335,6 @@ public final class ContainerProperties {
         }
         if (legalHold() != null) {
             legalHold().validate();
-        }
-        if (immutableStorageWithVersioning() != null) {
-            immutableStorageWithVersioning().validate();
         }
     }
 }

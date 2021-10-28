@@ -32,9 +32,7 @@ public final class SnapshotUpdate {
 
     /*
      * The snapshots sku name. Can be Standard_LRS, Premium_LRS, or
-     * Standard_ZRS. This is an optional parameter for incremental snapshot and
-     * the default behavior is the SKU will be set to the same sku as the
-     * previous snapshot
+     * Standard_ZRS.
      */
     @JsonProperty(value = "sku")
     private SnapshotSku sku;
@@ -69,9 +67,7 @@ public final class SnapshotUpdate {
     }
 
     /**
-     * Get the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. This is an
-     * optional parameter for incremental snapshot and the default behavior is the SKU will be set to the same sku as
-     * the previous snapshot.
+     * Get the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS.
      *
      * @return the sku value.
      */
@@ -80,9 +76,7 @@ public final class SnapshotUpdate {
     }
 
     /**
-     * Set the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. This is an
-     * optional parameter for incremental snapshot and the default behavior is the SKU will be set to the same sku as
-     * the previous snapshot.
+     * Set the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS.
      *
      * @param sku the sku value to set.
      * @return the SnapshotUpdate object itself.
@@ -191,98 +185,6 @@ public final class SnapshotUpdate {
             this.innerProperties = new SnapshotUpdateProperties();
         }
         this.innerProperties().withEncryption(encryption);
-        return this;
-    }
-
-    /**
-     * Get the networkAccessPolicy property: Policy for accessing the disk via network.
-     *
-     * @return the networkAccessPolicy value.
-     */
-    public NetworkAccessPolicy networkAccessPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().networkAccessPolicy();
-    }
-
-    /**
-     * Set the networkAccessPolicy property: Policy for accessing the disk via network.
-     *
-     * @param networkAccessPolicy the networkAccessPolicy value to set.
-     * @return the SnapshotUpdate object itself.
-     */
-    public SnapshotUpdate withNetworkAccessPolicy(NetworkAccessPolicy networkAccessPolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SnapshotUpdateProperties();
-        }
-        this.innerProperties().withNetworkAccessPolicy(networkAccessPolicy);
-        return this;
-    }
-
-    /**
-     * Get the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
-     *
-     * @return the diskAccessId value.
-     */
-    public String diskAccessId() {
-        return this.innerProperties() == null ? null : this.innerProperties().diskAccessId();
-    }
-
-    /**
-     * Set the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
-     *
-     * @param diskAccessId the diskAccessId value to set.
-     * @return the SnapshotUpdate object itself.
-     */
-    public SnapshotUpdate withDiskAccessId(String diskAccessId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SnapshotUpdateProperties();
-        }
-        this.innerProperties().withDiskAccessId(diskAccessId);
-        return this;
-    }
-
-    /**
-     * Get the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
-     *
-     * @return the supportsHibernation value.
-     */
-    public Boolean supportsHibernation() {
-        return this.innerProperties() == null ? null : this.innerProperties().supportsHibernation();
-    }
-
-    /**
-     * Set the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
-     *
-     * @param supportsHibernation the supportsHibernation value to set.
-     * @return the SnapshotUpdate object itself.
-     */
-    public SnapshotUpdate withSupportsHibernation(Boolean supportsHibernation) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SnapshotUpdateProperties();
-        }
-        this.innerProperties().withSupportsHibernation(supportsHibernation);
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Policy for controlling export on the disk.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Policy for controlling export on the disk.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the SnapshotUpdate object itself.
-     */
-    public SnapshotUpdate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SnapshotUpdateProperties();
-        }
-        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 

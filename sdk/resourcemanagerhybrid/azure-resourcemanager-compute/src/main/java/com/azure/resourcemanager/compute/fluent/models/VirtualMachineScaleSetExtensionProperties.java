@@ -84,14 +84,6 @@ public final class VirtualMachineScaleSetExtensionProperties {
     @JsonProperty(value = "provisionAfterExtensions")
     private List<String> provisionAfterExtensions;
 
-    /*
-     * Indicates whether failures stemming from the extension will be
-     * suppressed (Operational failures such as not connecting to the VM will
-     * not be suppressed regardless of this value). The default is false.
-     */
-    @JsonProperty(value = "suppressFailures")
-    private Boolean suppressFailures;
-
     /**
      * Get the forceUpdateTag property: If a value is provided and is different from the previous value, the extension
      * handler will be forced to update even if the extension configuration has not changed.
@@ -291,30 +283,6 @@ public final class VirtualMachineScaleSetExtensionProperties {
     public VirtualMachineScaleSetExtensionProperties withProvisionAfterExtensions(
         List<String> provisionAfterExtensions) {
         this.provisionAfterExtensions = provisionAfterExtensions;
-        return this;
-    }
-
-    /**
-     * Get the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
-     * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
-     * default is false.
-     *
-     * @return the suppressFailures value.
-     */
-    public Boolean suppressFailures() {
-        return this.suppressFailures;
-    }
-
-    /**
-     * Set the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
-     * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
-     * default is false.
-     *
-     * @param suppressFailures the suppressFailures value to set.
-     * @return the VirtualMachineScaleSetExtensionProperties object itself.
-     */
-    public VirtualMachineScaleSetExtensionProperties withSuppressFailures(Boolean suppressFailures) {
-        this.suppressFailures = suppressFailures;
         return this;
     }
 

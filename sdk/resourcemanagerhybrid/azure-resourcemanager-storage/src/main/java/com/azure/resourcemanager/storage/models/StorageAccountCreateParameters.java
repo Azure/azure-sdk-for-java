@@ -40,14 +40,6 @@ public final class StorageAccountCreateParameters {
     private String location;
 
     /*
-     * Optional. Set the extended location of the resource. If not set, the
-     * storage account will be created in Azure main region. Otherwise it will
-     * be created in the specified extended location
-     */
-    @JsonProperty(value = "extendedLocation")
-    private ExtendedLocation extendedLocation;
-
-    /*
      * Gets or sets a list of key value pairs that describe the resource. These
      * tags can be used for viewing and grouping this resource (across resource
      * groups). A maximum of 15 tags can be provided for a resource. Each tag
@@ -137,28 +129,6 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the extendedLocation property: Optional. Set the extended location of the resource. If not set, the storage
-     * account will be created in Azure main region. Otherwise it will be created in the specified extended location.
-     *
-     * @return the extendedLocation value.
-     */
-    public ExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
-
-    /**
-     * Set the extendedLocation property: Optional. Set the extended location of the resource. If not set, the storage
-     * account will be created in Azure main region. Otherwise it will be created in the specified extended location.
-     *
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the StorageAccountCreateParameters object itself.
-     */
-    public StorageAccountCreateParameters withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
-        return this;
-    }
-
-    /**
      * Get the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
      * for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
      * resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no
@@ -211,52 +181,6 @@ public final class StorageAccountCreateParameters {
      */
     private StorageAccountPropertiesCreateParameters innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the sasPolicy property: SasPolicy assigned to the storage account.
-     *
-     * @return the sasPolicy value.
-     */
-    public SasPolicy sasPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().sasPolicy();
-    }
-
-    /**
-     * Set the sasPolicy property: SasPolicy assigned to the storage account.
-     *
-     * @param sasPolicy the sasPolicy value to set.
-     * @return the StorageAccountCreateParameters object itself.
-     */
-    public StorageAccountCreateParameters withSasPolicy(SasPolicy sasPolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageAccountPropertiesCreateParameters();
-        }
-        this.innerProperties().withSasPolicy(sasPolicy);
-        return this;
-    }
-
-    /**
-     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
-     * @return the keyPolicy value.
-     */
-    public KeyPolicy keyPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().keyPolicy();
-    }
-
-    /**
-     * Set the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
-     * @param keyPolicy the keyPolicy value to set.
-     * @return the StorageAccountCreateParameters object itself.
-     */
-    public StorageAccountCreateParameters withKeyPolicy(KeyPolicy keyPolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageAccountPropertiesCreateParameters();
-        }
-        this.innerProperties().withKeyPolicy(keyPolicy);
-        return this;
     }
 
     /**
@@ -561,54 +485,6 @@ public final class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
-     * @return the enableNfsV3 value.
-     */
-    public Boolean enableNfsV3() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableNfsV3();
-    }
-
-    /**
-     * Set the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
-     * @param enableNfsV3 the enableNfsV3 value to set.
-     * @return the StorageAccountCreateParameters object itself.
-     */
-    public StorageAccountCreateParameters withEnableNfsV3(Boolean enableNfsV3) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageAccountPropertiesCreateParameters();
-        }
-        this.innerProperties().withEnableNfsV3(enableNfsV3);
-        return this;
-    }
-
-    /**
-     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @return the allowCrossTenantReplication value.
-     */
-    public Boolean allowCrossTenantReplication() {
-        return this.innerProperties() == null ? null : this.innerProperties().allowCrossTenantReplication();
-    }
-
-    /**
-     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
-     * @return the StorageAccountCreateParameters object itself.
-     */
-    public StorageAccountCreateParameters withAllowCrossTenantReplication(Boolean allowCrossTenantReplication) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageAccountPropertiesCreateParameters();
-        }
-        this.innerProperties().withAllowCrossTenantReplication(allowCrossTenantReplication);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -633,9 +509,6 @@ public final class StorageAccountCreateParameters {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model StorageAccountCreateParameters"));
-        }
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
         }
         if (identity() != null) {
             identity().validate();

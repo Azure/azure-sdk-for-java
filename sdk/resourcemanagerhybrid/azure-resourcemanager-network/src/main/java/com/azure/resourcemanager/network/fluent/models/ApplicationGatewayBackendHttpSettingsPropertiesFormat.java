@@ -10,7 +10,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayConnectionDraining;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCookieBasedAffinity;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -28,7 +27,8 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     private Integer port;
 
     /*
-     * The protocol used to communicate with the backend.
+     * The protocol used to communicate with the backend. Possible values are
+     * 'Http' and 'Https'.
      */
     @JsonProperty(value = "protocol")
     private ApplicationGatewayProtocol protocol;
@@ -104,10 +104,11 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     private String path;
 
     /*
-     * The provisioning state of the backend HTTP settings resource.
+     * Provisioning state of the backend http settings resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the port property: The destination port on the backend.
@@ -130,7 +131,8 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     }
 
     /**
-     * Get the protocol property: The protocol used to communicate with the backend.
+     * Get the protocol property: The protocol used to communicate with the backend. Possible values are 'Http' and
+     * 'Https'.
      *
      * @return the protocol value.
      */
@@ -139,7 +141,8 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     }
 
     /**
-     * Set the protocol property: The protocol used to communicate with the backend.
+     * Set the protocol property: The protocol used to communicate with the backend. Possible values are 'Http' and
+     * 'Https'.
      *
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
@@ -383,12 +386,25 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the backend HTTP settings resource.
+     * Get the provisioningState property: Provisioning state of the backend http settings resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the backend http settings resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

@@ -4,34 +4,44 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for IpFilterTag. */
-public final class IpFilterTag extends ExpandableStringEnum<IpFilterTag> {
-    /** Static value Default for IpFilterTag. */
-    public static final IpFilterTag DEFAULT = fromString("Default");
+public enum IpFilterTag {
+    /** Enum value Default. */
+    DEFAULT("Default"),
 
-    /** Static value XffProxy for IpFilterTag. */
-    public static final IpFilterTag XFF_PROXY = fromString("XffProxy");
+    /** Enum value XffProxy. */
+    XFF_PROXY("XffProxy");
 
-    /** Static value ServiceTag for IpFilterTag. */
-    public static final IpFilterTag SERVICE_TAG = fromString("ServiceTag");
+    /** The actual serialized value for a IpFilterTag instance. */
+    private final String value;
 
-    /**
-     * Creates or finds a IpFilterTag from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding IpFilterTag.
-     */
-    @JsonCreator
-    public static IpFilterTag fromString(String name) {
-        return fromString(name, IpFilterTag.class);
+    IpFilterTag(String value) {
+        this.value = value;
     }
 
-    /** @return known IpFilterTag values. */
-    public static Collection<IpFilterTag> values() {
-        return values(IpFilterTag.class);
+    /**
+     * Parses a serialized value to a IpFilterTag instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed IpFilterTag object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static IpFilterTag fromString(String value) {
+        IpFilterTag[] items = IpFilterTag.values();
+        for (IpFilterTag item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

@@ -22,7 +22,7 @@ public final class NextHopResultInner {
     private NextHopType nextHopType;
 
     /*
-     * Next hop IP Address.
+     * Next hop IP Address
      */
     @JsonProperty(value = "nextHopIpAddress")
     private String nextHopIpAddress;

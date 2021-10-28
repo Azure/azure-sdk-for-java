@@ -9,7 +9,6 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProbeHealthResponseMatch;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,7 +18,7 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayProbeInner.class);
 
     /*
-     * Properties of the application gateway probe.
+     * Properties of probe of an application gateway.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayProbePropertiesFormat innerProperties;
@@ -33,17 +32,17 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type")
     private String type;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway probe.
+     * Get the innerProperties property: Properties of probe of an application gateway.
      *
      * @return the innerProperties value.
      */
@@ -81,12 +80,34 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the ApplicationGatewayProbeInner object itself.
+     */
+    public ApplicationGatewayProbeInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the type property: Type of the resource.
      *
      * @return the type value.
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Set the type property: Type of the resource.
+     *
+     * @param type the type value to set.
+     * @return the ApplicationGatewayProbeInner object itself.
+     */
+    public ApplicationGatewayProbeInner withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -97,7 +118,7 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
-     * Get the protocol property: The protocol used for the probe.
+     * Get the protocol property: The protocol used for the probe. Possible values are 'Http' and 'Https'.
      *
      * @return the protocol value.
      */
@@ -106,7 +127,7 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
-     * Set the protocol property: The protocol used for the probe.
+     * Set the protocol property: The protocol used for the probe. Possible values are 'Http' and 'Https'.
      *
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayProbeInner object itself.
@@ -193,7 +214,7 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
-     * Get the timeout property: The probe timeout in seconds. Probe marked as failed if valid response is not received
+     * Get the timeout property: the probe timeout in seconds. Probe marked as failed if valid response is not received
      * with this timeout period. Acceptable values are from 1 second to 86400 seconds.
      *
      * @return the timeout value.
@@ -203,7 +224,7 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
-     * Set the timeout property: The probe timeout in seconds. Probe marked as failed if valid response is not received
+     * Set the timeout property: the probe timeout in seconds. Probe marked as failed if valid response is not received
      * with this timeout period. Acceptable values are from 1 second to 86400 seconds.
      *
      * @param timeout the timeout value to set.
@@ -315,38 +336,27 @@ public final class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the probe resource.
+     * Get the provisioningState property: Provisioning state of the backend http settings resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the port property: Custom port which will be used for probing the backend servers. The valid value ranges
-     * from 1 to 65535. In case not set, port from http settings will be used. This property is valid for Standard_v2
-     * and WAF_v2 only.
+     * Set the provisioningState property: Provisioning state of the backend http settings resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      *
-     * @return the port value.
-     */
-    public Integer port() {
-        return this.innerProperties() == null ? null : this.innerProperties().port();
-    }
-
-    /**
-     * Set the port property: Custom port which will be used for probing the backend servers. The valid value ranges
-     * from 1 to 65535. In case not set, port from http settings will be used. This property is valid for Standard_v2
-     * and WAF_v2 only.
-     *
-     * @param port the port value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the ApplicationGatewayProbeInner object itself.
      */
-    public ApplicationGatewayProbeInner withPort(Integer port) {
+    public ApplicationGatewayProbeInner withProvisioningState(String provisioningState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
         }
-        this.innerProperties().withPort(port);
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 

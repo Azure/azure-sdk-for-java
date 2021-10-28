@@ -7,25 +7,11 @@ package com.azure.resourcemanager.network.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.fluent.models.BastionActiveSessionInner;
-import com.azure.resourcemanager.network.fluent.models.BastionSessionStateInner;
-import com.azure.resourcemanager.network.fluent.models.BastionShareableLinkInner;
 import com.azure.resourcemanager.network.fluent.models.DnsNameAvailabilityResultInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualWanSecurityProvidersInner;
-import com.azure.resourcemanager.network.fluent.models.VpnProfileResponseInner;
-import com.azure.resourcemanager.network.models.BastionShareableLinkListRequest;
-import com.azure.resourcemanager.network.models.SessionIds;
-import com.azure.resourcemanager.network.models.VirtualWanVpnProfileParameters;
-import java.nio.ByteBuffer;
 import java.time.Duration;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** The interface for NetworkManagementClient class. */
@@ -67,20 +53,6 @@ public interface NetworkManagementClient {
     ApplicationGatewaysClient getApplicationGateways();
 
     /**
-     * Gets the ApplicationGatewayPrivateLinkResourcesClient object to access its operations.
-     *
-     * @return the ApplicationGatewayPrivateLinkResourcesClient object.
-     */
-    ApplicationGatewayPrivateLinkResourcesClient getApplicationGatewayPrivateLinkResources();
-
-    /**
-     * Gets the ApplicationGatewayPrivateEndpointConnectionsClient object to access its operations.
-     *
-     * @return the ApplicationGatewayPrivateEndpointConnectionsClient object.
-     */
-    ApplicationGatewayPrivateEndpointConnectionsClient getApplicationGatewayPrivateEndpointConnections();
-
-    /**
      * Gets the ApplicationSecurityGroupsClient object to access its operations.
      *
      * @return the ApplicationSecurityGroupsClient object.
@@ -102,13 +74,6 @@ public interface NetworkManagementClient {
     AvailableResourceGroupDelegationsClient getAvailableResourceGroupDelegations();
 
     /**
-     * Gets the AvailableServiceAliasesClient object to access its operations.
-     *
-     * @return the AvailableServiceAliasesClient object.
-     */
-    AvailableServiceAliasesClient getAvailableServiceAliases();
-
-    /**
      * Gets the AzureFirewallsClient object to access its operations.
      *
      * @return the AzureFirewallsClient object.
@@ -123,41 +88,6 @@ public interface NetworkManagementClient {
     AzureFirewallFqdnTagsClient getAzureFirewallFqdnTags();
 
     /**
-     * Gets the WebCategoriesClient object to access its operations.
-     *
-     * @return the WebCategoriesClient object.
-     */
-    WebCategoriesClient getWebCategories();
-
-    /**
-     * Gets the BastionHostsClient object to access its operations.
-     *
-     * @return the BastionHostsClient object.
-     */
-    BastionHostsClient getBastionHosts();
-
-    /**
-     * Gets the NetworkInterfacesClient object to access its operations.
-     *
-     * @return the NetworkInterfacesClient object.
-     */
-    NetworkInterfacesClient getNetworkInterfaces();
-
-    /**
-     * Gets the PublicIpAddressesClient object to access its operations.
-     *
-     * @return the PublicIpAddressesClient object.
-     */
-    PublicIpAddressesClient getPublicIpAddresses();
-
-    /**
-     * Gets the CustomIpPrefixesClient object to access its operations.
-     *
-     * @return the CustomIpPrefixesClient object.
-     */
-    CustomIpPrefixesClient getCustomIpPrefixes();
-
-    /**
      * Gets the DdosCustomPoliciesClient object to access its operations.
      *
      * @return the DdosCustomPoliciesClient object.
@@ -170,13 +100,6 @@ public interface NetworkManagementClient {
      * @return the DdosProtectionPlansClient object.
      */
     DdosProtectionPlansClient getDdosProtectionPlans();
-
-    /**
-     * Gets the DscpConfigurationsClient object to access its operations.
-     *
-     * @return the DscpConfigurationsClient object.
-     */
-    DscpConfigurationsClient getDscpConfigurations();
 
     /**
      * Gets the AvailableEndpointServicesClient object to access its operations.
@@ -207,13 +130,6 @@ public interface NetworkManagementClient {
     ExpressRouteCircuitConnectionsClient getExpressRouteCircuitConnections();
 
     /**
-     * Gets the PeerExpressRouteCircuitConnectionsClient object to access its operations.
-     *
-     * @return the PeerExpressRouteCircuitConnectionsClient object.
-     */
-    PeerExpressRouteCircuitConnectionsClient getPeerExpressRouteCircuitConnections();
-
-    /**
      * Gets the ExpressRouteCircuitsClient object to access its operations.
      *
      * @return the ExpressRouteCircuitsClient object.
@@ -242,6 +158,20 @@ public interface NetworkManagementClient {
     ExpressRouteCrossConnectionPeeringsClient getExpressRouteCrossConnectionPeerings();
 
     /**
+     * Gets the ExpressRouteGatewaysClient object to access its operations.
+     *
+     * @return the ExpressRouteGatewaysClient object.
+     */
+    ExpressRouteGatewaysClient getExpressRouteGateways();
+
+    /**
+     * Gets the ExpressRouteConnectionsClient object to access its operations.
+     *
+     * @return the ExpressRouteConnectionsClient object.
+     */
+    ExpressRouteConnectionsClient getExpressRouteConnections();
+
+    /**
      * Gets the ExpressRoutePortsLocationsClient object to access its operations.
      *
      * @return the ExpressRoutePortsLocationsClient object.
@@ -263,32 +193,11 @@ public interface NetworkManagementClient {
     ExpressRouteLinksClient getExpressRouteLinks();
 
     /**
-     * Gets the FirewallPoliciesClient object to access its operations.
+     * Gets the InterfaceEndpointsClient object to access its operations.
      *
-     * @return the FirewallPoliciesClient object.
+     * @return the InterfaceEndpointsClient object.
      */
-    FirewallPoliciesClient getFirewallPolicies();
-
-    /**
-     * Gets the FirewallPolicyRuleCollectionGroupsClient object to access its operations.
-     *
-     * @return the FirewallPolicyRuleCollectionGroupsClient object.
-     */
-    FirewallPolicyRuleCollectionGroupsClient getFirewallPolicyRuleCollectionGroups();
-
-    /**
-     * Gets the IpAllocationsClient object to access its operations.
-     *
-     * @return the IpAllocationsClient object.
-     */
-    IpAllocationsClient getIpAllocations();
-
-    /**
-     * Gets the IpGroupsClient object to access its operations.
-     *
-     * @return the IpGroupsClient object.
-     */
-    IpGroupsClient getIpGroups();
+    InterfaceEndpointsClient getInterfaceEndpoints();
 
     /**
      * Gets the LoadBalancersClient object to access its operations.
@@ -347,11 +256,11 @@ public interface NetworkManagementClient {
     LoadBalancerProbesClient getLoadBalancerProbes();
 
     /**
-     * Gets the NatGatewaysClient object to access its operations.
+     * Gets the NetworkInterfacesClient object to access its operations.
      *
-     * @return the NatGatewaysClient object.
+     * @return the NetworkInterfacesClient object.
      */
-    NatGatewaysClient getNatGateways();
+    NetworkInterfacesClient getNetworkInterfaces();
 
     /**
      * Gets the NetworkInterfaceIpConfigurationsClient object to access its operations.
@@ -403,34 +312,6 @@ public interface NetworkManagementClient {
     DefaultSecurityRulesClient getDefaultSecurityRules();
 
     /**
-     * Gets the NetworkVirtualAppliancesClient object to access its operations.
-     *
-     * @return the NetworkVirtualAppliancesClient object.
-     */
-    NetworkVirtualAppliancesClient getNetworkVirtualAppliances();
-
-    /**
-     * Gets the VirtualApplianceSitesClient object to access its operations.
-     *
-     * @return the VirtualApplianceSitesClient object.
-     */
-    VirtualApplianceSitesClient getVirtualApplianceSites();
-
-    /**
-     * Gets the VirtualApplianceSkusClient object to access its operations.
-     *
-     * @return the VirtualApplianceSkusClient object.
-     */
-    VirtualApplianceSkusClient getVirtualApplianceSkus();
-
-    /**
-     * Gets the InboundSecurityRuleOperationsClient object to access its operations.
-     *
-     * @return the InboundSecurityRuleOperationsClient object.
-     */
-    InboundSecurityRuleOperationsClient getInboundSecurityRuleOperations();
-
-    /**
      * Gets the NetworkWatchersClient object to access its operations.
      *
      * @return the NetworkWatchersClient object.
@@ -452,13 +333,6 @@ public interface NetworkManagementClient {
     ConnectionMonitorsClient getConnectionMonitors();
 
     /**
-     * Gets the FlowLogsClient object to access its operations.
-     *
-     * @return the FlowLogsClient object.
-     */
-    FlowLogsClient getFlowLogs();
-
-    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.
@@ -466,32 +340,11 @@ public interface NetworkManagementClient {
     OperationsClient getOperations();
 
     /**
-     * Gets the PrivateEndpointsClient object to access its operations.
+     * Gets the PublicIpAddressesClient object to access its operations.
      *
-     * @return the PrivateEndpointsClient object.
+     * @return the PublicIpAddressesClient object.
      */
-    PrivateEndpointsClient getPrivateEndpoints();
-
-    /**
-     * Gets the AvailablePrivateEndpointTypesClient object to access its operations.
-     *
-     * @return the AvailablePrivateEndpointTypesClient object.
-     */
-    AvailablePrivateEndpointTypesClient getAvailablePrivateEndpointTypes();
-
-    /**
-     * Gets the PrivateDnsZoneGroupsClient object to access its operations.
-     *
-     * @return the PrivateDnsZoneGroupsClient object.
-     */
-    PrivateDnsZoneGroupsClient getPrivateDnsZoneGroups();
-
-    /**
-     * Gets the PrivateLinkServicesClient object to access its operations.
-     *
-     * @return the PrivateLinkServicesClient object.
-     */
-    PrivateLinkServicesClient getPrivateLinkServices();
+    PublicIpAddressesClient getPublicIpAddresses();
 
     /**
      * Gets the PublicIpPrefixesClient object to access its operations.
@@ -529,13 +382,6 @@ public interface NetworkManagementClient {
     RoutesClient getRoutes();
 
     /**
-     * Gets the SecurityPartnerProvidersClient object to access its operations.
-     *
-     * @return the SecurityPartnerProvidersClient object.
-     */
-    SecurityPartnerProvidersClient getSecurityPartnerProviders();
-
-    /**
      * Gets the BgpServiceCommunitiesClient object to access its operations.
      *
      * @return the BgpServiceCommunitiesClient object.
@@ -557,20 +403,6 @@ public interface NetworkManagementClient {
     ServiceEndpointPolicyDefinitionsClient getServiceEndpointPolicyDefinitions();
 
     /**
-     * Gets the ServiceTagsClient object to access its operations.
-     *
-     * @return the ServiceTagsClient object.
-     */
-    ServiceTagsClient getServiceTags();
-
-    /**
-     * Gets the ServiceTagInformationsClient object to access its operations.
-     *
-     * @return the ServiceTagInformationsClient object.
-     */
-    ServiceTagInformationsClient getServiceTagInformations();
-
-    /**
      * Gets the UsagesClient object to access its operations.
      *
      * @return the UsagesClient object.
@@ -590,20 +422,6 @@ public interface NetworkManagementClient {
      * @return the SubnetsClient object.
      */
     SubnetsClient getSubnets();
-
-    /**
-     * Gets the ResourceNavigationLinksClient object to access its operations.
-     *
-     * @return the ResourceNavigationLinksClient object.
-     */
-    ResourceNavigationLinksClient getResourceNavigationLinks();
-
-    /**
-     * Gets the ServiceAssociationLinksClient object to access its operations.
-     *
-     * @return the ServiceAssociationLinksClient object.
-     */
-    ServiceAssociationLinksClient getServiceAssociationLinks();
 
     /**
      * Gets the VirtualNetworkPeeringsClient object to access its operations.
@@ -634,32 +452,11 @@ public interface NetworkManagementClient {
     LocalNetworkGatewaysClient getLocalNetworkGateways();
 
     /**
-     * Gets the VirtualNetworkGatewayNatRulesClient object to access its operations.
-     *
-     * @return the VirtualNetworkGatewayNatRulesClient object.
-     */
-    VirtualNetworkGatewayNatRulesClient getVirtualNetworkGatewayNatRules();
-
-    /**
      * Gets the VirtualNetworkTapsClient object to access its operations.
      *
      * @return the VirtualNetworkTapsClient object.
      */
     VirtualNetworkTapsClient getVirtualNetworkTaps();
-
-    /**
-     * Gets the VirtualRoutersClient object to access its operations.
-     *
-     * @return the VirtualRoutersClient object.
-     */
-    VirtualRoutersClient getVirtualRouters();
-
-    /**
-     * Gets the VirtualRouterPeeringsClient object to access its operations.
-     *
-     * @return the VirtualRouterPeeringsClient object.
-     */
-    VirtualRouterPeeringsClient getVirtualRouterPeerings();
 
     /**
      * Gets the VirtualWansClient object to access its operations.
@@ -676,25 +473,11 @@ public interface NetworkManagementClient {
     VpnSitesClient getVpnSites();
 
     /**
-     * Gets the VpnSiteLinksClient object to access its operations.
-     *
-     * @return the VpnSiteLinksClient object.
-     */
-    VpnSiteLinksClient getVpnSiteLinks();
-
-    /**
      * Gets the VpnSitesConfigurationsClient object to access its operations.
      *
      * @return the VpnSitesConfigurationsClient object.
      */
     VpnSitesConfigurationsClient getVpnSitesConfigurations();
-
-    /**
-     * Gets the VpnServerConfigurationsClient object to access its operations.
-     *
-     * @return the VpnServerConfigurationsClient object.
-     */
-    VpnServerConfigurationsClient getVpnServerConfigurations();
 
     /**
      * Gets the VirtualHubsClient object to access its operations.
@@ -718,13 +501,6 @@ public interface NetworkManagementClient {
     VpnGatewaysClient getVpnGateways();
 
     /**
-     * Gets the VpnLinkConnectionsClient object to access its operations.
-     *
-     * @return the VpnLinkConnectionsClient object.
-     */
-    VpnLinkConnectionsClient getVpnLinkConnections();
-
-    /**
      * Gets the VpnConnectionsClient object to access its operations.
      *
      * @return the VpnConnectionsClient object.
@@ -732,18 +508,11 @@ public interface NetworkManagementClient {
     VpnConnectionsClient getVpnConnections();
 
     /**
-     * Gets the VpnSiteLinkConnectionsClient object to access its operations.
+     * Gets the P2SVpnServerConfigurationsClient object to access its operations.
      *
-     * @return the VpnSiteLinkConnectionsClient object.
+     * @return the P2SVpnServerConfigurationsClient object.
      */
-    VpnSiteLinkConnectionsClient getVpnSiteLinkConnections();
-
-    /**
-     * Gets the NatRulesClient object to access its operations.
-     *
-     * @return the NatRulesClient object.
-     */
-    NatRulesClient getNatRules();
+    P2SVpnServerConfigurationsClient getP2SVpnServerConfigurations();
 
     /**
      * Gets the P2SVpnGatewaysClient object to access its operations.
@@ -751,346 +520,6 @@ public interface NetworkManagementClient {
      * @return the P2SVpnGatewaysClient object.
      */
     P2SVpnGatewaysClient getP2SVpnGateways();
-
-    /**
-     * Gets the VpnServerConfigurationsAssociatedWithVirtualWansClient object to access its operations.
-     *
-     * @return the VpnServerConfigurationsAssociatedWithVirtualWansClient object.
-     */
-    VpnServerConfigurationsAssociatedWithVirtualWansClient getVpnServerConfigurationsAssociatedWithVirtualWans();
-
-    /**
-     * Gets the VirtualHubRouteTableV2SClient object to access its operations.
-     *
-     * @return the VirtualHubRouteTableV2SClient object.
-     */
-    VirtualHubRouteTableV2SClient getVirtualHubRouteTableV2S();
-
-    /**
-     * Gets the ExpressRouteGatewaysClient object to access its operations.
-     *
-     * @return the ExpressRouteGatewaysClient object.
-     */
-    ExpressRouteGatewaysClient getExpressRouteGateways();
-
-    /**
-     * Gets the ExpressRouteConnectionsClient object to access its operations.
-     *
-     * @return the ExpressRouteConnectionsClient object.
-     */
-    ExpressRouteConnectionsClient getExpressRouteConnections();
-
-    /**
-     * Gets the VirtualHubBgpConnectionsClient object to access its operations.
-     *
-     * @return the VirtualHubBgpConnectionsClient object.
-     */
-    VirtualHubBgpConnectionsClient getVirtualHubBgpConnections();
-
-    /**
-     * Gets the VirtualHubIpConfigurationsClient object to access its operations.
-     *
-     * @return the VirtualHubIpConfigurationsClient object.
-     */
-    VirtualHubIpConfigurationsClient getVirtualHubIpConfigurations();
-
-    /**
-     * Gets the HubRouteTablesClient object to access its operations.
-     *
-     * @return the HubRouteTablesClient object.
-     */
-    HubRouteTablesClient getHubRouteTables();
-
-    /**
-     * Gets the WebApplicationFirewallPoliciesClient object to access its operations.
-     *
-     * @return the WebApplicationFirewallPoliciesClient object.
-     */
-    WebApplicationFirewallPoliciesClient getWebApplicationFirewallPolicies();
-
-    /**
-     * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BastionShareableLinkInner> putBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
-
-    /**
-     * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BastionShareableLinkInner> putBastionShareableLink(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
-
-    /**
-     * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BastionShareableLinkInner> putBastionShareableLink(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context);
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteBastionShareableLinkWithResponseAsync(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDeleteBastionShareableLink(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context);
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteBastionShareableLink(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
-
-    /**
-     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteBastionShareableLink(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context);
-
-    /**
-     * Return the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BastionShareableLinkInner> getBastionShareableLinkAsync(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
-
-    /**
-     * Return the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest);
-
-    /**
-     * Return the Bastion Shareable Links for all the VMs specified in the request.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param bslRequest Post request for all the Bastion Shareable Link endpoints.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for all the Bastion Shareable Link endpoints.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BastionShareableLinkInner> getBastionShareableLink(
-        String resourceGroupName, String bastionHostname, BastionShareableLinkListRequest bslRequest, Context context);
-
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GetActiveSessions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BastionActiveSessionInner> getActiveSessionsAsync(String resourceGroupName, String bastionHostname);
-
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GetActiveSessions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BastionActiveSessionInner> getActiveSessions(String resourceGroupName, String bastionHostname);
-
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GetActiveSessions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BastionActiveSessionInner> getActiveSessions(
-        String resourceGroupName, String bastionHostname, Context context);
-
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param sessionIds The list of sessionids to disconnect.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BastionSessionStateInner> disconnectActiveSessionsAsync(
-        String resourceGroupName, String bastionHostname, SessionIds sessionIds);
-
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param sessionIds The list of sessionids to disconnect.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BastionSessionStateInner> disconnectActiveSessions(
-        String resourceGroupName, String bastionHostname, SessionIds sessionIds);
-
-    /**
-     * Returns the list of currently active sessions on the Bastion.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param bastionHostname The name of the Bastion Host.
-     * @param sessionIds The list of sessionids to disconnect.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for DisconnectActiveSessions.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BastionSessionStateInner> disconnectActiveSessions(
-        String resourceGroupName, String bastionHostname, SessionIds sessionIds, Context context);
 
     /**
      * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
@@ -1157,7 +586,7 @@ public interface NetworkManagementClient {
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SecurityProviders.
      */
@@ -1171,7 +600,7 @@ public interface NetworkManagementClient {
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SecurityProviders.
      */
@@ -1185,7 +614,7 @@ public interface NetworkManagementClient {
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SecurityProviders.
      */
@@ -1199,134 +628,11 @@ public interface NetworkManagementClient {
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of SecurityProviders.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualWanSecurityProvidersInner> supportedSecurityProvidersWithResponse(
         String resourceGroupName, String virtualWanName, Context context);
-
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> generatevirtualwanvpnserverconfigurationvpnprofileWithResponseAsync(
-        String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams);
-
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
-        beginGeneratevirtualwanvpnserverconfigurationvpnprofileAsync(
-            String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams);
-
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
-        beginGeneratevirtualwanvpnserverconfigurationvpnprofile(
-            String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams);
-
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner>
-        beginGeneratevirtualwanvpnserverconfigurationvpnprofile(
-            String resourceGroupName,
-            String virtualWanName,
-            VirtualWanVpnProfileParameters vpnClientParams,
-            Context context);
-
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnProfileResponseInner> generatevirtualwanvpnserverconfigurationvpnprofileAsync(
-        String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams);
-
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnProfileResponseInner generatevirtualwanvpnserverconfigurationvpnprofile(
-        String resourceGroupName, String virtualWanName, VirtualWanVpnProfileParameters vpnClientParams);
-
-    /**
-     * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
-     * in the specified resource group.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
-     * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnProfileResponseInner generatevirtualwanvpnserverconfigurationvpnprofile(
-        String resourceGroupName,
-        String virtualWanName,
-        VirtualWanVpnProfileParameters vpnClientParams,
-        Context context);
 }

@@ -40,7 +40,7 @@ public final class VirtualNetworkUsageInner {
     private VirtualNetworkUsageName name;
 
     /*
-     * Usage units. Returns 'Count'.
+     * Usage units. Returns 'Count'
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;

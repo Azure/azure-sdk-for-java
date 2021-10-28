@@ -16,7 +16,7 @@ public final class VirtualHubRoute {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubRoute.class);
 
     /*
-     * List of all addressPrefixes.
+     * list of all addressPrefixes.
      */
     @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;
@@ -28,7 +28,7 @@ public final class VirtualHubRoute {
     private String nextHopIpAddress;
 
     /**
-     * Get the addressPrefixes property: List of all addressPrefixes.
+     * Get the addressPrefixes property: list of all addressPrefixes.
      *
      * @return the addressPrefixes value.
      */
@@ -37,7 +37,7 @@ public final class VirtualHubRoute {
     }
 
     /**
-     * Set the addressPrefixes property: List of all addressPrefixes.
+     * Set the addressPrefixes property: list of all addressPrefixes.
      *
      * @param addressPrefixes the addressPrefixes value to set.
      * @return the VirtualHubRoute object itself.

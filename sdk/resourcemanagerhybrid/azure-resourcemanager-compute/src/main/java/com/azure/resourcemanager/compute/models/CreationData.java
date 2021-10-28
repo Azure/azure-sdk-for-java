@@ -35,14 +35,6 @@ public final class CreationData {
     private ImageDiskReference imageReference;
 
     /*
-     * Required if creating from a Gallery Image. The id of the
-     * ImageDiskReference will be the ARM id of the shared galley image version
-     * from which to create a disk.
-     */
-    @JsonProperty(value = "galleryImageReference")
-    private ImageDiskReference galleryImageReference;
-
-    /*
      * If createOption is Import, this is the URI of a blob to be imported into
      * a managed disk.
      */
@@ -71,13 +63,6 @@ public final class CreationData {
      */
     @JsonProperty(value = "uploadSizeBytes")
     private Long uploadSizeBytes;
-
-    /*
-     * Logical sector size in bytes for Ultra disks. Supported values are 512
-     * ad 4096. 4096 is the default.
-     */
-    @JsonProperty(value = "logicalSectorSize")
-    private Integer logicalSectorSize;
 
     /**
      * Get the createOption property: This enumerates the possible sources of a disk's creation.
@@ -138,28 +123,6 @@ public final class CreationData {
      */
     public CreationData withImageReference(ImageDiskReference imageReference) {
         this.imageReference = imageReference;
-        return this;
-    }
-
-    /**
-     * Get the galleryImageReference property: Required if creating from a Gallery Image. The id of the
-     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
-     *
-     * @return the galleryImageReference value.
-     */
-    public ImageDiskReference galleryImageReference() {
-        return this.galleryImageReference;
-    }
-
-    /**
-     * Set the galleryImageReference property: Required if creating from a Gallery Image. The id of the
-     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
-     *
-     * @param galleryImageReference the galleryImageReference value to set.
-     * @return the CreationData object itself.
-     */
-    public CreationData withGalleryImageReference(ImageDiskReference galleryImageReference) {
-        this.galleryImageReference = galleryImageReference;
         return this;
     }
 
@@ -240,28 +203,6 @@ public final class CreationData {
     }
 
     /**
-     * Get the logicalSectorSize property: Logical sector size in bytes for Ultra disks. Supported values are 512 ad
-     * 4096. 4096 is the default.
-     *
-     * @return the logicalSectorSize value.
-     */
-    public Integer logicalSectorSize() {
-        return this.logicalSectorSize;
-    }
-
-    /**
-     * Set the logicalSectorSize property: Logical sector size in bytes for Ultra disks. Supported values are 512 ad
-     * 4096. 4096 is the default.
-     *
-     * @param logicalSectorSize the logicalSectorSize value to set.
-     * @return the CreationData object itself.
-     */
-    public CreationData withLogicalSectorSize(Integer logicalSectorSize) {
-        this.logicalSectorSize = logicalSectorSize;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -274,9 +215,6 @@ public final class CreationData {
         }
         if (imageReference() != null) {
             imageReference().validate();
-        }
-        if (galleryImageReference() != null) {
-            galleryImageReference().validate();
         }
     }
 }

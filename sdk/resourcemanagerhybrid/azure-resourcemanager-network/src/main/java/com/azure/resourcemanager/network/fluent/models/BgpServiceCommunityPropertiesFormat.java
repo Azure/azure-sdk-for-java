@@ -23,7 +23,7 @@ public final class BgpServiceCommunityPropertiesFormat {
     private String serviceName;
 
     /*
-     * A list of bgp communities.
+     * Get a list of bgp communities.
      */
     @JsonProperty(value = "bgpCommunities")
     private List<BgpCommunity> bgpCommunities;
@@ -49,7 +49,7 @@ public final class BgpServiceCommunityPropertiesFormat {
     }
 
     /**
-     * Get the bgpCommunities property: A list of bgp communities.
+     * Get the bgpCommunities property: Get a list of bgp communities.
      *
      * @return the bgpCommunities value.
      */
@@ -58,7 +58,7 @@ public final class BgpServiceCommunityPropertiesFormat {
     }
 
     /**
-     * Set the bgpCommunities property: A list of bgp communities.
+     * Set the bgpCommunities property: Get a list of bgp communities.
      *
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the BgpServiceCommunityPropertiesFormat object itself.

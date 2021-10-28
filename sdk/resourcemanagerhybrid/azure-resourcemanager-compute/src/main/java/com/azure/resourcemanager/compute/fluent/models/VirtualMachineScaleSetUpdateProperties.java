@@ -72,8 +72,8 @@ public final class VirtualMachineScaleSetUpdateProperties {
     private AdditionalCapabilities additionalCapabilities;
 
     /*
-     * Specifies the policies applied when scaling in Virtual Machines in the
-     * Virtual Machine Scale Set.
+     * Specifies the scale-in policy that decides which virtual machines are
+     * chosen for removal when a Virtual Machine Scale Set is scaled-in.
      */
     @JsonProperty(value = "scaleInPolicy")
     private ScaleInPolicy scaleInPolicy;
@@ -243,8 +243,8 @@ public final class VirtualMachineScaleSetUpdateProperties {
     }
 
     /**
-     * Get the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
-     * Machine Scale Set.
+     * Get the scaleInPolicy property: Specifies the scale-in policy that decides which virtual machines are chosen for
+     * removal when a Virtual Machine Scale Set is scaled-in.
      *
      * @return the scaleInPolicy value.
      */
@@ -253,8 +253,8 @@ public final class VirtualMachineScaleSetUpdateProperties {
     }
 
     /**
-     * Set the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
-     * Machine Scale Set.
+     * Set the scaleInPolicy property: Specifies the scale-in policy that decides which virtual machines are chosen for
+     * removal when a Virtual Machine Scale Set is scaled-in.
      *
      * @param scaleInPolicy the scaleInPolicy value to set.
      * @return the VirtualMachineScaleSetUpdateProperties object itself.

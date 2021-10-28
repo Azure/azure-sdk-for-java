@@ -417,7 +417,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -475,7 +475,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -583,7 +583,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -634,7 +634,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -736,7 +736,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -787,7 +787,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -975,7 +975,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1033,7 +1033,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1134,7 +1134,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1183,7 +1183,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1279,7 +1279,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1316,7 +1316,7 @@ public final class NetworkWatchersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1418,7 +1418,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1476,7 +1476,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1590,7 +1590,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1648,7 +1648,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1865,7 +1865,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1923,7 +1923,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2132,7 +2132,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2190,7 +2190,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2412,7 +2412,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2470,7 +2470,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2687,7 +2687,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2748,7 +2748,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2980,7 +2980,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3038,7 +3038,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3256,7 +3256,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3314,7 +3314,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3532,7 +3532,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3591,7 +3591,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3780,8 +3780,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -3789,7 +3788,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getAzureReachabilityReportWithResponseAsync(
@@ -3819,7 +3818,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3838,8 +3837,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -3848,7 +3846,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getAzureReachabilityReportWithResponseAsync(
@@ -3881,7 +3879,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3897,8 +3895,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -3906,7 +3903,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
@@ -3925,8 +3922,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -3935,7 +3931,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
@@ -3958,8 +3954,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -3967,7 +3962,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
@@ -3977,8 +3972,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -3987,7 +3981,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
@@ -4001,8 +3995,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4010,7 +4003,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AzureReachabilityReportInner> getAzureReachabilityReportAsync(
@@ -4021,8 +4014,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4031,7 +4023,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AzureReachabilityReportInner> getAzureReachabilityReportAsync(
@@ -4045,8 +4037,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4054,7 +4045,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureReachabilityReportInner getAzureReachabilityReport(
@@ -4063,8 +4054,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4073,7 +4063,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AzureReachabilityReportInner getAzureReachabilityReport(
@@ -4085,8 +4075,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4124,7 +4113,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4143,8 +4132,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4186,7 +4174,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4202,8 +4190,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4230,8 +4217,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4263,8 +4249,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4281,8 +4266,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4304,8 +4288,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4324,8 +4307,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4348,8 +4330,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4366,8 +4347,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -4388,10 +4368,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -4399,7 +4376,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> getNetworkConfigurationDiagnosticWithResponseAsync(
@@ -4429,7 +4406,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4448,10 +4425,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -4460,7 +4434,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getNetworkConfigurationDiagnosticWithResponseAsync(
@@ -4493,7 +4467,7 @@ public final class NetworkWatchersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4509,10 +4483,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -4520,7 +4491,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<
@@ -4540,10 +4511,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -4552,7 +4520,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PollerFlux<
@@ -4577,10 +4545,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -4588,7 +4553,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<
@@ -4600,10 +4565,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -4612,7 +4574,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<
@@ -4627,10 +4589,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -4638,7 +4597,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(
@@ -4649,10 +4608,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -4661,7 +4617,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(
@@ -4675,10 +4631,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -4686,7 +4639,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(
@@ -4695,10 +4648,7 @@ public final class NetworkWatchersClientImpl
     }
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -4707,7 +4657,7 @@ public final class NetworkWatchersClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(

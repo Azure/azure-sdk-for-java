@@ -14,7 +14,6 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -36,9 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRoutePortsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortInner;
-import com.azure.resourcemanager.network.fluent.models.GenerateExpressRoutePortsLoaResultInner;
 import com.azure.resourcemanager.network.models.ExpressRoutePortListResult;
-import com.azure.resourcemanager.network.models.GenerateExpressRoutePortsLoaRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -79,7 +76,7 @@ public final class ExpressRoutePortsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface ExpressRoutePortsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/ExpressRoutePorts/{expressRoutePortName}")
@@ -91,7 +88,6 @@ public final class ExpressRoutePortsClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("expressRoutePortName") String expressRoutePortName,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -131,7 +127,7 @@ public final class ExpressRoutePortsClientImpl
                 + "/ExpressRoutePorts/{expressRoutePortName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRoutePortInner>> updateTags(
+        Mono<Response<Flux<ByteBuffer>>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -163,22 +159,6 @@ public final class ExpressRoutePortsClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRoutePorts/{expressRoutePortName}/generateLoa")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GenerateExpressRoutePortsLoaResultInner>> generateLoa(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("expressRoutePortName") String expressRoutePortName,
-            @BodyParam("application/json") GenerateExpressRoutePortsLoaRequest request,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -236,8 +216,7 @@ public final class ExpressRoutePortsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -248,7 +227,6 @@ public final class ExpressRoutePortsClientImpl
                             apiVersion,
                             resourceGroupName,
                             expressRoutePortName,
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -287,8 +265,7 @@ public final class ExpressRoutePortsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -297,7 +274,6 @@ public final class ExpressRoutePortsClientImpl
                 apiVersion,
                 resourceGroupName,
                 expressRoutePortName,
-                accept,
                 context);
     }
 
@@ -470,7 +446,7 @@ public final class ExpressRoutePortsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -521,7 +497,7 @@ public final class ExpressRoutePortsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -629,7 +605,7 @@ public final class ExpressRoutePortsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -687,7 +663,7 @@ public final class ExpressRoutePortsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -873,7 +849,7 @@ public final class ExpressRoutePortsClientImpl
      * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExpressRoutePortInner>> updateTagsWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String expressRoutePortName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -900,7 +876,7 @@ public final class ExpressRoutePortsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -931,7 +907,7 @@ public final class ExpressRoutePortsClientImpl
      * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExpressRoutePortInner>> updateTagsWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String expressRoutePortName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -958,7 +934,7 @@ public final class ExpressRoutePortsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -985,17 +961,116 @@ public final class ExpressRoutePortsClientImpl
      * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginUpdateTagsAsync(
+        String resourceGroupName, String expressRoutePortName, TagsObject parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, expressRoutePortName, parameters);
+        return this
+            .client
+            .<ExpressRoutePortInner, ExpressRoutePortInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ExpressRoutePortInner.class,
+                ExpressRoutePortInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Update ExpressRoutePort tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRoutePortName The name of the ExpressRoutePort resource.
+     * @param parameters Parameters supplied to update ExpressRoutePort resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRoute Port.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginUpdateTagsAsync(
+        String resourceGroupName, String expressRoutePortName, TagsObject parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, expressRoutePortName, parameters, context);
+        return this
+            .client
+            .<ExpressRoutePortInner, ExpressRoutePortInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ExpressRoutePortInner.class, ExpressRoutePortInner.class, context);
+    }
+
+    /**
+     * Update ExpressRoutePort tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRoutePortName The name of the ExpressRoutePort resource.
+     * @param parameters Parameters supplied to update ExpressRoutePort resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRoute Port.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginUpdateTags(
+        String resourceGroupName, String expressRoutePortName, TagsObject parameters) {
+        return beginUpdateTagsAsync(resourceGroupName, expressRoutePortName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Update ExpressRoutePort tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRoutePortName The name of the ExpressRoutePort resource.
+     * @param parameters Parameters supplied to update ExpressRoutePort resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRoute Port.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ExpressRoutePortInner>, ExpressRoutePortInner> beginUpdateTags(
+        String resourceGroupName, String expressRoutePortName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, expressRoutePortName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Update ExpressRoutePort tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRoutePortName The name of the ExpressRoutePort resource.
+     * @param parameters Parameters supplied to update ExpressRoutePort resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRoute Port.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ExpressRoutePortInner> updateTagsAsync(
         String resourceGroupName, String expressRoutePortName, TagsObject parameters) {
-        return updateTagsWithResponseAsync(resourceGroupName, expressRoutePortName, parameters)
-            .flatMap(
-                (Response<ExpressRoutePortInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateTagsAsync(resourceGroupName, expressRoutePortName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update ExpressRoutePort tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRoutePortName The name of the ExpressRoutePort resource.
+     * @param parameters Parameters supplied to update ExpressRoutePort resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRoute Port.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ExpressRoutePortInner> updateTagsAsync(
+        String resourceGroupName, String expressRoutePortName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, expressRoutePortName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1028,9 +1103,9 @@ public final class ExpressRoutePortsClientImpl
      * @return expressRoute Port.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExpressRoutePortInner> updateTagsWithResponse(
+    public ExpressRoutePortInner updateTags(
         String resourceGroupName, String expressRoutePortName, TagsObject parameters, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, expressRoutePortName, parameters, context).block();
+        return updateTagsAsync(resourceGroupName, expressRoutePortName, parameters, context).block();
     }
 
     /**
@@ -1060,7 +1135,7 @@ public final class ExpressRoutePortsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1114,7 +1189,7 @@ public final class ExpressRoutePortsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1219,7 +1294,7 @@ public final class ExpressRoutePortsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1261,7 +1336,7 @@ public final class ExpressRoutePortsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1328,184 +1403,6 @@ public final class ExpressRoutePortsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ExpressRoutePortInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
-    }
-
-    /**
-     * Generate a letter of authorization for the requested ExpressRoutePort resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param expressRoutePortName The name of ExpressRoutePort.
-     * @param request Request parameters supplied to generate a letter of authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GenerateExpressRoutePortsLOA API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GenerateExpressRoutePortsLoaResultInner>> generateLoaWithResponseAsync(
-        String resourceGroupName, String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (expressRoutePortName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
-        }
-        if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
-        } else {
-            request.validate();
-        }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .generateLoa(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            resourceGroupName,
-                            expressRoutePortName,
-                            request,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Generate a letter of authorization for the requested ExpressRoutePort resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param expressRoutePortName The name of ExpressRoutePort.
-     * @param request Request parameters supplied to generate a letter of authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GenerateExpressRoutePortsLOA API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GenerateExpressRoutePortsLoaResultInner>> generateLoaWithResponseAsync(
-        String resourceGroupName,
-        String expressRoutePortName,
-        GenerateExpressRoutePortsLoaRequest request,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (expressRoutePortName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
-        }
-        if (request == null) {
-            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
-        } else {
-            request.validate();
-        }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .generateLoa(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                apiVersion,
-                resourceGroupName,
-                expressRoutePortName,
-                request,
-                accept,
-                context);
-    }
-
-    /**
-     * Generate a letter of authorization for the requested ExpressRoutePort resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param expressRoutePortName The name of ExpressRoutePort.
-     * @param request Request parameters supplied to generate a letter of authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GenerateExpressRoutePortsLOA API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenerateExpressRoutePortsLoaResultInner> generateLoaAsync(
-        String resourceGroupName, String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request) {
-        return generateLoaWithResponseAsync(resourceGroupName, expressRoutePortName, request)
-            .flatMap(
-                (Response<GenerateExpressRoutePortsLoaResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Generate a letter of authorization for the requested ExpressRoutePort resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param expressRoutePortName The name of ExpressRoutePort.
-     * @param request Request parameters supplied to generate a letter of authorization.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GenerateExpressRoutePortsLOA API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenerateExpressRoutePortsLoaResultInner generateLoa(
-        String resourceGroupName, String expressRoutePortName, GenerateExpressRoutePortsLoaRequest request) {
-        return generateLoaAsync(resourceGroupName, expressRoutePortName, request).block();
-    }
-
-    /**
-     * Generate a letter of authorization for the requested ExpressRoutePort resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param expressRoutePortName The name of ExpressRoutePort.
-     * @param request Request parameters supplied to generate a letter of authorization.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for GenerateExpressRoutePortsLOA API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GenerateExpressRoutePortsLoaResultInner> generateLoaWithResponse(
-        String resourceGroupName,
-        String expressRoutePortName,
-        GenerateExpressRoutePortsLoaRequest request,
-        Context context) {
-        return generateLoaWithResponseAsync(resourceGroupName, expressRoutePortName, request, context).block();
     }
 
     /**

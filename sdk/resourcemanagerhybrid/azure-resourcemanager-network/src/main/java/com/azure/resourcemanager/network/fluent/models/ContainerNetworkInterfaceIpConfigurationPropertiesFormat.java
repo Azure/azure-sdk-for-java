@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,19 +17,17 @@ public final class ContainerNetworkInterfaceIpConfigurationPropertiesFormat {
         new ClientLogger(ContainerNetworkInterfaceIpConfigurationPropertiesFormat.class);
 
     /*
-     * The provisioning state of the container network interface IP
-     * configuration resource.
+     * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
-     * Get the provisioningState property: The provisioning state of the container network interface IP configuration
-     * resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

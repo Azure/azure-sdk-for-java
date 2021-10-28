@@ -10,13 +10,6 @@ import java.time.Duration;
 /** The interface for GraphRbacManagementClient class. */
 public interface GraphRbacManagementClient {
     /**
-     * Gets The tenant ID.
-     *
-     * @return the tenantId value.
-     */
-    String getTenantId();
-
-    /**
      * Gets server parameter.
      *
      * @return the endpoint value.

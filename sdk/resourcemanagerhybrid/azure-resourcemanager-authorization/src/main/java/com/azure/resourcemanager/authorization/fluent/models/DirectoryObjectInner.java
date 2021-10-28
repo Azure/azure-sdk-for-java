@@ -28,7 +28,8 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "User", value = UserInner.class),
     @JsonSubTypes.Type(name = "Application", value = ApplicationInner.class),
     @JsonSubTypes.Type(name = "Group", value = ADGroupInner.class),
-    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalInner.class)
+    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalInner.class),
+    @JsonSubTypes.Type(name = "AppRoleAssignment", value = AppRoleAssignmentInner.class)
 })
 @Fluent
 public class DirectoryObjectInner {

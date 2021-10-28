@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,34 +23,27 @@ public final class HubVirtualNetworkConnectionProperties {
     private SubResource remoteVirtualNetwork;
 
     /*
-     * Deprecated: VirtualHub to RemoteVnet transit to enabled or not.
+     * VirtualHub to RemoteVnet transit to enabled or not.
      */
     @JsonProperty(value = "allowHubToRemoteVnetTransit")
     private Boolean allowHubToRemoteVnetTransit;
 
     /*
-     * Deprecated: Allow RemoteVnet to use Virtual Hub's gateways.
+     * Allow RemoteVnet to use Virtual Hub's gateways.
      */
     @JsonProperty(value = "allowRemoteVnetToUseHubVnetGateways")
     private Boolean allowRemoteVnetToUseHubVnetGateways;
 
     /*
-     * Enable internet security.
+     * Enable internet security
      */
     @JsonProperty(value = "enableInternetSecurity")
     private Boolean enableInternetSecurity;
 
     /*
-     * The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
+     * The provisioning state of the resource.
      */
-    @JsonProperty(value = "routingConfiguration")
-    private RoutingConfiguration routingConfiguration;
-
-    /*
-     * The provisioning state of the hub virtual network connection resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /**
@@ -75,7 +67,7 @@ public final class HubVirtualNetworkConnectionProperties {
     }
 
     /**
-     * Get the allowHubToRemoteVnetTransit property: Deprecated: VirtualHub to RemoteVnet transit to enabled or not.
+     * Get the allowHubToRemoteVnetTransit property: VirtualHub to RemoteVnet transit to enabled or not.
      *
      * @return the allowHubToRemoteVnetTransit value.
      */
@@ -84,7 +76,7 @@ public final class HubVirtualNetworkConnectionProperties {
     }
 
     /**
-     * Set the allowHubToRemoteVnetTransit property: Deprecated: VirtualHub to RemoteVnet transit to enabled or not.
+     * Set the allowHubToRemoteVnetTransit property: VirtualHub to RemoteVnet transit to enabled or not.
      *
      * @param allowHubToRemoteVnetTransit the allowHubToRemoteVnetTransit value to set.
      * @return the HubVirtualNetworkConnectionProperties object itself.
@@ -95,7 +87,7 @@ public final class HubVirtualNetworkConnectionProperties {
     }
 
     /**
-     * Get the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's gateways.
+     * Get the allowRemoteVnetToUseHubVnetGateways property: Allow RemoteVnet to use Virtual Hub's gateways.
      *
      * @return the allowRemoteVnetToUseHubVnetGateways value.
      */
@@ -104,7 +96,7 @@ public final class HubVirtualNetworkConnectionProperties {
     }
 
     /**
-     * Set the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's gateways.
+     * Set the allowRemoteVnetToUseHubVnetGateways property: Allow RemoteVnet to use Virtual Hub's gateways.
      *
      * @param allowRemoteVnetToUseHubVnetGateways the allowRemoteVnetToUseHubVnetGateways value to set.
      * @return the HubVirtualNetworkConnectionProperties object itself.
@@ -136,29 +128,7 @@ public final class HubVirtualNetworkConnectionProperties {
     }
 
     /**
-     * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @return the routingConfiguration value.
-     */
-    public RoutingConfiguration routingConfiguration() {
-        return this.routingConfiguration;
-    }
-
-    /**
-     * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @param routingConfiguration the routingConfiguration value to set.
-     * @return the HubVirtualNetworkConnectionProperties object itself.
-     */
-    public HubVirtualNetworkConnectionProperties withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
-        this.routingConfiguration = routingConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the hub virtual network connection resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -167,13 +137,21 @@ public final class HubVirtualNetworkConnectionProperties {
     }
 
     /**
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the HubVirtualNetworkConnectionProperties object itself.
+     */
+    public HubVirtualNetworkConnectionProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (routingConfiguration() != null) {
-            routingConfiguration().validate();
-        }
     }
 }

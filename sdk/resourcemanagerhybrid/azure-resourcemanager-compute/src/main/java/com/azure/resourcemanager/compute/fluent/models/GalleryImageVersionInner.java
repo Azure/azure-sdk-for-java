@@ -15,19 +15,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Specifies information about the gallery image version that you want to create or update. */
+/** Specifies information about the gallery Image Version that you want to create or update. */
 @Fluent
 public final class GalleryImageVersionInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionInner.class);
 
     /*
-     * Describes the properties of a gallery image version.
+     * Describes the properties of a gallery Image Version.
      */
     @JsonProperty(value = "properties")
     private GalleryImageVersionProperties innerProperties;
 
     /**
-     * Get the innerProperties property: Describes the properties of a gallery image version.
+     * Get the innerProperties property: Describes the properties of a gallery Image Version.
      *
      * @return the innerProperties value.
      */
@@ -50,7 +50,7 @@ public final class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Get the publishingProfile property: The publishing profile of a gallery image Version.
+     * Get the publishingProfile property: The publishing profile of a gallery Image Version.
      *
      * @return the publishingProfile value.
      */
@@ -59,7 +59,7 @@ public final class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Set the publishingProfile property: The publishing profile of a gallery image Version.
+     * Set the publishingProfile property: The publishing profile of a gallery Image Version.
      *
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryImageVersionInner object itself.
@@ -73,7 +73,7 @@ public final class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery image version. The provisioning state, which
+     * Get the provisioningState property: The current state of the gallery Image Version. The provisioning state, which
      * only appears in the response.
      *
      * @return the provisioningState value.
@@ -106,7 +106,7 @@ public final class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Get the replicationStatus property: This is the replication status of the gallery image version.
+     * Get the replicationStatus property: This is the replication status of the gallery Image Version.
      *
      * @return the replicationStatus value.
      */

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -25,9 +24,10 @@ public final class ApplicationSecurityGroupPropertiesFormat {
 
     /*
      * The provisioning state of the application security group resource.
+     * Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the resourceGuid property: The resource GUID property of the application security group resource. It uniquely
@@ -41,11 +41,12 @@ public final class ApplicationSecurityGroupPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the application security group resource.
+     * Get the provisioningState property: The provisioning state of the application security group resource. Possible
+     * values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

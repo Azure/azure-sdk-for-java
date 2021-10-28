@@ -69,14 +69,6 @@ public final class VirtualMachineExtensionUpdateProperties {
     @JsonProperty(value = "protectedSettings")
     private Object protectedSettings;
 
-    /*
-     * Indicates whether failures stemming from the extension will be
-     * suppressed (Operational failures such as not connecting to the VM will
-     * not be suppressed regardless of this value). The default is false.
-     */
-    @JsonProperty(value = "suppressFailures")
-    private Boolean suppressFailures;
-
     /**
      * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension
      * configuration has not changed.
@@ -244,30 +236,6 @@ public final class VirtualMachineExtensionUpdateProperties {
      */
     public VirtualMachineExtensionUpdateProperties withProtectedSettings(Object protectedSettings) {
         this.protectedSettings = protectedSettings;
-        return this;
-    }
-
-    /**
-     * Get the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
-     * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
-     * default is false.
-     *
-     * @return the suppressFailures value.
-     */
-    public Boolean suppressFailures() {
-        return this.suppressFailures;
-    }
-
-    /**
-     * Set the suppressFailures property: Indicates whether failures stemming from the extension will be suppressed
-     * (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The
-     * default is false.
-     *
-     * @param suppressFailures the suppressFailures value to set.
-     * @return the VirtualMachineExtensionUpdateProperties object itself.
-     */
-    public VirtualMachineExtensionUpdateProperties withSuppressFailures(Boolean suppressFailures) {
-        this.suppressFailures = suppressFailures;
         return this;
     }
 

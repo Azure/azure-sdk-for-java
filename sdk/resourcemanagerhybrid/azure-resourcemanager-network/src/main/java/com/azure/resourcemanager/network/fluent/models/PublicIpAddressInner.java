@@ -9,14 +9,10 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.DdosSettings;
-import com.azure.resourcemanager.network.models.DeleteOptions;
-import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
-import com.azure.resourcemanager.network.models.PublicIpAddressMigrationPhase;
 import com.azure.resourcemanager.network.models.PublicIpAddressSku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,12 +23,6 @@ import java.util.Map;
 @Fluent
 public final class PublicIpAddressInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressInner.class);
-
-    /*
-     * The extended location of the public ip address.
-     */
-    @JsonProperty(value = "extendedLocation")
-    private ExtendedLocation extendedLocation;
 
     /*
      * The public IP address SKU.
@@ -49,7 +39,7 @@ public final class PublicIpAddressInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
@@ -64,26 +54,6 @@ public final class PublicIpAddressInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
-
-    /**
-     * Get the extendedLocation property: The extended location of the public ip address.
-     *
-     * @return the extendedLocation value.
-     */
-    public ExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
-
-    /**
-     * Set the extendedLocation property: The extended location of the public ip address.
-     *
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the PublicIpAddressInner object itself.
-     */
-    public PublicIpAddressInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
-        return this;
-    }
 
     /**
      * Get the sku property: The public IP address SKU.
@@ -121,6 +91,17 @@ public final class PublicIpAddressInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
@@ -180,7 +161,8 @@ public final class PublicIpAddressInner extends Resource {
     }
 
     /**
-     * Get the publicIpAllocationMethod property: The public IP address allocation method.
+     * Get the publicIpAllocationMethod property: The public IP allocation method. Possible values are: 'Static' and
+     * 'Dynamic'.
      *
      * @return the publicIpAllocationMethod value.
      */
@@ -189,7 +171,8 @@ public final class PublicIpAddressInner extends Resource {
     }
 
     /**
-     * Set the publicIpAllocationMethod property: The public IP address allocation method.
+     * Set the publicIpAllocationMethod property: The public IP allocation method. Possible values are: 'Static' and
+     * 'Dynamic'.
      *
      * @param publicIpAllocationMethod the publicIpAllocationMethod value to set.
      * @return the PublicIpAddressInner object itself.
@@ -203,7 +186,7 @@ public final class PublicIpAddressInner extends Resource {
     }
 
     /**
-     * Get the publicIpAddressVersion property: The public IP address version.
+     * Get the publicIpAddressVersion property: The public IP address version. Possible values are: 'IPv4' and 'IPv6'.
      *
      * @return the publicIpAddressVersion value.
      */
@@ -212,7 +195,7 @@ public final class PublicIpAddressInner extends Resource {
     }
 
     /**
-     * Set the publicIpAddressVersion property: The public IP address version.
+     * Set the publicIpAddressVersion property: The public IP address version. Possible values are: 'IPv4' and 'IPv6'.
      *
      * @param publicIpAddressVersion the publicIpAddressVersion value to set.
      * @return the PublicIpAddressInner object itself.
@@ -373,7 +356,7 @@ public final class PublicIpAddressInner extends Resource {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the public IP address resource.
+     * Get the resourceGuid property: The resource GUID property of the public IP resource.
      *
      * @return the resourceGuid value.
      */
@@ -382,126 +365,41 @@ public final class PublicIpAddressInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the public IP address resource.
+     * Set the resourceGuid property: The resource GUID property of the public IP resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withResourceGuid(String resourceGuid) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
+        }
+        this.innerProperties().withResourceGuid(resourceGuid);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the servicePublicIpAddress property: The service public IP address of the public IP address resource.
+     * Set the provisioningState property: The provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
-     * @return the servicePublicIpAddress value.
-     */
-    public PublicIpAddressInner servicePublicIpAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().servicePublicIpAddress();
-    }
-
-    /**
-     * Set the servicePublicIpAddress property: The service public IP address of the public IP address resource.
-     *
-     * @param servicePublicIpAddress the servicePublicIpAddress value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the PublicIpAddressInner object itself.
      */
-    public PublicIpAddressInner withServicePublicIpAddress(PublicIpAddressInner servicePublicIpAddress) {
+    public PublicIpAddressInner withProvisioningState(String provisioningState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PublicIpAddressPropertiesFormatInner();
         }
-        this.innerProperties().withServicePublicIpAddress(servicePublicIpAddress);
-        return this;
-    }
-
-    /**
-     * Get the natGateway property: The NatGateway for the Public IP address.
-     *
-     * @return the natGateway value.
-     */
-    public NatGatewayInner natGateway() {
-        return this.innerProperties() == null ? null : this.innerProperties().natGateway();
-    }
-
-    /**
-     * Set the natGateway property: The NatGateway for the Public IP address.
-     *
-     * @param natGateway the natGateway value to set.
-     * @return the PublicIpAddressInner object itself.
-     */
-    public PublicIpAddressInner withNatGateway(NatGatewayInner natGateway) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
-        }
-        this.innerProperties().withNatGateway(natGateway);
-        return this;
-    }
-
-    /**
-     * Get the migrationPhase property: Migration phase of Public IP Address.
-     *
-     * @return the migrationPhase value.
-     */
-    public PublicIpAddressMigrationPhase migrationPhase() {
-        return this.innerProperties() == null ? null : this.innerProperties().migrationPhase();
-    }
-
-    /**
-     * Set the migrationPhase property: Migration phase of Public IP Address.
-     *
-     * @param migrationPhase the migrationPhase value to set.
-     * @return the PublicIpAddressInner object itself.
-     */
-    public PublicIpAddressInner withMigrationPhase(PublicIpAddressMigrationPhase migrationPhase) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
-        }
-        this.innerProperties().withMigrationPhase(migrationPhase);
-        return this;
-    }
-
-    /**
-     * Get the linkedPublicIpAddress property: The linked public IP address of the public IP address resource.
-     *
-     * @return the linkedPublicIpAddress value.
-     */
-    public PublicIpAddressInner linkedPublicIpAddress() {
-        return this.innerProperties() == null ? null : this.innerProperties().linkedPublicIpAddress();
-    }
-
-    /**
-     * Set the linkedPublicIpAddress property: The linked public IP address of the public IP address resource.
-     *
-     * @param linkedPublicIpAddress the linkedPublicIpAddress value to set.
-     * @return the PublicIpAddressInner object itself.
-     */
-    public PublicIpAddressInner withLinkedPublicIpAddress(PublicIpAddressInner linkedPublicIpAddress) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
-        }
-        this.innerProperties().withLinkedPublicIpAddress(linkedPublicIpAddress);
-        return this;
-    }
-
-    /**
-     * Get the deleteOption property: Specify what happens to the public IP address when the VM using it is deleted.
-     *
-     * @return the deleteOption value.
-     */
-    public DeleteOptions deleteOption() {
-        return this.innerProperties() == null ? null : this.innerProperties().deleteOption();
-    }
-
-    /**
-     * Set the deleteOption property: Specify what happens to the public IP address when the VM using it is deleted.
-     *
-     * @param deleteOption the deleteOption value to set.
-     * @return the PublicIpAddressInner object itself.
-     */
-    public PublicIpAddressInner withDeleteOption(DeleteOptions deleteOption) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PublicIpAddressPropertiesFormatInner();
-        }
-        this.innerProperties().withDeleteOption(deleteOption);
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -511,9 +409,6 @@ public final class PublicIpAddressInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
-        }
         if (sku() != null) {
             sku().validate();
         }

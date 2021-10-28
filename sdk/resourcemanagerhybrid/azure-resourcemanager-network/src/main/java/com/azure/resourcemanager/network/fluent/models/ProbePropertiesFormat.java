@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -25,10 +24,10 @@ public final class ProbePropertiesFormat {
     private List<SubResource> loadBalancingRules;
 
     /*
-     * The protocol of the end point. If 'Tcp' is specified, a received ACK is
-     * required for the probe to be successful. If 'Http' or 'Https' is
-     * specified, a 200 OK response from the specifies URI is required for the
-     * probe to be successful.
+     * The protocol of the end point. Possible values are: 'Http', 'Tcp', or
+     * 'Https'. If 'Tcp' is specified, a received ACK is required for the probe
+     * to be successful. If 'Http' or 'Https' is specified, a 200 OK response
+     * from the specifies URI is required for the probe to be successful.
      */
     @JsonProperty(value = "protocol", required = true)
     private ProbeProtocol protocol;
@@ -68,10 +67,11 @@ public final class ProbePropertiesFormat {
     private String requestPath;
 
     /*
-     * The provisioning state of the probe resource.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the loadBalancingRules property: The load balancer rules that use this probe.
@@ -83,9 +83,9 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Get the protocol property: The protocol of the end point. If 'Tcp' is specified, a received ACK is required for
-     * the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is
-     * required for the probe to be successful.
+     * Get the protocol property: The protocol of the end point. Possible values are: 'Http', 'Tcp', or 'Https'. If
+     * 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' or 'Https' is specified,
+     * a 200 OK response from the specifies URI is required for the probe to be successful.
      *
      * @return the protocol value.
      */
@@ -94,9 +94,9 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Set the protocol property: The protocol of the end point. If 'Tcp' is specified, a received ACK is required for
-     * the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is
-     * required for the probe to be successful.
+     * Set the protocol property: The protocol of the end point. Possible values are: 'Http', 'Tcp', or 'Https'. If
+     * 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' or 'Https' is specified,
+     * a 200 OK response from the specifies URI is required for the probe to be successful.
      *
      * @param protocol the protocol value to set.
      * @return the ProbePropertiesFormat object itself.
@@ -197,12 +197,25 @@ public final class ProbePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the probe resource.
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ProbePropertiesFormat object itself.
+     */
+    public ProbePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

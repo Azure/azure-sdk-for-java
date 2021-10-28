@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,7 +17,7 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HubVirtualNetworkConnectionInner.class);
 
     /*
-     * Properties of the hub virtual network connection.
+     * Parameters for HubVirtualNetworkConnection
      */
     @JsonProperty(value = "properties")
     private HubVirtualNetworkConnectionProperties innerProperties;
@@ -31,13 +30,14 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     private String name;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the hub virtual network connection.
+     * Get the innerProperties property: Parameters for HubVirtualNetworkConnection.
      *
      * @return the innerProperties value.
      */
@@ -68,7 +68,7 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -107,7 +107,7 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
-     * Get the allowHubToRemoteVnetTransit property: Deprecated: VirtualHub to RemoteVnet transit to enabled or not.
+     * Get the allowHubToRemoteVnetTransit property: VirtualHub to RemoteVnet transit to enabled or not.
      *
      * @return the allowHubToRemoteVnetTransit value.
      */
@@ -116,7 +116,7 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
-     * Set the allowHubToRemoteVnetTransit property: Deprecated: VirtualHub to RemoteVnet transit to enabled or not.
+     * Set the allowHubToRemoteVnetTransit property: VirtualHub to RemoteVnet transit to enabled or not.
      *
      * @param allowHubToRemoteVnetTransit the allowHubToRemoteVnetTransit value to set.
      * @return the HubVirtualNetworkConnectionInner object itself.
@@ -130,7 +130,7 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
-     * Get the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's gateways.
+     * Get the allowRemoteVnetToUseHubVnetGateways property: Allow RemoteVnet to use Virtual Hub's gateways.
      *
      * @return the allowRemoteVnetToUseHubVnetGateways value.
      */
@@ -139,7 +139,7 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
-     * Set the allowRemoteVnetToUseHubVnetGateways property: Deprecated: Allow RemoteVnet to use Virtual Hub's gateways.
+     * Set the allowRemoteVnetToUseHubVnetGateways property: Allow RemoteVnet to use Virtual Hub's gateways.
      *
      * @param allowRemoteVnetToUseHubVnetGateways the allowRemoteVnetToUseHubVnetGateways value to set.
      * @return the HubVirtualNetworkConnectionInner object itself.
@@ -177,37 +177,26 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     }
 
     /**
-     * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @return the routingConfiguration value.
-     */
-    public RoutingConfiguration routingConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().routingConfiguration();
-    }
-
-    /**
-     * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @param routingConfiguration the routingConfiguration value to set.
-     * @return the HubVirtualNetworkConnectionInner object itself.
-     */
-    public HubVirtualNetworkConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new HubVirtualNetworkConnectionProperties();
-        }
-        this.innerProperties().withRoutingConfiguration(routingConfiguration);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the hub virtual network connection resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the HubVirtualNetworkConnectionInner object itself.
+     */
+    public HubVirtualNetworkConnectionInner withProvisioningState(ProvisioningState provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HubVirtualNetworkConnectionProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

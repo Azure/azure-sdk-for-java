@@ -12,20 +12,16 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersClient;
 import com.azure.resourcemanager.appservice.fluent.AppServiceEnvironmentsClient;
 import com.azure.resourcemanager.appservice.fluent.AppServicePlansClient;
-import com.azure.resourcemanager.appservice.fluent.CertificateOrdersDiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.CertificateRegistrationProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.appservice.fluent.DeletedWebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.DomainRegistrationProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.DomainsClient;
-import com.azure.resourcemanager.appservice.fluent.GlobalsClient;
-import com.azure.resourcemanager.appservice.fluent.KubeEnvironmentsClient;
 import com.azure.resourcemanager.appservice.fluent.ProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.RecommendationsClient;
 import com.azure.resourcemanager.appservice.fluent.ResourceHealthMetadatasClient;
 import com.azure.resourcemanager.appservice.fluent.ResourceProvidersClient;
-import com.azure.resourcemanager.appservice.fluent.StaticSitesClient;
 import com.azure.resourcemanager.appservice.fluent.TopLevelDomainsClient;
 import com.azure.resourcemanager.appservice.fluent.WebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.WebSiteManagementClient;
@@ -121,18 +117,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         return this.appServiceCertificateOrders;
     }
 
-    /** The CertificateOrdersDiagnosticsClient object to access its operations. */
-    private final CertificateOrdersDiagnosticsClient certificateOrdersDiagnostics;
-
-    /**
-     * Gets the CertificateOrdersDiagnosticsClient object to access its operations.
-     *
-     * @return the CertificateOrdersDiagnosticsClient object.
-     */
-    public CertificateOrdersDiagnosticsClient getCertificateOrdersDiagnostics() {
-        return this.certificateOrdersDiagnostics;
-    }
-
     /** The CertificateRegistrationProvidersClient object to access its operations. */
     private final CertificateRegistrationProvidersClient certificateRegistrationProviders;
 
@@ -181,30 +165,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         return this.domainRegistrationProviders;
     }
 
-    /** The AppServiceEnvironmentsClient object to access its operations. */
-    private final AppServiceEnvironmentsClient appServiceEnvironments;
-
-    /**
-     * Gets the AppServiceEnvironmentsClient object to access its operations.
-     *
-     * @return the AppServiceEnvironmentsClient object.
-     */
-    public AppServiceEnvironmentsClient getAppServiceEnvironments() {
-        return this.appServiceEnvironments;
-    }
-
-    /** The AppServicePlansClient object to access its operations. */
-    private final AppServicePlansClient appServicePlans;
-
-    /**
-     * Gets the AppServicePlansClient object to access its operations.
-     *
-     * @return the AppServicePlansClient object.
-     */
-    public AppServicePlansClient getAppServicePlans() {
-        return this.appServicePlans;
-    }
-
     /** The CertificatesClient object to access its operations. */
     private final CertificatesClient certificates;
 
@@ -241,30 +201,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         return this.diagnostics;
     }
 
-    /** The GlobalsClient object to access its operations. */
-    private final GlobalsClient globals;
-
-    /**
-     * Gets the GlobalsClient object to access its operations.
-     *
-     * @return the GlobalsClient object.
-     */
-    public GlobalsClient getGlobals() {
-        return this.globals;
-    }
-
-    /** The KubeEnvironmentsClient object to access its operations. */
-    private final KubeEnvironmentsClient kubeEnvironments;
-
-    /**
-     * Gets the KubeEnvironmentsClient object to access its operations.
-     *
-     * @return the KubeEnvironmentsClient object.
-     */
-    public KubeEnvironmentsClient getKubeEnvironments() {
-        return this.kubeEnvironments;
-    }
-
     /** The ProvidersClient object to access its operations. */
     private final ProvidersClient providers;
 
@@ -289,18 +225,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         return this.recommendations;
     }
 
-    /** The ResourceHealthMetadatasClient object to access its operations. */
-    private final ResourceHealthMetadatasClient resourceHealthMetadatas;
-
-    /**
-     * Gets the ResourceHealthMetadatasClient object to access its operations.
-     *
-     * @return the ResourceHealthMetadatasClient object.
-     */
-    public ResourceHealthMetadatasClient getResourceHealthMetadatas() {
-        return this.resourceHealthMetadatas;
-    }
-
     /** The ResourceProvidersClient object to access its operations. */
     private final ResourceProvidersClient resourceProviders;
 
@@ -313,18 +237,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         return this.resourceProviders;
     }
 
-    /** The StaticSitesClient object to access its operations. */
-    private final StaticSitesClient staticSites;
-
-    /**
-     * Gets the StaticSitesClient object to access its operations.
-     *
-     * @return the StaticSitesClient object.
-     */
-    public StaticSitesClient getStaticSites() {
-        return this.staticSites;
-    }
-
     /** The WebAppsClient object to access its operations. */
     private final WebAppsClient webApps;
 
@@ -335,6 +247,42 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      */
     public WebAppsClient getWebApps() {
         return this.webApps;
+    }
+
+    /** The AppServiceEnvironmentsClient object to access its operations. */
+    private final AppServiceEnvironmentsClient appServiceEnvironments;
+
+    /**
+     * Gets the AppServiceEnvironmentsClient object to access its operations.
+     *
+     * @return the AppServiceEnvironmentsClient object.
+     */
+    public AppServiceEnvironmentsClient getAppServiceEnvironments() {
+        return this.appServiceEnvironments;
+    }
+
+    /** The AppServicePlansClient object to access its operations. */
+    private final AppServicePlansClient appServicePlans;
+
+    /**
+     * Gets the AppServicePlansClient object to access its operations.
+     *
+     * @return the AppServicePlansClient object.
+     */
+    public AppServicePlansClient getAppServicePlans() {
+        return this.appServicePlans;
+    }
+
+    /** The ResourceHealthMetadatasClient object to access its operations. */
+    private final ResourceHealthMetadatasClient resourceHealthMetadatas;
+
+    /**
+     * Gets the ResourceHealthMetadatasClient object to access its operations.
+     *
+     * @return the ResourceHealthMetadatasClient object.
+     */
+    public ResourceHealthMetadatasClient getResourceHealthMetadatas() {
+        return this.resourceHealthMetadatas;
     }
 
     /**
@@ -361,25 +309,21 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-02-01";
+        this.apiVersion = "2018-02-01";
         this.appServiceCertificateOrders = new AppServiceCertificateOrdersClientImpl(this);
-        this.certificateOrdersDiagnostics = new CertificateOrdersDiagnosticsClientImpl(this);
         this.certificateRegistrationProviders = new CertificateRegistrationProvidersClientImpl(this);
         this.domains = new DomainsClientImpl(this);
         this.topLevelDomains = new TopLevelDomainsClientImpl(this);
         this.domainRegistrationProviders = new DomainRegistrationProvidersClientImpl(this);
-        this.appServiceEnvironments = new AppServiceEnvironmentsClientImpl(this);
-        this.appServicePlans = new AppServicePlansClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
         this.deletedWebApps = new DeletedWebAppsClientImpl(this);
         this.diagnostics = new DiagnosticsClientImpl(this);
-        this.globals = new GlobalsClientImpl(this);
-        this.kubeEnvironments = new KubeEnvironmentsClientImpl(this);
         this.providers = new ProvidersClientImpl(this);
         this.recommendations = new RecommendationsClientImpl(this);
-        this.resourceHealthMetadatas = new ResourceHealthMetadatasClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
-        this.staticSites = new StaticSitesClientImpl(this);
         this.webApps = new WebAppsClientImpl(this);
+        this.appServiceEnvironments = new AppServiceEnvironmentsClientImpl(this);
+        this.appServicePlans = new AppServicePlansClientImpl(this);
+        this.resourceHealthMetadatas = new ResourceHealthMetadatasClientImpl(this);
     }
 }

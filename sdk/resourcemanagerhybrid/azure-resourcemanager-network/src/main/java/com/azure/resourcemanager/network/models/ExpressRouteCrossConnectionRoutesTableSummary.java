@@ -16,7 +16,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
     private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionRoutesTableSummary.class);
 
     /*
-     * IP address of Neighbor router.
+     * IP address of Neighbor router
      */
     @JsonProperty(value = "neighbor")
     private String neighbor;

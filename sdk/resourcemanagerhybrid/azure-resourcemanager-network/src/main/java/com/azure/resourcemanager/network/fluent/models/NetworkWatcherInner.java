@@ -20,11 +20,11 @@ public final class NetworkWatcherInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
-     * Properties of the network watcher.
+     * The network watcher properties.
      */
     @JsonProperty(value = "properties")
     private NetworkWatcherPropertiesFormat innerProperties;
@@ -45,7 +45,18 @@ public final class NetworkWatcherInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Properties of the network watcher.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the NetworkWatcherInner object itself.
+     */
+    public NetworkWatcherInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the innerProperties property: The network watcher properties.
      *
      * @return the innerProperties value.
      */
@@ -88,7 +99,7 @@ public final class NetworkWatcherInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the network watcher resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */

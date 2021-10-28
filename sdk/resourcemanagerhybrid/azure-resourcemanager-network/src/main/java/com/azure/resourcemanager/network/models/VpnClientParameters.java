@@ -16,13 +16,15 @@ public final class VpnClientParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientParameters.class);
 
     /*
-     * VPN client Processor Architecture.
+     * VPN client Processor Architecture. Possible values are: 'AMD64' and
+     * 'X86'.
      */
     @JsonProperty(value = "processorArchitecture")
     private ProcessorArchitecture processorArchitecture;
 
     /*
-     * VPN client authentication method.
+     * VPN client Authentication Method. Possible values are: 'EAPTLS' and
+     * 'EAPMSCHAPv2'.
      */
     @JsonProperty(value = "authenticationMethod")
     private AuthenticationMethod authenticationMethod;
@@ -44,7 +46,8 @@ public final class VpnClientParameters {
     private List<String> clientRootCertificates;
 
     /**
-     * Get the processorArchitecture property: VPN client Processor Architecture.
+     * Get the processorArchitecture property: VPN client Processor Architecture. Possible values are: 'AMD64' and
+     * 'X86'.
      *
      * @return the processorArchitecture value.
      */
@@ -53,7 +56,8 @@ public final class VpnClientParameters {
     }
 
     /**
-     * Set the processorArchitecture property: VPN client Processor Architecture.
+     * Set the processorArchitecture property: VPN client Processor Architecture. Possible values are: 'AMD64' and
+     * 'X86'.
      *
      * @param processorArchitecture the processorArchitecture value to set.
      * @return the VpnClientParameters object itself.
@@ -64,7 +68,8 @@ public final class VpnClientParameters {
     }
 
     /**
-     * Get the authenticationMethod property: VPN client authentication method.
+     * Get the authenticationMethod property: VPN client Authentication Method. Possible values are: 'EAPTLS' and
+     * 'EAPMSCHAPv2'.
      *
      * @return the authenticationMethod value.
      */
@@ -73,7 +78,8 @@ public final class VpnClientParameters {
     }
 
     /**
-     * Set the authenticationMethod property: VPN client authentication method.
+     * Set the authenticationMethod property: VPN client Authentication Method. Possible values are: 'EAPTLS' and
+     * 'EAPMSCHAPv2'.
      *
      * @param authenticationMethod the authenticationMethod value to set.
      * @return the VpnClientParameters object itself.

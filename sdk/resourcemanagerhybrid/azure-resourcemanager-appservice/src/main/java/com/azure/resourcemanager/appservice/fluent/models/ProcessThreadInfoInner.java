@@ -255,6 +255,29 @@ public final class ProcessThreadInfoInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get the priviledgedProcessorTime property: Privileged processor time.
+     *
+     * @return the priviledgedProcessorTime value.
+     */
+    public String priviledgedProcessorTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().priviledgedProcessorTime();
+    }
+
+    /**
+     * Set the priviledgedProcessorTime property: Privileged processor time.
+     *
+     * @param priviledgedProcessorTime the priviledgedProcessorTime value to set.
+     * @return the ProcessThreadInfoInner object itself.
+     */
+    public ProcessThreadInfoInner withPriviledgedProcessorTime(String priviledgedProcessorTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProcessThreadInfoProperties();
+        }
+        this.innerProperties().withPriviledgedProcessorTime(priviledgedProcessorTime);
+        return this;
+    }
+
+    /**
      * Get the state property: Thread state.
      *
      * @return the state value.

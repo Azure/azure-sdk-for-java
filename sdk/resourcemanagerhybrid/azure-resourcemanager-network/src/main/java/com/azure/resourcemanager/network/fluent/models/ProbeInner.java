@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -25,8 +24,8 @@ public final class ProbeInner extends SubResource {
     private ProbePropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of probes used by
-     * the load balancer. This name can be used to access the resource.
+     * Gets name of the resource that is unique within a resource group. This
+     * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -34,14 +33,8 @@ public final class ProbeInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * Type of the resource.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of load balancer probe.
@@ -53,8 +46,8 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within the set of probes used by the load
-     * balancer. This name can be used to access the resource.
+     * Get the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @return the name value.
      */
@@ -63,8 +56,8 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within the set of probes used by the load
-     * balancer. This name can be used to access the resource.
+     * Set the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @param name the name value to set.
      * @return the ProbeInner object itself.
@@ -84,12 +77,14 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the type property: Type of the resource.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
+     * @param etag the etag value to set.
+     * @return the ProbeInner object itself.
      */
-    public String type() {
-        return this.type;
+    public ProbeInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -109,9 +104,9 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the protocol property: The protocol of the end point. If 'Tcp' is specified, a received ACK is required for
-     * the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is
-     * required for the probe to be successful.
+     * Get the protocol property: The protocol of the end point. Possible values are: 'Http', 'Tcp', or 'Https'. If
+     * 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' or 'Https' is specified,
+     * a 200 OK response from the specifies URI is required for the probe to be successful.
      *
      * @return the protocol value.
      */
@@ -120,9 +115,9 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the protocol property: The protocol of the end point. If 'Tcp' is specified, a received ACK is required for
-     * the probe to be successful. If 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is
-     * required for the probe to be successful.
+     * Set the protocol property: The protocol of the end point. Possible values are: 'Http', 'Tcp', or 'Https'. If
+     * 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' or 'Https' is specified,
+     * a 200 OK response from the specifies URI is required for the probe to be successful.
      *
      * @param protocol the protocol value to set.
      * @return the ProbeInner object itself.
@@ -238,12 +233,28 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the probe resource.
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ProbeInner object itself.
+     */
+    public ProbeInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProbePropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

@@ -17,7 +17,7 @@ public final class OperationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
 
     /*
-     * Operation name: {provider}/{resource}/{operation}.
+     * Operation name: {provider}/{resource}/{operation}
      */
     @JsonProperty(value = "name")
     private String name;

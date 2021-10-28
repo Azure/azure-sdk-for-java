@@ -10,22 +10,21 @@ import com.azure.resourcemanager.compute.fluent.models.GalleryImageProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Map;
 
-/** Specifies information about the gallery image definition that you want to update. */
+/** Specifies information about the gallery Image Definition that you want to update. */
 @Fluent
 public final class GalleryImageUpdate extends UpdateResourceDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageUpdate.class);
 
     /*
-     * Describes the properties of a gallery image definition.
+     * Describes the properties of a gallery Image Definition.
      */
     @JsonProperty(value = "properties")
     private GalleryImageProperties innerProperties;
 
     /**
-     * Get the innerProperties property: Describes the properties of a gallery image definition.
+     * Get the innerProperties property: Describes the properties of a gallery Image Definition.
      *
      * @return the innerProperties value.
      */
@@ -41,7 +40,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the description property: The description of this gallery image definition resource. This property is
+     * Get the description property: The description of this gallery Image Definition resource. This property is
      * updatable.
      *
      * @return the description value.
@@ -51,7 +50,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the description property: The description of this gallery image definition resource. This property is
+     * Set the description property: The description of this gallery Image Definition resource. This property is
      * updatable.
      *
      * @param description the description value to set.
@@ -66,7 +65,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the eula property: The Eula agreement for the gallery image definition.
+     * Get the eula property: The Eula agreement for the gallery Image Definition.
      *
      * @return the eula value.
      */
@@ -75,7 +74,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the eula property: The Eula agreement for the gallery image definition.
+     * Set the eula property: The Eula agreement for the gallery Image Definition.
      *
      * @param eula the eula value to set.
      * @return the GalleryImageUpdate object itself.
@@ -210,7 +209,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the endOfLifeDate property: The end of life date of the gallery image definition. This property can be used
+     * Get the endOfLifeDate property: The end of life date of the gallery Image Definition. This property can be used
      * for decommissioning purposes. This property is updatable.
      *
      * @return the endOfLifeDate value.
@@ -220,7 +219,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the endOfLifeDate property: The end of life date of the gallery image definition. This property can be used
+     * Set the endOfLifeDate property: The end of life date of the gallery Image Definition. This property can be used
      * for decommissioning purposes. This property is updatable.
      *
      * @param endOfLifeDate the endOfLifeDate value to set.
@@ -235,7 +234,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the identifier property: This is the gallery image definition identifier.
+     * Get the identifier property: This is the gallery Image Definition identifier.
      *
      * @return the identifier value.
      */
@@ -244,7 +243,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the identifier property: This is the gallery image definition identifier.
+     * Set the identifier property: This is the gallery Image Definition identifier.
      *
      * @param identifier the identifier value to set.
      * @return the GalleryImageUpdate object itself.
@@ -306,7 +305,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the purchasePlan property: Describes the gallery image definition purchase plan. This is used by marketplace
+     * Get the purchasePlan property: Describes the gallery Image Definition purchase plan. This is used by marketplace
      * images.
      *
      * @return the purchasePlan value.
@@ -316,7 +315,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the purchasePlan property: Describes the gallery image definition purchase plan. This is used by marketplace
+     * Set the purchasePlan property: Describes the gallery Image Definition purchase plan. This is used by marketplace
      * images.
      *
      * @param purchasePlan the purchasePlan value to set.
@@ -331,36 +330,13 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery image definition. The provisioning state,
+     * Get the provisioningState property: The current state of the gallery Image Definition. The provisioning state,
      * which only appears in the response.
      *
      * @return the provisioningState value.
      */
     public GalleryImagePropertiesProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the features property: A list of gallery image features.
-     *
-     * @return the features value.
-     */
-    public List<GalleryImageFeature> features() {
-        return this.innerProperties() == null ? null : this.innerProperties().features();
-    }
-
-    /**
-     * Set the features property: A list of gallery image features.
-     *
-     * @param features the features value to set.
-     * @return the GalleryImageUpdate object itself.
-     */
-    public GalleryImageUpdate withFeatures(List<GalleryImageFeature> features) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new GalleryImageProperties();
-        }
-        this.innerProperties().withFeatures(features);
-        return this;
     }
 
     /**

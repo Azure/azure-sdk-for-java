@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,16 +21,16 @@ public final class ResourceNavigationLinkFormat {
     private String linkedResourceType;
 
     /*
-     * Link to the external resource.
+     * Link to the external resource
      */
     @JsonProperty(value = "link")
     private String link;
 
     /*
-     * The provisioning state of the resource navigation link resource.
+     * Provisioning state of the ResourceNavigationLink resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the linkedResourceType property: Resource type of the linked resource.
@@ -74,11 +73,11 @@ public final class ResourceNavigationLinkFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the resource navigation link resource.
+     * Get the provisioningState property: Provisioning state of the ResourceNavigationLink resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

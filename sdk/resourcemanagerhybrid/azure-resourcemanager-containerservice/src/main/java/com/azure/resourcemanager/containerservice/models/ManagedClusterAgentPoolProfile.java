@@ -19,15 +19,14 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /*
      * Unique name of the agent pool profile in the context of the subscription
-     * and resource group. Windows agent pool names must be 6 characters or
-     * less.
+     * and resource group.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group. Windows agent pool names must be 6 characters or less.
+     * group.
      *
      * @return the name value.
      */
@@ -37,7 +36,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /**
      * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group. Windows agent pool names must be 6 characters or less.
+     * group.
      *
      * @param name the name value to set.
      * @return the ManagedClusterAgentPoolProfile object itself.
@@ -56,7 +55,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
-    public ManagedClusterAgentPoolProfile withVmSize(String vmSize) {
+    public ManagedClusterAgentPoolProfile withVmSize(ContainerServiceVMSizeTypes vmSize) {
         super.withVmSize(vmSize);
         return this;
     }
@@ -72,20 +71,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withOsDiskType(OSDiskType osDiskType) {
         super.withOsDiskType(osDiskType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedClusterAgentPoolProfile withKubeletDiskType(KubeletDiskType kubeletDiskType) {
-        super.withKubeletDiskType(kubeletDiskType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedClusterAgentPoolProfile withWorkloadRuntime(WorkloadRuntime workloadRuntime) {
-        super.withWorkloadRuntime(workloadRuntime);
         return this;
     }
 
@@ -119,13 +104,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /** {@inheritDoc} */
     @Override
-    public ManagedClusterAgentPoolProfile withOsSku(Ossku osSku) {
-        super.withOsSku(osSku);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public ManagedClusterAgentPoolProfile withMaxCount(Integer maxCount) {
         super.withMaxCount(maxCount);
         return this;
@@ -142,13 +120,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withEnableAutoScaling(Boolean enableAutoScaling) {
         super.withEnableAutoScaling(enableAutoScaling);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedClusterAgentPoolProfile withScaleDownMode(ScaleDownMode scaleDownMode) {
-        super.withScaleDownMode(scaleDownMode);
         return this;
     }
 
@@ -191,13 +162,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withEnableNodePublicIp(Boolean enableNodePublicIp) {
         super.withEnableNodePublicIp(enableNodePublicIp);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedClusterAgentPoolProfile withNodePublicIpPrefixId(String nodePublicIpPrefixId) {
-        super.withNodePublicIpPrefixId(nodePublicIpPrefixId);
         return this;
     }
 
@@ -261,41 +225,6 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     @Override
     public ManagedClusterAgentPoolProfile withLinuxOSConfig(LinuxOSConfig linuxOSConfig) {
         super.withLinuxOSConfig(linuxOSConfig);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedClusterAgentPoolProfile withEnableEncryptionAtHost(Boolean enableEncryptionAtHost) {
-        super.withEnableEncryptionAtHost(enableEncryptionAtHost);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedClusterAgentPoolProfile withEnableUltraSsd(Boolean enableUltraSsd) {
-        super.withEnableUltraSsd(enableUltraSsd);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedClusterAgentPoolProfile withEnableFips(Boolean enableFips) {
-        super.withEnableFips(enableFips);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedClusterAgentPoolProfile withGpuInstanceProfile(GpuInstanceProfile gpuInstanceProfile) {
-        super.withGpuInstanceProfile(gpuInstanceProfile);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManagedClusterAgentPoolProfile withCreationData(CreationData creationData) {
-        super.withCreationData(creationData);
         return this;
     }
 

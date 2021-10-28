@@ -15,13 +15,13 @@ public final class ApplicationGatewayAutoscaleConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayAutoscaleConfiguration.class);
 
     /*
-     * Lower bound on number of Application Gateway capacity.
+     * Lower bound on number of Application Gateway capacity
      */
     @JsonProperty(value = "minCapacity", required = true)
     private int minCapacity;
 
     /*
-     * Upper bound on number of Application Gateway capacity.
+     * Upper bound on number of Application Gateway capacity
      */
     @JsonProperty(value = "maxCapacity")
     private Integer maxCapacity;

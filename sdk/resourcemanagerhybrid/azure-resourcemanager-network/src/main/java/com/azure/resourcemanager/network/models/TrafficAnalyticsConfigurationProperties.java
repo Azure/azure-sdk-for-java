@@ -17,30 +17,30 @@ public final class TrafficAnalyticsConfigurationProperties {
     /*
      * Flag to enable/disable traffic analytics.
      */
-    @JsonProperty(value = "enabled")
-    private Boolean enabled;
+    @JsonProperty(value = "enabled", required = true)
+    private boolean enabled;
 
     /*
-     * The resource guid of the attached workspace.
+     * The resource guid of the attached workspace
      */
-    @JsonProperty(value = "workspaceId")
+    @JsonProperty(value = "workspaceId", required = true)
     private String workspaceId;
 
     /*
-     * The location of the attached workspace.
+     * The location of the attached workspace
      */
-    @JsonProperty(value = "workspaceRegion")
+    @JsonProperty(value = "workspaceRegion", required = true)
     private String workspaceRegion;
 
     /*
-     * Resource Id of the attached workspace.
+     * Resource Id of the attached workspace
      */
-    @JsonProperty(value = "workspaceResourceId")
+    @JsonProperty(value = "workspaceResourceId", required = true)
     private String workspaceResourceId;
 
     /*
      * The interval in minutes which would decide how frequently TA service
-     * should do flow analytics.
+     * should do flow analytics
      */
     @JsonProperty(value = "trafficAnalyticsInterval")
     private Integer trafficAnalyticsInterval;
@@ -50,7 +50,7 @@ public final class TrafficAnalyticsConfigurationProperties {
      *
      * @return the enabled value.
      */
-    public Boolean enabled() {
+    public boolean enabled() {
         return this.enabled;
     }
 
@@ -60,7 +60,7 @@ public final class TrafficAnalyticsConfigurationProperties {
      * @param enabled the enabled value to set.
      * @return the TrafficAnalyticsConfigurationProperties object itself.
      */
-    public TrafficAnalyticsConfigurationProperties withEnabled(Boolean enabled) {
+    public TrafficAnalyticsConfigurationProperties withEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -153,5 +153,24 @@ public final class TrafficAnalyticsConfigurationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (workspaceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property workspaceId in model TrafficAnalyticsConfigurationProperties"));
+        }
+        if (workspaceRegion() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property workspaceRegion in model TrafficAnalyticsConfigurationProperties"));
+        }
+        if (workspaceResourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property workspaceResourceId in model"
+                            + " TrafficAnalyticsConfigurationProperties"));
+        }
     }
 }

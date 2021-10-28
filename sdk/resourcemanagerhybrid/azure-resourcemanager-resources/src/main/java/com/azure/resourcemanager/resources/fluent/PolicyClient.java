@@ -24,6 +24,13 @@ public interface PolicyClient {
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -38,20 +45,6 @@ public interface PolicyClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the DataPolicyManifestsClient object to access its operations.
-     *
-     * @return the DataPolicyManifestsClient object.
-     */
-    DataPolicyManifestsClient getDataPolicyManifests();
-
-    /**
-     * Gets the PolicyAssignmentsClient object to access its operations.
-     *
-     * @return the PolicyAssignmentsClient object.
-     */
-    PolicyAssignmentsClient getPolicyAssignments();
-
-    /**
      * Gets the PolicyDefinitionsClient object to access its operations.
      *
      * @return the PolicyDefinitionsClient object.
@@ -59,16 +52,9 @@ public interface PolicyClient {
     PolicyDefinitionsClient getPolicyDefinitions();
 
     /**
-     * Gets the PolicySetDefinitionsClient object to access its operations.
+     * Gets the PolicyAssignmentsClient object to access its operations.
      *
-     * @return the PolicySetDefinitionsClient object.
+     * @return the PolicyAssignmentsClient object.
      */
-    PolicySetDefinitionsClient getPolicySetDefinitions();
-
-    /**
-     * Gets the PolicyExemptionsClient object to access its operations.
-     *
-     * @return the PolicyExemptionsClient object.
-     */
-    PolicyExemptionsClient getPolicyExemptions();
+    PolicyAssignmentsClient getPolicyAssignments();
 }

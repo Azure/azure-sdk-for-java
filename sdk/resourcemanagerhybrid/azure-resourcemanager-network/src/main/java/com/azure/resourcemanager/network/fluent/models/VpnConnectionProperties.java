@@ -9,8 +9,6 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.RoutingConfiguration;
-import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,16 +27,10 @@ public final class VpnConnectionProperties {
     private SubResource remoteVpnSite;
 
     /*
-     * Routing weight for vpn connection.
+     * routing weight for vpn connection.
      */
     @JsonProperty(value = "routingWeight")
     private Integer routingWeight;
-
-    /*
-     * DPD timeout in seconds for vpn connection.
-     */
-    @JsonProperty(value = "dpdTimeoutSeconds")
-    private Integer dpdTimeoutSeconds;
 
     /*
      * The connection status.
@@ -47,7 +39,7 @@ public final class VpnConnectionProperties {
     private VpnConnectionStatus connectionStatus;
 
     /*
-     * Connection protocol used for this connection.
+     * Connection protocol used for this connection
      */
     @JsonProperty(value = "vpnConnectionProtocolType")
     private VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType;
@@ -77,16 +69,10 @@ public final class VpnConnectionProperties {
     private String sharedKey;
 
     /*
-     * EnableBgp flag.
+     * EnableBgp flag
      */
     @JsonProperty(value = "enableBgp")
     private Boolean enableBgp;
-
-    /*
-     * Enable policy-based traffic selectors.
-     */
-    @JsonProperty(value = "usePolicyBasedTrafficSelectors")
-    private Boolean usePolicyBasedTrafficSelectors;
 
     /*
      * The IPSec Policies to be considered by this connection.
@@ -95,47 +81,22 @@ public final class VpnConnectionProperties {
     private List<IpsecPolicy> ipsecPolicies;
 
     /*
-     * The Traffic Selector Policies to be considered by this connection.
-     */
-    @JsonProperty(value = "trafficSelectorPolicies")
-    private List<TrafficSelectorPolicy> trafficSelectorPolicies;
-
-    /*
-     * EnableBgp flag.
+     * EnableBgp flag
      */
     @JsonProperty(value = "enableRateLimiting")
     private Boolean enableRateLimiting;
 
     /*
-     * Enable internet security.
+     * Enable internet security
      */
     @JsonProperty(value = "enableInternetSecurity")
     private Boolean enableInternetSecurity;
 
     /*
-     * Use local azure ip to initiate connection.
+     * The provisioning state of the resource.
      */
-    @JsonProperty(value = "useLocalAzureIpAddress")
-    private Boolean useLocalAzureIpAddress;
-
-    /*
-     * The provisioning state of the VPN connection resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
-
-    /*
-     * List of all vpn site link connections to the gateway.
-     */
-    @JsonProperty(value = "vpnLinkConnections")
-    private List<VpnSiteLinkConnectionInner> vpnLinkConnections;
-
-    /*
-     * The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     */
-    @JsonProperty(value = "routingConfiguration")
-    private RoutingConfiguration routingConfiguration;
 
     /**
      * Get the remoteVpnSite property: Id of the connected vpn site.
@@ -158,7 +119,7 @@ public final class VpnConnectionProperties {
     }
 
     /**
-     * Get the routingWeight property: Routing weight for vpn connection.
+     * Get the routingWeight property: routing weight for vpn connection.
      *
      * @return the routingWeight value.
      */
@@ -167,33 +128,13 @@ public final class VpnConnectionProperties {
     }
 
     /**
-     * Set the routingWeight property: Routing weight for vpn connection.
+     * Set the routingWeight property: routing weight for vpn connection.
      *
      * @param routingWeight the routingWeight value to set.
      * @return the VpnConnectionProperties object itself.
      */
     public VpnConnectionProperties withRoutingWeight(Integer routingWeight) {
         this.routingWeight = routingWeight;
-        return this;
-    }
-
-    /**
-     * Get the dpdTimeoutSeconds property: DPD timeout in seconds for vpn connection.
-     *
-     * @return the dpdTimeoutSeconds value.
-     */
-    public Integer dpdTimeoutSeconds() {
-        return this.dpdTimeoutSeconds;
-    }
-
-    /**
-     * Set the dpdTimeoutSeconds property: DPD timeout in seconds for vpn connection.
-     *
-     * @param dpdTimeoutSeconds the dpdTimeoutSeconds value to set.
-     * @return the VpnConnectionProperties object itself.
-     */
-    public VpnConnectionProperties withDpdTimeoutSeconds(Integer dpdTimeoutSeconds) {
-        this.dpdTimeoutSeconds = dpdTimeoutSeconds;
         return this;
     }
 
@@ -306,26 +247,6 @@ public final class VpnConnectionProperties {
     }
 
     /**
-     * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
-     * @return the usePolicyBasedTrafficSelectors value.
-     */
-    public Boolean usePolicyBasedTrafficSelectors() {
-        return this.usePolicyBasedTrafficSelectors;
-    }
-
-    /**
-     * Set the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
-     * @param usePolicyBasedTrafficSelectors the usePolicyBasedTrafficSelectors value to set.
-     * @return the VpnConnectionProperties object itself.
-     */
-    public VpnConnectionProperties withUsePolicyBasedTrafficSelectors(Boolean usePolicyBasedTrafficSelectors) {
-        this.usePolicyBasedTrafficSelectors = usePolicyBasedTrafficSelectors;
-        return this;
-    }
-
-    /**
      * Get the ipsecPolicies property: The IPSec Policies to be considered by this connection.
      *
      * @return the ipsecPolicies value.
@@ -342,26 +263,6 @@ public final class VpnConnectionProperties {
      */
     public VpnConnectionProperties withIpsecPolicies(List<IpsecPolicy> ipsecPolicies) {
         this.ipsecPolicies = ipsecPolicies;
-        return this;
-    }
-
-    /**
-     * Get the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
-     * @return the trafficSelectorPolicies value.
-     */
-    public List<TrafficSelectorPolicy> trafficSelectorPolicies() {
-        return this.trafficSelectorPolicies;
-    }
-
-    /**
-     * Set the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
-     * @param trafficSelectorPolicies the trafficSelectorPolicies value to set.
-     * @return the VpnConnectionProperties object itself.
-     */
-    public VpnConnectionProperties withTrafficSelectorPolicies(List<TrafficSelectorPolicy> trafficSelectorPolicies) {
-        this.trafficSelectorPolicies = trafficSelectorPolicies;
         return this;
     }
 
@@ -406,27 +307,7 @@ public final class VpnConnectionProperties {
     }
 
     /**
-     * Get the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
-     * @return the useLocalAzureIpAddress value.
-     */
-    public Boolean useLocalAzureIpAddress() {
-        return this.useLocalAzureIpAddress;
-    }
-
-    /**
-     * Set the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
-     * @param useLocalAzureIpAddress the useLocalAzureIpAddress value to set.
-     * @return the VpnConnectionProperties object itself.
-     */
-    public VpnConnectionProperties withUseLocalAzureIpAddress(Boolean useLocalAzureIpAddress) {
-        this.useLocalAzureIpAddress = useLocalAzureIpAddress;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the VPN connection resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -435,44 +316,13 @@ public final class VpnConnectionProperties {
     }
 
     /**
-     * Get the vpnLinkConnections property: List of all vpn site link connections to the gateway.
+     * Set the provisioningState property: The provisioning state of the resource.
      *
-     * @return the vpnLinkConnections value.
-     */
-    public List<VpnSiteLinkConnectionInner> vpnLinkConnections() {
-        return this.vpnLinkConnections;
-    }
-
-    /**
-     * Set the vpnLinkConnections property: List of all vpn site link connections to the gateway.
-     *
-     * @param vpnLinkConnections the vpnLinkConnections value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the VpnConnectionProperties object itself.
      */
-    public VpnConnectionProperties withVpnLinkConnections(List<VpnSiteLinkConnectionInner> vpnLinkConnections) {
-        this.vpnLinkConnections = vpnLinkConnections;
-        return this;
-    }
-
-    /**
-     * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @return the routingConfiguration value.
-     */
-    public RoutingConfiguration routingConfiguration() {
-        return this.routingConfiguration;
-    }
-
-    /**
-     * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @param routingConfiguration the routingConfiguration value to set.
-     * @return the VpnConnectionProperties object itself.
-     */
-    public VpnConnectionProperties withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
-        this.routingConfiguration = routingConfiguration;
+    public VpnConnectionProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
         return this;
     }
 
@@ -484,15 +334,6 @@ public final class VpnConnectionProperties {
     public void validate() {
         if (ipsecPolicies() != null) {
             ipsecPolicies().forEach(e -> e.validate());
-        }
-        if (trafficSelectorPolicies() != null) {
-            trafficSelectorPolicies().forEach(e -> e.validate());
-        }
-        if (vpnLinkConnections() != null) {
-            vpnLinkConnections().forEach(e -> e.validate());
-        }
-        if (routingConfiguration() != null) {
-            routingConfiguration().validate();
         }
     }
 }

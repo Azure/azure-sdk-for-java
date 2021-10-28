@@ -15,13 +15,13 @@ public final class ExpressRoutePortsLocationBandwidths {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationBandwidths.class);
 
     /*
-     * Bandwidth descriptive name.
+     * Bandwidth descriptive name
      */
     @JsonProperty(value = "offerName", access = JsonProperty.Access.WRITE_ONLY)
     private String offerName;
 
     /*
-     * Bandwidth value in Gbps.
+     * Bandwidth value in Gbps
      */
     @JsonProperty(value = "valueInGbps", access = JsonProperty.Access.WRITE_ONLY)
     private Integer valueInGbps;

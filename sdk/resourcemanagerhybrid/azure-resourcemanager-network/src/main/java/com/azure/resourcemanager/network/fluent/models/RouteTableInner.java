@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -25,9 +24,10 @@ public final class RouteTableInner extends Resource {
     private RouteTablePropertiesFormat innerProperties;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
@@ -46,12 +46,23 @@ public final class RouteTableInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Set the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the RouteTableInner object itself.
+     */
+    public RouteTableInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
@@ -121,8 +132,8 @@ public final class RouteTableInner extends Resource {
     }
 
     /**
-     * Get the disableBgpRoutePropagation property: Whether to disable the routes learned by BGP on that route table.
-     * True means disable.
+     * Get the disableBgpRoutePropagation property: Gets or sets whether to disable the routes learned by BGP on that
+     * route table. True means disable.
      *
      * @return the disableBgpRoutePropagation value.
      */
@@ -131,8 +142,8 @@ public final class RouteTableInner extends Resource {
     }
 
     /**
-     * Set the disableBgpRoutePropagation property: Whether to disable the routes learned by BGP on that route table.
-     * True means disable.
+     * Set the disableBgpRoutePropagation property: Gets or sets whether to disable the routes learned by BGP on that
+     * route table. True means disable.
      *
      * @param disableBgpRoutePropagation the disableBgpRoutePropagation value to set.
      * @return the RouteTableInner object itself.
@@ -146,21 +157,28 @@ public final class RouteTableInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the route table resource.
+     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the route table.
+     * Set the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      *
-     * @return the resourceGuid value.
+     * @param provisioningState the provisioningState value to set.
+     * @return the RouteTableInner object itself.
      */
-    public String resourceGuid() {
-        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    public RouteTableInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RouteTablePropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

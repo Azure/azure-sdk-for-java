@@ -7,11 +7,10 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AuthorizationUseStatus;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of ExpressRouteCircuitAuthorization. */
+/** The AuthorizationPropertiesFormat model. */
 @Fluent
 public final class AuthorizationPropertiesFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationPropertiesFormat.class);
@@ -23,16 +22,17 @@ public final class AuthorizationPropertiesFormat {
     private String authorizationKey;
 
     /*
-     * The authorization use status.
+     * AuthorizationUseStatus. Possible values are: 'Available' and 'InUse'.
      */
     @JsonProperty(value = "authorizationUseStatus")
     private AuthorizationUseStatus authorizationUseStatus;
 
     /*
-     * The provisioning state of the authorization resource.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the authorizationKey property: The authorization key.
@@ -55,7 +55,7 @@ public final class AuthorizationPropertiesFormat {
     }
 
     /**
-     * Get the authorizationUseStatus property: The authorization use status.
+     * Get the authorizationUseStatus property: AuthorizationUseStatus. Possible values are: 'Available' and 'InUse'.
      *
      * @return the authorizationUseStatus value.
      */
@@ -64,7 +64,7 @@ public final class AuthorizationPropertiesFormat {
     }
 
     /**
-     * Set the authorizationUseStatus property: The authorization use status.
+     * Set the authorizationUseStatus property: AuthorizationUseStatus. Possible values are: 'Available' and 'InUse'.
      *
      * @param authorizationUseStatus the authorizationUseStatus value to set.
      * @return the AuthorizationPropertiesFormat object itself.
@@ -75,12 +75,25 @@ public final class AuthorizationPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the authorization resource.
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the AuthorizationPropertiesFormat object itself.
+     */
+    public AuthorizationPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

@@ -34,8 +34,7 @@ public final class AzureFirewallNatRule {
     private List<String> sourceAddresses;
 
     /*
-     * List of destination IP addresses for this rule. Supports IP ranges,
-     * prefixes, and service tags.
+     * List of destination IP addresses for this rule.
      */
     @JsonProperty(value = "destinationAddresses")
     private List<String> destinationAddresses;
@@ -63,18 +62,6 @@ public final class AzureFirewallNatRule {
      */
     @JsonProperty(value = "translatedPort")
     private String translatedPort;
-
-    /*
-     * The translated FQDN for this NAT rule.
-     */
-    @JsonProperty(value = "translatedFqdn")
-    private String translatedFqdn;
-
-    /*
-     * List of source IpGroups for this rule.
-     */
-    @JsonProperty(value = "sourceIpGroups")
-    private List<String> sourceIpGroups;
 
     /**
      * Get the name property: Name of the NAT rule.
@@ -137,8 +124,7 @@ public final class AzureFirewallNatRule {
     }
 
     /**
-     * Get the destinationAddresses property: List of destination IP addresses for this rule. Supports IP ranges,
-     * prefixes, and service tags.
+     * Get the destinationAddresses property: List of destination IP addresses for this rule.
      *
      * @return the destinationAddresses value.
      */
@@ -147,8 +133,7 @@ public final class AzureFirewallNatRule {
     }
 
     /**
-     * Set the destinationAddresses property: List of destination IP addresses for this rule. Supports IP ranges,
-     * prefixes, and service tags.
+     * Set the destinationAddresses property: List of destination IP addresses for this rule.
      *
      * @param destinationAddresses the destinationAddresses value to set.
      * @return the AzureFirewallNatRule object itself.
@@ -235,46 +220,6 @@ public final class AzureFirewallNatRule {
      */
     public AzureFirewallNatRule withTranslatedPort(String translatedPort) {
         this.translatedPort = translatedPort;
-        return this;
-    }
-
-    /**
-     * Get the translatedFqdn property: The translated FQDN for this NAT rule.
-     *
-     * @return the translatedFqdn value.
-     */
-    public String translatedFqdn() {
-        return this.translatedFqdn;
-    }
-
-    /**
-     * Set the translatedFqdn property: The translated FQDN for this NAT rule.
-     *
-     * @param translatedFqdn the translatedFqdn value to set.
-     * @return the AzureFirewallNatRule object itself.
-     */
-    public AzureFirewallNatRule withTranslatedFqdn(String translatedFqdn) {
-        this.translatedFqdn = translatedFqdn;
-        return this;
-    }
-
-    /**
-     * Get the sourceIpGroups property: List of source IpGroups for this rule.
-     *
-     * @return the sourceIpGroups value.
-     */
-    public List<String> sourceIpGroups() {
-        return this.sourceIpGroups;
-    }
-
-    /**
-     * Set the sourceIpGroups property: List of source IpGroups for this rule.
-     *
-     * @param sourceIpGroups the sourceIpGroups value to set.
-     * @return the AzureFirewallNatRule object itself.
-     */
-    public AzureFirewallNatRule withSourceIpGroups(List<String> sourceIpGroups) {
-        this.sourceIpGroups = sourceIpGroups;
         return this;
     }
 

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -19,7 +18,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyInner.class);
 
     /*
-     * Properties of the service end point policy.
+     * Properties of the service end point policy
      */
     @JsonProperty(value = "properties")
     private ServiceEndpointPolicyPropertiesFormat innerProperties;
@@ -27,15 +26,8 @@ public final class ServiceEndpointPolicyInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * Kind of service endpoint policy. This is metadata used for the Azure
-     * portal experience.
-     */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
-    private String kind;
 
     /*
      * Resource ID.
@@ -62,12 +54,14 @@ public final class ServiceEndpointPolicyInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of service endpoint policy. This is metadata used for the Azure portal experience.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the kind value.
+     * @param etag the etag value to set.
+     * @return the ServiceEndpointPolicyInner object itself.
      */
-    public String kind() {
-        return this.kind;
+    public ServiceEndpointPolicyInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
@@ -149,59 +143,13 @@ public final class ServiceEndpointPolicyInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the service endpoint policy resource.
+     * Get the provisioningState property: The provisioning state of the service endpoint policy. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the serviceAlias property: The alias indicating if the policy belongs to a service.
-     *
-     * @return the serviceAlias value.
-     */
-    public String serviceAlias() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceAlias();
-    }
-
-    /**
-     * Set the serviceAlias property: The alias indicating if the policy belongs to a service.
-     *
-     * @param serviceAlias the serviceAlias value to set.
-     * @return the ServiceEndpointPolicyInner object itself.
-     */
-    public ServiceEndpointPolicyInner withServiceAlias(String serviceAlias) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceEndpointPolicyPropertiesFormat();
-        }
-        this.innerProperties().withServiceAlias(serviceAlias);
-        return this;
-    }
-
-    /**
-     * Get the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
-     *
-     * @return the contextualServiceEndpointPolicies value.
-     */
-    public List<String> contextualServiceEndpointPolicies() {
-        return this.innerProperties() == null ? null : this.innerProperties().contextualServiceEndpointPolicies();
-    }
-
-    /**
-     * Set the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
-     *
-     * @param contextualServiceEndpointPolicies the contextualServiceEndpointPolicies value to set.
-     * @return the ServiceEndpointPolicyInner object itself.
-     */
-    public ServiceEndpointPolicyInner withContextualServiceEndpointPolicies(
-        List<String> contextualServiceEndpointPolicies) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceEndpointPolicyPropertiesFormat();
-        }
-        this.innerProperties().withContextualServiceEndpointPolicies(contextualServiceEndpointPolicies);
-        return this;
     }
 
     /**

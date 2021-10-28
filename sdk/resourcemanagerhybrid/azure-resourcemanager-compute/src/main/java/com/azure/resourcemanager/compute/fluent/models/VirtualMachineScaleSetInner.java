@@ -10,12 +10,9 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
-import com.azure.resourcemanager.compute.models.ExtendedLocation;
-import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
 import com.azure.resourcemanager.compute.models.Sku;
-import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
@@ -65,12 +62,6 @@ public final class VirtualMachineScaleSetInner extends Resource {
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
-
-    /*
-     * The extended location of the Virtual Machine Scale Set.
-     */
-    @JsonProperty(value = "extendedLocation")
-    private ExtendedLocation extendedLocation;
 
     /**
      * Get the sku property: The virtual machine scale set sku.
@@ -168,26 +159,6 @@ public final class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withZones(List<String> zones) {
         this.zones = zones;
-        return this;
-    }
-
-    /**
-     * Get the extendedLocation property: The extended location of the Virtual Machine Scale Set.
-     *
-     * @return the extendedLocation value.
-     */
-    public ExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
-
-    /**
-     * Set the extendedLocation property: The extended location of the Virtual Machine Scale Set.
-     *
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the VirtualMachineScaleSetInner object itself.
-     */
-    public VirtualMachineScaleSetInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -373,8 +344,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Get the zoneBalance property: Whether to force strictly even Virtual Machine distribution cross x-zones in case
-     * there is zone outage. zoneBalance property can only be set if the zones property of the scale set contains more
-     * than one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
+     * there is zone outage.
      *
      * @return the zoneBalance value.
      */
@@ -384,8 +354,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Set the zoneBalance property: Whether to force strictly even Virtual Machine distribution cross x-zones in case
-     * there is zone outage. zoneBalance property can only be set if the zones property of the scale set contains more
-     * than one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
+     * there is zone outage.
      *
      * @param zoneBalance the zoneBalance value to set.
      * @return the VirtualMachineScaleSetInner object itself.
@@ -499,8 +468,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
-     * Machine Scale Set.
+     * Get the scaleInPolicy property: Specifies the scale-in policy that decides which virtual machines are chosen for
+     * removal when a Virtual Machine Scale Set is scaled-in.
      *
      * @return the scaleInPolicy value.
      */
@@ -509,8 +478,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
-     * Machine Scale Set.
+     * Set the scaleInPolicy property: Specifies the scale-in policy that decides which virtual machines are chosen for
+     * removal when a Virtual Machine Scale Set is scaled-in.
      *
      * @param scaleInPolicy the scaleInPolicy value to set.
      * @return the VirtualMachineScaleSetInner object itself.
@@ -520,52 +489,6 @@ public final class VirtualMachineScaleSetInner extends Resource {
             this.innerProperties = new VirtualMachineScaleSetProperties();
         }
         this.innerProperties().withScaleInPolicy(scaleInPolicy);
-        return this;
-    }
-
-    /**
-     * Get the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
-     *
-     * @return the orchestrationMode value.
-     */
-    public OrchestrationMode orchestrationMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().orchestrationMode();
-    }
-
-    /**
-     * Set the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
-     *
-     * @param orchestrationMode the orchestrationMode value to set.
-     * @return the VirtualMachineScaleSetInner object itself.
-     */
-    public VirtualMachineScaleSetInner withOrchestrationMode(OrchestrationMode orchestrationMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineScaleSetProperties();
-        }
-        this.innerProperties().withOrchestrationMode(orchestrationMode);
-        return this;
-    }
-
-    /**
-     * Get the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
-     *
-     * @return the spotRestorePolicy value.
-     */
-    public SpotRestorePolicy spotRestorePolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().spotRestorePolicy();
-    }
-
-    /**
-     * Set the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
-     *
-     * @param spotRestorePolicy the spotRestorePolicy value to set.
-     * @return the VirtualMachineScaleSetInner object itself.
-     */
-    public VirtualMachineScaleSetInner withSpotRestorePolicy(SpotRestorePolicy spotRestorePolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineScaleSetProperties();
-        }
-        this.innerProperties().withSpotRestorePolicy(spotRestorePolicy);
         return this;
     }
 
@@ -586,9 +509,6 @@ public final class VirtualMachineScaleSetInner extends Resource {
         }
         if (identity() != null) {
             identity().validate();
-        }
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
         }
     }
 }

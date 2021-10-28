@@ -6,6 +6,7 @@ package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -57,7 +58,7 @@ public final class RegionsClientImpl implements RegionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "EventHubManagementCl")
     private interface RegionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventHub/sku/{sku}/regions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -66,14 +67,18 @@ public final class RegionsClientImpl implements RegionsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("sku") String sku,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MessagingRegionsListResult>> listBySkuNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -102,15 +107,18 @@ public final class RegionsClientImpl implements RegionsClient {
         if (sku == null) {
             return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .listBySku(
                             this.client.getEndpoint(),
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             sku,
+                            accept,
                             context))
             .<PagedResponse<MessagingRegionsInner>>map(
                 res ->
@@ -121,7 +129,7 @@ public final class RegionsClientImpl implements RegionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -151,10 +159,11 @@ public final class RegionsClientImpl implements RegionsClient {
         if (sku == null) {
             return Mono.error(new IllegalArgumentException("Parameter sku is required and cannot be null."));
         }
+        final String apiVersion = "2017-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySku(
-                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), sku, context)
+            .listBySku(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), sku, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -239,8 +248,15 @@ public final class RegionsClientImpl implements RegionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBySkuNext(nextLink, context))
+            .withContext(context -> service.listBySkuNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<MessagingRegionsInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -250,7 +266,7 @@ public final class RegionsClientImpl implements RegionsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -268,9 +284,16 @@ public final class RegionsClientImpl implements RegionsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySkuNext(nextLink, context)
+            .listBySkuNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

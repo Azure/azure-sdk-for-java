@@ -22,7 +22,7 @@ public final class VirtualMachineAssessPatchesResultInner {
     /*
      * The overall success or failure status of the operation. It remains
      * "InProgress" until the operation completes. At that point it will become
-     * "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
+     * "Failed", "Succeeded", or "CompletedWithWarnings."
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
@@ -65,8 +65,8 @@ public final class VirtualMachineAssessPatchesResultInner {
      * The list of patches that have been detected as available for
      * installation.
      */
-    @JsonProperty(value = "availablePatches", access = JsonProperty.Access.WRITE_ONLY)
-    private List<VirtualMachineSoftwarePatchProperties> availablePatches;
+    @JsonProperty(value = "patches", access = JsonProperty.Access.WRITE_ONLY)
+    private List<VirtualMachineSoftwarePatchProperties> patches;
 
     /*
      * The errors that were encountered during execution of the operation. The
@@ -77,8 +77,7 @@ public final class VirtualMachineAssessPatchesResultInner {
 
     /**
      * Get the status property: The overall success or failure status of the operation. It remains "InProgress" until
-     * the operation completes. At that point it will become "Unknown", "Failed", "Succeeded", or
-     * "CompletedWithWarnings.".
+     * the operation completes. At that point it will become "Failed", "Succeeded", or "CompletedWithWarnings.".
      *
      * @return the status value.
      */
@@ -135,12 +134,12 @@ public final class VirtualMachineAssessPatchesResultInner {
     }
 
     /**
-     * Get the availablePatches property: The list of patches that have been detected as available for installation.
+     * Get the patches property: The list of patches that have been detected as available for installation.
      *
-     * @return the availablePatches value.
+     * @return the patches value.
      */
-    public List<VirtualMachineSoftwarePatchProperties> availablePatches() {
-        return this.availablePatches;
+    public List<VirtualMachineSoftwarePatchProperties> patches() {
+        return this.patches;
     }
 
     /**
@@ -159,8 +158,8 @@ public final class VirtualMachineAssessPatchesResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (availablePatches() != null) {
-            availablePatches().forEach(e -> e.validate());
+        if (patches() != null) {
+            patches().forEach(e -> e.validate());
         }
         if (error() != null) {
             error().validate();

@@ -76,7 +76,7 @@ public final class NetworkProfilesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface NetworkProfilesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkProfiles/{networkProfileName}")
@@ -88,7 +88,6 @@ public final class NetworkProfilesClientImpl
             @PathParam("networkProfileName") String networkProfileName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -218,8 +217,7 @@ public final class NetworkProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -230,7 +228,6 @@ public final class NetworkProfilesClientImpl
                             networkProfileName,
                             apiVersion,
                             this.client.getSubscriptionId(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -269,8 +266,7 @@ public final class NetworkProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -279,7 +275,6 @@ public final class NetworkProfilesClientImpl
                 networkProfileName,
                 apiVersion,
                 this.client.getSubscriptionId(),
-                accept,
                 context);
     }
 
@@ -422,7 +417,7 @@ public final class NetworkProfilesClientImpl
      * Gets the specified network profile in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -452,7 +447,7 @@ public final class NetworkProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -474,7 +469,7 @@ public final class NetworkProfilesClientImpl
      * Gets the specified network profile in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -505,7 +500,7 @@ public final class NetworkProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -524,7 +519,7 @@ public final class NetworkProfilesClientImpl
      * Gets the specified network profile in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -549,7 +544,7 @@ public final class NetworkProfilesClientImpl
      * Gets the specified network profile in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -573,7 +568,7 @@ public final class NetworkProfilesClientImpl
      * Gets the specified network profile in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -589,7 +584,7 @@ public final class NetworkProfilesClientImpl
      * Gets the specified network profile in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param networkProfileName The name of the public IP prefix.
+     * @param networkProfileName The name of the PublicIPPrefix.
      * @param expand Expands referenced resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,7 +637,7 @@ public final class NetworkProfilesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -700,7 +695,7 @@ public final class NetworkProfilesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -814,7 +809,7 @@ public final class NetworkProfilesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -872,7 +867,7 @@ public final class NetworkProfilesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -967,7 +962,7 @@ public final class NetworkProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1009,7 +1004,7 @@ public final class NetworkProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1105,7 +1100,7 @@ public final class NetworkProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1159,7 +1154,7 @@ public final class NetworkProfilesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

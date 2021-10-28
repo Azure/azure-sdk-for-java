@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitReference;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,13 +18,13 @@ public final class ExpressRouteCrossConnectionProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionProperties.class);
 
     /*
-     * The name of the primary port.
+     * The name of the primary  port.
      */
     @JsonProperty(value = "primaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryAzurePort;
 
     /*
-     * The name of the secondary port.
+     * The name of the secondary  port.
      */
     @JsonProperty(value = "secondaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryAzurePort;
@@ -39,24 +38,25 @@ public final class ExpressRouteCrossConnectionProperties {
     /*
      * The peering location of the ExpressRoute circuit.
      */
-    @JsonProperty(value = "peeringLocation", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "peeringLocation")
     private String peeringLocation;
 
     /*
      * The circuit bandwidth In Mbps.
      */
-    @JsonProperty(value = "bandwidthInMbps", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "bandwidthInMbps")
     private Integer bandwidthInMbps;
 
     /*
-     * The ExpressRouteCircuit.
+     * The ExpressRouteCircuit
      */
     @JsonProperty(value = "expressRouteCircuit")
     private ExpressRouteCircuitReference expressRouteCircuit;
 
     /*
      * The provisioning state of the circuit in the connectivity provider
-     * system.
+     * system. Possible values are 'NotProvisioned', 'Provisioning',
+     * 'Provisioned'.
      */
     @JsonProperty(value = "serviceProviderProvisioningState")
     private ServiceProviderProvisioningState serviceProviderProvisioningState;
@@ -68,10 +68,11 @@ public final class ExpressRouteCrossConnectionProperties {
     private String serviceProviderNotes;
 
     /*
-     * The provisioning state of the express route cross connection resource.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /*
      * The list of peerings.
@@ -116,12 +117,34 @@ public final class ExpressRouteCrossConnectionProperties {
     }
 
     /**
+     * Set the peeringLocation property: The peering location of the ExpressRoute circuit.
+     *
+     * @param peeringLocation the peeringLocation value to set.
+     * @return the ExpressRouteCrossConnectionProperties object itself.
+     */
+    public ExpressRouteCrossConnectionProperties withPeeringLocation(String peeringLocation) {
+        this.peeringLocation = peeringLocation;
+        return this;
+    }
+
+    /**
      * Get the bandwidthInMbps property: The circuit bandwidth In Mbps.
      *
      * @return the bandwidthInMbps value.
      */
     public Integer bandwidthInMbps() {
         return this.bandwidthInMbps;
+    }
+
+    /**
+     * Set the bandwidthInMbps property: The circuit bandwidth In Mbps.
+     *
+     * @param bandwidthInMbps the bandwidthInMbps value to set.
+     * @return the ExpressRouteCrossConnectionProperties object itself.
+     */
+    public ExpressRouteCrossConnectionProperties withBandwidthInMbps(Integer bandwidthInMbps) {
+        this.bandwidthInMbps = bandwidthInMbps;
+        return this;
     }
 
     /**
@@ -147,7 +170,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
-     * provider system.
+     * provider system. Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned'.
      *
      * @return the serviceProviderProvisioningState value.
      */
@@ -157,7 +180,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Set the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
-     * provider system.
+     * provider system. Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned'.
      *
      * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
      * @return the ExpressRouteCrossConnectionProperties object itself.
@@ -189,11 +212,12 @@ public final class ExpressRouteCrossConnectionProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route cross connection resource.
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

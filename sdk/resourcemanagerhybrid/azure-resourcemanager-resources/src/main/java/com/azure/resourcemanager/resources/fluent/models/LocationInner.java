@@ -4,15 +4,13 @@
 
 package com.azure.resourcemanager.resources.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.resources.models.LocationMetadata;
-import com.azure.resourcemanager.resources.models.LocationType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Location information. */
-@Fluent
+@Immutable
 public final class LocationInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationInner.class);
 
@@ -36,28 +34,22 @@ public final class LocationInner {
     private String name;
 
     /*
-     * The location type.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private LocationType type;
-
-    /*
      * The display name of the location.
      */
     @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
-     * The display name of the location and its region.
+     * The latitude of the location.
      */
-    @JsonProperty(value = "regionalDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String regionalDisplayName;
+    @JsonProperty(value = "latitude", access = JsonProperty.Access.WRITE_ONLY)
+    private String latitude;
 
     /*
-     * Metadata of the location, such as lat/long, paired region, and others.
+     * The longitude of the location.
      */
-    @JsonProperty(value = "metadata")
-    private LocationMetadata metadata;
+    @JsonProperty(value = "longitude", access = JsonProperty.Access.WRITE_ONLY)
+    private String longitude;
 
     /**
      * Get the id property: The fully qualified ID of the location. For example,
@@ -88,15 +80,6 @@ public final class LocationInner {
     }
 
     /**
-     * Get the type property: The location type.
-     *
-     * @return the type value.
-     */
-    public LocationType type() {
-        return this.type;
-    }
-
-    /**
      * Get the displayName property: The display name of the location.
      *
      * @return the displayName value.
@@ -106,32 +89,21 @@ public final class LocationInner {
     }
 
     /**
-     * Get the regionalDisplayName property: The display name of the location and its region.
+     * Get the latitude property: The latitude of the location.
      *
-     * @return the regionalDisplayName value.
+     * @return the latitude value.
      */
-    public String regionalDisplayName() {
-        return this.regionalDisplayName;
+    public String latitude() {
+        return this.latitude;
     }
 
     /**
-     * Get the metadata property: Metadata of the location, such as lat/long, paired region, and others.
+     * Get the longitude property: The longitude of the location.
      *
-     * @return the metadata value.
+     * @return the longitude value.
      */
-    public LocationMetadata metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata property: Metadata of the location, such as lat/long, paired region, and others.
-     *
-     * @param metadata the metadata value to set.
-     * @return the LocationInner object itself.
-     */
-    public LocationInner withMetadata(LocationMetadata metadata) {
-        this.metadata = metadata;
-        return this;
+    public String longitude() {
+        return this.longitude;
     }
 
     /**
@@ -140,8 +112,5 @@ public final class LocationInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (metadata() != null) {
-            metadata().validate();
-        }
     }
 }

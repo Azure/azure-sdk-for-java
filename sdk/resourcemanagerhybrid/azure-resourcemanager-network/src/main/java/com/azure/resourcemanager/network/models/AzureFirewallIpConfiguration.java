@@ -17,7 +17,7 @@ public final class AzureFirewallIpConfiguration extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallIpConfiguration.class);
 
     /*
-     * Properties of the azure firewall IP configuration.
+     * Properties of IP configuration of an Azure Firewall.
      */
     @JsonProperty(value = "properties")
     private AzureFirewallIpConfigurationPropertiesFormat innerProperties;
@@ -35,14 +35,8 @@ public final class AzureFirewallIpConfiguration extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /*
-     * Type of the resource.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
-
     /**
-     * Get the innerProperties property: Properties of the azure firewall IP configuration.
+     * Get the innerProperties property: Properties of IP configuration of an Azure Firewall.
      *
      * @return the innerProperties value.
      */
@@ -81,15 +75,6 @@ public final class AzureFirewallIpConfiguration extends SubResource {
         return this.etag;
     }
 
-    /**
-     * Get the type property: Type of the resource.
-     *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
     /** {@inheritDoc} */
     @Override
     public AzureFirewallIpConfiguration withId(String id) {
@@ -108,8 +93,7 @@ public final class AzureFirewallIpConfiguration extends SubResource {
     }
 
     /**
-     * Get the subnet property: Reference to the subnet resource. This resource must be named 'AzureFirewallSubnet' or
-     * 'AzureFirewallManagementSubnet'.
+     * Get the subnet property: Reference of the subnet resource. This resource must be named 'AzureFirewallSubnet'.
      *
      * @return the subnet value.
      */
@@ -118,8 +102,7 @@ public final class AzureFirewallIpConfiguration extends SubResource {
     }
 
     /**
-     * Set the subnet property: Reference to the subnet resource. This resource must be named 'AzureFirewallSubnet' or
-     * 'AzureFirewallManagementSubnet'.
+     * Set the subnet property: Reference of the subnet resource. This resource must be named 'AzureFirewallSubnet'.
      *
      * @param subnet the subnet value to set.
      * @return the AzureFirewallIpConfiguration object itself.
@@ -133,7 +116,7 @@ public final class AzureFirewallIpConfiguration extends SubResource {
     }
 
     /**
-     * Get the publicIpAddress property: Reference to the PublicIP resource. This field is a mandatory input if subnet
+     * Get the publicIpAddress property: Reference of the PublicIP resource. This field is a mandatory input if subnet
      * is not null.
      *
      * @return the publicIpAddress value.
@@ -143,7 +126,7 @@ public final class AzureFirewallIpConfiguration extends SubResource {
     }
 
     /**
-     * Set the publicIpAddress property: Reference to the PublicIP resource. This field is a mandatory input if subnet
+     * Set the publicIpAddress property: Reference of the PublicIP resource. This field is a mandatory input if subnet
      * is not null.
      *
      * @param publicIpAddress the publicIpAddress value to set.
@@ -158,12 +141,26 @@ public final class AzureFirewallIpConfiguration extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the Azure firewall IP configuration resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the AzureFirewallIpConfiguration object itself.
+     */
+    public AzureFirewallIpConfiguration withProvisioningState(ProvisioningState provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallIpConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

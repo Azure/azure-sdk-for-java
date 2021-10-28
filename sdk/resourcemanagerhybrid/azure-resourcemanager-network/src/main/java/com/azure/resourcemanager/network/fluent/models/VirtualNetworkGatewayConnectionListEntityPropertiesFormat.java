@@ -8,11 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
-import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
 import com.azure.resourcemanager.network.models.VirtualNetworkConnectionGatewayReference;
-import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
@@ -52,13 +49,14 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     private VirtualNetworkConnectionGatewayReference localNetworkGateway2;
 
     /*
-     * Gateway connection type.
+     * Gateway connection type. Possible values are:
+     * 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient.
      */
     @JsonProperty(value = "connectionType", required = true)
     private VirtualNetworkGatewayConnectionType connectionType;
 
     /*
-     * Connection protocol used for this connection.
+     * Connection protocol used for this connection
      */
     @JsonProperty(value = "connectionProtocol")
     private VirtualNetworkGatewayConnectionProtocol connectionProtocol;
@@ -70,19 +68,14 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     private Integer routingWeight;
 
     /*
-     * The connection mode for this connection.
-     */
-    @JsonProperty(value = "connectionMode")
-    private VirtualNetworkGatewayConnectionMode connectionMode;
-
-    /*
      * The IPSec shared key.
      */
     @JsonProperty(value = "sharedKey")
     private String sharedKey;
 
     /*
-     * Virtual Network Gateway connection status.
+     * Virtual network Gateway connection status. Possible values are
+     * 'Unknown', 'Connecting', 'Connected' and 'NotConnected'.
      */
     @JsonProperty(value = "connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkGatewayConnectionStatus connectionStatus;
@@ -112,7 +105,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     private SubResource peer;
 
     /*
-     * EnableBgp flag.
+     * EnableBgp flag
      */
     @JsonProperty(value = "enableBgp")
     private Boolean enableBgp;
@@ -130,27 +123,21 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     private List<IpsecPolicy> ipsecPolicies;
 
     /*
-     * The Traffic Selector Policies to be considered by this connection.
-     */
-    @JsonProperty(value = "trafficSelectorPolicies")
-    private List<TrafficSelectorPolicy> trafficSelectorPolicies;
-
-    /*
-     * The resource GUID property of the virtual network gateway connection
+     * The resource GUID property of the VirtualNetworkGatewayConnection
      * resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resourceGuid")
     private String resourceGuid;
 
     /*
-     * The provisioning state of the virtual network gateway connection
-     * resource.
+     * The provisioning state of the VirtualNetworkGatewayConnection resource.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /*
-     * Bypass ExpressRoute Gateway for data forwarding.
+     * Bypass ExpressRoute Gateway for data forwarding
      */
     @JsonProperty(value = "expressRouteGatewayBypass")
     private Boolean expressRouteGatewayBypass;
@@ -239,7 +226,8 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     }
 
     /**
-     * Get the connectionType property: Gateway connection type.
+     * Get the connectionType property: Gateway connection type. Possible values are:
+     * 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient.
      *
      * @return the connectionType value.
      */
@@ -248,7 +236,8 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     }
 
     /**
-     * Set the connectionType property: Gateway connection type.
+     * Set the connectionType property: Gateway connection type. Possible values are:
+     * 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient.
      *
      * @param connectionType the connectionType value to set.
      * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
@@ -301,27 +290,6 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     }
 
     /**
-     * Get the connectionMode property: The connection mode for this connection.
-     *
-     * @return the connectionMode value.
-     */
-    public VirtualNetworkGatewayConnectionMode connectionMode() {
-        return this.connectionMode;
-    }
-
-    /**
-     * Set the connectionMode property: The connection mode for this connection.
-     *
-     * @param connectionMode the connectionMode value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
-     */
-    public VirtualNetworkGatewayConnectionListEntityPropertiesFormat withConnectionMode(
-        VirtualNetworkGatewayConnectionMode connectionMode) {
-        this.connectionMode = connectionMode;
-        return this;
-    }
-
-    /**
      * Get the sharedKey property: The IPSec shared key.
      *
      * @return the sharedKey value.
@@ -342,7 +310,8 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     }
 
     /**
-     * Get the connectionStatus property: Virtual Network Gateway connection status.
+     * Get the connectionStatus property: Virtual network Gateway connection status. Possible values are 'Unknown',
+     * 'Connecting', 'Connected' and 'NotConnected'.
      *
      * @return the connectionStatus value.
      */
@@ -460,28 +429,7 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     }
 
     /**
-     * Get the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
-     * @return the trafficSelectorPolicies value.
-     */
-    public List<TrafficSelectorPolicy> trafficSelectorPolicies() {
-        return this.trafficSelectorPolicies;
-    }
-
-    /**
-     * Set the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
-     * @param trafficSelectorPolicies the trafficSelectorPolicies value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
-     */
-    public VirtualNetworkGatewayConnectionListEntityPropertiesFormat withTrafficSelectorPolicies(
-        List<TrafficSelectorPolicy> trafficSelectorPolicies) {
-        this.trafficSelectorPolicies = trafficSelectorPolicies;
-        return this;
-    }
-
-    /**
-     * Get the resourceGuid property: The resource GUID property of the virtual network gateway connection resource.
+     * Get the resourceGuid property: The resource GUID property of the VirtualNetworkGatewayConnection resource.
      *
      * @return the resourceGuid value.
      */
@@ -490,11 +438,23 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the virtual network gateway connection resource.
+     * Set the resourceGuid property: The resource GUID property of the VirtualNetworkGatewayConnection resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the VirtualNetworkGatewayConnectionListEntityPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayConnectionListEntityPropertiesFormat withResourceGuid(String resourceGuid) {
+        this.resourceGuid = resourceGuid;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the VirtualNetworkGatewayConnection resource.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
@@ -552,9 +512,6 @@ public final class VirtualNetworkGatewayConnectionListEntityPropertiesFormat {
         }
         if (ipsecPolicies() != null) {
             ipsecPolicies().forEach(e -> e.validate());
-        }
-        if (trafficSelectorPolicies() != null) {
-            trafficSelectorPolicies().forEach(e -> e.validate());
         }
     }
 }

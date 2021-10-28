@@ -13,7 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import com.azure.resourcemanager.storage.fluent.BlobContainersClient;
 import com.azure.resourcemanager.storage.fluent.BlobInventoryPoliciesClient;
 import com.azure.resourcemanager.storage.fluent.BlobServicesClient;
-import com.azure.resourcemanager.storage.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.storage.fluent.EncryptionScopesClient;
 import com.azure.resourcemanager.storage.fluent.FileServicesClient;
 import com.azure.resourcemanager.storage.fluent.FileSharesClient;
@@ -143,18 +142,6 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
      */
     public StorageAccountsClient getStorageAccounts() {
         return this.storageAccounts;
-    }
-
-    /** The DeletedAccountsClient object to access its operations. */
-    private final DeletedAccountsClient deletedAccounts;
-
-    /**
-     * Gets the DeletedAccountsClient object to access its operations.
-     *
-     * @return the DeletedAccountsClient object.
-     */
-    public DeletedAccountsClient getDeletedAccounts() {
-        return this.deletedAccounts;
     }
 
     /** The UsagesClient object to access its operations. */
@@ -360,11 +347,10 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-04-01";
+        this.apiVersion = "2019-06-01";
         this.operations = new OperationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.storageAccounts = new StorageAccountsClientImpl(this);
-        this.deletedAccounts = new DeletedAccountsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
         this.managementPolicies = new ManagementPoliciesClientImpl(this);
         this.blobInventoryPolicies = new BlobInventoryPoliciesClientImpl(this);

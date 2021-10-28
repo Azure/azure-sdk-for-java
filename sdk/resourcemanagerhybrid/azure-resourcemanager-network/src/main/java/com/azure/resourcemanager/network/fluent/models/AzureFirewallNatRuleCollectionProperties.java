@@ -25,7 +25,7 @@ public final class AzureFirewallNatRuleCollectionProperties {
     private Integer priority;
 
     /*
-     * The action type of a NAT rule collection.
+     * The action type of a NAT rule collection
      */
     @JsonProperty(value = "action")
     private AzureFirewallNatRCAction action;
@@ -37,9 +37,9 @@ public final class AzureFirewallNatRuleCollectionProperties {
     private List<AzureFirewallNatRule> rules;
 
     /*
-     * The provisioning state of the NAT rule collection resource.
+     * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /**
@@ -103,12 +103,23 @@ public final class AzureFirewallNatRuleCollectionProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the NAT rule collection resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the AzureFirewallNatRuleCollectionProperties object itself.
+     */
+    public AzureFirewallNatRuleCollectionProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

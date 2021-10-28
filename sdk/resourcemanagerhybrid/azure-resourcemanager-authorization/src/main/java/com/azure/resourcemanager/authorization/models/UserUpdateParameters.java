@@ -45,6 +45,12 @@ public final class UserUpdateParameters extends UserBase {
     @JsonProperty(value = "mailNickname")
     private String mailNickname;
 
+    /*
+     * The primary email address of the user.
+     */
+    @JsonProperty(value = "mail")
+    private String mail;
+
     /**
      * Get the accountEnabled property: Whether the account is enabled.
      *
@@ -144,6 +150,61 @@ public final class UserUpdateParameters extends UserBase {
      */
     public UserUpdateParameters withMailNickname(String mailNickname) {
         this.mailNickname = mailNickname;
+        return this;
+    }
+
+    /**
+     * Get the mail property: The primary email address of the user.
+     *
+     * @return the mail value.
+     */
+    public String mail() {
+        return this.mail;
+    }
+
+    /**
+     * Set the mail property: The primary email address of the user.
+     *
+     * @param mail the mail value to set.
+     * @return the UserUpdateParameters object itself.
+     */
+    public UserUpdateParameters withMail(String mail) {
+        this.mail = mail;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserUpdateParameters withImmutableId(String immutableId) {
+        super.withImmutableId(immutableId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserUpdateParameters withUsageLocation(String usageLocation) {
+        super.withUsageLocation(usageLocation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserUpdateParameters withGivenName(String givenName) {
+        super.withGivenName(givenName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserUpdateParameters withSurname(String surname) {
+        super.withSurname(surname);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserUpdateParameters withUserType(UserType userType) {
+        super.withUserType(userType);
         return this;
     }
 

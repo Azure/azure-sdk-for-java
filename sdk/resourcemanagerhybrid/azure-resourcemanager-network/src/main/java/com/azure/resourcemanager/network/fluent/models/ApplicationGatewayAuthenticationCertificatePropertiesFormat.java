@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,10 +23,11 @@ public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
     private String data;
 
     /*
-     * The provisioning state of the authentication certificate resource.
+     * Provisioning state of the authentication certificate resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the data property: Certificate public data.
@@ -50,12 +50,25 @@ public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the authentication certificate resource.
+     * Get the provisioningState property: Provisioning state of the authentication certificate resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the authentication certificate resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayAuthenticationCertificatePropertiesFormat object itself.
+     */
+    public ApplicationGatewayAuthenticationCertificatePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

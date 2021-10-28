@@ -72,14 +72,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(
@@ -103,7 +104,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -121,7 +122,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -129,7 +131,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(
@@ -153,7 +155,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -168,14 +170,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PrivateLinkResourcesListResultInner> listAsync(String resourceGroupName, String resourceName) {
@@ -191,14 +194,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PrivateLinkResourcesListResultInner list(String resourceGroupName, String resourceName) {
@@ -206,7 +210,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     }
 
     /**
-     * To learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters.
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
@@ -214,7 +219,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources.
+     * @return a list of private link resources in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourcesListResultInner> listWithResponse(

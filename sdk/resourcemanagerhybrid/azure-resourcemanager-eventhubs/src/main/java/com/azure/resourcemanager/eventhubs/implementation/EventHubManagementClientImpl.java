@@ -9,12 +9,15 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.eventhubs.fluent.ClustersClient;
 import com.azure.resourcemanager.eventhubs.fluent.ConsumerGroupsClient;
 import com.azure.resourcemanager.eventhubs.fluent.DisasterRecoveryConfigsClient;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubManagementClient;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubsClient;
 import com.azure.resourcemanager.eventhubs.fluent.NamespacesClient;
 import com.azure.resourcemanager.eventhubs.fluent.OperationsClient;
+import com.azure.resourcemanager.eventhubs.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.eventhubs.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.eventhubs.fluent.RegionsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
@@ -50,18 +53,6 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
      */
     public String getEndpoint() {
         return this.endpoint;
-    }
-
-    /** Api Version. */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -100,6 +91,18 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
         return this.defaultPollInterval;
     }
 
+    /** The ClustersClient object to access its operations. */
+    private final ClustersClient clusters;
+
+    /**
+     * Gets the ClustersClient object to access its operations.
+     *
+     * @return the ClustersClient object.
+     */
+    public ClustersClient getClusters() {
+        return this.clusters;
+    }
+
     /** The NamespacesClient object to access its operations. */
     private final NamespacesClient namespaces;
 
@@ -110,6 +113,30 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
      */
     public NamespacesClient getNamespaces() {
         return this.namespaces;
+    }
+
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
     }
 
     /** The DisasterRecoveryConfigsClient object to access its operations. */
@@ -196,8 +223,10 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2017-04-01";
+        this.clusters = new ClustersClientImpl(this);
         this.namespaces = new NamespacesClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.disasterRecoveryConfigs = new DisasterRecoveryConfigsClientImpl(this);
         this.eventHubs = new EventHubsClientImpl(this);
         this.consumerGroups = new ConsumerGroupsClientImpl(this);

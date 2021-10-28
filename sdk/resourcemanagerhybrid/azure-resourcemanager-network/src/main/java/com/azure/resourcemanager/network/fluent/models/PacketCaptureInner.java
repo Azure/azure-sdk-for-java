@@ -18,13 +18,13 @@ public final class PacketCaptureInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureInner.class);
 
     /*
-     * Properties of the packet capture.
+     * Parameters that define the create packet capture operation.
      */
     @JsonProperty(value = "properties", required = true)
     private PacketCaptureParameters innerProperties = new PacketCaptureParameters();
 
     /**
-     * Get the innerProperties property: Properties of the packet capture.
+     * Get the innerProperties property: Parameters that define the create packet capture operation.
      *
      * @return the innerProperties value.
      */
@@ -60,7 +60,7 @@ public final class PacketCaptureInner {
      *
      * @return the bytesToCapturePerPacket value.
      */
-    public Long bytesToCapturePerPacket() {
+    public Integer bytesToCapturePerPacket() {
         return this.innerProperties() == null ? null : this.innerProperties().bytesToCapturePerPacket();
     }
 
@@ -70,7 +70,7 @@ public final class PacketCaptureInner {
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set.
      * @return the PacketCaptureInner object itself.
      */
-    public PacketCaptureInner withBytesToCapturePerPacket(Long bytesToCapturePerPacket) {
+    public PacketCaptureInner withBytesToCapturePerPacket(Integer bytesToCapturePerPacket) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PacketCaptureParameters();
         }
@@ -83,7 +83,7 @@ public final class PacketCaptureInner {
      *
      * @return the totalBytesPerSession value.
      */
-    public Long totalBytesPerSession() {
+    public Integer totalBytesPerSession() {
         return this.innerProperties() == null ? null : this.innerProperties().totalBytesPerSession();
     }
 
@@ -93,7 +93,7 @@ public final class PacketCaptureInner {
      * @param totalBytesPerSession the totalBytesPerSession value to set.
      * @return the PacketCaptureInner object itself.
      */
-    public PacketCaptureInner withTotalBytesPerSession(Long totalBytesPerSession) {
+    public PacketCaptureInner withTotalBytesPerSession(Integer totalBytesPerSession) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PacketCaptureParameters();
         }
@@ -125,7 +125,7 @@ public final class PacketCaptureInner {
     }
 
     /**
-     * Get the storageLocation property: The storage location for a packet capture session.
+     * Get the storageLocation property: Describes the storage location for a packet capture session.
      *
      * @return the storageLocation value.
      */
@@ -134,7 +134,7 @@ public final class PacketCaptureInner {
     }
 
     /**
-     * Set the storageLocation property: The storage location for a packet capture session.
+     * Set the storageLocation property: Describes the storage location for a packet capture session.
      *
      * @param storageLocation the storageLocation value to set.
      * @return the PacketCaptureInner object itself.
@@ -148,7 +148,7 @@ public final class PacketCaptureInner {
     }
 
     /**
-     * Get the filters property: A list of packet capture filters.
+     * Get the filters property: The filters property.
      *
      * @return the filters value.
      */
@@ -157,7 +157,7 @@ public final class PacketCaptureInner {
     }
 
     /**
-     * Set the filters property: A list of packet capture filters.
+     * Set the filters property: The filters property.
      *
      * @param filters the filters value to set.
      * @return the PacketCaptureInner object itself.

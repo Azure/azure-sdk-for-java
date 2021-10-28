@@ -9,8 +9,6 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsEncapsulation;
-import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -22,7 +20,7 @@ public final class ExpressRoutePortInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortInner.class);
 
     /*
-     * ExpressRoutePort Properties ExpressRoutePort properties.
+     * ExpressRoutePort Properties ExpressRoutePort properties
      */
     @JsonProperty(value = "properties")
     private ExpressRoutePortPropertiesFormat innerProperties;
@@ -32,12 +30,6 @@ public final class ExpressRoutePortInner extends Resource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
-
-    /*
-     * The identity of ExpressRoutePort, if configured.
-     */
-    @JsonProperty(value = "identity")
-    private ManagedServiceIdentity identity;
 
     /*
      * Resource ID.
@@ -61,26 +53,6 @@ public final class ExpressRoutePortInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the identity property: The identity of ExpressRoutePort, if configured.
-     *
-     * @return the identity value.
-     */
-    public ManagedServiceIdentity identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The identity of ExpressRoutePort, if configured.
-     *
-     * @param identity the identity value to set.
-     * @return the ExpressRoutePortInner object itself.
-     */
-    public ExpressRoutePortInner withIdentity(ManagedServiceIdentity identity) {
-        this.identity = identity;
-        return this;
     }
 
     /**
@@ -260,21 +232,36 @@ public final class ExpressRoutePortInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route port resource.
+     * Get the provisioningState property: The provisioning state of the ExpressRoutePort resource. Possible values are:
+     * 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the express route port resource.
+     * Get the resourceGuid property: The resource GUID property of the ExpressRoutePort resource.
      *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
         return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
+    }
+
+    /**
+     * Set the resourceGuid property: The resource GUID property of the ExpressRoutePort resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the ExpressRoutePortInner object itself.
+     */
+    public ExpressRoutePortInner withResourceGuid(String resourceGuid) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRoutePortPropertiesFormat();
+        }
+        this.innerProperties().withResourceGuid(resourceGuid);
+        return this;
     }
 
     /**
@@ -285,9 +272,6 @@ public final class ExpressRoutePortInner extends Resource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
-        }
-        if (identity() != null) {
-            identity().validate();
         }
     }
 }

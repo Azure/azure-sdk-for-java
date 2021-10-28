@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -36,22 +35,11 @@ public final class ServiceEndpointPolicyPropertiesFormat {
     private String resourceGuid;
 
     /*
-     * The provisioning state of the service endpoint policy resource.
+     * The provisioning state of the service endpoint policy. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The alias indicating if the policy belongs to a service
-     */
-    @JsonProperty(value = "serviceAlias")
-    private String serviceAlias;
-
-    /*
-     * A collection of contextual service endpoint policy.
-     */
-    @JsonProperty(value = "contextualServiceEndpointPolicies")
-    private List<String> contextualServiceEndpointPolicies;
+    private String provisioningState;
 
     /**
      * Get the serviceEndpointPolicyDefinitions property: A collection of service endpoint policy definitions of the
@@ -95,53 +83,13 @@ public final class ServiceEndpointPolicyPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the service endpoint policy resource.
+     * Get the provisioningState property: The provisioning state of the service endpoint policy. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the serviceAlias property: The alias indicating if the policy belongs to a service.
-     *
-     * @return the serviceAlias value.
-     */
-    public String serviceAlias() {
-        return this.serviceAlias;
-    }
-
-    /**
-     * Set the serviceAlias property: The alias indicating if the policy belongs to a service.
-     *
-     * @param serviceAlias the serviceAlias value to set.
-     * @return the ServiceEndpointPolicyPropertiesFormat object itself.
-     */
-    public ServiceEndpointPolicyPropertiesFormat withServiceAlias(String serviceAlias) {
-        this.serviceAlias = serviceAlias;
-        return this;
-    }
-
-    /**
-     * Get the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
-     *
-     * @return the contextualServiceEndpointPolicies value.
-     */
-    public List<String> contextualServiceEndpointPolicies() {
-        return this.contextualServiceEndpointPolicies;
-    }
-
-    /**
-     * Set the contextualServiceEndpointPolicies property: A collection of contextual service endpoint policy.
-     *
-     * @param contextualServiceEndpointPolicies the contextualServiceEndpointPolicies value to set.
-     * @return the ServiceEndpointPolicyPropertiesFormat object itself.
-     */
-    public ServiceEndpointPolicyPropertiesFormat withContextualServiceEndpointPolicies(
-        List<String> contextualServiceEndpointPolicies) {
-        this.contextualServiceEndpointPolicies = contextualServiceEndpointPolicies;
-        return this;
     }
 
     /**

@@ -15,7 +15,8 @@ public final class NetworkConfigurationDiagnosticProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticProfile.class);
 
     /*
-     * The direction of the traffic.
+     * The direction of the traffic. Accepted values are 'Inbound' and
+     * 'Outbound'.
      */
     @JsonProperty(value = "direction", required = true)
     private Direction direction;
@@ -40,14 +41,14 @@ public final class NetworkConfigurationDiagnosticProfile {
     private String destination;
 
     /*
-     * Traffic destination port. Accepted values are '*' and a single port in
-     * the range (0 - 65535).
+     * Traffic destination port. Accepted values are '*', port (for example,
+     * 3389) and port range (for example, 80-100).
      */
     @JsonProperty(value = "destinationPort", required = true)
     private String destinationPort;
 
     /**
-     * Get the direction property: The direction of the traffic.
+     * Get the direction property: The direction of the traffic. Accepted values are 'Inbound' and 'Outbound'.
      *
      * @return the direction value.
      */
@@ -56,7 +57,7 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Set the direction property: The direction of the traffic.
+     * Set the direction property: The direction of the traffic. Accepted values are 'Inbound' and 'Outbound'.
      *
      * @param direction the direction value to set.
      * @return the NetworkConfigurationDiagnosticProfile object itself.
@@ -127,8 +128,8 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Get the destinationPort property: Traffic destination port. Accepted values are '*' and a single port in the
-     * range (0 - 65535).
+     * Get the destinationPort property: Traffic destination port. Accepted values are '*', port (for example, 3389) and
+     * port range (for example, 80-100).
      *
      * @return the destinationPort value.
      */
@@ -137,8 +138,8 @@ public final class NetworkConfigurationDiagnosticProfile {
     }
 
     /**
-     * Set the destinationPort property: Traffic destination port. Accepted values are '*' and a single port in the
-     * range (0 - 65535).
+     * Set the destinationPort property: Traffic destination port. Accepted values are '*', port (for example, 3389) and
+     * port range (for example, 80-100).
      *
      * @param destinationPort the destinationPort value to set.
      * @return the NetworkConfigurationDiagnosticProfile object itself.

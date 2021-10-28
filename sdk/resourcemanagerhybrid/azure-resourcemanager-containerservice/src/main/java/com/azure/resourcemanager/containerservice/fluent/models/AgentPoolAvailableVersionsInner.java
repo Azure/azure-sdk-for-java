@@ -17,19 +17,19 @@ public final class AgentPoolAvailableVersionsInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolAvailableVersionsInner.class);
 
     /*
-     * The ID of the agent pool version list.
+     * Id of the agent pool available versions.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The name of the agent pool version list.
+     * Name of the agent pool available versions.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Type of the agent pool version list.
+     * Type of the agent pool  available versions.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
@@ -41,7 +41,7 @@ public final class AgentPoolAvailableVersionsInner {
     private AgentPoolAvailableVersionsProperties innerProperties = new AgentPoolAvailableVersionsProperties();
 
     /**
-     * Get the id property: The ID of the agent pool version list.
+     * Get the id property: Id of the agent pool available versions.
      *
      * @return the id value.
      */
@@ -50,7 +50,7 @@ public final class AgentPoolAvailableVersionsInner {
     }
 
     /**
-     * Get the name property: The name of the agent pool version list.
+     * Get the name property: Name of the agent pool available versions.
      *
      * @return the name value.
      */
@@ -59,7 +59,7 @@ public final class AgentPoolAvailableVersionsInner {
     }
 
     /**
-     * Get the type property: Type of the agent pool version list.
+     * Get the type property: Type of the agent pool available versions.
      *
      * @return the type value.
      */

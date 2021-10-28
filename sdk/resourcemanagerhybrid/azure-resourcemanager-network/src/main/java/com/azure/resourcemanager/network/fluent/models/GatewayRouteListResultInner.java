@@ -17,7 +17,7 @@ public final class GatewayRouteListResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayRouteListResultInner.class);
 
     /*
-     * List of gateway routes.
+     * List of gateway routes
      */
     @JsonProperty(value = "value")
     private List<GatewayRoute> value;

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRewriteRule;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -25,10 +24,11 @@ public final class ApplicationGatewayRewriteRuleSetPropertiesFormat {
     private List<ApplicationGatewayRewriteRule> rewriteRules;
 
     /*
-     * The provisioning state of the rewrite rule set resource.
+     * Provisioning state of the rewrite rule set resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the rewriteRules property: Rewrite rules in the rewrite rule set.
@@ -52,11 +52,12 @@ public final class ApplicationGatewayRewriteRuleSetPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the rewrite rule set resource.
+     * Get the provisioningState property: Provisioning state of the rewrite rule set resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

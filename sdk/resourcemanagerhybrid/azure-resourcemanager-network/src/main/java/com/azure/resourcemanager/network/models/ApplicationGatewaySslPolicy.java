@@ -22,13 +22,13 @@ public final class ApplicationGatewaySslPolicy {
     private List<ApplicationGatewaySslProtocol> disabledSslProtocols;
 
     /*
-     * Type of Ssl Policy.
+     * Type of Ssl Policy
      */
     @JsonProperty(value = "policyType")
     private ApplicationGatewaySslPolicyType policyType;
 
     /*
-     * Name of Ssl predefined policy.
+     * Name of Ssl predefined policy
      */
     @JsonProperty(value = "policyName")
     private ApplicationGatewaySslPolicyName policyName;

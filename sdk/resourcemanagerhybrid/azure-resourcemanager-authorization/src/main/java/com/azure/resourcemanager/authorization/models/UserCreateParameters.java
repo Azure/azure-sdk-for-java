@@ -173,6 +173,41 @@ public final class UserCreateParameters extends UserBase {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public UserCreateParameters withImmutableId(String immutableId) {
+        super.withImmutableId(immutableId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserCreateParameters withUsageLocation(String usageLocation) {
+        super.withUsageLocation(usageLocation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserCreateParameters withGivenName(String givenName) {
+        super.withGivenName(givenName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserCreateParameters withSurname(String surname) {
+        super.withSurname(surname);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserCreateParameters withUserType(UserType userType) {
+        super.withUserType(userType);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

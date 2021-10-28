@@ -8,9 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
-import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
-import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -21,23 +18,23 @@ public final class NetworkInterfacePropertiesFormatInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfacePropertiesFormatInner.class);
 
     /*
-     * The reference to a virtual machine.
+     * The reference of a virtual machine.
      */
     @JsonProperty(value = "virtualMachine", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource virtualMachine;
 
     /*
-     * The reference to the NetworkSecurityGroup resource.
+     * The reference of the NetworkSecurityGroup resource.
      */
     @JsonProperty(value = "networkSecurityGroup")
     private NetworkSecurityGroupInner networkSecurityGroup;
 
     /*
-     * A reference to the private endpoint to which the network interface is
+     * A reference to the interface endpoint to which the network interface is
      * linked.
      */
-    @JsonProperty(value = "privateEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private PrivateEndpointInner privateEndpoint;
+    @JsonProperty(value = "interfaceEndpoint", access = JsonProperty.Access.WRITE_ONLY)
+    private InterfaceEndpointInner interfaceEndpoint;
 
     /*
      * A list of IPConfigurations of the network interface.
@@ -48,7 +45,7 @@ public final class NetworkInterfacePropertiesFormatInner {
     /*
      * A list of TapConfigurations of the network interface.
      */
-    @JsonProperty(value = "tapConfigurations", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tapConfigurations")
     private List<NetworkInterfaceTapConfigurationInner> tapConfigurations;
 
     /*
@@ -60,13 +57,13 @@ public final class NetworkInterfacePropertiesFormatInner {
     /*
      * The MAC address of the network interface.
      */
-    @JsonProperty(value = "macAddress", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "macAddress")
     private String macAddress;
 
     /*
-     * Whether this is a primary network interface on a virtual machine.
+     * Gets whether this is a primary network interface on a virtual machine.
      */
-    @JsonProperty(value = "primary", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
@@ -82,56 +79,26 @@ public final class NetworkInterfacePropertiesFormatInner {
     private Boolean enableIpForwarding;
 
     /*
-     * A list of references to linked BareMetal resources.
+     * A list of references to linked BareMetal resources
      */
     @JsonProperty(value = "hostedWorkloads", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> hostedWorkloads;
 
     /*
-     * A reference to the dscp configuration to which the network interface is
-     * linked.
-     */
-    @JsonProperty(value = "dscpConfiguration", access = JsonProperty.Access.WRITE_ONLY)
-    private SubResource dscpConfiguration;
-
-    /*
      * The resource GUID property of the network interface resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resourceGuid")
     private String resourceGuid;
 
     /*
-     * The provisioning state of the network interface resource.
+     * The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * WorkloadType of the NetworkInterface for BareMetal resources
-     */
-    @JsonProperty(value = "workloadType")
-    private String workloadType;
-
-    /*
-     * Type of Network Interface resource.
-     */
-    @JsonProperty(value = "nicType")
-    private NetworkInterfaceNicType nicType;
-
-    /*
-     * Privatelinkservice of the network interface resource.
-     */
-    @JsonProperty(value = "privateLinkService")
-    private PrivateLinkServiceInner privateLinkService;
-
-    /*
-     * Migration phase of Network Interface resource.
-     */
-    @JsonProperty(value = "migrationPhase")
-    private NetworkInterfaceMigrationPhase migrationPhase;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
-     * Get the virtualMachine property: The reference to a virtual machine.
+     * Get the virtualMachine property: The reference of a virtual machine.
      *
      * @return the virtualMachine value.
      */
@@ -140,7 +107,7 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
-     * Get the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
+     * Get the networkSecurityGroup property: The reference of the NetworkSecurityGroup resource.
      *
      * @return the networkSecurityGroup value.
      */
@@ -149,7 +116,7 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
-     * Set the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
+     * Set the networkSecurityGroup property: The reference of the NetworkSecurityGroup resource.
      *
      * @param networkSecurityGroup the networkSecurityGroup value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
@@ -161,12 +128,13 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
-     * Get the privateEndpoint property: A reference to the private endpoint to which the network interface is linked.
+     * Get the interfaceEndpoint property: A reference to the interface endpoint to which the network interface is
+     * linked.
      *
-     * @return the privateEndpoint value.
+     * @return the interfaceEndpoint value.
      */
-    public PrivateEndpointInner privateEndpoint() {
-        return this.privateEndpoint;
+    public InterfaceEndpointInner interfaceEndpoint() {
+        return this.interfaceEndpoint;
     }
 
     /**
@@ -200,6 +168,18 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
+     * Set the tapConfigurations property: A list of TapConfigurations of the network interface.
+     *
+     * @param tapConfigurations the tapConfigurations value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withTapConfigurations(
+        List<NetworkInterfaceTapConfigurationInner> tapConfigurations) {
+        this.tapConfigurations = tapConfigurations;
+        return this;
+    }
+
+    /**
      * Get the dnsSettings property: The DNS settings in network interface.
      *
      * @return the dnsSettings value.
@@ -229,12 +209,34 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
-     * Get the primary property: Whether this is a primary network interface on a virtual machine.
+     * Set the macAddress property: The MAC address of the network interface.
+     *
+     * @param macAddress the macAddress value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withMacAddress(String macAddress) {
+        this.macAddress = macAddress;
+        return this;
+    }
+
+    /**
+     * Get the primary property: Gets whether this is a primary network interface on a virtual machine.
      *
      * @return the primary value.
      */
     public Boolean primary() {
         return this.primary;
+    }
+
+    /**
+     * Set the primary property: Gets whether this is a primary network interface on a virtual machine.
+     *
+     * @param primary the primary value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withPrimary(Boolean primary) {
+        this.primary = primary;
+        return this;
     }
 
     /**
@@ -287,16 +289,6 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
-     * Get the dscpConfiguration property: A reference to the dscp configuration to which the network interface is
-     * linked.
-     *
-     * @return the dscpConfiguration value.
-     */
-    public SubResource dscpConfiguration() {
-        return this.dscpConfiguration;
-    }
-
-    /**
      * Get the resourceGuid property: The resource GUID property of the network interface resource.
      *
      * @return the resourceGuid value.
@@ -306,91 +298,35 @@ public final class NetworkInterfacePropertiesFormatInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the network interface resource.
+     * Set the resourceGuid property: The resource GUID property of the network interface resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the NetworkInterfacePropertiesFormatInner object itself.
+     */
+    public NetworkInterfacePropertiesFormatInner withResourceGuid(String resourceGuid) {
+        this.resourceGuid = resourceGuid;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Get the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
+     * Set the provisioningState property: The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
-     * @return the workloadType value.
-     */
-    public String workloadType() {
-        return this.workloadType;
-    }
-
-    /**
-     * Set the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
-     *
-     * @param workloadType the workloadType value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the NetworkInterfacePropertiesFormatInner object itself.
      */
-    public NetworkInterfacePropertiesFormatInner withWorkloadType(String workloadType) {
-        this.workloadType = workloadType;
-        return this;
-    }
-
-    /**
-     * Get the nicType property: Type of Network Interface resource.
-     *
-     * @return the nicType value.
-     */
-    public NetworkInterfaceNicType nicType() {
-        return this.nicType;
-    }
-
-    /**
-     * Set the nicType property: Type of Network Interface resource.
-     *
-     * @param nicType the nicType value to set.
-     * @return the NetworkInterfacePropertiesFormatInner object itself.
-     */
-    public NetworkInterfacePropertiesFormatInner withNicType(NetworkInterfaceNicType nicType) {
-        this.nicType = nicType;
-        return this;
-    }
-
-    /**
-     * Get the privateLinkService property: Privatelinkservice of the network interface resource.
-     *
-     * @return the privateLinkService value.
-     */
-    public PrivateLinkServiceInner privateLinkService() {
-        return this.privateLinkService;
-    }
-
-    /**
-     * Set the privateLinkService property: Privatelinkservice of the network interface resource.
-     *
-     * @param privateLinkService the privateLinkService value to set.
-     * @return the NetworkInterfacePropertiesFormatInner object itself.
-     */
-    public NetworkInterfacePropertiesFormatInner withPrivateLinkService(PrivateLinkServiceInner privateLinkService) {
-        this.privateLinkService = privateLinkService;
-        return this;
-    }
-
-    /**
-     * Get the migrationPhase property: Migration phase of Network Interface resource.
-     *
-     * @return the migrationPhase value.
-     */
-    public NetworkInterfaceMigrationPhase migrationPhase() {
-        return this.migrationPhase;
-    }
-
-    /**
-     * Set the migrationPhase property: Migration phase of Network Interface resource.
-     *
-     * @param migrationPhase the migrationPhase value to set.
-     * @return the NetworkInterfacePropertiesFormatInner object itself.
-     */
-    public NetworkInterfacePropertiesFormatInner withMigrationPhase(NetworkInterfaceMigrationPhase migrationPhase) {
-        this.migrationPhase = migrationPhase;
+    public NetworkInterfacePropertiesFormatInner withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
         return this;
     }
 
@@ -403,8 +339,8 @@ public final class NetworkInterfacePropertiesFormatInner {
         if (networkSecurityGroup() != null) {
             networkSecurityGroup().validate();
         }
-        if (privateEndpoint() != null) {
-            privateEndpoint().validate();
+        if (interfaceEndpoint() != null) {
+            interfaceEndpoint().validate();
         }
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
@@ -414,9 +350,6 @@ public final class NetworkInterfacePropertiesFormatInner {
         }
         if (dnsSettings() != null) {
             dnsSettings().validate();
-        }
-        if (privateLinkService() != null) {
-            privateLinkService().validate();
         }
     }
 }

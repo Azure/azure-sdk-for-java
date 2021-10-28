@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -24,7 +23,7 @@ public final class ServiceEndpointPolicyDefinitionPropertiesFormat {
     private String description;
 
     /*
-     * Service endpoint name.
+     * service endpoint name.
      */
     @JsonProperty(value = "service")
     private String service;
@@ -36,11 +35,11 @@ public final class ServiceEndpointPolicyDefinitionPropertiesFormat {
     private List<String> serviceResources;
 
     /*
-     * The provisioning state of the service endpoint policy definition
-     * resource.
+     * The provisioning state of the service end point policy definition.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
@@ -63,7 +62,7 @@ public final class ServiceEndpointPolicyDefinitionPropertiesFormat {
     }
 
     /**
-     * Get the service property: Service endpoint name.
+     * Get the service property: service endpoint name.
      *
      * @return the service value.
      */
@@ -72,7 +71,7 @@ public final class ServiceEndpointPolicyDefinitionPropertiesFormat {
     }
 
     /**
-     * Set the service property: Service endpoint name.
+     * Set the service property: service endpoint name.
      *
      * @param service the service value to set.
      * @return the ServiceEndpointPolicyDefinitionPropertiesFormat object itself.
@@ -103,11 +102,12 @@ public final class ServiceEndpointPolicyDefinitionPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the service endpoint policy definition resource.
+     * Get the provisioningState property: The provisioning state of the service end point policy definition. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

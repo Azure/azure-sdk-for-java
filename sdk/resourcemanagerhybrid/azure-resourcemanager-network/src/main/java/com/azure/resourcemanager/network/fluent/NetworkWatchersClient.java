@@ -1314,8 +1314,7 @@ public interface NetworkWatchersClient
         String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters, Context context);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1323,15 +1322,14 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> getAzureReachabilityReportWithResponseAsync(
         String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1339,7 +1337,7 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PollerFlux<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
@@ -1347,8 +1345,7 @@ public interface NetworkWatchersClient
             String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1356,15 +1353,14 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner> beginGetAzureReachabilityReport(
         String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1373,7 +1369,7 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner> beginGetAzureReachabilityReport(
@@ -1383,8 +1379,7 @@ public interface NetworkWatchersClient
         Context context);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1392,15 +1387,14 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AzureReachabilityReportInner> getAzureReachabilityReportAsync(
         String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1408,15 +1402,14 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AzureReachabilityReportInner getAzureReachabilityReport(
         String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Gets the relative latency score
-     * for internet service providers from a specified location to Azure regions.
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1425,7 +1418,7 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure reachability report details.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AzureReachabilityReportInner getAzureReachabilityReport(
@@ -1435,8 +1428,7 @@ public interface NetworkWatchersClient
         Context context);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1451,8 +1443,7 @@ public interface NetworkWatchersClient
         String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1467,8 +1458,7 @@ public interface NetworkWatchersClient
         String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1483,8 +1473,7 @@ public interface NetworkWatchersClient
         String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1503,8 +1492,7 @@ public interface NetworkWatchersClient
         Context context);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1519,8 +1507,7 @@ public interface NetworkWatchersClient
         String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1535,8 +1522,7 @@ public interface NetworkWatchersClient
         String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
 
     /**
-     * NOTE: This feature is currently in preview and still being tested for stability. Lists all available internet
-     * service providers for a specified Azure region.
+     * Lists all available internet service providers for a specified Azure region.
      *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
@@ -1555,10 +1541,7 @@ public interface NetworkWatchersClient
         Context context);
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -1566,17 +1549,14 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> getNetworkConfigurationDiagnosticWithResponseAsync(
         String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -1584,7 +1564,7 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PollerFlux<PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>
@@ -1592,10 +1572,7 @@ public interface NetworkWatchersClient
             String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -1603,7 +1580,7 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>
@@ -1611,10 +1588,7 @@ public interface NetworkWatchersClient
             String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -1623,7 +1597,7 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SyncPoller<PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>
@@ -1634,10 +1608,7 @@ public interface NetworkWatchersClient
             Context context);
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -1645,17 +1616,14 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(
         String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -1663,17 +1631,14 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(
         String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
     /**
-     * Gets Network Configuration Diagnostic data to help customers understand and debug network behavior. It provides
-     * detailed information on what security rules were applied to a specified traffic flow and the result of evaluating
-     * these rules. Customers must provide details of a flow like source, destination, protocol, etc. The API returns
-     * whether traffic was allowed or denied, the rules evaluated for the specified flow and the evaluation results.
+     * Get network configuration diagnostic.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
@@ -1682,7 +1647,7 @@ public interface NetworkWatchersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network Configuration Diagnostic data to help customers understand and debug network behavior.
+     * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(

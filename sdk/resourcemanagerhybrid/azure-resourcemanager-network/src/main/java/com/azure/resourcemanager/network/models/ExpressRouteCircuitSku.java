@@ -21,13 +21,15 @@ public final class ExpressRouteCircuitSku {
     private String name;
 
     /*
-     * The tier of the SKU.
+     * The tier of the SKU. Possible values are 'Standard', 'Premium' or
+     * 'Basic'.
      */
     @JsonProperty(value = "tier")
     private ExpressRouteCircuitSkuTier tier;
 
     /*
-     * The family of the SKU.
+     * The family of the SKU. Possible values are: 'UnlimitedData' and
+     * 'MeteredData'.
      */
     @JsonProperty(value = "family")
     private ExpressRouteCircuitSkuFamily family;
@@ -53,7 +55,7 @@ public final class ExpressRouteCircuitSku {
     }
 
     /**
-     * Get the tier property: The tier of the SKU.
+     * Get the tier property: The tier of the SKU. Possible values are 'Standard', 'Premium' or 'Basic'.
      *
      * @return the tier value.
      */
@@ -62,7 +64,7 @@ public final class ExpressRouteCircuitSku {
     }
 
     /**
-     * Set the tier property: The tier of the SKU.
+     * Set the tier property: The tier of the SKU. Possible values are 'Standard', 'Premium' or 'Basic'.
      *
      * @param tier the tier value to set.
      * @return the ExpressRouteCircuitSku object itself.
@@ -73,7 +75,7 @@ public final class ExpressRouteCircuitSku {
     }
 
     /**
-     * Get the family property: The family of the SKU.
+     * Get the family property: The family of the SKU. Possible values are: 'UnlimitedData' and 'MeteredData'.
      *
      * @return the family value.
      */
@@ -82,7 +84,7 @@ public final class ExpressRouteCircuitSku {
     }
 
     /**
-     * Set the family property: The family of the SKU.
+     * Set the family property: The family of the SKU. Possible values are: 'UnlimitedData' and 'MeteredData'.
      *
      * @param family the family value to set.
      * @return the ExpressRouteCircuitSku object itself.

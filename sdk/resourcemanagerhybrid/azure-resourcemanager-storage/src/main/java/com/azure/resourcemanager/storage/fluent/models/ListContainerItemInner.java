@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AzureEntityResource;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyProperties;
-import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
 import com.azure.resourcemanager.storage.models.LeaseDuration;
 import com.azure.resourcemanager.storage.models.LeaseState;
 import com.azure.resourcemanager.storage.models.LeaseStatus;
@@ -244,34 +243,6 @@ public final class ListContainerItemInner extends AzureEntityResource {
      */
     public Boolean hasImmutabilityPolicy() {
         return this.innerProperties() == null ? null : this.innerProperties().hasImmutabilityPolicy();
-    }
-
-    /**
-     * Get the immutableStorageWithVersioning property: The object level immutability property of the container. The
-     * property is immutable and can only be set to true at the container creation time. Existing containers must
-     * undergo a migration process.
-     *
-     * @return the immutableStorageWithVersioning value.
-     */
-    public ImmutableStorageWithVersioning immutableStorageWithVersioning() {
-        return this.innerProperties() == null ? null : this.innerProperties().immutableStorageWithVersioning();
-    }
-
-    /**
-     * Set the immutableStorageWithVersioning property: The object level immutability property of the container. The
-     * property is immutable and can only be set to true at the container creation time. Existing containers must
-     * undergo a migration process.
-     *
-     * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
-     * @return the ListContainerItemInner object itself.
-     */
-    public ListContainerItemInner withImmutableStorageWithVersioning(
-        ImmutableStorageWithVersioning immutableStorageWithVersioning) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ContainerProperties();
-        }
-        this.innerProperties().withImmutableStorageWithVersioning(immutableStorageWithVersioning);
-        return this;
     }
 
     /**

@@ -7,12 +7,11 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.P2SConnectionConfiguration;
+import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Parameters for P2SVpnGateway. */
 @Fluent
@@ -20,21 +19,15 @@ public final class P2SVpnGatewayProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnGatewayProperties.class);
 
     /*
-     * The VirtualHub to which the gateway belongs.
+     * The VirtualHub to which the gateway belongs
      */
     @JsonProperty(value = "virtualHub")
     private SubResource virtualHub;
 
     /*
-     * List of all p2s connection configurations of the gateway.
+     * The provisioning state of the resource.
      */
-    @JsonProperty(value = "p2SConnectionConfigurations")
-    private List<P2SConnectionConfiguration> p2SConnectionConfigurations;
-
-    /*
-     * The provisioning state of the P2S VPN gateway resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /*
@@ -44,29 +37,23 @@ public final class P2SVpnGatewayProperties {
     private Integer vpnGatewayScaleUnit;
 
     /*
-     * The VpnServerConfiguration to which the p2sVpnGateway is attached to.
+     * The P2SVpnServerConfiguration to which the p2sVpnGateway is attached to.
      */
-    @JsonProperty(value = "vpnServerConfiguration")
-    private SubResource vpnServerConfiguration;
+    @JsonProperty(value = "p2SVpnServerConfiguration")
+    private SubResource p2SVpnServerConfiguration;
+
+    /*
+     * The reference of the address space resource which represents Address
+     * space for P2S VpnClient.
+     */
+    @JsonProperty(value = "vpnClientAddressPool")
+    private AddressSpace vpnClientAddressPool;
 
     /*
      * All P2S VPN clients' connection health status.
      */
     @JsonProperty(value = "vpnClientConnectionHealth", access = JsonProperty.Access.WRITE_ONLY)
     private VpnClientConnectionHealth vpnClientConnectionHealth;
-
-    /*
-     * List of all customer specified DNS servers IP addresses.
-     */
-    @JsonProperty(value = "customDnsServers")
-    private List<String> customDnsServers;
-
-    /*
-     * Enable Routing Preference property for the Public IP Interface of the
-     * P2SVpnGateway.
-     */
-    @JsonProperty(value = "isRoutingPreferenceInternet")
-    private Boolean isRoutingPreferenceInternet;
 
     /**
      * Get the virtualHub property: The VirtualHub to which the gateway belongs.
@@ -89,33 +76,23 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Get the p2SConnectionConfigurations property: List of all p2s connection configurations of the gateway.
-     *
-     * @return the p2SConnectionConfigurations value.
-     */
-    public List<P2SConnectionConfiguration> p2SConnectionConfigurations() {
-        return this.p2SConnectionConfigurations;
-    }
-
-    /**
-     * Set the p2SConnectionConfigurations property: List of all p2s connection configurations of the gateway.
-     *
-     * @param p2SConnectionConfigurations the p2SConnectionConfigurations value to set.
-     * @return the P2SVpnGatewayProperties object itself.
-     */
-    public P2SVpnGatewayProperties withP2SConnectionConfigurations(
-        List<P2SConnectionConfiguration> p2SConnectionConfigurations) {
-        this.p2SConnectionConfigurations = p2SConnectionConfigurations;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the P2S VPN gateway resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the P2SVpnGatewayProperties object itself.
+     */
+    public P2SVpnGatewayProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -139,22 +116,46 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Get the vpnServerConfiguration property: The VpnServerConfiguration to which the p2sVpnGateway is attached to.
+     * Get the p2SVpnServerConfiguration property: The P2SVpnServerConfiguration to which the p2sVpnGateway is attached
+     * to.
      *
-     * @return the vpnServerConfiguration value.
+     * @return the p2SVpnServerConfiguration value.
      */
-    public SubResource vpnServerConfiguration() {
-        return this.vpnServerConfiguration;
+    public SubResource p2SVpnServerConfiguration() {
+        return this.p2SVpnServerConfiguration;
     }
 
     /**
-     * Set the vpnServerConfiguration property: The VpnServerConfiguration to which the p2sVpnGateway is attached to.
+     * Set the p2SVpnServerConfiguration property: The P2SVpnServerConfiguration to which the p2sVpnGateway is attached
+     * to.
      *
-     * @param vpnServerConfiguration the vpnServerConfiguration value to set.
+     * @param p2SVpnServerConfiguration the p2SVpnServerConfiguration value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
-    public P2SVpnGatewayProperties withVpnServerConfiguration(SubResource vpnServerConfiguration) {
-        this.vpnServerConfiguration = vpnServerConfiguration;
+    public P2SVpnGatewayProperties withP2SVpnServerConfiguration(SubResource p2SVpnServerConfiguration) {
+        this.p2SVpnServerConfiguration = p2SVpnServerConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the vpnClientAddressPool property: The reference of the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
+     * @return the vpnClientAddressPool value.
+     */
+    public AddressSpace vpnClientAddressPool() {
+        return this.vpnClientAddressPool;
+    }
+
+    /**
+     * Set the vpnClientAddressPool property: The reference of the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
+     * @param vpnClientAddressPool the vpnClientAddressPool value to set.
+     * @return the P2SVpnGatewayProperties object itself.
+     */
+    public P2SVpnGatewayProperties withVpnClientAddressPool(AddressSpace vpnClientAddressPool) {
+        this.vpnClientAddressPool = vpnClientAddressPool;
         return this;
     }
 
@@ -168,55 +169,13 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Get the customDnsServers property: List of all customer specified DNS servers IP addresses.
-     *
-     * @return the customDnsServers value.
-     */
-    public List<String> customDnsServers() {
-        return this.customDnsServers;
-    }
-
-    /**
-     * Set the customDnsServers property: List of all customer specified DNS servers IP addresses.
-     *
-     * @param customDnsServers the customDnsServers value to set.
-     * @return the P2SVpnGatewayProperties object itself.
-     */
-    public P2SVpnGatewayProperties withCustomDnsServers(List<String> customDnsServers) {
-        this.customDnsServers = customDnsServers;
-        return this;
-    }
-
-    /**
-     * Get the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
-     * the P2SVpnGateway.
-     *
-     * @return the isRoutingPreferenceInternet value.
-     */
-    public Boolean isRoutingPreferenceInternet() {
-        return this.isRoutingPreferenceInternet;
-    }
-
-    /**
-     * Set the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
-     * the P2SVpnGateway.
-     *
-     * @param isRoutingPreferenceInternet the isRoutingPreferenceInternet value to set.
-     * @return the P2SVpnGatewayProperties object itself.
-     */
-    public P2SVpnGatewayProperties withIsRoutingPreferenceInternet(Boolean isRoutingPreferenceInternet) {
-        this.isRoutingPreferenceInternet = isRoutingPreferenceInternet;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (p2SConnectionConfigurations() != null) {
-            p2SConnectionConfigurations().forEach(e -> e.validate());
+        if (vpnClientAddressPool() != null) {
+            vpnClientAddressPool().validate();
         }
         if (vpnClientConnectionHealth() != null) {
             vpnClientConnectionHealth().validate();

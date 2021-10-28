@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProbeHealthResponseMatch;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,7 +17,7 @@ public final class ApplicationGatewayProbePropertiesFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayProbePropertiesFormat.class);
 
     /*
-     * The protocol used for the probe.
+     * The protocol used for the probe. Possible values are 'Http' and 'Https'.
      */
     @JsonProperty(value = "protocol")
     private ApplicationGatewayProtocol protocol;
@@ -31,7 +30,7 @@ public final class ApplicationGatewayProbePropertiesFormat {
 
     /*
      * Relative path of probe. Valid path starts from '/'. Probe is sent to
-     * <Protocol>://<host>:<port><path>.
+     * <Protocol>://<host>:<port><path>
      */
     @JsonProperty(value = "path")
     private String path;
@@ -45,7 +44,7 @@ public final class ApplicationGatewayProbePropertiesFormat {
     private Integer interval;
 
     /*
-     * The probe timeout in seconds. Probe marked as failed if valid response
+     * the probe timeout in seconds. Probe marked as failed if valid response
      * is not received with this timeout period. Acceptable values are from 1
      * second to 86400 seconds.
      */
@@ -81,22 +80,14 @@ public final class ApplicationGatewayProbePropertiesFormat {
     private ApplicationGatewayProbeHealthResponseMatch match;
 
     /*
-     * The provisioning state of the probe resource.
+     * Provisioning state of the backend http settings resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Custom port which will be used for probing the backend servers. The
-     * valid value ranges from 1 to 65535. In case not set, port from http
-     * settings will be used. This property is valid for Standard_v2 and WAF_v2
-     * only.
-     */
-    @JsonProperty(value = "port")
-    private Integer port;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
-     * Get the protocol property: The protocol used for the probe.
+     * Get the protocol property: The protocol used for the probe. Possible values are 'Http' and 'Https'.
      *
      * @return the protocol value.
      */
@@ -105,7 +96,7 @@ public final class ApplicationGatewayProbePropertiesFormat {
     }
 
     /**
-     * Set the protocol property: The protocol used for the probe.
+     * Set the protocol property: The protocol used for the probe. Possible values are 'Http' and 'Https'.
      *
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayProbePropertiesFormat object itself.
@@ -180,7 +171,7 @@ public final class ApplicationGatewayProbePropertiesFormat {
     }
 
     /**
-     * Get the timeout property: The probe timeout in seconds. Probe marked as failed if valid response is not received
+     * Get the timeout property: the probe timeout in seconds. Probe marked as failed if valid response is not received
      * with this timeout period. Acceptable values are from 1 second to 86400 seconds.
      *
      * @return the timeout value.
@@ -190,7 +181,7 @@ public final class ApplicationGatewayProbePropertiesFormat {
     }
 
     /**
-     * Set the timeout property: The probe timeout in seconds. Probe marked as failed if valid response is not received
+     * Set the timeout property: the probe timeout in seconds. Probe marked as failed if valid response is not received
      * with this timeout period. Acceptable values are from 1 second to 86400 seconds.
      *
      * @param timeout the timeout value to set.
@@ -287,35 +278,24 @@ public final class ApplicationGatewayProbePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the probe resource.
+     * Get the provisioningState property: Provisioning state of the backend http settings resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Get the port property: Custom port which will be used for probing the backend servers. The valid value ranges
-     * from 1 to 65535. In case not set, port from http settings will be used. This property is valid for Standard_v2
-     * and WAF_v2 only.
+     * Set the provisioningState property: Provisioning state of the backend http settings resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      *
-     * @return the port value.
-     */
-    public Integer port() {
-        return this.port;
-    }
-
-    /**
-     * Set the port property: Custom port which will be used for probing the backend servers. The valid value ranges
-     * from 1 to 65535. In case not set, port from http settings will be used. This property is valid for Standard_v2
-     * and WAF_v2 only.
-     *
-     * @param port the port value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the ApplicationGatewayProbePropertiesFormat object itself.
      */
-    public ApplicationGatewayProbePropertiesFormat withPort(Integer port) {
-        this.port = port;
+    public ApplicationGatewayProbePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
         return this;
     }
 

@@ -10,9 +10,6 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
-import com.azure.resourcemanager.network.models.ExtendedLocation;
-import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -24,21 +21,16 @@ public final class VirtualNetworkInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkInner.class);
 
     /*
-     * The extended location of the virtual network.
-     */
-    @JsonProperty(value = "extendedLocation")
-    private ExtendedLocation extendedLocation;
-
-    /*
      * Properties of the virtual network.
      */
     @JsonProperty(value = "properties")
     private VirtualNetworkPropertiesFormat innerProperties;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
@@ -46,26 +38,6 @@ public final class VirtualNetworkInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
-
-    /**
-     * Get the extendedLocation property: The extended location of the virtual network.
-     *
-     * @return the extendedLocation value.
-     */
-    public ExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
-
-    /**
-     * Set the extendedLocation property: The extended location of the virtual network.
-     *
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the VirtualNetworkInner object itself.
-     */
-    public VirtualNetworkInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
-        return this;
-    }
 
     /**
      * Get the innerProperties property: Properties of the virtual network.
@@ -77,12 +49,23 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Set the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /**
@@ -170,29 +153,6 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
-     *
-     * @return the flowTimeoutInMinutes value.
-     */
-    public Integer flowTimeoutInMinutes() {
-        return this.innerProperties() == null ? null : this.innerProperties().flowTimeoutInMinutes();
-    }
-
-    /**
-     * Set the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
-     *
-     * @param flowTimeoutInMinutes the flowTimeoutInMinutes value to set.
-     * @return the VirtualNetworkInner object itself.
-     */
-    public VirtualNetworkInner withFlowTimeoutInMinutes(Integer flowTimeoutInMinutes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkPropertiesFormat();
-        }
-        this.innerProperties().withFlowTimeoutInMinutes(flowTimeoutInMinutes);
-        return this;
-    }
-
-    /**
      * Get the subnets property: A list of subnets in a Virtual Network.
      *
      * @return the subnets value.
@@ -248,12 +208,42 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the virtual network resource.
+     * Set the resourceGuid property: The resourceGuid property of the Virtual Network resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withResourceGuid(String resourceGuid) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPropertiesFormat();
+        }
+        this.innerProperties().withResourceGuid(resourceGuid);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the VirtualNetworkInner object itself.
+     */
+    public VirtualNetworkInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**
@@ -330,62 +320,11 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
-     * in this VNET.
-     *
-     * @return the bgpCommunities value.
-     */
-    public VirtualNetworkBgpCommunities bgpCommunities() {
-        return this.innerProperties() == null ? null : this.innerProperties().bgpCommunities();
-    }
-
-    /**
-     * Set the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
-     * in this VNET.
-     *
-     * @param bgpCommunities the bgpCommunities value to set.
-     * @return the VirtualNetworkInner object itself.
-     */
-    public VirtualNetworkInner withBgpCommunities(VirtualNetworkBgpCommunities bgpCommunities) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkPropertiesFormat();
-        }
-        this.innerProperties().withBgpCommunities(bgpCommunities);
-        return this;
-    }
-
-    /**
-     * Get the ipAllocations property: Array of IpAllocation which reference this VNET.
-     *
-     * @return the ipAllocations value.
-     */
-    public List<SubResource> ipAllocations() {
-        return this.innerProperties() == null ? null : this.innerProperties().ipAllocations();
-    }
-
-    /**
-     * Set the ipAllocations property: Array of IpAllocation which reference this VNET.
-     *
-     * @param ipAllocations the ipAllocations value to set.
-     * @return the VirtualNetworkInner object itself.
-     */
-    public VirtualNetworkInner withIpAllocations(List<SubResource> ipAllocations) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkPropertiesFormat();
-        }
-        this.innerProperties().withIpAllocations(ipAllocations);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

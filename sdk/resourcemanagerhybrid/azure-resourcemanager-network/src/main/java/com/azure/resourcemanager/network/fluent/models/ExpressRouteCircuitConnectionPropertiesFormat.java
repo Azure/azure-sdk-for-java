@@ -8,12 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
-import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the express route circuit connection. */
+/** The ExpressRouteCircuitConnectionPropertiesFormat model. */
 @Fluent
 public final class ExpressRouteCircuitConnectionPropertiesFormat {
     @JsonIgnore
@@ -46,22 +44,18 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     private String authorizationKey;
 
     /*
-     * IPv6 Address PrefixProperties of the express route circuit connection.
-     */
-    @JsonProperty(value = "ipv6CircuitConnectionConfig")
-    private Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig;
-
-    /*
-     * Express Route Circuit connection state.
+     * Express Route Circuit Connection State. Possible values are: 'Connected'
+     * and 'Disconnected'.
      */
     @JsonProperty(value = "circuitConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private CircuitConnectionStatus circuitConnectionStatus;
 
     /*
-     * The provisioning state of the express route circuit connection resource.
+     * Provisioning state of the circuit connection resource. Possible values
+     * are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the
@@ -150,30 +144,8 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     }
 
     /**
-     * Get the ipv6CircuitConnectionConfig property: IPv6 Address PrefixProperties of the express route circuit
-     * connection.
-     *
-     * @return the ipv6CircuitConnectionConfig value.
-     */
-    public Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig() {
-        return this.ipv6CircuitConnectionConfig;
-    }
-
-    /**
-     * Set the ipv6CircuitConnectionConfig property: IPv6 Address PrefixProperties of the express route circuit
-     * connection.
-     *
-     * @param ipv6CircuitConnectionConfig the ipv6CircuitConnectionConfig value to set.
-     * @return the ExpressRouteCircuitConnectionPropertiesFormat object itself.
-     */
-    public ExpressRouteCircuitConnectionPropertiesFormat withIpv6CircuitConnectionConfig(
-        Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig) {
-        this.ipv6CircuitConnectionConfig = ipv6CircuitConnectionConfig;
-        return this;
-    }
-
-    /**
-     * Get the circuitConnectionStatus property: Express Route Circuit connection state.
+     * Get the circuitConnectionStatus property: Express Route Circuit Connection State. Possible values are:
+     * 'Connected' and 'Disconnected'.
      *
      * @return the circuitConnectionStatus value.
      */
@@ -182,11 +154,12 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route circuit connection resource.
+     * Get the provisioningState property: Provisioning state of the circuit connection resource. Possible values are:
+     * 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
@@ -196,8 +169,5 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (ipv6CircuitConnectionConfig() != null) {
-            ipv6CircuitConnectionConfig().validate();
-        }
     }
 }

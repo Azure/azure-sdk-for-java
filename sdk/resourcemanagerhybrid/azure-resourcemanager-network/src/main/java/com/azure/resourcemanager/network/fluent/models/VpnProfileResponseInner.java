@@ -15,7 +15,7 @@ public final class VpnProfileResponseInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnProfileResponseInner.class);
 
     /*
-     * URL to the VPN profile.
+     * URL to the VPN profile
      */
     @JsonProperty(value = "profileUrl")
     private String profileUrl;

@@ -52,13 +52,6 @@ public final class EncryptionScopeProperties {
     @JsonProperty(value = "keyVaultProperties")
     private EncryptionScopeKeyVaultProperties keyVaultProperties;
 
-    /*
-     * A boolean indicating whether or not the service applies a secondary
-     * layer of encryption with platform managed keys for data at rest.
-     */
-    @JsonProperty(value = "requireInfrastructureEncryption")
-    private Boolean requireInfrastructureEncryption;
-
     /**
      * Get the source property: The provider for the encryption scope. Possible values (case-insensitive):
      * Microsoft.Storage, Microsoft.KeyVault.
@@ -138,28 +131,6 @@ public final class EncryptionScopeProperties {
      */
     public EncryptionScopeProperties withKeyVaultProperties(EncryptionScopeKeyVaultProperties keyVaultProperties) {
         this.keyVaultProperties = keyVaultProperties;
-        return this;
-    }
-
-    /**
-     * Get the requireInfrastructureEncryption property: A boolean indicating whether or not the service applies a
-     * secondary layer of encryption with platform managed keys for data at rest.
-     *
-     * @return the requireInfrastructureEncryption value.
-     */
-    public Boolean requireInfrastructureEncryption() {
-        return this.requireInfrastructureEncryption;
-    }
-
-    /**
-     * Set the requireInfrastructureEncryption property: A boolean indicating whether or not the service applies a
-     * secondary layer of encryption with platform managed keys for data at rest.
-     *
-     * @param requireInfrastructureEncryption the requireInfrastructureEncryption value to set.
-     * @return the EncryptionScopeProperties object itself.
-     */
-    public EncryptionScopeProperties withRequireInfrastructureEncryption(Boolean requireInfrastructureEncryption) {
-        this.requireInfrastructureEncryption = requireInfrastructureEncryption;
         return this;
     }
 

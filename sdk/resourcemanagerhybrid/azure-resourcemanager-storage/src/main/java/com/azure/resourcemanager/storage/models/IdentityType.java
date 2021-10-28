@@ -10,17 +10,8 @@ import java.util.Collection;
 
 /** Defines values for IdentityType. */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
-    /** Static value None for IdentityType. */
-    public static final IdentityType NONE = fromString("None");
-
     /** Static value SystemAssigned for IdentityType. */
     public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
-
-    /** Static value UserAssigned for IdentityType. */
-    public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");
-
-    /** Static value SystemAssigned,UserAssigned for IdentityType. */
-    public static final IdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned,UserAssigned");
 
     /**
      * Creates or finds a IdentityType from its string representation.

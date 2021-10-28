@@ -27,13 +27,13 @@ public class PacketCaptureParameters {
      * Number of bytes captured per packet, the remaining bytes are truncated.
      */
     @JsonProperty(value = "bytesToCapturePerPacket")
-    private Long bytesToCapturePerPacket;
+    private Integer bytesToCapturePerPacket;
 
     /*
      * Maximum size of the capture output.
      */
     @JsonProperty(value = "totalBytesPerSession")
-    private Long totalBytesPerSession;
+    private Integer totalBytesPerSession;
 
     /*
      * Maximum duration of the capture session in seconds.
@@ -42,13 +42,13 @@ public class PacketCaptureParameters {
     private Integer timeLimitInSeconds;
 
     /*
-     * The storage location for a packet capture session.
+     * Describes the storage location for a packet capture session.
      */
     @JsonProperty(value = "storageLocation", required = true)
     private PacketCaptureStorageLocation storageLocation;
 
     /*
-     * A list of packet capture filters.
+     * The filters property.
      */
     @JsonProperty(value = "filters")
     private List<PacketCaptureFilter> filters;
@@ -78,7 +78,7 @@ public class PacketCaptureParameters {
      *
      * @return the bytesToCapturePerPacket value.
      */
-    public Long bytesToCapturePerPacket() {
+    public Integer bytesToCapturePerPacket() {
         return this.bytesToCapturePerPacket;
     }
 
@@ -88,7 +88,7 @@ public class PacketCaptureParameters {
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set.
      * @return the PacketCaptureParameters object itself.
      */
-    public PacketCaptureParameters withBytesToCapturePerPacket(Long bytesToCapturePerPacket) {
+    public PacketCaptureParameters withBytesToCapturePerPacket(Integer bytesToCapturePerPacket) {
         this.bytesToCapturePerPacket = bytesToCapturePerPacket;
         return this;
     }
@@ -98,7 +98,7 @@ public class PacketCaptureParameters {
      *
      * @return the totalBytesPerSession value.
      */
-    public Long totalBytesPerSession() {
+    public Integer totalBytesPerSession() {
         return this.totalBytesPerSession;
     }
 
@@ -108,7 +108,7 @@ public class PacketCaptureParameters {
      * @param totalBytesPerSession the totalBytesPerSession value to set.
      * @return the PacketCaptureParameters object itself.
      */
-    public PacketCaptureParameters withTotalBytesPerSession(Long totalBytesPerSession) {
+    public PacketCaptureParameters withTotalBytesPerSession(Integer totalBytesPerSession) {
         this.totalBytesPerSession = totalBytesPerSession;
         return this;
     }
@@ -134,7 +134,7 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Get the storageLocation property: The storage location for a packet capture session.
+     * Get the storageLocation property: Describes the storage location for a packet capture session.
      *
      * @return the storageLocation value.
      */
@@ -143,7 +143,7 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the storageLocation property: The storage location for a packet capture session.
+     * Set the storageLocation property: Describes the storage location for a packet capture session.
      *
      * @param storageLocation the storageLocation value to set.
      * @return the PacketCaptureParameters object itself.
@@ -154,7 +154,7 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Get the filters property: A list of packet capture filters.
+     * Get the filters property: The filters property.
      *
      * @return the filters value.
      */
@@ -163,7 +163,7 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the filters property: A list of packet capture filters.
+     * Set the filters property: The filters property.
      *
      * @param filters the filters value to set.
      * @return the PacketCaptureParameters object itself.

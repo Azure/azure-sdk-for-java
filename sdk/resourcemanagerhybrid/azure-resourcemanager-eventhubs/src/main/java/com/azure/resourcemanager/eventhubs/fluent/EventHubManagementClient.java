@@ -25,13 +25,6 @@ public interface EventHubManagementClient {
     String getEndpoint();
 
     /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    String getApiVersion();
-
-    /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
@@ -46,11 +39,32 @@ public interface EventHubManagementClient {
     Duration getDefaultPollInterval();
 
     /**
+     * Gets the ClustersClient object to access its operations.
+     *
+     * @return the ClustersClient object.
+     */
+    ClustersClient getClusters();
+
+    /**
      * Gets the NamespacesClient object to access its operations.
      *
      * @return the NamespacesClient object.
      */
     NamespacesClient getNamespaces();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
      * Gets the DisasterRecoveryConfigsClient object to access its operations.

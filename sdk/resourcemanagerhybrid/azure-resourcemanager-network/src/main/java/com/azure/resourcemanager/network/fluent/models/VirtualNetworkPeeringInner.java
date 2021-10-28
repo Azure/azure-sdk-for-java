@@ -8,9 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
-import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
-import com.azure.resourcemanager.network.models.VirtualNetworkPeeringLevel;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -36,14 +33,8 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * Resource type.
-     */
-    @JsonProperty(value = "type")
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of the virtual network peering.
@@ -86,22 +77,13 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: Resource type.
-     *
-     * @param type the type value to set.
+     * @param etag the etag value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
-    public VirtualNetworkPeeringInner withType(String type) {
-        this.type = type;
+    public VirtualNetworkPeeringInner withEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 
@@ -113,8 +95,8 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the allowVirtualNetworkAccess property: Whether the VMs in the local virtual network space would be able to
-     * access the VMs in remote virtual network space.
+     * Get the allowVirtualNetworkAccess property: Whether the VMs in the linked virtual network space would be able to
+     * access all the VMs in local Virtual network space.
      *
      * @return the allowVirtualNetworkAccess value.
      */
@@ -123,8 +105,8 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the allowVirtualNetworkAccess property: Whether the VMs in the local virtual network space would be able to
-     * access the VMs in remote virtual network space.
+     * Set the allowVirtualNetworkAccess property: Whether the VMs in the linked virtual network space would be able to
+     * access all the VMs in local Virtual network space.
      *
      * @param allowVirtualNetworkAccess the allowVirtualNetworkAccess value to set.
      * @return the VirtualNetworkPeeringInner object itself.
@@ -138,8 +120,8 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the allowForwardedTraffic property: Whether the forwarded traffic from the VMs in the local virtual network
-     * will be allowed/disallowed in remote virtual network.
+     * Get the allowForwardedTraffic property: Whether the forwarded traffic from the VMs in the remote virtual network
+     * will be allowed/disallowed.
      *
      * @return the allowForwardedTraffic value.
      */
@@ -148,8 +130,8 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the allowForwardedTraffic property: Whether the forwarded traffic from the VMs in the local virtual network
-     * will be allowed/disallowed in remote virtual network.
+     * Set the allowForwardedTraffic property: Whether the forwarded traffic from the VMs in the remote virtual network
+     * will be allowed/disallowed.
      *
      * @param allowForwardedTraffic the allowForwardedTraffic value to set.
      * @return the VirtualNetworkPeeringInner object itself.
@@ -217,7 +199,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the remoteVirtualNetwork property: The reference to the remote virtual network. The remote virtual network
+     * Get the remoteVirtualNetwork property: The reference of the remote virtual network. The remote virtual network
      * can be in the same or different region (preview). See here to register for the preview and learn more
      * (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
      *
@@ -228,7 +210,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the remoteVirtualNetwork property: The reference to the remote virtual network. The remote virtual network
+     * Set the remoteVirtualNetwork property: The reference of the remote virtual network. The remote virtual network
      * can be in the same or different region (preview). See here to register for the preview and learn more
      * (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
      *
@@ -244,7 +226,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the remoteAddressSpace property: The reference to the address space peered with the remote virtual network.
+     * Get the remoteAddressSpace property: The reference of the remote virtual network address space.
      *
      * @return the remoteAddressSpace value.
      */
@@ -253,7 +235,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the remoteAddressSpace property: The reference to the address space peered with the remote virtual network.
+     * Set the remoteAddressSpace property: The reference of the remote virtual network address space.
      *
      * @param remoteAddressSpace the remoteAddressSpace value to set.
      * @return the VirtualNetworkPeeringInner object itself.
@@ -267,56 +249,8 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the remoteVirtualNetworkAddressSpace property: The reference to the current address space of the remote
-     * virtual network.
-     *
-     * @return the remoteVirtualNetworkAddressSpace value.
-     */
-    public AddressSpace remoteVirtualNetworkAddressSpace() {
-        return this.innerProperties() == null ? null : this.innerProperties().remoteVirtualNetworkAddressSpace();
-    }
-
-    /**
-     * Set the remoteVirtualNetworkAddressSpace property: The reference to the current address space of the remote
-     * virtual network.
-     *
-     * @param remoteVirtualNetworkAddressSpace the remoteVirtualNetworkAddressSpace value to set.
-     * @return the VirtualNetworkPeeringInner object itself.
-     */
-    public VirtualNetworkPeeringInner withRemoteVirtualNetworkAddressSpace(
-        AddressSpace remoteVirtualNetworkAddressSpace) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
-        }
-        this.innerProperties().withRemoteVirtualNetworkAddressSpace(remoteVirtualNetworkAddressSpace);
-        return this;
-    }
-
-    /**
-     * Get the remoteBgpCommunities property: The reference to the remote virtual network's Bgp Communities.
-     *
-     * @return the remoteBgpCommunities value.
-     */
-    public VirtualNetworkBgpCommunities remoteBgpCommunities() {
-        return this.innerProperties() == null ? null : this.innerProperties().remoteBgpCommunities();
-    }
-
-    /**
-     * Set the remoteBgpCommunities property: The reference to the remote virtual network's Bgp Communities.
-     *
-     * @param remoteBgpCommunities the remoteBgpCommunities value to set.
-     * @return the VirtualNetworkPeeringInner object itself.
-     */
-    public VirtualNetworkPeeringInner withRemoteBgpCommunities(VirtualNetworkBgpCommunities remoteBgpCommunities) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
-        }
-        this.innerProperties().withRemoteBgpCommunities(remoteBgpCommunities);
-        return this;
-    }
-
-    /**
-     * Get the peeringState property: The status of the virtual network peering.
+     * Get the peeringState property: The status of the virtual network peering. Possible values are 'Initiated',
+     * 'Connected', and 'Disconnected'.
      *
      * @return the peeringState value.
      */
@@ -325,7 +259,8 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the peeringState property: The status of the virtual network peering.
+     * Set the peeringState property: The status of the virtual network peering. Possible values are 'Initiated',
+     * 'Connected', and 'Disconnected'.
      *
      * @param peeringState the peeringState value to set.
      * @return the VirtualNetworkPeeringInner object itself.
@@ -339,67 +274,26 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the peeringSyncLevel property: The peering sync status of the virtual network peering.
-     *
-     * @return the peeringSyncLevel value.
-     */
-    public VirtualNetworkPeeringLevel peeringSyncLevel() {
-        return this.innerProperties() == null ? null : this.innerProperties().peeringSyncLevel();
-    }
-
-    /**
-     * Set the peeringSyncLevel property: The peering sync status of the virtual network peering.
-     *
-     * @param peeringSyncLevel the peeringSyncLevel value to set.
-     * @return the VirtualNetworkPeeringInner object itself.
-     */
-    public VirtualNetworkPeeringInner withPeeringSyncLevel(VirtualNetworkPeeringLevel peeringSyncLevel) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
-        }
-        this.innerProperties().withPeeringSyncLevel(peeringSyncLevel);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the virtual network peering resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the doNotVerifyRemoteGateways property: If we need to verify the provisioning state of the remote gateway.
+     * Set the provisioningState property: The provisioning state of the resource.
      *
-     * @return the doNotVerifyRemoteGateways value.
-     */
-    public Boolean doNotVerifyRemoteGateways() {
-        return this.innerProperties() == null ? null : this.innerProperties().doNotVerifyRemoteGateways();
-    }
-
-    /**
-     * Set the doNotVerifyRemoteGateways property: If we need to verify the provisioning state of the remote gateway.
-     *
-     * @param doNotVerifyRemoteGateways the doNotVerifyRemoteGateways value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
-    public VirtualNetworkPeeringInner withDoNotVerifyRemoteGateways(Boolean doNotVerifyRemoteGateways) {
+    public VirtualNetworkPeeringInner withProvisioningState(String provisioningState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
         }
-        this.innerProperties().withDoNotVerifyRemoteGateways(doNotVerifyRemoteGateways);
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
-    }
-
-    /**
-     * Get the resourceGuid property: The resourceGuid property of the Virtual Network peering resource.
-     *
-     * @return the resourceGuid value.
-     */
-    public String resourceGuid() {
-        return this.innerProperties() == null ? null : this.innerProperties().resourceGuid();
     }
 
     /**

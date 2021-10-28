@@ -8,11 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.LoadDistribution;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** A load balancing rule for a load balancer. */
 @Fluent
@@ -26,9 +24,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     private LoadBalancingRulePropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of load balancing
-     * rules used by the load balancer. This name can be used to access the
-     * resource.
+     * The name of the resource that is unique within a resource group. This
+     * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -36,14 +33,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * Type of the resource.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of load balancer load balancing rule.
@@ -55,8 +46,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within the set of load balancing rules used by the
-     * load balancer. This name can be used to access the resource.
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @return the name value.
      */
@@ -65,8 +56,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within the set of load balancing rules used by the
-     * load balancer. This name can be used to access the resource.
+     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @param name the name value to set.
      * @return the LoadBalancingRuleInner object itself.
@@ -86,12 +77,14 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the type property: Type of the resource.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
+     * @param etag the etag value to set.
+     * @return the LoadBalancingRuleInner object itself.
      */
-    public String type() {
-        return this.type;
+    public LoadBalancingRuleInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -150,30 +143,7 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the backendAddressPools property: An array of references to pool of DIPs.
-     *
-     * @return the backendAddressPools value.
-     */
-    public List<SubResource> backendAddressPools() {
-        return this.innerProperties() == null ? null : this.innerProperties().backendAddressPools();
-    }
-
-    /**
-     * Set the backendAddressPools property: An array of references to pool of DIPs.
-     *
-     * @param backendAddressPools the backendAddressPools value to set.
-     * @return the LoadBalancingRuleInner object itself.
-     */
-    public LoadBalancingRuleInner withBackendAddressPools(List<SubResource> backendAddressPools) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LoadBalancingRulePropertiesFormat();
-        }
-        this.innerProperties().withBackendAddressPools(backendAddressPools);
-        return this;
-    }
-
-    /**
-     * Get the probe property: The reference to the load balancer probe used by the load balancing rule.
+     * Get the probe property: The reference of the load balancer probe used by the load balancing rule.
      *
      * @return the probe value.
      */
@@ -182,7 +152,7 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the probe property: The reference to the load balancer probe used by the load balancing rule.
+     * Set the probe property: The reference of the load balancer probe used by the load balancing rule.
      *
      * @param probe the probe value to set.
      * @return the LoadBalancingRuleInner object itself.
@@ -196,7 +166,7 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the protocol property: The reference to the transport protocol used by the load balancing rule.
+     * Get the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
      *
      * @return the protocol value.
      */
@@ -205,7 +175,7 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the protocol property: The reference to the transport protocol used by the load balancing rule.
+     * Set the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
      *
      * @param protocol the protocol value to set.
      * @return the LoadBalancingRuleInner object itself.
@@ -219,7 +189,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the loadDistribution property: The load distribution policy for this rule.
+     * Get the loadDistribution property: The load distribution policy for this rule. Possible values are 'Default',
+     * 'SourceIP', and 'SourceIPProtocol'.
      *
      * @return the loadDistribution value.
      */
@@ -228,7 +199,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the loadDistribution property: The load distribution policy for this rule.
+     * Set the loadDistribution property: The load distribution policy for this rule. Possible values are 'Default',
+     * 'SourceIP', and 'SourceIPProtocol'.
      *
      * @param loadDistribution the loadDistribution value to set.
      * @return the LoadBalancingRuleInner object itself.
@@ -394,12 +366,28 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the load balancing rule resource.
+     * Get the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the LoadBalancingRuleInner object itself.
+     */
+    public LoadBalancingRuleInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancingRulePropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

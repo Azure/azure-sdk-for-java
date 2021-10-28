@@ -11,7 +11,7 @@ import com.azure.resourcemanager.network.models.UsageUnit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The network resource usage. */
+/** Describes network resource usage. */
 @Fluent
 public final class UsageInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);

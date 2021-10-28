@@ -5,13 +5,10 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
-import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -23,25 +20,19 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     private final ClientLogger logger = new ClientLogger(NetworkInterfaceIpConfigurationPropertiesFormatInner.class);
 
     /*
-     * The reference to gateway load balancer frontend IP.
-     */
-    @JsonProperty(value = "gatewayLoadBalancer")
-    private SubResource gatewayLoadBalancer;
-
-    /*
      * The reference to Virtual Network Taps.
      */
     @JsonProperty(value = "virtualNetworkTaps")
     private List<VirtualNetworkTapInner> virtualNetworkTaps;
 
     /*
-     * The reference to ApplicationGatewayBackendAddressPool resource.
+     * The reference of ApplicationGatewayBackendAddressPool resource.
      */
     @JsonProperty(value = "applicationGatewayBackendAddressPools")
     private List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools;
 
     /*
-     * The reference to LoadBalancerBackendAddressPool resource.
+     * The reference of LoadBalancerBackendAddressPool resource.
      */
     @JsonProperty(value = "loadBalancerBackendAddressPools")
     private List<BackendAddressPoolInner> loadBalancerBackendAddressPools;
@@ -59,13 +50,16 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     private String privateIpAddress;
 
     /*
-     * The private IP address allocation method.
+     * Defines how a private IP address is assigned. Possible values are:
+     * 'Static' and 'Dynamic'.
      */
     @JsonProperty(value = "privateIPAllocationMethod")
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
-     * Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
+     * Available from Api-Version 2016-03-30 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
+     * Possible values are: 'IPv4' and 'IPv6'.
      */
     @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
@@ -77,7 +71,8 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     private SubnetInner subnet;
 
     /*
-     * Whether this is a primary customer address on the network interface.
+     * Gets whether this is a primary customer address on the network
+     * interface.
      */
     @JsonProperty(value = "primary")
     private Boolean primary;
@@ -96,36 +91,10 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
 
     /*
      * The provisioning state of the network interface IP configuration.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * PrivateLinkConnection properties for the network interface.
-     */
-    @JsonProperty(value = "privateLinkConnectionProperties", access = JsonProperty.Access.WRITE_ONLY)
-    private NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties;
-
-    /**
-     * Get the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
-     *
-     * @return the gatewayLoadBalancer value.
-     */
-    public SubResource gatewayLoadBalancer() {
-        return this.gatewayLoadBalancer;
-    }
-
-    /**
-     * Set the gatewayLoadBalancer property: The reference to gateway load balancer frontend IP.
-     *
-     * @param gatewayLoadBalancer the gatewayLoadBalancer value to set.
-     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
-     */
-    public NetworkInterfaceIpConfigurationPropertiesFormatInner withGatewayLoadBalancer(
-        SubResource gatewayLoadBalancer) {
-        this.gatewayLoadBalancer = gatewayLoadBalancer;
-        return this;
-    }
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the virtualNetworkTaps property: The reference to Virtual Network Taps.
@@ -149,7 +118,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Get the applicationGatewayBackendAddressPools property: The reference to ApplicationGatewayBackendAddressPool
+     * Get the applicationGatewayBackendAddressPools property: The reference of ApplicationGatewayBackendAddressPool
      * resource.
      *
      * @return the applicationGatewayBackendAddressPools value.
@@ -159,7 +128,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the applicationGatewayBackendAddressPools property: The reference to ApplicationGatewayBackendAddressPool
+     * Set the applicationGatewayBackendAddressPools property: The reference of ApplicationGatewayBackendAddressPool
      * resource.
      *
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
@@ -172,7 +141,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Get the loadBalancerBackendAddressPools property: The reference to LoadBalancerBackendAddressPool resource.
+     * Get the loadBalancerBackendAddressPools property: The reference of LoadBalancerBackendAddressPool resource.
      *
      * @return the loadBalancerBackendAddressPools value.
      */
@@ -181,7 +150,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the loadBalancerBackendAddressPools property: The reference to LoadBalancerBackendAddressPool resource.
+     * Set the loadBalancerBackendAddressPools property: The reference of LoadBalancerBackendAddressPool resource.
      *
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
@@ -234,7 +203,8 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Get the privateIpAllocationMethod property: The private IP address allocation method.
+     * Get the privateIpAllocationMethod property: Defines how a private IP address is assigned. Possible values are:
+     * 'Static' and 'Dynamic'.
      *
      * @return the privateIpAllocationMethod value.
      */
@@ -243,7 +213,8 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the privateIpAllocationMethod property: The private IP address allocation method.
+     * Set the privateIpAllocationMethod property: Defines how a private IP address is assigned. Possible values are:
+     * 'Static' and 'Dynamic'.
      *
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
@@ -255,7 +226,8 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Get the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
+     * Get the privateIpAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
+     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      *
      * @return the privateIpAddressVersion value.
      */
@@ -264,7 +236,8 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the privateIpAddressVersion property: Whether the specific IP configuration is IPv4 or IPv6. Default is IPv4.
+     * Set the privateIpAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
+     * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      *
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
@@ -296,7 +269,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Get the primary property: Whether this is a primary customer address on the network interface.
+     * Get the primary property: Gets whether this is a primary customer address on the network interface.
      *
      * @return the primary value.
      */
@@ -305,7 +278,7 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the primary property: Whether this is a primary customer address on the network interface.
+     * Set the primary property: Gets whether this is a primary customer address on the network interface.
      *
      * @param primary the primary value to set.
      * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
@@ -360,21 +333,25 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the network interface IP configuration.
+     * Get the provisioningState property: The provisioning state of the network interface IP configuration. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Get the privateLinkConnectionProperties property: PrivateLinkConnection properties for the network interface.
+     * Set the provisioningState property: The provisioning state of the network interface IP configuration. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      *
-     * @return the privateLinkConnectionProperties value.
+     * @param provisioningState the provisioningState value to set.
+     * @return the NetworkInterfaceIpConfigurationPropertiesFormatInner object itself.
      */
-    public NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties privateLinkConnectionProperties() {
-        return this.privateLinkConnectionProperties;
+    public NetworkInterfaceIpConfigurationPropertiesFormatInner withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -403,9 +380,6 @@ public final class NetworkInterfaceIpConfigurationPropertiesFormatInner {
         }
         if (applicationSecurityGroups() != null) {
             applicationSecurityGroups().forEach(e -> e.validate());
-        }
-        if (privateLinkConnectionProperties() != null) {
-            privateLinkConnectionProperties().validate();
         }
     }
 }

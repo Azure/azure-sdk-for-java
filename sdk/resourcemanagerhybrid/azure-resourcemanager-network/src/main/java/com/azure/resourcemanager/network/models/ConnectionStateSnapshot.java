@@ -44,31 +44,31 @@ public final class ConnectionStateSnapshot {
      * Average latency in ms.
      */
     @JsonProperty(value = "avgLatencyInMs")
-    private Long avgLatencyInMs;
+    private Integer avgLatencyInMs;
 
     /*
      * Minimum latency in ms.
      */
     @JsonProperty(value = "minLatencyInMs")
-    private Long minLatencyInMs;
+    private Integer minLatencyInMs;
 
     /*
      * Maximum latency in ms.
      */
     @JsonProperty(value = "maxLatencyInMs")
-    private Long maxLatencyInMs;
+    private Integer maxLatencyInMs;
 
     /*
      * The number of sent probes.
      */
     @JsonProperty(value = "probesSent")
-    private Long probesSent;
+    private Integer probesSent;
 
     /*
      * The number of failed probes.
      */
     @JsonProperty(value = "probesFailed")
-    private Long probesFailed;
+    private Integer probesFailed;
 
     /*
      * List of hops between the source and the destination.
@@ -161,7 +161,7 @@ public final class ConnectionStateSnapshot {
      *
      * @return the avgLatencyInMs value.
      */
-    public Long avgLatencyInMs() {
+    public Integer avgLatencyInMs() {
         return this.avgLatencyInMs;
     }
 
@@ -171,7 +171,7 @@ public final class ConnectionStateSnapshot {
      * @param avgLatencyInMs the avgLatencyInMs value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
-    public ConnectionStateSnapshot withAvgLatencyInMs(Long avgLatencyInMs) {
+    public ConnectionStateSnapshot withAvgLatencyInMs(Integer avgLatencyInMs) {
         this.avgLatencyInMs = avgLatencyInMs;
         return this;
     }
@@ -181,7 +181,7 @@ public final class ConnectionStateSnapshot {
      *
      * @return the minLatencyInMs value.
      */
-    public Long minLatencyInMs() {
+    public Integer minLatencyInMs() {
         return this.minLatencyInMs;
     }
 
@@ -191,7 +191,7 @@ public final class ConnectionStateSnapshot {
      * @param minLatencyInMs the minLatencyInMs value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
-    public ConnectionStateSnapshot withMinLatencyInMs(Long minLatencyInMs) {
+    public ConnectionStateSnapshot withMinLatencyInMs(Integer minLatencyInMs) {
         this.minLatencyInMs = minLatencyInMs;
         return this;
     }
@@ -201,7 +201,7 @@ public final class ConnectionStateSnapshot {
      *
      * @return the maxLatencyInMs value.
      */
-    public Long maxLatencyInMs() {
+    public Integer maxLatencyInMs() {
         return this.maxLatencyInMs;
     }
 
@@ -211,7 +211,7 @@ public final class ConnectionStateSnapshot {
      * @param maxLatencyInMs the maxLatencyInMs value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
-    public ConnectionStateSnapshot withMaxLatencyInMs(Long maxLatencyInMs) {
+    public ConnectionStateSnapshot withMaxLatencyInMs(Integer maxLatencyInMs) {
         this.maxLatencyInMs = maxLatencyInMs;
         return this;
     }
@@ -221,7 +221,7 @@ public final class ConnectionStateSnapshot {
      *
      * @return the probesSent value.
      */
-    public Long probesSent() {
+    public Integer probesSent() {
         return this.probesSent;
     }
 
@@ -231,7 +231,7 @@ public final class ConnectionStateSnapshot {
      * @param probesSent the probesSent value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
-    public ConnectionStateSnapshot withProbesSent(Long probesSent) {
+    public ConnectionStateSnapshot withProbesSent(Integer probesSent) {
         this.probesSent = probesSent;
         return this;
     }
@@ -241,7 +241,7 @@ public final class ConnectionStateSnapshot {
      *
      * @return the probesFailed value.
      */
-    public Long probesFailed() {
+    public Integer probesFailed() {
         return this.probesFailed;
     }
 
@@ -251,7 +251,7 @@ public final class ConnectionStateSnapshot {
      * @param probesFailed the probesFailed value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
-    public ConnectionStateSnapshot withProbesFailed(Long probesFailed) {
+    public ConnectionStateSnapshot withProbesFailed(Integer probesFailed) {
         this.probesFailed = probesFailed;
         return this;
     }

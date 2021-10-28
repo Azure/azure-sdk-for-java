@@ -6,8 +6,11 @@ package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Request parameters for creating a new service principal. */
 @Fluent
@@ -37,6 +40,48 @@ public final class ServicePrincipalCreateParameters extends ServicePrincipalBase
      */
     public ServicePrincipalCreateParameters withAppId(String appId) {
         this.appId = appId;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServicePrincipalCreateParameters withAccountEnabled(Boolean accountEnabled) {
+        super.withAccountEnabled(accountEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServicePrincipalCreateParameters withAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
+        super.withAppRoleAssignmentRequired(appRoleAssignmentRequired);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServicePrincipalCreateParameters withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+        super.withKeyCredentials(keyCredentials);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServicePrincipalCreateParameters withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+        super.withPasswordCredentials(passwordCredentials);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServicePrincipalCreateParameters withServicePrincipalType(String servicePrincipalType) {
+        super.withServicePrincipalType(servicePrincipalType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServicePrincipalCreateParameters withTags(List<String> tags) {
+        super.withTags(tags);
         return this;
     }
 

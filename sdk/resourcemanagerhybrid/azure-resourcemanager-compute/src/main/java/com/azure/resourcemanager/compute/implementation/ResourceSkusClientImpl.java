@@ -68,7 +68,6 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$filter") String filter,
-            @QueryParam("includeExtendedLocations") String includeExtendedLocations,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -87,14 +86,13 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * Gets the list of Microsoft.Compute SKUs available for your Subscription.
      *
      * @param filter The filter to apply on the operation. Only **location** filter is supported currently.
-     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Microsoft.Compute SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceSkuInner>> listSinglePageAsync(String filter, String includeExtendedLocations) {
+    private Mono<PagedResponse<ResourceSkuInner>> listSinglePageAsync(String filter) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -107,7 +105,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2019-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -118,7 +116,6 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             filter,
-                            includeExtendedLocations,
                             accept,
                             context))
             .<PagedResponse<ResourceSkuInner>>map(
@@ -137,7 +134,6 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * Gets the list of Microsoft.Compute SKUs available for your Subscription.
      *
      * @param filter The filter to apply on the operation. Only **location** filter is supported currently.
-     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -145,8 +141,7 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * @return the list of Microsoft.Compute SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceSkuInner>> listSinglePageAsync(
-        String filter, String includeExtendedLocations, Context context) {
+    private Mono<PagedResponse<ResourceSkuInner>> listSinglePageAsync(String filter, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -159,18 +154,11 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2019-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                filter,
-                includeExtendedLocations,
-                accept,
-                context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), filter, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -186,16 +174,14 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * Gets the list of Microsoft.Compute SKUs available for your Subscription.
      *
      * @param filter The filter to apply on the operation. Only **location** filter is supported currently.
-     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Microsoft.Compute SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ResourceSkuInner> listAsync(String filter, String includeExtendedLocations) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, includeExtendedLocations), nextLink -> listNextSinglePageAsync(nextLink));
+    public PagedFlux<ResourceSkuInner> listAsync(String filter) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -208,16 +194,13 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ResourceSkuInner> listAsync() {
         final String filter = null;
-        final String includeExtendedLocations = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, includeExtendedLocations), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of Microsoft.Compute SKUs available for your Subscription.
      *
      * @param filter The filter to apply on the operation. Only **location** filter is supported currently.
-     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -225,10 +208,9 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * @return the list of Microsoft.Compute SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceSkuInner> listAsync(String filter, String includeExtendedLocations, Context context) {
+    private PagedFlux<ResourceSkuInner> listAsync(String filter, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, includeExtendedLocations, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -241,15 +223,13 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSkuInner> list() {
         final String filter = null;
-        final String includeExtendedLocations = null;
-        return new PagedIterable<>(listAsync(filter, includeExtendedLocations));
+        return new PagedIterable<>(listAsync(filter));
     }
 
     /**
      * Gets the list of Microsoft.Compute SKUs available for your Subscription.
      *
      * @param filter The filter to apply on the operation. Only **location** filter is supported currently.
-     * @param includeExtendedLocations To Include Extended Locations information or not in the response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -257,8 +237,8 @@ public final class ResourceSkusClientImpl implements ResourceSkusClient {
      * @return the list of Microsoft.Compute SKUs available for your Subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceSkuInner> list(String filter, String includeExtendedLocations, Context context) {
-        return new PagedIterable<>(listAsync(filter, includeExtendedLocations, context));
+    public PagedIterable<ResourceSkuInner> list(String filter, Context context) {
+        return new PagedIterable<>(listAsync(filter, context));
     }
 
     /**

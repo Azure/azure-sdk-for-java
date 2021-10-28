@@ -25,23 +25,23 @@ public final class AzureFirewallIpConfigurationPropertiesFormat {
     private String privateIpAddress;
 
     /*
-     * Reference to the subnet resource. This resource must be named
-     * 'AzureFirewallSubnet' or 'AzureFirewallManagementSubnet'.
+     * Reference of the subnet resource. This resource must be named
+     * 'AzureFirewallSubnet'.
      */
     @JsonProperty(value = "subnet")
     private SubResource subnet;
 
     /*
-     * Reference to the PublicIP resource. This field is a mandatory input if
+     * Reference of the PublicIP resource. This field is a mandatory input if
      * subnet is not null.
      */
     @JsonProperty(value = "publicIPAddress")
     private SubResource publicIpAddress;
 
     /*
-     * The provisioning state of the Azure firewall IP configuration resource.
+     * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /**
@@ -55,8 +55,7 @@ public final class AzureFirewallIpConfigurationPropertiesFormat {
     }
 
     /**
-     * Get the subnet property: Reference to the subnet resource. This resource must be named 'AzureFirewallSubnet' or
-     * 'AzureFirewallManagementSubnet'.
+     * Get the subnet property: Reference of the subnet resource. This resource must be named 'AzureFirewallSubnet'.
      *
      * @return the subnet value.
      */
@@ -65,8 +64,7 @@ public final class AzureFirewallIpConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the subnet property: Reference to the subnet resource. This resource must be named 'AzureFirewallSubnet' or
-     * 'AzureFirewallManagementSubnet'.
+     * Set the subnet property: Reference of the subnet resource. This resource must be named 'AzureFirewallSubnet'.
      *
      * @param subnet the subnet value to set.
      * @return the AzureFirewallIpConfigurationPropertiesFormat object itself.
@@ -77,7 +75,7 @@ public final class AzureFirewallIpConfigurationPropertiesFormat {
     }
 
     /**
-     * Get the publicIpAddress property: Reference to the PublicIP resource. This field is a mandatory input if subnet
+     * Get the publicIpAddress property: Reference of the PublicIP resource. This field is a mandatory input if subnet
      * is not null.
      *
      * @return the publicIpAddress value.
@@ -87,7 +85,7 @@ public final class AzureFirewallIpConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the publicIpAddress property: Reference to the PublicIP resource. This field is a mandatory input if subnet
+     * Set the publicIpAddress property: Reference of the PublicIP resource. This field is a mandatory input if subnet
      * is not null.
      *
      * @param publicIpAddress the publicIpAddress value to set.
@@ -99,12 +97,23 @@ public final class AzureFirewallIpConfigurationPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the Azure firewall IP configuration resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the AzureFirewallIpConfigurationPropertiesFormat object itself.
+     */
+    public AzureFirewallIpConfigurationPropertiesFormat withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

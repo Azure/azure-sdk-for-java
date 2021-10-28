@@ -11,7 +11,6 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,13 +20,13 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionPeeringInner.class);
 
     /*
-     * Properties of the express route cross connection peering.
+     * The properties property.
      */
     @JsonProperty(value = "properties")
-    private ExpressRouteCrossConnectionPeeringProperties innerProperties;
+    private ExpressRouteCrossConnectionPeeringPropertiesInner innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
+     * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
@@ -40,16 +39,16 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the express route cross connection peering.
+     * Get the innerProperties property: The properties property.
      *
      * @return the innerProperties value.
      */
-    private ExpressRouteCrossConnectionPeeringProperties innerProperties() {
+    private ExpressRouteCrossConnectionPeeringPropertiesInner innerProperties() {
         return this.innerProperties;
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * Get the name property: Gets name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
      *
      * @return the name value.
@@ -59,7 +58,7 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * Set the name property: Gets name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
      *
      * @param name the name value to set.
@@ -103,7 +102,7 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      */
     public ExpressRouteCrossConnectionPeeringInner withPeeringType(ExpressRoutePeeringType peeringType) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
         }
         this.innerProperties().withPeeringType(peeringType);
         return this;
@@ -126,7 +125,7 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      */
     public ExpressRouteCrossConnectionPeeringInner withState(ExpressRoutePeeringState state) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
         }
         this.innerProperties().withState(state);
         return this;
@@ -158,7 +157,7 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      */
     public ExpressRouteCrossConnectionPeeringInner withPeerAsn(Long peerAsn) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
         }
         this.innerProperties().withPeerAsn(peerAsn);
         return this;
@@ -181,7 +180,7 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      */
     public ExpressRouteCrossConnectionPeeringInner withPrimaryPeerAddressPrefix(String primaryPeerAddressPrefix) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
         }
         this.innerProperties().withPrimaryPeerAddressPrefix(primaryPeerAddressPrefix);
         return this;
@@ -204,7 +203,7 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      */
     public ExpressRouteCrossConnectionPeeringInner withSecondaryPeerAddressPrefix(String secondaryPeerAddressPrefix) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
         }
         this.innerProperties().withSecondaryPeerAddressPrefix(secondaryPeerAddressPrefix);
         return this;
@@ -245,7 +244,7 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      */
     public ExpressRouteCrossConnectionPeeringInner withSharedKey(String sharedKey) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
         }
         this.innerProperties().withSharedKey(sharedKey);
         return this;
@@ -268,7 +267,7 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      */
     public ExpressRouteCrossConnectionPeeringInner withVlanId(Integer vlanId) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
         }
         this.innerProperties().withVlanId(vlanId);
         return this;
@@ -292,19 +291,19 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
     public ExpressRouteCrossConnectionPeeringInner withMicrosoftPeeringConfig(
         ExpressRouteCircuitPeeringConfig microsoftPeeringConfig) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
         }
         this.innerProperties().withMicrosoftPeeringConfig(microsoftPeeringConfig);
         return this;
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route cross connection peering
-     * resource.
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
@@ -325,19 +324,33 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
      */
     public ExpressRouteCrossConnectionPeeringInner withGatewayManagerEtag(String gatewayManagerEtag) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
         }
         this.innerProperties().withGatewayManagerEtag(gatewayManagerEtag);
         return this;
     }
 
     /**
-     * Get the lastModifiedBy property: Who was the last to modify the peering.
+     * Get the lastModifiedBy property: Gets whether the provider or the customer last modified the peering.
      *
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
         return this.innerProperties() == null ? null : this.innerProperties().lastModifiedBy();
+    }
+
+    /**
+     * Set the lastModifiedBy property: Gets whether the provider or the customer last modified the peering.
+     *
+     * @param lastModifiedBy the lastModifiedBy value to set.
+     * @return the ExpressRouteCrossConnectionPeeringInner object itself.
+     */
+    public ExpressRouteCrossConnectionPeeringInner withLastModifiedBy(String lastModifiedBy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
+        }
+        this.innerProperties().withLastModifiedBy(lastModifiedBy);
+        return this;
     }
 
     /**
@@ -358,7 +371,7 @@ public final class ExpressRouteCrossConnectionPeeringInner extends SubResource {
     public ExpressRouteCrossConnectionPeeringInner withIpv6PeeringConfig(
         Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteCrossConnectionPeeringProperties();
+            this.innerProperties = new ExpressRouteCrossConnectionPeeringPropertiesInner();
         }
         this.innerProperties().withIpv6PeeringConfig(ipv6PeeringConfig);
         return this;

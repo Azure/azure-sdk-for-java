@@ -127,7 +127,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition Role definition.
+     * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -142,7 +142,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition Role definition.
+     * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -157,7 +157,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition Role definition.
+     * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -171,7 +171,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition Role definition.
+     * @param roleDefinition The values for the role definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -212,6 +212,18 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * Get all role definitions that are applicable at scope and above.
      *
      * @param scope The scope of the role definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RoleDefinitionInner> list(String scope);
+
+    /**
+     * Get all role definitions that are applicable at scope and above.
+     *
+     * @param scope The scope of the role definition.
      * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
      *     well.
      * @param context The context to associate with this operation.
@@ -224,21 +236,9 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
     PagedIterable<RoleDefinitionInner> list(String scope, String filter, Context context);
 
     /**
-     * Get all role definitions that are applicable at scope and above.
-     *
-     * @param scope The scope of the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleDefinitionInner> list(String scope);
-
-    /**
      * Gets a role definition by ID.
      *
-     * @param roleId The fully qualified role definition ID. Use the format,
+     * @param roleDefinitionId The fully qualified role definition ID. Use the format,
      *     /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for subscription
      *     level role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant
      *     level role definitions.
@@ -248,12 +248,12 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @return a role definition by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RoleDefinitionInner>> getByIdWithResponseAsync(String roleId);
+    Mono<Response<RoleDefinitionInner>> getByIdWithResponseAsync(String roleDefinitionId);
 
     /**
      * Gets a role definition by ID.
      *
-     * @param roleId The fully qualified role definition ID. Use the format,
+     * @param roleDefinitionId The fully qualified role definition ID. Use the format,
      *     /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for subscription
      *     level role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant
      *     level role definitions.
@@ -263,12 +263,12 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @return a role definition by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RoleDefinitionInner> getByIdAsync(String roleId);
+    Mono<RoleDefinitionInner> getByIdAsync(String roleDefinitionId);
 
     /**
      * Gets a role definition by ID.
      *
-     * @param roleId The fully qualified role definition ID. Use the format,
+     * @param roleDefinitionId The fully qualified role definition ID. Use the format,
      *     /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for subscription
      *     level role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant
      *     level role definitions.
@@ -278,12 +278,12 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @return a role definition by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleDefinitionInner getById(String roleId);
+    RoleDefinitionInner getById(String roleDefinitionId);
 
     /**
      * Gets a role definition by ID.
      *
-     * @param roleId The fully qualified role definition ID. Use the format,
+     * @param roleDefinitionId The fully qualified role definition ID. Use the format,
      *     /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for subscription
      *     level role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant
      *     level role definitions.
@@ -294,5 +294,5 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * @return a role definition by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoleDefinitionInner> getByIdWithResponse(String roleId, Context context);
+    Response<RoleDefinitionInner> getByIdWithResponse(String roleDefinitionId, Context context);
 }

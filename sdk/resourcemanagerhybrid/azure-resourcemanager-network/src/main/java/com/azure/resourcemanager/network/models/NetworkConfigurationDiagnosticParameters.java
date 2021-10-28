@@ -24,7 +24,7 @@ public final class NetworkConfigurationDiagnosticParameters {
     private String targetResourceId;
 
     /*
-     * Verbosity level.
+     * Verbosity level. Accepted values are 'Normal', 'Minimum', 'Full'.
      */
     @JsonProperty(value = "verbosityLevel")
     private VerbosityLevel verbosityLevel;
@@ -58,7 +58,7 @@ public final class NetworkConfigurationDiagnosticParameters {
     }
 
     /**
-     * Get the verbosityLevel property: Verbosity level.
+     * Get the verbosityLevel property: Verbosity level. Accepted values are 'Normal', 'Minimum', 'Full'.
      *
      * @return the verbosityLevel value.
      */
@@ -67,7 +67,7 @@ public final class NetworkConfigurationDiagnosticParameters {
     }
 
     /**
-     * Set the verbosityLevel property: Verbosity level.
+     * Set the verbosityLevel property: Verbosity level. Accepted values are 'Normal', 'Minimum', 'Full'.
      *
      * @param verbosityLevel the verbosityLevel value to set.
      * @return the NetworkConfigurationDiagnosticParameters object itself.

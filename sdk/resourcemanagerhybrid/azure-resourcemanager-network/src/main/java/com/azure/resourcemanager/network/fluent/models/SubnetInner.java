@@ -8,12 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Delegation;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResourceNavigationLink;
 import com.azure.resourcemanager.network.models.ServiceAssociationLink;
 import com.azure.resourcemanager.network.models.ServiceEndpointPropertiesFormat;
-import com.azure.resourcemanager.network.models.VirtualNetworkPrivateEndpointNetworkPolicies;
-import com.azure.resourcemanager.network.models.VirtualNetworkPrivateLinkServiceNetworkPolicies;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -39,14 +36,8 @@ public final class SubnetInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * Resource type.
-     */
-    @JsonProperty(value = "type")
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of the subnet.
@@ -89,22 +80,13 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Get the type property: Resource type.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: Resource type.
-     *
-     * @param type the type value to set.
+     * @param etag the etag value to set.
      * @return the SubnetInner object itself.
      */
-    public SubnetInner withType(String type) {
-        this.type = type;
+    public SubnetInner withEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 
@@ -162,7 +144,7 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Get the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
+     * Get the networkSecurityGroup property: The reference of the NetworkSecurityGroup resource.
      *
      * @return the networkSecurityGroup value.
      */
@@ -171,7 +153,7 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Set the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
+     * Set the networkSecurityGroup property: The reference of the NetworkSecurityGroup resource.
      *
      * @param networkSecurityGroup the networkSecurityGroup value to set.
      * @return the SubnetInner object itself.
@@ -185,7 +167,7 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Get the routeTable property: The reference to the RouteTable resource.
+     * Get the routeTable property: The reference of the RouteTable resource.
      *
      * @return the routeTable value.
      */
@@ -194,7 +176,7 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Set the routeTable property: The reference to the RouteTable resource.
+     * Set the routeTable property: The reference of the RouteTable resource.
      *
      * @param routeTable the routeTable value to set.
      * @return the SubnetInner object itself.
@@ -204,29 +186,6 @@ public final class SubnetInner extends SubResource {
             this.innerProperties = new SubnetPropertiesFormatInner();
         }
         this.innerProperties().withRouteTable(routeTable);
-        return this;
-    }
-
-    /**
-     * Get the natGateway property: Nat gateway associated with this subnet.
-     *
-     * @return the natGateway value.
-     */
-    public SubResource natGateway() {
-        return this.innerProperties() == null ? null : this.innerProperties().natGateway();
-    }
-
-    /**
-     * Set the natGateway property: Nat gateway associated with this subnet.
-     *
-     * @param natGateway the natGateway value to set.
-     * @return the SubnetInner object itself.
-     */
-    public SubnetInner withNatGateway(SubResource natGateway) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SubnetPropertiesFormatInner();
-        }
-        this.innerProperties().withNatGateway(natGateway);
         return this;
     }
 
@@ -277,16 +236,16 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Get the privateEndpoints property: An array of references to private endpoints.
+     * Get the interfaceEndpoints property: An array of references to interface endpoints.
      *
-     * @return the privateEndpoints value.
+     * @return the interfaceEndpoints value.
      */
-    public List<PrivateEndpointInner> privateEndpoints() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpoints();
+    public List<InterfaceEndpointInner> interfaceEndpoints() {
+        return this.innerProperties() == null ? null : this.innerProperties().interfaceEndpoints();
     }
 
     /**
-     * Get the ipConfigurations property: An array of references to the network interface IP configurations using
+     * Get the ipConfigurations property: Gets an array of references to the network interface IP configurations using
      * subnet.
      *
      * @return the ipConfigurations value.
@@ -305,30 +264,7 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Get the ipAllocations property: Array of IpAllocation which reference this subnet.
-     *
-     * @return the ipAllocations value.
-     */
-    public List<SubResource> ipAllocations() {
-        return this.innerProperties() == null ? null : this.innerProperties().ipAllocations();
-    }
-
-    /**
-     * Set the ipAllocations property: Array of IpAllocation which reference this subnet.
-     *
-     * @param ipAllocations the ipAllocations value to set.
-     * @return the SubnetInner object itself.
-     */
-    public SubnetInner withIpAllocations(List<SubResource> ipAllocations) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SubnetPropertiesFormatInner();
-        }
-        this.innerProperties().withIpAllocations(ipAllocations);
-        return this;
-    }
-
-    /**
-     * Get the resourceNavigationLinks property: An array of references to the external resources using subnet.
+     * Get the resourceNavigationLinks property: Gets an array of references to the external resources using subnet.
      *
      * @return the resourceNavigationLinks value.
      */
@@ -337,7 +273,21 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Get the serviceAssociationLinks property: An array of references to services injecting into this subnet.
+     * Set the resourceNavigationLinks property: Gets an array of references to the external resources using subnet.
+     *
+     * @param resourceNavigationLinks the resourceNavigationLinks value to set.
+     * @return the SubnetInner object itself.
+     */
+    public SubnetInner withResourceNavigationLinks(List<ResourceNavigationLink> resourceNavigationLinks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withResourceNavigationLinks(resourceNavigationLinks);
+        return this;
+    }
+
+    /**
+     * Get the serviceAssociationLinks property: Gets an array of references to services injecting into this subnet.
      *
      * @return the serviceAssociationLinks value.
      */
@@ -346,7 +296,21 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Get the delegations property: An array of references to the delegations on the subnet.
+     * Set the serviceAssociationLinks property: Gets an array of references to services injecting into this subnet.
+     *
+     * @param serviceAssociationLinks the serviceAssociationLinks value to set.
+     * @return the SubnetInner object itself.
+     */
+    public SubnetInner withServiceAssociationLinks(List<ServiceAssociationLink> serviceAssociationLinks) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withServiceAssociationLinks(serviceAssociationLinks);
+        return this;
+    }
+
+    /**
+     * Get the delegations property: Gets an array of references to the delegations on the subnet.
      *
      * @return the delegations value.
      */
@@ -355,7 +319,7 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Set the delegations property: An array of references to the delegations on the subnet.
+     * Set the delegations property: Gets an array of references to the delegations on the subnet.
      *
      * @param delegations the delegations value to set.
      * @return the SubnetInner object itself.
@@ -379,89 +343,25 @@ public final class SubnetInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the subnet resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the privateEndpointNetworkPolicies property: Enable or Disable apply network policies on private end point in
-     * the subnet.
+     * Set the provisioningState property: The provisioning state of the resource.
      *
-     * @return the privateEndpointNetworkPolicies value.
-     */
-    public VirtualNetworkPrivateEndpointNetworkPolicies privateEndpointNetworkPolicies() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointNetworkPolicies();
-    }
-
-    /**
-     * Set the privateEndpointNetworkPolicies property: Enable or Disable apply network policies on private end point in
-     * the subnet.
-     *
-     * @param privateEndpointNetworkPolicies the privateEndpointNetworkPolicies value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the SubnetInner object itself.
      */
-    public SubnetInner withPrivateEndpointNetworkPolicies(
-        VirtualNetworkPrivateEndpointNetworkPolicies privateEndpointNetworkPolicies) {
+    public SubnetInner withProvisioningState(String provisioningState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SubnetPropertiesFormatInner();
         }
-        this.innerProperties().withPrivateEndpointNetworkPolicies(privateEndpointNetworkPolicies);
-        return this;
-    }
-
-    /**
-     * Get the privateLinkServiceNetworkPolicies property: Enable or Disable apply network policies on private link
-     * service in the subnet.
-     *
-     * @return the privateLinkServiceNetworkPolicies value.
-     */
-    public VirtualNetworkPrivateLinkServiceNetworkPolicies privateLinkServiceNetworkPolicies() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceNetworkPolicies();
-    }
-
-    /**
-     * Set the privateLinkServiceNetworkPolicies property: Enable or Disable apply network policies on private link
-     * service in the subnet.
-     *
-     * @param privateLinkServiceNetworkPolicies the privateLinkServiceNetworkPolicies value to set.
-     * @return the SubnetInner object itself.
-     */
-    public SubnetInner withPrivateLinkServiceNetworkPolicies(
-        VirtualNetworkPrivateLinkServiceNetworkPolicies privateLinkServiceNetworkPolicies) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SubnetPropertiesFormatInner();
-        }
-        this.innerProperties().withPrivateLinkServiceNetworkPolicies(privateLinkServiceNetworkPolicies);
-        return this;
-    }
-
-    /**
-     * Get the applicationGatewayIpConfigurations property: Application gateway IP configurations of virtual network
-     * resource.
-     *
-     * @return the applicationGatewayIpConfigurations value.
-     */
-    public List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations() {
-        return this.innerProperties() == null ? null : this.innerProperties().applicationGatewayIpConfigurations();
-    }
-
-    /**
-     * Set the applicationGatewayIpConfigurations property: Application gateway IP configurations of virtual network
-     * resource.
-     *
-     * @param applicationGatewayIpConfigurations the applicationGatewayIpConfigurations value to set.
-     * @return the SubnetInner object itself.
-     */
-    public SubnetInner withApplicationGatewayIpConfigurations(
-        List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SubnetPropertiesFormatInner();
-        }
-        this.innerProperties().withApplicationGatewayIpConfigurations(applicationGatewayIpConfigurations);
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.ProvisioningStateDR;
@@ -14,43 +13,26 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Single item in List or Get Alias(Disaster Recovery configuration) operation. */
-@JsonFlatten
 @Fluent
-public class ArmDisasterRecoveryInner extends ProxyResource {
+public final class ArmDisasterRecoveryInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmDisasterRecoveryInner.class);
 
     /*
-     * Provisioning state of the Alias(Disaster Recovery configuration) -
-     * possible values 'Accepted' or 'Succeeded' or 'Failed'
+     * Properties required to the Create Or Update Alias(Disaster Recovery
+     * configurations)
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStateDR provisioningState;
+    @JsonProperty(value = "properties")
+    private ArmDisasterRecoveryProperties innerProperties;
 
-    /*
-     * ARM Id of the Primary/Secondary eventhub namespace name, which is part
-     * of GEO DR pairing
+    /**
+     * Get the innerProperties property: Properties required to the Create Or Update Alias(Disaster Recovery
+     * configurations).
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.partnerNamespace")
-    private String partnerNamespace;
-
-    /*
-     * Alternate name specified when alias and namespace names are same.
-     */
-    @JsonProperty(value = "properties.alternateName")
-    private String alternateName;
-
-    /*
-     * role of namespace in GEO DR - possible values 'Primary' or
-     * 'PrimaryNotReplicating' or 'Secondary'
-     */
-    @JsonProperty(value = "properties.role", access = JsonProperty.Access.WRITE_ONLY)
-    private RoleDisasterRecovery role;
-
-    /*
-     * Number of entities pending to be replicated.
-     */
-    @JsonProperty(value = "properties.pendingReplicationOperationsCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Long pendingReplicationOperationsCount;
+    private ArmDisasterRecoveryProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the Alias(Disaster Recovery configuration) - possible
@@ -59,7 +41,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public ProvisioningStateDR provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -69,7 +51,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
      * @return the partnerNamespace value.
      */
     public String partnerNamespace() {
-        return this.partnerNamespace;
+        return this.innerProperties() == null ? null : this.innerProperties().partnerNamespace();
     }
 
     /**
@@ -80,7 +62,10 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
      * @return the ArmDisasterRecoveryInner object itself.
      */
     public ArmDisasterRecoveryInner withPartnerNamespace(String partnerNamespace) {
-        this.partnerNamespace = partnerNamespace;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArmDisasterRecoveryProperties();
+        }
+        this.innerProperties().withPartnerNamespace(partnerNamespace);
         return this;
     }
 
@@ -90,7 +75,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
      * @return the alternateName value.
      */
     public String alternateName() {
-        return this.alternateName;
+        return this.innerProperties() == null ? null : this.innerProperties().alternateName();
     }
 
     /**
@@ -100,7 +85,10 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
      * @return the ArmDisasterRecoveryInner object itself.
      */
     public ArmDisasterRecoveryInner withAlternateName(String alternateName) {
-        this.alternateName = alternateName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ArmDisasterRecoveryProperties();
+        }
+        this.innerProperties().withAlternateName(alternateName);
         return this;
     }
 
@@ -111,7 +99,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
      * @return the role value.
      */
     public RoleDisasterRecovery role() {
-        return this.role;
+        return this.innerProperties() == null ? null : this.innerProperties().role();
     }
 
     /**
@@ -120,7 +108,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
      * @return the pendingReplicationOperationsCount value.
      */
     public Long pendingReplicationOperationsCount() {
-        return this.pendingReplicationOperationsCount;
+        return this.innerProperties() == null ? null : this.innerProperties().pendingReplicationOperationsCount();
     }
 
     /**
@@ -129,5 +117,8 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -23,12 +23,6 @@ public final class CsmOperationDescriptionInner {
     private String name;
 
     /*
-     * The isDataAction property.
-     */
-    @JsonProperty(value = "isDataAction")
-    private Boolean isDataAction;
-
-    /*
      * Meta data about operation used for display in portal.
      */
     @JsonProperty(value = "display")
@@ -63,26 +57,6 @@ public final class CsmOperationDescriptionInner {
      */
     public CsmOperationDescriptionInner withName(String name) {
         this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the isDataAction property: The isDataAction property.
-     *
-     * @return the isDataAction value.
-     */
-    public Boolean isDataAction() {
-        return this.isDataAction;
-    }
-
-    /**
-     * Set the isDataAction property: The isDataAction property.
-     *
-     * @param isDataAction the isDataAction value to set.
-     * @return the CsmOperationDescriptionInner object itself.
-     */
-    public CsmOperationDescriptionInner withIsDataAction(Boolean isDataAction) {
-        this.isDataAction = isDataAction;
         return this;
     }
 

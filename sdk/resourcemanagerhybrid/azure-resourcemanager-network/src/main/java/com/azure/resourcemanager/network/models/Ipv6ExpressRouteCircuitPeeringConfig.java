@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.RouteFilterInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -34,13 +34,13 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     private ExpressRouteCircuitPeeringConfig microsoftPeeringConfig;
 
     /*
-     * The reference to the RouteFilter resource.
+     * The reference of the RouteFilter resource.
      */
     @JsonProperty(value = "routeFilter")
-    private SubResource routeFilter;
+    private RouteFilterInner routeFilter;
 
     /*
-     * The state of peering.
+     * The state of peering. Possible values are: 'Disabled' and 'Enabled'
      */
     @JsonProperty(value = "state")
     private ExpressRouteCircuitPeeringState state;
@@ -107,27 +107,27 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Get the routeFilter property: The reference to the RouteFilter resource.
+     * Get the routeFilter property: The reference of the RouteFilter resource.
      *
      * @return the routeFilter value.
      */
-    public SubResource routeFilter() {
+    public RouteFilterInner routeFilter() {
         return this.routeFilter;
     }
 
     /**
-     * Set the routeFilter property: The reference to the RouteFilter resource.
+     * Set the routeFilter property: The reference of the RouteFilter resource.
      *
      * @param routeFilter the routeFilter value to set.
      * @return the Ipv6ExpressRouteCircuitPeeringConfig object itself.
      */
-    public Ipv6ExpressRouteCircuitPeeringConfig withRouteFilter(SubResource routeFilter) {
+    public Ipv6ExpressRouteCircuitPeeringConfig withRouteFilter(RouteFilterInner routeFilter) {
         this.routeFilter = routeFilter;
         return this;
     }
 
     /**
-     * Get the state property: The state of peering.
+     * Get the state property: The state of peering. Possible values are: 'Disabled' and 'Enabled'.
      *
      * @return the state value.
      */
@@ -136,7 +136,7 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Set the state property: The state of peering.
+     * Set the state property: The state of peering. Possible values are: 'Disabled' and 'Enabled'.
      *
      * @param state the state value to set.
      * @return the Ipv6ExpressRouteCircuitPeeringConfig object itself.
@@ -154,6 +154,9 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     public void validate() {
         if (microsoftPeeringConfig() != null) {
             microsoftPeeringConfig().validate();
+        }
+        if (routeFilter() != null) {
+            routeFilter().validate();
         }
     }
 }

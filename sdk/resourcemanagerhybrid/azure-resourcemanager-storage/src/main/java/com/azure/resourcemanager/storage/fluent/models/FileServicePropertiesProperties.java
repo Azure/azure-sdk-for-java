@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
-import com.azure.resourcemanager.storage.models.ProtocolSettings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,12 +30,6 @@ public final class FileServicePropertiesProperties {
      */
     @JsonProperty(value = "shareDeleteRetentionPolicy")
     private DeleteRetentionPolicy shareDeleteRetentionPolicy;
-
-    /*
-     * Protocol settings for file service
-     */
-    @JsonProperty(value = "protocolSettings")
-    private ProtocolSettings protocolSettings;
 
     /**
      * Get the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
@@ -84,26 +77,6 @@ public final class FileServicePropertiesProperties {
     }
 
     /**
-     * Get the protocolSettings property: Protocol settings for file service.
-     *
-     * @return the protocolSettings value.
-     */
-    public ProtocolSettings protocolSettings() {
-        return this.protocolSettings;
-    }
-
-    /**
-     * Set the protocolSettings property: Protocol settings for file service.
-     *
-     * @param protocolSettings the protocolSettings value to set.
-     * @return the FileServicePropertiesProperties object itself.
-     */
-    public FileServicePropertiesProperties withProtocolSettings(ProtocolSettings protocolSettings) {
-        this.protocolSettings = protocolSettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -114,9 +87,6 @@ public final class FileServicePropertiesProperties {
         }
         if (shareDeleteRetentionPolicy() != null) {
             shareDeleteRetentionPolicy().validate();
-        }
-        if (protocolSettings() != null) {
-            protocolSettings().validate();
         }
     }
 }

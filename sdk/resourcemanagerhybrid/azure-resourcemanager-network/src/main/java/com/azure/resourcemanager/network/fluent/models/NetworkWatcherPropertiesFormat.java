@@ -16,13 +16,13 @@ public final class NetworkWatcherPropertiesFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkWatcherPropertiesFormat.class);
 
     /*
-     * The provisioning state of the network watcher resource.
+     * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
-     * Get the provisioningState property: The provisioning state of the network watcher resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */

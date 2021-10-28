@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The publishing profile of a gallery image Version. */
+/** The publishing profile of a gallery Image Version. */
 @Fluent
 public final class GalleryImageVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionPublishingProfile.class);
@@ -47,13 +47,6 @@ public final class GalleryImageVersionPublishingProfile extends GalleryArtifactP
     @Override
     public GalleryImageVersionPublishingProfile withStorageAccountType(StorageAccountType storageAccountType) {
         super.withStorageAccountType(storageAccountType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public GalleryImageVersionPublishingProfile withReplicationMode(ReplicationMode replicationMode) {
-        super.withReplicationMode(replicationMode);
         return this;
     }
 

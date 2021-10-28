@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -48,22 +47,11 @@ public final class ApplicationGatewayPathRulePropertiesFormat {
     private SubResource rewriteRuleSet;
 
     /*
-     * Load Distribution Policy resource of URL path map path rule.
+     * Path rule of URL path map resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "loadDistributionPolicy")
-    private SubResource loadDistributionPolicy;
-
-    /*
-     * The provisioning state of the path rule resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Reference to the FirewallPolicy resource.
-     */
-    @JsonProperty(value = "firewallPolicy")
-    private SubResource firewallPolicy;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the paths property: Path rules of URL path map.
@@ -166,51 +154,24 @@ public final class ApplicationGatewayPathRulePropertiesFormat {
     }
 
     /**
-     * Get the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
-     *
-     * @return the loadDistributionPolicy value.
-     */
-    public SubResource loadDistributionPolicy() {
-        return this.loadDistributionPolicy;
-    }
-
-    /**
-     * Set the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
-     *
-     * @param loadDistributionPolicy the loadDistributionPolicy value to set.
-     * @return the ApplicationGatewayPathRulePropertiesFormat object itself.
-     */
-    public ApplicationGatewayPathRulePropertiesFormat withLoadDistributionPolicy(SubResource loadDistributionPolicy) {
-        this.loadDistributionPolicy = loadDistributionPolicy;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the path rule resource.
+     * Get the provisioningState property: Path rule of URL path map resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Get the firewallPolicy property: Reference to the FirewallPolicy resource.
+     * Set the provisioningState property: Path rule of URL path map resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      *
-     * @return the firewallPolicy value.
-     */
-    public SubResource firewallPolicy() {
-        return this.firewallPolicy;
-    }
-
-    /**
-     * Set the firewallPolicy property: Reference to the FirewallPolicy resource.
-     *
-     * @param firewallPolicy the firewallPolicy value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the ApplicationGatewayPathRulePropertiesFormat object itself.
      */
-    public ApplicationGatewayPathRulePropertiesFormat withFirewallPolicy(SubResource firewallPolicy) {
-        this.firewallPolicy = firewallPolicy;
+    public ApplicationGatewayPathRulePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
         return this;
     }
 

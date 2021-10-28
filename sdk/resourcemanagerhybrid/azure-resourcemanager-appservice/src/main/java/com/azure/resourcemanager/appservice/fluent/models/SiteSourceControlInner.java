@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.models.GitHubActionConfiguration;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -112,29 +111,6 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isGitHubAction property: &lt;code&gt;true&lt;/code&gt; if this is deployed via GitHub action.
-     *
-     * @return the isGitHubAction value.
-     */
-    public Boolean isGitHubAction() {
-        return this.innerProperties() == null ? null : this.innerProperties().isGitHubAction();
-    }
-
-    /**
-     * Set the isGitHubAction property: &lt;code&gt;true&lt;/code&gt; if this is deployed via GitHub action.
-     *
-     * @param isGitHubAction the isGitHubAction value to set.
-     * @return the SiteSourceControlInner object itself.
-     */
-    public SiteSourceControlInner withIsGitHubAction(Boolean isGitHubAction) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteSourceControlProperties();
-        }
-        this.innerProperties().withIsGitHubAction(isGitHubAction);
-        return this;
-    }
-
-    /**
      * Get the deploymentRollbackEnabled property: &lt;code&gt;true&lt;/code&gt; to enable deployment rollback;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
@@ -181,29 +157,6 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
             this.innerProperties = new SiteSourceControlProperties();
         }
         this.innerProperties().withIsMercurial(isMercurial);
-        return this;
-    }
-
-    /**
-     * Get the gitHubActionConfiguration property: If GitHub Action is selected, than the associated configuration.
-     *
-     * @return the gitHubActionConfiguration value.
-     */
-    public GitHubActionConfiguration gitHubActionConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().gitHubActionConfiguration();
-    }
-
-    /**
-     * Set the gitHubActionConfiguration property: If GitHub Action is selected, than the associated configuration.
-     *
-     * @param gitHubActionConfiguration the gitHubActionConfiguration value to set.
-     * @return the SiteSourceControlInner object itself.
-     */
-    public SiteSourceControlInner withGitHubActionConfiguration(GitHubActionConfiguration gitHubActionConfiguration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SiteSourceControlProperties();
-        }
-        this.innerProperties().withGitHubActionConfiguration(gitHubActionConfiguration);
         return this;
     }
 

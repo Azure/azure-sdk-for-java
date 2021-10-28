@@ -19,7 +19,8 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     private final ClientLogger logger = new ClientLogger(ApplicationGatewayRedirectConfigurationPropertiesFormat.class);
 
     /*
-     * HTTP redirection type.
+     * Supported http redirection types - Permanent, Temporary, Found,
+     * SeeOther.
      */
     @JsonProperty(value = "redirectType")
     private ApplicationGatewayRedirectType redirectType;
@@ -67,7 +68,7 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     private List<SubResource> pathRules;
 
     /**
-     * Get the redirectType property: HTTP redirection type.
+     * Get the redirectType property: Supported http redirection types - Permanent, Temporary, Found, SeeOther.
      *
      * @return the redirectType value.
      */
@@ -76,7 +77,7 @@ public final class ApplicationGatewayRedirectConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the redirectType property: HTTP redirection type.
+     * Set the redirectType property: Supported http redirection types - Permanent, Temporary, Found, SeeOther.
      *
      * @param redirectType the redirectType value to set.
      * @return the ApplicationGatewayRedirectConfigurationPropertiesFormat object itself.

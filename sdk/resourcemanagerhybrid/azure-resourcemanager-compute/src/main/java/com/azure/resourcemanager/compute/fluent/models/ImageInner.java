@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.models.ExtendedLocation;
 import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.ImageStorageProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,12 +28,6 @@ public final class ImageInner extends Resource {
     @JsonProperty(value = "properties")
     private ImageProperties innerProperties;
 
-    /*
-     * The extended location of the Image.
-     */
-    @JsonProperty(value = "extendedLocation")
-    private ExtendedLocation extendedLocation;
-
     /**
      * Get the innerProperties property: Describes the properties of an Image.
      *
@@ -42,26 +35,6 @@ public final class ImageInner extends Resource {
      */
     private ImageProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the extendedLocation property: The extended location of the Image.
-     *
-     * @return the extendedLocation value.
-     */
-    public ExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
-
-    /**
-     * Set the extendedLocation property: The extended location of the Image.
-     *
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the ImageInner object itself.
-     */
-    public ImageInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
-        return this;
     }
 
     /** {@inheritDoc} */
@@ -134,10 +107,7 @@ public final class ImageInner extends Resource {
     }
 
     /**
-     * Get the hyperVGeneration property: Specifies the HyperVGenerationType of the VirtualMachine created from the
-     * image. From API Version 2019-03-01 if the image source is a blob, then we need the user to specify the value, if
-     * the source is managed resource like disk or snapshot, we may require the user to specify the property if we
-     * cannot deduce it from the source managed resource.
+     * Get the hyperVGeneration property: Gets the HyperVGenerationType of the VirtualMachine created from the image.
      *
      * @return the hyperVGeneration value.
      */
@@ -146,10 +116,7 @@ public final class ImageInner extends Resource {
     }
 
     /**
-     * Set the hyperVGeneration property: Specifies the HyperVGenerationType of the VirtualMachine created from the
-     * image. From API Version 2019-03-01 if the image source is a blob, then we need the user to specify the value, if
-     * the source is managed resource like disk or snapshot, we may require the user to specify the property if we
-     * cannot deduce it from the source managed resource.
+     * Set the hyperVGeneration property: Gets the HyperVGenerationType of the VirtualMachine created from the image.
      *
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the ImageInner object itself.
@@ -170,9 +137,6 @@ public final class ImageInner extends Resource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
-        }
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
         }
     }
 }

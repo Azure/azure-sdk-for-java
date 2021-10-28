@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallRuleGroup;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -21,8 +20,8 @@ public final class ApplicationGatewayFirewallRuleSetPropertiesFormat {
     /*
      * The provisioning state of the web application firewall rule set.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /*
      * The type of the web application firewall rule set.
@@ -47,8 +46,19 @@ public final class ApplicationGatewayFirewallRuleSetPropertiesFormat {
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the web application firewall rule set.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayFirewallRuleSetPropertiesFormat object itself.
+     */
+    public ApplicationGatewayFirewallRuleSetPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

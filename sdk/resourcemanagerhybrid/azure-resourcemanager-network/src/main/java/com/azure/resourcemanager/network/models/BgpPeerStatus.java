@@ -15,49 +15,49 @@ public final class BgpPeerStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpPeerStatus.class);
 
     /*
-     * The virtual network gateway's local address.
+     * The virtual network gateway's local address
      */
     @JsonProperty(value = "localAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String localAddress;
 
     /*
-     * The remote BGP peer.
+     * The remote BGP peer
      */
     @JsonProperty(value = "neighbor", access = JsonProperty.Access.WRITE_ONLY)
     private String neighbor;
 
     /*
-     * The autonomous system number of the remote BGP peer.
+     * The autonomous system number of the remote BGP peer
      */
     @JsonProperty(value = "asn", access = JsonProperty.Access.WRITE_ONLY)
-    private Long asn;
+    private Integer asn;
 
     /*
-     * The BGP peer state.
+     * The BGP peer state
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private BgpPeerState state;
 
     /*
-     * For how long the peering has been up.
+     * For how long the peering has been up
      */
     @JsonProperty(value = "connectedDuration", access = JsonProperty.Access.WRITE_ONLY)
     private String connectedDuration;
 
     /*
-     * The number of routes learned from this peer.
+     * The number of routes learned from this peer
      */
     @JsonProperty(value = "routesReceived", access = JsonProperty.Access.WRITE_ONLY)
     private Long routesReceived;
 
     /*
-     * The number of BGP messages sent.
+     * The number of BGP messages sent
      */
     @JsonProperty(value = "messagesSent", access = JsonProperty.Access.WRITE_ONLY)
     private Long messagesSent;
 
     /*
-     * The number of BGP messages received.
+     * The number of BGP messages received
      */
     @JsonProperty(value = "messagesReceived", access = JsonProperty.Access.WRITE_ONLY)
     private Long messagesReceived;
@@ -85,7 +85,7 @@ public final class BgpPeerStatus {
      *
      * @return the asn value.
      */
-    public Long asn() {
+    public Integer asn() {
         return this.asn;
     }
 

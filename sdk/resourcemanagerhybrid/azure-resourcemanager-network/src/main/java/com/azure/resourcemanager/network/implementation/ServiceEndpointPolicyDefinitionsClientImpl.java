@@ -73,7 +73,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface ServiceEndpointPolicyDefinitionsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/serviceEndpointPolicies/{serviceEndpointPolicyName}/serviceEndpointPolicyDefinitions"
@@ -87,7 +87,6 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
             @PathParam("serviceEndpointPolicyDefinitionName") String serviceEndpointPolicyDefinitionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -193,8 +192,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -206,7 +204,6 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                             serviceEndpointPolicyDefinitionName,
                             apiVersion,
                             this.client.getSubscriptionId(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -257,8 +254,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -268,7 +264,6 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                 serviceEndpointPolicyDefinitionName,
                 apiVersion,
                 this.client.getSubscriptionId(),
-                accept,
                 context);
     }
 
@@ -482,7 +477,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -546,7 +541,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -681,7 +676,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
         } else {
             serviceEndpointPolicyDefinitions.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -757,7 +752,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
         } else {
             serviceEndpointPolicyDefinitions.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1059,7 +1054,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1121,7 +1116,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -13,7 +13,6 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -35,9 +34,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.SubnetsClient;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
-import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
 import com.azure.resourcemanager.network.models.SubnetListResult;
-import com.azure.resourcemanager.network.models.UnprepareNetworkPoliciesRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -69,7 +66,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface SubnetsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
@@ -82,7 +79,6 @@ public final class SubnetsClientImpl implements SubnetsClient {
             @PathParam("subnetName") String subnetName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -116,40 +112,6 @@ public final class SubnetsClientImpl implements SubnetsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") SubnetInner subnetParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/PrepareNetworkPolicies")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> prepareNetworkPolicies(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkName") String virtualNetworkName,
-            @PathParam("subnetName") String subnetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/UnprepareNetworkPolicies")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> unprepareNetworkPolicies(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualNetworkName") String virtualNetworkName,
-            @PathParam("subnetName") String subnetName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -216,8 +178,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -229,7 +190,6 @@ public final class SubnetsClientImpl implements SubnetsClient {
                             subnetName,
                             apiVersion,
                             this.client.getSubscriptionId(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -272,8 +232,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -283,7 +242,6 @@ public final class SubnetsClientImpl implements SubnetsClient {
                 subnetName,
                 apiVersion,
                 this.client.getSubscriptionId(),
-                accept,
                 context);
     }
 
@@ -473,7 +431,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -531,7 +489,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -678,7 +636,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -746,7 +704,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -946,694 +904,6 @@ public final class SubnetsClientImpl implements SubnetsClient {
     }
 
     /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> prepareNetworkPoliciesWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
-        }
-        if (subnetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (prepareNetworkPoliciesRequestParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter prepareNetworkPoliciesRequestParameters is required and cannot be null."));
-        } else {
-            prepareNetworkPoliciesRequestParameters.validate();
-        }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .prepareNetworkPolicies(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            subnetName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            prepareNetworkPoliciesRequestParameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> prepareNetworkPoliciesWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
-        }
-        if (subnetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (prepareNetworkPoliciesRequestParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter prepareNetworkPoliciesRequestParameters is required and cannot be null."));
-        } else {
-            prepareNetworkPoliciesRequestParameters.validate();
-        }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .prepareNetworkPolicies(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                subnetName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                prepareNetworkPoliciesRequestParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginPrepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            prepareNetworkPoliciesWithResponseAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginPrepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            prepareNetworkPoliciesWithResponseAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        return beginPrepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-        Context context) {
-        return beginPrepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> prepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        return beginPrepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> prepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-        Context context) {
-        return beginPrepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void prepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        prepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters)
-            .block();
-    }
-
-    /**
-     * Prepares a subnet by applying network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param prepareNetworkPoliciesRequestParameters Parameters supplied to prepare subnet by applying network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void prepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
-        Context context) {
-        prepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, prepareNetworkPoliciesRequestParameters, context)
-            .block();
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> unprepareNetworkPoliciesWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
-        }
-        if (subnetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (unprepareNetworkPoliciesRequestParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter unprepareNetworkPoliciesRequestParameters is required and cannot be null."));
-        } else {
-            unprepareNetworkPoliciesRequestParameters.validate();
-        }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .unprepareNetworkPolicies(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            virtualNetworkName,
-                            subnetName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            unprepareNetworkPoliciesRequestParameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> unprepareNetworkPoliciesWithResponseAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (virtualNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
-        }
-        if (subnetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (unprepareNetworkPoliciesRequestParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter unprepareNetworkPoliciesRequestParameters is required and cannot be null."));
-        } else {
-            unprepareNetworkPoliciesRequestParameters.validate();
-        }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .unprepareNetworkPolicies(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                virtualNetworkName,
-                subnetName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                unprepareNetworkPoliciesRequestParameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginUnprepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            unprepareNetworkPoliciesWithResponseAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginUnprepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            unprepareNetworkPoliciesWithResponseAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        return beginUnprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
-        Context context) {
-        return beginUnprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> unprepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        return beginUnprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> unprepareNetworkPoliciesAsync(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
-        Context context) {
-        return beginUnprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void unprepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        unprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters)
-            .block();
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param unprepareNetworkPoliciesRequestParameters Parameters supplied to unprepare subnet to remove network intent
-     *     policies.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void unprepareNetworkPolicies(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String subnetName,
-        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
-        Context context) {
-        unprepareNetworkPoliciesAsync(
-                resourceGroupName, virtualNetworkName, subnetName, unprepareNetworkPoliciesRequestParameters, context)
-            .block();
-    }
-
-    /**
      * Gets all subnets in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1665,7 +935,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1725,7 +995,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

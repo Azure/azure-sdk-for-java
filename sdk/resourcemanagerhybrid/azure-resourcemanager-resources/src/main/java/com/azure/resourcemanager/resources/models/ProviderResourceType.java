@@ -30,12 +30,6 @@ public final class ProviderResourceType {
     private List<String> locations;
 
     /*
-     * The location mappings that are supported by this resource type.
-     */
-    @JsonProperty(value = "locationMappings")
-    private List<ProviderExtendedLocation> locationMappings;
-
-    /*
      * The aliases that are supported by this resource type.
      */
     @JsonProperty(value = "aliases")
@@ -48,16 +42,10 @@ public final class ProviderResourceType {
     private List<String> apiVersions;
 
     /*
-     * The default API version.
+     * The zoneMappings property.
      */
-    @JsonProperty(value = "defaultApiVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultApiVersion;
-
-    /*
-     * The API profiles for the resource provider.
-     */
-    @JsonProperty(value = "apiProfiles", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ApiProfile> apiProfiles;
+    @JsonProperty(value = "zoneMappings")
+    private List<ZoneMapping> zoneMappings;
 
     /*
      * The additional capabilities offered by this resource type.
@@ -113,26 +101,6 @@ public final class ProviderResourceType {
     }
 
     /**
-     * Get the locationMappings property: The location mappings that are supported by this resource type.
-     *
-     * @return the locationMappings value.
-     */
-    public List<ProviderExtendedLocation> locationMappings() {
-        return this.locationMappings;
-    }
-
-    /**
-     * Set the locationMappings property: The location mappings that are supported by this resource type.
-     *
-     * @param locationMappings the locationMappings value to set.
-     * @return the ProviderResourceType object itself.
-     */
-    public ProviderResourceType withLocationMappings(List<ProviderExtendedLocation> locationMappings) {
-        this.locationMappings = locationMappings;
-        return this;
-    }
-
-    /**
      * Get the aliases property: The aliases that are supported by this resource type.
      *
      * @return the aliases value.
@@ -173,21 +141,23 @@ public final class ProviderResourceType {
     }
 
     /**
-     * Get the defaultApiVersion property: The default API version.
+     * Get the zoneMappings property: The zoneMappings property.
      *
-     * @return the defaultApiVersion value.
+     * @return the zoneMappings value.
      */
-    public String defaultApiVersion() {
-        return this.defaultApiVersion;
+    public List<ZoneMapping> zoneMappings() {
+        return this.zoneMappings;
     }
 
     /**
-     * Get the apiProfiles property: The API profiles for the resource provider.
+     * Set the zoneMappings property: The zoneMappings property.
      *
-     * @return the apiProfiles value.
+     * @param zoneMappings the zoneMappings value to set.
+     * @return the ProviderResourceType object itself.
      */
-    public List<ApiProfile> apiProfiles() {
-        return this.apiProfiles;
+    public ProviderResourceType withZoneMappings(List<ZoneMapping> zoneMappings) {
+        this.zoneMappings = zoneMappings;
+        return this;
     }
 
     /**
@@ -236,14 +206,11 @@ public final class ProviderResourceType {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (locationMappings() != null) {
-            locationMappings().forEach(e -> e.validate());
-        }
         if (aliases() != null) {
             aliases().forEach(e -> e.validate());
         }
-        if (apiProfiles() != null) {
-            apiProfiles().forEach(e -> e.validate());
+        if (zoneMappings() != null) {
+            zoneMappings().forEach(e -> e.validate());
         }
     }
 }

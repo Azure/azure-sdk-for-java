@@ -23,9 +23,8 @@ public final class InboundNatPool extends SubResource {
     private InboundNatPoolPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of inbound NAT
-     * pools used by the load balancer. This name can be used to access the
-     * resource.
+     * The name of the resource that is unique within a resource group. This
+     * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -33,14 +32,8 @@ public final class InboundNatPool extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * Type of the resource.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of load balancer inbound nat pool.
@@ -52,8 +45,8 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within the set of inbound NAT pools used by the
-     * load balancer. This name can be used to access the resource.
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @return the name value.
      */
@@ -62,8 +55,8 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within the set of inbound NAT pools used by the
-     * load balancer. This name can be used to access the resource.
+     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @param name the name value to set.
      * @return the InboundNatPool object itself.
@@ -83,12 +76,14 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the type property: Type of the resource.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
+     * @param etag the etag value to set.
+     * @return the InboundNatPool object itself.
      */
-    public String type() {
-        return this.type;
+    public InboundNatPool withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -122,7 +117,7 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the protocol property: The reference to the transport protocol used by the inbound NAT pool.
+     * Get the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
      *
      * @return the protocol value.
      */
@@ -131,7 +126,7 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the protocol property: The reference to the transport protocol used by the inbound NAT pool.
+     * Set the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
      *
      * @param protocol the protocol value to set.
      * @return the InboundNatPool object itself.
@@ -297,12 +292,28 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the inbound NAT pool resource.
+     * Get the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the InboundNatPool object itself.
+     */
+    public InboundNatPool withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InboundNatPoolPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

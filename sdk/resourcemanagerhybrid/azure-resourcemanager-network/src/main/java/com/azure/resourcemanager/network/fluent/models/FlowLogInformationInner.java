@@ -25,7 +25,7 @@ public final class FlowLogInformationInner {
     private String targetResourceId;
 
     /*
-     * Properties of the flow log.
+     * Parameters that define the configuration of flow log.
      */
     @JsonProperty(value = "properties", required = true)
     private FlowLogProperties innerProperties = new FlowLogProperties();
@@ -59,7 +59,7 @@ public final class FlowLogInformationInner {
     }
 
     /**
-     * Get the innerProperties property: Properties of the flow log.
+     * Get the innerProperties property: Parameters that define the configuration of flow log.
      *
      * @return the innerProperties value.
      */

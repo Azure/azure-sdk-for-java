@@ -18,26 +18,27 @@ public final class AzureFirewallApplicationRuleCollection extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallApplicationRuleCollection.class);
 
     /*
-     * Properties of the azure firewall application rule collection.
+     * Properties of the application rule collection.
      */
     @JsonProperty(value = "properties")
     private AzureFirewallApplicationRuleCollectionPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the Azure firewall. This
+     * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the azure firewall application rule collection.
+     * Get the innerProperties property: Properties of the application rule collection.
      *
      * @return the innerProperties value.
      */
@@ -46,8 +47,8 @@ public final class AzureFirewallApplicationRuleCollection extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within the Azure firewall. This name can be used
-     * to access the resource.
+     * Get the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @return the name value.
      */
@@ -56,8 +57,8 @@ public final class AzureFirewallApplicationRuleCollection extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within the Azure firewall. This name can be used
-     * to access the resource.
+     * Set the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @param name the name value to set.
      * @return the AzureFirewallApplicationRuleCollection object itself.
@@ -68,7 +69,7 @@ public final class AzureFirewallApplicationRuleCollection extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -153,12 +154,26 @@ public final class AzureFirewallApplicationRuleCollection extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the application rule collection resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the AzureFirewallApplicationRuleCollection object itself.
+     */
+    public AzureFirewallApplicationRuleCollection withProvisioningState(ProvisioningState provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AzureFirewallApplicationRuleCollectionPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

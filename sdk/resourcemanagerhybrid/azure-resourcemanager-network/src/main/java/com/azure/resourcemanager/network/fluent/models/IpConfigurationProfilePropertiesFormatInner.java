@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,20 +15,20 @@ public final class IpConfigurationProfilePropertiesFormatInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationProfilePropertiesFormatInner.class);
 
     /*
-     * The reference to the subnet resource to create a container network
+     * The reference of the subnet resource to create a container network
      * interface ip configuration.
      */
     @JsonProperty(value = "subnet")
     private SubnetInner subnet;
 
     /*
-     * The provisioning state of the IP configuration profile resource.
+     * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
-     * Get the subnet property: The reference to the subnet resource to create a container network interface ip
+     * Get the subnet property: The reference of the subnet resource to create a container network interface ip
      * configuration.
      *
      * @return the subnet value.
@@ -39,7 +38,7 @@ public final class IpConfigurationProfilePropertiesFormatInner {
     }
 
     /**
-     * Set the subnet property: The reference to the subnet resource to create a container network interface ip
+     * Set the subnet property: The reference of the subnet resource to create a container network interface ip
      * configuration.
      *
      * @param subnet the subnet value to set.
@@ -51,11 +50,11 @@ public final class IpConfigurationProfilePropertiesFormatInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the IP configuration profile resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

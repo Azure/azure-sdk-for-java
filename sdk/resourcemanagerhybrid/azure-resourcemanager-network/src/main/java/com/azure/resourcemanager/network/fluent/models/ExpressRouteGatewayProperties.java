@@ -31,7 +31,7 @@ public final class ExpressRouteGatewayProperties {
     private List<ExpressRouteConnectionInner> expressRouteConnections;
 
     /*
-     * The provisioning state of the express route gateway resource.
+     * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -73,7 +73,7 @@ public final class ExpressRouteGatewayProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route gateway resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */

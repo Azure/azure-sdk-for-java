@@ -15,7 +15,7 @@ public final class AzureFirewallApplicationRuleProtocol {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallApplicationRuleProtocol.class);
 
     /*
-     * Protocol type.
+     * Protocol type
      */
     @JsonProperty(value = "protocolType")
     private AzureFirewallApplicationRuleProtocolType protocolType;

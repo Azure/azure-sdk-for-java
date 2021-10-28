@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -33,11 +32,10 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     private List<SubResource> containerNetworkInterfaces;
 
     /*
-     * The provisioning state of the container network interface configuration
-     * resource.
+     * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the ipConfigurations property: A list of ip configurations of the container network interface configuration.
@@ -84,12 +82,11 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the container network interface configuration
-     * resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

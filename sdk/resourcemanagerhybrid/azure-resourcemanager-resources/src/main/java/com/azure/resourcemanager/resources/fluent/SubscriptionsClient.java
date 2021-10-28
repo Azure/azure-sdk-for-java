@@ -21,20 +21,6 @@ public interface SubscriptionsClient {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
-     * @param includeExtendedLocations Whether to include extended locations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Boolean includeExtendedLocations);
-
-    /**
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     *
-     * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -61,7 +47,6 @@ public interface SubscriptionsClient {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
-     * @param includeExtendedLocations Whether to include extended locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,8 +54,7 @@ public interface SubscriptionsClient {
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LocationInner> listLocations(
-        String subscriptionId, Boolean includeExtendedLocations, Context context);
+    PagedIterable<LocationInner> listLocations(String subscriptionId, Context context);
 
     /**
      * Gets details about a specified subscription.

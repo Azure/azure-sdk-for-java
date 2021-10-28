@@ -19,7 +19,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -27,6 +26,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VpnSitesConfigurationsClient;
+import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.GetVpnSitesConfigurationRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -66,7 +66,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
                 + "/{virtualWANName}/vpnConfiguration")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
+        @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> download(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
@@ -85,7 +85,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -116,7 +116,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -142,7 +142,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @param request Parameters supplied to download vpn-sites configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -173,7 +173,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -195,7 +195,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -216,7 +216,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @param request Parameters supplied to download vpn-sites configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -238,7 +238,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -256,7 +256,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @param request Parameters supplied to download vpn-sites configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -273,7 +273,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -293,7 +293,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @param request Parameters supplied to download vpn-sites configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -312,7 +312,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -328,7 +328,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
      * @param request Parameters supplied to download vpn-sites configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -9,23 +9,19 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
-import com.azure.resourcemanager.containerservice.models.ExtendedLocation;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
-import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
-import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
-import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
-import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -43,22 +39,16 @@ public final class ManagedClusterInner extends Resource {
     private ManagedClusterSku sku;
 
     /*
-     * The extended location of the Virtual Machine.
+     * Properties of a managed cluster.
      */
-    @JsonProperty(value = "extendedLocation")
-    private ExtendedLocation extendedLocation;
+    @JsonProperty(value = "properties")
+    private ManagedClusterProperties innerProperties;
 
     /*
      * The identity of the managed cluster, if configured.
      */
     @JsonProperty(value = "identity")
     private ManagedClusterIdentity identity;
-
-    /*
-     * Properties of a managed cluster.
-     */
-    @JsonProperty(value = "properties")
-    private ManagedClusterProperties innerProperties;
 
     /**
      * Get the sku property: The managed cluster SKU.
@@ -81,23 +71,12 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the extendedLocation property: The extended location of the Virtual Machine.
+     * Get the innerProperties property: Properties of a managed cluster.
      *
-     * @return the extendedLocation value.
+     * @return the innerProperties value.
      */
-    public ExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
-
-    /**
-     * Set the extendedLocation property: The extended location of the Virtual Machine.
-     *
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
-        return this;
+    private ManagedClusterProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -120,15 +99,6 @@ public final class ManagedClusterInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the innerProperties property: Properties of a managed cluster.
-     *
-     * @return the innerProperties value.
-     */
-    private ManagedClusterProperties innerProperties() {
-        return this.innerProperties;
-    }
-
     /** {@inheritDoc} */
     @Override
     public ManagedClusterInner withLocation(String location) {
@@ -144,7 +114,8 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current provisioning state.
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
      *
      * @return the provisioningState value.
      */
@@ -153,7 +124,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the powerState property: The Power State of the cluster.
+     * Get the powerState property: Represents the Power State of the cluster.
      *
      * @return the powerState value.
      */
@@ -171,11 +142,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the kubernetesVersion property: The version of Kubernetes the Managed Cluster is running. When you upgrade a
-     * supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed sequentially
-     * by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed,
-     * however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
-     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
+     * Get the kubernetesVersion property: Version of Kubernetes specified when creating the managed cluster.
      *
      * @return the kubernetesVersion value.
      */
@@ -184,11 +151,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the kubernetesVersion property: The version of Kubernetes the Managed Cluster is running. When you upgrade a
-     * supported AKS cluster, Kubernetes minor versions cannot be skipped. All upgrades must be performed sequentially
-     * by major version number. For example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed,
-     * however 1.14.x -&gt; 1.16.x is not allowed. See [upgrading an AKS
-     * cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more details.
+     * Set the kubernetesVersion property: Version of Kubernetes specified when creating the managed cluster.
      *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterInner object itself.
@@ -202,8 +165,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the dnsPrefix property: The DNS prefix of the Managed Cluster. This cannot be updated once the Managed
-     * Cluster has been created.
+     * Get the dnsPrefix property: DNS prefix specified when creating the managed cluster.
      *
      * @return the dnsPrefix value.
      */
@@ -212,8 +174,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the dnsPrefix property: The DNS prefix of the Managed Cluster. This cannot be updated once the Managed
-     * Cluster has been created.
+     * Set the dnsPrefix property: DNS prefix specified when creating the managed cluster.
      *
      * @param dnsPrefix the dnsPrefix value to set.
      * @return the ManagedClusterInner object itself.
@@ -227,32 +188,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the fqdnSubdomain property: The FQDN subdomain of the private cluster with custom private dns zone. This
-     * cannot be updated once the Managed Cluster has been created.
-     *
-     * @return the fqdnSubdomain value.
-     */
-    public String fqdnSubdomain() {
-        return this.innerProperties() == null ? null : this.innerProperties().fqdnSubdomain();
-    }
-
-    /**
-     * Set the fqdnSubdomain property: The FQDN subdomain of the private cluster with custom private dns zone. This
-     * cannot be updated once the Managed Cluster has been created.
-     *
-     * @param fqdnSubdomain the fqdnSubdomain value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withFqdnSubdomain(String fqdnSubdomain) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withFqdnSubdomain(fqdnSubdomain);
-        return this;
-    }
-
-    /**
-     * Get the fqdn property: The FQDN of the master pool.
+     * Get the fqdn property: FQDN for the master pool.
      *
      * @return the fqdn value.
      */
@@ -261,7 +197,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the privateFqdn property: The FQDN of private cluster.
+     * Get the privateFqdn property: FQDN of private cluster.
      *
      * @return the privateFqdn value.
      */
@@ -270,19 +206,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the azurePortalFqdn property: The special FQDN used by the Azure Portal to access the Managed Cluster. This
-     * FQDN is for use only by the Azure Portal and should not be used by other clients. The Azure Portal requires
-     * certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses, which Kubernetes APIServer
-     * doesn't handle by default. This special FQDN supports CORS, allowing the Azure Portal to function properly.
-     *
-     * @return the azurePortalFqdn value.
-     */
-    public String azurePortalFqdn() {
-        return this.innerProperties() == null ? null : this.innerProperties().azurePortalFqdn();
-    }
-
-    /**
-     * Get the agentPoolProfiles property: The agent pool properties.
+     * Get the agentPoolProfiles property: Properties of the agent pool.
      *
      * @return the agentPoolProfiles value.
      */
@@ -291,7 +215,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the agentPoolProfiles property: The agent pool properties.
+     * Set the agentPoolProfiles property: Properties of the agent pool.
      *
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ManagedClusterInner object itself.
@@ -305,7 +229,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the linuxProfile property: The profile for Linux VMs in the Managed Cluster.
+     * Get the linuxProfile property: Profile for Linux VMs in the container service cluster.
      *
      * @return the linuxProfile value.
      */
@@ -314,7 +238,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the linuxProfile property: The profile for Linux VMs in the Managed Cluster.
+     * Set the linuxProfile property: Profile for Linux VMs in the container service cluster.
      *
      * @param linuxProfile the linuxProfile value to set.
      * @return the ManagedClusterInner object itself.
@@ -328,7 +252,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the windowsProfile property: The profile for Windows VMs in the Managed Cluster.
+     * Get the windowsProfile property: Profile for Windows VMs in the container service cluster.
      *
      * @return the windowsProfile value.
      */
@@ -337,7 +261,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the windowsProfile property: The profile for Windows VMs in the Managed Cluster.
+     * Set the windowsProfile property: Profile for Windows VMs in the container service cluster.
      *
      * @param windowsProfile the windowsProfile value to set.
      * @return the ManagedClusterInner object itself.
@@ -377,7 +301,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the addonProfiles property: The profile of managed cluster add-on.
+     * Get the addonProfiles property: Profile of managed cluster add-on.
      *
      * @return the addonProfiles value.
      */
@@ -386,7 +310,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the addonProfiles property: The profile of managed cluster add-on.
+     * Set the addonProfiles property: Profile of managed cluster add-on.
      *
      * @param addonProfiles the addonProfiles value to set.
      * @return the ManagedClusterInner object itself.
@@ -400,9 +324,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the podIdentityProfile property: The pod identity profile of the Managed Cluster. See [use AAD pod
-     * identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on AAD pod identity
-     * integration.
+     * Get the podIdentityProfile property: Profile of managed cluster pod identity.
      *
      * @return the podIdentityProfile value.
      */
@@ -411,9 +333,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the podIdentityProfile property: The pod identity profile of the Managed Cluster. See [use AAD pod
-     * identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on AAD pod identity
-     * integration.
+     * Set the podIdentityProfile property: Profile of managed cluster pod identity.
      *
      * @param podIdentityProfile the podIdentityProfile value to set.
      * @return the ManagedClusterInner object itself.
@@ -427,7 +347,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the nodeResourceGroup property: The name of the resource group containing agent pool nodes.
+     * Get the nodeResourceGroup property: Name of the resource group containing agent pool nodes.
      *
      * @return the nodeResourceGroup value.
      */
@@ -436,7 +356,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the nodeResourceGroup property: The name of the resource group containing agent pool nodes.
+     * Set the nodeResourceGroup property: Name of the resource group containing agent pool nodes.
      *
      * @param nodeResourceGroup the nodeResourceGroup value to set.
      * @return the ManagedClusterInner object itself.
@@ -498,7 +418,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the networkProfile property: The network configuration profile.
+     * Get the networkProfile property: Profile of network configuration.
      *
      * @return the networkProfile value.
      */
@@ -507,7 +427,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the networkProfile property: The network configuration profile.
+     * Set the networkProfile property: Profile of network configuration.
      *
      * @param networkProfile the networkProfile value to set.
      * @return the ManagedClusterInner object itself.
@@ -521,8 +441,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the aadProfile property: AADProfile specifies attributes for Azure Active Directory integration. The Azure
-     * Active Directory configuration.
+     * Get the aadProfile property: Profile of Azure Active Directory configuration.
      *
      * @return the aadProfile value.
      */
@@ -531,8 +450,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the aadProfile property: AADProfile specifies attributes for Azure Active Directory integration. The Azure
-     * Active Directory configuration.
+     * Set the aadProfile property: Profile of Azure Active Directory configuration.
      *
      * @param aadProfile the aadProfile value to set.
      * @return the ManagedClusterInner object itself.
@@ -546,7 +464,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the autoUpgradeProfile property: The auto upgrade configuration.
+     * Get the autoUpgradeProfile property: Profile of auto upgrade configuration.
      *
      * @return the autoUpgradeProfile value.
      */
@@ -555,7 +473,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the autoUpgradeProfile property: The auto upgrade configuration.
+     * Set the autoUpgradeProfile property: Profile of auto upgrade configuration.
      *
      * @param autoUpgradeProfile the autoUpgradeProfile value to set.
      * @return the ManagedClusterInner object itself.
@@ -592,7 +510,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the apiServerAccessProfile property: The access profile for managed cluster API server.
+     * Get the apiServerAccessProfile property: Access profile for managed cluster API server.
      *
      * @return the apiServerAccessProfile value.
      */
@@ -601,7 +519,7 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the apiServerAccessProfile property: The access profile for managed cluster API server.
+     * Set the apiServerAccessProfile property: Access profile for managed cluster API server.
      *
      * @param apiServerAccessProfile the apiServerAccessProfile value to set.
      * @return the ManagedClusterInner object itself.
@@ -615,9 +533,8 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the diskEncryptionSetId property: The Resource ID of the disk encryption set to use for enabling encryption
-     * at rest. This is of the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'.
+     * Get the diskEncryptionSetId property: ResourceId of the disk encryption set to use for enabling encryption at
+     * rest.
      *
      * @return the diskEncryptionSetId value.
      */
@@ -626,9 +543,8 @@ public final class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the diskEncryptionSetId property: The Resource ID of the disk encryption set to use for enabling encryption
-     * at rest. This is of the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'.
+     * Set the diskEncryptionSetId property: ResourceId of the disk encryption set to use for enabling encryption at
+     * rest.
      *
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the ManagedClusterInner object itself.
@@ -646,7 +562,7 @@ public final class ManagedClusterInner extends Resource {
      *
      * @return the identityProfile value.
      */
-    public Map<String, UserAssignedIdentity> identityProfile() {
+    public Map<String, ManagedClusterPropertiesIdentityProfile> identityProfile() {
         return this.innerProperties() == null ? null : this.innerProperties().identityProfile();
     }
 
@@ -656,134 +572,12 @@ public final class ManagedClusterInner extends Resource {
      * @param identityProfile the identityProfile value to set.
      * @return the ManagedClusterInner object itself.
      */
-    public ManagedClusterInner withIdentityProfile(Map<String, UserAssignedIdentity> identityProfile) {
+    public ManagedClusterInner withIdentityProfile(
+        Map<String, ManagedClusterPropertiesIdentityProfile> identityProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedClusterProperties();
         }
         this.innerProperties().withIdentityProfile(identityProfile);
-        return this;
-    }
-
-    /**
-     * Get the privateLinkResources property: Private link resources associated with the cluster.
-     *
-     * @return the privateLinkResources value.
-     */
-    public List<PrivateLinkResourceInner> privateLinkResources() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateLinkResources();
-    }
-
-    /**
-     * Set the privateLinkResources property: Private link resources associated with the cluster.
-     *
-     * @param privateLinkResources the privateLinkResources value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withPrivateLinkResources(List<PrivateLinkResourceInner> privateLinkResources) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withPrivateLinkResources(privateLinkResources);
-        return this;
-    }
-
-    /**
-     * Get the disableLocalAccounts property: If local accounts should be disabled on the Managed Cluster. If set to
-     * true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters
-     * that are AAD enabled. For more details see [disable local
-     * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
-     *
-     * @return the disableLocalAccounts value.
-     */
-    public Boolean disableLocalAccounts() {
-        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAccounts();
-    }
-
-    /**
-     * Set the disableLocalAccounts property: If local accounts should be disabled on the Managed Cluster. If set to
-     * true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters
-     * that are AAD enabled. For more details see [disable local
-     * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
-     *
-     * @param disableLocalAccounts the disableLocalAccounts value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withDisableLocalAccounts(Boolean disableLocalAccounts) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withDisableLocalAccounts(disableLocalAccounts);
-        return this;
-    }
-
-    /**
-     * Get the httpProxyConfig property: Configurations for provisioning the cluster with HTTP proxy servers.
-     *
-     * @return the httpProxyConfig value.
-     */
-    public ManagedClusterHttpProxyConfig httpProxyConfig() {
-        return this.innerProperties() == null ? null : this.innerProperties().httpProxyConfig();
-    }
-
-    /**
-     * Set the httpProxyConfig property: Configurations for provisioning the cluster with HTTP proxy servers.
-     *
-     * @param httpProxyConfig the httpProxyConfig value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withHttpProxyConfig(ManagedClusterHttpProxyConfig httpProxyConfig) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withHttpProxyConfig(httpProxyConfig);
-        return this;
-    }
-
-    /**
-     * Get the securityProfile property: Security profile for the managed cluster.
-     *
-     * @return the securityProfile value.
-     */
-    public ManagedClusterSecurityProfile securityProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().securityProfile();
-    }
-
-    /**
-     * Set the securityProfile property: Security profile for the managed cluster.
-     *
-     * @param securityProfile the securityProfile value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withSecurityProfile(ManagedClusterSecurityProfile securityProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withSecurityProfile(securityProfile);
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Whether the cluster can be accessed through public network or not Default
-     * value is 'Enabled' (case insensitive). Could be set to 'Disabled' to enable private cluster.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Whether the cluster can be accessed through public network or not Default
-     * value is 'Enabled' (case insensitive). Could be set to 'Disabled' to enable private cluster.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the ManagedClusterInner object itself.
-     */
-    public ManagedClusterInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ManagedClusterProperties();
-        }
-        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -796,14 +590,11 @@ public final class ManagedClusterInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();
-        }
-        if (innerProperties() != null) {
-            innerProperties().validate();
         }
     }
 }

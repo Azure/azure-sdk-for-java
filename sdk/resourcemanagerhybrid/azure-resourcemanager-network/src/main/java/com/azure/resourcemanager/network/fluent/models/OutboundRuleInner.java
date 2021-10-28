@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -25,8 +24,8 @@ public final class OutboundRuleInner extends SubResource {
     private OutboundRulePropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of outbound rules
-     * used by the load balancer. This name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This
+     * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -34,14 +33,8 @@ public final class OutboundRuleInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * Type of the resource.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of load balancer outbound rule.
@@ -53,8 +46,8 @@ public final class OutboundRuleInner extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within the set of outbound rules used by the load
-     * balancer. This name can be used to access the resource.
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @return the name value.
      */
@@ -63,8 +56,8 @@ public final class OutboundRuleInner extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within the set of outbound rules used by the load
-     * balancer. This name can be used to access the resource.
+     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @param name the name value to set.
      * @return the OutboundRuleInner object itself.
@@ -84,12 +77,14 @@ public final class OutboundRuleInner extends SubResource {
     }
 
     /**
-     * Get the type property: Type of the resource.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
+     * @param etag the etag value to set.
+     * @return the OutboundRuleInner object itself.
      */
-    public String type() {
-        return this.type;
+    public OutboundRuleInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -171,16 +166,32 @@ public final class OutboundRuleInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the outbound rule resource.
+     * Get the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the protocol property: The protocol for the outbound rule in load balancer.
+     * Set the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the OutboundRuleInner object itself.
+     */
+    public OutboundRuleInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OutboundRulePropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    /**
+     * Get the protocol property: Protocol - TCP, UDP or All.
      *
      * @return the protocol value.
      */
@@ -189,7 +200,7 @@ public final class OutboundRuleInner extends SubResource {
     }
 
     /**
-     * Set the protocol property: The protocol for the outbound rule in load balancer.
+     * Set the protocol property: Protocol - TCP, UDP or All.
      *
      * @param protocol the protocol value to set.
      * @return the OutboundRuleInner object itself.

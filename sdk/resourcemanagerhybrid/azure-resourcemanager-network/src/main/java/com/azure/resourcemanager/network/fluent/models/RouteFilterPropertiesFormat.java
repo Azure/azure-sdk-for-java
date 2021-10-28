@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -25,20 +24,15 @@ public final class RouteFilterPropertiesFormat {
     /*
      * A collection of references to express route circuit peerings.
      */
-    @JsonProperty(value = "peerings", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "peerings")
     private List<ExpressRouteCircuitPeeringInner> peerings;
 
     /*
-     * A collection of references to express route circuit ipv6 peerings.
-     */
-    @JsonProperty(value = "ipv6Peerings", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ExpressRouteCircuitPeeringInner> ipv6Peerings;
-
-    /*
-     * The provisioning state of the route filter resource.
+     * The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', 'Succeeded' and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the rules property: Collection of RouteFilterRules contained within a route filter.
@@ -70,20 +64,23 @@ public final class RouteFilterPropertiesFormat {
     }
 
     /**
-     * Get the ipv6Peerings property: A collection of references to express route circuit ipv6 peerings.
+     * Set the peerings property: A collection of references to express route circuit peerings.
      *
-     * @return the ipv6Peerings value.
+     * @param peerings the peerings value to set.
+     * @return the RouteFilterPropertiesFormat object itself.
      */
-    public List<ExpressRouteCircuitPeeringInner> ipv6Peerings() {
-        return this.ipv6Peerings;
+    public RouteFilterPropertiesFormat withPeerings(List<ExpressRouteCircuitPeeringInner> peerings) {
+        this.peerings = peerings;
+        return this;
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the route filter resource.
+     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', 'Succeeded' and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
@@ -98,9 +95,6 @@ public final class RouteFilterPropertiesFormat {
         }
         if (peerings() != null) {
             peerings().forEach(e -> e.validate());
-        }
-        if (ipv6Peerings() != null) {
-            ipv6Peerings().forEach(e -> e.validate());
         }
     }
 }

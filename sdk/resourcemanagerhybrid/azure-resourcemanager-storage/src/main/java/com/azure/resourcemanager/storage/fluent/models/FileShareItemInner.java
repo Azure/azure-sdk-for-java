@@ -8,16 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AzureEntityResource;
 import com.azure.resourcemanager.storage.models.EnabledProtocols;
-import com.azure.resourcemanager.storage.models.LeaseDuration;
-import com.azure.resourcemanager.storage.models.LeaseState;
-import com.azure.resourcemanager.storage.models.LeaseStatus;
 import com.azure.resourcemanager.storage.models.RootSquashType;
 import com.azure.resourcemanager.storage.models.ShareAccessTier;
-import com.azure.resourcemanager.storage.models.SignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Map;
 
 /** The file share properties be listed out. */
@@ -232,67 +227,6 @@ public final class FileShareItemInner extends AzureEntityResource {
      */
     public Long shareUsageBytes() {
         return this.innerProperties() == null ? null : this.innerProperties().shareUsageBytes();
-    }
-
-    /**
-     * Get the leaseStatus property: The lease status of the share.
-     *
-     * @return the leaseStatus value.
-     */
-    public LeaseStatus leaseStatus() {
-        return this.innerProperties() == null ? null : this.innerProperties().leaseStatus();
-    }
-
-    /**
-     * Get the leaseState property: Lease state of the share.
-     *
-     * @return the leaseState value.
-     */
-    public LeaseState leaseState() {
-        return this.innerProperties() == null ? null : this.innerProperties().leaseState();
-    }
-
-    /**
-     * Get the leaseDuration property: Specifies whether the lease on a share is of infinite or fixed duration, only
-     * when the share is leased.
-     *
-     * @return the leaseDuration value.
-     */
-    public LeaseDuration leaseDuration() {
-        return this.innerProperties() == null ? null : this.innerProperties().leaseDuration();
-    }
-
-    /**
-     * Get the signedIdentifiers property: List of stored access policies specified on the share.
-     *
-     * @return the signedIdentifiers value.
-     */
-    public List<SignedIdentifier> signedIdentifiers() {
-        return this.innerProperties() == null ? null : this.innerProperties().signedIdentifiers();
-    }
-
-    /**
-     * Set the signedIdentifiers property: List of stored access policies specified on the share.
-     *
-     * @param signedIdentifiers the signedIdentifiers value to set.
-     * @return the FileShareItemInner object itself.
-     */
-    public FileShareItemInner withSignedIdentifiers(List<SignedIdentifier> signedIdentifiers) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FileShareProperties();
-        }
-        this.innerProperties().withSignedIdentifiers(signedIdentifiers);
-        return this;
-    }
-
-    /**
-     * Get the snapshotTime property: Creation time of share snapshot returned in the response of list shares with
-     * expand param "snapshots".
-     *
-     * @return the snapshotTime value.
-     */
-    public OffsetDateTime snapshotTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().snapshotTime();
     }
 
     /**

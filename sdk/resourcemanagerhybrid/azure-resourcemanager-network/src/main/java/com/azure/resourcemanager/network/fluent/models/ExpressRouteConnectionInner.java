@@ -9,7 +9,6 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringId;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,7 +18,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionInner.class);
 
     /*
-     * Properties of the express route connection.
+     * Properties of the ExpressRouteConnection subresource.
      */
     @JsonProperty(value = "properties")
     private ExpressRouteConnectionProperties innerProperties;
@@ -31,7 +30,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
     private String name;
 
     /**
-     * Get the innerProperties property: Properties of the express route connection.
+     * Get the innerProperties property: Properties of the ExpressRouteConnection subresource.
      *
      * @return the innerProperties value.
      */
@@ -67,7 +66,7 @@ public final class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route connection resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
@@ -142,77 +141,6 @@ public final class ExpressRouteConnectionInner extends SubResource {
             this.innerProperties = new ExpressRouteConnectionProperties();
         }
         this.innerProperties().withRoutingWeight(routingWeight);
-        return this;
-    }
-
-    /**
-     * Get the enableInternetSecurity property: Enable internet security.
-     *
-     * @return the enableInternetSecurity value.
-     */
-    public Boolean enableInternetSecurity() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableInternetSecurity();
-    }
-
-    /**
-     * Set the enableInternetSecurity property: Enable internet security.
-     *
-     * @param enableInternetSecurity the enableInternetSecurity value to set.
-     * @return the ExpressRouteConnectionInner object itself.
-     */
-    public ExpressRouteConnectionInner withEnableInternetSecurity(Boolean enableInternetSecurity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteConnectionProperties();
-        }
-        this.innerProperties().withEnableInternetSecurity(enableInternetSecurity);
-        return this;
-    }
-
-    /**
-     * Get the expressRouteGatewayBypass property: Enable FastPath to vWan Firewall hub.
-     *
-     * @return the expressRouteGatewayBypass value.
-     */
-    public Boolean expressRouteGatewayBypass() {
-        return this.innerProperties() == null ? null : this.innerProperties().expressRouteGatewayBypass();
-    }
-
-    /**
-     * Set the expressRouteGatewayBypass property: Enable FastPath to vWan Firewall hub.
-     *
-     * @param expressRouteGatewayBypass the expressRouteGatewayBypass value to set.
-     * @return the ExpressRouteConnectionInner object itself.
-     */
-    public ExpressRouteConnectionInner withExpressRouteGatewayBypass(Boolean expressRouteGatewayBypass) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteConnectionProperties();
-        }
-        this.innerProperties().withExpressRouteGatewayBypass(expressRouteGatewayBypass);
-        return this;
-    }
-
-    /**
-     * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @return the routingConfiguration value.
-     */
-    public RoutingConfiguration routingConfiguration() {
-        return this.innerProperties() == null ? null : this.innerProperties().routingConfiguration();
-    }
-
-    /**
-     * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
-     *
-     * @param routingConfiguration the routingConfiguration value to set.
-     * @return the ExpressRouteConnectionInner object itself.
-     */
-    public ExpressRouteConnectionInner withRoutingConfiguration(RoutingConfiguration routingConfiguration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteConnectionProperties();
-        }
-        this.innerProperties().withRoutingConfiguration(routingConfiguration);
         return this;
     }
 

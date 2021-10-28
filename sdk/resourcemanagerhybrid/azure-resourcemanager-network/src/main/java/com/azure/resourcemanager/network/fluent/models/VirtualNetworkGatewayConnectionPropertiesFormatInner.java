@@ -8,10 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
-import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
-import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
@@ -50,25 +47,14 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     private LocalNetworkGatewayInner localNetworkGateway2;
 
     /*
-     * List of ingress NatRules.
-     */
-    @JsonProperty(value = "ingressNatRules")
-    private List<SubResource> ingressNatRules;
-
-    /*
-     * List of egress NatRules.
-     */
-    @JsonProperty(value = "egressNatRules")
-    private List<SubResource> egressNatRules;
-
-    /*
-     * Gateway connection type.
+     * Gateway connection type. Possible values are:
+     * 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient.
      */
     @JsonProperty(value = "connectionType", required = true)
     private VirtualNetworkGatewayConnectionType connectionType;
 
     /*
-     * Connection protocol used for this connection.
+     * Connection protocol used for this connection
      */
     @JsonProperty(value = "connectionProtocol")
     private VirtualNetworkGatewayConnectionProtocol connectionProtocol;
@@ -80,25 +66,14 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     private Integer routingWeight;
 
     /*
-     * The dead peer detection timeout of this connection in seconds.
-     */
-    @JsonProperty(value = "dpdTimeoutSeconds")
-    private Integer dpdTimeoutSeconds;
-
-    /*
-     * The connection mode for this connection.
-     */
-    @JsonProperty(value = "connectionMode")
-    private VirtualNetworkGatewayConnectionMode connectionMode;
-
-    /*
      * The IPSec shared key.
      */
     @JsonProperty(value = "sharedKey")
     private String sharedKey;
 
     /*
-     * Virtual Network Gateway connection status.
+     * Virtual network Gateway connection status. Possible values are
+     * 'Unknown', 'Connecting', 'Connected' and 'NotConnected'.
      */
     @JsonProperty(value = "connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkGatewayConnectionStatus connectionStatus;
@@ -128,16 +103,10 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     private SubResource peer;
 
     /*
-     * EnableBgp flag.
+     * EnableBgp flag
      */
     @JsonProperty(value = "enableBgp")
     private Boolean enableBgp;
-
-    /*
-     * Use private local Azure IP for the connection.
-     */
-    @JsonProperty(value = "useLocalAzureIpAddress")
-    private Boolean useLocalAzureIpAddress;
 
     /*
      * Enable policy-based traffic selectors.
@@ -152,27 +121,21 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     private List<IpsecPolicy> ipsecPolicies;
 
     /*
-     * The Traffic Selector Policies to be considered by this connection.
-     */
-    @JsonProperty(value = "trafficSelectorPolicies")
-    private List<TrafficSelectorPolicy> trafficSelectorPolicies;
-
-    /*
-     * The resource GUID property of the virtual network gateway connection
+     * The resource GUID property of the VirtualNetworkGatewayConnection
      * resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resourceGuid")
     private String resourceGuid;
 
     /*
-     * The provisioning state of the virtual network gateway connection
-     * resource.
+     * The provisioning state of the VirtualNetworkGatewayConnection resource.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /*
-     * Bypass ExpressRoute Gateway for data forwarding.
+     * Bypass ExpressRoute Gateway for data forwarding
      */
     @JsonProperty(value = "expressRouteGatewayBypass")
     private Boolean expressRouteGatewayBypass;
@@ -261,47 +224,8 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     }
 
     /**
-     * Get the ingressNatRules property: List of ingress NatRules.
-     *
-     * @return the ingressNatRules value.
-     */
-    public List<SubResource> ingressNatRules() {
-        return this.ingressNatRules;
-    }
-
-    /**
-     * Set the ingressNatRules property: List of ingress NatRules.
-     *
-     * @param ingressNatRules the ingressNatRules value to set.
-     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
-     */
-    public VirtualNetworkGatewayConnectionPropertiesFormatInner withIngressNatRules(List<SubResource> ingressNatRules) {
-        this.ingressNatRules = ingressNatRules;
-        return this;
-    }
-
-    /**
-     * Get the egressNatRules property: List of egress NatRules.
-     *
-     * @return the egressNatRules value.
-     */
-    public List<SubResource> egressNatRules() {
-        return this.egressNatRules;
-    }
-
-    /**
-     * Set the egressNatRules property: List of egress NatRules.
-     *
-     * @param egressNatRules the egressNatRules value to set.
-     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
-     */
-    public VirtualNetworkGatewayConnectionPropertiesFormatInner withEgressNatRules(List<SubResource> egressNatRules) {
-        this.egressNatRules = egressNatRules;
-        return this;
-    }
-
-    /**
-     * Get the connectionType property: Gateway connection type.
+     * Get the connectionType property: Gateway connection type. Possible values are:
+     * 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient.
      *
      * @return the connectionType value.
      */
@@ -310,7 +234,8 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     }
 
     /**
-     * Set the connectionType property: Gateway connection type.
+     * Set the connectionType property: Gateway connection type. Possible values are:
+     * 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient.
      *
      * @param connectionType the connectionType value to set.
      * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
@@ -363,47 +288,6 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     }
 
     /**
-     * Get the dpdTimeoutSeconds property: The dead peer detection timeout of this connection in seconds.
-     *
-     * @return the dpdTimeoutSeconds value.
-     */
-    public Integer dpdTimeoutSeconds() {
-        return this.dpdTimeoutSeconds;
-    }
-
-    /**
-     * Set the dpdTimeoutSeconds property: The dead peer detection timeout of this connection in seconds.
-     *
-     * @param dpdTimeoutSeconds the dpdTimeoutSeconds value to set.
-     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
-     */
-    public VirtualNetworkGatewayConnectionPropertiesFormatInner withDpdTimeoutSeconds(Integer dpdTimeoutSeconds) {
-        this.dpdTimeoutSeconds = dpdTimeoutSeconds;
-        return this;
-    }
-
-    /**
-     * Get the connectionMode property: The connection mode for this connection.
-     *
-     * @return the connectionMode value.
-     */
-    public VirtualNetworkGatewayConnectionMode connectionMode() {
-        return this.connectionMode;
-    }
-
-    /**
-     * Set the connectionMode property: The connection mode for this connection.
-     *
-     * @param connectionMode the connectionMode value to set.
-     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
-     */
-    public VirtualNetworkGatewayConnectionPropertiesFormatInner withConnectionMode(
-        VirtualNetworkGatewayConnectionMode connectionMode) {
-        this.connectionMode = connectionMode;
-        return this;
-    }
-
-    /**
      * Get the sharedKey property: The IPSec shared key.
      *
      * @return the sharedKey value.
@@ -424,7 +308,8 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     }
 
     /**
-     * Get the connectionStatus property: Virtual Network Gateway connection status.
+     * Get the connectionStatus property: Virtual network Gateway connection status. Possible values are 'Unknown',
+     * 'Connecting', 'Connected' and 'NotConnected'.
      *
      * @return the connectionStatus value.
      */
@@ -500,27 +385,6 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     }
 
     /**
-     * Get the useLocalAzureIpAddress property: Use private local Azure IP for the connection.
-     *
-     * @return the useLocalAzureIpAddress value.
-     */
-    public Boolean useLocalAzureIpAddress() {
-        return this.useLocalAzureIpAddress;
-    }
-
-    /**
-     * Set the useLocalAzureIpAddress property: Use private local Azure IP for the connection.
-     *
-     * @param useLocalAzureIpAddress the useLocalAzureIpAddress value to set.
-     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
-     */
-    public VirtualNetworkGatewayConnectionPropertiesFormatInner withUseLocalAzureIpAddress(
-        Boolean useLocalAzureIpAddress) {
-        this.useLocalAzureIpAddress = useLocalAzureIpAddress;
-        return this;
-    }
-
-    /**
      * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
      *
      * @return the usePolicyBasedTrafficSelectors value.
@@ -562,28 +426,7 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     }
 
     /**
-     * Get the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
-     * @return the trafficSelectorPolicies value.
-     */
-    public List<TrafficSelectorPolicy> trafficSelectorPolicies() {
-        return this.trafficSelectorPolicies;
-    }
-
-    /**
-     * Set the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
-     * @param trafficSelectorPolicies the trafficSelectorPolicies value to set.
-     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
-     */
-    public VirtualNetworkGatewayConnectionPropertiesFormatInner withTrafficSelectorPolicies(
-        List<TrafficSelectorPolicy> trafficSelectorPolicies) {
-        this.trafficSelectorPolicies = trafficSelectorPolicies;
-        return this;
-    }
-
-    /**
-     * Get the resourceGuid property: The resource GUID property of the virtual network gateway connection resource.
+     * Get the resourceGuid property: The resource GUID property of the VirtualNetworkGatewayConnection resource.
      *
      * @return the resourceGuid value.
      */
@@ -592,11 +435,23 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the virtual network gateway connection resource.
+     * Set the resourceGuid property: The resource GUID property of the VirtualNetworkGatewayConnection resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the VirtualNetworkGatewayConnectionPropertiesFormatInner object itself.
+     */
+    public VirtualNetworkGatewayConnectionPropertiesFormatInner withResourceGuid(String resourceGuid) {
+        this.resourceGuid = resourceGuid;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the VirtualNetworkGatewayConnection resource.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
@@ -654,9 +509,6 @@ public final class VirtualNetworkGatewayConnectionPropertiesFormatInner {
         }
         if (ipsecPolicies() != null) {
             ipsecPolicies().forEach(e -> e.validate());
-        }
-        if (trafficSelectorPolicies() != null) {
-            trafficSelectorPolicies().forEach(e -> e.validate());
         }
     }
 }

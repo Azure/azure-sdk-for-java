@@ -105,7 +105,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
         Mono<Response<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("forceDeletionTypes") String forceDeletionTypes,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept,
@@ -479,16 +478,13 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String forceDeletionTypes) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -513,7 +509,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
                         .delete(
                             this.client.getEndpoint(),
                             resourceGroupName,
-                            forceDeletionTypes,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             accept,
@@ -526,8 +521,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -535,8 +528,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String forceDeletionTypes, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -559,7 +551,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
             .delete(
                 this.client.getEndpoint(),
                 resourceGroupName,
-                forceDeletionTypes,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 accept,
@@ -571,16 +562,14 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String forceDeletionTypes) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, forceDeletionTypes);
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
@@ -591,8 +580,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -600,10 +587,9 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String forceDeletionTypes, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, forceDeletionTypes, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -614,16 +600,14 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String forceDeletionTypes) {
-        return beginDeleteAsync(resourceGroupName, forceDeletionTypes).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName) {
+        return beginDeleteAsync(resourceGroupName).getSyncPoller();
     }
 
     /**
@@ -631,8 +615,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -640,28 +622,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String forceDeletionTypes, Context context) {
-        return beginDeleteAsync(resourceGroupName, forceDeletionTypes, context).getSyncPoller();
-    }
-
-    /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
-     *
-     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String forceDeletionTypes) {
-        return beginDeleteAsync(resourceGroupName, forceDeletionTypes)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, Context context) {
+        return beginDeleteAsync(resourceGroupName, context).getSyncPoller();
     }
 
     /**
@@ -676,10 +638,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName) {
-        final String forceDeletionTypes = null;
-        return beginDeleteAsync(resourceGroupName, forceDeletionTypes)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -687,8 +646,6 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -696,26 +653,8 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String forceDeletionTypes, Context context) {
-        return beginDeleteAsync(resourceGroupName, forceDeletionTypes, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * When you delete a resource group, all of its resources are also deleted. Deleting a resource group deletes all of
-     * its template deployments and currently stored operations.
-     *
-     * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String forceDeletionTypes) {
-        deleteAsync(resourceGroupName, forceDeletionTypes).block();
+    private Mono<Void> deleteAsync(String resourceGroupName, Context context) {
+        return beginDeleteAsync(resourceGroupName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -729,8 +668,7 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName) {
-        final String forceDeletionTypes = null;
-        deleteAsync(resourceGroupName, forceDeletionTypes).block();
+        deleteAsync(resourceGroupName).block();
     }
 
     /**
@@ -738,16 +676,14 @@ public final class ResourceGroupsClientImpl implements ResourceGroupsClient {
      * its template deployments and currently stored operations.
      *
      * @param resourceGroupName The name of the resource group to delete. The name is case insensitive.
-     * @param forceDeletionTypes The resource types you want to force delete. Currently, only the following is
-     *     supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String forceDeletionTypes, Context context) {
-        deleteAsync(resourceGroupName, forceDeletionTypes, context).block();
+    public void delete(String resourceGroupName, Context context) {
+        deleteAsync(resourceGroupName, context).block();
     }
 
     /**

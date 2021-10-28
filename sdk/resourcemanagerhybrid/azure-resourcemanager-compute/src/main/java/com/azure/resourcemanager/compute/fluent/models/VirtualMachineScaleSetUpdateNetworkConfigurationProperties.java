@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfigurationDnsSettings;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateIpConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,12 +65,6 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
      */
     @JsonProperty(value = "enableIPForwarding")
     private Boolean enableIpForwarding;
-
-    /*
-     * Specify what happens to the network interface when the VM is deleted
-     */
-    @JsonProperty(value = "deleteOption")
-    private DeleteOptions deleteOption;
 
     /**
      * Get the primary property: Whether this is a primary NIC on a virtual machine.
@@ -217,26 +210,6 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withEnableIpForwarding(
         Boolean enableIpForwarding) {
         this.enableIpForwarding = enableIpForwarding;
-        return this;
-    }
-
-    /**
-     * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
-     * @return the deleteOption value.
-     */
-    public DeleteOptions deleteOption() {
-        return this.deleteOption;
-    }
-
-    /**
-     * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
-     * @param deleteOption the deleteOption value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
-     */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withDeleteOption(DeleteOptions deleteOption) {
-        this.deleteOption = deleteOption;
         return this;
     }
 

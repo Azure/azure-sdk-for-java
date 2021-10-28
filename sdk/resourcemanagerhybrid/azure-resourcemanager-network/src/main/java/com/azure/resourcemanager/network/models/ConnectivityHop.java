@@ -46,24 +46,6 @@ public final class ConnectivityHop {
     private List<String> nextHopIds;
 
     /*
-     * List of previous hop identifiers.
-     */
-    @JsonProperty(value = "previousHopIds", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> previousHopIds;
-
-    /*
-     * List of hop links.
-     */
-    @JsonProperty(value = "links", access = JsonProperty.Access.WRITE_ONLY)
-    private List<HopLink> links;
-
-    /*
-     * List of previous hop links.
-     */
-    @JsonProperty(value = "previousLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private List<HopLink> previousLinks;
-
-    /*
      * List of issues.
      */
     @JsonProperty(value = "issues", access = JsonProperty.Access.WRITE_ONLY)
@@ -115,33 +97,6 @@ public final class ConnectivityHop {
     }
 
     /**
-     * Get the previousHopIds property: List of previous hop identifiers.
-     *
-     * @return the previousHopIds value.
-     */
-    public List<String> previousHopIds() {
-        return this.previousHopIds;
-    }
-
-    /**
-     * Get the links property: List of hop links.
-     *
-     * @return the links value.
-     */
-    public List<HopLink> links() {
-        return this.links;
-    }
-
-    /**
-     * Get the previousLinks property: List of previous hop links.
-     *
-     * @return the previousLinks value.
-     */
-    public List<HopLink> previousLinks() {
-        return this.previousLinks;
-    }
-
-    /**
      * Get the issues property: List of issues.
      *
      * @return the issues value.
@@ -156,12 +111,6 @@ public final class ConnectivityHop {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (links() != null) {
-            links().forEach(e -> e.validate());
-        }
-        if (previousLinks() != null) {
-            previousLinks().forEach(e -> e.validate());
-        }
         if (issues() != null) {
             issues().forEach(e -> e.validate());
         }

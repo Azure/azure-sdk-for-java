@@ -9,8 +9,6 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
-import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -35,12 +33,6 @@ public final class VirtualNetworkPropertiesFormat {
     private DhcpOptions dhcpOptions;
 
     /*
-     * The FlowTimeout value (in minutes) for the Virtual Network
-     */
-    @JsonProperty(value = "flowTimeoutInMinutes")
-    private Integer flowTimeoutInMinutes;
-
-    /*
      * A list of subnets in a Virtual Network.
      */
     @JsonProperty(value = "subnets")
@@ -55,14 +47,15 @@ public final class VirtualNetworkPropertiesFormat {
     /*
      * The resourceGuid property of the Virtual Network resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resourceGuid")
     private String resourceGuid;
 
     /*
-     * The provisioning state of the virtual network resource.
+     * The provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /*
      * Indicates if DDoS protection is enabled for all the protected resources
@@ -84,19 +77,6 @@ public final class VirtualNetworkPropertiesFormat {
      */
     @JsonProperty(value = "ddosProtectionPlan")
     private SubResource ddosProtectionPlan;
-
-    /*
-     * Bgp Communities sent over ExpressRoute with each route corresponding to
-     * a prefix in this VNET.
-     */
-    @JsonProperty(value = "bgpCommunities")
-    private VirtualNetworkBgpCommunities bgpCommunities;
-
-    /*
-     * Array of IpAllocation which reference this VNET.
-     */
-    @JsonProperty(value = "ipAllocations")
-    private List<SubResource> ipAllocations;
 
     /**
      * Get the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by
@@ -139,26 +119,6 @@ public final class VirtualNetworkPropertiesFormat {
      */
     public VirtualNetworkPropertiesFormat withDhcpOptions(DhcpOptions dhcpOptions) {
         this.dhcpOptions = dhcpOptions;
-        return this;
-    }
-
-    /**
-     * Get the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
-     *
-     * @return the flowTimeoutInMinutes value.
-     */
-    public Integer flowTimeoutInMinutes() {
-        return this.flowTimeoutInMinutes;
-    }
-
-    /**
-     * Set the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
-     *
-     * @param flowTimeoutInMinutes the flowTimeoutInMinutes value to set.
-     * @return the VirtualNetworkPropertiesFormat object itself.
-     */
-    public VirtualNetworkPropertiesFormat withFlowTimeoutInMinutes(Integer flowTimeoutInMinutes) {
-        this.flowTimeoutInMinutes = flowTimeoutInMinutes;
         return this;
     }
 
@@ -213,12 +173,36 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the virtual network resource.
+     * Set the resourceGuid property: The resourceGuid property of the Virtual Network resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the VirtualNetworkPropertiesFormat object itself.
+     */
+    public VirtualNetworkPropertiesFormat withResourceGuid(String resourceGuid) {
+        this.resourceGuid = resourceGuid;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the VirtualNetworkPropertiesFormat object itself.
+     */
+    public VirtualNetworkPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -286,48 +270,6 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Get the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
-     * in this VNET.
-     *
-     * @return the bgpCommunities value.
-     */
-    public VirtualNetworkBgpCommunities bgpCommunities() {
-        return this.bgpCommunities;
-    }
-
-    /**
-     * Set the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
-     * in this VNET.
-     *
-     * @param bgpCommunities the bgpCommunities value to set.
-     * @return the VirtualNetworkPropertiesFormat object itself.
-     */
-    public VirtualNetworkPropertiesFormat withBgpCommunities(VirtualNetworkBgpCommunities bgpCommunities) {
-        this.bgpCommunities = bgpCommunities;
-        return this;
-    }
-
-    /**
-     * Get the ipAllocations property: Array of IpAllocation which reference this VNET.
-     *
-     * @return the ipAllocations value.
-     */
-    public List<SubResource> ipAllocations() {
-        return this.ipAllocations;
-    }
-
-    /**
-     * Set the ipAllocations property: Array of IpAllocation which reference this VNET.
-     *
-     * @param ipAllocations the ipAllocations value to set.
-     * @return the VirtualNetworkPropertiesFormat object itself.
-     */
-    public VirtualNetworkPropertiesFormat withIpAllocations(List<SubResource> ipAllocations) {
-        this.ipAllocations = ipAllocations;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -344,9 +286,6 @@ public final class VirtualNetworkPropertiesFormat {
         }
         if (virtualNetworkPeerings() != null) {
             virtualNetworkPeerings().forEach(e -> e.validate());
-        }
-        if (bgpCommunities() != null) {
-            bgpCommunities().validate();
         }
     }
 }

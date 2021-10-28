@@ -15,13 +15,13 @@ public final class ApplicationGatewayHeaderConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayHeaderConfiguration.class);
 
     /*
-     * Header name of the header configuration.
+     * Header name of the header configuration
      */
     @JsonProperty(value = "headerName")
     private String headerName;
 
     /*
-     * Header value of the header configuration.
+     * Header value of the header configuration
      */
     @JsonProperty(value = "headerValue")
     private String headerValue;

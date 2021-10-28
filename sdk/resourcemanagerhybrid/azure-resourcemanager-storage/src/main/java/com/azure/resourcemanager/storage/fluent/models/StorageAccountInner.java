@@ -13,18 +13,14 @@ import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentic
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Endpoints;
-import com.azure.resourcemanager.storage.models.ExtendedLocation;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
 import com.azure.resourcemanager.storage.models.Identity;
-import com.azure.resourcemanager.storage.models.KeyCreationTime;
-import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
-import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.azure.resourcemanager.storage.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -54,12 +50,6 @@ public final class StorageAccountInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private Identity identity;
-
-    /*
-     * The extendedLocation of the resource.
-     */
-    @JsonProperty(value = "extendedLocation")
-    private ExtendedLocation extendedLocation;
 
     /*
      * Properties of the storage account.
@@ -102,26 +92,6 @@ public final class StorageAccountInner extends Resource {
      */
     public StorageAccountInner withIdentity(Identity identity) {
         this.identity = identity;
-        return this;
-    }
-
-    /**
-     * Get the extendedLocation property: The extendedLocation of the resource.
-     *
-     * @return the extendedLocation value.
-     */
-    public ExtendedLocation extendedLocation() {
-        return this.extendedLocation;
-    }
-
-    /**
-     * Set the extendedLocation property: The extendedLocation of the resource.
-     *
-     * @param extendedLocation the extendedLocation value to set.
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.extendedLocation = extendedLocation;
         return this;
     }
 
@@ -233,33 +203,6 @@ public final class StorageAccountInner extends Resource {
      */
     public CustomDomain customDomain() {
         return this.innerProperties() == null ? null : this.innerProperties().customDomain();
-    }
-
-    /**
-     * Get the sasPolicy property: SasPolicy assigned to the storage account.
-     *
-     * @return the sasPolicy value.
-     */
-    public SasPolicy sasPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().sasPolicy();
-    }
-
-    /**
-     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
-     * @return the keyPolicy value.
-     */
-    public KeyPolicy keyPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().keyPolicy();
-    }
-
-    /**
-     * Get the keyCreationTime property: Storage account keys creation time.
-     *
-     * @return the keyCreationTime value.
-     */
-    public KeyCreationTime keyCreationTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().keyCreationTime();
     }
 
     /**
@@ -540,54 +483,6 @@ public final class StorageAccountInner extends Resource {
     }
 
     /**
-     * Get the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
-     * @return the enableNfsV3 value.
-     */
-    public Boolean enableNfsV3() {
-        return this.innerProperties() == null ? null : this.innerProperties().enableNfsV3();
-    }
-
-    /**
-     * Set the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
-     * @param enableNfsV3 the enableNfsV3 value to set.
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withEnableNfsV3(Boolean enableNfsV3) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageAccountPropertiesInner();
-        }
-        this.innerProperties().withEnableNfsV3(enableNfsV3);
-        return this;
-    }
-
-    /**
-     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @return the allowCrossTenantReplication value.
-     */
-    public Boolean allowCrossTenantReplication() {
-        return this.innerProperties() == null ? null : this.innerProperties().allowCrossTenantReplication();
-    }
-
-    /**
-     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
-     * @return the StorageAccountInner object itself.
-     */
-    public StorageAccountInner withAllowCrossTenantReplication(Boolean allowCrossTenantReplication) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new StorageAccountPropertiesInner();
-        }
-        this.innerProperties().withAllowCrossTenantReplication(allowCrossTenantReplication);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -598,9 +493,6 @@ public final class StorageAccountInner extends Resource {
         }
         if (identity() != null) {
             identity().validate();
-        }
-        if (extendedLocation() != null) {
-            extendedLocation().validate();
         }
         if (innerProperties() != null) {
             innerProperties().validate();

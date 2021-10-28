@@ -132,33 +132,6 @@ public final class EncryptionScopeInner extends ProxyResource {
     }
 
     /**
-     * Get the requireInfrastructureEncryption property: A boolean indicating whether or not the service applies a
-     * secondary layer of encryption with platform managed keys for data at rest.
-     *
-     * @return the requireInfrastructureEncryption value.
-     */
-    public Boolean requireInfrastructureEncryption() {
-        return this.innerEncryptionScopeProperties() == null
-            ? null
-            : this.innerEncryptionScopeProperties().requireInfrastructureEncryption();
-    }
-
-    /**
-     * Set the requireInfrastructureEncryption property: A boolean indicating whether or not the service applies a
-     * secondary layer of encryption with platform managed keys for data at rest.
-     *
-     * @param requireInfrastructureEncryption the requireInfrastructureEncryption value to set.
-     * @return the EncryptionScopeInner object itself.
-     */
-    public EncryptionScopeInner withRequireInfrastructureEncryption(Boolean requireInfrastructureEncryption) {
-        if (this.innerEncryptionScopeProperties() == null) {
-            this.innerEncryptionScopeProperties = new EncryptionScopeProperties();
-        }
-        this.innerEncryptionScopeProperties().withRequireInfrastructureEncryption(requireInfrastructureEncryption);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -43,22 +42,17 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
     private SubResource defaultRedirectConfiguration;
 
     /*
-     * Default Load Distribution Policy resource of URL path map.
-     */
-    @JsonProperty(value = "defaultLoadDistributionPolicy")
-    private SubResource defaultLoadDistributionPolicy;
-
-    /*
      * Path rule of URL path map resource.
      */
     @JsonProperty(value = "pathRules")
     private List<ApplicationGatewayPathRuleInner> pathRules;
 
     /*
-     * The provisioning state of the URL path map resource.
+     * Provisioning state of the backend http settings resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the defaultBackendAddressPool property: Default backend address pool resource of URL path map.
@@ -144,27 +138,6 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
     }
 
     /**
-     * Get the defaultLoadDistributionPolicy property: Default Load Distribution Policy resource of URL path map.
-     *
-     * @return the defaultLoadDistributionPolicy value.
-     */
-    public SubResource defaultLoadDistributionPolicy() {
-        return this.defaultLoadDistributionPolicy;
-    }
-
-    /**
-     * Set the defaultLoadDistributionPolicy property: Default Load Distribution Policy resource of URL path map.
-     *
-     * @param defaultLoadDistributionPolicy the defaultLoadDistributionPolicy value to set.
-     * @return the ApplicationGatewayUrlPathMapPropertiesFormat object itself.
-     */
-    public ApplicationGatewayUrlPathMapPropertiesFormat withDefaultLoadDistributionPolicy(
-        SubResource defaultLoadDistributionPolicy) {
-        this.defaultLoadDistributionPolicy = defaultLoadDistributionPolicy;
-        return this;
-    }
-
-    /**
      * Get the pathRules property: Path rule of URL path map resource.
      *
      * @return the pathRules value.
@@ -185,12 +158,25 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the URL path map resource.
+     * Get the provisioningState property: Provisioning state of the backend http settings resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the backend http settings resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayUrlPathMapPropertiesFormat object itself.
+     */
+    public ApplicationGatewayUrlPathMapPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

@@ -38,7 +38,7 @@ public final class ContainerNetworkInterface extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
@@ -88,6 +88,17 @@ public final class ContainerNetworkInterface extends SubResource {
         return this.etag;
     }
 
+    /**
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the ContainerNetworkInterface object itself.
+     */
+    public ContainerNetworkInterface withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ContainerNetworkInterface withId(String id) {
@@ -103,6 +114,22 @@ public final class ContainerNetworkInterface extends SubResource {
      */
     public ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration() {
         return this.innerProperties() == null ? null : this.innerProperties().containerNetworkInterfaceConfiguration();
+    }
+
+    /**
+     * Set the containerNetworkInterfaceConfiguration property: Container network interface configuration from which
+     * this container network interface is created.
+     *
+     * @param containerNetworkInterfaceConfiguration the containerNetworkInterfaceConfiguration value to set.
+     * @return the ContainerNetworkInterface object itself.
+     */
+    public ContainerNetworkInterface withContainerNetworkInterfaceConfiguration(
+        ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerNetworkInterfacePropertiesFormat();
+        }
+        this.innerProperties().withContainerNetworkInterfaceConfiguration(containerNetworkInterfaceConfiguration);
+        return this;
     }
 
     /**
@@ -138,11 +165,26 @@ public final class ContainerNetworkInterface extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the container network interface resource.
+     * Set the ipConfigurations property: Reference to the ip configuration on this container nic.
+     *
+     * @param ipConfigurations the ipConfigurations value to set.
+     * @return the ContainerNetworkInterface object itself.
+     */
+    public ContainerNetworkInterface withIpConfigurations(
+        List<ContainerNetworkInterfaceIpConfiguration> ipConfigurations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerNetworkInterfacePropertiesFormat();
+        }
+        this.innerProperties().withIpConfigurations(ipConfigurations);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

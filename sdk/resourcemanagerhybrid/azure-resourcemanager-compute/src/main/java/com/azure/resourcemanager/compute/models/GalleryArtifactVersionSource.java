@@ -16,21 +16,14 @@ public final class GalleryArtifactVersionSource {
 
     /*
      * The id of the gallery artifact version source. Can specify a disk uri,
-     * snapshot uri, user image or storage account resource.
+     * snapshot uri, or user image.
      */
     @JsonProperty(value = "id")
     private String id;
 
-    /*
-     * The uri of the gallery artifact version source. Currently used to
-     * specify vhd/blob source.
-     */
-    @JsonProperty(value = "uri")
-    private String uri;
-
     /**
-     * Get the id property: The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user
-     * image or storage account resource.
+     * Get the id property: The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, or user
+     * image.
      *
      * @return the id value.
      */
@@ -39,34 +32,14 @@ public final class GalleryArtifactVersionSource {
     }
 
     /**
-     * Set the id property: The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, user
-     * image or storage account resource.
+     * Set the id property: The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, or user
+     * image.
      *
      * @param id the id value to set.
      * @return the GalleryArtifactVersionSource object itself.
      */
     public GalleryArtifactVersionSource withId(String id) {
         this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the uri property: The uri of the gallery artifact version source. Currently used to specify vhd/blob source.
-     *
-     * @return the uri value.
-     */
-    public String uri() {
-        return this.uri;
-    }
-
-    /**
-     * Set the uri property: The uri of the gallery artifact version source. Currently used to specify vhd/blob source.
-     *
-     * @param uri the uri value to set.
-     * @return the GalleryArtifactVersionSource object itself.
-     */
-    public GalleryArtifactVersionSource withUri(String uri) {
-        this.uri = uri;
         return this;
     }
 

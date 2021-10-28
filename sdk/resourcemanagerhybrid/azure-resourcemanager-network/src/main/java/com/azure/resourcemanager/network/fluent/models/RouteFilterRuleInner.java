@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Access;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteFilterRuleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,7 +19,7 @@ public final class RouteFilterRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterRuleInner.class);
 
     /*
-     * Properties of the route filter rule.
+     * Route Filter Rule Resource
      */
     @JsonProperty(value = "properties")
     private RouteFilterRulePropertiesFormat innerProperties;
@@ -45,7 +44,7 @@ public final class RouteFilterRuleInner extends SubResource {
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the route filter rule.
+     * Get the innerProperties property: Route Filter Rule Resource.
      *
      * @return the innerProperties value.
      */
@@ -112,7 +111,7 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Get the access property: The access type of the rule.
+     * Get the access property: The access type of the rule. Valid values are: 'Allow', 'Deny'.
      *
      * @return the access value.
      */
@@ -121,7 +120,7 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Set the access property: The access type of the rule.
+     * Set the access property: The access type of the rule. Valid values are: 'Allow', 'Deny'.
      *
      * @param access the access value to set.
      * @return the RouteFilterRuleInner object itself.
@@ -135,7 +134,7 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Get the routeFilterRuleType property: The rule type of the rule.
+     * Get the routeFilterRuleType property: The rule type of the rule. Valid value is: 'Community'.
      *
      * @return the routeFilterRuleType value.
      */
@@ -144,7 +143,7 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Set the routeFilterRuleType property: The rule type of the rule.
+     * Set the routeFilterRuleType property: The rule type of the rule. Valid value is: 'Community'.
      *
      * @param routeFilterRuleType the routeFilterRuleType value to set.
      * @return the RouteFilterRuleInner object itself.
@@ -183,11 +182,12 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the route filter rule resource.
+     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', 'Succeeded' and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

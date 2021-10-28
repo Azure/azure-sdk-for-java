@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsEncapsulation;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -26,7 +25,7 @@ public final class ExpressRoutePortPropertiesFormat {
     private String peeringLocation;
 
     /*
-     * Bandwidth of procured ports in Gbps.
+     * Bandwidth of procured ports in Gbps
      */
     @JsonProperty(value = "bandwidthInGbps")
     private Integer bandwidthInGbps;
@@ -38,7 +37,7 @@ public final class ExpressRoutePortPropertiesFormat {
     private Float provisionedBandwidthInGbps;
 
     /*
-     * Maximum transmission unit of the physical port pair(s).
+     * Maximum transmission unit of the physical port pair(s)
      */
     @JsonProperty(value = "mtu", access = JsonProperty.Access.WRITE_ONLY)
     private String mtu;
@@ -64,7 +63,7 @@ public final class ExpressRoutePortPropertiesFormat {
 
     /*
      * ExpressRouteLink Sub-Resources The set of physical links of the
-     * ExpressRoutePort resource.
+     * ExpressRoutePort resource
      */
     @JsonProperty(value = "links")
     private List<ExpressRouteLinkInner> links;
@@ -77,15 +76,16 @@ public final class ExpressRoutePortPropertiesFormat {
     private List<SubResource> circuits;
 
     /*
-     * The provisioning state of the express route port resource.
+     * The provisioning state of the ExpressRoutePort resource. Possible values
+     * are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /*
-     * The resource GUID property of the express route port resource.
+     * The resource GUID property of the ExpressRoutePort resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resourceGuid")
     private String resourceGuid;
 
     /**
@@ -219,21 +219,33 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route port resource.
+     * Get the provisioningState property: The provisioning state of the ExpressRoutePort resource. Possible values are:
+     * 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the express route port resource.
+     * Get the resourceGuid property: The resource GUID property of the ExpressRoutePort resource.
      *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
         return this.resourceGuid;
+    }
+
+    /**
+     * Set the resourceGuid property: The resource GUID property of the ExpressRoutePort resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the ExpressRoutePortPropertiesFormat object itself.
+     */
+    public ExpressRoutePortPropertiesFormat withResourceGuid(String resourceGuid) {
+        this.resourceGuid = resourceGuid;
+        return this;
     }
 
     /**

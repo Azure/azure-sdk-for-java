@@ -7,9 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelInterface;
-import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -26,9 +23,8 @@ public final class BackendAddressPoolInner extends SubResource {
     private BackendAddressPoolPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of backend
-     * address pools used by the load balancer. This name can be used to access
-     * the resource.
+     * Gets name of the resource that is unique within a resource group. This
+     * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -36,14 +32,8 @@ public final class BackendAddressPoolInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * Type of the resource.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of load balancer backend address pool.
@@ -55,8 +45,8 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within the set of backend address pools used by
-     * the load balancer. This name can be used to access the resource.
+     * Get the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @return the name value.
      */
@@ -65,8 +55,8 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within the set of backend address pools used by
-     * the load balancer. This name can be used to access the resource.
+     * Set the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
      *
      * @param name the name value to set.
      * @return the BackendAddressPoolInner object itself.
@@ -86,12 +76,14 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the type property: Type of the resource.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
+     * @param etag the etag value to set.
+     * @return the BackendAddressPoolInner object itself.
      */
-    public String type() {
-        return this.type;
+    public BackendAddressPoolInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -102,77 +94,8 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the location property: The location of the backend address pool.
-     *
-     * @return the location value.
-     */
-    public String location() {
-        return this.innerProperties() == null ? null : this.innerProperties().location();
-    }
-
-    /**
-     * Set the location property: The location of the backend address pool.
-     *
-     * @param location the location value to set.
-     * @return the BackendAddressPoolInner object itself.
-     */
-    public BackendAddressPoolInner withLocation(String location) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BackendAddressPoolPropertiesFormat();
-        }
-        this.innerProperties().withLocation(location);
-        return this;
-    }
-
-    /**
-     * Get the tunnelInterfaces property: An array of gateway load balancer tunnel interfaces.
-     *
-     * @return the tunnelInterfaces value.
-     */
-    public List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces() {
-        return this.innerProperties() == null ? null : this.innerProperties().tunnelInterfaces();
-    }
-
-    /**
-     * Set the tunnelInterfaces property: An array of gateway load balancer tunnel interfaces.
-     *
-     * @param tunnelInterfaces the tunnelInterfaces value to set.
-     * @return the BackendAddressPoolInner object itself.
-     */
-    public BackendAddressPoolInner withTunnelInterfaces(List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BackendAddressPoolPropertiesFormat();
-        }
-        this.innerProperties().withTunnelInterfaces(tunnelInterfaces);
-        return this;
-    }
-
-    /**
-     * Get the loadBalancerBackendAddresses property: An array of backend addresses.
-     *
-     * @return the loadBalancerBackendAddresses value.
-     */
-    public List<LoadBalancerBackendAddress> loadBalancerBackendAddresses() {
-        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerBackendAddresses();
-    }
-
-    /**
-     * Set the loadBalancerBackendAddresses property: An array of backend addresses.
-     *
-     * @param loadBalancerBackendAddresses the loadBalancerBackendAddresses value to set.
-     * @return the BackendAddressPoolInner object itself.
-     */
-    public BackendAddressPoolInner withLoadBalancerBackendAddresses(
-        List<LoadBalancerBackendAddress> loadBalancerBackendAddresses) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BackendAddressPoolPropertiesFormat();
-        }
-        this.innerProperties().withLoadBalancerBackendAddresses(loadBalancerBackendAddresses);
-        return this;
-    }
-
-    /**
-     * Get the backendIpConfigurations property: An array of references to IP addresses defined in network interfaces.
+     * Get the backendIpConfigurations property: Gets collection of references to IP addresses defined in network
+     * interfaces.
      *
      * @return the backendIpConfigurations value.
      */
@@ -181,8 +104,7 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the loadBalancingRules property: An array of references to load balancing rules that use this backend address
-     * pool.
+     * Get the loadBalancingRules property: Gets load balancing rules that use this backend address pool.
      *
      * @return the loadBalancingRules value.
      */
@@ -191,7 +113,7 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the outboundRule property: A reference to an outbound rule that uses this backend address pool.
+     * Get the outboundRule property: Gets outbound rules that use this backend address pool.
      *
      * @return the outboundRule value.
      */
@@ -200,7 +122,7 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the outboundRules property: An array of references to outbound rules that use this backend address pool.
+     * Get the outboundRules property: Gets outbound rules that use this backend address pool.
      *
      * @return the outboundRules value.
      */
@@ -209,12 +131,28 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the backend address pool resource.
+     * Get the provisioningState property: Get provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: Get provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the BackendAddressPoolInner object itself.
+     */
+    public BackendAddressPoolInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendAddressPoolPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

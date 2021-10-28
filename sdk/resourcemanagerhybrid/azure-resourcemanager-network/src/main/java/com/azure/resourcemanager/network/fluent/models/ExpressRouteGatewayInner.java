@@ -21,7 +21,7 @@ public final class ExpressRouteGatewayInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteGatewayInner.class);
 
     /*
-     * Properties of the express route gateway.
+     * ExpressRoute gateway resource properties.
      */
     @JsonProperty(value = "properties")
     private ExpressRouteGatewayProperties innerProperties;
@@ -39,7 +39,7 @@ public final class ExpressRouteGatewayInner extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the express route gateway.
+     * Get the innerProperties property: ExpressRoute gateway resource properties.
      *
      * @return the innerProperties value.
      */
@@ -124,7 +124,7 @@ public final class ExpressRouteGatewayInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route gateway resource.
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */

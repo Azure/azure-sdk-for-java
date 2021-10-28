@@ -36,7 +36,7 @@ public final class ContainerNetworkInterfaceIpConfiguration {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
@@ -87,12 +87,22 @@ public final class ContainerNetworkInterfaceIpConfiguration {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the container network interface IP configuration
-     * resource.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the ContainerNetworkInterfaceIpConfiguration object itself.
+     */
+    public ContainerNetworkInterfaceIpConfiguration withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

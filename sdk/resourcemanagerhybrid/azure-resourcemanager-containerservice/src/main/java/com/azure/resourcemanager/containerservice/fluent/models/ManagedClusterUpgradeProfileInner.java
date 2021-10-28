@@ -17,31 +17,31 @@ public final class ManagedClusterUpgradeProfileInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterUpgradeProfileInner.class);
 
     /*
-     * The ID of the upgrade profile.
+     * Id of upgrade profile.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The name of the upgrade profile.
+     * Name of upgrade profile.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * The type of the upgrade profile.
+     * Type of upgrade profile.
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
-     * The properties of the upgrade profile.
+     * Properties of upgrade profile.
      */
     @JsonProperty(value = "properties", required = true)
     private ManagedClusterUpgradeProfileProperties innerProperties = new ManagedClusterUpgradeProfileProperties();
 
     /**
-     * Get the id property: The ID of the upgrade profile.
+     * Get the id property: Id of upgrade profile.
      *
      * @return the id value.
      */
@@ -50,7 +50,7 @@ public final class ManagedClusterUpgradeProfileInner {
     }
 
     /**
-     * Get the name property: The name of the upgrade profile.
+     * Get the name property: Name of upgrade profile.
      *
      * @return the name value.
      */
@@ -59,7 +59,7 @@ public final class ManagedClusterUpgradeProfileInner {
     }
 
     /**
-     * Get the type property: The type of the upgrade profile.
+     * Get the type property: Type of upgrade profile.
      *
      * @return the type value.
      */
@@ -68,7 +68,7 @@ public final class ManagedClusterUpgradeProfileInner {
     }
 
     /**
-     * Get the innerProperties property: The properties of the upgrade profile.
+     * Get the innerProperties property: Properties of upgrade profile.
      *
      * @return the innerProperties value.
      */

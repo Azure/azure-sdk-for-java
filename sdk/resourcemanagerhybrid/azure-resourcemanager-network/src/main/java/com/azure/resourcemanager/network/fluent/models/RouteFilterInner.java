@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -19,13 +18,14 @@ public final class RouteFilterInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterInner.class);
 
     /*
-     * Properties of the route filter.
+     * Route Filter Resource
      */
     @JsonProperty(value = "properties")
     private RouteFilterPropertiesFormat innerProperties;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -37,7 +37,7 @@ public final class RouteFilterInner extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the route filter.
+     * Get the innerProperties property: Route Filter Resource.
      *
      * @return the innerProperties value.
      */
@@ -46,7 +46,7 @@ public final class RouteFilterInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value.
      */
@@ -121,20 +121,26 @@ public final class RouteFilterInner extends Resource {
     }
 
     /**
-     * Get the ipv6Peerings property: A collection of references to express route circuit ipv6 peerings.
+     * Set the peerings property: A collection of references to express route circuit peerings.
      *
-     * @return the ipv6Peerings value.
+     * @param peerings the peerings value to set.
+     * @return the RouteFilterInner object itself.
      */
-    public List<ExpressRouteCircuitPeeringInner> ipv6Peerings() {
-        return this.innerProperties() == null ? null : this.innerProperties().ipv6Peerings();
+    public RouteFilterInner withPeerings(List<ExpressRouteCircuitPeeringInner> peerings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RouteFilterPropertiesFormat();
+        }
+        this.innerProperties().withPeerings(peerings);
+        return this;
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the route filter resource.
+     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', 'Succeeded' and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,7 +17,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayPathRuleInner.class);
 
     /*
-     * Properties of the application gateway path rule.
+     * Properties of path rule of an application gateway.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayPathRulePropertiesFormat innerProperties;
@@ -32,17 +31,17 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type")
     private String type;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway path rule.
+     * Get the innerProperties property: Properties of path rule of an application gateway.
      *
      * @return the innerProperties value.
      */
@@ -80,12 +79,34 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
     }
 
     /**
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the ApplicationGatewayPathRuleInner object itself.
+     */
+    public ApplicationGatewayPathRuleInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the type property: Type of the resource.
      *
      * @return the type value.
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Set the type property: Type of the resource.
+     *
+     * @param type the type value to set.
+     * @return the ApplicationGatewayPathRuleInner object itself.
+     */
+    public ApplicationGatewayPathRuleInner withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -211,57 +232,27 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
     }
 
     /**
-     * Get the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
-     *
-     * @return the loadDistributionPolicy value.
-     */
-    public SubResource loadDistributionPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().loadDistributionPolicy();
-    }
-
-    /**
-     * Set the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
-     *
-     * @param loadDistributionPolicy the loadDistributionPolicy value to set.
-     * @return the ApplicationGatewayPathRuleInner object itself.
-     */
-    public ApplicationGatewayPathRuleInner withLoadDistributionPolicy(SubResource loadDistributionPolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayPathRulePropertiesFormat();
-        }
-        this.innerProperties().withLoadDistributionPolicy(loadDistributionPolicy);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the path rule resource.
+     * Get the provisioningState property: Path rule of URL path map resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the firewallPolicy property: Reference to the FirewallPolicy resource.
+     * Set the provisioningState property: Path rule of URL path map resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      *
-     * @return the firewallPolicy value.
-     */
-    public SubResource firewallPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().firewallPolicy();
-    }
-
-    /**
-     * Set the firewallPolicy property: Reference to the FirewallPolicy resource.
-     *
-     * @param firewallPolicy the firewallPolicy value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
-    public ApplicationGatewayPathRuleInner withFirewallPolicy(SubResource firewallPolicy) {
+    public ApplicationGatewayPathRuleInner withProvisioningState(String provisioningState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPathRulePropertiesFormat();
         }
-        this.innerProperties().withFirewallPolicy(firewallPolicy);
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 

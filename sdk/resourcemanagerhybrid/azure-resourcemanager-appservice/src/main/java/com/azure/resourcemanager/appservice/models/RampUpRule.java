@@ -34,12 +34,11 @@ public final class RampUpRule {
     /*
      * In auto ramp up scenario this is the step to add/remove from
      * <code>ReroutePercentage</code> until it reaches
-     * \n<code>MinReroutePercentage</code> or
-     * <code>MaxReroutePercentage</code>. Site metrics are checked every N
-     * minutes specified in <code>ChangeIntervalInMinutes</code>.\nCustom
-     * decision algorithm
-     * can be provided in TiPCallback site extension which URL can be specified
-     * in <code>ChangeDecisionCallbackUrl</code>.
+     * <code>MinReroutePercentage</code> or <code>MaxReroutePercentage</code>.
+     * Site metrics are checked every N minutes specified in
+     * <code>ChangeIntervalInMinutes</code>.
+     * Custom decision algorithm can be provided in TiPCallback site extension
+     * which URL can be specified in <code>ChangeDecisionCallbackUrl</code>.
      */
     @JsonProperty(value = "changeStep")
     private Double changeStep;
@@ -124,9 +123,9 @@ public final class RampUpRule {
 
     /**
      * Get the changeStep property: In auto ramp up scenario this is the step to add/remove from
-     * &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches \n&lt;code&gt;MinReroutePercentage&lt;/code&gt; or
+     * &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches &lt;code&gt;MinReroutePercentage&lt;/code&gt; or
      * &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specified in
-     * &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.\nCustom decision algorithm can be provided in TiPCallback site
+     * &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;. Custom decision algorithm can be provided in TiPCallback site
      * extension which URL can be specified in &lt;code&gt;ChangeDecisionCallbackUrl&lt;/code&gt;.
      *
      * @return the changeStep value.
@@ -137,9 +136,9 @@ public final class RampUpRule {
 
     /**
      * Set the changeStep property: In auto ramp up scenario this is the step to add/remove from
-     * &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches \n&lt;code&gt;MinReroutePercentage&lt;/code&gt; or
+     * &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches &lt;code&gt;MinReroutePercentage&lt;/code&gt; or
      * &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specified in
-     * &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.\nCustom decision algorithm can be provided in TiPCallback site
+     * &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;. Custom decision algorithm can be provided in TiPCallback site
      * extension which URL can be specified in &lt;code&gt;ChangeDecisionCallbackUrl&lt;/code&gt;.
      *
      * @param changeStep the changeStep value to set.

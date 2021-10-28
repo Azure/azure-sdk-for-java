@@ -17,13 +17,13 @@ public final class VirtualWanSecurityProvidersInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualWanSecurityProvidersInner.class);
 
     /*
-     * List of VirtualWAN security providers.
+     * The supportedProviders property.
      */
     @JsonProperty(value = "supportedProviders")
     private List<VirtualWanSecurityProvider> supportedProviders;
 
     /**
-     * Get the supportedProviders property: List of VirtualWAN security providers.
+     * Get the supportedProviders property: The supportedProviders property.
      *
      * @return the supportedProviders value.
      */
@@ -32,7 +32,7 @@ public final class VirtualWanSecurityProvidersInner {
     }
 
     /**
-     * Set the supportedProviders property: List of VirtualWAN security providers.
+     * Set the supportedProviders property: The supportedProviders property.
      *
      * @param supportedProviders the supportedProviders value to set.
      * @return the VirtualWanSecurityProvidersInner object itself.

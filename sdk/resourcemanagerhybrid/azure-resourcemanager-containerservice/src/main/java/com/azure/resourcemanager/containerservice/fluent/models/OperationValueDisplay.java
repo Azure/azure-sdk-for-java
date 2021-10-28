@@ -9,13 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a Operation Value Display. */
+/** Describes the properties of a Compute Operation Value Display. */
 @Immutable
 public final class OperationValueDisplay {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationValueDisplay.class);
 
     /*
-     * The display name of the operation.
+     * The display name of the compute operation.
      */
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
@@ -39,7 +39,7 @@ public final class OperationValueDisplay {
     private String provider;
 
     /**
-     * Get the operation property: The display name of the operation.
+     * Get the operation property: The display name of the compute operation.
      *
      * @return the operation value.
      */

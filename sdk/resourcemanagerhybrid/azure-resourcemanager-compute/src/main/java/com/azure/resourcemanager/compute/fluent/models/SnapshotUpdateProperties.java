@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
-import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -48,30 +46,6 @@ public final class SnapshotUpdateProperties {
      */
     @JsonProperty(value = "encryption")
     private Encryption encryption;
-
-    /*
-     * Policy for accessing the disk via network.
-     */
-    @JsonProperty(value = "networkAccessPolicy")
-    private NetworkAccessPolicy networkAccessPolicy;
-
-    /*
-     * ARM id of the DiskAccess resource for using private endpoints on disks.
-     */
-    @JsonProperty(value = "diskAccessId")
-    private String diskAccessId;
-
-    /*
-     * Indicates the OS on a snapshot supports hibernation.
-     */
-    @JsonProperty(value = "supportsHibernation")
-    private Boolean supportsHibernation;
-
-    /*
-     * Policy for controlling export on the disk.
-     */
-    @JsonProperty(value = "publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
 
     /**
      * Get the osType property: the Operating System type.
@@ -161,86 +135,6 @@ public final class SnapshotUpdateProperties {
      */
     public SnapshotUpdateProperties withEncryption(Encryption encryption) {
         this.encryption = encryption;
-        return this;
-    }
-
-    /**
-     * Get the networkAccessPolicy property: Policy for accessing the disk via network.
-     *
-     * @return the networkAccessPolicy value.
-     */
-    public NetworkAccessPolicy networkAccessPolicy() {
-        return this.networkAccessPolicy;
-    }
-
-    /**
-     * Set the networkAccessPolicy property: Policy for accessing the disk via network.
-     *
-     * @param networkAccessPolicy the networkAccessPolicy value to set.
-     * @return the SnapshotUpdateProperties object itself.
-     */
-    public SnapshotUpdateProperties withNetworkAccessPolicy(NetworkAccessPolicy networkAccessPolicy) {
-        this.networkAccessPolicy = networkAccessPolicy;
-        return this;
-    }
-
-    /**
-     * Get the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
-     *
-     * @return the diskAccessId value.
-     */
-    public String diskAccessId() {
-        return this.diskAccessId;
-    }
-
-    /**
-     * Set the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
-     *
-     * @param diskAccessId the diskAccessId value to set.
-     * @return the SnapshotUpdateProperties object itself.
-     */
-    public SnapshotUpdateProperties withDiskAccessId(String diskAccessId) {
-        this.diskAccessId = diskAccessId;
-        return this;
-    }
-
-    /**
-     * Get the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
-     *
-     * @return the supportsHibernation value.
-     */
-    public Boolean supportsHibernation() {
-        return this.supportsHibernation;
-    }
-
-    /**
-     * Set the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
-     *
-     * @param supportsHibernation the supportsHibernation value to set.
-     * @return the SnapshotUpdateProperties object itself.
-     */
-    public SnapshotUpdateProperties withSupportsHibernation(Boolean supportsHibernation) {
-        this.supportsHibernation = supportsHibernation;
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Policy for controlling export on the disk.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Policy for controlling export on the disk.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the SnapshotUpdateProperties object itself.
-     */
-    public SnapshotUpdateProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 

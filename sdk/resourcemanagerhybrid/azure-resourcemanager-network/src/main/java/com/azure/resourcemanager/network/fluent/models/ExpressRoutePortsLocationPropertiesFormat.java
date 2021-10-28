@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsLocationBandwidths;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -36,10 +35,11 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
     private List<ExpressRoutePortsLocationBandwidths> availableBandwidths;
 
     /*
-     * The provisioning state of the express route port location resource.
+     * The provisioning state of the ExpressRoutePortLocation resource.
+     * Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the address property: Address of peering location.
@@ -81,11 +81,12 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route port location resource.
+     * Get the provisioningState property: The provisioning state of the ExpressRoutePortLocation resource. Possible
+     * values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

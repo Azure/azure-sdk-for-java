@@ -37,7 +37,7 @@ public final class TopologyInner {
     private OffsetDateTime lastModified;
 
     /*
-     * A list of topology resources.
+     * The resources property.
      */
     @JsonProperty(value = "resources")
     private List<TopologyResource> resources;
@@ -70,7 +70,7 @@ public final class TopologyInner {
     }
 
     /**
-     * Get the resources property: A list of topology resources.
+     * Get the resources property: The resources property.
      *
      * @return the resources value.
      */
@@ -79,7 +79,7 @@ public final class TopologyInner {
     }
 
     /**
-     * Set the resources property: A list of topology resources.
+     * Set the resources property: The resources property.
      *
      * @param resources the resources value to set.
      * @return the TopologyInner object itself.

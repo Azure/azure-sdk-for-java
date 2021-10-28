@@ -15,9 +15,6 @@ public enum RecordType {
     /** Enum value AAAA. */
     AAAA("AAAA"),
 
-    /** Enum value CAA. */
-    CAA("CAA"),
-
     /** Enum value CNAME. */
     CNAME("CNAME"),
 

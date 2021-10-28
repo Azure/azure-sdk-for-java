@@ -7,13 +7,10 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.models.VpnClientConfiguration;
-import com.azure.resourcemanager.network.models.VpnGatewayGeneration;
 import com.azure.resourcemanager.network.models.VpnType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,23 +28,18 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations;
 
     /*
-     * The type of this virtual network gateway.
+     * The type of this virtual network gateway. Possible values are: 'Vpn' and
+     * 'ExpressRoute'.
      */
     @JsonProperty(value = "gatewayType")
     private VirtualNetworkGatewayType gatewayType;
 
     /*
-     * The type of this virtual network gateway.
+     * The type of this virtual network gateway. Possible values are:
+     * 'PolicyBased' and 'RouteBased'.
      */
     @JsonProperty(value = "vpnType")
     private VpnType vpnType;
-
-    /*
-     * The generation for this VirtualNetworkGateway. Must be None if
-     * gatewayType is not VPN.
-     */
-    @JsonProperty(value = "vpnGatewayGeneration")
-    private VpnGatewayGeneration vpnGatewayGeneration;
 
     /*
      * Whether BGP is enabled for this virtual network gateway or not.
@@ -56,20 +48,13 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private Boolean enableBgp;
 
     /*
-     * Whether private IP needs to be enabled on this gateway for connections
-     * or not.
-     */
-    @JsonProperty(value = "enablePrivateIpAddress")
-    private Boolean enablePrivateIpAddress;
-
-    /*
-     * ActiveActive flag.
+     * ActiveActive flag
      */
     @JsonProperty(value = "activeActive")
     private Boolean active;
 
     /*
-     * The reference to the LocalNetworkGateway resource which represents local
+     * The reference of the LocalNetworkGateway resource which represents local
      * network site having default routes. Assign Null value in case of
      * removing existing default site setting.
      */
@@ -77,14 +62,14 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private SubResource gatewayDefaultSite;
 
     /*
-     * The reference to the VirtualNetworkGatewaySku resource which represents
+     * The reference of the VirtualNetworkGatewaySku resource which represents
      * the SKU selected for Virtual network gateway.
      */
     @JsonProperty(value = "sku")
     private VirtualNetworkGatewaySku sku;
 
     /*
-     * The reference to the VpnClientConfiguration resource which represents
+     * The reference of the VpnClientConfiguration resource which represents
      * the P2S VpnClient configurations.
      */
     @JsonProperty(value = "vpnClientConfiguration")
@@ -97,56 +82,17 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private BgpSettings bgpSettings;
 
     /*
-     * The reference to the address space resource which represents the custom
-     * routes address space specified by the customer for virtual network
-     * gateway and VpnClient.
+     * The resource GUID property of the VirtualNetworkGateway resource.
      */
-    @JsonProperty(value = "customRoutes")
-    private AddressSpace customRoutes;
-
-    /*
-     * The resource GUID property of the virtual network gateway resource.
-     */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resourceGuid")
     private String resourceGuid;
 
     /*
-     * The provisioning state of the virtual network gateway resource.
+     * The provisioning state of the VirtualNetworkGateway resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Whether dns forwarding is enabled or not.
-     */
-    @JsonProperty(value = "enableDnsForwarding")
-    private Boolean enableDnsForwarding;
-
-    /*
-     * The IP address allocated by the gateway to which dns requests can be
-     * sent.
-     */
-    @JsonProperty(value = "inboundDnsForwardingEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String inboundDnsForwardingEndpoint;
-
-    /*
-     * Customer vnet resource id. VirtualNetworkGateway of type local gateway
-     * is associated with the customer vnet.
-     */
-    @JsonProperty(value = "vNetExtendedLocationResourceId")
-    private String vNetExtendedLocationResourceId;
-
-    /*
-     * NatRules for virtual network gateway.
-     */
-    @JsonProperty(value = "natRules")
-    private List<VirtualNetworkGatewayNatRuleInner> natRules;
-
-    /*
-     * EnableBgpRouteTranslationForNat flag.
-     */
-    @JsonProperty(value = "enableBgpRouteTranslationForNat")
-    private Boolean enableBgpRouteTranslationForNat;
+    private String provisioningState;
 
     /**
      * Get the ipConfigurations property: IP configurations for virtual network gateway.
@@ -170,7 +116,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the gatewayType property: The type of this virtual network gateway.
+     * Get the gatewayType property: The type of this virtual network gateway. Possible values are: 'Vpn' and
+     * 'ExpressRoute'.
      *
      * @return the gatewayType value.
      */
@@ -179,7 +126,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the gatewayType property: The type of this virtual network gateway.
+     * Set the gatewayType property: The type of this virtual network gateway. Possible values are: 'Vpn' and
+     * 'ExpressRoute'.
      *
      * @param gatewayType the gatewayType value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
@@ -190,7 +138,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the vpnType property: The type of this virtual network gateway.
+     * Get the vpnType property: The type of this virtual network gateway. Possible values are: 'PolicyBased' and
+     * 'RouteBased'.
      *
      * @return the vpnType value.
      */
@@ -199,35 +148,14 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the vpnType property: The type of this virtual network gateway.
+     * Set the vpnType property: The type of this virtual network gateway. Possible values are: 'PolicyBased' and
+     * 'RouteBased'.
      *
      * @param vpnType the vpnType value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
      */
     public VirtualNetworkGatewayPropertiesFormat withVpnType(VpnType vpnType) {
         this.vpnType = vpnType;
-        return this;
-    }
-
-    /**
-     * Get the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if gatewayType
-     * is not VPN.
-     *
-     * @return the vpnGatewayGeneration value.
-     */
-    public VpnGatewayGeneration vpnGatewayGeneration() {
-        return this.vpnGatewayGeneration;
-    }
-
-    /**
-     * Set the vpnGatewayGeneration property: The generation for this VirtualNetworkGateway. Must be None if gatewayType
-     * is not VPN.
-     *
-     * @param vpnGatewayGeneration the vpnGatewayGeneration value to set.
-     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
-     */
-    public VirtualNetworkGatewayPropertiesFormat withVpnGatewayGeneration(VpnGatewayGeneration vpnGatewayGeneration) {
-        this.vpnGatewayGeneration = vpnGatewayGeneration;
         return this;
     }
 
@@ -252,28 +180,6 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the enablePrivateIpAddress property: Whether private IP needs to be enabled on this gateway for connections
-     * or not.
-     *
-     * @return the enablePrivateIpAddress value.
-     */
-    public Boolean enablePrivateIpAddress() {
-        return this.enablePrivateIpAddress;
-    }
-
-    /**
-     * Set the enablePrivateIpAddress property: Whether private IP needs to be enabled on this gateway for connections
-     * or not.
-     *
-     * @param enablePrivateIpAddress the enablePrivateIpAddress value to set.
-     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
-     */
-    public VirtualNetworkGatewayPropertiesFormat withEnablePrivateIpAddress(Boolean enablePrivateIpAddress) {
-        this.enablePrivateIpAddress = enablePrivateIpAddress;
-        return this;
-    }
-
-    /**
      * Get the active property: ActiveActive flag.
      *
      * @return the active value.
@@ -294,7 +200,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the gatewayDefaultSite property: The reference to the LocalNetworkGateway resource which represents local
+     * Get the gatewayDefaultSite property: The reference of the LocalNetworkGateway resource which represents local
      * network site having default routes. Assign Null value in case of removing existing default site setting.
      *
      * @return the gatewayDefaultSite value.
@@ -304,7 +210,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the gatewayDefaultSite property: The reference to the LocalNetworkGateway resource which represents local
+     * Set the gatewayDefaultSite property: The reference of the LocalNetworkGateway resource which represents local
      * network site having default routes. Assign Null value in case of removing existing default site setting.
      *
      * @param gatewayDefaultSite the gatewayDefaultSite value to set.
@@ -316,7 +222,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the sku property: The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected
+     * Get the sku property: The reference of the VirtualNetworkGatewaySku resource which represents the SKU selected
      * for Virtual network gateway.
      *
      * @return the sku value.
@@ -326,7 +232,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the sku property: The reference to the VirtualNetworkGatewaySku resource which represents the SKU selected
+     * Set the sku property: The reference of the VirtualNetworkGatewaySku resource which represents the SKU selected
      * for Virtual network gateway.
      *
      * @param sku the sku value to set.
@@ -338,7 +244,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the vpnClientConfiguration property: The reference to the VpnClientConfiguration resource which represents
+     * Get the vpnClientConfiguration property: The reference of the VpnClientConfiguration resource which represents
      * the P2S VpnClient configurations.
      *
      * @return the vpnClientConfiguration value.
@@ -348,7 +254,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the vpnClientConfiguration property: The reference to the VpnClientConfiguration resource which represents
+     * Set the vpnClientConfiguration property: The reference of the VpnClientConfiguration resource which represents
      * the P2S VpnClient configurations.
      *
      * @param vpnClientConfiguration the vpnClientConfiguration value to set.
@@ -381,29 +287,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the customRoutes property: The reference to the address space resource which represents the custom routes
-     * address space specified by the customer for virtual network gateway and VpnClient.
-     *
-     * @return the customRoutes value.
-     */
-    public AddressSpace customRoutes() {
-        return this.customRoutes;
-    }
-
-    /**
-     * Set the customRoutes property: The reference to the address space resource which represents the custom routes
-     * address space specified by the customer for virtual network gateway and VpnClient.
-     *
-     * @param customRoutes the customRoutes value to set.
-     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
-     */
-    public VirtualNetworkGatewayPropertiesFormat withCustomRoutes(AddressSpace customRoutes) {
-        this.customRoutes = customRoutes;
-        return this;
-    }
-
-    /**
-     * Get the resourceGuid property: The resource GUID property of the virtual network gateway resource.
+     * Get the resourceGuid property: The resource GUID property of the VirtualNetworkGateway resource.
      *
      * @return the resourceGuid value.
      */
@@ -412,106 +296,24 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the virtual network gateway resource.
+     * Set the resourceGuid property: The resource GUID property of the VirtualNetworkGateway resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withResourceGuid(String resourceGuid) {
+        this.resourceGuid = resourceGuid;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the VirtualNetworkGateway resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get the enableDnsForwarding property: Whether dns forwarding is enabled or not.
-     *
-     * @return the enableDnsForwarding value.
-     */
-    public Boolean enableDnsForwarding() {
-        return this.enableDnsForwarding;
-    }
-
-    /**
-     * Set the enableDnsForwarding property: Whether dns forwarding is enabled or not.
-     *
-     * @param enableDnsForwarding the enableDnsForwarding value to set.
-     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
-     */
-    public VirtualNetworkGatewayPropertiesFormat withEnableDnsForwarding(Boolean enableDnsForwarding) {
-        this.enableDnsForwarding = enableDnsForwarding;
-        return this;
-    }
-
-    /**
-     * Get the inboundDnsForwardingEndpoint property: The IP address allocated by the gateway to which dns requests can
-     * be sent.
-     *
-     * @return the inboundDnsForwardingEndpoint value.
-     */
-    public String inboundDnsForwardingEndpoint() {
-        return this.inboundDnsForwardingEndpoint;
-    }
-
-    /**
-     * Get the vNetExtendedLocationResourceId property: Customer vnet resource id. VirtualNetworkGateway of type local
-     * gateway is associated with the customer vnet.
-     *
-     * @return the vNetExtendedLocationResourceId value.
-     */
-    public String vNetExtendedLocationResourceId() {
-        return this.vNetExtendedLocationResourceId;
-    }
-
-    /**
-     * Set the vNetExtendedLocationResourceId property: Customer vnet resource id. VirtualNetworkGateway of type local
-     * gateway is associated with the customer vnet.
-     *
-     * @param vNetExtendedLocationResourceId the vNetExtendedLocationResourceId value to set.
-     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
-     */
-    public VirtualNetworkGatewayPropertiesFormat withVNetExtendedLocationResourceId(
-        String vNetExtendedLocationResourceId) {
-        this.vNetExtendedLocationResourceId = vNetExtendedLocationResourceId;
-        return this;
-    }
-
-    /**
-     * Get the natRules property: NatRules for virtual network gateway.
-     *
-     * @return the natRules value.
-     */
-    public List<VirtualNetworkGatewayNatRuleInner> natRules() {
-        return this.natRules;
-    }
-
-    /**
-     * Set the natRules property: NatRules for virtual network gateway.
-     *
-     * @param natRules the natRules value to set.
-     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
-     */
-    public VirtualNetworkGatewayPropertiesFormat withNatRules(List<VirtualNetworkGatewayNatRuleInner> natRules) {
-        this.natRules = natRules;
-        return this;
-    }
-
-    /**
-     * Get the enableBgpRouteTranslationForNat property: EnableBgpRouteTranslationForNat flag.
-     *
-     * @return the enableBgpRouteTranslationForNat value.
-     */
-    public Boolean enableBgpRouteTranslationForNat() {
-        return this.enableBgpRouteTranslationForNat;
-    }
-
-    /**
-     * Set the enableBgpRouteTranslationForNat property: EnableBgpRouteTranslationForNat flag.
-     *
-     * @param enableBgpRouteTranslationForNat the enableBgpRouteTranslationForNat value to set.
-     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
-     */
-    public VirtualNetworkGatewayPropertiesFormat withEnableBgpRouteTranslationForNat(
-        Boolean enableBgpRouteTranslationForNat) {
-        this.enableBgpRouteTranslationForNat = enableBgpRouteTranslationForNat;
-        return this;
     }
 
     /**
@@ -531,12 +333,6 @@ public final class VirtualNetworkGatewayPropertiesFormat {
         }
         if (bgpSettings() != null) {
             bgpSettings().validate();
-        }
-        if (customRoutes() != null) {
-            customRoutes().validate();
-        }
-        if (natRules() != null) {
-            natRules().forEach(e -> e.validate());
         }
     }
 }

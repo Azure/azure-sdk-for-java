@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes an available Compute SKU Location Information. */
+/** The ResourceSkuLocationInfo model. */
 @Immutable
 public final class ResourceSkuLocationInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuLocationInfo.class);
@@ -32,18 +32,6 @@ public final class ResourceSkuLocationInfo {
      */
     @JsonProperty(value = "zoneDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuZoneDetails> zoneDetails;
-
-    /*
-     * The names of extended locations.
-     */
-    @JsonProperty(value = "extendedLocations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> extendedLocations;
-
-    /*
-     * The type of the extended location.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private ExtendedLocationType type;
 
     /**
      * Get the location property: Location of the SKU.
@@ -70,24 +58,6 @@ public final class ResourceSkuLocationInfo {
      */
     public List<ResourceSkuZoneDetails> zoneDetails() {
         return this.zoneDetails;
-    }
-
-    /**
-     * Get the extendedLocations property: The names of extended locations.
-     *
-     * @return the extendedLocations value.
-     */
-    public List<String> extendedLocations() {
-        return this.extendedLocations;
-    }
-
-    /**
-     * Get the type property: The type of the extended location.
-     *
-     * @return the type value.
-     */
-    public ExtendedLocationType type() {
-        return this.type;
     }
 
     /**

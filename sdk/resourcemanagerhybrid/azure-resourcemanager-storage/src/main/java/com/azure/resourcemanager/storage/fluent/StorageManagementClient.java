@@ -66,13 +66,6 @@ public interface StorageManagementClient {
     StorageAccountsClient getStorageAccounts();
 
     /**
-     * Gets the DeletedAccountsClient object to access its operations.
-     *
-     * @return the DeletedAccountsClient object.
-     */
-    DeletedAccountsClient getDeletedAccounts();
-
-    /**
      * Gets the UsagesClient object to access its operations.
      *
      * @return the UsagesClient object.

@@ -17,9 +17,6 @@ public final class AzureFirewallApplicationRuleProtocolType
     /** Static value Https for AzureFirewallApplicationRuleProtocolType. */
     public static final AzureFirewallApplicationRuleProtocolType HTTPS = fromString("Https");
 
-    /** Static value Mssql for AzureFirewallApplicationRuleProtocolType. */
-    public static final AzureFirewallApplicationRuleProtocolType MSSQL = fromString("Mssql");
-
     /**
      * Creates or finds a AzureFirewallApplicationRuleProtocolType from its string representation.
      *

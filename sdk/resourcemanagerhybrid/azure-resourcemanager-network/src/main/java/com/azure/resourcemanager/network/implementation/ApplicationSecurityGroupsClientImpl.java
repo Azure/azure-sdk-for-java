@@ -78,7 +78,7 @@ public final class ApplicationSecurityGroupsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface ApplicationSecurityGroupsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/applicationSecurityGroups/{applicationSecurityGroupName}")
@@ -90,7 +90,6 @@ public final class ApplicationSecurityGroupsClientImpl
             @PathParam("applicationSecurityGroupName") String applicationSecurityGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -130,7 +129,7 @@ public final class ApplicationSecurityGroupsClientImpl
                 + "/applicationSecurityGroups/{applicationSecurityGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationSecurityGroupInner>> updateTags(
+        Mono<Response<Flux<ByteBuffer>>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("applicationSecurityGroupName") String applicationSecurityGroupName,
@@ -221,8 +220,7 @@ public final class ApplicationSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -233,7 +231,6 @@ public final class ApplicationSecurityGroupsClientImpl
                             applicationSecurityGroupName,
                             apiVersion,
                             this.client.getSubscriptionId(),
-                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -274,8 +271,7 @@ public final class ApplicationSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -284,7 +280,6 @@ public final class ApplicationSecurityGroupsClientImpl
                 applicationSecurityGroupName,
                 apiVersion,
                 this.client.getSubscriptionId(),
-                accept,
                 context);
     }
 
@@ -462,7 +457,7 @@ public final class ApplicationSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -515,7 +510,7 @@ public final class ApplicationSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -627,7 +622,7 @@ public final class ApplicationSecurityGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -690,7 +685,7 @@ public final class ApplicationSecurityGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -895,7 +890,7 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ApplicationSecurityGroupInner>> updateTagsWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -924,7 +919,7 @@ public final class ApplicationSecurityGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -955,7 +950,7 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationSecurityGroupInner>> updateTagsWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -984,7 +979,7 @@ public final class ApplicationSecurityGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1011,17 +1006,121 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTagsAsync(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters);
+        return this
+            .client
+            .<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ApplicationSecurityGroupInner.class,
+                ApplicationSecurityGroupInner.class,
+                Context.NONE);
+    }
+
+    /**
+     * Updates an application security group's tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTagsAsync(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters, context);
+        return this
+            .client
+            .<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ApplicationSecurityGroupInner.class,
+                ApplicationSecurityGroupInner.class,
+                context);
+    }
+
+    /**
+     * Updates an application security group's tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTags(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
+        return beginUpdateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Updates an application security group's tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTags(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates an application security group's tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationSecurityGroupInner> updateTagsAsync(
         String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
-        return updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters)
-            .flatMap(
-                (Response<ApplicationSecurityGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates an application security group's tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ApplicationSecurityGroupInner> updateTagsAsync(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1054,10 +1153,9 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationSecurityGroupInner> updateTagsWithResponse(
+    public ApplicationSecurityGroupInner updateTags(
         String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters, context)
-            .block();
+        return updateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters, context).block();
     }
 
     /**
@@ -1081,7 +1179,7 @@ public final class ApplicationSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1123,7 +1221,7 @@ public final class ApplicationSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1220,7 +1318,7 @@ public final class ApplicationSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1274,7 +1372,7 @@ public final class ApplicationSecurityGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

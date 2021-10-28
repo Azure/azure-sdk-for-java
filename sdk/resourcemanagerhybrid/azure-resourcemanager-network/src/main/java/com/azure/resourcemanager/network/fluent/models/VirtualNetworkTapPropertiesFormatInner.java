@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -24,27 +23,28 @@ public final class VirtualNetworkTapPropertiesFormatInner {
     private List<NetworkInterfaceTapConfigurationInner> networkInterfaceTapConfigurations;
 
     /*
-     * The resource GUID property of the virtual network tap resource.
+     * The resourceGuid property of the virtual network tap.
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
-     * The provisioning state of the virtual network tap resource.
+     * The provisioning state of the virtual network tap. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /*
      * The reference to the private IP Address of the collector nic that will
-     * receive the tap.
+     * receive the tap
      */
     @JsonProperty(value = "destinationNetworkInterfaceIPConfiguration")
     private NetworkInterfaceIpConfigurationInner destinationNetworkInterfaceIpConfiguration;
 
     /*
      * The reference to the private IP address on the internal Load Balancer
-     * that will receive the tap.
+     * that will receive the tap
      */
     @JsonProperty(value = "destinationLoadBalancerFrontEndIPConfiguration")
     private FrontendIpConfigurationInner destinationLoadBalancerFrontEndIpConfiguration;
@@ -66,7 +66,7 @@ public final class VirtualNetworkTapPropertiesFormatInner {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the virtual network tap resource.
+     * Get the resourceGuid property: The resourceGuid property of the virtual network tap.
      *
      * @return the resourceGuid value.
      */
@@ -75,11 +75,12 @@ public final class VirtualNetworkTapPropertiesFormatInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the virtual network tap resource.
+     * Get the provisioningState property: The provisioning state of the virtual network tap. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

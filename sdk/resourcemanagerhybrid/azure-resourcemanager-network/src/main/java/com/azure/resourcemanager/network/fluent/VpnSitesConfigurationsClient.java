@@ -25,7 +25,7 @@ public interface VpnSitesConfigurationsClient {
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -40,7 +40,7 @@ public interface VpnSitesConfigurationsClient {
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -55,7 +55,7 @@ public interface VpnSitesConfigurationsClient {
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -71,7 +71,7 @@ public interface VpnSitesConfigurationsClient {
      * @param request Parameters supplied to download vpn-sites configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -86,7 +86,7 @@ public interface VpnSitesConfigurationsClient {
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -100,7 +100,7 @@ public interface VpnSitesConfigurationsClient {
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -114,7 +114,7 @@ public interface VpnSitesConfigurationsClient {
      * @param request Parameters supplied to download vpn-sites configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

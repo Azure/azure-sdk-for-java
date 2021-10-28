@@ -23,7 +23,8 @@ public final class EffectiveNetworkSecurityRule {
     private String name;
 
     /*
-     * The network protocol this rule applies to.
+     * The network protocol this rule applies to. Possible values are: 'Tcp',
+     * 'Udp', and 'All'.
      */
     @JsonProperty(value = "protocol")
     private EffectiveSecurityRuleProtocol protocol;
@@ -43,7 +44,7 @@ public final class EffectiveNetworkSecurityRule {
     /*
      * The source port ranges. Expected values include a single integer between
      * 0 and 65535, a range using '-' as separator (e.g. 100-400), or an
-     * asterisk (*).
+     * asterisk (*)
      */
     @JsonProperty(value = "sourcePortRanges")
     private List<String> sourcePortRanges;
@@ -51,7 +52,7 @@ public final class EffectiveNetworkSecurityRule {
     /*
      * The destination port ranges. Expected values include a single integer
      * between 0 and 65535, a range using '-' as separator (e.g. 100-400), or
-     * an asterisk (*).
+     * an asterisk (*)
      */
     @JsonProperty(value = "destinationPortRanges")
     private List<String> destinationPortRanges;
@@ -97,7 +98,8 @@ public final class EffectiveNetworkSecurityRule {
     private List<String> expandedDestinationAddressPrefix;
 
     /*
-     * Whether network traffic is allowed or denied.
+     * Whether network traffic is allowed or denied. Possible values are:
+     * 'Allow' and 'Deny'.
      */
     @JsonProperty(value = "access")
     private SecurityRuleAccess access;
@@ -109,7 +111,7 @@ public final class EffectiveNetworkSecurityRule {
     private Integer priority;
 
     /*
-     * The direction of the rule.
+     * The direction of the rule. Possible values are: 'Inbound and Outbound'.
      */
     @JsonProperty(value = "direction")
     private SecurityRuleDirection direction;
@@ -135,7 +137,8 @@ public final class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the protocol property: The network protocol this rule applies to.
+     * Get the protocol property: The network protocol this rule applies to. Possible values are: 'Tcp', 'Udp', and
+     * 'All'.
      *
      * @return the protocol value.
      */
@@ -144,7 +147,8 @@ public final class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the protocol property: The network protocol this rule applies to.
+     * Set the protocol property: The network protocol this rule applies to. Possible values are: 'Tcp', 'Udp', and
+     * 'All'.
      *
      * @param protocol the protocol value to set.
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -364,7 +368,7 @@ public final class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the access property: Whether network traffic is allowed or denied.
+     * Get the access property: Whether network traffic is allowed or denied. Possible values are: 'Allow' and 'Deny'.
      *
      * @return the access value.
      */
@@ -373,7 +377,7 @@ public final class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the access property: Whether network traffic is allowed or denied.
+     * Set the access property: Whether network traffic is allowed or denied. Possible values are: 'Allow' and 'Deny'.
      *
      * @param access the access value to set.
      * @return the EffectiveNetworkSecurityRule object itself.
@@ -404,7 +408,7 @@ public final class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Get the direction property: The direction of the rule.
+     * Get the direction property: The direction of the rule. Possible values are: 'Inbound and Outbound'.
      *
      * @return the direction value.
      */
@@ -413,7 +417,7 @@ public final class EffectiveNetworkSecurityRule {
     }
 
     /**
-     * Set the direction property: The direction of the rule.
+     * Set the direction property: The direction of the rule. Possible values are: 'Inbound and Outbound'.
      *
      * @param direction the direction value to set.
      * @return the EffectiveNetworkSecurityRule object itself.

@@ -18,7 +18,7 @@ public final class AgentPoolUpgradeProfileProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolUpgradeProfileProperties.class);
 
     /*
-     * The Kubernetes version (major.minor.patch).
+     * Kubernetes version (major, minor, patch).
      */
     @JsonProperty(value = "kubernetesVersion", required = true)
     private String kubernetesVersion;
@@ -37,13 +37,13 @@ public final class AgentPoolUpgradeProfileProperties {
     private List<AgentPoolUpgradeProfilePropertiesUpgradesItem> upgrades;
 
     /*
-     * The latest AKS supported node image version.
+     * LatestNodeImageVersion is the latest AKS supported node image version.
      */
     @JsonProperty(value = "latestNodeImageVersion")
     private String latestNodeImageVersion;
 
     /**
-     * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
+     * Get the kubernetesVersion property: Kubernetes version (major, minor, patch).
      *
      * @return the kubernetesVersion value.
      */
@@ -52,7 +52,7 @@ public final class AgentPoolUpgradeProfileProperties {
     }
 
     /**
-     * Set the kubernetesVersion property: The Kubernetes version (major.minor.patch).
+     * Set the kubernetesVersion property: Kubernetes version (major, minor, patch).
      *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the AgentPoolUpgradeProfileProperties object itself.
@@ -104,7 +104,7 @@ public final class AgentPoolUpgradeProfileProperties {
     }
 
     /**
-     * Get the latestNodeImageVersion property: The latest AKS supported node image version.
+     * Get the latestNodeImageVersion property: LatestNodeImageVersion is the latest AKS supported node image version.
      *
      * @return the latestNodeImageVersion value.
      */
@@ -113,7 +113,7 @@ public final class AgentPoolUpgradeProfileProperties {
     }
 
     /**
-     * Set the latestNodeImageVersion property: The latest AKS supported node image version.
+     * Set the latestNodeImageVersion property: LatestNodeImageVersion is the latest AKS supported node image version.
      *
      * @param latestNodeImageVersion the latestNodeImageVersion value to set.
      * @return the AgentPoolUpgradeProfileProperties object itself.

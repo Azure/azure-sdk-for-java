@@ -15,13 +15,15 @@ public final class P2SVpnProfileParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnProfileParameters.class);
 
     /*
-     * VPN client authentication method.
+     * VPN client Authentication Method. Possible values are: 'EAPTLS' and
+     * 'EAPMSCHAPv2'.
      */
     @JsonProperty(value = "authenticationMethod")
     private AuthenticationMethod authenticationMethod;
 
     /**
-     * Get the authenticationMethod property: VPN client authentication method.
+     * Get the authenticationMethod property: VPN client Authentication Method. Possible values are: 'EAPTLS' and
+     * 'EAPMSCHAPv2'.
      *
      * @return the authenticationMethod value.
      */
@@ -30,7 +32,8 @@ public final class P2SVpnProfileParameters {
     }
 
     /**
-     * Set the authenticationMethod property: VPN client authentication method.
+     * Set the authenticationMethod property: VPN client Authentication Method. Possible values are: 'EAPTLS' and
+     * 'EAPMSCHAPv2'.
      *
      * @param authenticationMethod the authenticationMethod value to set.
      * @return the P2SVpnProfileParameters object itself.

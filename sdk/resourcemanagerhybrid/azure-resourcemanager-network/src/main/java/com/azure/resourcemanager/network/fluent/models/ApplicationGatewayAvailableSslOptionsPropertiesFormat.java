@@ -28,7 +28,7 @@ public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
 
     /*
      * Name of the Ssl predefined policy applied by default to application
-     * gateway.
+     * gateway
      */
     @JsonProperty(value = "defaultPolicy")
     private ApplicationGatewaySslPolicyName defaultPolicy;

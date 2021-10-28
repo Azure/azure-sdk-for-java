@@ -21,7 +21,7 @@ public final class ApplicationGatewayBackendAddress {
     private String fqdn;
 
     /*
-     * IP address.
+     * IP address
      */
     @JsonProperty(value = "ipAddress")
     private String ipAddress;

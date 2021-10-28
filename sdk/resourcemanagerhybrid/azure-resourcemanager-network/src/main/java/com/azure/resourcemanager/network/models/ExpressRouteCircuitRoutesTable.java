@@ -15,20 +15,20 @@ public final class ExpressRouteCircuitRoutesTable {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitRoutesTable.class);
 
     /*
-     * IP address of a network entity.
+     * IP address of a network entity
      */
     @JsonProperty(value = "network")
     private String network;
 
     /*
-     * NextHop address.
+     * NextHop address
      */
     @JsonProperty(value = "nextHop")
     private String nextHop;
 
     /*
      * Local preference value as set with the set local-preference route-map
-     * configuration command.
+     * configuration command
      */
     @JsonProperty(value = "locPrf")
     private String locPrf;

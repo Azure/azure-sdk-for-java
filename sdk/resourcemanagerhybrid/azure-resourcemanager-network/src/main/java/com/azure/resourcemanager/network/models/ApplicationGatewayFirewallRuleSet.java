@@ -19,7 +19,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallRuleSet.class);
 
     /*
-     * Properties of the application gateway firewall rule set.
+     * Properties of the web application firewall rule set.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayFirewallRuleSetPropertiesFormat innerProperties;
@@ -31,7 +31,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway firewall rule set.
+     * Get the innerProperties property: Properties of the web application firewall rule set.
      *
      * @return the innerProperties value.
      */
@@ -78,8 +78,22 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the web application firewall rule set.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayFirewallRuleSet object itself.
+     */
+    public ApplicationGatewayFirewallRuleSet withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayFirewallRuleSetPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

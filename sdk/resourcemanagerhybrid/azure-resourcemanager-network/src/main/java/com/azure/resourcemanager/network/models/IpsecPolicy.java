@@ -53,13 +53,13 @@ public final class IpsecPolicy {
     private IkeIntegrity ikeIntegrity;
 
     /*
-     * The DH Group used in IKE Phase 1 for initial SA.
+     * The DH Groups used in IKE Phase 1 for initial SA.
      */
     @JsonProperty(value = "dhGroup", required = true)
     private DhGroup dhGroup;
 
     /*
-     * The Pfs Group used in IKE Phase 2 for new child SA.
+     * The Pfs Groups used in IKE Phase 2 for new child SA.
      */
     @JsonProperty(value = "pfsGroup", required = true)
     private PfsGroup pfsGroup;
@@ -189,7 +189,7 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Get the dhGroup property: The DH Group used in IKE Phase 1 for initial SA.
+     * Get the dhGroup property: The DH Groups used in IKE Phase 1 for initial SA.
      *
      * @return the dhGroup value.
      */
@@ -198,7 +198,7 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Set the dhGroup property: The DH Group used in IKE Phase 1 for initial SA.
+     * Set the dhGroup property: The DH Groups used in IKE Phase 1 for initial SA.
      *
      * @param dhGroup the dhGroup value to set.
      * @return the IpsecPolicy object itself.
@@ -209,7 +209,7 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Get the pfsGroup property: The Pfs Group used in IKE Phase 2 for new child SA.
+     * Get the pfsGroup property: The Pfs Groups used in IKE Phase 2 for new child SA.
      *
      * @return the pfsGroup value.
      */
@@ -218,7 +218,7 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Set the pfsGroup property: The Pfs Group used in IKE Phase 2 for new child SA.
+     * Set the pfsGroup property: The Pfs Groups used in IKE Phase 2 for new child SA.
      *
      * @param pfsGroup the pfsGroup value to set.
      * @return the IpsecPolicy object itself.

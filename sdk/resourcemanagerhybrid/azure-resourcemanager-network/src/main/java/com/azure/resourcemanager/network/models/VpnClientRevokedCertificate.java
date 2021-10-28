@@ -32,7 +32,7 @@ public final class VpnClientRevokedCertificate extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /**
@@ -75,6 +75,17 @@ public final class VpnClientRevokedCertificate extends SubResource {
         return this.etag;
     }
 
+    /**
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the VpnClientRevokedCertificate object itself.
+     */
+    public VpnClientRevokedCertificate withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public VpnClientRevokedCertificate withId(String id) {
@@ -107,10 +118,11 @@ public final class VpnClientRevokedCertificate extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN client revoked certificate resource.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

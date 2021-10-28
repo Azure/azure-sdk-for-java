@@ -25,7 +25,7 @@ public final class ApplicationGatewaySslPredefinedPolicyInner extends SubResourc
     private String name;
 
     /*
-     * Properties of the application gateway SSL predefined policy.
+     * Properties of ApplicationGatewaySslPredefinedPolicy
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewaySslPredefinedPolicyPropertiesFormat innerProperties;
@@ -51,7 +51,7 @@ public final class ApplicationGatewaySslPredefinedPolicyInner extends SubResourc
     }
 
     /**
-     * Get the innerProperties property: Properties of the application gateway SSL predefined policy.
+     * Get the innerProperties property: Properties of ApplicationGatewaySslPredefinedPolicy.
      *
      * @return the innerProperties value.
      */

@@ -16,9 +16,10 @@ public final class ManagedDiskParameters extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedDiskParameters.class);
 
     /*
-     * Specifies the storage account type for the managed disk. NOTE:
-     * UltraSSD_LRS can only be used with data disks, it cannot be used with OS
-     * Disk.
+     * Specifies the storage account type for the managed disk. Managed OS disk
+     * storage account type can only be set when you create the scale set.
+     * NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used
+     * with OS Disk.
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountTypes storageAccountType;
@@ -31,8 +32,9 @@ public final class ManagedDiskParameters extends SubResource {
     private DiskEncryptionSetParameters diskEncryptionSet;
 
     /**
-     * Get the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
-     * can only be used with data disks, it cannot be used with OS Disk.
+     * Get the storageAccountType property: Specifies the storage account type for the managed disk. Managed OS disk
+     * storage account type can only be set when you create the scale set. NOTE: UltraSSD_LRS can only be used with data
+     * disks, it cannot be used with OS Disk.
      *
      * @return the storageAccountType value.
      */
@@ -41,8 +43,9 @@ public final class ManagedDiskParameters extends SubResource {
     }
 
     /**
-     * Set the storageAccountType property: Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS
-     * can only be used with data disks, it cannot be used with OS Disk.
+     * Set the storageAccountType property: Specifies the storage account type for the managed disk. Managed OS disk
+     * storage account type can only be set when you create the scale set. NOTE: UltraSSD_LRS can only be used with data
+     * disks, it cannot be used with OS Disk.
      *
      * @param storageAccountType the storageAccountType value to set.
      * @return the ManagedDiskParameters object itself.

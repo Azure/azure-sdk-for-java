@@ -73,7 +73,8 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
     }
 
     /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
+     * This API is deprecated. Use [Resources
+     * Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +99,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -119,7 +120,8 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
     }
 
     /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
+     * This API is deprecated. Use [Resources
+     * Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.
@@ -145,7 +147,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2020-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -157,7 +159,8 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
     }
 
     /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
+     * This API is deprecated. Use [Resources
+     * Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,7 +174,8 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
     }
 
     /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
+     * This API is deprecated. Use [Resources
+     * Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.
@@ -186,7 +190,8 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
     }
 
     /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
+     * This API is deprecated. Use [Resources
+     * Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,7 +205,8 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
     }
 
     /**
-     * This API is deprecated. Use [Resources Skus](https://docs.microsoft.com/rest/api/compute/resourceskus/list).
+     * This API is deprecated. Use [Resources
+     * Skus](https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list).
      *
      * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.

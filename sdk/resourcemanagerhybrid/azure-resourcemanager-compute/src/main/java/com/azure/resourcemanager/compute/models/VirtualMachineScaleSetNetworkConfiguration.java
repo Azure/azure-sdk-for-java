@@ -235,29 +235,6 @@ public final class VirtualMachineScaleSetNetworkConfiguration extends SubResourc
     }
 
     /**
-     * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
-     * @return the deleteOption value.
-     */
-    public DeleteOptions deleteOption() {
-        return this.innerProperties() == null ? null : this.innerProperties().deleteOption();
-    }
-
-    /**
-     * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
-     * @param deleteOption the deleteOption value to set.
-     * @return the VirtualMachineScaleSetNetworkConfiguration object itself.
-     */
-    public VirtualMachineScaleSetNetworkConfiguration withDeleteOption(DeleteOptions deleteOption) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualMachineScaleSetNetworkConfigurationProperties();
-        }
-        this.innerProperties().withDeleteOption(deleteOption);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

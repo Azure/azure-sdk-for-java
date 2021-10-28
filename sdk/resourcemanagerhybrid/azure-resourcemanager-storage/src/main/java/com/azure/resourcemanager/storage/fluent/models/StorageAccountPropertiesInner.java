@@ -13,14 +13,11 @@ import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Endpoints;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
-import com.azure.resourcemanager.storage.models.KeyCreationTime;
-import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
-import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -95,24 +92,6 @@ public final class StorageAccountPropertiesInner {
      */
     @JsonProperty(value = "customDomain", access = JsonProperty.Access.WRITE_ONLY)
     private CustomDomain customDomain;
-
-    /*
-     * SasPolicy assigned to the storage account.
-     */
-    @JsonProperty(value = "sasPolicy", access = JsonProperty.Access.WRITE_ONLY)
-    private SasPolicy sasPolicy;
-
-    /*
-     * KeyPolicy assigned to the storage account.
-     */
-    @JsonProperty(value = "keyPolicy", access = JsonProperty.Access.WRITE_ONLY)
-    private KeyPolicy keyPolicy;
-
-    /*
-     * Storage account keys creation time.
-     */
-    @JsonProperty(value = "keyCreationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private KeyCreationTime keyCreationTime;
 
     /*
      * Gets the URLs that are used to perform a retrieval of a public blob,
@@ -224,19 +203,6 @@ public final class StorageAccountPropertiesInner {
     @JsonProperty(value = "allowSharedKeyAccess")
     private Boolean allowSharedKeyAccess;
 
-    /*
-     * NFS 3.0 protocol support enabled if set to true.
-     */
-    @JsonProperty(value = "isNfsV3Enabled")
-    private Boolean enableNfsV3;
-
-    /*
-     * Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     */
-    @JsonProperty(value = "allowCrossTenantReplication")
-    private Boolean allowCrossTenantReplication;
-
     /**
      * Get the provisioningState property: Gets the status of the storage account at the time the operation was called.
      *
@@ -322,33 +288,6 @@ public final class StorageAccountPropertiesInner {
      */
     public CustomDomain customDomain() {
         return this.customDomain;
-    }
-
-    /**
-     * Get the sasPolicy property: SasPolicy assigned to the storage account.
-     *
-     * @return the sasPolicy value.
-     */
-    public SasPolicy sasPolicy() {
-        return this.sasPolicy;
-    }
-
-    /**
-     * Get the keyPolicy property: KeyPolicy assigned to the storage account.
-     *
-     * @return the keyPolicy value.
-     */
-    public KeyPolicy keyPolicy() {
-        return this.keyPolicy;
-    }
-
-    /**
-     * Get the keyCreationTime property: Storage account keys creation time.
-     *
-     * @return the keyCreationTime value.
-     */
-    public KeyCreationTime keyCreationTime() {
-        return this.keyCreationTime;
     }
 
     /**
@@ -605,48 +544,6 @@ public final class StorageAccountPropertiesInner {
     }
 
     /**
-     * Get the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
-     * @return the enableNfsV3 value.
-     */
-    public Boolean enableNfsV3() {
-        return this.enableNfsV3;
-    }
-
-    /**
-     * Set the enableNfsV3 property: NFS 3.0 protocol support enabled if set to true.
-     *
-     * @param enableNfsV3 the enableNfsV3 value to set.
-     * @return the StorageAccountPropertiesInner object itself.
-     */
-    public StorageAccountPropertiesInner withEnableNfsV3(Boolean enableNfsV3) {
-        this.enableNfsV3 = enableNfsV3;
-        return this;
-    }
-
-    /**
-     * Get the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @return the allowCrossTenantReplication value.
-     */
-    public Boolean allowCrossTenantReplication() {
-        return this.allowCrossTenantReplication;
-    }
-
-    /**
-     * Set the allowCrossTenantReplication property: Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
-     *
-     * @param allowCrossTenantReplication the allowCrossTenantReplication value to set.
-     * @return the StorageAccountPropertiesInner object itself.
-     */
-    public StorageAccountPropertiesInner withAllowCrossTenantReplication(Boolean allowCrossTenantReplication) {
-        this.allowCrossTenantReplication = allowCrossTenantReplication;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -657,15 +554,6 @@ public final class StorageAccountPropertiesInner {
         }
         if (customDomain() != null) {
             customDomain().validate();
-        }
-        if (sasPolicy() != null) {
-            sasPolicy().validate();
-        }
-        if (keyPolicy() != null) {
-            keyPolicy().validate();
-        }
-        if (keyCreationTime() != null) {
-            keyCreationTime().validate();
         }
         if (secondaryEndpoints() != null) {
             secondaryEndpoints().validate();

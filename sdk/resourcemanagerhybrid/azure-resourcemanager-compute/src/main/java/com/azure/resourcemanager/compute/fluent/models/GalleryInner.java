@@ -9,8 +9,6 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryPropertiesProvisioningState;
-import com.azure.resourcemanager.compute.models.SharingProfile;
-import com.azure.resourcemanager.compute.models.SoftDeletePolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -103,52 +101,6 @@ public final class GalleryInner extends Resource {
      */
     public GalleryPropertiesProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
-     * @return the sharingProfile value.
-     */
-    public SharingProfile sharingProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().sharingProfile();
-    }
-
-    /**
-     * Set the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
-     * @param sharingProfile the sharingProfile value to set.
-     * @return the GalleryInner object itself.
-     */
-    public GalleryInner withSharingProfile(SharingProfile sharingProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new GalleryProperties();
-        }
-        this.innerProperties().withSharingProfile(sharingProfile);
-        return this;
-    }
-
-    /**
-     * Get the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
-     * @return the softDeletePolicy value.
-     */
-    public SoftDeletePolicy softDeletePolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().softDeletePolicy();
-    }
-
-    /**
-     * Set the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
-     * @param softDeletePolicy the softDeletePolicy value to set.
-     * @return the GalleryInner object itself.
-     */
-    public GalleryInner withSoftDeletePolicy(SoftDeletePolicy softDeletePolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new GalleryProperties();
-        }
-        this.innerProperties().withSoftDeletePolicy(softDeletePolicy);
-        return this;
     }
 
     /**

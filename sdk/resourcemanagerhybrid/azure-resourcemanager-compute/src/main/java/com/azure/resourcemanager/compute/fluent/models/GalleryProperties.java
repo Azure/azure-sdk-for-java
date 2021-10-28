@@ -8,8 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryPropertiesProvisioningState;
-import com.azure.resourcemanager.compute.models.SharingProfile;
-import com.azure.resourcemanager.compute.models.SoftDeletePolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -37,18 +35,6 @@ public final class GalleryProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryPropertiesProvisioningState provisioningState;
-
-    /*
-     * Profile for gallery sharing to subscription or tenant
-     */
-    @JsonProperty(value = "sharingProfile")
-    private SharingProfile sharingProfile;
-
-    /*
-     * Contains information about the soft deletion policy of the gallery.
-     */
-    @JsonProperty(value = "softDeletePolicy")
-    private SoftDeletePolicy softDeletePolicy;
 
     /**
      * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
@@ -101,46 +87,6 @@ public final class GalleryProperties {
     }
 
     /**
-     * Get the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
-     * @return the sharingProfile value.
-     */
-    public SharingProfile sharingProfile() {
-        return this.sharingProfile;
-    }
-
-    /**
-     * Set the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
-     * @param sharingProfile the sharingProfile value to set.
-     * @return the GalleryProperties object itself.
-     */
-    public GalleryProperties withSharingProfile(SharingProfile sharingProfile) {
-        this.sharingProfile = sharingProfile;
-        return this;
-    }
-
-    /**
-     * Get the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
-     * @return the softDeletePolicy value.
-     */
-    public SoftDeletePolicy softDeletePolicy() {
-        return this.softDeletePolicy;
-    }
-
-    /**
-     * Set the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
-     * @param softDeletePolicy the softDeletePolicy value to set.
-     * @return the GalleryProperties object itself.
-     */
-    public GalleryProperties withSoftDeletePolicy(SoftDeletePolicy softDeletePolicy) {
-        this.softDeletePolicy = softDeletePolicy;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -148,12 +94,6 @@ public final class GalleryProperties {
     public void validate() {
         if (identifier() != null) {
             identifier().validate();
-        }
-        if (sharingProfile() != null) {
-            sharingProfile().validate();
-        }
-        if (softDeletePolicy() != null) {
-            softDeletePolicy().validate();
         }
     }
 }

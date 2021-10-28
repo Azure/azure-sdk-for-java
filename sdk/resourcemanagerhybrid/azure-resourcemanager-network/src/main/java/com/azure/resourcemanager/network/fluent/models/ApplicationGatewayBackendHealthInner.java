@@ -11,19 +11,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ApplicationGatewayBackendHealth API service call. */
+/** List of ApplicationGatewayBackendHealthPool resources. */
 @Fluent
 public final class ApplicationGatewayBackendHealthInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthInner.class);
 
     /*
-     * A list of ApplicationGatewayBackendHealthPool resources.
+     * The backendAddressPools property.
      */
     @JsonProperty(value = "backendAddressPools")
     private List<ApplicationGatewayBackendHealthPool> backendAddressPools;
 
     /**
-     * Get the backendAddressPools property: A list of ApplicationGatewayBackendHealthPool resources.
+     * Get the backendAddressPools property: The backendAddressPools property.
      *
      * @return the backendAddressPools value.
      */
@@ -32,7 +32,7 @@ public final class ApplicationGatewayBackendHealthInner {
     }
 
     /**
-     * Set the backendAddressPools property: A list of ApplicationGatewayBackendHealthPool resources.
+     * Set the backendAddressPools property: The backendAddressPools property.
      *
      * @param backendAddressPools the backendAddressPools value to set.
      * @return the ApplicationGatewayBackendHealthInner object itself.

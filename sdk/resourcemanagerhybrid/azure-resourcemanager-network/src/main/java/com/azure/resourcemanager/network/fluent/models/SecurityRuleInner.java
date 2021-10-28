@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
@@ -21,7 +20,7 @@ public final class SecurityRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRuleInner.class);
 
     /*
-     * Properties of the security rule.
+     * Properties of the security rule
      */
     @JsonProperty(value = "properties")
     private SecurityRulePropertiesFormat innerProperties;
@@ -36,14 +35,8 @@ public final class SecurityRuleInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * The type of the resource.
-     */
-    @JsonProperty(value = "type")
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of the security rule.
@@ -86,22 +79,13 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: The type of the resource.
-     *
-     * @param type the type value to set.
+     * @param etag the etag value to set.
      * @return the SecurityRuleInner object itself.
      */
-    public SecurityRuleInner withType(String type) {
-        this.type = type;
+    public SecurityRuleInner withEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 
@@ -136,7 +120,7 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the protocol property: Network protocol this rule applies to.
+     * Get the protocol property: Network protocol this rule applies to. Possible values are 'Tcp', 'Udp', and '*'.
      *
      * @return the protocol value.
      */
@@ -145,7 +129,7 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Set the protocol property: Network protocol this rule applies to.
+     * Set the protocol property: Network protocol this rule applies to. Possible values are 'Tcp', 'Udp', and '*'.
      *
      * @param protocol the protocol value to set.
      * @return the SecurityRuleInner object itself.
@@ -159,7 +143,7 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the sourcePortRange property: The source port or range. Integer or range between 0 and 65535. Asterisk '*'
+     * Get the sourcePortRange property: The source port or range. Integer or range between 0 and 65535. Asterisks '*'
      * can also be used to match all ports.
      *
      * @return the sourcePortRange value.
@@ -169,7 +153,7 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Set the sourcePortRange property: The source port or range. Integer or range between 0 and 65535. Asterisk '*'
+     * Set the sourcePortRange property: The source port or range. Integer or range between 0 and 65535. Asterisks '*'
      * can also be used to match all ports.
      *
      * @param sourcePortRange the sourcePortRange value to set.
@@ -185,7 +169,7 @@ public final class SecurityRuleInner extends SubResource {
 
     /**
      * Get the destinationPortRange property: The destination port or range. Integer or range between 0 and 65535.
-     * Asterisk '*' can also be used to match all ports.
+     * Asterisks '*' can also be used to match all ports.
      *
      * @return the destinationPortRange value.
      */
@@ -195,7 +179,7 @@ public final class SecurityRuleInner extends SubResource {
 
     /**
      * Set the destinationPortRange property: The destination port or range. Integer or range between 0 and 65535.
-     * Asterisk '*' can also be used to match all ports.
+     * Asterisks '*' can also be used to match all ports.
      *
      * @param destinationPortRange the destinationPortRange value to set.
      * @return the SecurityRuleInner object itself.
@@ -209,7 +193,7 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the sourceAddressPrefix property: The CIDR or source IP range. Asterisk '*' can also be used to match all
+     * Get the sourceAddressPrefix property: The CIDR or source IP range. Asterisks '*' can also be used to match all
      * source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this
      * is an ingress rule, specifies where network traffic originates from.
      *
@@ -220,7 +204,7 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Set the sourceAddressPrefix property: The CIDR or source IP range. Asterisk '*' can also be used to match all
+     * Set the sourceAddressPrefix property: The CIDR or source IP range. Asterisks '*' can also be used to match all
      * source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this
      * is an ingress rule, specifies where network traffic originates from.
      *
@@ -283,9 +267,9 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range. Asterisk
-     * '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and
-     * 'Internet' can also be used.
+     * Get the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range.
+     * Asterisks '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork',
+     * 'AzureLoadBalancer' and 'Internet' can also be used.
      *
      * @return the destinationAddressPrefix value.
      */
@@ -294,9 +278,9 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Set the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range. Asterisk
-     * '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and
-     * 'Internet' can also be used.
+     * Set the destinationAddressPrefix property: The destination address prefix. CIDR or destination IP range.
+     * Asterisks '*' can also be used to match all source IPs. Default tags such as 'VirtualNetwork',
+     * 'AzureLoadBalancer' and 'Internet' can also be used.
      *
      * @param destinationAddressPrefix the destinationAddressPrefix value to set.
      * @return the SecurityRuleInner object itself.
@@ -403,7 +387,7 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the access property: The network traffic is allowed or denied.
+     * Get the access property: The network traffic is allowed or denied. Possible values are: 'Allow' and 'Deny'.
      *
      * @return the access value.
      */
@@ -412,7 +396,7 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Set the access property: The network traffic is allowed or denied.
+     * Set the access property: The network traffic is allowed or denied. Possible values are: 'Allow' and 'Deny'.
      *
      * @param access the access value to set.
      * @return the SecurityRuleInner object itself.
@@ -454,7 +438,7 @@ public final class SecurityRuleInner extends SubResource {
 
     /**
      * Get the direction property: The direction of the rule. The direction specifies if rule will be evaluated on
-     * incoming or outgoing traffic.
+     * incoming or outgoing traffic. Possible values are: 'Inbound' and 'Outbound'.
      *
      * @return the direction value.
      */
@@ -464,7 +448,7 @@ public final class SecurityRuleInner extends SubResource {
 
     /**
      * Set the direction property: The direction of the rule. The direction specifies if rule will be evaluated on
-     * incoming or outgoing traffic.
+     * incoming or outgoing traffic. Possible values are: 'Inbound' and 'Outbound'.
      *
      * @param direction the direction value to set.
      * @return the SecurityRuleInner object itself.
@@ -478,12 +462,28 @@ public final class SecurityRuleInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the security rule resource.
+     * Get the provisioningState property: The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the SecurityRuleInner object itself.
+     */
+    public SecurityRuleInner withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityRulePropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
     }
 
     /**

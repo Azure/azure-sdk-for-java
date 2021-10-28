@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,7 +17,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyDefinitionInner.class);
 
     /*
-     * Properties of the service endpoint policy definition.
+     * Properties of the service endpoint policy definition
      */
     @JsonProperty(value = "properties")
     private ServiceEndpointPolicyDefinitionPropertiesFormat innerProperties;
@@ -33,14 +32,8 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * The type of the resource.
-     */
-    @JsonProperty(value = "type")
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of the service endpoint policy definition.
@@ -83,22 +76,13 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: The type of the resource.
-     *
-     * @param type the type value to set.
+     * @param etag the etag value to set.
      * @return the ServiceEndpointPolicyDefinitionInner object itself.
      */
-    public ServiceEndpointPolicyDefinitionInner withType(String type) {
-        this.type = type;
+    public ServiceEndpointPolicyDefinitionInner withEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 
@@ -133,7 +117,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     }
 
     /**
-     * Get the service property: Service endpoint name.
+     * Get the service property: service endpoint name.
      *
      * @return the service value.
      */
@@ -142,7 +126,7 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     }
 
     /**
-     * Set the service property: Service endpoint name.
+     * Set the service property: service endpoint name.
      *
      * @param service the service value to set.
      * @return the ServiceEndpointPolicyDefinitionInner object itself.
@@ -179,11 +163,12 @@ public final class ServiceEndpointPolicyDefinitionInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the service endpoint policy definition resource.
+     * Get the provisioningState property: The provisioning state of the service end point policy definition. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

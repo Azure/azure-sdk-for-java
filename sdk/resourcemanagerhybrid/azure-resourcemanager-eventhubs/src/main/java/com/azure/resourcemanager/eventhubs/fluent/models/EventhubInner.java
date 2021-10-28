@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.CaptureDescription;
@@ -16,54 +15,24 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Single item in List or Get Event Hub operation. */
-@JsonFlatten
 @Fluent
-public class EventhubInner extends ProxyResource {
+public final class EventhubInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EventhubInner.class);
 
     /*
-     * Current number of shards on the Event Hub.
+     * Properties supplied to the Create Or Update Event Hub operation.
      */
-    @JsonProperty(value = "properties.partitionIds", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> partitionIds;
+    @JsonProperty(value = "properties")
+    private EventhubProperties innerProperties;
 
-    /*
-     * Exact time the Event Hub was created.
+    /**
+     * Get the innerProperties property: Properties supplied to the Create Or Update Event Hub operation.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
-
-    /*
-     * The exact time the message was updated.
-     */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
-
-    /*
-     * Number of days to retain the events for this Event Hub, value should be
-     * 1 to 7 days
-     */
-    @JsonProperty(value = "properties.messageRetentionInDays")
-    private Long messageRetentionInDays;
-
-    /*
-     * Number of partitions created for the Event Hub, allowed values are from
-     * 1 to 32 partitions.
-     */
-    @JsonProperty(value = "properties.partitionCount")
-    private Long partitionCount;
-
-    /*
-     * Enumerates the possible values for the status of the Event Hub.
-     */
-    @JsonProperty(value = "properties.status")
-    private EntityStatus status;
-
-    /*
-     * Properties of capture description
-     */
-    @JsonProperty(value = "properties.captureDescription")
-    private CaptureDescription captureDescription;
+    private EventhubProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the partitionIds property: Current number of shards on the Event Hub.
@@ -71,7 +40,7 @@ public class EventhubInner extends ProxyResource {
      * @return the partitionIds value.
      */
     public List<String> partitionIds() {
-        return this.partitionIds;
+        return this.innerProperties() == null ? null : this.innerProperties().partitionIds();
     }
 
     /**
@@ -80,7 +49,7 @@ public class EventhubInner extends ProxyResource {
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
-        return this.createdAt;
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
     }
 
     /**
@@ -89,7 +58,7 @@ public class EventhubInner extends ProxyResource {
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
-        return this.updatedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
     }
 
     /**
@@ -99,7 +68,7 @@ public class EventhubInner extends ProxyResource {
      * @return the messageRetentionInDays value.
      */
     public Long messageRetentionInDays() {
-        return this.messageRetentionInDays;
+        return this.innerProperties() == null ? null : this.innerProperties().messageRetentionInDays();
     }
 
     /**
@@ -110,7 +79,10 @@ public class EventhubInner extends ProxyResource {
      * @return the EventhubInner object itself.
      */
     public EventhubInner withMessageRetentionInDays(Long messageRetentionInDays) {
-        this.messageRetentionInDays = messageRetentionInDays;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventhubProperties();
+        }
+        this.innerProperties().withMessageRetentionInDays(messageRetentionInDays);
         return this;
     }
 
@@ -121,7 +93,7 @@ public class EventhubInner extends ProxyResource {
      * @return the partitionCount value.
      */
     public Long partitionCount() {
-        return this.partitionCount;
+        return this.innerProperties() == null ? null : this.innerProperties().partitionCount();
     }
 
     /**
@@ -132,7 +104,10 @@ public class EventhubInner extends ProxyResource {
      * @return the EventhubInner object itself.
      */
     public EventhubInner withPartitionCount(Long partitionCount) {
-        this.partitionCount = partitionCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventhubProperties();
+        }
+        this.innerProperties().withPartitionCount(partitionCount);
         return this;
     }
 
@@ -142,7 +117,7 @@ public class EventhubInner extends ProxyResource {
      * @return the status value.
      */
     public EntityStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -152,7 +127,10 @@ public class EventhubInner extends ProxyResource {
      * @return the EventhubInner object itself.
      */
     public EventhubInner withStatus(EntityStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventhubProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -162,7 +140,7 @@ public class EventhubInner extends ProxyResource {
      * @return the captureDescription value.
      */
     public CaptureDescription captureDescription() {
-        return this.captureDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().captureDescription();
     }
 
     /**
@@ -172,7 +150,10 @@ public class EventhubInner extends ProxyResource {
      * @return the EventhubInner object itself.
      */
     public EventhubInner withCaptureDescription(CaptureDescription captureDescription) {
-        this.captureDescription = captureDescription;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventhubProperties();
+        }
+        this.innerProperties().withCaptureDescription(captureDescription);
         return this;
     }
 
@@ -182,8 +163,8 @@ public class EventhubInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (captureDescription() != null) {
-            captureDescription().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

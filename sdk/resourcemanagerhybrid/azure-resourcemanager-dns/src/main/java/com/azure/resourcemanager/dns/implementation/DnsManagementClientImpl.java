@@ -139,7 +139,7 @@ public final class DnsManagementClientImpl extends AzureServiceClient implements
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-03-01-preview";
+        this.apiVersion = "2016-04-01";
         this.recordSets = new RecordSetsClientImpl(this);
         this.zones = new ZonesClientImpl(this);
     }

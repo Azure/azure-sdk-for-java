@@ -9,12 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Container;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceIpConfiguration;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of container network interface. */
+/** The ContainerNetworkInterfacePropertiesFormat model. */
 @Fluent
 public final class ContainerNetworkInterfacePropertiesFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfacePropertiesFormat.class);
@@ -23,7 +22,7 @@ public final class ContainerNetworkInterfacePropertiesFormat {
      * Container network interface configuration from which this container
      * network interface is created.
      */
-    @JsonProperty(value = "containerNetworkInterfaceConfiguration", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "containerNetworkInterfaceConfiguration")
     private ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration;
 
     /*
@@ -36,14 +35,14 @@ public final class ContainerNetworkInterfacePropertiesFormat {
     /*
      * Reference to the ip configuration on this container nic.
      */
-    @JsonProperty(value = "ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "ipConfigurations")
     private List<ContainerNetworkInterfaceIpConfiguration> ipConfigurations;
 
     /*
-     * The provisioning state of the container network interface resource.
+     * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the containerNetworkInterfaceConfiguration property: Container network interface configuration from which
@@ -53,6 +52,19 @@ public final class ContainerNetworkInterfacePropertiesFormat {
      */
     public ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration() {
         return this.containerNetworkInterfaceConfiguration;
+    }
+
+    /**
+     * Set the containerNetworkInterfaceConfiguration property: Container network interface configuration from which
+     * this container network interface is created.
+     *
+     * @param containerNetworkInterfaceConfiguration the containerNetworkInterfaceConfiguration value to set.
+     * @return the ContainerNetworkInterfacePropertiesFormat object itself.
+     */
+    public ContainerNetworkInterfacePropertiesFormat withContainerNetworkInterfaceConfiguration(
+        ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration) {
+        this.containerNetworkInterfaceConfiguration = containerNetworkInterfaceConfiguration;
+        return this;
     }
 
     /**
@@ -85,11 +97,23 @@ public final class ContainerNetworkInterfacePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the container network interface resource.
+     * Set the ipConfigurations property: Reference to the ip configuration on this container nic.
+     *
+     * @param ipConfigurations the ipConfigurations value to set.
+     * @return the ContainerNetworkInterfacePropertiesFormat object itself.
+     */
+    public ContainerNetworkInterfacePropertiesFormat withIpConfigurations(
+        List<ContainerNetworkInterfaceIpConfiguration> ipConfigurations) {
+        this.ipConfigurations = ipConfigurations;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 

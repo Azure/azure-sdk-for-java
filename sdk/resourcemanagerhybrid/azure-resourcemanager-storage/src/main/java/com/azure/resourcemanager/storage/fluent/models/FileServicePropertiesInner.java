@@ -9,7 +9,6 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
-import com.azure.resourcemanager.storage.models.ProtocolSettings;
 import com.azure.resourcemanager.storage.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -98,29 +97,6 @@ public final class FileServicePropertiesInner extends ProxyResource {
             this.innerFileServiceProperties = new FileServicePropertiesProperties();
         }
         this.innerFileServiceProperties().withShareDeleteRetentionPolicy(shareDeleteRetentionPolicy);
-        return this;
-    }
-
-    /**
-     * Get the protocolSettings property: Protocol settings for file service.
-     *
-     * @return the protocolSettings value.
-     */
-    public ProtocolSettings protocolSettings() {
-        return this.innerFileServiceProperties() == null ? null : this.innerFileServiceProperties().protocolSettings();
-    }
-
-    /**
-     * Set the protocolSettings property: Protocol settings for file service.
-     *
-     * @param protocolSettings the protocolSettings value to set.
-     * @return the FileServicePropertiesInner object itself.
-     */
-    public FileServicePropertiesInner withProtocolSettings(ProtocolSettings protocolSettings) {
-        if (this.innerFileServiceProperties() == null) {
-            this.innerFileServiceProperties = new FileServicePropertiesProperties();
-        }
-        this.innerFileServiceProperties().withProtocolSettings(protocolSettings);
         return this;
     }
 

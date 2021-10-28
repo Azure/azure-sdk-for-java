@@ -294,8 +294,8 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
-     * Machine Scale Set.
+     * Get the scaleInPolicy property: Specifies the scale-in policy that decides which virtual machines are chosen for
+     * removal when a Virtual Machine Scale Set is scaled-in.
      *
      * @return the scaleInPolicy value.
      */
@@ -304,8 +304,8 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
-     * Machine Scale Set.
+     * Set the scaleInPolicy property: Specifies the scale-in policy that decides which virtual machines are chosen for
+     * removal when a Virtual Machine Scale Set is scaled-in.
      *
      * @param scaleInPolicy the scaleInPolicy value to set.
      * @return the VirtualMachineScaleSetUpdate object itself.

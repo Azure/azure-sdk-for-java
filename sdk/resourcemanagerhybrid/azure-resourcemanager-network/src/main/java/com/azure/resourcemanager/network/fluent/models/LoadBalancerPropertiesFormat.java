@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.InboundNatPool;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,26 +17,26 @@ public final class LoadBalancerPropertiesFormat {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerPropertiesFormat.class);
 
     /*
-     * Object representing the frontend IPs to be used for the load balancer.
+     * Object representing the frontend IPs to be used for the load balancer
      */
     @JsonProperty(value = "frontendIPConfigurations")
     private List<FrontendIpConfigurationInner> frontendIpConfigurations;
 
     /*
-     * Collection of backend address pools used by a load balancer.
+     * Collection of backend address pools used by a load balancer
      */
     @JsonProperty(value = "backendAddressPools")
     private List<BackendAddressPoolInner> backendAddressPools;
 
     /*
      * Object collection representing the load balancing rules Gets the
-     * provisioning.
+     * provisioning
      */
     @JsonProperty(value = "loadBalancingRules")
     private List<LoadBalancingRuleInner> loadBalancingRules;
 
     /*
-     * Collection of probe objects used in the load balancer.
+     * Collection of probe objects used in the load balancer
      */
     @JsonProperty(value = "probes")
     private List<ProbeInner> probes;
@@ -75,14 +74,15 @@ public final class LoadBalancerPropertiesFormat {
     /*
      * The resource GUID property of the load balancer resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resourceGuid")
     private String resourceGuid;
 
     /*
-     * The provisioning state of the load balancer resource.
+     * Gets the provisioning state of the PublicIP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the frontendIpConfigurations property: Object representing the frontend IPs to be used for the load balancer.
@@ -253,12 +253,36 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the load balancer resource.
+     * Set the resourceGuid property: The resource GUID property of the load balancer resource.
+     *
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the LoadBalancerPropertiesFormat object itself.
+     */
+    public LoadBalancerPropertiesFormat withResourceGuid(String resourceGuid) {
+        this.resourceGuid = resourceGuid;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the LoadBalancerPropertiesFormat object itself.
+     */
+    public LoadBalancerPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

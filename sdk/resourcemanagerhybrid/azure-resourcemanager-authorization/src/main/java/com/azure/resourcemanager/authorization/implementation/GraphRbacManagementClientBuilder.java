@@ -19,22 +19,6 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {GraphRbacManagementClientImpl.class})
 public final class GraphRbacManagementClientBuilder {
     /*
-     * The tenant ID.
-     */
-    private String tenantId;
-
-    /**
-     * Sets The tenant ID.
-     *
-     * @param tenantId the tenantId value.
-     * @return the GraphRbacManagementClientBuilder.
-     */
-    public GraphRbacManagementClientBuilder tenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
-    }
-
-    /*
      * server parameter
      */
     private String endpoint;
@@ -139,8 +123,7 @@ public final class GraphRbacManagementClientBuilder {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
         GraphRbacManagementClientImpl client =
-            new GraphRbacManagementClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, tenantId, endpoint);
+            new GraphRbacManagementClientImpl(pipeline, serializerAdapter, defaultPollInterval, environment, endpoint);
         return client;
     }
 }

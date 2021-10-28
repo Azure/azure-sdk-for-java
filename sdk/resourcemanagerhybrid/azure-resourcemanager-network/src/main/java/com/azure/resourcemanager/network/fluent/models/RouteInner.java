@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,14 +32,8 @@ public final class RouteInner extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
-
-    /*
-     * The type of the resource.
-     */
-    @JsonProperty(value = "type")
-    private String type;
 
     /**
      * Get the innerProperties property: Properties of the route.
@@ -83,22 +76,13 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type property: The type of the resource.
-     *
-     * @param type the type value to set.
+     * @param etag the etag value to set.
      * @return the RouteInner object itself.
      */
-    public RouteInner withType(String type) {
-        this.type = type;
+    public RouteInner withEtag(String etag) {
+        this.etag = etag;
         return this;
     }
 
@@ -133,7 +117,8 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Get the nextHopType property: The type of Azure hop the packet should be sent to.
+     * Get the nextHopType property: The type of Azure hop the packet should be sent to. Possible values are:
+     * 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', and 'None'.
      *
      * @return the nextHopType value.
      */
@@ -142,7 +127,8 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Set the nextHopType property: The type of Azure hop the packet should be sent to.
+     * Set the nextHopType property: The type of Azure hop the packet should be sent to. Possible values are:
+     * 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', and 'None'.
      *
      * @param nextHopType the nextHopType value to set.
      * @return the RouteInner object itself.
@@ -181,36 +167,27 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the route resource.
+     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
-     * regardless of LPM.
+     * Set the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      *
-     * @return the hasBgpOverride value.
-     */
-    public Boolean hasBgpOverride() {
-        return this.innerProperties() == null ? null : this.innerProperties().hasBgpOverride();
-    }
-
-    /**
-     * Set the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
-     * regardless of LPM.
-     *
-     * @param hasBgpOverride the hasBgpOverride value to set.
+     * @param provisioningState the provisioningState value to set.
      * @return the RouteInner object itself.
      */
-    public RouteInner withHasBgpOverride(Boolean hasBgpOverride) {
+    public RouteInner withProvisioningState(String provisioningState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RoutePropertiesFormat();
         }
-        this.innerProperties().withHasBgpOverride(hasBgpOverride);
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 

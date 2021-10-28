@@ -296,8 +296,54 @@ public interface ExpressRouteCircuitsClient
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteCircuitInner>> updateTagsWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String circuitName, TagsObject parameters);
+
+    /**
+     * Updates an express route circuit tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param parameters Parameters supplied to update express route circuit tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteCircuit resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginUpdateTagsAsync(
+        String resourceGroupName, String circuitName, TagsObject parameters);
+
+    /**
+     * Updates an express route circuit tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param parameters Parameters supplied to update express route circuit tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteCircuit resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginUpdateTags(
+        String resourceGroupName, String circuitName, TagsObject parameters);
+
+    /**
+     * Updates an express route circuit tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param parameters Parameters supplied to update express route circuit tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteCircuit resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginUpdateTags(
+        String resourceGroupName, String circuitName, TagsObject parameters, Context context);
 
     /**
      * Updates an express route circuit tags.
@@ -340,7 +386,7 @@ public interface ExpressRouteCircuitsClient
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCircuitInner> updateTagsWithResponse(
+    ExpressRouteCircuitInner updateTags(
         String resourceGroupName, String circuitName, TagsObject parameters, Context context);
 
     /**

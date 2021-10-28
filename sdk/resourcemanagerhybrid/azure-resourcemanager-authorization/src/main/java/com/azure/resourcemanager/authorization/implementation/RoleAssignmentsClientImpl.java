@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -67,7 +68,7 @@ public final class RoleAssignmentsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
     private interface RoleAssignmentsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
                 + "/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization"
@@ -84,9 +85,10 @@ public final class RoleAssignmentsClientImpl
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization"
                 + "/roleAssignments")
@@ -98,20 +100,22 @@ public final class RoleAssignmentsClientImpl
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentInner>> delete(
             @HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleAssignmentName") String roleAssignmentName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -121,9 +125,10 @@ public final class RoleAssignmentsClientImpl
             @PathParam("roleAssignmentName") String roleAssignmentName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RoleAssignmentCreateParameters parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -132,40 +137,44 @@ public final class RoleAssignmentsClientImpl
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleAssignmentName") String roleAssignmentName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Delete("/{roleId}")
-        @ExpectedResponses({200})
+        @Headers({"Content-Type: application/json"})
+        @Delete("/{roleAssignmentId}")
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentInner>> deleteById(
             @HostParam("$host") String endpoint,
-            @PathParam(value = "roleId", encoded = true) String roleId,
+            @PathParam(value = "roleAssignmentId", encoded = true) String roleAssignmentId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put("/{roleId}")
+        @Headers({"Content-Type: application/json"})
+        @Put("/{roleAssignmentId}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentInner>> createById(
             @HostParam("$host") String endpoint,
-            @PathParam(value = "roleId", encoded = true) String roleId,
+            @PathParam(value = "roleAssignmentId", encoded = true) String roleAssignmentId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RoleAssignmentCreateParameters parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/{roleId}")
+        @Headers({"Content-Type: application/json"})
+        @Get("/{roleAssignmentId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentInner>> getById(
             @HostParam("$host") String endpoint,
-            @PathParam(value = "roleId", encoded = true) String roleId,
+            @PathParam(value = "roleAssignmentId", encoded = true) String roleAssignmentId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/roleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -174,9 +183,10 @@ public final class RoleAssignmentsClientImpl
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Authorization/roleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -185,41 +195,54 @@ public final class RoleAssignmentsClientImpl
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentListResult>> listForResourceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentListResult>> listForResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentListResult>> listForScopeNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Gets role assignments for a resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource.
@@ -272,7 +295,7 @@ public final class RoleAssignmentsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -285,8 +308,9 @@ public final class RoleAssignmentsClientImpl
                             resourceType,
                             resourceName,
                             filter,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<RoleAssignmentInner>>map(
                 res ->
@@ -297,13 +321,13 @@ public final class RoleAssignmentsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets role assignments for a resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource.
@@ -358,7 +382,7 @@ public final class RoleAssignmentsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listForResource(
@@ -369,8 +393,9 @@ public final class RoleAssignmentsClientImpl
                 resourceType,
                 resourceName,
                 filter,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -386,7 +411,7 @@ public final class RoleAssignmentsClientImpl
     /**
      * Gets role assignments for a resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource.
@@ -422,7 +447,7 @@ public final class RoleAssignmentsClientImpl
     /**
      * Gets role assignments for a resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource.
@@ -455,7 +480,7 @@ public final class RoleAssignmentsClientImpl
     /**
      * Gets role assignments for a resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource.
@@ -494,7 +519,33 @@ public final class RoleAssignmentsClientImpl
     /**
      * Gets role assignments for a resource.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type of the resource.
+     * @param resourceName The name of the resource to get role assignments for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RoleAssignmentInner> listForResource(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName) {
+        final String filter = null;
+        return new PagedIterable<>(
+            listForResourceAsync(
+                resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter));
+    }
+
+    /**
+     * Gets role assignments for a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource.
@@ -529,35 +580,9 @@ public final class RoleAssignmentsClientImpl
     }
 
     /**
-     * Gets role assignments for a resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource.
-     * @param resourceName The name of the resource to get role assignments for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleAssignmentInner> listForResource(
-        String resourceGroupName,
-        String resourceProviderNamespace,
-        String parentResourcePath,
-        String resourceType,
-        String resourceName) {
-        final String filter = null;
-        return new PagedIterable<>(
-            listForResourceAsync(
-                resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter));
-    }
-
-    /**
      * Gets role assignments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
@@ -585,7 +610,7 @@ public final class RoleAssignmentsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -594,8 +619,9 @@ public final class RoleAssignmentsClientImpl
                             this.client.getEndpoint(),
                             resourceGroupName,
                             filter,
-                            apiVersion,
+                            this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<RoleAssignmentInner>>map(
                 res ->
@@ -606,13 +632,13 @@ public final class RoleAssignmentsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets role assignments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
@@ -641,15 +667,16 @@ public final class RoleAssignmentsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 filter,
-                apiVersion,
+                this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -665,7 +692,7 @@ public final class RoleAssignmentsClientImpl
     /**
      * Gets role assignments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
@@ -684,7 +711,7 @@ public final class RoleAssignmentsClientImpl
     /**
      * Gets role assignments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -701,7 +728,7 @@ public final class RoleAssignmentsClientImpl
     /**
      * Gets role assignments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
@@ -722,7 +749,22 @@ public final class RoleAssignmentsClientImpl
     /**
      * Gets role assignments for a resource group.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName) {
+        final String filter = null;
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter));
+    }
+
+    /**
+     * Gets role assignments for a resource group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
@@ -736,21 +778,6 @@ public final class RoleAssignmentsClientImpl
     public PagedIterable<RoleAssignmentInner> listByResourceGroup(
         String resourceGroupName, String filter, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, context));
-    }
-
-    /**
-     * Gets role assignments for a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName) {
-        final String filter = null;
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter));
     }
 
     /**
@@ -778,11 +805,19 @@ public final class RoleAssignmentsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.delete(this.client.getEndpoint(), scope, roleAssignmentName, apiVersion, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            scope,
+                            roleAssignmentName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -812,9 +847,10 @@ public final class RoleAssignmentsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), scope, roleAssignmentName, apiVersion, context);
+        return service
+            .delete(this.client.getEndpoint(), scope, roleAssignmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -880,7 +916,7 @@ public final class RoleAssignmentsClientImpl
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @param parameters Role assignment create parameters.
+     * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -907,13 +943,20 @@ public final class RoleAssignmentsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .create(this.client.getEndpoint(), scope, roleAssignmentName, apiVersion, parameters, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                        .create(
+                            this.client.getEndpoint(),
+                            scope,
+                            roleAssignmentName,
+                            this.client.getApiVersion(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -925,7 +968,7 @@ public final class RoleAssignmentsClientImpl
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @param parameters Role assignment create parameters.
+     * @param parameters Parameters for the role assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -953,9 +996,17 @@ public final class RoleAssignmentsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), scope, roleAssignmentName, apiVersion, parameters, context);
+        return service
+            .create(
+                this.client.getEndpoint(),
+                scope,
+                roleAssignmentName,
+                this.client.getApiVersion(),
+                parameters,
+                accept,
+                context);
     }
 
     /**
@@ -967,7 +1018,7 @@ public final class RoleAssignmentsClientImpl
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @param parameters Role assignment create parameters.
+     * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -996,7 +1047,7 @@ public final class RoleAssignmentsClientImpl
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @param parameters Role assignment create parameters.
+     * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1017,7 +1068,7 @@ public final class RoleAssignmentsClientImpl
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
      *     for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @param parameters Role assignment create parameters.
+     * @param parameters Parameters for the role assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1055,11 +1106,19 @@ public final class RoleAssignmentsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.get(this.client.getEndpoint(), scope, roleAssignmentName, apiVersion, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            scope,
+                            roleAssignmentName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1089,9 +1148,10 @@ public final class RoleAssignmentsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), scope, roleAssignmentName, apiVersion, context);
+        return service
+            .get(this.client.getEndpoint(), scope, roleAssignmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1151,33 +1211,44 @@ public final class RoleAssignmentsClientImpl
     /**
      * Deletes a role assignment.
      *
-     * @param roleId The ID of the role assignment to delete.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignmentInner>> deleteByIdWithResponseAsync(String roleId) {
+    public Mono<Response<RoleAssignmentInner>> deleteByIdWithResponseAsync(String roleAssignmentId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (roleId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.deleteById(this.client.getEndpoint(), roleId, apiVersion, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(
+                context ->
+                    service
+                        .deleteById(
+                            this.client.getEndpoint(), roleAssignmentId, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a role assignment.
      *
-     * @param roleId The ID of the role assignment to delete.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1185,33 +1256,38 @@ public final class RoleAssignmentsClientImpl
      * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleAssignmentInner>> deleteByIdWithResponseAsync(String roleId, Context context) {
+    private Mono<Response<RoleAssignmentInner>> deleteByIdWithResponseAsync(String roleAssignmentId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (roleId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deleteById(this.client.getEndpoint(), roleId, apiVersion, context);
+        return service
+            .deleteById(this.client.getEndpoint(), roleAssignmentId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a role assignment.
      *
-     * @param roleId The ID of the role assignment to delete.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignmentInner> deleteByIdAsync(String roleId) {
-        return deleteByIdWithResponseAsync(roleId)
+    public Mono<RoleAssignmentInner> deleteByIdAsync(String roleAssignmentId) {
+        return deleteByIdWithResponseAsync(roleAssignmentId)
             .flatMap(
                 (Response<RoleAssignmentInner> res) -> {
                     if (res.getValue() != null) {
@@ -1225,21 +1301,27 @@ public final class RoleAssignmentsClientImpl
     /**
      * Deletes a role assignment.
      *
-     * @param roleId The ID of the role assignment to delete.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentInner deleteById(String roleId) {
-        return deleteByIdAsync(roleId).block();
+    public RoleAssignmentInner deleteById(String roleAssignmentId) {
+        return deleteByIdAsync(roleAssignmentId).block();
     }
 
     /**
      * Deletes a role assignment.
      *
-     * @param roleId The ID of the role assignment to delete.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1247,15 +1329,18 @@ public final class RoleAssignmentsClientImpl
      * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignmentInner> deleteByIdWithResponse(String roleId, Context context) {
-        return deleteByIdWithResponseAsync(roleId, context).block();
+    public Response<RoleAssignmentInner> deleteByIdWithResponse(String roleAssignmentId, Context context) {
+        return deleteByIdWithResponseAsync(roleAssignmentId, context).block();
     }
 
     /**
      * Creates a role assignment by ID.
      *
-     * @param roleId The ID of the role assignment to create.
-     * @param parameters Role assignment create parameters.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1263,33 +1348,45 @@ public final class RoleAssignmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleAssignmentInner>> createByIdWithResponseAsync(
-        String roleId, RoleAssignmentCreateParameters parameters) {
+        String roleAssignmentId, RoleAssignmentCreateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (roleId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.createById(this.client.getEndpoint(), roleId, apiVersion, parameters, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+                context ->
+                    service
+                        .createById(
+                            this.client.getEndpoint(),
+                            roleAssignmentId,
+                            this.client.getApiVersion(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a role assignment by ID.
      *
-     * @param roleId The ID of the role assignment to create.
-     * @param parameters Role assignment create parameters.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param parameters Parameters for the role assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1298,39 +1395,46 @@ public final class RoleAssignmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RoleAssignmentInner>> createByIdWithResponseAsync(
-        String roleId, RoleAssignmentCreateParameters parameters, Context context) {
+        String roleAssignmentId, RoleAssignmentCreateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (roleId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createById(this.client.getEndpoint(), roleId, apiVersion, parameters, context);
+        return service
+            .createById(
+                this.client.getEndpoint(), roleAssignmentId, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates a role assignment by ID.
      *
-     * @param roleId The ID of the role assignment to create.
-     * @param parameters Role assignment create parameters.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignmentInner> createByIdAsync(String roleId, RoleAssignmentCreateParameters parameters) {
-        return createByIdWithResponseAsync(roleId, parameters)
+    public Mono<RoleAssignmentInner> createByIdAsync(
+        String roleAssignmentId, RoleAssignmentCreateParameters parameters) {
+        return createByIdWithResponseAsync(roleAssignmentId, parameters)
             .flatMap(
                 (Response<RoleAssignmentInner> res) -> {
                     if (res.getValue() != null) {
@@ -1344,23 +1448,29 @@ public final class RoleAssignmentsClientImpl
     /**
      * Creates a role assignment by ID.
      *
-     * @param roleId The ID of the role assignment to create.
-     * @param parameters Role assignment create parameters.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param parameters Parameters for the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentInner createById(String roleId, RoleAssignmentCreateParameters parameters) {
-        return createByIdAsync(roleId, parameters).block();
+    public RoleAssignmentInner createById(String roleAssignmentId, RoleAssignmentCreateParameters parameters) {
+        return createByIdAsync(roleAssignmentId, parameters).block();
     }
 
     /**
      * Creates a role assignment by ID.
      *
-     * @param roleId The ID of the role assignment to create.
-     * @param parameters Role assignment create parameters.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param parameters Parameters for the role assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1369,40 +1479,51 @@ public final class RoleAssignmentsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleAssignmentInner> createByIdWithResponse(
-        String roleId, RoleAssignmentCreateParameters parameters, Context context) {
-        return createByIdWithResponseAsync(roleId, parameters, context).block();
+        String roleAssignmentId, RoleAssignmentCreateParameters parameters, Context context) {
+        return createByIdWithResponseAsync(roleAssignmentId, parameters, context).block();
     }
 
     /**
      * Gets a role assignment by ID.
      *
-     * @param roleId The ID of the role assignment to get.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a role assignment by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoleAssignmentInner>> getByIdWithResponseAsync(String roleId) {
+    public Mono<Response<RoleAssignmentInner>> getByIdWithResponseAsync(String roleAssignmentId) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (roleId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getById(this.client.getEndpoint(), roleId, apiVersion, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .withContext(
+                context ->
+                    service
+                        .getById(
+                            this.client.getEndpoint(), roleAssignmentId, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a role assignment by ID.
      *
-     * @param roleId The ID of the role assignment to get.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1410,33 +1531,38 @@ public final class RoleAssignmentsClientImpl
      * @return a role assignment by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleAssignmentInner>> getByIdWithResponseAsync(String roleId, Context context) {
+    private Mono<Response<RoleAssignmentInner>> getByIdWithResponseAsync(String roleAssignmentId, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (roleId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
+        if (roleAssignmentId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getById(this.client.getEndpoint(), roleId, apiVersion, context);
+        return service
+            .getById(this.client.getEndpoint(), roleAssignmentId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a role assignment by ID.
      *
-     * @param roleId The ID of the role assignment to get.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a role assignment by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RoleAssignmentInner> getByIdAsync(String roleId) {
-        return getByIdWithResponseAsync(roleId)
+    public Mono<RoleAssignmentInner> getByIdAsync(String roleAssignmentId) {
+        return getByIdWithResponseAsync(roleAssignmentId)
             .flatMap(
                 (Response<RoleAssignmentInner> res) -> {
                     if (res.getValue() != null) {
@@ -1450,21 +1576,27 @@ public final class RoleAssignmentsClientImpl
     /**
      * Gets a role assignment by ID.
      *
-     * @param roleId The ID of the role assignment to get.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a role assignment by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentInner getById(String roleId) {
-        return getByIdAsync(roleId).block();
+    public RoleAssignmentInner getById(String roleAssignmentId) {
+        return getByIdAsync(roleAssignmentId).block();
     }
 
     /**
      * Gets a role assignment by ID.
      *
-     * @param roleId The ID of the role assignment to get.
+     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and
+     *     resource type. Use the format,
+     *     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example:
+     *     /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1472,8 +1604,8 @@ public final class RoleAssignmentsClientImpl
      * @return a role assignment by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignmentInner> getByIdWithResponse(String roleId, Context context) {
-        return getByIdWithResponseAsync(roleId, context).block();
+    public Response<RoleAssignmentInner> getByIdWithResponse(String roleAssignmentId, Context context) {
+        return getByIdWithResponseAsync(roleAssignmentId, context).block();
     }
 
     /**
@@ -1501,12 +1633,18 @@ public final class RoleAssignmentsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .list(this.client.getEndpoint(), filter, apiVersion, this.client.getSubscriptionId(), context))
+                        .list(
+                            this.client.getEndpoint(),
+                            filter,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
             .<PagedResponse<RoleAssignmentInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1516,7 +1654,7 @@ public final class RoleAssignmentsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1545,10 +1683,16 @@ public final class RoleAssignmentsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), filter, apiVersion, this.client.getSubscriptionId(), context)
+            .list(
+                this.client.getEndpoint(),
+                filter,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1610,6 +1754,19 @@ public final class RoleAssignmentsClientImpl
     /**
      * Gets all role assignments for the subscription.
      *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role assignments for the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RoleAssignmentInner> list() {
+        final String filter = null;
+        return new PagedIterable<>(listAsync(filter));
+    }
+
+    /**
+     * Gets all role assignments for the subscription.
+     *
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
@@ -1622,19 +1779,6 @@ public final class RoleAssignmentsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> list(String filter, Context context) {
         return new PagedIterable<>(listAsync(filter, context));
-    }
-
-    /**
-     * Gets all role assignments for the subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role assignments for the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleAssignmentInner> list() {
-        final String filter = null;
-        return new PagedIterable<>(listAsync(filter));
     }
 
     /**
@@ -1660,9 +1804,13 @@ public final class RoleAssignmentsClientImpl
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listForScope(this.client.getEndpoint(), scope, filter, apiVersion, context))
+            .withContext(
+                context ->
+                    service
+                        .listForScope(
+                            this.client.getEndpoint(), scope, filter, this.client.getApiVersion(), accept, context))
             .<PagedResponse<RoleAssignmentInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1672,7 +1820,7 @@ public final class RoleAssignmentsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1700,10 +1848,10 @@ public final class RoleAssignmentsClientImpl
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listForScope(this.client.getEndpoint(), scope, filter, apiVersion, context)
+            .listForScope(this.client.getEndpoint(), scope, filter, this.client.getApiVersion(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1773,6 +1921,21 @@ public final class RoleAssignmentsClientImpl
      * Gets role assignments for a scope.
      *
      * @param scope The scope of the role assignments.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a scope.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RoleAssignmentInner> listForScope(String scope) {
+        final String filter = null;
+        return new PagedIterable<>(listForScopeAsync(scope, filter));
+    }
+
+    /**
+     * Gets role assignments for a scope.
+     *
+     * @param scope The scope of the role assignments.
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      *     above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope
      *     for the specified principal.
@@ -1785,21 +1948,6 @@ public final class RoleAssignmentsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listForScope(String scope, String filter, Context context) {
         return new PagedIterable<>(listForScopeAsync(scope, filter, context));
-    }
-
-    /**
-     * Gets role assignments for a scope.
-     *
-     * @param scope The scope of the role assignments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role assignments for a scope.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleAssignmentInner> listForScope(String scope) {
-        final String filter = null;
-        return new PagedIterable<>(listForScopeAsync(scope, filter));
     }
 
     /**
@@ -1816,8 +1964,15 @@ public final class RoleAssignmentsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listForResourceNext(nextLink, context))
+            .withContext(context -> service.listForResourceNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RoleAssignmentInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1827,7 +1982,7 @@ public final class RoleAssignmentsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1846,9 +2001,16 @@ public final class RoleAssignmentsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listForResourceNext(nextLink, context)
+            .listForResourceNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1874,8 +2036,16 @@ public final class RoleAssignmentsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listForResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listForResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RoleAssignmentInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1885,7 +2055,7 @@ public final class RoleAssignmentsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1904,9 +2074,16 @@ public final class RoleAssignmentsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listForResourceGroupNext(nextLink, context)
+            .listForResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1932,8 +2109,15 @@ public final class RoleAssignmentsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RoleAssignmentInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1943,7 +2127,7 @@ public final class RoleAssignmentsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1961,9 +2145,16 @@ public final class RoleAssignmentsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1989,8 +2180,15 @@ public final class RoleAssignmentsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listForScopeNext(nextLink, context))
+            .withContext(context -> service.listForScopeNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RoleAssignmentInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2000,7 +2198,7 @@ public final class RoleAssignmentsClientImpl
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2018,9 +2216,16 @@ public final class RoleAssignmentsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listForScopeNext(nextLink, context)
+            .listForScopeNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

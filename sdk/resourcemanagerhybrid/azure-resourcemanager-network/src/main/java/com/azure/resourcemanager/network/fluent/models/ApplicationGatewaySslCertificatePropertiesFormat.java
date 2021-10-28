@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -33,7 +32,7 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
      * Base-64 encoded Public cert data corresponding to pfx specified in data.
      * Only applicable in GET request.
      */
-    @JsonProperty(value = "publicCertData", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "publicCertData")
     private String publicCertData;
 
     /*
@@ -44,10 +43,11 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     private String keyVaultSecretId;
 
     /*
-     * The provisioning state of the SSL certificate resource.
+     * Provisioning state of the SSL certificate resource Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the data property: Base-64 encoded pfx certificate. Only applicable in PUT Request.
@@ -100,6 +100,18 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     }
 
     /**
+     * Set the publicCertData property: Base-64 encoded Public cert data corresponding to pfx specified in data. Only
+     * applicable in GET request.
+     *
+     * @param publicCertData the publicCertData value to set.
+     * @return the ApplicationGatewaySslCertificatePropertiesFormat object itself.
+     */
+    public ApplicationGatewaySslCertificatePropertiesFormat withPublicCertData(String publicCertData) {
+        this.publicCertData = publicCertData;
+        return this;
+    }
+
+    /**
      * Get the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
      * object stored in KeyVault.
      *
@@ -122,12 +134,25 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the SSL certificate resource.
+     * Get the provisioningState property: Provisioning state of the SSL certificate resource Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: Provisioning state of the SSL certificate resource Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewaySslCertificatePropertiesFormat object itself.
+     */
+    public ApplicationGatewaySslCertificatePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**

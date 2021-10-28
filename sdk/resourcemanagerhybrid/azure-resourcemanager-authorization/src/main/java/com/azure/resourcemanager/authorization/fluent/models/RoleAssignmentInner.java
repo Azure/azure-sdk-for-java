@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Role Assignments. */
-@JsonFlatten
 @Fluent
-public class RoleAssignmentInner {
+public final class RoleAssignmentInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentInner.class);
 
     /*
@@ -35,28 +33,10 @@ public class RoleAssignmentInner {
     private String type;
 
     /*
-     * The role assignment scope.
+     * Role assignment properties.
      */
-    @JsonProperty(value = "properties.scope")
-    private String scope;
-
-    /*
-     * The role definition ID.
-     */
-    @JsonProperty(value = "properties.roleDefinitionId")
-    private String roleDefinitionId;
-
-    /*
-     * The principal ID.
-     */
-    @JsonProperty(value = "properties.principalId")
-    private String principalId;
-
-    /*
-     * The Delegation flag for the role assignment
-     */
-    @JsonProperty(value = "properties.canDelegate")
-    private Boolean canDelegate;
+    @JsonProperty(value = "properties")
+    private RoleAssignmentPropertiesWithScope innerProperties;
 
     /**
      * Get the id property: The role assignment ID.
@@ -86,12 +66,21 @@ public class RoleAssignmentInner {
     }
 
     /**
+     * Get the innerProperties property: Role assignment properties.
+     *
+     * @return the innerProperties value.
+     */
+    private RoleAssignmentPropertiesWithScope innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the scope property: The role assignment scope.
      *
      * @return the scope value.
      */
     public String scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
     }
 
     /**
@@ -101,7 +90,10 @@ public class RoleAssignmentInner {
      * @return the RoleAssignmentInner object itself.
      */
     public RoleAssignmentInner withScope(String scope) {
-        this.scope = scope;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignmentPropertiesWithScope();
+        }
+        this.innerProperties().withScope(scope);
         return this;
     }
 
@@ -111,7 +103,7 @@ public class RoleAssignmentInner {
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
-        return this.roleDefinitionId;
+        return this.innerProperties() == null ? null : this.innerProperties().roleDefinitionId();
     }
 
     /**
@@ -121,7 +113,10 @@ public class RoleAssignmentInner {
      * @return the RoleAssignmentInner object itself.
      */
     public RoleAssignmentInner withRoleDefinitionId(String roleDefinitionId) {
-        this.roleDefinitionId = roleDefinitionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignmentPropertiesWithScope();
+        }
+        this.innerProperties().withRoleDefinitionId(roleDefinitionId);
         return this;
     }
 
@@ -131,7 +126,7 @@ public class RoleAssignmentInner {
      * @return the principalId value.
      */
     public String principalId() {
-        return this.principalId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalId();
     }
 
     /**
@@ -141,27 +136,10 @@ public class RoleAssignmentInner {
      * @return the RoleAssignmentInner object itself.
      */
     public RoleAssignmentInner withPrincipalId(String principalId) {
-        this.principalId = principalId;
-        return this;
-    }
-
-    /**
-     * Get the canDelegate property: The Delegation flag for the role assignment.
-     *
-     * @return the canDelegate value.
-     */
-    public Boolean canDelegate() {
-        return this.canDelegate;
-    }
-
-    /**
-     * Set the canDelegate property: The Delegation flag for the role assignment.
-     *
-     * @param canDelegate the canDelegate value to set.
-     * @return the RoleAssignmentInner object itself.
-     */
-    public RoleAssignmentInner withCanDelegate(Boolean canDelegate) {
-        this.canDelegate = canDelegate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleAssignmentPropertiesWithScope();
+        }
+        this.innerProperties().withPrincipalId(principalId);
         return this;
     }
 
@@ -171,5 +149,8 @@ public class RoleAssignmentInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

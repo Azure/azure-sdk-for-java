@@ -305,8 +305,54 @@ public interface RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RouteTableInner>> updateTagsWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String routeTableName, TagsObject parameters);
+
+    /**
+     * Updates a route table tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to update route table tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route table resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<RouteTableInner>, RouteTableInner> beginUpdateTagsAsync(
+        String resourceGroupName, String routeTableName, TagsObject parameters);
+
+    /**
+     * Updates a route table tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to update route table tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route table resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginUpdateTags(
+        String resourceGroupName, String routeTableName, TagsObject parameters);
+
+    /**
+     * Updates a route table tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeTableName The name of the route table.
+     * @param parameters Parameters supplied to update route table tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route table resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<RouteTableInner>, RouteTableInner> beginUpdateTags(
+        String resourceGroupName, String routeTableName, TagsObject parameters, Context context);
 
     /**
      * Updates a route table tags.
@@ -349,8 +395,7 @@ public interface RouteTablesClient
      * @return route table resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RouteTableInner> updateTagsWithResponse(
-        String resourceGroupName, String routeTableName, TagsObject parameters, Context context);
+    RouteTableInner updateTags(String resourceGroupName, String routeTableName, TagsObject parameters, Context context);
 
     /**
      * Gets all route tables in a resource group.

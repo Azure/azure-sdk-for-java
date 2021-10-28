@@ -16,7 +16,8 @@ public final class NetworkSecurityGroupResult {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkSecurityGroupResult.class);
 
     /*
-     * The network traffic is allowed or denied.
+     * The network traffic is allowed or denied. Possible values are 'Allow'
+     * and 'Deny'.
      */
     @JsonProperty(value = "securityRuleAccessResult")
     private SecurityRuleAccess securityRuleAccessResult;
@@ -28,7 +29,8 @@ public final class NetworkSecurityGroupResult {
     private List<EvaluatedNetworkSecurityGroup> evaluatedNetworkSecurityGroups;
 
     /**
-     * Get the securityRuleAccessResult property: The network traffic is allowed or denied.
+     * Get the securityRuleAccessResult property: The network traffic is allowed or denied. Possible values are 'Allow'
+     * and 'Deny'.
      *
      * @return the securityRuleAccessResult value.
      */
@@ -37,7 +39,8 @@ public final class NetworkSecurityGroupResult {
     }
 
     /**
-     * Set the securityRuleAccessResult property: The network traffic is allowed or denied.
+     * Set the securityRuleAccessResult property: The network traffic is allowed or denied. Possible values are 'Allow'
+     * and 'Deny'.
      *
      * @param securityRuleAccessResult the securityRuleAccessResult value to set.
      * @return the NetworkSecurityGroupResult object itself.

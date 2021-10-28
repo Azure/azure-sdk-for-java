@@ -9,12 +9,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.resources.fluent.DataPolicyManifestsClient;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
 import com.azure.resourcemanager.resources.fluent.PolicyDefinitionsClient;
-import com.azure.resourcemanager.resources.fluent.PolicyExemptionsClient;
-import com.azure.resourcemanager.resources.fluent.PolicySetDefinitionsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -45,6 +42,18 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /** Api Version. */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -83,30 +92,6 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
         return this.defaultPollInterval;
     }
 
-    /** The DataPolicyManifestsClient object to access its operations. */
-    private final DataPolicyManifestsClient dataPolicyManifests;
-
-    /**
-     * Gets the DataPolicyManifestsClient object to access its operations.
-     *
-     * @return the DataPolicyManifestsClient object.
-     */
-    public DataPolicyManifestsClient getDataPolicyManifests() {
-        return this.dataPolicyManifests;
-    }
-
-    /** The PolicyAssignmentsClient object to access its operations. */
-    private final PolicyAssignmentsClient policyAssignments;
-
-    /**
-     * Gets the PolicyAssignmentsClient object to access its operations.
-     *
-     * @return the PolicyAssignmentsClient object.
-     */
-    public PolicyAssignmentsClient getPolicyAssignments() {
-        return this.policyAssignments;
-    }
-
     /** The PolicyDefinitionsClient object to access its operations. */
     private final PolicyDefinitionsClient policyDefinitions;
 
@@ -119,28 +104,16 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
         return this.policyDefinitions;
     }
 
-    /** The PolicySetDefinitionsClient object to access its operations. */
-    private final PolicySetDefinitionsClient policySetDefinitions;
+    /** The PolicyAssignmentsClient object to access its operations. */
+    private final PolicyAssignmentsClient policyAssignments;
 
     /**
-     * Gets the PolicySetDefinitionsClient object to access its operations.
+     * Gets the PolicyAssignmentsClient object to access its operations.
      *
-     * @return the PolicySetDefinitionsClient object.
+     * @return the PolicyAssignmentsClient object.
      */
-    public PolicySetDefinitionsClient getPolicySetDefinitions() {
-        return this.policySetDefinitions;
-    }
-
-    /** The PolicyExemptionsClient object to access its operations. */
-    private final PolicyExemptionsClient policyExemptions;
-
-    /**
-     * Gets the PolicyExemptionsClient object to access its operations.
-     *
-     * @return the PolicyExemptionsClient object.
-     */
-    public PolicyExemptionsClient getPolicyExemptions() {
-        return this.policyExemptions;
+    public PolicyAssignmentsClient getPolicyAssignments() {
+        return this.policyAssignments;
     }
 
     /**
@@ -166,10 +139,8 @@ public final class PolicyClientImpl extends AzureServiceClient implements Policy
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.dataPolicyManifests = new DataPolicyManifestsClientImpl(this);
-        this.policyAssignments = new PolicyAssignmentsClientImpl(this);
+        this.apiVersion = "2016-12-01";
         this.policyDefinitions = new PolicyDefinitionsClientImpl(this);
-        this.policySetDefinitions = new PolicySetDefinitionsClientImpl(this);
-        this.policyExemptions = new PolicyExemptionsClientImpl(this);
+        this.policyAssignments = new PolicyAssignmentsClientImpl(this);
     }
 }

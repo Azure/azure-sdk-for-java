@@ -19,7 +19,7 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     private final ClientLogger logger = new ClientLogger(ApplicationGatewayRedirectConfigurationInner.class);
 
     /*
-     * Properties of the application gateway redirect configuration.
+     * Properties of redirect configuration of the application gateway.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayRedirectConfigurationPropertiesFormat innerProperties;
@@ -34,17 +34,17 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type")
     private String type;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway redirect configuration.
+     * Get the innerProperties property: Properties of redirect configuration of the application gateway.
      *
      * @return the innerProperties value.
      */
@@ -82,12 +82,34 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
+     * @param etag the etag value to set.
+     * @return the ApplicationGatewayRedirectConfigurationInner object itself.
+     */
+    public ApplicationGatewayRedirectConfigurationInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the type property: Type of the resource.
      *
      * @return the type value.
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Set the type property: Type of the resource.
+     *
+     * @param type the type value to set.
+     * @return the ApplicationGatewayRedirectConfigurationInner object itself.
+     */
+    public ApplicationGatewayRedirectConfigurationInner withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -98,7 +120,7 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Get the redirectType property: HTTP redirection type.
+     * Get the redirectType property: Supported http redirection types - Permanent, Temporary, Found, SeeOther.
      *
      * @return the redirectType value.
      */
@@ -107,7 +129,7 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     }
 
     /**
-     * Set the redirectType property: HTTP redirection type.
+     * Set the redirectType property: Supported http redirection types - Permanent, Temporary, Found, SeeOther.
      *
      * @param redirectType the redirectType value to set.
      * @return the ApplicationGatewayRedirectConfigurationInner object itself.

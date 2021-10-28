@@ -16,13 +16,13 @@ public final class VpnClientConnectionHealth {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientConnectionHealth.class);
 
     /*
-     * Total of the Ingress Bytes Transferred in this P2S Vpn connection.
+     * Total of the Ingress Bytes Transferred in this P2S Vpn connection
      */
     @JsonProperty(value = "totalIngressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalIngressBytesTransferred;
 
     /*
-     * Total of the Egress Bytes Transferred in this connection.
+     * Total of the Egress Bytes Transferred in this connection
      */
     @JsonProperty(value = "totalEgressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalEgressBytesTransferred;
