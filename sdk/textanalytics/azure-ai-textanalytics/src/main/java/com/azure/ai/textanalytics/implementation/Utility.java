@@ -130,7 +130,7 @@ import java.util.stream.Collectors;
  */
 public final class Utility {
     // default time interval for polling
-    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
 
