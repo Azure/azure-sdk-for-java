@@ -3,10 +3,13 @@
 package com.azure.spring.autoconfigure.cosmos;
 
 
-import org.junit.jupiter.api.Assertions;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.beans.factory.BeanCreationException;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
@@ -25,25 +28,81 @@ import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.TEST_URI
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.TEST_URI_HTTPS;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.configureCosmosProperties;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.springframework.test.context.support.TestPropertySourceUtils.addInlinedPropertiesToEnvironment;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CosmosPropertiesTest {
 
     @Test
-    public void uriPatternWithException() {
-        Assertions.assertThrows(BeanCreationException.class, () -> {
-            try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
-                configureCosmosProperties(context);
-                addInlinedPropertiesToEnvironment(
-                    context,
-                    PROPERTY_URI + "=" + TEST_URI_FAIL
-                );
-                context.register(Config.class);
-                context.refresh();
-            }
-        });
+    public void uriPatternFail() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        configureCosmosProperties(context);
+        addInlinedPropertiesToEnvironment(
+            context,
+            PROPERTY_URI + "=" + TEST_URI_FAIL
+        );
+        context.register(Config.class);
+        context.refresh();
+        final CosmosProperties properties = context.getBean(CosmosProperties.class);
+        assertThat(properties.getUri()).doesNotMatch(CosmosProperties.URI_REGEX);
     }
+
+    @ParameterizedTest
+    @MethodSource("localURIMatchedProvider")
+    public void uriPatternLocalMatched(ArgumentsAccessor arguments) {
+        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
+            configureCosmosProperties(context);
+            addInlinedPropertiesToEnvironment(
+                context,
+                PROPERTY_URI + "=" + arguments.getString(0)
+            );
+            context.register(Config.class);
+            context.refresh();
+            final CosmosProperties properties = context.getBean(CosmosProperties.class);
+            assertThat(properties.getUri()).matches(CosmosProperties.LOCAL_URI_REGEX);
+        }
+    }
+
+    static Stream<Arguments> localURIMatchedProvider() {
+        return Stream.of(
+            arguments("localhost"),
+            arguments("127.0.0.1"),
+            arguments("127.0.0.1:8081"),
+            arguments("127.000.000.001"),
+            arguments("localhost:8080"),
+            arguments("localhost:8081"),
+            arguments("http://localhost:443"),
+            arguments("http://localhost:8081")
+        );
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("localURIUnMatchedProvider")
+    public void uriPatternLocalUnMatched(ArgumentsAccessor arguments) {
+        Exception exception = null;
+
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        configureCosmosProperties(context);
+        addInlinedPropertiesToEnvironment(
+            context,
+            PROPERTY_URI + "=" + arguments.getString(0)
+        );
+        context.register(Config.class);
+        context.refresh();
+        final CosmosProperties properties = context.getBean(CosmosProperties.class);
+        assertThat(properties.getUri()).doesNotMatch(CosmosProperties.LOCAL_URI_REGEX);
+    }
+
+    static Stream<Arguments> localURIUnMatchedProvider() {
+        return Stream.of(
+            arguments("www.google.com"),
+            arguments("http://github.com:443"),
+            arguments("https://microsoft.com:8081")
+        );
+    }
+
 
     @Test
     public void uriPatternHttp() {
