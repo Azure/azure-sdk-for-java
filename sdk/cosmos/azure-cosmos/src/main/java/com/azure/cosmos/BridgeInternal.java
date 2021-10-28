@@ -705,11 +705,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Duration getNetworkRequestTimeoutFromDirectConnectionConfig(DirectConnectionConfig directConnectionConfig) {
-        return directConnectionConfig.getNetworkRequestTimeout();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Duration getNetworkRequestTimeoutFromGatewayConnectionConfig(GatewayConnectionConfig gatewayConnectionConfig) {
         return gatewayConnectionConfig.getNetworkRequestTimeout();
     }

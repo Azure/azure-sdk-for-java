@@ -207,7 +207,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
     private void validateGatewayConfig(ConnectionPolicy connectionPolicy, GatewayConnectionConfig gatewayConnectionConfig) {
         assertThat(connectionPolicy.getIdleHttpConnectionTimeout()).isEqualTo(gatewayConnectionConfig.getIdleConnectionTimeout());
         assertThat(connectionPolicy.getMaxConnectionPoolSize()).isEqualTo(gatewayConnectionConfig.getMaxConnectionPoolSize());
-        assertThat(connectionPolicy.getNetworkRequestTimeout()).isEqualTo(gatewayConnectionConfig.getNetworkRequestTimeout());
+        assertThat(connectionPolicy.getHttpNetworkRequestTimeout()).isEqualTo(gatewayConnectionConfig.getNetworkRequestTimeout());
         assertThat(connectionPolicy.getProxy()).isEqualTo(gatewayConnectionConfig.getProxy());
     }
 

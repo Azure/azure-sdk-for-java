@@ -32,7 +32,7 @@ public final class ConnectionPolicy {
 
     //  Gateway connection config properties
     private int maxConnectionPoolSize;
-    private Duration networkRequestTimeout;
+    private Duration httpNetworkRequestTimeout;
     private ProxyOptions proxy;
     private Duration idleHttpConnectionTimeout;
 
@@ -42,7 +42,7 @@ public final class ConnectionPolicy {
     private Duration idleTcpEndpointTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
-
+    private Duration tcpNetworkRequestTimeout;
     private boolean tcpConnectionEndpointRediscoveryEnabled;
 
 
@@ -55,7 +55,7 @@ public final class ConnectionPolicy {
         this(ConnectionMode.GATEWAY);
         this.idleHttpConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
-        this.networkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
+        this.httpNetworkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
         this.proxy = gatewayConnectionConfig.getProxy();
         this.tcpConnectionEndpointRediscoveryEnabled = false;
     }
@@ -67,7 +67,7 @@ public final class ConnectionPolicy {
         this.idleTcpEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
         this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
-        this.networkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromDirectConnectionConfig(directConnectionConfig);
+        this.tcpNetworkRequestTimeout = directConnectionConfig.getNetworkRequestTimeout();
         this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
     }
 
@@ -112,23 +112,44 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the network request timeout (time to wait for response from network peer).
+     * Gets the http network request timeout (time to wait for response from network peer).
      *
-     * @return the request timeout duration.
+     * @return the http request timeout duration.
      */
-    public Duration getNetworkRequestTimeout() {
-        return this.networkRequestTimeout;
+    public Duration getHttpNetworkRequestTimeout() {
+        return this.httpNetworkRequestTimeout;
     }
 
     /**
-     * Sets the network request timeout (time to wait for response from network peer).
+     * Sets the http network request timeout (time to wait for response from network peer).
      * The default is 5 seconds.
      *
-     * @param networkRequestTimeout the request timeout duration.
+     * @param httpNetworkRequestTimeout the http request timeout duration.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setNetworkRequestTimeout(Duration networkRequestTimeout) {
-        this.networkRequestTimeout = networkRequestTimeout;
+    public ConnectionPolicy setHttpNetworkRequestTimeout(Duration httpNetworkRequestTimeout) {
+        this.httpNetworkRequestTimeout = httpNetworkRequestTimeout;
+        return this;
+    }
+
+    /**
+     * Gets the tcp network request timeout (time to wait for response from network peer).
+     *
+     * @return the request timeout duration.
+     */
+    public Duration getTcpNetworkRequestTimeout() {
+        return this.tcpNetworkRequestTimeout;
+    }
+
+    /**
+     * Sets the tcp network request timeout (time to wait for response from network peer).
+     * The default is 5 seconds.
+     *
+     * @param tcpNetworkRequestTimeout the request timeout duration.
+     * @return the ConnectionPolicy.
+     */
+    public ConnectionPolicy setTcpNetworkRequestTimeout(Duration tcpNetworkRequestTimeout) {
+        this.tcpNetworkRequestTimeout = tcpNetworkRequestTimeout;
         return this;
     }
 
@@ -511,7 +532,8 @@ public final class ConnectionPolicy {
     @Override
     public String toString() {
         return "ConnectionPolicy{" +
-            "networkRequestTimeout=" + networkRequestTimeout +
+            "httpNetworkRequestTimeout=" + httpNetworkRequestTimeout +
+            ", tcpNetworkRequestTimeout=" + tcpNetworkRequestTimeout +
             ", connectionMode=" + connectionMode +
             ", maxConnectionPoolSize=" + maxConnectionPoolSize +
             ", idleHttpConnectionTimeout=" + idleHttpConnectionTimeout +

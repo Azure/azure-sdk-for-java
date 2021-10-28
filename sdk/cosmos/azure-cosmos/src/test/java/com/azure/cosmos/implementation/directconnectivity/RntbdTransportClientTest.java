@@ -615,7 +615,7 @@ public final class RntbdTransportClientTest {
     public void verifyGoneResponseMapsToGoneException() throws Exception {
 
         ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
-        connectionPolicy.setNetworkRequestTimeout(requestTimeout);
+        connectionPolicy.setTcpNetworkRequestTimeout(requestTimeout);
         final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
@@ -703,7 +703,7 @@ public final class RntbdTransportClientTest {
     ) {
         final UserAgentContainer userAgent = new UserAgentContainer();
         ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
-        connectionPolicy.setNetworkRequestTimeout(Duration.ofMillis(1000));
+        connectionPolicy.setTcpNetworkRequestTimeout(Duration.ofMillis(1000));
 
         try (final RntbdTransportClient client = getRntbdTransportClientUnderTest(userAgent, connectionPolicy, response)) {
 
