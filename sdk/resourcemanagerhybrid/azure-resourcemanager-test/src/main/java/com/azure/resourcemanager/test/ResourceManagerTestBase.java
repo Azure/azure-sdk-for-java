@@ -4,7 +4,10 @@ package com.azure.resourcemanager.test;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.CookiePolicy;
@@ -13,17 +16,24 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
 import com.azure.resourcemanager.test.policy.TextReplacementPolicy;
 import com.azure.resourcemanager.test.utils.AuthFile;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -64,6 +74,9 @@ public abstract class ResourceManagerTestBase extends TestBase {
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     private static final String AZURE_AUTH_LOCATION = "AZURE_AUTH_LOCATION";
     private static final String AZURE_TEST_LOG_LEVEL = "AZURE_TEST_LOG_LEVEL";
+    private static final String AZURE_ARM_ENDPOINT = "AZURE_ARM_ENDPOINT";
+    private static final String AZURE_LOCATION = "AZURE_LOCATION";
+    private static final String AZURE_STACK_CLOUD = "AzureStackCloud";
     private static final String HTTPS_PROXY_HOST = "https.proxyHost";
     private static final String HTTPS_PROXY_PORT = "https.proxyPort";
     private static final String HTTP_PROXY_HOST = "http.proxyHost";
@@ -145,6 +158,34 @@ public abstract class ResourceManagerTestBase extends TestBase {
         return sshPublicKey;
     }
 
+    /**
+     * Return the configured Azure location from AZURE_LOCATION, or a default region.
+     *
+     * @param defaultLocation the default region to use
+     * @return the region as a string
+     */
+    public static String locationOrDefault(String defaultLocation) {
+        String location = System.getenv(AZURE_LOCATION);
+        if (location == null) {
+            return defaultLocation;
+        }
+        return location;
+    }
+
+    /**
+     * Return the configured Azure location from AZURE_LOCATION, or a default region.
+     *
+     * @param defaultLocation the default region to use
+     * @return the region
+     */
+    public static Region locationOrDefault(Region defaultLocation) {
+        String location = System.getenv(AZURE_LOCATION);
+        if (location == null) {
+            return defaultLocation;
+        }
+        return Region.fromName(location);
+    }
+
     protected TokenCredential credentialFromFile() {
         return testAuthFile.getCredential();
     }
@@ -215,6 +256,38 @@ public abstract class ResourceManagerTestBase extends TestBase {
             textReplacementRules.put(PLAYBACK_URI_BASE + "1234", PLAYBACK_URI);
             addTextReplacementRules(textReplacementRules);
         } else {
+            Configuration configuration = Configuration.getGlobalConfiguration();
+            String cloud = configuration.get(Configuration.PROPERTY_AZURE_CLOUD);
+            AzureEnvironment environment;
+
+            if (cloud == null || cloud.equalsIgnoreCase(AzureEnvironment.AZURE.toString())) {
+                environment = AzureEnvironment.AZURE;
+            } else if (cloud.equalsIgnoreCase(AZURE_STACK_CLOUD)) {
+                String armEndpoint = System.getenv(AZURE_ARM_ENDPOINT);
+                String location = System.getenv(AZURE_LOCATION);
+                if (armEndpoint == null || location == null) {
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalArgumentException("When running tests with AzureStackCloud in record mode AZURE_ARM_ENDPOINT and AZURE_LOCATION need to be set"));
+                }
+
+                HashMap<String, String> settings = getActiveDirectorySettings(armEndpoint);
+                HashMap<String, String> endpoints = new HashMap<String, String>();
+
+                endpoints.put("managementEndpointUrl", settings.get("audience"));
+                endpoints.put("resourceManagerEndpointUrl", armEndpoint);
+                endpoints.put("galleryEndpointUrl", settings.get("galleryEndpoint"));
+                endpoints.put("activeDirectoryEndpointUrl", settings.get("login_endpoint"));
+                endpoints.put("activeDirectoryResourceId", settings.get("audience"));
+                endpoints.put("activeDirectoryGraphResourceId", settings.get("graphEndpoint"));
+                endpoints.put("storageEndpointSuffix", armEndpoint.substring(armEndpoint.indexOf('.')));
+                endpoints.put("keyVaultDnsSuffix", ".vault" + armEndpoint.substring(armEndpoint.indexOf('.')));
+
+                environment = new AzureEnvironment(endpoints);
+            } else {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("Unsupported AZURE_CLOUD given: " + cloud));
+            }
+
             if (System.getenv(AZURE_AUTH_LOCATION) != null) { // Record mode
                 final File credFile = new File(System.getenv(AZURE_AUTH_LOCATION));
                 try {
@@ -225,7 +298,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 credential = testAuthFile.getCredential();
                 testProfile = new AzureProfile(testAuthFile.getTenantId(), testAuthFile.getSubscriptionId(), testAuthFile.getEnvironment());
             } else {
-                Configuration configuration = Configuration.getGlobalConfiguration();
                 String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
                 String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
                 String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
@@ -239,9 +311,9 @@ public abstract class ResourceManagerTestBase extends TestBase {
                     .tenantId(tenantId)
                     .clientId(clientId)
                     .clientSecret(clientSecret)
-                    .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
+                    .authorityHost(environment.getActiveDirectoryEndpoint())
                     .build();
-                testProfile = new AzureProfile(tenantId, subscriptionId, AzureEnvironment.AZURE);
+                testProfile = new AzureProfile(tenantId, subscriptionId, environment);
             }
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -259,18 +331,52 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 testProfile,
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
-                generateHttpClientWithProxy(null, null));
+                generateHttpClientWithProxy(null, null, environment));
 
             textReplacementRules.put(testProfile.getSubscriptionId(), ZERO_SUBSCRIPTION);
             textReplacementRules.put(testProfile.getTenantId(), ZERO_TENANT);
-            textReplacementRules.put(AzureEnvironment.AZURE.getResourceManagerEndpoint(), PLAYBACK_URI + "/");
-            textReplacementRules.put(AzureEnvironment.AZURE.getGraphEndpoint(), PLAYBACK_URI + "/");
+            textReplacementRules.put(environment.getResourceManagerEndpoint(), PLAYBACK_URI + "/");
+            textReplacementRules.put(environment.getGraphEndpoint(), PLAYBACK_URI + "/");
             addTextReplacementRules(textReplacementRules);
         }
         initializeClients(httpPipeline, testProfile);
     }
 
-    protected HttpClient generateHttpClientWithProxy(NettyAsyncHttpClientBuilder clientBuilder, ProxyOptions proxyOptions) {
+    private HashMap<String, String> getActiveDirectorySettings(String armEndpoint) {
+        HashMap<String, String> adSettings = new HashMap<String, String>();
+
+        String metadataUrl = String.format("%s/metadata/endpoints?api-version=1.0", armEndpoint);
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, metadataUrl);
+        httpRequest.setHeader("accept", "application/json");
+
+        HttpResponse response = httpClient.send(httpRequest).block();
+
+        if (response == null || response.getStatusCode() != 200) {
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("Failed to get ARM metadata, status code: " + (response != null ? response.getStatusCode() : "null")));
+        }
+
+        byte[] body = response.getBodyAsByteArray().block();
+
+        if (body == null) {
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("Failed to get ARM metadata, body is null"));
+        }
+
+        JsonSerializer jsonSerializer = new JacksonJsonSerializerProvider().createInstance();
+        ObjectNode responseJson = jsonSerializer.deserialize(new ByteArrayInputStream(body), TypeReference.createInstance(ObjectNode.class));
+
+        adSettings.put("galleryEndpoint", responseJson.get("galleryEndpoint").asText());
+        JsonNode authentication = responseJson.get("authentication");
+        adSettings.put("login_endpoint", authentication.get("loginEndpoint").asText());
+        adSettings.put("audience", authentication.get("audiences").get(0).asText());
+        adSettings.put("graphEndpoint", responseJson.get("graphEndpoint").asText());
+
+        return adSettings;
+    }
+
+    protected HttpClient generateHttpClientWithProxy(NettyAsyncHttpClientBuilder clientBuilder, ProxyOptions proxyOptions, AzureEnvironment environment) {
         if (clientBuilder == null) {
             clientBuilder = new NettyAsyncHttpClientBuilder();
         }
@@ -279,7 +385,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
         } else {
             try {
                 System.setProperty(USE_SYSTEM_PROXY, VALUE_TRUE);
-                List<Proxy> proxies = ProxySelector.getDefault().select(new URI(AzureEnvironment.AZURE.getResourceManagerEndpoint()));
+                List<Proxy> proxies = ProxySelector.getDefault().select(new URI(environment.getResourceManagerEndpoint()));
                 if (!proxies.isEmpty()) {
                     for (Proxy proxy : proxies) {
                         if (proxy.address() instanceof InetSocketAddress) {
