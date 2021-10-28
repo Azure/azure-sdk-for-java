@@ -70,7 +70,7 @@ public class CosmosPropertiesTest {
         addInlinedPropertiesToEnvironment(
             context,
             PROPERTY_URI + "=" + TEST_URI_FAIL,
-            PROPERTY_VALIDATE_URI+ "=" + NOT_VALIDATE_URI
+            PROPERTY_VALIDATE_URI + "=" + NOT_VALIDATE_URI
         );
         context.register(Config.class);
         context.refresh();
