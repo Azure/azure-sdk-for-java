@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Specifies the operating system settings for the virtual machine. Some of the settings cannot be changed once VM is
- * provisioned.
+ * Specifies the operating system settings for the virtual machine. Some of the
+ * settings cannot be changed once VM is provisioned.
  */
 @Fluent
 public final class OSProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OSProfile.class);
 
     /*
      * Specifies the host OS name of the virtual machine. <br><br> This name
@@ -24,7 +27,7 @@ public final class OSProfile {
      * (Windows):** 15 characters <br><br> **Max-length (Linux):** 64
      * characters. <br><br> For naming conventions and restrictions see [Azure
      * infrastructure services implementation
-     * guidelines](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-name-rules).
+     * guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
      */
     @JsonProperty(value = "computerName")
     private String computerName;
@@ -37,9 +40,14 @@ public final class OSProfile {
      * "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2",
      * "aspnet", "backup", "console", "david", "guest", "john", "owner",
      * "root", "server", "sql", "support", "support_388945a0", "sys", "test2",
-     * "test3", "user4", "user5". <br><br> **Minimum-length (Linux):** 1
+     * "test3", "user4", "user5". <br><br> **Minimum-length (Linux):** 1 
      * character <br><br> **Max-length (Linux):** 64 characters <br><br>
-     * **Max-length (Windows):** 20 characters.
+     * **Max-length (Windows):** 20 characters  <br><br><li> For root access to
+     * the Linux VM, see [Using root privileges on Linux virtual machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-use-root-privileges?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)<br><li>
+     * For a list of built-in system users on Linux that should not be used in
+     * this field, see [Selecting User Names for Linux on
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-usernames?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
      */
     @JsonProperty(value = "adminUsername")
     private String adminUsername;
@@ -56,10 +64,10 @@ public final class OSProfile {
      * "Pa$$word", "pass@word1", "Password!", "Password1", "Password22",
      * "iloveyou!" <br><br> For resetting the password, see [How to reset the
      * Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp)
+     * VM](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-reset-rdp?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
      * <br><br> For resetting root password, see [Manage users, SSH, and check
      * or repair disks on Azure Linux VMs using the VMAccess
-     * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
+     * Extension](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-vmaccess-extension?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#reset-root-password)
      */
     @JsonProperty(value = "adminPassword")
     private String adminPassword;
@@ -72,10 +80,10 @@ public final class OSProfile {
      * property** <br><br> This property cannot be updated after the VM is
      * created. <br><br> customData is passed to the VM to be saved as a file,
      * for more information see [Custom Data on Azure
-     * VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/)
+     * VMs](https://azure.microsoft.com/en-us/blog/custom-data-and-cloud-init-on-windows-azure/)
      * <br><br> For using cloud-init for your Linux VM, see [Using cloud-init
      * to customize a Linux VM during
-     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init)
+     * creation](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-cloud-init?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
      */
     @JsonProperty(value = "customData")
     private String customData;
@@ -90,18 +98,17 @@ public final class OSProfile {
      * Specifies the Linux operating system settings on the virtual machine.
      * <br><br>For a list of supported Linux distributions, see [Linux on
      * Azure-Endorsed
-     * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
+     * Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-endorsed-distros?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
+     * <br><br> For running non-endorsed distributions, see [Information for
+     * Non-Endorsed
+     * Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-create-upload-generic?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
      */
     @JsonProperty(value = "linuxConfiguration")
     private LinuxConfiguration linuxConfiguration;
 
     /*
      * Specifies set of certificates that should be installed onto the virtual
-     * machine. To install certificates on a virtual machine it is recommended
-     * to use the [Azure Key Vault virtual machine extension for
-     * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux)
-     * or the [Azure Key Vault virtual machine extension for
-     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
+     * machine.
      */
     @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
@@ -124,12 +131,14 @@ public final class OSProfile {
     private Boolean requireGuestProvisionSignal;
 
     /**
-     * Get the computerName property: Specifies the host OS name of the virtual machine. &lt;br&gt;&lt;br&gt; This name
-     * cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 15 characters
-     * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters. &lt;br&gt;&lt;br&gt; For naming conventions and
-     * restrictions see [Azure infrastructure services implementation
-     * guidelines](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-name-rules).
-     *
+     * Get the computerName property: Specifies the host OS name of the virtual
+     * machine. &lt;br&gt;&lt;br&gt; This name cannot be updated after the VM
+     * is created. &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 15 characters
+     * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters.
+     * &lt;br&gt;&lt;br&gt; For naming conventions and restrictions see [Azure
+     * infrastructure services implementation
+     * guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
+     * 
      * @return the computerName value.
      */
     public String computerName() {
@@ -137,12 +146,14 @@ public final class OSProfile {
     }
 
     /**
-     * Set the computerName property: Specifies the host OS name of the virtual machine. &lt;br&gt;&lt;br&gt; This name
-     * cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 15 characters
-     * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters. &lt;br&gt;&lt;br&gt; For naming conventions and
-     * restrictions see [Azure infrastructure services implementation
-     * guidelines](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-name-rules).
-     *
+     * Set the computerName property: Specifies the host OS name of the virtual
+     * machine. &lt;br&gt;&lt;br&gt; This name cannot be updated after the VM
+     * is created. &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 15 characters
+     * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters.
+     * &lt;br&gt;&lt;br&gt; For naming conventions and restrictions see [Azure
+     * infrastructure services implementation
+     * guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
+     * 
      * @param computerName the computerName value to set.
      * @return the OSProfile object itself.
      */
@@ -152,14 +163,24 @@ public final class OSProfile {
     }
 
     /**
-     * Get the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt; This
-     * property cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Windows-only restriction:** Cannot end
-     * in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2",
-     * "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david",
-     * "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3",
-     * "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1 character &lt;br&gt;&lt;br&gt; **Max-length
-     * (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 20 characters.
-     *
+     * Get the adminUsername property: Specifies the name of the administrator
+     * account. &lt;br&gt;&lt;br&gt; This property cannot be updated after the
+     * VM is created. &lt;br&gt;&lt;br&gt; **Windows-only restriction:** Cannot
+     * end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator",
+     * "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1",
+     * "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup",
+     * "console", "david", "guest", "john", "owner", "root", "server", "sql",
+     * "support", "support_388945a0", "sys", "test2", "test3", "user4",
+     * "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1  character
+     * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters
+     * &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 20 characters 
+     * &lt;br&gt;&lt;br&gt;&lt;li&gt; For root access to the Linux VM, see
+     * [Using root privileges on Linux virtual machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-use-root-privileges?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)&lt;br&gt;&lt;li&gt;
+     * For a list of built-in system users on Linux that should not be used in
+     * this field, see [Selecting User Names for Linux on
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-usernames?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -167,14 +188,24 @@ public final class OSProfile {
     }
 
     /**
-     * Set the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt; This
-     * property cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; **Windows-only restriction:** Cannot end
-     * in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user", "user1", "test", "user2",
-     * "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console", "david",
-     * "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0", "sys", "test2", "test3",
-     * "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1 character &lt;br&gt;&lt;br&gt; **Max-length
-     * (Linux):** 64 characters &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 20 characters.
-     *
+     * Set the adminUsername property: Specifies the name of the administrator
+     * account. &lt;br&gt;&lt;br&gt; This property cannot be updated after the
+     * VM is created. &lt;br&gt;&lt;br&gt; **Windows-only restriction:** Cannot
+     * end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator",
+     * "admin", "user", "user1", "test", "user2", "test1", "user3", "admin1",
+     * "1", "123", "a", "actuser", "adm", "admin2", "aspnet", "backup",
+     * "console", "david", "guest", "john", "owner", "root", "server", "sql",
+     * "support", "support_388945a0", "sys", "test2", "test3", "user4",
+     * "user5". &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 1  character
+     * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters
+     * &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 20 characters 
+     * &lt;br&gt;&lt;br&gt;&lt;li&gt; For root access to the Linux VM, see
+     * [Using root privileges on Linux virtual machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-use-root-privileges?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)&lt;br&gt;&lt;li&gt;
+     * For a list of built-in system users on Linux that should not be used in
+     * this field, see [Selecting User Names for Linux on
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-usernames?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
+     * 
      * @param adminUsername the adminUsername value to set.
      * @return the OSProfile object itself.
      */
@@ -184,18 +215,24 @@ public final class OSProfile {
     }
 
     /**
-     * Get the adminPassword property: Specifies the password of the administrator account. &lt;br&gt;&lt;br&gt;
-     * **Minimum-length (Windows):** 8 characters &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 6 characters
-     * &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 123 characters &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 72
-     * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
-     * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
-     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt;
-     * For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) &lt;br&gt;&lt;br&gt; For resetting
-     * root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
-     * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
-     *
+     * Get the adminPassword property: Specifies the password of the
+     * administrator account. &lt;br&gt;&lt;br&gt; **Minimum-length
+     * (Windows):** 8 characters &lt;br&gt;&lt;br&gt; **Minimum-length
+     * (Linux):** 6 characters &lt;br&gt;&lt;br&gt; **Max-length (Windows):**
+     * 123 characters &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 72
+     * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4
+     * conditions below need to be fulfilled &lt;br&gt; Has lower characters
+     * &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a
+     * special character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed
+     * values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
+     * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
+     * &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the
+     * Remote Desktop service or its login password in a Windows
+     * VM](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-reset-rdp?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
+     * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users,
+     * SSH, and check or repair disks on Azure Linux VMs using the VMAccess
+     * Extension](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-vmaccess-extension?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#reset-root-password).
+     * 
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -203,18 +240,24 @@ public final class OSProfile {
     }
 
     /**
-     * Set the adminPassword property: Specifies the password of the administrator account. &lt;br&gt;&lt;br&gt;
-     * **Minimum-length (Windows):** 8 characters &lt;br&gt;&lt;br&gt; **Minimum-length (Linux):** 6 characters
-     * &lt;br&gt;&lt;br&gt; **Max-length (Windows):** 123 characters &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 72
-     * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled
-     * &lt;br&gt; Has lower characters &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
-     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd",
-     * "P@ssword123", "Pa$$word", "pass@word1", "Password!", "Password1", "Password22", "iloveyou!" &lt;br&gt;&lt;br&gt;
-     * For resetting the password, see [How to reset the Remote Desktop service or its login password in a Windows
-     * VM](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/reset-rdp) &lt;br&gt;&lt;br&gt; For resetting
-     * root password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
-     * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection).
-     *
+     * Set the adminPassword property: Specifies the password of the
+     * administrator account. &lt;br&gt;&lt;br&gt; **Minimum-length
+     * (Windows):** 8 characters &lt;br&gt;&lt;br&gt; **Minimum-length
+     * (Linux):** 6 characters &lt;br&gt;&lt;br&gt; **Max-length (Windows):**
+     * 123 characters &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 72
+     * characters &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4
+     * conditions below need to be fulfilled &lt;br&gt; Has lower characters
+     * &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a
+     * special character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed
+     * values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
+     * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!"
+     * &lt;br&gt;&lt;br&gt; For resetting the password, see [How to reset the
+     * Remote Desktop service or its login password in a Windows
+     * VM](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-reset-rdp?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
+     * &lt;br&gt;&lt;br&gt; For resetting root password, see [Manage users,
+     * SSH, and check or repair disks on Azure Linux VMs using the VMAccess
+     * Extension](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-vmaccess-extension?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#reset-root-password).
+     * 
      * @param adminPassword the adminPassword value to set.
      * @return the OSProfile object itself.
      */
@@ -224,15 +267,19 @@ public final class OSProfile {
     }
 
     /**
-     * Get the customData property: Specifies a base-64 encoded string of custom data. The base-64 encoded string is
-     * decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array
-     * is 65535 bytes. &lt;br&gt;&lt;br&gt; **Note: Do not pass any secrets or passwords in customData property**
-     * &lt;br&gt;&lt;br&gt; This property cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; customData is
-     * passed to the VM to be saved as a file, for more information see [Custom Data on Azure
-     * VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/) &lt;br&gt;&lt;br&gt; For
-     * using cloud-init for your Linux VM, see [Using cloud-init to customize a Linux VM during
-     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
-     *
+     * Get the customData property: Specifies a base-64 encoded string of
+     * custom data. The base-64 encoded string is decoded to a binary array
+     * that is saved as a file on the Virtual Machine. The maximum length of
+     * the binary array is 65535 bytes. &lt;br&gt;&lt;br&gt; **Note: Do not
+     * pass any secrets or passwords in customData property**
+     * &lt;br&gt;&lt;br&gt; This property cannot be updated after the VM is
+     * created. &lt;br&gt;&lt;br&gt; customData is passed to the VM to be saved
+     * as a file, for more information see [Custom Data on Azure
+     * VMs](https://azure.microsoft.com/en-us/blog/custom-data-and-cloud-init-on-windows-azure/)
+     * &lt;br&gt;&lt;br&gt; For using cloud-init for your Linux VM, see [Using
+     * cloud-init to customize a Linux VM during
+     * creation](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-cloud-init?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
+     * 
      * @return the customData value.
      */
     public String customData() {
@@ -240,15 +287,19 @@ public final class OSProfile {
     }
 
     /**
-     * Set the customData property: Specifies a base-64 encoded string of custom data. The base-64 encoded string is
-     * decoded to a binary array that is saved as a file on the Virtual Machine. The maximum length of the binary array
-     * is 65535 bytes. &lt;br&gt;&lt;br&gt; **Note: Do not pass any secrets or passwords in customData property**
-     * &lt;br&gt;&lt;br&gt; This property cannot be updated after the VM is created. &lt;br&gt;&lt;br&gt; customData is
-     * passed to the VM to be saved as a file, for more information see [Custom Data on Azure
-     * VMs](https://azure.microsoft.com/blog/custom-data-and-cloud-init-on-windows-azure/) &lt;br&gt;&lt;br&gt; For
-     * using cloud-init for your Linux VM, see [Using cloud-init to customize a Linux VM during
-     * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
-     *
+     * Set the customData property: Specifies a base-64 encoded string of
+     * custom data. The base-64 encoded string is decoded to a binary array
+     * that is saved as a file on the Virtual Machine. The maximum length of
+     * the binary array is 65535 bytes. &lt;br&gt;&lt;br&gt; **Note: Do not
+     * pass any secrets or passwords in customData property**
+     * &lt;br&gt;&lt;br&gt; This property cannot be updated after the VM is
+     * created. &lt;br&gt;&lt;br&gt; customData is passed to the VM to be saved
+     * as a file, for more information see [Custom Data on Azure
+     * VMs](https://azure.microsoft.com/en-us/blog/custom-data-and-cloud-init-on-windows-azure/)
+     * &lt;br&gt;&lt;br&gt; For using cloud-init for your Linux VM, see [Using
+     * cloud-init to customize a Linux VM during
+     * creation](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-cloud-init?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
+     * 
      * @param customData the customData value to set.
      * @return the OSProfile object itself.
      */
@@ -258,8 +309,9 @@ public final class OSProfile {
     }
 
     /**
-     * Get the windowsConfiguration property: Specifies Windows operating system settings on the virtual machine.
-     *
+     * Get the windowsConfiguration property: Specifies Windows operating
+     * system settings on the virtual machine.
+     * 
      * @return the windowsConfiguration value.
      */
     public WindowsConfiguration windowsConfiguration() {
@@ -267,8 +319,9 @@ public final class OSProfile {
     }
 
     /**
-     * Set the windowsConfiguration property: Specifies Windows operating system settings on the virtual machine.
-     *
+     * Set the windowsConfiguration property: Specifies Windows operating
+     * system settings on the virtual machine.
+     * 
      * @param windowsConfiguration the windowsConfiguration value to set.
      * @return the OSProfile object itself.
      */
@@ -278,10 +331,14 @@ public final class OSProfile {
     }
 
     /**
-     * Get the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;For a list of supported Linux distributions, see [Linux on Azure-Endorsed
-     * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
-     *
+     * Get the linuxConfiguration property: Specifies the Linux operating
+     * system settings on the virtual machine. &lt;br&gt;&lt;br&gt;For a list
+     * of supported Linux distributions, see [Linux on Azure-Endorsed
+     * Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-endorsed-distros?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
+     * &lt;br&gt;&lt;br&gt; For running non-endorsed distributions, see
+     * [Information for Non-Endorsed
+     * Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-create-upload-generic?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
+     * 
      * @return the linuxConfiguration value.
      */
     public LinuxConfiguration linuxConfiguration() {
@@ -289,10 +346,14 @@ public final class OSProfile {
     }
 
     /**
-     * Set the linuxConfiguration property: Specifies the Linux operating system settings on the virtual machine.
-     * &lt;br&gt;&lt;br&gt;For a list of supported Linux distributions, see [Linux on Azure-Endorsed
-     * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
-     *
+     * Set the linuxConfiguration property: Specifies the Linux operating
+     * system settings on the virtual machine. &lt;br&gt;&lt;br&gt;For a list
+     * of supported Linux distributions, see [Linux on Azure-Endorsed
+     * Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-endorsed-distros?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
+     * &lt;br&gt;&lt;br&gt; For running non-endorsed distributions, see
+     * [Information for Non-Endorsed
+     * Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-create-upload-generic?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
+     * 
      * @param linuxConfiguration the linuxConfiguration value to set.
      * @return the OSProfile object itself.
      */
@@ -302,12 +363,9 @@ public final class OSProfile {
     }
 
     /**
-     * Get the secrets property: Specifies set of certificates that should be installed onto the virtual machine. To
-     * install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension
-     * for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
-     * virtual machine extension for
-     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
-     *
+     * Get the secrets property: Specifies set of certificates that should be
+     * installed onto the virtual machine.
+     * 
      * @return the secrets value.
      */
     public List<VaultSecretGroup> secrets() {
@@ -315,12 +373,9 @@ public final class OSProfile {
     }
 
     /**
-     * Set the secrets property: Specifies set of certificates that should be installed onto the virtual machine. To
-     * install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension
-     * for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
-     * virtual machine extension for
-     * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
-     *
+     * Set the secrets property: Specifies set of certificates that should be
+     * installed onto the virtual machine.
+     * 
      * @param secrets the secrets value to set.
      * @return the OSProfile object itself.
      */
@@ -330,10 +385,11 @@ public final class OSProfile {
     }
 
     /**
-     * Get the allowExtensionOperations property: Specifies whether extension operations should be allowed on the
-     * virtual machine. &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are present on the virtual
-     * machine.
-     *
+     * Get the allowExtensionOperations property: Specifies whether extension
+     * operations should be allowed on the virtual machine.
+     * &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are
+     * present on the virtual machine.
+     * 
      * @return the allowExtensionOperations value.
      */
     public Boolean allowExtensionOperations() {
@@ -341,11 +397,13 @@ public final class OSProfile {
     }
 
     /**
-     * Set the allowExtensionOperations property: Specifies whether extension operations should be allowed on the
-     * virtual machine. &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are present on the virtual
-     * machine.
-     *
-     * @param allowExtensionOperations the allowExtensionOperations value to set.
+     * Set the allowExtensionOperations property: Specifies whether extension
+     * operations should be allowed on the virtual machine.
+     * &lt;br&gt;&lt;br&gt;This may only be set to False when no extensions are
+     * present on the virtual machine.
+     * 
+     * @param allowExtensionOperations the allowExtensionOperations value to
+     * set.
      * @return the OSProfile object itself.
      */
     public OSProfile withAllowExtensionOperations(Boolean allowExtensionOperations) {
@@ -354,10 +412,11 @@ public final class OSProfile {
     }
 
     /**
-     * Get the requireGuestProvisionSignal property: Specifies whether the guest provision signal is required to infer
-     * provision success of the virtual machine. **Note: This property is for private testing only, and all customers
-     * must not set the property to false.**.
-     *
+     * Get the requireGuestProvisionSignal property: Specifies whether the
+     * guest provision signal is required to infer provision success of the
+     * virtual machine.  **Note: This property is for private testing only, and
+     * all customers must not set the property to false.**.
+     * 
      * @return the requireGuestProvisionSignal value.
      */
     public Boolean requireGuestProvisionSignal() {
@@ -365,11 +424,13 @@ public final class OSProfile {
     }
 
     /**
-     * Set the requireGuestProvisionSignal property: Specifies whether the guest provision signal is required to infer
-     * provision success of the virtual machine. **Note: This property is for private testing only, and all customers
-     * must not set the property to false.**.
-     *
-     * @param requireGuestProvisionSignal the requireGuestProvisionSignal value to set.
+     * Set the requireGuestProvisionSignal property: Specifies whether the
+     * guest provision signal is required to infer provision success of the
+     * virtual machine.  **Note: This property is for private testing only, and
+     * all customers must not set the property to false.**.
+     * 
+     * @param requireGuestProvisionSignal the requireGuestProvisionSignal value
+     * to set.
      * @return the OSProfile object itself.
      */
     public OSProfile withRequireGuestProvisionSignal(Boolean requireGuestProvisionSignal) {
@@ -379,7 +440,7 @@ public final class OSProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

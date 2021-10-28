@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.UsageName;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes Compute Resource Usage. */
+/**
+ * Describes Compute Resource Usage.
+ */
 @Fluent
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UsageInner.class);
 
     /*
      * An enum describing the unit of usage measurement.
@@ -39,14 +44,16 @@ public final class UsageInner {
     @JsonProperty(value = "name", required = true)
     private UsageName name;
 
-    /** Creates an instance of UsageInner class. */
+    /**
+     * Creates an instance of UsageInner class.
+     */
     public UsageInner() {
         unit = "Count";
     }
 
     /**
      * Get the unit property: An enum describing the unit of usage measurement.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -55,7 +62,7 @@ public final class UsageInner {
 
     /**
      * Set the unit property: An enum describing the unit of usage measurement.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the UsageInner object itself.
      */
@@ -66,7 +73,7 @@ public final class UsageInner {
 
     /**
      * Get the currentValue property: The current usage of the resource.
-     *
+     * 
      * @return the currentValue value.
      */
     public int currentValue() {
@@ -75,7 +82,7 @@ public final class UsageInner {
 
     /**
      * Set the currentValue property: The current usage of the resource.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the UsageInner object itself.
      */
@@ -86,7 +93,7 @@ public final class UsageInner {
 
     /**
      * Get the limit property: The maximum permitted usage of the resource.
-     *
+     * 
      * @return the limit value.
      */
     public long limit() {
@@ -95,7 +102,7 @@ public final class UsageInner {
 
     /**
      * Set the limit property: The maximum permitted usage of the resource.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the UsageInner object itself.
      */
@@ -106,7 +113,7 @@ public final class UsageInner {
 
     /**
      * Get the name property: The name of the type of usage.
-     *
+     * 
      * @return the name value.
      */
     public UsageName name() {
@@ -115,7 +122,7 @@ public final class UsageInner {
 
     /**
      * Set the name property: The name of the type of usage.
-     *
+     * 
      * @param name the name value to set.
      * @return the UsageInner object itself.
      */
@@ -126,14 +133,12 @@ public final class UsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model UsageInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model UsageInner"));
         } else {
             name().validate();
         }

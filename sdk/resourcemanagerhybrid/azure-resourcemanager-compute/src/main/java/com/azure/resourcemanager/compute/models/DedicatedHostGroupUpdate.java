@@ -5,20 +5,24 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostGroupProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Specifies information about the dedicated host group that the dedicated host should be assigned to. Only tags may be
- * updated.
+ * Specifies information about the dedicated host group that the dedicated host
+ * should be assigned to. Only tags may be updated.
  */
 @Fluent
 public final class DedicatedHostGroupUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostGroupUpdate.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DedicatedHostGroupUpdate.class);
 
     /*
      * Dedicated Host Group Properties.
@@ -37,7 +41,7 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
 
     /**
      * Get the innerProperties property: Dedicated Host Group Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DedicatedHostGroupProperties innerProperties() {
@@ -45,10 +49,11 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
     }
 
     /**
-     * Get the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone can
-     * be assigned only during creation. If not provided, the group supports all zones in the region. If provided,
-     * enforces each host in the group to be in the same zone.
-     *
+     * Get the zones property: Availability Zone to use for this host group.
+     * Only single zone is supported. The zone can be assigned only during
+     * creation. If not provided, the group supports all zones in the region.
+     * If provided, enforces each host in the group to be in the same zone.
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -56,10 +61,11 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
     }
 
     /**
-     * Set the zones property: Availability Zone to use for this host group. Only single zone is supported. The zone can
-     * be assigned only during creation. If not provided, the group supports all zones in the region. If provided,
-     * enforces each host in the group to be in the same zone.
-     *
+     * Set the zones property: Availability Zone to use for this host group.
+     * Only single zone is supported. The zone can be assigned only during
+     * creation. If not provided, the group supports all zones in the region.
+     * If provided, enforces each host in the group to be in the same zone.
+     * 
      * @param zones the zones value to set.
      * @return the DedicatedHostGroupUpdate object itself.
      */
@@ -68,7 +74,9 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedHostGroupUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -76,8 +84,9 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
     }
 
     /**
-     * Get the platformFaultDomainCount property: Number of fault domains that the host group can span.
-     *
+     * Get the platformFaultDomainCount property: Number of fault domains that
+     * the host group can span.
+     * 
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
@@ -85,9 +94,11 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
     }
 
     /**
-     * Set the platformFaultDomainCount property: Number of fault domains that the host group can span.
-     *
-     * @param platformFaultDomainCount the platformFaultDomainCount value to set.
+     * Set the platformFaultDomainCount property: Number of fault domains that
+     * the host group can span.
+     * 
+     * @param platformFaultDomainCount the platformFaultDomainCount value to
+     * set.
      * @return the DedicatedHostGroupUpdate object itself.
      */
     public DedicatedHostGroupUpdate withPlatformFaultDomainCount(Integer platformFaultDomainCount) {
@@ -99,8 +110,9 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
     }
 
     /**
-     * Get the hosts property: A list of references to all dedicated hosts in the dedicated host group.
-     *
+     * Get the hosts property: A list of references to all dedicated hosts in
+     * the dedicated host group.
+     * 
      * @return the hosts value.
      */
     public List<SubResourceReadOnly> hosts() {
@@ -108,9 +120,10 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
     }
 
     /**
-     * Get the instanceView property: The dedicated host group instance view, which has the list of instance view of the
-     * dedicated hosts under the dedicated host group.
-     *
+     * Get the instanceView property: The dedicated host group instance view,
+     * which has the list of instance view of the dedicated hosts under the
+     * dedicated host group.
+     * 
      * @return the instanceView value.
      */
     public DedicatedHostGroupInstanceView instanceView() {
@@ -118,11 +131,13 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
     }
 
     /**
-     * Get the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
-     * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
-     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
-     * not provided. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
-     *
+     * Get the supportAutomaticPlacement property: Specifies whether virtual
+     * machines or virtual machine scale sets can be placed automatically on
+     * the dedicated host group. Automatic placement means resources are
+     * allocated on dedicated hosts, that are chosen by Azure, under the
+     * dedicated host group. The value is defaulted to 'false' when not
+     * provided. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     * 
      * @return the supportAutomaticPlacement value.
      */
     public Boolean supportAutomaticPlacement() {
@@ -130,12 +145,15 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
     }
 
     /**
-     * Set the supportAutomaticPlacement property: Specifies whether virtual machines or virtual machine scale sets can
-     * be placed automatically on the dedicated host group. Automatic placement means resources are allocated on
-     * dedicated hosts, that are chosen by Azure, under the dedicated host group. The value is defaulted to 'false' when
-     * not provided. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
-     *
-     * @param supportAutomaticPlacement the supportAutomaticPlacement value to set.
+     * Set the supportAutomaticPlacement property: Specifies whether virtual
+     * machines or virtual machine scale sets can be placed automatically on
+     * the dedicated host group. Automatic placement means resources are
+     * allocated on dedicated hosts, that are chosen by Azure, under the
+     * dedicated host group. The value is defaulted to 'false' when not
+     * provided. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     * 
+     * @param supportAutomaticPlacement the supportAutomaticPlacement value to
+     * set.
      * @return the DedicatedHostGroupUpdate object itself.
      */
     public DedicatedHostGroupUpdate withSupportAutomaticPlacement(Boolean supportAutomaticPlacement) {
@@ -148,7 +166,7 @@ public final class DedicatedHostGroupUpdate extends UpdateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

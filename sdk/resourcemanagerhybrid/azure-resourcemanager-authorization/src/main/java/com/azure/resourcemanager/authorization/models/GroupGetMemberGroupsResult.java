@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Server response for GetMemberGroups API call. */
+/**
+ * Server response for GetMemberGroups API call.
+ */
 @Fluent
 public final class GroupGetMemberGroupsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupGetMemberGroupsResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GroupGetMemberGroupsResult.class);
 
     /*
      * A collection of group IDs of which the group is a member.
@@ -22,8 +27,9 @@ public final class GroupGetMemberGroupsResult {
     private List<String> value;
 
     /**
-     * Get the value property: A collection of group IDs of which the group is a member.
-     *
+     * Get the value property: A collection of group IDs of which the group is
+     * a member.
+     * 
      * @return the value value.
      */
     public List<String> value() {
@@ -31,8 +37,9 @@ public final class GroupGetMemberGroupsResult {
     }
 
     /**
-     * Set the value property: A collection of group IDs of which the group is a member.
-     *
+     * Set the value property: A collection of group IDs of which the group is
+     * a member.
+     * 
      * @param value the value value to set.
      * @return the GroupGetMemberGroupsResult object itself.
      */
@@ -43,7 +50,7 @@ public final class GroupGetMemberGroupsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

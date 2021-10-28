@@ -5,17 +5,23 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.ImageProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The source user image virtual hard disk. Only tags may be updated. */
+/**
+ * The source user image virtual hard disk. Only tags may be updated.
+ */
 @Fluent
 public final class ImageUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageUpdate.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ImageUpdate.class);
 
     /*
      * Describes the properties of an Image.
@@ -25,14 +31,16 @@ public final class ImageUpdate extends UpdateResource {
 
     /**
      * Get the innerProperties property: Describes the properties of an Image.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ImageProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -40,8 +48,9 @@ public final class ImageUpdate extends UpdateResource {
     }
 
     /**
-     * Get the sourceVirtualMachine property: The source virtual machine from which Image is created.
-     *
+     * Get the sourceVirtualMachine property: The source virtual machine from
+     * which Image is created.
+     * 
      * @return the sourceVirtualMachine value.
      */
     public SubResource sourceVirtualMachine() {
@@ -49,8 +58,9 @@ public final class ImageUpdate extends UpdateResource {
     }
 
     /**
-     * Set the sourceVirtualMachine property: The source virtual machine from which Image is created.
-     *
+     * Set the sourceVirtualMachine property: The source virtual machine from
+     * which Image is created.
+     * 
      * @param sourceVirtualMachine the sourceVirtualMachine value to set.
      * @return the ImageUpdate object itself.
      */
@@ -63,8 +73,9 @@ public final class ImageUpdate extends UpdateResource {
     }
 
     /**
-     * Get the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * Get the storageProfile property: Specifies the storage settings for the
+     * virtual machine disks.
+     * 
      * @return the storageProfile value.
      */
     public ImageStorageProfile storageProfile() {
@@ -72,8 +83,9 @@ public final class ImageUpdate extends UpdateResource {
     }
 
     /**
-     * Set the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * Set the storageProfile property: Specifies the storage settings for the
+     * virtual machine disks.
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the ImageUpdate object itself.
      */
@@ -87,7 +99,7 @@ public final class ImageUpdate extends UpdateResource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -95,11 +107,9 @@ public final class ImageUpdate extends UpdateResource {
     }
 
     /**
-     * Get the hyperVGeneration property: Specifies the HyperVGenerationType of the VirtualMachine created from the
-     * image. From API Version 2019-03-01 if the image source is a blob, then we need the user to specify the value, if
-     * the source is managed resource like disk or snapshot, we may require the user to specify the property if we
-     * cannot deduce it from the source managed resource.
-     *
+     * Get the hyperVGeneration property: Gets the HyperVGenerationType of the
+     * VirtualMachine created from the image.
+     * 
      * @return the hyperVGeneration value.
      */
     public HyperVGenerationTypes hyperVGeneration() {
@@ -107,11 +117,9 @@ public final class ImageUpdate extends UpdateResource {
     }
 
     /**
-     * Set the hyperVGeneration property: Specifies the HyperVGenerationType of the VirtualMachine created from the
-     * image. From API Version 2019-03-01 if the image source is a blob, then we need the user to specify the value, if
-     * the source is managed resource like disk or snapshot, we may require the user to specify the property if we
-     * cannot deduce it from the source managed resource.
-     *
+     * Set the hyperVGeneration property: Gets the HyperVGenerationType of the
+     * VirtualMachine created from the image.
+     * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the ImageUpdate object itself.
      */
@@ -125,7 +133,7 @@ public final class ImageUpdate extends UpdateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

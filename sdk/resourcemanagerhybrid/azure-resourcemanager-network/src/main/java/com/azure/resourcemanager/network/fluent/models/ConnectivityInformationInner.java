@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.network.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionStatus;
 import com.azure.resourcemanager.network.models.ConnectivityHop;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information on the connectivity status. */
+/**
+ * Information on the connectivity status.
+ */
 @Immutable
 public final class ConnectivityInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityInformationInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ConnectivityInformationInner.class);
 
     /*
      * List of hops between the source and the destination.
@@ -60,8 +65,9 @@ public final class ConnectivityInformationInner {
     private Integer probesFailed;
 
     /**
-     * Get the hops property: List of hops between the source and the destination.
-     *
+     * Get the hops property: List of hops between the source and the
+     * destination.
+     * 
      * @return the hops value.
      */
     public List<ConnectivityHop> hops() {
@@ -70,7 +76,7 @@ public final class ConnectivityInformationInner {
 
     /**
      * Get the connectionStatus property: The connection status.
-     *
+     * 
      * @return the connectionStatus value.
      */
     public ConnectionStatus connectionStatus() {
@@ -79,7 +85,7 @@ public final class ConnectivityInformationInner {
 
     /**
      * Get the avgLatencyInMs property: Average latency in milliseconds.
-     *
+     * 
      * @return the avgLatencyInMs value.
      */
     public Integer avgLatencyInMs() {
@@ -88,7 +94,7 @@ public final class ConnectivityInformationInner {
 
     /**
      * Get the minLatencyInMs property: Minimum latency in milliseconds.
-     *
+     * 
      * @return the minLatencyInMs value.
      */
     public Integer minLatencyInMs() {
@@ -97,7 +103,7 @@ public final class ConnectivityInformationInner {
 
     /**
      * Get the maxLatencyInMs property: Maximum latency in milliseconds.
-     *
+     * 
      * @return the maxLatencyInMs value.
      */
     public Integer maxLatencyInMs() {
@@ -106,7 +112,7 @@ public final class ConnectivityInformationInner {
 
     /**
      * Get the probesSent property: Total number of probes sent.
-     *
+     * 
      * @return the probesSent value.
      */
     public Integer probesSent() {
@@ -115,7 +121,7 @@ public final class ConnectivityInformationInner {
 
     /**
      * Get the probesFailed property: Number of failed probes.
-     *
+     * 
      * @return the probesFailed value.
      */
     public Integer probesFailed() {
@@ -124,7 +130,7 @@ public final class ConnectivityInformationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

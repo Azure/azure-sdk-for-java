@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response to a record set List operation. */
+/**
+ * The response to a record set List operation.
+ */
 @Fluent
 public final class RecordSetListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSetListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RecordSetListResult.class);
 
     /*
      * Information about the record sets in the response.
@@ -25,12 +30,13 @@ public final class RecordSetListResult {
     /*
      * The continuation token for the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the value property: Information about the record sets in the response.
-     *
+     * Get the value property: Information about the record sets in the
+     * response.
+     * 
      * @return the value value.
      */
     public List<RecordSetInner> value() {
@@ -38,8 +44,9 @@ public final class RecordSetListResult {
     }
 
     /**
-     * Set the value property: Information about the record sets in the response.
-     *
+     * Set the value property: Information about the record sets in the
+     * response.
+     * 
      * @param value the value value to set.
      * @return the RecordSetListResult object itself.
      */
@@ -49,8 +56,9 @@ public final class RecordSetListResult {
     }
 
     /**
-     * Get the nextLink property: The continuation token for the next page of results.
-     *
+     * Get the nextLink property: The continuation token for the next page of
+     * results.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -58,8 +66,20 @@ public final class RecordSetListResult {
     }
 
     /**
+     * Set the nextLink property: The continuation token for the next page of
+     * results.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the RecordSetListResult object itself.
+     */
+    public RecordSetListResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

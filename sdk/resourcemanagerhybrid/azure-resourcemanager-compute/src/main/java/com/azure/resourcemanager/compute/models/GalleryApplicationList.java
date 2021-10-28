@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Gallery Applications operation response. */
+/**
+ * The List Gallery Applications operation response.
+ */
 @Fluent
 public final class GalleryApplicationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GalleryApplicationList.class);
 
     /*
      * A list of Gallery Applications.
@@ -32,7 +37,7 @@ public final class GalleryApplicationList {
 
     /**
      * Get the value property: A list of Gallery Applications.
-     *
+     * 
      * @return the value value.
      */
     public List<GalleryApplicationInner> value() {
@@ -41,7 +46,7 @@ public final class GalleryApplicationList {
 
     /**
      * Set the value property: A list of Gallery Applications.
-     *
+     * 
      * @param value the value value to set.
      * @return the GalleryApplicationList object itself.
      */
@@ -51,9 +56,10 @@ public final class GalleryApplicationList {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of Application Definitions in the Application Gallery.
-     * Call ListNext() with this to fetch the next page of gallery Application Definitions.
-     *
+     * Get the nextLink property: The uri to fetch the next page of Application
+     * Definitions in the Application Gallery. Call ListNext() with this to
+     * fetch the next page of gallery Application Definitions.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,9 +67,10 @@ public final class GalleryApplicationList {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of Application Definitions in the Application Gallery.
-     * Call ListNext() with this to fetch the next page of gallery Application Definitions.
-     *
+     * Set the nextLink property: The uri to fetch the next page of Application
+     * Definitions in the Application Gallery. Call ListNext() with this to
+     * fetch the next page of gallery Application Definitions.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GalleryApplicationList object itself.
      */
@@ -74,14 +81,12 @@ public final class GalleryApplicationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model GalleryApplicationList"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property value in model GalleryApplicationList"));
         } else {
             value().forEach(e -> e.validate());
         }

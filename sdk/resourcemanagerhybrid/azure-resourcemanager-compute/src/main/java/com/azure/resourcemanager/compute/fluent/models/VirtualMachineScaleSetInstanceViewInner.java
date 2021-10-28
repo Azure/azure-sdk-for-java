@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceSummary;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetInstanceViewStatusesSummary;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMExtensionsSummary;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The instance view of a virtual machine scale set. */
+/**
+ * The instance view of a virtual machine scale set.
+ */
 @Fluent
 public final class VirtualMachineScaleSetInstanceViewInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetInstanceViewInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetInstanceViewInner.class);
 
     /*
      * The instance view status summary for the virtual machine scale set.
@@ -44,8 +49,9 @@ public final class VirtualMachineScaleSetInstanceViewInner {
     private List<OrchestrationServiceSummary> orchestrationServices;
 
     /**
-     * Get the virtualMachine property: The instance view status summary for the virtual machine scale set.
-     *
+     * Get the virtualMachine property: The instance view status summary for
+     * the virtual machine scale set.
+     * 
      * @return the virtualMachine value.
      */
     public VirtualMachineScaleSetInstanceViewStatusesSummary virtualMachine() {
@@ -54,7 +60,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Get the extensions property: The extensions information.
-     *
+     * 
      * @return the extensions value.
      */
     public List<VirtualMachineScaleSetVMExtensionsSummary> extensions() {
@@ -63,7 +69,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -72,7 +78,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Set the statuses property: The resource status information.
-     *
+     * 
      * @param statuses the statuses value to set.
      * @return the VirtualMachineScaleSetInstanceViewInner object itself.
      */
@@ -82,8 +88,9 @@ public final class VirtualMachineScaleSetInstanceViewInner {
     }
 
     /**
-     * Get the orchestrationServices property: The orchestration services information.
-     *
+     * Get the orchestrationServices property: The orchestration services
+     * information.
+     * 
      * @return the orchestrationServices value.
      */
     public List<OrchestrationServiceSummary> orchestrationServices() {
@@ -92,7 +99,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

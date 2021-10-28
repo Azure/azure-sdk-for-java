@@ -4,16 +4,21 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An error response from the Compute service. */
+/**
+ * Api error.
+ */
 @Immutable
 public final class ApiError extends ManagementError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiError.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApiError.class);
 
     /*
      * The Api inner error
@@ -23,7 +28,7 @@ public final class ApiError extends ManagementError {
 
     /**
      * Get the innererror property: The Api inner error.
-     *
+     * 
      * @return the innererror value.
      */
     public InnerError getInnererror() {
@@ -32,7 +37,7 @@ public final class ApiError extends ManagementError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

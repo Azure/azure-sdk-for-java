@@ -5,16 +5,23 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AzureEntityResource;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ImmutabilityPolicy property of a blob container, including Id, resource name, resource type, Etag. */
+/**
+ * The ImmutabilityPolicy property of a blob container, including Id, resource
+ * name, resource type, Etag.
+ */
 @Fluent
 public final class ImmutabilityPolicyInner extends AzureEntityResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImmutabilityPolicyInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ImmutabilityPolicyInner.class);
 
     /*
      * The properties of an ImmutabilityPolicy of a blob container.
@@ -23,8 +30,9 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     private ImmutabilityPolicyProperty innerProperties = new ImmutabilityPolicyProperty();
 
     /**
-     * Get the innerProperties property: The properties of an ImmutabilityPolicy of a blob container.
-     *
+     * Get the innerProperties property: The properties of an
+     * ImmutabilityPolicy of a blob container.
+     * 
      * @return the innerProperties value.
      */
     private ImmutabilityPolicyProperty innerProperties() {
@@ -32,9 +40,10 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     }
 
     /**
-     * Get the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
-     * since the policy creation, in days.
-     *
+     * Get the immutabilityPeriodSinceCreationInDays property: The immutability
+     * period for the blobs in the container since the policy creation, in
+     * days.
+     * 
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
     public Integer immutabilityPeriodSinceCreationInDays() {
@@ -42,14 +51,15 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     }
 
     /**
-     * Set the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
-     * since the policy creation, in days.
-     *
-     * @param immutabilityPeriodSinceCreationInDays the immutabilityPeriodSinceCreationInDays value to set.
+     * Set the immutabilityPeriodSinceCreationInDays property: The immutability
+     * period for the blobs in the container since the policy creation, in
+     * days.
+     * 
+     * @param immutabilityPeriodSinceCreationInDays the
+     * immutabilityPeriodSinceCreationInDays value to set.
      * @return the ImmutabilityPolicyInner object itself.
      */
-    public ImmutabilityPolicyInner withImmutabilityPeriodSinceCreationInDays(
-        Integer immutabilityPeriodSinceCreationInDays) {
+    public ImmutabilityPolicyInner withImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ImmutabilityPolicyProperty();
         }
@@ -58,9 +68,9 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     }
 
     /**
-     * Get the state property: The ImmutabilityPolicy state of a blob container, possible values include: Locked and
-     * Unlocked.
-     *
+     * Get the state property: The ImmutabilityPolicy state of a blob
+     * container, possible values include: Locked and Unlocked.
+     * 
      * @return the state value.
      */
     public ImmutabilityPolicyState state() {
@@ -68,11 +78,13 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     }
 
     /**
-     * Get the allowProtectedAppendWrites property: This property can only be changed for unlocked time-based retention
-     * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
-     * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
-     * cannot be changed with ExtendImmutabilityPolicy API.
-     *
+     * Get the allowProtectedAppendWrites property: This property can only be
+     * changed for unlocked time-based retention policies. When enabled, new
+     * blocks can be written to an append blob while maintaining immutability
+     * protection and compliance. Only new blocks can be added and any existing
+     * blocks cannot be modified or deleted. This property cannot be changed
+     * with ExtendImmutabilityPolicy API.
+     * 
      * @return the allowProtectedAppendWrites value.
      */
     public Boolean allowProtectedAppendWrites() {
@@ -80,12 +92,15 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
     }
 
     /**
-     * Set the allowProtectedAppendWrites property: This property can only be changed for unlocked time-based retention
-     * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
-     * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
-     * cannot be changed with ExtendImmutabilityPolicy API.
-     *
-     * @param allowProtectedAppendWrites the allowProtectedAppendWrites value to set.
+     * Set the allowProtectedAppendWrites property: This property can only be
+     * changed for unlocked time-based retention policies. When enabled, new
+     * blocks can be written to an append blob while maintaining immutability
+     * protection and compliance. Only new blocks can be added and any existing
+     * blocks cannot be modified or deleted. This property cannot be changed
+     * with ExtendImmutabilityPolicy API.
+     * 
+     * @param allowProtectedAppendWrites the allowProtectedAppendWrites value
+     * to set.
      * @return the ImmutabilityPolicyInner object itself.
      */
     public ImmutabilityPolicyInner withAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites) {
@@ -98,17 +113,14 @@ public final class ImmutabilityPolicyInner extends AzureEntityResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ImmutabilityPolicyInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model ImmutabilityPolicyInner"));
         } else {
             innerProperties().validate();
         }

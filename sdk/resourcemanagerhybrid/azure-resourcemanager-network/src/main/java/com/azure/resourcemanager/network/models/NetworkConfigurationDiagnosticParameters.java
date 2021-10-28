@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters to get network configuration diagnostic. */
+/**
+ * Parameters to get network configuration diagnostic.
+ */
 @Fluent
 public final class NetworkConfigurationDiagnosticParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticParameters.class);
 
     /*
      * The ID of the target resource to perform network configuration
@@ -24,7 +29,7 @@ public final class NetworkConfigurationDiagnosticParameters {
     private String targetResourceId;
 
     /*
-     * Verbosity level.
+     * Verbosity level. Accepted values are 'Normal', 'Minimum', 'Full'.
      */
     @JsonProperty(value = "verbosityLevel")
     private VerbosityLevel verbosityLevel;
@@ -36,9 +41,10 @@ public final class NetworkConfigurationDiagnosticParameters {
     private List<NetworkConfigurationDiagnosticProfile> profiles;
 
     /**
-     * Get the targetResourceId property: The ID of the target resource to perform network configuration diagnostic.
-     * Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
-     *
+     * Get the targetResourceId property: The ID of the target resource to
+     * perform network configuration diagnostic. Valid options are VM,
+     * NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -46,9 +52,10 @@ public final class NetworkConfigurationDiagnosticParameters {
     }
 
     /**
-     * Set the targetResourceId property: The ID of the target resource to perform network configuration diagnostic.
-     * Valid options are VM, NetworkInterface, VMSS/NetworkInterface and Application Gateway.
-     *
+     * Set the targetResourceId property: The ID of the target resource to
+     * perform network configuration diagnostic. Valid options are VM,
+     * NetworkInterface, VMSS/NetworkInterface and Application Gateway.
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the NetworkConfigurationDiagnosticParameters object itself.
      */
@@ -58,8 +65,9 @@ public final class NetworkConfigurationDiagnosticParameters {
     }
 
     /**
-     * Get the verbosityLevel property: Verbosity level.
-     *
+     * Get the verbosityLevel property: Verbosity level. Accepted values are
+     * 'Normal', 'Minimum', 'Full'.
+     * 
      * @return the verbosityLevel value.
      */
     public VerbosityLevel verbosityLevel() {
@@ -67,8 +75,9 @@ public final class NetworkConfigurationDiagnosticParameters {
     }
 
     /**
-     * Set the verbosityLevel property: Verbosity level.
-     *
+     * Set the verbosityLevel property: Verbosity level. Accepted values are
+     * 'Normal', 'Minimum', 'Full'.
+     * 
      * @param verbosityLevel the verbosityLevel value to set.
      * @return the NetworkConfigurationDiagnosticParameters object itself.
      */
@@ -78,8 +87,9 @@ public final class NetworkConfigurationDiagnosticParameters {
     }
 
     /**
-     * Get the profiles property: List of network configuration diagnostic profiles.
-     *
+     * Get the profiles property: List of network configuration diagnostic
+     * profiles.
+     * 
      * @return the profiles value.
      */
     public List<NetworkConfigurationDiagnosticProfile> profiles() {
@@ -87,8 +97,9 @@ public final class NetworkConfigurationDiagnosticParameters {
     }
 
     /**
-     * Set the profiles property: List of network configuration diagnostic profiles.
-     *
+     * Set the profiles property: List of network configuration diagnostic
+     * profiles.
+     * 
      * @param profiles the profiles value to set.
      * @return the NetworkConfigurationDiagnosticParameters object itself.
      */
@@ -99,22 +110,15 @@ public final class NetworkConfigurationDiagnosticParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model"
-                            + " NetworkConfigurationDiagnosticParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property targetResourceId in model NetworkConfigurationDiagnosticParameters"));
         }
         if (profiles() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property profiles in model NetworkConfigurationDiagnosticParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property profiles in model NetworkConfigurationDiagnosticParameters"));
         } else {
             profiles().forEach(e -> e.validate());
         }

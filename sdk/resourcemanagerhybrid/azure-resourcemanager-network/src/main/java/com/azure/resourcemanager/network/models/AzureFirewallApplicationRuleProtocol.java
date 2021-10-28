@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the application rule protocol. */
+/**
+ * Properties of the application rule protocol.
+ */
 @Fluent
 public final class AzureFirewallApplicationRuleProtocol {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallApplicationRuleProtocol.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AzureFirewallApplicationRuleProtocol.class);
 
     /*
-     * Protocol type.
+     * Protocol type
      */
     @JsonProperty(value = "protocolType")
     private AzureFirewallApplicationRuleProtocolType protocolType;
@@ -29,7 +34,7 @@ public final class AzureFirewallApplicationRuleProtocol {
 
     /**
      * Get the protocolType property: Protocol type.
-     *
+     * 
      * @return the protocolType value.
      */
     public AzureFirewallApplicationRuleProtocolType protocolType() {
@@ -38,19 +43,19 @@ public final class AzureFirewallApplicationRuleProtocol {
 
     /**
      * Set the protocolType property: Protocol type.
-     *
+     * 
      * @param protocolType the protocolType value to set.
      * @return the AzureFirewallApplicationRuleProtocol object itself.
      */
-    public AzureFirewallApplicationRuleProtocol withProtocolType(
-        AzureFirewallApplicationRuleProtocolType protocolType) {
+    public AzureFirewallApplicationRuleProtocol withProtocolType(AzureFirewallApplicationRuleProtocolType protocolType) {
         this.protocolType = protocolType;
         return this;
     }
 
     /**
-     * Get the port property: Port number for the protocol, cannot be greater than 64000. This field is optional.
-     *
+     * Get the port property: Port number for the protocol, cannot be greater
+     * than 64000. This field is optional.
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -58,8 +63,9 @@ public final class AzureFirewallApplicationRuleProtocol {
     }
 
     /**
-     * Set the port property: Port number for the protocol, cannot be greater than 64000. This field is optional.
-     *
+     * Set the port property: Port number for the protocol, cannot be greater
+     * than 64000. This field is optional.
+     * 
      * @param port the port value to set.
      * @return the AzureFirewallApplicationRuleProtocol object itself.
      */
@@ -70,7 +76,7 @@ public final class AzureFirewallApplicationRuleProtocol {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

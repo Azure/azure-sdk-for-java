@@ -4,16 +4,21 @@
 
 package com.azure.resourcemanager.containerservice.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The credential result response. */
+/**
+ * The credential result response.
+ */
 @Immutable
 public final class CredentialResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CredentialResult.class);
 
     /*
      * The name of the credential.
@@ -29,7 +34,7 @@ public final class CredentialResult {
 
     /**
      * Get the name property: The name of the credential.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +43,7 @@ public final class CredentialResult {
 
     /**
      * Get the value property: Base64-encoded Kubernetes configuration file.
-     *
+     * 
      * @return the value value.
      */
     public byte[] value() {
@@ -47,7 +52,7 @@ public final class CredentialResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

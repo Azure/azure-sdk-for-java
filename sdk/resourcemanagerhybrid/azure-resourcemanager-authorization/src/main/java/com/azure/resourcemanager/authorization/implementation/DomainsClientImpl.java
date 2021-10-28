@@ -6,6 +6,7 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -30,19 +31,26 @@ import com.azure.resourcemanager.authorization.fluent.models.DomainInner;
 import com.azure.resourcemanager.authorization.models.DomainListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * DomainsClient.
+ */
 public final class DomainsClientImpl implements DomainsClient {
     private final ClientLogger logger = new ClientLogger(DomainsClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DomainsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of DomainsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DomainsClientImpl(GraphRbacManagementClientImpl client) {
@@ -51,38 +59,30 @@ public final class DomainsClientImpl implements DomainsClient {
     }
 
     /**
-     * The interface defining all the services for GraphRbacManagementClientDomains to be used by the proxy service to
+     * The interface defining all the services for
+     * GraphRbacManagementClientDomains to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementC")
     private interface DomainsService {
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/domains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<DomainListResult>> list(@HostParam("$host") String endpoint, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{tenantID}/domains/{domainName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("domainName") String domainName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
+        Mono<Response<DomainInner>> get(@HostParam("$host") String endpoint, @PathParam("domainName") String domainName, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of domains for the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -90,39 +90,29 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DomainInner>> listSinglePageAsync(String filter) {
+    private Mono<PagedResponse<DomainInner>> listSinglePageAsync(String tenantId, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<DomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<DomainInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of domains for the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,31 +121,29 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DomainInner>> listSinglePageAsync(String filter, Context context) {
+    private Mono<PagedResponse<DomainInner>> listSinglePageAsync(String tenantId, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null));
     }
 
     /**
      * Gets a list of domains for the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -163,26 +151,31 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DomainInner> listAsync(String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter));
+    public PagedFlux<DomainInner> listAsync(String tenantId, String filter) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(tenantId, filter));
     }
 
     /**
      * Gets a list of domains for the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DomainInner> listAsync() {
+    public PagedFlux<DomainInner> listAsync(String tenantId) {
         final String filter = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(tenantId, filter));
     }
 
     /**
      * Gets a list of domains for the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,13 +184,30 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DomainInner> listAsync(String filter, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, context));
+    private PagedFlux<DomainInner> listAsync(String tenantId, String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(tenantId, filter, context));
     }
 
     /**
      * Gets a list of domains for the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of domains for the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DomainInner> list(String tenantId) {
+        final String filter = null;
+        return new PagedIterable<>(listAsync(tenantId, filter));
+    }
+
+    /**
+     * Gets a list of domains for the current tenant.
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,66 +216,41 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DomainInner> list(String filter, Context context) {
-        return new PagedIterable<>(listAsync(filter, context));
-    }
-
-    /**
-     * Gets a list of domains for the current tenant.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DomainInner> list() {
-        final String filter = null;
-        return new PagedIterable<>(listAsync(filter));
+    public PagedIterable<DomainInner> list(String tenantId, String filter, Context context) {
+        return new PagedIterable<>(listAsync(tenantId, filter, context));
     }
 
     /**
      * Gets a specific domain in the current tenant.
-     *
+     * 
      * @param domainName name of the domain.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific domain in the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DomainInner>> getWithResponseAsync(String domainName) {
+    public Mono<Response<DomainInner>> getWithResponseAsync(String domainName, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (domainName == null) {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            domainName,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+        final String accept = "application/json, text/json";
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), domainName, this.client.getApiVersion(), tenantId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a specific domain in the current tenant.
-     *
+     * 
      * @param domainName name of the domain.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -273,68 +258,63 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return a specific domain in the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DomainInner>> getWithResponseAsync(String domainName, Context context) {
+    private Mono<Response<DomainInner>> getWithResponseAsync(String domainName, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (domainName == null) {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        if (tenantId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
+        final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(), domainName, this.client.getApiVersion(), this.client.getTenantId(), context);
+        return service.get(this.client.getEndpoint(), domainName, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
      * Gets a specific domain in the current tenant.
-     *
+     * 
      * @param domainName name of the domain.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific domain in the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DomainInner> getAsync(String domainName) {
-        return getWithResponseAsync(domainName)
-            .flatMap(
-                (Response<DomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Mono<DomainInner> getAsync(String domainName, String tenantId) {
+        return getWithResponseAsync(domainName, tenantId)
+            .flatMap((Response<DomainInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets a specific domain in the current tenant.
-     *
+     * 
      * @param domainName name of the domain.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific domain in the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainInner get(String domainName) {
-        return getAsync(domainName).block();
+    public DomainInner get(String domainName, String tenantId) {
+        return getAsync(domainName, tenantId).block();
     }
 
     /**
      * Gets a specific domain in the current tenant.
-     *
+     * 
      * @param domainName name of the domain.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -342,7 +322,7 @@ public final class DomainsClientImpl implements DomainsClient {
      * @return a specific domain in the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DomainInner> getWithResponse(String domainName, Context context) {
-        return getWithResponseAsync(domainName, context).block();
+    public Response<DomainInner> getWithResponse(String domainName, String tenantId, Context context) {
+        return getWithResponseAsync(domainName, tenantId, context).block();
     }
 }

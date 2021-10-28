@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters of move resources. */
+/**
+ * Parameters of move resources.
+ */
 @Fluent
 public final class ResourcesMoveInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourcesMoveInfo.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourcesMoveInfo.class);
 
     /*
      * The IDs of the resources.
@@ -29,7 +34,7 @@ public final class ResourcesMoveInfo {
 
     /**
      * Get the resources property: The IDs of the resources.
-     *
+     * 
      * @return the resources value.
      */
     public List<String> resources() {
@@ -38,7 +43,7 @@ public final class ResourcesMoveInfo {
 
     /**
      * Set the resources property: The IDs of the resources.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the ResourcesMoveInfo object itself.
      */
@@ -49,7 +54,7 @@ public final class ResourcesMoveInfo {
 
     /**
      * Get the targetResourceGroup property: The target resource group.
-     *
+     * 
      * @return the targetResourceGroup value.
      */
     public String targetResourceGroup() {
@@ -58,7 +63,7 @@ public final class ResourcesMoveInfo {
 
     /**
      * Set the targetResourceGroup property: The target resource group.
-     *
+     * 
      * @param targetResourceGroup the targetResourceGroup value to set.
      * @return the ResourcesMoveInfo object itself.
      */
@@ -69,7 +74,7 @@ public final class ResourcesMoveInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The usage names. */
+/**
+ * The usage names.
+ */
 @Fluent
 public final class UsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageName.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UsageName.class);
 
     /*
      * A string describing the resource name.
@@ -28,7 +33,7 @@ public final class UsageName {
 
     /**
      * Get the value property: A string describing the resource name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +42,7 @@ public final class UsageName {
 
     /**
      * Set the value property: A string describing the resource name.
-     *
+     * 
      * @param value the value value to set.
      * @return the UsageName object itself.
      */
@@ -47,8 +52,9 @@ public final class UsageName {
     }
 
     /**
-     * Get the localizedValue property: A localized string describing the resource name.
-     *
+     * Get the localizedValue property: A localized string describing the
+     * resource name.
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -56,8 +62,9 @@ public final class UsageName {
     }
 
     /**
-     * Set the localizedValue property: A localized string describing the resource name.
-     *
+     * Set the localizedValue property: A localized string describing the
+     * resource name.
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the UsageName object itself.
      */
@@ -68,7 +75,7 @@ public final class UsageName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

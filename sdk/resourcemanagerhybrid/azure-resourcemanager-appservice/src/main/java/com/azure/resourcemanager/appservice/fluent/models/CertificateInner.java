@@ -76,29 +76,6 @@ public final class CertificateInner extends Resource {
     }
 
     /**
-     * Get the password property: Certificate password.
-     *
-     * @return the password value.
-     */
-    public String password() {
-        return this.innerProperties() == null ? null : this.innerProperties().password();
-    }
-
-    /**
-     * Set the password property: Certificate password.
-     *
-     * @param password the password value to set.
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withPassword(String password) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CertificateProperties();
-        }
-        this.innerProperties().withPassword(password);
-        return this;
-    }
-
-    /**
      * Get the friendlyName property: Friendly name of the certificate.
      *
      * @return the friendlyName value.
@@ -205,6 +182,29 @@ public final class CertificateInner extends Resource {
      */
     public OffsetDateTime expirationDate() {
         return this.innerProperties() == null ? null : this.innerProperties().expirationDate();
+    }
+
+    /**
+     * Get the password property: Certificate password.
+     *
+     * @return the password value.
+     */
+    public String password() {
+        return this.innerProperties() == null ? null : this.innerProperties().password();
+    }
+
+    /**
+     * Set the password property: Certificate password.
+     *
+     * @param password the password value to set.
+     * @return the CertificateInner object itself.
+     */
+    public CertificateInner withPassword(String password) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CertificateProperties();
+        }
+        this.innerProperties().withPassword(password);
+        return this;
     }
 
     /**
@@ -332,52 +332,6 @@ public final class CertificateInner extends Resource {
             this.innerProperties = new CertificateProperties();
         }
         this.innerProperties().withServerFarmId(serverFarmId);
-        return this;
-    }
-
-    /**
-     * Get the canonicalName property: CNAME of the certificate to be issued via free certificate.
-     *
-     * @return the canonicalName value.
-     */
-    public String canonicalName() {
-        return this.innerProperties() == null ? null : this.innerProperties().canonicalName();
-    }
-
-    /**
-     * Set the canonicalName property: CNAME of the certificate to be issued via free certificate.
-     *
-     * @param canonicalName the canonicalName value to set.
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withCanonicalName(String canonicalName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CertificateProperties();
-        }
-        this.innerProperties().withCanonicalName(canonicalName);
-        return this;
-    }
-
-    /**
-     * Get the domainValidationMethod property: Method of domain validation for free cert.
-     *
-     * @return the domainValidationMethod value.
-     */
-    public String domainValidationMethod() {
-        return this.innerProperties() == null ? null : this.innerProperties().domainValidationMethod();
-    }
-
-    /**
-     * Set the domainValidationMethod property: Method of domain validation for free cert.
-     *
-     * @param domainValidationMethod the domainValidationMethod value to set.
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withDomainValidationMethod(String domainValidationMethod) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new CertificateProperties();
-        }
-        this.innerProperties().withDomainValidationMethod(domainValidationMethod);
         return this;
     }
 

@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information about a single resource change predicted by What-If operation. */
+/**
+ * Information about a single resource change predicted by What-If operation.
+ */
 @Fluent
 public final class WhatIfChange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WhatIfChange.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WhatIfChange.class);
 
     /*
      * Resource ID
@@ -27,12 +32,6 @@ public final class WhatIfChange {
      */
     @JsonProperty(value = "changeType", required = true)
     private ChangeType changeType;
-
-    /*
-     * The explanation about why the resource is unsupported by What-If.
-     */
-    @JsonProperty(value = "unsupportedReason")
-    private String unsupportedReason;
 
     /*
      * The snapshot of the resource before the deployment is executed.
@@ -54,7 +53,7 @@ public final class WhatIfChange {
 
     /**
      * Get the resourceId property: Resource ID.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -63,7 +62,7 @@ public final class WhatIfChange {
 
     /**
      * Set the resourceId property: Resource ID.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the WhatIfChange object itself.
      */
@@ -73,8 +72,9 @@ public final class WhatIfChange {
     }
 
     /**
-     * Get the changeType property: Type of change that will be made to the resource when the deployment is executed.
-     *
+     * Get the changeType property: Type of change that will be made to the
+     * resource when the deployment is executed.
+     * 
      * @return the changeType value.
      */
     public ChangeType changeType() {
@@ -82,8 +82,9 @@ public final class WhatIfChange {
     }
 
     /**
-     * Set the changeType property: Type of change that will be made to the resource when the deployment is executed.
-     *
+     * Set the changeType property: Type of change that will be made to the
+     * resource when the deployment is executed.
+     * 
      * @param changeType the changeType value to set.
      * @return the WhatIfChange object itself.
      */
@@ -93,28 +94,9 @@ public final class WhatIfChange {
     }
 
     /**
-     * Get the unsupportedReason property: The explanation about why the resource is unsupported by What-If.
-     *
-     * @return the unsupportedReason value.
-     */
-    public String unsupportedReason() {
-        return this.unsupportedReason;
-    }
-
-    /**
-     * Set the unsupportedReason property: The explanation about why the resource is unsupported by What-If.
-     *
-     * @param unsupportedReason the unsupportedReason value to set.
-     * @return the WhatIfChange object itself.
-     */
-    public WhatIfChange withUnsupportedReason(String unsupportedReason) {
-        this.unsupportedReason = unsupportedReason;
-        return this;
-    }
-
-    /**
-     * Get the before property: The snapshot of the resource before the deployment is executed.
-     *
+     * Get the before property: The snapshot of the resource before the
+     * deployment is executed.
+     * 
      * @return the before value.
      */
     public Object before() {
@@ -122,8 +104,9 @@ public final class WhatIfChange {
     }
 
     /**
-     * Set the before property: The snapshot of the resource before the deployment is executed.
-     *
+     * Set the before property: The snapshot of the resource before the
+     * deployment is executed.
+     * 
      * @param before the before value to set.
      * @return the WhatIfChange object itself.
      */
@@ -133,8 +116,9 @@ public final class WhatIfChange {
     }
 
     /**
-     * Get the after property: The predicted snapshot of the resource after the deployment is executed.
-     *
+     * Get the after property: The predicted snapshot of the resource after the
+     * deployment is executed.
+     * 
      * @return the after value.
      */
     public Object after() {
@@ -142,8 +126,9 @@ public final class WhatIfChange {
     }
 
     /**
-     * Set the after property: The predicted snapshot of the resource after the deployment is executed.
-     *
+     * Set the after property: The predicted snapshot of the resource after the
+     * deployment is executed.
+     * 
      * @param after the after value to set.
      * @return the WhatIfChange object itself.
      */
@@ -154,7 +139,7 @@ public final class WhatIfChange {
 
     /**
      * Get the delta property: The predicted changes to resource properties.
-     *
+     * 
      * @return the delta value.
      */
     public List<WhatIfPropertyChange> delta() {
@@ -163,7 +148,7 @@ public final class WhatIfChange {
 
     /**
      * Set the delta property: The predicted changes to resource properties.
-     *
+     * 
      * @param delta the delta value to set.
      * @return the WhatIfChange object itself.
      */
@@ -174,19 +159,15 @@ public final class WhatIfChange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model WhatIfChange"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property resourceId in model WhatIfChange"));
         }
         if (changeType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property changeType in model WhatIfChange"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property changeType in model WhatIfChange"));
         }
         if (delta() != null) {
             delta().forEach(e -> e.validate());

@@ -5,17 +5,23 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.models.TrafficAnalyticsProperties;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information on the configuration of flow log and traffic analytics (optional) . */
+/**
+ * Information on the configuration of flow log and traffic analytics
+ * (optional) .
+ */
 @Fluent
 public final class FlowLogInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowLogInformationInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FlowLogInformationInner.class);
 
     /*
      * The ID of the resource to configure for flow log and traffic analytics
@@ -25,7 +31,7 @@ public final class FlowLogInformationInner {
     private String targetResourceId;
 
     /*
-     * Properties of the flow log.
+     * Parameters that define the configuration of flow log.
      */
     @JsonProperty(value = "properties", required = true)
     private FlowLogProperties innerProperties = new FlowLogProperties();
@@ -37,9 +43,9 @@ public final class FlowLogInformationInner {
     private TrafficAnalyticsProperties flowAnalyticsConfiguration;
 
     /**
-     * Get the targetResourceId property: The ID of the resource to configure for flow log and traffic analytics
-     * (optional) .
-     *
+     * Get the targetResourceId property: The ID of the resource to configure
+     * for flow log and traffic analytics (optional) .
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -47,9 +53,9 @@ public final class FlowLogInformationInner {
     }
 
     /**
-     * Set the targetResourceId property: The ID of the resource to configure for flow log and traffic analytics
-     * (optional) .
-     *
+     * Set the targetResourceId property: The ID of the resource to configure
+     * for flow log and traffic analytics (optional) .
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -59,8 +65,9 @@ public final class FlowLogInformationInner {
     }
 
     /**
-     * Get the innerProperties property: Properties of the flow log.
-     *
+     * Get the innerProperties property: Parameters that define the
+     * configuration of flow log.
+     * 
      * @return the innerProperties value.
      */
     private FlowLogProperties innerProperties() {
@@ -68,8 +75,9 @@ public final class FlowLogInformationInner {
     }
 
     /**
-     * Get the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     *
+     * Get the flowAnalyticsConfiguration property: Parameters that define the
+     * configuration of traffic analytics.
+     * 
      * @return the flowAnalyticsConfiguration value.
      */
     public TrafficAnalyticsProperties flowAnalyticsConfiguration() {
@@ -77,20 +85,22 @@ public final class FlowLogInformationInner {
     }
 
     /**
-     * Set the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     *
-     * @param flowAnalyticsConfiguration the flowAnalyticsConfiguration value to set.
+     * Set the flowAnalyticsConfiguration property: Parameters that define the
+     * configuration of traffic analytics.
+     * 
+     * @param flowAnalyticsConfiguration the flowAnalyticsConfiguration value
+     * to set.
      * @return the FlowLogInformationInner object itself.
      */
-    public FlowLogInformationInner withFlowAnalyticsConfiguration(
-        TrafficAnalyticsProperties flowAnalyticsConfiguration) {
+    public FlowLogInformationInner withFlowAnalyticsConfiguration(TrafficAnalyticsProperties flowAnalyticsConfiguration) {
         this.flowAnalyticsConfiguration = flowAnalyticsConfiguration;
         return this;
     }
 
     /**
-     * Get the storageId property: ID of the storage account which is used to store the flow log.
-     *
+     * Get the storageId property: ID of the storage account which is used to
+     * store the flow log.
+     * 
      * @return the storageId value.
      */
     public String storageId() {
@@ -98,8 +108,9 @@ public final class FlowLogInformationInner {
     }
 
     /**
-     * Set the storageId property: ID of the storage account which is used to store the flow log.
-     *
+     * Set the storageId property: ID of the storage account which is used to
+     * store the flow log.
+     * 
      * @param storageId the storageId value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -113,7 +124,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Get the enabled property: Flag to enable/disable flow logging.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -122,7 +133,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Set the enabled property: Flag to enable/disable flow logging.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -135,8 +146,9 @@ public final class FlowLogInformationInner {
     }
 
     /**
-     * Get the retentionPolicy property: Parameters that define the retention policy for flow log.
-     *
+     * Get the retentionPolicy property: Parameters that define the retention
+     * policy for flow log.
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicyParameters retentionPolicy() {
@@ -144,8 +156,9 @@ public final class FlowLogInformationInner {
     }
 
     /**
-     * Set the retentionPolicy property: Parameters that define the retention policy for flow log.
-     *
+     * Set the retentionPolicy property: Parameters that define the retention
+     * policy for flow log.
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -159,7 +172,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Get the format property: Parameters that define the flow log format.
-     *
+     * 
      * @return the format value.
      */
     public FlowLogFormatParameters format() {
@@ -168,7 +181,7 @@ public final class FlowLogInformationInner {
 
     /**
      * Set the format property: Parameters that define the flow log format.
-     *
+     * 
      * @param format the format value to set.
      * @return the FlowLogInformationInner object itself.
      */
@@ -182,21 +195,15 @@ public final class FlowLogInformationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model FlowLogInformationInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property targetResourceId in model FlowLogInformationInner"));
         }
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model FlowLogInformationInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model FlowLogInformationInner"));
         } else {
             innerProperties().validate();
         }

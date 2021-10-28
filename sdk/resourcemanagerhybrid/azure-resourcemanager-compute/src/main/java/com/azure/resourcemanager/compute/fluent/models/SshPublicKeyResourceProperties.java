@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the SSH public key. */
+/**
+ * Properties of the SSH public key.
+ */
 @Fluent
 public final class SshPublicKeyResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SshPublicKeyResourceProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SshPublicKeyResourceProperties.class);
 
     /*
      * SSH public key used to authenticate to a virtual machine through ssh. If
@@ -25,11 +30,13 @@ public final class SshPublicKeyResourceProperties {
     private String publicKey;
 
     /**
-     * Get the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
-     * property is not initially provided when the resource is created, the publicKey property will be populated when
-     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to
-     * be at least 2048-bit and in ssh-rsa format.
-     *
+     * Get the publicKey property: SSH public key used to authenticate to a
+     * virtual machine through ssh. If this property is not initially provided
+     * when the resource is created, the publicKey property will be populated
+     * when generateKeyPair is called. If the public key is provided upon
+     * resource creation, the provided public key needs to be at least 2048-bit
+     * and in ssh-rsa format.
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -37,11 +44,13 @@ public final class SshPublicKeyResourceProperties {
     }
 
     /**
-     * Set the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
-     * property is not initially provided when the resource is created, the publicKey property will be populated when
-     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to
-     * be at least 2048-bit and in ssh-rsa format.
-     *
+     * Set the publicKey property: SSH public key used to authenticate to a
+     * virtual machine through ssh. If this property is not initially provided
+     * when the resource is created, the publicKey property will be populated
+     * when generateKeyPair is called. If the public key is provided upon
+     * resource creation, the provided public key needs to be at least 2048-bit
+     * and in ssh-rsa format.
+     * 
      * @param publicKey the publicKey value to set.
      * @return the SshPublicKeyResourceProperties object itself.
      */
@@ -52,7 +61,7 @@ public final class SshPublicKeyResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

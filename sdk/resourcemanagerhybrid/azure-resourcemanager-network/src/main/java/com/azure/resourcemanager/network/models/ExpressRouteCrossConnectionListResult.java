@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListExpressRouteCrossConnection API service call. */
+/**
+ * Response for ListExpressRouteCrossConnection API service call.
+ */
 @Fluent
 public final class ExpressRouteCrossConnectionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionListResult.class);
 
     /*
      * A list of ExpressRouteCrossConnection resources.
@@ -30,7 +35,7 @@ public final class ExpressRouteCrossConnectionListResult {
 
     /**
      * Get the value property: A list of ExpressRouteCrossConnection resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRouteCrossConnectionInner> value() {
@@ -39,7 +44,7 @@ public final class ExpressRouteCrossConnectionListResult {
 
     /**
      * Set the value property: A list of ExpressRouteCrossConnection resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRouteCrossConnectionListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class ExpressRouteCrossConnectionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +64,7 @@ public final class ExpressRouteCrossConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

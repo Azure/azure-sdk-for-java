@@ -4,15 +4,21 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The status code and count of the virtual machine scale set instance view status summary. */
+/**
+ * The status code and count of the virtual machine scale set instance view
+ * status summary.
+ */
 @Immutable
 public final class VirtualMachineStatusCodeCount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineStatusCodeCount.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineStatusCodeCount.class);
 
     /*
      * The instance view status code.
@@ -28,7 +34,7 @@ public final class VirtualMachineStatusCodeCount {
 
     /**
      * Get the code property: The instance view status code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -36,8 +42,9 @@ public final class VirtualMachineStatusCodeCount {
     }
 
     /**
-     * Get the count property: The number of instances having a particular status code.
-     *
+     * Get the count property: The number of instances having a particular
+     * status code.
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -46,7 +53,7 @@ public final class VirtualMachineStatusCodeCount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

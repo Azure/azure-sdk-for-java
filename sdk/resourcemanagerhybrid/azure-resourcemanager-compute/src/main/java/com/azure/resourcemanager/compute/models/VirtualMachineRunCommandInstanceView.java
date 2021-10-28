@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The instance view of a virtual machine run command. */
+/**
+ * The instance view of a virtual machine run command.
+ */
 @Fluent
 public final class VirtualMachineRunCommandInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandInstanceView.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandInstanceView.class);
 
     /*
      * Script execution status.
@@ -66,7 +71,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Get the executionState property: Script execution status.
-     *
+     * 
      * @return the executionState value.
      */
     public ExecutionState executionState() {
@@ -75,7 +80,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Set the executionState property: Script execution status.
-     *
+     * 
      * @param executionState the executionState value to set.
      * @return the VirtualMachineRunCommandInstanceView object itself.
      */
@@ -85,8 +90,9 @@ public final class VirtualMachineRunCommandInstanceView {
     }
 
     /**
-     * Get the executionMessage property: Communicate script configuration errors or execution messages.
-     *
+     * Get the executionMessage property: Communicate script configuration
+     * errors or execution messages.
+     * 
      * @return the executionMessage value.
      */
     public String executionMessage() {
@@ -94,8 +100,9 @@ public final class VirtualMachineRunCommandInstanceView {
     }
 
     /**
-     * Set the executionMessage property: Communicate script configuration errors or execution messages.
-     *
+     * Set the executionMessage property: Communicate script configuration
+     * errors or execution messages.
+     * 
      * @param executionMessage the executionMessage value to set.
      * @return the VirtualMachineRunCommandInstanceView object itself.
      */
@@ -106,7 +113,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Get the exitCode property: Exit code returned from script execution.
-     *
+     * 
      * @return the exitCode value.
      */
     public Integer exitCode() {
@@ -115,7 +122,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Set the exitCode property: Exit code returned from script execution.
-     *
+     * 
      * @param exitCode the exitCode value to set.
      * @return the VirtualMachineRunCommandInstanceView object itself.
      */
@@ -126,7 +133,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Get the output property: Script output stream.
-     *
+     * 
      * @return the output value.
      */
     public String output() {
@@ -135,7 +142,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Set the output property: Script output stream.
-     *
+     * 
      * @param output the output value to set.
      * @return the VirtualMachineRunCommandInstanceView object itself.
      */
@@ -146,7 +153,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Get the error property: Script error stream.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -155,7 +162,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Set the error property: Script error stream.
-     *
+     * 
      * @param error the error value to set.
      * @return the VirtualMachineRunCommandInstanceView object itself.
      */
@@ -166,7 +173,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Get the startTime property: Script start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -175,7 +182,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Set the startTime property: Script start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the VirtualMachineRunCommandInstanceView object itself.
      */
@@ -186,7 +193,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Get the endTime property: Script end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -195,7 +202,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Set the endTime property: Script end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the VirtualMachineRunCommandInstanceView object itself.
      */
@@ -206,7 +213,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -215,7 +222,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Set the statuses property: The resource status information.
-     *
+     * 
      * @param statuses the statuses value to set.
      * @return the VirtualMachineRunCommandInstanceView object itself.
      */
@@ -226,7 +233,7 @@ public final class VirtualMachineRunCommandInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

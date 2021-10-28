@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LeaseDuration. */
+/**
+ * Defines values for LeaseDuration.
+ */
 public final class LeaseDuration extends ExpandableStringEnum<LeaseDuration> {
-    /** Static value Infinite for LeaseDuration. */
+    /**
+     * Static value Infinite for LeaseDuration.
+     */
     public static final LeaseDuration INFINITE = fromString("Infinite");
 
-    /** Static value Fixed for LeaseDuration. */
+    /**
+     * Static value Fixed for LeaseDuration.
+     */
     public static final LeaseDuration FIXED = fromString("Fixed");
 
     /**
      * Creates or finds a LeaseDuration from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LeaseDuration.
      */
@@ -27,7 +33,9 @@ public final class LeaseDuration extends ExpandableStringEnum<LeaseDuration> {
         return fromString(name, LeaseDuration.class);
     }
 
-    /** @return known LeaseDuration values. */
+    /**
+     * @return known LeaseDuration values.
+     */
     public static Collection<LeaseDuration> values() {
         return values(LeaseDuration.class);
     }

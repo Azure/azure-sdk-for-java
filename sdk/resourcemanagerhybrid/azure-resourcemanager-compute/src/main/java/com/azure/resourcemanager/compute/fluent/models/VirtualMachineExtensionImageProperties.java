@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a Virtual Machine Extension Image. */
+/**
+ * Describes the properties of a Virtual Machine Extension Image.
+ */
 @Fluent
 public final class VirtualMachineExtensionImageProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionImageProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionImageProperties.class);
 
     /*
      * The operating system this extension supports.
@@ -49,8 +54,9 @@ public final class VirtualMachineExtensionImageProperties {
     private Boolean supportsMultipleExtensions;
 
     /**
-     * Get the operatingSystem property: The operating system this extension supports.
-     *
+     * Get the operatingSystem property: The operating system this extension
+     * supports.
+     * 
      * @return the operatingSystem value.
      */
     public String operatingSystem() {
@@ -58,8 +64,9 @@ public final class VirtualMachineExtensionImageProperties {
     }
 
     /**
-     * Set the operatingSystem property: The operating system this extension supports.
-     *
+     * Set the operatingSystem property: The operating system this extension
+     * supports.
+     * 
      * @param operatingSystem the operatingSystem value to set.
      * @return the VirtualMachineExtensionImageProperties object itself.
      */
@@ -69,8 +76,9 @@ public final class VirtualMachineExtensionImageProperties {
     }
 
     /**
-     * Get the computeRole property: The type of role (IaaS or PaaS) this extension supports.
-     *
+     * Get the computeRole property: The type of role (IaaS or PaaS) this
+     * extension supports.
+     * 
      * @return the computeRole value.
      */
     public String computeRole() {
@@ -78,8 +86,9 @@ public final class VirtualMachineExtensionImageProperties {
     }
 
     /**
-     * Set the computeRole property: The type of role (IaaS or PaaS) this extension supports.
-     *
+     * Set the computeRole property: The type of role (IaaS or PaaS) this
+     * extension supports.
+     * 
      * @param computeRole the computeRole value to set.
      * @return the VirtualMachineExtensionImageProperties object itself.
      */
@@ -89,9 +98,9 @@ public final class VirtualMachineExtensionImageProperties {
     }
 
     /**
-     * Get the handlerSchema property: The schema defined by publisher, where extension consumers should provide
-     * settings in a matching schema.
-     *
+     * Get the handlerSchema property: The schema defined by publisher, where
+     * extension consumers should provide settings in a matching schema.
+     * 
      * @return the handlerSchema value.
      */
     public String handlerSchema() {
@@ -99,9 +108,9 @@ public final class VirtualMachineExtensionImageProperties {
     }
 
     /**
-     * Set the handlerSchema property: The schema defined by publisher, where extension consumers should provide
-     * settings in a matching schema.
-     *
+     * Set the handlerSchema property: The schema defined by publisher, where
+     * extension consumers should provide settings in a matching schema.
+     * 
      * @param handlerSchema the handlerSchema value to set.
      * @return the VirtualMachineExtensionImageProperties object itself.
      */
@@ -111,10 +120,11 @@ public final class VirtualMachineExtensionImageProperties {
     }
 
     /**
-     * Get the vmScaleSetEnabled property: Whether the extension can be used on xRP VMScaleSets. By default existing
-     * extensions are usable on scalesets, but there might be cases where a publisher wants to explicitly indicate the
-     * extension is only enabled for CRP VMs but not VMSS.
-     *
+     * Get the vmScaleSetEnabled property: Whether the extension can be used on
+     * xRP VMScaleSets. By default existing extensions are usable on scalesets,
+     * but there might be cases where a publisher wants to explicitly indicate
+     * the extension is only enabled for CRP VMs but not VMSS.
+     * 
      * @return the vmScaleSetEnabled value.
      */
     public Boolean vmScaleSetEnabled() {
@@ -122,10 +132,11 @@ public final class VirtualMachineExtensionImageProperties {
     }
 
     /**
-     * Set the vmScaleSetEnabled property: Whether the extension can be used on xRP VMScaleSets. By default existing
-     * extensions are usable on scalesets, but there might be cases where a publisher wants to explicitly indicate the
-     * extension is only enabled for CRP VMs but not VMSS.
-     *
+     * Set the vmScaleSetEnabled property: Whether the extension can be used on
+     * xRP VMScaleSets. By default existing extensions are usable on scalesets,
+     * but there might be cases where a publisher wants to explicitly indicate
+     * the extension is only enabled for CRP VMs but not VMSS.
+     * 
      * @param vmScaleSetEnabled the vmScaleSetEnabled value to set.
      * @return the VirtualMachineExtensionImageProperties object itself.
      */
@@ -135,8 +146,9 @@ public final class VirtualMachineExtensionImageProperties {
     }
 
     /**
-     * Get the supportsMultipleExtensions property: Whether the handler can support multiple extensions.
-     *
+     * Get the supportsMultipleExtensions property: Whether the handler can
+     * support multiple extensions.
+     * 
      * @return the supportsMultipleExtensions value.
      */
     public Boolean supportsMultipleExtensions() {
@@ -144,9 +156,11 @@ public final class VirtualMachineExtensionImageProperties {
     }
 
     /**
-     * Set the supportsMultipleExtensions property: Whether the handler can support multiple extensions.
-     *
-     * @param supportsMultipleExtensions the supportsMultipleExtensions value to set.
+     * Set the supportsMultipleExtensions property: Whether the handler can
+     * support multiple extensions.
+     * 
+     * @param supportsMultipleExtensions the supportsMultipleExtensions value
+     * to set.
      * @return the VirtualMachineExtensionImageProperties object itself.
      */
     public VirtualMachineExtensionImageProperties withSupportsMultipleExtensions(Boolean supportsMultipleExtensions) {
@@ -156,27 +170,18 @@ public final class VirtualMachineExtensionImageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operatingSystem() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operatingSystem in model VirtualMachineExtensionImageProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property operatingSystem in model VirtualMachineExtensionImageProperties"));
         }
         if (computeRole() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property computeRole in model VirtualMachineExtensionImageProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property computeRole in model VirtualMachineExtensionImageProperties"));
         }
         if (handlerSchema() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property handlerSchema in model VirtualMachineExtensionImageProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property handlerSchema in model VirtualMachineExtensionImageProperties"));
         }
     }
 }

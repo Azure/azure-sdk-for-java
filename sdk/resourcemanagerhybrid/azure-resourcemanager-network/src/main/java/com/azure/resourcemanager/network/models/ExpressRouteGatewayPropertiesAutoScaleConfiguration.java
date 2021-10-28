@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration for auto scaling. */
+/**
+ * Configuration for auto scaling.
+ */
 @Fluent
 public final class ExpressRouteGatewayPropertiesAutoScaleConfiguration {
     @JsonIgnore
@@ -22,8 +26,9 @@ public final class ExpressRouteGatewayPropertiesAutoScaleConfiguration {
     private ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds bounds;
 
     /**
-     * Get the bounds property: Minimum and maximum number of scale units to deploy.
-     *
+     * Get the bounds property: Minimum and maximum number of scale units to
+     * deploy.
+     * 
      * @return the bounds value.
      */
     public ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds bounds() {
@@ -31,20 +36,21 @@ public final class ExpressRouteGatewayPropertiesAutoScaleConfiguration {
     }
 
     /**
-     * Set the bounds property: Minimum and maximum number of scale units to deploy.
-     *
+     * Set the bounds property: Minimum and maximum number of scale units to
+     * deploy.
+     * 
      * @param bounds the bounds value to set.
-     * @return the ExpressRouteGatewayPropertiesAutoScaleConfiguration object itself.
+     * @return the ExpressRouteGatewayPropertiesAutoScaleConfiguration object
+     * itself.
      */
-    public ExpressRouteGatewayPropertiesAutoScaleConfiguration withBounds(
-        ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds bounds) {
+    public ExpressRouteGatewayPropertiesAutoScaleConfiguration withBounds(ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds bounds) {
         this.bounds = bounds;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EffectiveSecurityRuleProtocol. */
+/**
+ * Defines values for EffectiveSecurityRuleProtocol.
+ */
 public final class EffectiveSecurityRuleProtocol extends ExpandableStringEnum<EffectiveSecurityRuleProtocol> {
-    /** Static value Tcp for EffectiveSecurityRuleProtocol. */
+    /**
+     * Static value Tcp for EffectiveSecurityRuleProtocol.
+     */
     public static final EffectiveSecurityRuleProtocol TCP = fromString("Tcp");
 
-    /** Static value Udp for EffectiveSecurityRuleProtocol. */
+    /**
+     * Static value Udp for EffectiveSecurityRuleProtocol.
+     */
     public static final EffectiveSecurityRuleProtocol UDP = fromString("Udp");
 
-    /** Static value All for EffectiveSecurityRuleProtocol. */
+    /**
+     * Static value All for EffectiveSecurityRuleProtocol.
+     */
     public static final EffectiveSecurityRuleProtocol ALL = fromString("All");
 
     /**
      * Creates or finds a EffectiveSecurityRuleProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EffectiveSecurityRuleProtocol.
      */
@@ -30,7 +38,9 @@ public final class EffectiveSecurityRuleProtocol extends ExpandableStringEnum<Ef
         return fromString(name, EffectiveSecurityRuleProtocol.class);
     }
 
-    /** @return known EffectiveSecurityRuleProtocol values. */
+    /**
+     * @return known EffectiveSecurityRuleProtocol values.
+     */
     public static Collection<EffectiveSecurityRuleProtocol> values() {
         return values(EffectiveSecurityRuleProtocol.class);
     }

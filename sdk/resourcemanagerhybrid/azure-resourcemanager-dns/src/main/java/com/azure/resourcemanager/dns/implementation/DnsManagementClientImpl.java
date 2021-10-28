@@ -6,6 +6,10 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -15,101 +19,119 @@ import com.azure.resourcemanager.dns.fluent.ZonesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the DnsManagementClientImpl type. */
+/**
+ * Initializes a new instance of the DnsManagementClientImpl type.
+ */
 @ServiceClient(builder = DnsManagementClientBuilder.class)
 public final class DnsManagementClientImpl extends AzureServiceClient implements DnsManagementClient {
     private final ClientLogger logger = new ClientLogger(DnsManagementClientImpl.class);
 
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The RecordSetsClient object to access its operations. */
+    /**
+     * The RecordSetsClient object to access its operations.
+     */
     private final RecordSetsClient recordSets;
 
     /**
      * Gets the RecordSetsClient object to access its operations.
-     *
+     * 
      * @return the RecordSetsClient object.
      */
     public RecordSetsClient getRecordSets() {
         return this.recordSets;
     }
 
-    /** The ZonesClient object to access its operations. */
+    /**
+     * The ZonesClient object to access its operations.
+     */
     private final ZonesClient zones;
 
     /**
      * Gets the ZonesClient object to access its operations.
-     *
+     * 
      * @return the ZonesClient object.
      */
     public ZonesClient getZones() {
@@ -118,7 +140,7 @@ public final class DnsManagementClientImpl extends AzureServiceClient implements
 
     /**
      * Initializes an instance of DnsManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -126,20 +148,14 @@ public final class DnsManagementClientImpl extends AzureServiceClient implements
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    DnsManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    DnsManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2018-03-01-preview";
+        this.apiVersion = "2016-04-01";
         this.recordSets = new RecordSetsClientImpl(this);
         this.zones = new ZonesClientImpl(this);
     }

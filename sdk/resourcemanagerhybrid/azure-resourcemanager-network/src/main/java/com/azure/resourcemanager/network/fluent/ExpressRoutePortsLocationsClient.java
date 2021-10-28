@@ -8,17 +8,21 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortsLocationInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExpressRoutePortsLocationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ExpressRoutePortsLocationsClient.
+ */
 public interface ExpressRoutePortsLocationsClient {
     /**
-     * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
-     * Available bandwidths can only be obtained when retrieving a specific peering location.
-     *
+     * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location. Available bandwidths can only be obtained when retrieving a specific peering location.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoutePorts Location List Result.
@@ -27,9 +31,8 @@ public interface ExpressRoutePortsLocationsClient {
     PagedFlux<ExpressRoutePortsLocationInner> listAsync();
 
     /**
-     * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
-     * Available bandwidths can only be obtained when retrieving a specific peering location.
-     *
+     * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location. Available bandwidths can only be obtained when retrieving a specific peering location.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoutePorts Location List Result.
@@ -38,9 +41,8 @@ public interface ExpressRoutePortsLocationsClient {
     PagedIterable<ExpressRoutePortsLocationInner> list();
 
     /**
-     * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
-     * Available bandwidths can only be obtained when retrieving a specific peering location.
-     *
+     * Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location. Available bandwidths can only be obtained when retrieving a specific peering location.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,9 +53,8 @@ public interface ExpressRoutePortsLocationsClient {
     PagedIterable<ExpressRoutePortsLocationInner> list(Context context);
 
     /**
-     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
-     * said peering location.
-     *
+     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at said peering location.
+     * 
      * @param locationName Name of the requested ExpressRoutePort peering location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,9 +65,8 @@ public interface ExpressRoutePortsLocationsClient {
     Mono<Response<ExpressRoutePortsLocationInner>> getWithResponseAsync(String locationName);
 
     /**
-     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
-     * said peering location.
-     *
+     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at said peering location.
+     * 
      * @param locationName Name of the requested ExpressRoutePort peering location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,9 +77,8 @@ public interface ExpressRoutePortsLocationsClient {
     Mono<ExpressRoutePortsLocationInner> getAsync(String locationName);
 
     /**
-     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
-     * said peering location.
-     *
+     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at said peering location.
+     * 
      * @param locationName Name of the requested ExpressRoutePort peering location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,9 +89,8 @@ public interface ExpressRoutePortsLocationsClient {
     ExpressRoutePortsLocationInner get(String locationName);
 
     /**
-     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at
-     * said peering location.
-     *
+     * Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at said peering location.
+     * 
      * @param locationName Name of the requested ExpressRoutePort peering location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

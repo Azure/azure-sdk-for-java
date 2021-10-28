@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.DeploymentPropertiesExtended;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information from validate template deployment response. */
+/**
+ * Information from validate template deployment response.
+ */
 @Fluent
 public final class DeploymentValidateResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentValidateResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DeploymentValidateResultInner.class);
 
     /*
-     * The deployment validation error.
+     * Error Response The deployment validation error.
      */
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;
@@ -29,8 +34,8 @@ public final class DeploymentValidateResultInner {
     private DeploymentPropertiesExtended properties;
 
     /**
-     * Get the error property: The deployment validation error.
-     *
+     * Get the error property: Error Response The deployment validation error.
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -39,7 +44,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Get the properties property: The template deployment properties.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentPropertiesExtended properties() {
@@ -48,7 +53,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Set the properties property: The template deployment properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeploymentValidateResultInner object itself.
      */
@@ -59,7 +64,7 @@ public final class DeploymentValidateResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

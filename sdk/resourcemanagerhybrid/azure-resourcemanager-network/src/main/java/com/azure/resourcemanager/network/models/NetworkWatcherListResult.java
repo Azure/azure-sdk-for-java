@@ -5,26 +5,31 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.NetworkWatcherInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListNetworkWatchers API service call. */
+/**
+ * List of network watcher resources.
+ */
 @Fluent
 public final class NetworkWatcherListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkWatcherListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NetworkWatcherListResult.class);
 
     /*
-     * List of network watcher resources.
+     * The value property.
      */
     @JsonProperty(value = "value")
     private List<NetworkWatcherInner> value;
 
     /**
-     * Get the value property: List of network watcher resources.
-     *
+     * Get the value property: The value property.
+     * 
      * @return the value value.
      */
     public List<NetworkWatcherInner> value() {
@@ -32,8 +37,8 @@ public final class NetworkWatcherListResult {
     }
 
     /**
-     * Set the value property: List of network watcher resources.
-     *
+     * Set the value property: The value property.
+     * 
      * @param value the value value to set.
      * @return the NetworkWatcherListResult object itself.
      */
@@ -44,7 +49,7 @@ public final class NetworkWatcherListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

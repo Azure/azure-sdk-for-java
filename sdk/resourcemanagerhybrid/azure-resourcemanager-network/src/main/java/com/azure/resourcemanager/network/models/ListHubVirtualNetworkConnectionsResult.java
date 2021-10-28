@@ -5,16 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.HubVirtualNetworkConnectionInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of HubVirtualNetworkConnections and a URL nextLink to get the next set of results. */
+/**
+ * List of HubVirtualNetworkConnections and a URL nextLink to get the next set
+ * of results.
+ */
 @Fluent
 public final class ListHubVirtualNetworkConnectionsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListHubVirtualNetworkConnectionsResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListHubVirtualNetworkConnectionsResult.class);
 
     /*
      * List of HubVirtualNetworkConnections.
@@ -30,7 +36,7 @@ public final class ListHubVirtualNetworkConnectionsResult {
 
     /**
      * Get the value property: List of HubVirtualNetworkConnections.
-     *
+     * 
      * @return the value value.
      */
     public List<HubVirtualNetworkConnectionInner> value() {
@@ -39,7 +45,7 @@ public final class ListHubVirtualNetworkConnectionsResult {
 
     /**
      * Set the value property: List of HubVirtualNetworkConnections.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListHubVirtualNetworkConnectionsResult object itself.
      */
@@ -49,8 +55,9 @@ public final class ListHubVirtualNetworkConnectionsResult {
     }
 
     /**
-     * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * Get the nextLink property: URL to get the next set of operation list
+     * results if there are any.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -58,8 +65,9 @@ public final class ListHubVirtualNetworkConnectionsResult {
     }
 
     /**
-     * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * Set the nextLink property: URL to get the next set of operation list
+     * results if there are any.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListHubVirtualNetworkConnectionsResult object itself.
      */
@@ -70,7 +78,7 @@ public final class ListHubVirtualNetworkConnectionsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

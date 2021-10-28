@@ -5,23 +5,23 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
-import com.azure.resourcemanager.network.models.ConnectionMonitorEndpoint;
-import com.azure.resourcemanager.network.models.ConnectionMonitorOutput;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
-import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfiguration;
-import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.util.Map;
 
-/** Parameters that define the operation to create a connection monitor. */
+/**
+ * Parameters that define the operation to create a connection monitor.
+ */
 @Fluent
 public final class ConnectionMonitorInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ConnectionMonitorInner.class);
 
     /*
      * Connection monitor location.
@@ -37,14 +37,14 @@ public final class ConnectionMonitorInner {
     private Map<String, String> tags;
 
     /*
-     * Properties of the connection monitor.
+     * Parameters that define the operation to create a connection monitor.
      */
     @JsonProperty(value = "properties", required = true)
     private ConnectionMonitorParameters innerProperties = new ConnectionMonitorParameters();
 
     /**
      * Get the location property: Connection monitor location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -53,7 +53,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the location property: Connection monitor location.
-     *
+     * 
      * @param location the location value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -64,7 +64,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the tags property: Connection monitor tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -73,7 +73,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the tags property: Connection monitor tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -83,8 +83,9 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Get the innerProperties property: Properties of the connection monitor.
-     *
+     * Get the innerProperties property: Parameters that define the operation
+     * to create a connection monitor.
+     * 
      * @return the innerProperties value.
      */
     private ConnectionMonitorParameters innerProperties() {
@@ -93,7 +94,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the source property: Describes the source of connection monitor.
-     *
+     * 
      * @return the source value.
      */
     public ConnectionMonitorSource source() {
@@ -102,7 +103,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the source property: Describes the source of connection monitor.
-     *
+     * 
      * @param source the source value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -115,8 +116,9 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Get the destination property: Describes the destination of connection monitor.
-     *
+     * Get the destination property: Describes the destination of connection
+     * monitor.
+     * 
      * @return the destination value.
      */
     public ConnectionMonitorDestination destination() {
@@ -124,8 +126,9 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Set the destination property: Describes the destination of connection monitor.
-     *
+     * Set the destination property: Describes the destination of connection
+     * monitor.
+     * 
      * @param destination the destination value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -138,8 +141,9 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Get the autoStart property: Determines if the connection monitor will start automatically once created.
-     *
+     * Get the autoStart property: Determines if the connection monitor will
+     * start automatically once created.
+     * 
      * @return the autoStart value.
      */
     public Boolean autoStart() {
@@ -147,8 +151,9 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Set the autoStart property: Determines if the connection monitor will start automatically once created.
-     *
+     * Set the autoStart property: Determines if the connection monitor will
+     * start automatically once created.
+     * 
      * @param autoStart the autoStart value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -161,8 +166,9 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Get the monitoringIntervalInSeconds property: Monitoring interval in seconds.
-     *
+     * Get the monitoringIntervalInSeconds property: Monitoring interval in
+     * seconds.
+     * 
      * @return the monitoringIntervalInSeconds value.
      */
     public Integer monitoringIntervalInSeconds() {
@@ -170,9 +176,11 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Set the monitoringIntervalInSeconds property: Monitoring interval in seconds.
-     *
-     * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value to set.
+     * Set the monitoringIntervalInSeconds property: Monitoring interval in
+     * seconds.
+     * 
+     * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value
+     * to set.
      * @return the ConnectionMonitorInner object itself.
      */
     public ConnectionMonitorInner withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds) {
@@ -184,131 +192,13 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Get the endpoints property: List of connection monitor endpoints.
-     *
-     * @return the endpoints value.
-     */
-    public List<ConnectionMonitorEndpoint> endpoints() {
-        return this.innerProperties() == null ? null : this.innerProperties().endpoints();
-    }
-
-    /**
-     * Set the endpoints property: List of connection monitor endpoints.
-     *
-     * @param endpoints the endpoints value to set.
-     * @return the ConnectionMonitorInner object itself.
-     */
-    public ConnectionMonitorInner withEndpoints(List<ConnectionMonitorEndpoint> endpoints) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ConnectionMonitorParameters();
-        }
-        this.innerProperties().withEndpoints(endpoints);
-        return this;
-    }
-
-    /**
-     * Get the testConfigurations property: List of connection monitor test configurations.
-     *
-     * @return the testConfigurations value.
-     */
-    public List<ConnectionMonitorTestConfiguration> testConfigurations() {
-        return this.innerProperties() == null ? null : this.innerProperties().testConfigurations();
-    }
-
-    /**
-     * Set the testConfigurations property: List of connection monitor test configurations.
-     *
-     * @param testConfigurations the testConfigurations value to set.
-     * @return the ConnectionMonitorInner object itself.
-     */
-    public ConnectionMonitorInner withTestConfigurations(List<ConnectionMonitorTestConfiguration> testConfigurations) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ConnectionMonitorParameters();
-        }
-        this.innerProperties().withTestConfigurations(testConfigurations);
-        return this;
-    }
-
-    /**
-     * Get the testGroups property: List of connection monitor test groups.
-     *
-     * @return the testGroups value.
-     */
-    public List<ConnectionMonitorTestGroup> testGroups() {
-        return this.innerProperties() == null ? null : this.innerProperties().testGroups();
-    }
-
-    /**
-     * Set the testGroups property: List of connection monitor test groups.
-     *
-     * @param testGroups the testGroups value to set.
-     * @return the ConnectionMonitorInner object itself.
-     */
-    public ConnectionMonitorInner withTestGroups(List<ConnectionMonitorTestGroup> testGroups) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ConnectionMonitorParameters();
-        }
-        this.innerProperties().withTestGroups(testGroups);
-        return this;
-    }
-
-    /**
-     * Get the outputs property: List of connection monitor outputs.
-     *
-     * @return the outputs value.
-     */
-    public List<ConnectionMonitorOutput> outputs() {
-        return this.innerProperties() == null ? null : this.innerProperties().outputs();
-    }
-
-    /**
-     * Set the outputs property: List of connection monitor outputs.
-     *
-     * @param outputs the outputs value to set.
-     * @return the ConnectionMonitorInner object itself.
-     */
-    public ConnectionMonitorInner withOutputs(List<ConnectionMonitorOutput> outputs) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ConnectionMonitorParameters();
-        }
-        this.innerProperties().withOutputs(outputs);
-        return this;
-    }
-
-    /**
-     * Get the notes property: Optional notes to be associated with the connection monitor.
-     *
-     * @return the notes value.
-     */
-    public String notes() {
-        return this.innerProperties() == null ? null : this.innerProperties().notes();
-    }
-
-    /**
-     * Set the notes property: Optional notes to be associated with the connection monitor.
-     *
-     * @param notes the notes value to set.
-     * @return the ConnectionMonitorInner object itself.
-     */
-    public ConnectionMonitorInner withNotes(String notes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ConnectionMonitorParameters();
-        }
-        this.innerProperties().withNotes(notes);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ConnectionMonitorInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model ConnectionMonitorInner"));
         } else {
             innerProperties().validate();
         }

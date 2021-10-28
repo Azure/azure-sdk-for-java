@@ -5,52 +5,46 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
-import com.azure.resourcemanager.network.models.ConnectionMonitorEndpoint;
-import com.azure.resourcemanager.network.models.ConnectionMonitorOutput;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
-import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfiguration;
-import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
-import com.azure.resourcemanager.network.models.ConnectionMonitorType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.List;
 
-/** Describes the properties of a connection monitor. */
+/**
+ * Describes the properties of a connection monitor.
+ */
 @Fluent
 public final class ConnectionMonitorResultProperties extends ConnectionMonitorParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorResultProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ConnectionMonitorResultProperties.class);
 
     /*
      * The provisioning state of the connection monitor.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /*
      * The date and time when the connection monitor was started.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The monitoring status of the connection monitor.
      */
-    @JsonProperty(value = "monitoringStatus", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "monitoringStatus")
     private String monitoringStatus;
 
-    /*
-     * Type of connection monitor.
-     */
-    @JsonProperty(value = "connectionMonitorType", access = JsonProperty.Access.WRITE_ONLY)
-    private ConnectionMonitorType connectionMonitorType;
-
     /**
-     * Get the provisioningState property: The provisioning state of the connection monitor.
-     *
+     * Get the provisioningState property: The provisioning state of the
+     * connection monitor.
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,8 +52,21 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
     }
 
     /**
-     * Get the startTime property: The date and time when the connection monitor was started.
-     *
+     * Set the provisioningState property: The provisioning state of the
+     * connection monitor.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ConnectionMonitorResultProperties object itself.
+     */
+    public ConnectionMonitorResultProperties withProvisioningState(ProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get the startTime property: The date and time when the connection
+     * monitor was started.
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -67,8 +74,21 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
     }
 
     /**
-     * Get the monitoringStatus property: The monitoring status of the connection monitor.
-     *
+     * Set the startTime property: The date and time when the connection
+     * monitor was started.
+     * 
+     * @param startTime the startTime value to set.
+     * @return the ConnectionMonitorResultProperties object itself.
+     */
+    public ConnectionMonitorResultProperties withStartTime(OffsetDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    /**
+     * Get the monitoringStatus property: The monitoring status of the
+     * connection monitor.
+     * 
      * @return the monitoringStatus value.
      */
     public String monitoringStatus() {
@@ -76,81 +96,56 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
     }
 
     /**
-     * Get the connectionMonitorType property: Type of connection monitor.
-     *
-     * @return the connectionMonitorType value.
+     * Set the monitoringStatus property: The monitoring status of the
+     * connection monitor.
+     * 
+     * @param monitoringStatus the monitoringStatus value to set.
+     * @return the ConnectionMonitorResultProperties object itself.
      */
-    public ConnectionMonitorType connectionMonitorType() {
-        return this.connectionMonitorType;
+    public ConnectionMonitorResultProperties withMonitoringStatus(String monitoringStatus) {
+        this.monitoringStatus = monitoringStatus;
+        return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withSource(ConnectionMonitorSource source) {
         super.withSource(source);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withDestination(ConnectionMonitorDestination destination) {
         super.withDestination(destination);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withAutoStart(Boolean autoStart) {
         super.withAutoStart(autoStart);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionMonitorResultProperties withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds) {
         super.withMonitoringIntervalInSeconds(monitoringIntervalInSeconds);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ConnectionMonitorResultProperties withEndpoints(List<ConnectionMonitorEndpoint> endpoints) {
-        super.withEndpoints(endpoints);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ConnectionMonitorResultProperties withTestConfigurations(
-        List<ConnectionMonitorTestConfiguration> testConfigurations) {
-        super.withTestConfigurations(testConfigurations);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ConnectionMonitorResultProperties withTestGroups(List<ConnectionMonitorTestGroup> testGroups) {
-        super.withTestGroups(testGroups);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ConnectionMonitorResultProperties withOutputs(List<ConnectionMonitorOutput> outputs) {
-        super.withOutputs(outputs);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ConnectionMonitorResultProperties withNotes(String notes) {
-        super.withNotes(notes);
-        return this;
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

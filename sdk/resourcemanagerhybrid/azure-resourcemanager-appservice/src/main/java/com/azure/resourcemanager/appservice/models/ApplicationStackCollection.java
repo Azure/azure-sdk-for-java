@@ -6,7 +6,7 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.models.ApplicationStackResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.ApplicationStackInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -20,7 +20,7 @@ public final class ApplicationStackCollection {
      * Collection of resources.
      */
     @JsonProperty(value = "value", required = true)
-    private List<ApplicationStackResourceInner> value;
+    private List<ApplicationStackInner> value;
 
     /*
      * Link to next page of resources.
@@ -33,7 +33,7 @@ public final class ApplicationStackCollection {
      *
      * @return the value value.
      */
-    public List<ApplicationStackResourceInner> value() {
+    public List<ApplicationStackInner> value() {
         return this.value;
     }
 
@@ -43,7 +43,7 @@ public final class ApplicationStackCollection {
      * @param value the value value to set.
      * @return the ApplicationStackCollection object itself.
      */
-    public ApplicationStackCollection withValue(List<ApplicationStackResourceInner> value) {
+    public ApplicationStackCollection withValue(List<ApplicationStackInner> value) {
         this.value = value;
         return this;
     }

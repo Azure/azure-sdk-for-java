@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The deleted share to be restored. */
+/**
+ * The deleted share to be restored.
+ */
 @Fluent
 public final class DeletedShare {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedShare.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DeletedShare.class);
 
     /*
      * Required. Identify the name of the deleted share that will be restored.
@@ -28,8 +33,9 @@ public final class DeletedShare {
     private String deletedShareVersion;
 
     /**
-     * Get the deletedShareName property: Required. Identify the name of the deleted share that will be restored.
-     *
+     * Get the deletedShareName property: Required. Identify the name of the
+     * deleted share that will be restored.
+     * 
      * @return the deletedShareName value.
      */
     public String deletedShareName() {
@@ -37,8 +43,9 @@ public final class DeletedShare {
     }
 
     /**
-     * Set the deletedShareName property: Required. Identify the name of the deleted share that will be restored.
-     *
+     * Set the deletedShareName property: Required. Identify the name of the
+     * deleted share that will be restored.
+     * 
      * @param deletedShareName the deletedShareName value to set.
      * @return the DeletedShare object itself.
      */
@@ -48,8 +55,9 @@ public final class DeletedShare {
     }
 
     /**
-     * Get the deletedShareVersion property: Required. Identify the version of the deleted share that will be restored.
-     *
+     * Get the deletedShareVersion property: Required. Identify the version of
+     * the deleted share that will be restored.
+     * 
      * @return the deletedShareVersion value.
      */
     public String deletedShareVersion() {
@@ -57,8 +65,9 @@ public final class DeletedShare {
     }
 
     /**
-     * Set the deletedShareVersion property: Required. Identify the version of the deleted share that will be restored.
-     *
+     * Set the deletedShareVersion property: Required. Identify the version of
+     * the deleted share that will be restored.
+     * 
      * @param deletedShareVersion the deletedShareVersion value to set.
      * @return the DeletedShare object itself.
      */
@@ -69,20 +78,15 @@ public final class DeletedShare {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deletedShareName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property deletedShareName in model DeletedShare"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property deletedShareName in model DeletedShare"));
         }
         if (deletedShareVersion() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deletedShareVersion in model DeletedShare"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property deletedShareVersion in model DeletedShare"));
         }
     }
 }

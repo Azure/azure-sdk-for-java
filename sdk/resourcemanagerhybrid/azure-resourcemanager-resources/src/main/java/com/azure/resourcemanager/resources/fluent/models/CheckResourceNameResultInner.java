@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.ResourceNameStatus;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Resource Name valid if not a reserved word, does not contain a reserved word and does not start with a reserved word.
+ * Resource Name valid if not a reserved word, does not contain a reserved word
+ * and does not start with a reserved word.
  */
 @Fluent
 public final class CheckResourceNameResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckResourceNameResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CheckResourceNameResultInner.class);
 
     /*
      * Name of Resource
@@ -37,7 +41,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Get the name property: Name of Resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -46,7 +50,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Set the name property: Name of Resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckResourceNameResultInner object itself.
      */
@@ -57,7 +61,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Get the type property: Type of Resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -66,7 +70,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Set the type property: Type of Resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckResourceNameResultInner object itself.
      */
@@ -77,7 +81,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Get the status property: Is the resource name Allowed or Reserved.
-     *
+     * 
      * @return the status value.
      */
     public ResourceNameStatus status() {
@@ -86,7 +90,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Set the status property: Is the resource name Allowed or Reserved.
-     *
+     * 
      * @param status the status value to set.
      * @return the CheckResourceNameResultInner object itself.
      */
@@ -97,7 +101,7 @@ public final class CheckResourceNameResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

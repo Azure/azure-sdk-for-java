@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies a list of virtual machine instance IDs from the VM scale set. */
+/**
+ * Specifies a list of virtual machine instance IDs from the VM scale set.
+ */
 @Fluent
 public final class VirtualMachineScaleSetVMInstanceRequiredIDs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMInstanceRequiredIDs.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMInstanceRequiredIDs.class);
 
     /*
      * The virtual machine scale set instance ids.
@@ -22,8 +27,9 @@ public final class VirtualMachineScaleSetVMInstanceRequiredIDs {
     private List<String> instanceIds;
 
     /**
-     * Get the instanceIds property: The virtual machine scale set instance ids.
-     *
+     * Get the instanceIds property: The virtual machine scale set instance
+     * ids.
+     * 
      * @return the instanceIds value.
      */
     public List<String> instanceIds() {
@@ -31,8 +37,9 @@ public final class VirtualMachineScaleSetVMInstanceRequiredIDs {
     }
 
     /**
-     * Set the instanceIds property: The virtual machine scale set instance ids.
-     *
+     * Set the instanceIds property: The virtual machine scale set instance
+     * ids.
+     * 
      * @param instanceIds the instanceIds value to set.
      * @return the VirtualMachineScaleSetVMInstanceRequiredIDs object itself.
      */
@@ -43,15 +50,12 @@ public final class VirtualMachineScaleSetVMInstanceRequiredIDs {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (instanceIds() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property instanceIds in model VirtualMachineScaleSetVMInstanceRequiredIDs"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property instanceIds in model VirtualMachineScaleSetVMInstanceRequiredIDs"));
         }
     }
 }

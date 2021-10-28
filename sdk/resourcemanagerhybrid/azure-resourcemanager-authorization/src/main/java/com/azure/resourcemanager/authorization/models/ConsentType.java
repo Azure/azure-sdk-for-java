@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConsentType. */
+/**
+ * Defines values for ConsentType.
+ */
 public final class ConsentType extends ExpandableStringEnum<ConsentType> {
-    /** Static value AllPrincipals for ConsentType. */
+    /**
+     * Static value AllPrincipals for ConsentType.
+     */
     public static final ConsentType ALL_PRINCIPALS = fromString("AllPrincipals");
 
-    /** Static value Principal for ConsentType. */
+    /**
+     * Static value Principal for ConsentType.
+     */
     public static final ConsentType PRINCIPAL = fromString("Principal");
 
     /**
      * Creates or finds a ConsentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConsentType.
      */
@@ -27,7 +33,9 @@ public final class ConsentType extends ExpandableStringEnum<ConsentType> {
         return fromString(name, ConsentType.class);
     }
 
-    /** @return known ConsentType values. */
+    /**
+     * @return known ConsentType values.
+     */
     public static Collection<ConsentType> values() {
         return values(ConsentType.class);
     }

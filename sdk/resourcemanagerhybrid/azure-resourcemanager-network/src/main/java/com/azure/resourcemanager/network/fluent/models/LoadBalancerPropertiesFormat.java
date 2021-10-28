@@ -5,39 +5,43 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.InboundNatPool;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the load balancer. */
+/**
+ * Properties of the load balancer.
+ */
 @Fluent
 public final class LoadBalancerPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerPropertiesFormat.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LoadBalancerPropertiesFormat.class);
 
     /*
-     * Object representing the frontend IPs to be used for the load balancer.
+     * Object representing the frontend IPs to be used for the load balancer
      */
     @JsonProperty(value = "frontendIPConfigurations")
     private List<FrontendIpConfigurationInner> frontendIpConfigurations;
 
     /*
-     * Collection of backend address pools used by a load balancer.
+     * Collection of backend address pools used by a load balancer
      */
     @JsonProperty(value = "backendAddressPools")
     private List<BackendAddressPoolInner> backendAddressPools;
 
     /*
      * Object collection representing the load balancing rules Gets the
-     * provisioning.
+     * provisioning
      */
     @JsonProperty(value = "loadBalancingRules")
     private List<LoadBalancingRuleInner> loadBalancingRules;
 
     /*
-     * Collection of probe objects used in the load balancer.
+     * Collection of probe objects used in the load balancer
      */
     @JsonProperty(value = "probes")
     private List<ProbeInner> probes;
@@ -75,18 +79,20 @@ public final class LoadBalancerPropertiesFormat {
     /*
      * The resource GUID property of the load balancer resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resourceGuid")
     private String resourceGuid;
 
     /*
-     * The provisioning state of the load balancer resource.
+     * Gets the provisioning state of the PublicIP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
-     * Get the frontendIpConfigurations property: Object representing the frontend IPs to be used for the load balancer.
-     *
+     * Get the frontendIpConfigurations property: Object representing the
+     * frontend IPs to be used for the load balancer.
+     * 
      * @return the frontendIpConfigurations value.
      */
     public List<FrontendIpConfigurationInner> frontendIpConfigurations() {
@@ -94,20 +100,22 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Set the frontendIpConfigurations property: Object representing the frontend IPs to be used for the load balancer.
-     *
-     * @param frontendIpConfigurations the frontendIpConfigurations value to set.
+     * Set the frontendIpConfigurations property: Object representing the
+     * frontend IPs to be used for the load balancer.
+     * 
+     * @param frontendIpConfigurations the frontendIpConfigurations value to
+     * set.
      * @return the LoadBalancerPropertiesFormat object itself.
      */
-    public LoadBalancerPropertiesFormat withFrontendIpConfigurations(
-        List<FrontendIpConfigurationInner> frontendIpConfigurations) {
+    public LoadBalancerPropertiesFormat withFrontendIpConfigurations(List<FrontendIpConfigurationInner> frontendIpConfigurations) {
         this.frontendIpConfigurations = frontendIpConfigurations;
         return this;
     }
 
     /**
-     * Get the backendAddressPools property: Collection of backend address pools used by a load balancer.
-     *
+     * Get the backendAddressPools property: Collection of backend address
+     * pools used by a load balancer.
+     * 
      * @return the backendAddressPools value.
      */
     public List<BackendAddressPoolInner> backendAddressPools() {
@@ -115,8 +123,9 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Set the backendAddressPools property: Collection of backend address pools used by a load balancer.
-     *
+     * Set the backendAddressPools property: Collection of backend address
+     * pools used by a load balancer.
+     * 
      * @param backendAddressPools the backendAddressPools value to set.
      * @return the LoadBalancerPropertiesFormat object itself.
      */
@@ -126,9 +135,9 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Get the loadBalancingRules property: Object collection representing the load balancing rules Gets the
-     * provisioning.
-     *
+     * Get the loadBalancingRules property: Object collection representing the
+     * load balancing rules Gets the provisioning.
+     * 
      * @return the loadBalancingRules value.
      */
     public List<LoadBalancingRuleInner> loadBalancingRules() {
@@ -136,9 +145,9 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Set the loadBalancingRules property: Object collection representing the load balancing rules Gets the
-     * provisioning.
-     *
+     * Set the loadBalancingRules property: Object collection representing the
+     * load balancing rules Gets the provisioning.
+     * 
      * @param loadBalancingRules the loadBalancingRules value to set.
      * @return the LoadBalancerPropertiesFormat object itself.
      */
@@ -148,8 +157,9 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Get the probes property: Collection of probe objects used in the load balancer.
-     *
+     * Get the probes property: Collection of probe objects used in the load
+     * balancer.
+     * 
      * @return the probes value.
      */
     public List<ProbeInner> probes() {
@@ -157,8 +167,9 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Set the probes property: Collection of probe objects used in the load balancer.
-     *
+     * Set the probes property: Collection of probe objects used in the load
+     * balancer.
+     * 
      * @param probes the probes value to set.
      * @return the LoadBalancerPropertiesFormat object itself.
      */
@@ -168,11 +179,13 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Get the inboundNatRules property: Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT
-     * rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are
-     * referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot
-     * reference an Inbound NAT pool. They have to reference individual inbound NAT rules.
-     *
+     * Get the inboundNatRules property: Collection of inbound NAT Rules used
+     * by a load balancer. Defining inbound NAT rules on your load balancer is
+     * mutually exclusive with defining an inbound NAT pool. Inbound NAT pools
+     * are referenced from virtual machine scale sets. NICs that are associated
+     * with individual virtual machines cannot reference an Inbound NAT pool.
+     * They have to reference individual inbound NAT rules.
+     * 
      * @return the inboundNatRules value.
      */
     public List<InboundNatRuleInner> inboundNatRules() {
@@ -180,11 +193,13 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Set the inboundNatRules property: Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT
-     * rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are
-     * referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot
-     * reference an Inbound NAT pool. They have to reference individual inbound NAT rules.
-     *
+     * Set the inboundNatRules property: Collection of inbound NAT Rules used
+     * by a load balancer. Defining inbound NAT rules on your load balancer is
+     * mutually exclusive with defining an inbound NAT pool. Inbound NAT pools
+     * are referenced from virtual machine scale sets. NICs that are associated
+     * with individual virtual machines cannot reference an Inbound NAT pool.
+     * They have to reference individual inbound NAT rules.
+     * 
      * @param inboundNatRules the inboundNatRules value to set.
      * @return the LoadBalancerPropertiesFormat object itself.
      */
@@ -194,13 +209,16 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Get the inboundNatPools property: Defines an external port range for inbound NAT to a single backend port on NICs
-     * associated with a load balancer. Inbound NAT rules are created automatically for each NIC associated with the
-     * Load Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is
-     * mutually exclusive with defining inbound Nat rules. Inbound NAT pools are referenced from virtual machine scale
-     * sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They have
-     * to reference individual inbound NAT rules.
-     *
+     * Get the inboundNatPools property: Defines an external port range for
+     * inbound NAT to a single backend port on NICs associated with a load
+     * balancer. Inbound NAT rules are created automatically for each NIC
+     * associated with the Load Balancer using an external port from this
+     * range. Defining an Inbound NAT pool on your Load Balancer is mutually
+     * exclusive with defining inbound Nat rules. Inbound NAT pools are
+     * referenced from virtual machine scale sets. NICs that are associated
+     * with individual virtual machines cannot reference an inbound NAT pool.
+     * They have to reference individual inbound NAT rules.
+     * 
      * @return the inboundNatPools value.
      */
     public List<InboundNatPool> inboundNatPools() {
@@ -208,13 +226,16 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Set the inboundNatPools property: Defines an external port range for inbound NAT to a single backend port on NICs
-     * associated with a load balancer. Inbound NAT rules are created automatically for each NIC associated with the
-     * Load Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is
-     * mutually exclusive with defining inbound Nat rules. Inbound NAT pools are referenced from virtual machine scale
-     * sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They have
-     * to reference individual inbound NAT rules.
-     *
+     * Set the inboundNatPools property: Defines an external port range for
+     * inbound NAT to a single backend port on NICs associated with a load
+     * balancer. Inbound NAT rules are created automatically for each NIC
+     * associated with the Load Balancer using an external port from this
+     * range. Defining an Inbound NAT pool on your Load Balancer is mutually
+     * exclusive with defining inbound Nat rules. Inbound NAT pools are
+     * referenced from virtual machine scale sets. NICs that are associated
+     * with individual virtual machines cannot reference an inbound NAT pool.
+     * They have to reference individual inbound NAT rules.
+     * 
      * @param inboundNatPools the inboundNatPools value to set.
      * @return the LoadBalancerPropertiesFormat object itself.
      */
@@ -225,7 +246,7 @@ public final class LoadBalancerPropertiesFormat {
 
     /**
      * Get the outboundRules property: The outbound rules.
-     *
+     * 
      * @return the outboundRules value.
      */
     public List<OutboundRuleInner> outboundRules() {
@@ -234,7 +255,7 @@ public final class LoadBalancerPropertiesFormat {
 
     /**
      * Set the outboundRules property: The outbound rules.
-     *
+     * 
      * @param outboundRules the outboundRules value to set.
      * @return the LoadBalancerPropertiesFormat object itself.
      */
@@ -244,8 +265,9 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the load balancer resource.
-     *
+     * Get the resourceGuid property: The resource GUID property of the load
+     * balancer resource.
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -253,17 +275,44 @@ public final class LoadBalancerPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the load balancer resource.
-     *
+     * Set the resourceGuid property: The resource GUID property of the load
+     * balancer resource.
+     * 
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the LoadBalancerPropertiesFormat object itself.
+     */
+    public LoadBalancerPropertiesFormat withResourceGuid(String resourceGuid) {
+        this.resourceGuid = resourceGuid;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Gets the provisioning state of the
+     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
+     * Set the provisioningState property: Gets the provisioning state of the
+     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the LoadBalancerPropertiesFormat object itself.
+     */
+    public LoadBalancerPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

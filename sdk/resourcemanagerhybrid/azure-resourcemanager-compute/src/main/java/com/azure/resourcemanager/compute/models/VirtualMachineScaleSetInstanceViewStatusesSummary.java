@@ -4,13 +4,18 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Instance view statuses summary for virtual machines of a virtual machine scale set. */
+/**
+ * Instance view statuses summary for virtual machines of a virtual machine
+ * scale set.
+ */
 @Immutable
 public final class VirtualMachineScaleSetInstanceViewStatusesSummary {
     @JsonIgnore
@@ -24,7 +29,7 @@ public final class VirtualMachineScaleSetInstanceViewStatusesSummary {
 
     /**
      * Get the statusesSummary property: The extensions information.
-     *
+     * 
      * @return the statusesSummary value.
      */
     public List<VirtualMachineStatusCodeCount> statusesSummary() {
@@ -33,7 +38,7 @@ public final class VirtualMachineScaleSetInstanceViewStatusesSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

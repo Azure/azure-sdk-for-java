@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** SSH configuration for Linux based VMs running on Azure. */
+/**
+ * SSH configuration for Linux based VMs running on Azure.
+ */
 @Fluent
 public final class SshConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SshConfiguration.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SshConfiguration.class);
 
     /*
      * The list of SSH public keys used to authenticate with linux based VMs.
@@ -22,8 +27,9 @@ public final class SshConfiguration {
     private List<SshPublicKey> publicKeys;
 
     /**
-     * Get the publicKeys property: The list of SSH public keys used to authenticate with linux based VMs.
-     *
+     * Get the publicKeys property: The list of SSH public keys used to
+     * authenticate with linux based VMs.
+     * 
      * @return the publicKeys value.
      */
     public List<SshPublicKey> publicKeys() {
@@ -31,8 +37,9 @@ public final class SshConfiguration {
     }
 
     /**
-     * Set the publicKeys property: The list of SSH public keys used to authenticate with linux based VMs.
-     *
+     * Set the publicKeys property: The list of SSH public keys used to
+     * authenticate with linux based VMs.
+     * 
      * @param publicKeys the publicKeys value to set.
      * @return the SshConfiguration object itself.
      */
@@ -43,7 +50,7 @@ public final class SshConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

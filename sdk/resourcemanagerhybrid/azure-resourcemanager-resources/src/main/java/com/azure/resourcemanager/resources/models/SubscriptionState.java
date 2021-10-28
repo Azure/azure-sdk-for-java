@@ -7,24 +7,38 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SubscriptionState. */
+/**
+ * Defines values for SubscriptionState.
+ */
 public enum SubscriptionState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Warned. */
+    /**
+     * Enum value Warned.
+     */
     WARNED("Warned"),
 
-    /** Enum value PastDue. */
+    /**
+     * Enum value PastDue.
+     */
     PAST_DUE("PastDue"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled"),
 
-    /** Enum value Deleted. */
+    /**
+     * Enum value Deleted.
+     */
     DELETED("Deleted");
 
-    /** The actual serialized value for a SubscriptionState instance. */
+    /**
+     * The actual serialized value for a SubscriptionState instance.
+     */
     private final String value;
 
     SubscriptionState(String value) {
@@ -33,7 +47,7 @@ public enum SubscriptionState {
 
     /**
      * Parses a serialized value to a SubscriptionState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SubscriptionState object, or null if unable to parse.
      */

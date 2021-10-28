@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AgentPoolMode. */
+/**
+ * Defines values for AgentPoolMode.
+ */
 public final class AgentPoolMode extends ExpandableStringEnum<AgentPoolMode> {
-    /** Static value System for AgentPoolMode. */
+    /**
+     * Static value System for AgentPoolMode.
+     */
     public static final AgentPoolMode SYSTEM = fromString("System");
 
-    /** Static value User for AgentPoolMode. */
+    /**
+     * Static value User for AgentPoolMode.
+     */
     public static final AgentPoolMode USER = fromString("User");
 
     /**
      * Creates or finds a AgentPoolMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgentPoolMode.
      */
@@ -27,7 +33,9 @@ public final class AgentPoolMode extends ExpandableStringEnum<AgentPoolMode> {
         return fromString(name, AgentPoolMode.class);
     }
 
-    /** @return known AgentPoolMode values. */
+    /**
+     * @return known AgentPoolMode values.
+     */
     public static Collection<AgentPoolMode> values() {
         return values(AgentPoolMode.class);
     }

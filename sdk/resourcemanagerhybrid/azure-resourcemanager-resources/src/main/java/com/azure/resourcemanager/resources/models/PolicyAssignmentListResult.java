@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of policy assignments. */
+/**
+ * List of policy assignments.
+ */
 @Fluent
 public final class PolicyAssignmentListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyAssignmentListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PolicyAssignmentListResult.class);
 
     /*
      * An array of policy assignments.
@@ -30,7 +35,7 @@ public final class PolicyAssignmentListResult {
 
     /**
      * Get the value property: An array of policy assignments.
-     *
+     * 
      * @return the value value.
      */
     public List<PolicyAssignmentInner> value() {
@@ -39,7 +44,7 @@ public final class PolicyAssignmentListResult {
 
     /**
      * Set the value property: An array of policy assignments.
-     *
+     * 
      * @param value the value value to set.
      * @return the PolicyAssignmentListResult object itself.
      */
@@ -49,8 +54,9 @@ public final class PolicyAssignmentListResult {
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * Get the nextLink property: The URL to use for getting the next set of
+     * results.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -58,8 +64,9 @@ public final class PolicyAssignmentListResult {
     }
 
     /**
-     * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * Set the nextLink property: The URL to use for getting the next set of
+     * results.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PolicyAssignmentListResult object itself.
      */
@@ -70,7 +77,7 @@ public final class PolicyAssignmentListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

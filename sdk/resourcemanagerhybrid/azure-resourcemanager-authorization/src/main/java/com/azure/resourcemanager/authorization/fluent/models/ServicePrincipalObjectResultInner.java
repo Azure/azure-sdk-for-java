@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Service Principal Object Result. */
+/**
+ * Service Principal Object Result.
+ */
 @Fluent
 public final class ServicePrincipalObjectResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalObjectResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServicePrincipalObjectResultInner.class);
 
     /*
      * The Object ID of the service principal with the specified application
@@ -28,8 +33,9 @@ public final class ServicePrincipalObjectResultInner {
     private String odataMetadata;
 
     /**
-     * Get the value property: The Object ID of the service principal with the specified application ID.
-     *
+     * Get the value property: The Object ID of the service principal with the
+     * specified application ID.
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,8 +43,9 @@ public final class ServicePrincipalObjectResultInner {
     }
 
     /**
-     * Set the value property: The Object ID of the service principal with the specified application ID.
-     *
+     * Set the value property: The Object ID of the service principal with the
+     * specified application ID.
+     * 
      * @param value the value value to set.
      * @return the ServicePrincipalObjectResultInner object itself.
      */
@@ -49,7 +56,7 @@ public final class ServicePrincipalObjectResultInner {
 
     /**
      * Get the odataMetadata property: The URL representing edm equivalent.
-     *
+     * 
      * @return the odataMetadata value.
      */
     public String odataMetadata() {
@@ -58,7 +65,7 @@ public final class ServicePrincipalObjectResultInner {
 
     /**
      * Set the odataMetadata property: The URL representing edm equivalent.
-     *
+     * 
      * @param odataMetadata the odataMetadata value to set.
      * @return the ServicePrincipalObjectResultInner object itself.
      */
@@ -69,7 +76,7 @@ public final class ServicePrincipalObjectResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,6 +8,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -17,15 +19,19 @@ import com.azure.resourcemanager.compute.fluent.models.RunCommandDocumentBaseInn
 import com.azure.resourcemanager.compute.fluent.models.RunCommandDocumentInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineRunCommandInner;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandUpdate;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachineRunCommandsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * VirtualMachineRunCommandsClient.
+ */
 public interface VirtualMachineRunCommandsClient {
     /**
      * Lists all available run commands for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,7 +43,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * Lists all available run commands for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -49,7 +55,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * Lists all available run commands for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -62,7 +68,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * Gets specific run command for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -75,7 +81,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * Gets specific run command for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -88,7 +94,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * Gets specific run command for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,7 +107,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * Gets specific run command for a subscription in a location.
-     *
+     * 
      * @param location The location upon which run commands is queried.
      * @param commandId The command id.
      * @param context The context to associate with this operation.
@@ -115,7 +121,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -126,12 +132,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand);
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -142,12 +147,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand);
+    PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand);
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -158,12 +162,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand);
+    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand);
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -175,16 +178,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand,
-        Context context);
+    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand, Context context);
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -195,12 +193,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand);
+    Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand);
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -211,12 +208,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineRunCommandInner createOrUpdate(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand);
+    VirtualMachineRunCommandInner createOrUpdate(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand);
 
     /**
      * The operation to create or update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be created or updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -228,16 +224,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineRunCommandInner createOrUpdate(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandInner runCommand,
-        Context context);
+    VirtualMachineRunCommandInner createOrUpdate(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandInner runCommand, Context context);
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -248,12 +239,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -264,12 +254,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
+    PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -280,12 +269,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
+    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -297,16 +285,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
-        Context context);
+    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context);
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -317,12 +300,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineRunCommandInner> updateAsync(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
+    Mono<VirtualMachineRunCommandInner> updateAsync(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -333,12 +315,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineRunCommandInner update(
-        String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
+    VirtualMachineRunCommandInner update(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
 
     /**
      * The operation to update the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be updated.
      * @param runCommandName The name of the virtual machine run command.
@@ -350,16 +331,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineRunCommandInner update(
-        String resourceGroupName,
-        String vmName,
-        String runCommandName,
-        VirtualMachineRunCommandUpdate runCommand,
-        Context context);
+    VirtualMachineRunCommandInner update(String resourceGroupName, String vmName, String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context);
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -369,12 +345,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vmName, String runCommandName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmName, String runCommandName);
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -388,7 +363,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -402,7 +377,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -413,12 +388,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmName, String runCommandName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName, String runCommandName, Context context);
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -432,7 +406,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -445,7 +419,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * The operation to delete the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine where the run command should be deleted.
      * @param runCommandName The name of the virtual machine run command.
@@ -459,7 +433,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * The operation to get the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -470,12 +444,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineRunCommandInner>> getByVirtualMachineWithResponseAsync(
-        String resourceGroupName, String vmName, String runCommandName, String expand);
+    Mono<Response<VirtualMachineRunCommandInner>> getByVirtualMachineWithResponseAsync(String resourceGroupName, String vmName, String runCommandName, String expand);
 
     /**
      * The operation to get the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -486,12 +459,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineRunCommandInner> getByVirtualMachineAsync(
-        String resourceGroupName, String vmName, String runCommandName, String expand);
+    Mono<VirtualMachineRunCommandInner> getByVirtualMachineAsync(String resourceGroupName, String vmName, String runCommandName, String expand);
 
     /**
      * The operation to get the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -501,12 +473,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineRunCommandInner> getByVirtualMachineAsync(
-        String resourceGroupName, String vmName, String runCommandName);
+    Mono<VirtualMachineRunCommandInner> getByVirtualMachineAsync(String resourceGroupName, String vmName, String runCommandName);
 
     /**
      * The operation to get the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -520,7 +491,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * The operation to get the run command.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param runCommandName The name of the virtual machine run command.
@@ -532,12 +503,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineRunCommandInner> getByVirtualMachineWithResponse(
-        String resourceGroupName, String vmName, String runCommandName, String expand, Context context);
+    Response<VirtualMachineRunCommandInner> getByVirtualMachineWithResponse(String resourceGroupName, String vmName, String runCommandName, String expand, Context context);
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -547,12 +517,11 @@ public interface VirtualMachineRunCommandsClient {
      * @return the List run command operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(
-        String resourceGroupName, String vmName, String expand);
+    PagedFlux<VirtualMachineRunCommandInner> listByVirtualMachineAsync(String resourceGroupName, String vmName, String expand);
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -565,7 +534,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -578,7 +547,7 @@ public interface VirtualMachineRunCommandsClient {
 
     /**
      * The operation to get all run commands of a Virtual Machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the run command.
      * @param expand The expand expression to apply on the operation.
@@ -589,6 +558,5 @@ public interface VirtualMachineRunCommandsClient {
      * @return the List run command operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineRunCommandInner> listByVirtualMachine(
-        String resourceGroupName, String vmName, String expand, Context context);
+    PagedIterable<VirtualMachineRunCommandInner> listByVirtualMachine(String resourceGroupName, String vmName, String expand, Context context);
 }

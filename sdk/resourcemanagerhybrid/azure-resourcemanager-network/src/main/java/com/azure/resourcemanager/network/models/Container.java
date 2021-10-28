@@ -5,16 +5,24 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to container resource in remote resource provider. */
+/**
+ * Reference to container resource in remote resource provider.
+ */
 @Fluent
 public final class Container extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Container.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Container.class);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withId(String id) {
         super.withId(id);
@@ -23,7 +31,7 @@ public final class Container extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Role definition. */
-@JsonFlatten
+/**
+ * Role definition.
+ */
 @Fluent
-public class RoleDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleDefinitionInner.class);
+public final class RoleDefinitionInner {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RoleDefinitionInner.class);
 
     /*
      * The role definition ID.
@@ -36,38 +39,14 @@ public class RoleDefinitionInner {
     private String type;
 
     /*
-     * The role name.
+     * Role definition properties.
      */
-    @JsonProperty(value = "properties.roleName")
-    private String roleName;
-
-    /*
-     * The role definition description.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The role type.
-     */
-    @JsonProperty(value = "properties.type")
-    private String roleType;
-
-    /*
-     * Role definition permissions.
-     */
-    @JsonProperty(value = "properties.permissions")
-    private List<PermissionInner> permissions;
-
-    /*
-     * Role definition assignable scopes.
-     */
-    @JsonProperty(value = "properties.assignableScopes")
-    private List<String> assignableScopes;
+    @JsonProperty(value = "properties")
+    private RoleDefinitionProperties innerProperties;
 
     /**
      * Get the id property: The role definition ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +55,7 @@ public class RoleDefinitionInner {
 
     /**
      * Get the name property: The role definition name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -85,7 +64,7 @@ public class RoleDefinitionInner {
 
     /**
      * Get the type property: The role definition type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -93,113 +72,137 @@ public class RoleDefinitionInner {
     }
 
     /**
+     * Get the innerProperties property: Role definition properties.
+     * 
+     * @return the innerProperties value.
+     */
+    private RoleDefinitionProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the roleName property: The role name.
-     *
+     * 
      * @return the roleName value.
      */
     public String roleName() {
-        return this.roleName;
+        return this.innerProperties() == null ? null : this.innerProperties().roleName();
     }
 
     /**
      * Set the roleName property: The role name.
-     *
+     * 
      * @param roleName the roleName value to set.
      * @return the RoleDefinitionInner object itself.
      */
     public RoleDefinitionInner withRoleName(String roleName) {
-        this.roleName = roleName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleDefinitionProperties();
+        }
+        this.innerProperties().withRoleName(roleName);
         return this;
     }
 
     /**
      * Get the description property: The role definition description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: The role definition description.
-     *
+     * 
      * @param description the description value to set.
      * @return the RoleDefinitionInner object itself.
      */
     public RoleDefinitionInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleDefinitionProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Get the roleType property: The role type.
-     *
+     * 
      * @return the roleType value.
      */
     public String roleType() {
-        return this.roleType;
+        return this.innerProperties() == null ? null : this.innerProperties().roleType();
     }
 
     /**
      * Set the roleType property: The role type.
-     *
+     * 
      * @param roleType the roleType value to set.
      * @return the RoleDefinitionInner object itself.
      */
     public RoleDefinitionInner withRoleType(String roleType) {
-        this.roleType = roleType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleDefinitionProperties();
+        }
+        this.innerProperties().withRoleType(roleType);
         return this;
     }
 
     /**
      * Get the permissions property: Role definition permissions.
-     *
+     * 
      * @return the permissions value.
      */
     public List<PermissionInner> permissions() {
-        return this.permissions;
+        return this.innerProperties() == null ? null : this.innerProperties().permissions();
     }
 
     /**
      * Set the permissions property: Role definition permissions.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the RoleDefinitionInner object itself.
      */
     public RoleDefinitionInner withPermissions(List<PermissionInner> permissions) {
-        this.permissions = permissions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleDefinitionProperties();
+        }
+        this.innerProperties().withPermissions(permissions);
         return this;
     }
 
     /**
      * Get the assignableScopes property: Role definition assignable scopes.
-     *
+     * 
      * @return the assignableScopes value.
      */
     public List<String> assignableScopes() {
-        return this.assignableScopes;
+        return this.innerProperties() == null ? null : this.innerProperties().assignableScopes();
     }
 
     /**
      * Set the assignableScopes property: Role definition assignable scopes.
-     *
+     * 
      * @param assignableScopes the assignableScopes value to set.
      * @return the RoleDefinitionInner object itself.
      */
     public RoleDefinitionInner withAssignableScopes(List<String> assignableScopes) {
-        this.assignableScopes = assignableScopes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleDefinitionProperties();
+        }
+        this.innerProperties().withAssignableScopes(assignableScopes);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (permissions() != null) {
-            permissions().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

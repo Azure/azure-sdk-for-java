@@ -49,9 +49,6 @@ public final class ScmType extends ExpandableStringEnum<ScmType> {
     /** Static value VSO for ScmType. */
     public static final ScmType VSO = fromString("VSO");
 
-    /** Static value VSTSRM for ScmType. */
-    public static final ScmType VSTSRM = fromString("VSTSRM");
-
     /**
      * Creates or finds a ScmType from its string representation.
      *

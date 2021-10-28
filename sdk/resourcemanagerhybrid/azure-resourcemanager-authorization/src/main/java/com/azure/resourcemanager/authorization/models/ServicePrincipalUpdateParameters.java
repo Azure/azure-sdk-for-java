@@ -4,18 +4,81 @@
 
 package com.azure.resourcemanager.authorization.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** Request parameters for update an existing service principal. */
-@Immutable
+/**
+ * Request parameters for update an existing service principal.
+ */
+@Fluent
 public final class ServicePrincipalUpdateParameters extends ServicePrincipalBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalUpdateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServicePrincipalUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalUpdateParameters withAccountEnabled(Boolean accountEnabled) {
+        super.withAccountEnabled(accountEnabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalUpdateParameters withAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
+        super.withAppRoleAssignmentRequired(appRoleAssignmentRequired);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalUpdateParameters withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+        super.withKeyCredentials(keyCredentials);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalUpdateParameters withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+        super.withPasswordCredentials(passwordCredentials);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalUpdateParameters withServicePrincipalType(String servicePrincipalType) {
+        super.withServicePrincipalType(servicePrincipalType);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalUpdateParameters withTags(List<String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

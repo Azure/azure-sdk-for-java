@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRouteLinkConnectorType. */
+/**
+ * Defines values for ExpressRouteLinkConnectorType.
+ */
 public final class ExpressRouteLinkConnectorType extends ExpandableStringEnum<ExpressRouteLinkConnectorType> {
-    /** Static value LC for ExpressRouteLinkConnectorType. */
+    /**
+     * Static value LC for ExpressRouteLinkConnectorType.
+     */
     public static final ExpressRouteLinkConnectorType LC = fromString("LC");
 
-    /** Static value SC for ExpressRouteLinkConnectorType. */
+    /**
+     * Static value SC for ExpressRouteLinkConnectorType.
+     */
     public static final ExpressRouteLinkConnectorType SC = fromString("SC");
 
     /**
      * Creates or finds a ExpressRouteLinkConnectorType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExpressRouteLinkConnectorType.
      */
@@ -27,7 +33,9 @@ public final class ExpressRouteLinkConnectorType extends ExpandableStringEnum<Ex
         return fromString(name, ExpressRouteLinkConnectorType.class);
     }
 
-    /** @return known ExpressRouteLinkConnectorType values. */
+    /**
+     * @return known ExpressRouteLinkConnectorType values.
+     */
     public static Collection<ExpressRouteLinkConnectorType> values() {
         return values(ExpressRouteLinkConnectorType.class);
     }

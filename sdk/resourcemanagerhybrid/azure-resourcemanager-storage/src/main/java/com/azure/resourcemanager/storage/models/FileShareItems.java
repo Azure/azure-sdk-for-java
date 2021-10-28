@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.storage.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.FileShareItemInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Response schema. Contains list of shares returned, and if paging is requested or required, a URL to next page of
- * shares.
+ * Response schema. Contains list of shares returned, and if paging is
+ * requested or required, a URL to next page of shares.
  */
 @Immutable
 public final class FileShareItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileShareItems.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FileShareItems.class);
 
     /*
      * List of file shares returned.
@@ -34,7 +37,7 @@ public final class FileShareItems {
 
     /**
      * Get the value property: List of file shares returned.
-     *
+     * 
      * @return the value value.
      */
     public List<FileShareItemInner> value() {
@@ -42,9 +45,10 @@ public final class FileShareItems {
     }
 
     /**
-     * Get the nextLink property: Request URL that can be used to query next page of shares. Returned when total number
-     * of requested shares exceed maximum page size.
-     *
+     * Get the nextLink property: Request URL that can be used to query next
+     * page of shares. Returned when total number of requested shares exceed
+     * maximum page size.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -53,7 +57,7 @@ public final class FileShareItems {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

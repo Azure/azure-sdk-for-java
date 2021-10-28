@@ -5,15 +5,23 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains encryption settings for an OS disk image. */
+/**
+ * Contains encryption settings for an OS disk image.
+ */
 @Fluent
 public final class OSDiskImageEncryption extends DiskImageEncryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSDiskImageEncryption.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OSDiskImageEncryption.class);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OSDiskImageEncryption withDiskEncryptionSetId(String diskEncryptionSetId) {
         super.withDiskEncryptionSetId(diskEncryptionSetId);
@@ -22,7 +30,7 @@ public final class OSDiskImageEncryption extends DiskImageEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

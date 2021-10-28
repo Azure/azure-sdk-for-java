@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about feature. */
+/**
+ * Information about feature.
+ */
 @Fluent
 public final class FeatureProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FeatureProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FeatureProperties.class);
 
     /*
      * The registration state of the feature for the subscription.
@@ -21,8 +26,9 @@ public final class FeatureProperties {
     private String state;
 
     /**
-     * Get the state property: The registration state of the feature for the subscription.
-     *
+     * Get the state property: The registration state of the feature for the
+     * subscription.
+     * 
      * @return the state value.
      */
     public String state() {
@@ -30,8 +36,9 @@ public final class FeatureProperties {
     }
 
     /**
-     * Set the state property: The registration state of the feature for the subscription.
-     *
+     * Set the state property: The registration state of the feature for the
+     * subscription.
+     * 
      * @param state the state value to set.
      * @return the FeatureProperties object itself.
      */
@@ -42,7 +49,7 @@ public final class FeatureProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

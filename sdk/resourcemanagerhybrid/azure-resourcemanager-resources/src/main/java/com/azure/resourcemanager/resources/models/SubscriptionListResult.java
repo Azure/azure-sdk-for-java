@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Subscription list operation response. */
+/**
+ * Subscription list operation response.
+ */
 @Fluent
 public final class SubscriptionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SubscriptionListResult.class);
 
     /*
      * An array of subscriptions.
@@ -30,7 +35,7 @@ public final class SubscriptionListResult {
 
     /**
      * Get the value property: An array of subscriptions.
-     *
+     * 
      * @return the value value.
      */
     public List<SubscriptionInner> value() {
@@ -39,7 +44,7 @@ public final class SubscriptionListResult {
 
     /**
      * Set the value property: An array of subscriptions.
-     *
+     * 
      * @param value the value value to set.
      * @return the SubscriptionListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class SubscriptionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +64,7 @@ public final class SubscriptionListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SubscriptionListResult object itself.
      */
@@ -70,7 +75,7 @@ public final class SubscriptionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,9 +83,7 @@ public final class SubscriptionListResult {
             value().forEach(e -> e.validate());
         }
         if (nextLink() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nextLink in model SubscriptionListResult"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property nextLink in model SubscriptionListResult"));
         }
     }
 }

@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A Kubernetes add-on profile for a managed cluster. */
+/**
+ * A Kubernetes add-on profile for a managed cluster.
+ */
 @Fluent
 public final class ManagedClusterAddonProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAddonProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedClusterAddonProfile.class);
 
     /*
      * Whether the add-on is enabled or not.
@@ -37,7 +42,7 @@ public final class ManagedClusterAddonProfile {
 
     /**
      * Get the enabled property: Whether the add-on is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -46,7 +51,7 @@ public final class ManagedClusterAddonProfile {
 
     /**
      * Set the enabled property: Whether the add-on is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterAddonProfile object itself.
      */
@@ -57,7 +62,7 @@ public final class ManagedClusterAddonProfile {
 
     /**
      * Get the config property: Key-value pairs for configuring an add-on.
-     *
+     * 
      * @return the config value.
      */
     public Map<String, String> config() {
@@ -66,7 +71,7 @@ public final class ManagedClusterAddonProfile {
 
     /**
      * Set the config property: Key-value pairs for configuring an add-on.
-     *
+     * 
      * @param config the config value to set.
      * @return the ManagedClusterAddonProfile object itself.
      */
@@ -76,8 +81,9 @@ public final class ManagedClusterAddonProfile {
     }
 
     /**
-     * Get the identity property: Information of user assigned identity used by this add-on.
-     *
+     * Get the identity property: Information of user assigned identity used by
+     * this add-on.
+     * 
      * @return the identity value.
      */
     public ManagedClusterAddonProfileIdentity identity() {
@@ -86,7 +92,7 @@ public final class ManagedClusterAddonProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

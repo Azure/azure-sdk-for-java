@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of private link resources. */
+/**
+ * A list of private link resources.
+ */
 @Fluent
 public final class PrivateLinkResourcesListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesListResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesListResultInner.class);
 
     /*
      * The collection value.
@@ -23,7 +28,7 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Get the value property: The collection value.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResourceInner> value() {
@@ -32,7 +37,7 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Set the value property: The collection value.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResourcesListResultInner object itself.
      */
@@ -43,7 +48,7 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

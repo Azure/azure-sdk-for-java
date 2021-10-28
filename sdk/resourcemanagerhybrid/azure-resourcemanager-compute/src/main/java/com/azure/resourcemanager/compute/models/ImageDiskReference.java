@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The source image used for creating the disk. */
+/**
+ * The source image used for creating the disk.
+ */
 @Fluent
 public final class ImageDiskReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDiskReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ImageDiskReference.class);
 
     /*
      * A relative uri containing either a Platform Image Repository or user
@@ -30,8 +35,9 @@ public final class ImageDiskReference {
     private Integer lun;
 
     /**
-     * Get the id property: A relative uri containing either a Platform Image Repository or user image reference.
-     *
+     * Get the id property: A relative uri containing either a Platform Image
+     * Repository or user image reference.
+     * 
      * @return the id value.
      */
     public String id() {
@@ -39,8 +45,9 @@ public final class ImageDiskReference {
     }
 
     /**
-     * Set the id property: A relative uri containing either a Platform Image Repository or user image reference.
-     *
+     * Set the id property: A relative uri containing either a Platform Image
+     * Repository or user image reference.
+     * 
      * @param id the id value to set.
      * @return the ImageDiskReference object itself.
      */
@@ -50,9 +57,10 @@ public final class ImageDiskReference {
     }
 
     /**
-     * Get the lun property: If the disk is created from an image's data disk, this is an index that indicates which of
-     * the data disks in the image to use. For OS disks, this field is null.
-     *
+     * Get the lun property: If the disk is created from an image's data disk,
+     * this is an index that indicates which of the data disks in the image to
+     * use. For OS disks, this field is null.
+     * 
      * @return the lun value.
      */
     public Integer lun() {
@@ -60,9 +68,10 @@ public final class ImageDiskReference {
     }
 
     /**
-     * Set the lun property: If the disk is created from an image's data disk, this is an index that indicates which of
-     * the data disks in the image to use. For OS disks, this field is null.
-     *
+     * Set the lun property: If the disk is created from an image's data disk,
+     * this is an index that indicates which of the data disks in the image to
+     * use. For OS disks, this field is null.
+     * 
      * @param lun the lun value to set.
      * @return the ImageDiskReference object itself.
      */
@@ -73,14 +82,12 @@ public final class ImageDiskReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ImageDiskReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property id in model ImageDiskReference"));
         }
     }
 }

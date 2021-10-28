@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkMode. */
+/**
+ * Defines values for NetworkMode.
+ */
 public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
-    /** Static value transparent for NetworkMode. */
+    /**
+     * Static value transparent for NetworkMode.
+     */
     public static final NetworkMode TRANSPARENT = fromString("transparent");
 
-    /** Static value bridge for NetworkMode. */
+    /**
+     * Static value bridge for NetworkMode.
+     */
     public static final NetworkMode BRIDGE = fromString("bridge");
 
     /**
      * Creates or finds a NetworkMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkMode.
      */
@@ -27,7 +33,9 @@ public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
         return fromString(name, NetworkMode.class);
     }
 
-    /** @return known NetworkMode values. */
+    /**
+     * @return known NetworkMode values.
+     */
     public static Collection<NetworkMode> values() {
         return values(NetworkMode.class);
     }

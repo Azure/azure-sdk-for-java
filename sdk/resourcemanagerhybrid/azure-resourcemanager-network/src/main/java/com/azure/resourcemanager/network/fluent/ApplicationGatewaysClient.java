@@ -8,6 +8,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -16,27 +18,26 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayAvailableSslOptionsInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayAvailableWafRuleSetsResultInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackendHealthInner;
-import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackendHealthOnDemandInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslPredefinedPolicyInner;
-import com.azure.resourcemanager.network.models.ApplicationGatewayOnDemandProbe;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApplicationGatewaysClient. */
-public interface ApplicationGatewaysClient
-    extends InnerSupportsGet<ApplicationGatewayInner>,
-        InnerSupportsListing<ApplicationGatewayInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ApplicationGatewaysClient.
+ */
+public interface ApplicationGatewaysClient extends InnerSupportsGet<ApplicationGatewayInner>, InnerSupportsListing<ApplicationGatewayInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +50,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -62,7 +63,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -75,7 +76,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -85,12 +86,11 @@ public interface ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String applicationGatewayName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationGatewayName, Context context);
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,7 +103,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +115,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Deletes the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -128,7 +128,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,12 +137,11 @@ public interface ApplicationGatewaysClient
      * @return the specified application gateway.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ApplicationGatewayInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String applicationGatewayName);
+    Mono<Response<ApplicationGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String applicationGatewayName);
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -155,7 +154,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -168,7 +167,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Gets the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -178,12 +177,11 @@ public interface ApplicationGatewaysClient
      * @return the specified application gateway.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationGatewayInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String applicationGatewayName, Context context);
+    Response<ApplicationGatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String applicationGatewayName, Context context);
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -193,12 +191,11 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -208,12 +205,11 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
+    PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -223,12 +219,11 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
-        String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
+    SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -239,12 +234,11 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
-        String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context);
+    SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context);
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -254,12 +248,11 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationGatewayInner> createOrUpdateAsync(
-        String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
+    Mono<ApplicationGatewayInner> createOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -269,12 +262,11 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayInner createOrUpdate(
-        String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
+    ApplicationGatewayInner createOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters);
 
     /**
      * Creates or updates the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to the create or update application gateway operation.
@@ -285,12 +277,11 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayInner createOrUpdate(
-        String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context);
+    ApplicationGatewayInner createOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context);
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -300,12 +291,11 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ApplicationGatewayInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String applicationGatewayName, TagsObject parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String applicationGatewayName, TagsObject parameters);
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -315,12 +305,54 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationGatewayInner> updateTagsAsync(
-        String resourceGroupName, String applicationGatewayName, TagsObject parameters);
+    PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginUpdateTagsAsync(String resourceGroupName, String applicationGatewayName, TagsObject parameters);
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to update application gateway tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application gateway resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginUpdateTags(String resourceGroupName, String applicationGatewayName, TagsObject parameters);
+
+    /**
+     * Updates the specified application gateway tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to update application gateway tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application gateway resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginUpdateTags(String resourceGroupName, String applicationGatewayName, TagsObject parameters, Context context);
+
+    /**
+     * Updates the specified application gateway tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to update application gateway tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application gateway resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ApplicationGatewayInner> updateTagsAsync(String resourceGroupName, String applicationGatewayName, TagsObject parameters);
+
+    /**
+     * Updates the specified application gateway tags.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -334,7 +366,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Updates the specified application gateway tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param parameters Parameters supplied to update application gateway tags.
@@ -345,12 +377,11 @@ public interface ApplicationGatewaysClient
      * @return application gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationGatewayInner> updateTagsWithResponse(
-        String resourceGroupName, String applicationGatewayName, TagsObject parameters, Context context);
+    ApplicationGatewayInner updateTags(String resourceGroupName, String applicationGatewayName, TagsObject parameters, Context context);
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -362,7 +393,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -374,7 +405,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all application gateways in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -387,7 +418,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the application gateways in a subscription.
@@ -397,7 +428,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the application gateways in a subscription.
@@ -407,7 +438,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Gets all the application gateways in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -419,7 +450,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -432,7 +463,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -445,7 +476,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -458,7 +489,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -468,12 +499,11 @@ public interface ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String applicationGatewayName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String applicationGatewayName, Context context);
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -486,7 +516,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -498,7 +528,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Starts the specified application gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -511,7 +541,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -524,7 +554,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -537,7 +567,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -550,7 +580,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -560,12 +590,11 @@ public interface ApplicationGatewaysClient
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String applicationGatewayName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String applicationGatewayName, Context context);
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -578,7 +607,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -590,7 +619,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Stops the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param context The context to associate with this operation.
@@ -603,7 +632,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -613,12 +642,11 @@ public interface ApplicationGatewaysClient
      * @return the backend health of the specified application gateway in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> backendHealthWithResponseAsync(
-        String resourceGroupName, String applicationGatewayName, String expand);
+    Mono<Response<Flux<ByteBuffer>>> backendHealthWithResponseAsync(String resourceGroupName, String applicationGatewayName, String expand);
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -628,12 +656,11 @@ public interface ApplicationGatewaysClient
      * @return the backend health of the specified application gateway in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
-        beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand);
+    PollerFlux<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand);
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -643,12 +670,11 @@ public interface ApplicationGatewaysClient
      * @return the backend health of the specified application gateway in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
-        beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand);
+    SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner> beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand);
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -659,12 +685,11 @@ public interface ApplicationGatewaysClient
      * @return the backend health of the specified application gateway in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
-        beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand, Context context);
+    SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner> beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand, Context context);
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -674,12 +699,11 @@ public interface ApplicationGatewaysClient
      * @return the backend health of the specified application gateway in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationGatewayBackendHealthInner> backendHealthAsync(
-        String resourceGroupName, String applicationGatewayName, String expand);
+    Mono<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand);
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -688,12 +712,11 @@ public interface ApplicationGatewaysClient
      * @return the backend health of the specified application gateway in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationGatewayBackendHealthInner> backendHealthAsync(
-        String resourceGroupName, String applicationGatewayName);
+    Mono<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName);
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -703,12 +726,11 @@ public interface ApplicationGatewaysClient
      * @return the backend health of the specified application gateway in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayBackendHealthInner backendHealth(
-        String resourceGroupName, String applicationGatewayName, String expand);
+    ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName, String expand);
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -721,7 +743,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Gets the backend health of the specified application gateway in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
      * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
@@ -732,200 +754,11 @@ public interface ApplicationGatewaysClient
      * @return the backend health of the specified application gateway in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayBackendHealthInner backendHealth(
-        String resourceGroupName, String applicationGatewayName, String expand, Context context);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> backendHealthOnDemandWithResponseAsync(
-        String resourceGroupName,
-        String applicationGatewayName,
-        ApplicationGatewayOnDemandProbe probeRequest,
-        String expand);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
-        beginBackendHealthOnDemandAsync(
-            String resourceGroupName,
-            String applicationGatewayName,
-            ApplicationGatewayOnDemandProbe probeRequest,
-            String expand);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
-        beginBackendHealthOnDemand(
-            String resourceGroupName,
-            String applicationGatewayName,
-            ApplicationGatewayOnDemandProbe probeRequest,
-            String expand);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
-        beginBackendHealthOnDemand(
-            String resourceGroupName,
-            String applicationGatewayName,
-            ApplicationGatewayOnDemandProbe probeRequest,
-            String expand,
-            Context context);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationGatewayBackendHealthOnDemandInner> backendHealthOnDemandAsync(
-        String resourceGroupName,
-        String applicationGatewayName,
-        ApplicationGatewayOnDemandProbe probeRequest,
-        String expand);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationGatewayBackendHealthOnDemandInner> backendHealthOnDemandAsync(
-        String resourceGroupName, String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayBackendHealthOnDemandInner backendHealthOnDemand(
-        String resourceGroupName,
-        String applicationGatewayName,
-        ApplicationGatewayOnDemandProbe probeRequest,
-        String expand);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayBackendHealthOnDemandInner backendHealthOnDemand(
-        String resourceGroupName, String applicationGatewayName, ApplicationGatewayOnDemandProbe probeRequest);
-
-    /**
-     * Gets the backend health for given combination of backend pool and http setting of the specified application
-     * gateway in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the application gateway.
-     * @param probeRequest Request body for on-demand test probe operation.
-     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the backend health for given combination of backend pool and http setting of the specified application
-     *     gateway in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationGatewayBackendHealthOnDemandInner backendHealthOnDemand(
-        String resourceGroupName,
-        String applicationGatewayName,
-        ApplicationGatewayOnDemandProbe probeRequest,
-        String expand,
-        Context context);
+    ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName, String expand, Context context);
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableServerVariables API service call.
@@ -935,7 +768,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableServerVariables API service call.
@@ -945,7 +778,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableServerVariables API service call.
@@ -955,7 +788,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available server variables.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -967,7 +800,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableRequestHeaders API service call.
@@ -977,7 +810,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableRequestHeaders API service call.
@@ -987,7 +820,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableRequestHeaders API service call.
@@ -997,7 +830,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available request headers.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -1009,7 +842,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableResponseHeaders API service call.
@@ -1019,7 +852,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableResponseHeaders API service call.
@@ -1029,7 +862,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableResponseHeaders API service call.
@@ -1039,7 +872,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available response headers.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -1051,7 +884,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableWafRuleSets API service call.
@@ -1061,7 +894,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableWafRuleSets API service call.
@@ -1071,7 +904,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableWafRuleSets API service call.
@@ -1081,7 +914,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all available web application firewall rule sets.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1093,7 +926,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call.
@@ -1103,7 +936,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call.
@@ -1113,7 +946,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call.
@@ -1123,7 +956,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists available Ssl options for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1135,7 +968,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call.
@@ -1145,7 +978,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ApplicationGatewayAvailableSslOptions API service call.
@@ -1155,7 +988,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Lists all SSL predefined policies for configuring Ssl policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1167,7 +1000,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1175,12 +1008,11 @@ public interface ApplicationGatewaysClient
      * @return ssl predefined policy with the specified policy name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ApplicationGatewaySslPredefinedPolicyInner>> getSslPredefinedPolicyWithResponseAsync(
-        String predefinedPolicyName);
+    Mono<Response<ApplicationGatewaySslPredefinedPolicyInner>> getSslPredefinedPolicyWithResponseAsync(String predefinedPolicyName);
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1192,7 +1024,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1204,7 +1036,7 @@ public interface ApplicationGatewaysClient
 
     /**
      * Gets Ssl predefined policy with the specified policy name.
-     *
+     * 
      * @param predefinedPolicyName Name of Ssl predefined policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1213,6 +1045,5 @@ public interface ApplicationGatewaysClient
      * @return ssl predefined policy with the specified policy name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationGatewaySslPredefinedPolicyInner> getSslPredefinedPolicyWithResponse(
-        String predefinedPolicyName, Context context);
+    Response<ApplicationGatewaySslPredefinedPolicyInner> getSslPredefinedPolicyWithResponse(String predefinedPolicyName, Context context);
 }

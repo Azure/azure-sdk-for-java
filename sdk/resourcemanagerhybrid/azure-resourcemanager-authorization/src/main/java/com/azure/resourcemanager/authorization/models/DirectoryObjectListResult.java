@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.DirectoryObjectInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** DirectoryObject list operation result. */
+/**
+ * DirectoryObject list operation result.
+ */
 @Fluent
 public final class DirectoryObjectListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DirectoryObjectListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DirectoryObjectListResult.class);
 
     /*
      * A collection of DirectoryObject.
@@ -30,7 +35,7 @@ public final class DirectoryObjectListResult {
 
     /**
      * Get the value property: A collection of DirectoryObject.
-     *
+     * 
      * @return the value value.
      */
     public List<DirectoryObjectInner> value() {
@@ -39,7 +44,7 @@ public final class DirectoryObjectListResult {
 
     /**
      * Set the value property: A collection of DirectoryObject.
-     *
+     * 
      * @param value the value value to set.
      * @return the DirectoryObjectListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class DirectoryObjectListResult {
 
     /**
      * Get the odataNextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the odataNextLink value.
      */
     public String odataNextLink() {
@@ -59,7 +64,7 @@ public final class DirectoryObjectListResult {
 
     /**
      * Set the odataNextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param odataNextLink the odataNextLink value to set.
      * @return the DirectoryObjectListResult object itself.
      */
@@ -70,7 +75,7 @@ public final class DirectoryObjectListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

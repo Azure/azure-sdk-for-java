@@ -5,17 +5,23 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Active Directory service principal common properties shared among GET, POST and PATCH. */
+/**
+ * Active Directory service principal common properties shared among GET, POST
+ * and PATCH.
+ */
 @Fluent
 public class ServicePrincipalBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalBase.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServicePrincipalBase.class);
 
     /*
      * whether or not the service principal account is enabled
@@ -57,8 +63,9 @@ public class ServicePrincipalBase {
     private List<String> tags;
 
     /**
-     * Get the accountEnabled property: whether or not the service principal account is enabled.
-     *
+     * Get the accountEnabled property: whether or not the service principal
+     * account is enabled.
+     * 
      * @return the accountEnabled value.
      */
     public Boolean accountEnabled() {
@@ -66,8 +73,9 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Set the accountEnabled property: whether or not the service principal account is enabled.
-     *
+     * Set the accountEnabled property: whether or not the service principal
+     * account is enabled.
+     * 
      * @param accountEnabled the accountEnabled value to set.
      * @return the ServicePrincipalBase object itself.
      */
@@ -77,9 +85,10 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Get the appRoleAssignmentRequired property: Specifies whether an AppRoleAssignment to a user or group is required
-     * before Azure AD will issue a user or access token to the application.
-     *
+     * Get the appRoleAssignmentRequired property: Specifies whether an
+     * AppRoleAssignment to a user or group is required before Azure AD will
+     * issue a user or access token to the application.
+     * 
      * @return the appRoleAssignmentRequired value.
      */
     public Boolean appRoleAssignmentRequired() {
@@ -87,10 +96,12 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Set the appRoleAssignmentRequired property: Specifies whether an AppRoleAssignment to a user or group is required
-     * before Azure AD will issue a user or access token to the application.
-     *
-     * @param appRoleAssignmentRequired the appRoleAssignmentRequired value to set.
+     * Set the appRoleAssignmentRequired property: Specifies whether an
+     * AppRoleAssignment to a user or group is required before Azure AD will
+     * issue a user or access token to the application.
+     * 
+     * @param appRoleAssignmentRequired the appRoleAssignmentRequired value to
+     * set.
      * @return the ServicePrincipalBase object itself.
      */
     public ServicePrincipalBase withAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
@@ -99,8 +110,9 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Get the keyCredentials property: The collection of key credentials associated with the service principal.
-     *
+     * Get the keyCredentials property: The collection of key credentials
+     * associated with the service principal.
+     * 
      * @return the keyCredentials value.
      */
     public List<KeyCredentialInner> keyCredentials() {
@@ -108,8 +120,9 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Set the keyCredentials property: The collection of key credentials associated with the service principal.
-     *
+     * Set the keyCredentials property: The collection of key credentials
+     * associated with the service principal.
+     * 
      * @param keyCredentials the keyCredentials value to set.
      * @return the ServicePrincipalBase object itself.
      */
@@ -119,9 +132,9 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Get the passwordCredentials property: The collection of password credentials associated with the service
-     * principal.
-     *
+     * Get the passwordCredentials property: The collection of password
+     * credentials associated with the service principal.
+     * 
      * @return the passwordCredentials value.
      */
     public List<PasswordCredentialInner> passwordCredentials() {
@@ -129,9 +142,9 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Set the passwordCredentials property: The collection of password credentials associated with the service
-     * principal.
-     *
+     * Set the passwordCredentials property: The collection of password
+     * credentials associated with the service principal.
+     * 
      * @param passwordCredentials the passwordCredentials value to set.
      * @return the ServicePrincipalBase object itself.
      */
@@ -141,8 +154,9 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Get the servicePrincipalType property: the type of the service principal.
-     *
+     * Get the servicePrincipalType property: the type of the service
+     * principal.
+     * 
      * @return the servicePrincipalType value.
      */
     public String servicePrincipalType() {
@@ -150,8 +164,9 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Set the servicePrincipalType property: the type of the service principal.
-     *
+     * Set the servicePrincipalType property: the type of the service
+     * principal.
+     * 
      * @param servicePrincipalType the servicePrincipalType value to set.
      * @return the ServicePrincipalBase object itself.
      */
@@ -161,8 +176,9 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Get the tags property: Optional list of tags that you can apply to your service principals. Not nullable.
-     *
+     * Get the tags property: Optional list of tags that you can apply to your
+     * service principals. Not nullable.
+     * 
      * @return the tags value.
      */
     public List<String> tags() {
@@ -170,8 +186,9 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Set the tags property: Optional list of tags that you can apply to your service principals. Not nullable.
-     *
+     * Set the tags property: Optional list of tags that you can apply to your
+     * service principals. Not nullable.
+     * 
      * @param tags the tags value to set.
      * @return the ServicePrincipalBase object itself.
      */
@@ -182,7 +199,7 @@ public class ServicePrincipalBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

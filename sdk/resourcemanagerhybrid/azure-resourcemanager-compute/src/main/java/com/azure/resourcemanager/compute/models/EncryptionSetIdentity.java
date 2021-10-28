@@ -5,24 +5,24 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The managed identity for the disk encryption set. It should be given permission on the key vault before it can be
- * used to encrypt disks.
+ * The managed identity for the disk encryption set. It should be given
+ * permission on the key vault before it can be used to encrypt disks.
  */
 @Fluent
 public class EncryptionSetIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSetIdentity.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EncryptionSetIdentity.class);
 
     /*
      * The type of Managed Identity used by the DiskEncryptionSet. Only
-     * SystemAssigned is supported for new creations. Disk Encryption Sets can
-     * be updated with Identity type None during migration of subscription to a
-     * new Azure Active Directory tenant; it will cause the encrypted resources
-     * to lose access to the keys.
+     * SystemAssigned is supported.
      */
     @JsonProperty(value = "type")
     private DiskEncryptionSetIdentityType type;
@@ -44,11 +44,9 @@ public class EncryptionSetIdentity {
     private String tenantId;
 
     /**
-     * Get the type property: The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is
-     * supported for new creations. Disk Encryption Sets can be updated with Identity type None during migration of
-     * subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the
-     * keys.
-     *
+     * Get the type property: The type of Managed Identity used by the
+     * DiskEncryptionSet. Only SystemAssigned is supported.
+     * 
      * @return the type value.
      */
     public DiskEncryptionSetIdentityType type() {
@@ -56,11 +54,9 @@ public class EncryptionSetIdentity {
     }
 
     /**
-     * Set the type property: The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is
-     * supported for new creations. Disk Encryption Sets can be updated with Identity type None during migration of
-     * subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the
-     * keys.
-     *
+     * Set the type property: The type of Managed Identity used by the
+     * DiskEncryptionSet. Only SystemAssigned is supported.
+     * 
      * @param type the type value to set.
      * @return the EncryptionSetIdentity object itself.
      */
@@ -70,10 +66,11 @@ public class EncryptionSetIdentity {
     }
 
     /**
-     * Get the principalId property: The object id of the Managed Identity Resource. This will be sent to the RP from
-     * ARM via the x-ms-identity-principal-id header in the PUT request if the resource has a systemAssigned(implicit)
-     * identity.
-     *
+     * Get the principalId property: The object id of the Managed Identity
+     * Resource. This will be sent to the RP from ARM via the
+     * x-ms-identity-principal-id header in the PUT request if the resource has
+     * a systemAssigned(implicit) identity.
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -81,9 +78,11 @@ public class EncryptionSetIdentity {
     }
 
     /**
-     * Get the tenantId property: The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM
-     * via the x-ms-client-tenant-id header in the PUT request if the resource has a systemAssigned(implicit) identity.
-     *
+     * Get the tenantId property: The tenant id of the Managed Identity
+     * Resource. This will be sent to the RP from ARM via the
+     * x-ms-client-tenant-id header in the PUT request if the resource has a
+     * systemAssigned(implicit) identity.
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -92,7 +91,7 @@ public class EncryptionSetIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

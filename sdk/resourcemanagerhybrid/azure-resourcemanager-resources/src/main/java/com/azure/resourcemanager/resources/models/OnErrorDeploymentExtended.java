@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deployment on error behavior with additional details. */
+/**
+ * Deployment on error behavior with additional details.
+ */
 @Fluent
 public final class OnErrorDeploymentExtended {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OnErrorDeploymentExtended.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OnErrorDeploymentExtended.class);
 
     /*
      * The state of the provisioning for the on error deployment.
@@ -34,8 +39,9 @@ public final class OnErrorDeploymentExtended {
     private String deploymentName;
 
     /**
-     * Get the provisioningState property: The state of the provisioning for the on error deployment.
-     *
+     * Get the provisioningState property: The state of the provisioning for
+     * the on error deployment.
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -43,9 +49,9 @@ public final class OnErrorDeploymentExtended {
     }
 
     /**
-     * Get the type property: The deployment on error behavior type. Possible values are LastSuccessful and
-     * SpecificDeployment.
-     *
+     * Get the type property: The deployment on error behavior type. Possible
+     * values are LastSuccessful and SpecificDeployment.
+     * 
      * @return the type value.
      */
     public OnErrorDeploymentType type() {
@@ -53,9 +59,9 @@ public final class OnErrorDeploymentExtended {
     }
 
     /**
-     * Set the type property: The deployment on error behavior type. Possible values are LastSuccessful and
-     * SpecificDeployment.
-     *
+     * Set the type property: The deployment on error behavior type. Possible
+     * values are LastSuccessful and SpecificDeployment.
+     * 
      * @param type the type value to set.
      * @return the OnErrorDeploymentExtended object itself.
      */
@@ -65,8 +71,9 @@ public final class OnErrorDeploymentExtended {
     }
 
     /**
-     * Get the deploymentName property: The deployment to be used on error case.
-     *
+     * Get the deploymentName property: The deployment to be used on error
+     * case.
+     * 
      * @return the deploymentName value.
      */
     public String deploymentName() {
@@ -74,8 +81,9 @@ public final class OnErrorDeploymentExtended {
     }
 
     /**
-     * Set the deploymentName property: The deployment to be used on error case.
-     *
+     * Set the deploymentName property: The deployment to be used on error
+     * case.
+     * 
      * @param deploymentName the deploymentName value to set.
      * @return the OnErrorDeploymentExtended object itself.
      */
@@ -86,7 +94,7 @@ public final class OnErrorDeploymentExtended {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,25 +6,36 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Function secrets. */
 @Fluent
-public final class FunctionSecretsInner {
+public final class FunctionSecretsInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionSecretsInner.class);
 
     /*
-     * Secret key.
+     * FunctionSecrets resource specific properties
      */
-    @JsonProperty(value = "key")
-    private String key;
+    @JsonProperty(value = "properties")
+    private FunctionSecretsProperties innerProperties;
 
-    /*
-     * Trigger URL.
+    /**
+     * Get the innerProperties property: FunctionSecrets resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "trigger_url")
-    private String triggerUrl;
+    private FunctionSecretsProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FunctionSecretsInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the key property: Secret key.
@@ -32,7 +43,7 @@ public final class FunctionSecretsInner {
      * @return the key value.
      */
     public String key() {
-        return this.key;
+        return this.innerProperties() == null ? null : this.innerProperties().key();
     }
 
     /**
@@ -42,7 +53,10 @@ public final class FunctionSecretsInner {
      * @return the FunctionSecretsInner object itself.
      */
     public FunctionSecretsInner withKey(String key) {
-        this.key = key;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionSecretsProperties();
+        }
+        this.innerProperties().withKey(key);
         return this;
     }
 
@@ -52,7 +66,7 @@ public final class FunctionSecretsInner {
      * @return the triggerUrl value.
      */
     public String triggerUrl() {
-        return this.triggerUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().triggerUrl();
     }
 
     /**
@@ -62,7 +76,10 @@ public final class FunctionSecretsInner {
      * @return the FunctionSecretsInner object itself.
      */
     public FunctionSecretsInner withTriggerUrl(String triggerUrl) {
-        this.triggerUrl = triggerUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionSecretsProperties();
+        }
+        this.innerProperties().withTriggerUrl(triggerUrl);
         return this;
     }
 
@@ -71,6 +88,11 @@ public final class FunctionSecretsInner {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

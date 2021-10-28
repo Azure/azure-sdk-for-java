@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VirtualHubInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the request to list VirtualHubs. It contains a list of VirtualHubs and a URL nextLink to get the next set
- * of results.
+ * Result of the request to list VirtualHubs. It contains a list of VirtualHubs
+ * and a URL nextLink to get the next set of results.
  */
 @Fluent
 public final class ListVirtualHubsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListVirtualHubsResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListVirtualHubsResult.class);
 
     /*
      * List of VirtualHubs.
@@ -33,7 +36,7 @@ public final class ListVirtualHubsResult {
 
     /**
      * Get the value property: List of VirtualHubs.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualHubInner> value() {
@@ -42,7 +45,7 @@ public final class ListVirtualHubsResult {
 
     /**
      * Set the value property: List of VirtualHubs.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListVirtualHubsResult object itself.
      */
@@ -52,8 +55,9 @@ public final class ListVirtualHubsResult {
     }
 
     /**
-     * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * Get the nextLink property: URL to get the next set of operation list
+     * results if there are any.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,8 +65,9 @@ public final class ListVirtualHubsResult {
     }
 
     /**
-     * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * Set the nextLink property: URL to get the next set of operation list
+     * results if there are any.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListVirtualHubsResult object itself.
      */
@@ -73,7 +78,7 @@ public final class ListVirtualHubsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

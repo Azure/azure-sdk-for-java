@@ -8,6 +8,8 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
@@ -15,693 +17,678 @@ import com.azure.resourcemanager.authorization.fluent.models.DirectoryObjectInne
 import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalObjectResultInner;
+import com.azure.resourcemanager.authorization.models.AddOwnerParameters;
 import com.azure.resourcemanager.authorization.models.ApplicationCreateParameters;
 import com.azure.resourcemanager.authorization.models.ApplicationUpdateParameters;
-import java.util.List;
+import com.azure.resourcemanager.authorization.models.KeyCredentialsUpdateParameters;
+import com.azure.resourcemanager.authorization.models.PasswordCredentialsUpdateParameters;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApplicationsClient. */
-public interface ApplicationsClient {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ApplicationsClient.
+ */
+public interface ApplicationsClient extends InnerSupportsDelete<Void> {
     /**
      * Create a new application.
-     *
-     * @param parameters Request parameters for creating a new application.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for creating an application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ApplicationInner>> createWithResponseAsync(ApplicationCreateParameters parameters);
+    Mono<Response<ApplicationInner>> createWithResponseAsync(String tenantId, ApplicationCreateParameters parameters);
 
     /**
      * Create a new application.
-     *
-     * @param parameters Request parameters for creating a new application.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for creating an application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationInner> createAsync(ApplicationCreateParameters parameters);
+    Mono<ApplicationInner> createAsync(String tenantId, ApplicationCreateParameters parameters);
 
     /**
      * Create a new application.
-     *
-     * @param parameters Request parameters for creating a new application.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for creating an application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInner create(ApplicationCreateParameters parameters);
+    ApplicationInner create(String tenantId, ApplicationCreateParameters parameters);
 
     /**
      * Create a new application.
-     *
-     * @param parameters Request parameters for creating a new application.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for creating an application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInner> createWithResponse(ApplicationCreateParameters parameters, Context context);
+    Response<ApplicationInner> createWithResponse(String tenantId, ApplicationCreateParameters parameters, Context context);
 
     /**
      * Lists applications by filter parameters.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filters to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ApplicationInner> listAsync(String filter);
+    PagedFlux<ApplicationInner> listAsync(String tenantId, String filter);
 
     /**
      * Lists applications by filter parameters.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ApplicationInner> listAsync();
+    PagedFlux<ApplicationInner> listAsync(String tenantId);
 
     /**
      * Lists applications by filter parameters.
-     *
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return application list operation result.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ApplicationInner> list(String tenantId);
+
+    /**
+     * Lists applications by filter parameters.
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filters to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApplicationInner> list(String filter, Context context);
-
-    /**
-     * Lists applications by filter parameters.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application list operation result.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApplicationInner> list();
+    PagedIterable<ApplicationInner> list(String tenantId, String filter, Context context);
 
     /**
      * Delete an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String applicationObjectId);
+    Mono<Response<Void>> deleteWithResponseAsync(String applicationObjectId, String tenantId);
 
     /**
      * Delete an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String applicationObjectId);
+    Mono<Void> deleteAsync(String applicationObjectId, String tenantId);
 
     /**
      * Delete an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String applicationObjectId);
+    void delete(String applicationObjectId, String tenantId);
 
     /**
      * Delete an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String applicationObjectId, Context context);
+    Response<Void> deleteWithResponse(String applicationObjectId, String tenantId, Context context);
 
     /**
      * Get an application by object ID.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationObjectId);
+    Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationObjectId, String tenantId);
 
     /**
      * Get an application by object ID.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationInner> getAsync(String applicationObjectId);
+    Mono<ApplicationInner> getAsync(String applicationObjectId, String tenantId);
 
     /**
      * Get an application by object ID.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInner get(String applicationObjectId);
+    ApplicationInner get(String applicationObjectId, String tenantId);
 
     /**
      * Get an application by object ID.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInner> getWithResponse(String applicationObjectId, Context context);
+    Response<ApplicationInner> getWithResponse(String applicationObjectId, String tenantId, Context context);
 
     /**
      * Update an existing application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param parameters Request parameters for updating a new application.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> patchWithResponseAsync(String applicationObjectId, ApplicationUpdateParameters parameters);
+    Mono<Response<Void>> patchWithResponseAsync(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters);
 
     /**
      * Update an existing application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param parameters Request parameters for updating a new application.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> patchAsync(String applicationObjectId, ApplicationUpdateParameters parameters);
+    Mono<Void> patchAsync(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters);
 
     /**
      * Update an existing application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param parameters Request parameters for updating a new application.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void patch(String applicationObjectId, ApplicationUpdateParameters parameters);
+    void patch(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters);
 
     /**
      * Update an existing application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param parameters Request parameters for updating a new application.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> patchWithResponse(
-        String applicationObjectId, ApplicationUpdateParameters parameters, Context context);
+    Response<Void> patchWithResponse(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters, Context context);
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param applicationObjectId The object ID of the application for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DirectoryObjectInner> listOwnersAsync(String applicationObjectId);
+    PagedFlux<DirectoryObjectInner> listOwnersAsync(String applicationObjectId, String tenantId);
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param applicationObjectId The object ID of the application for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> listOwners(String applicationObjectId);
+    PagedIterable<DirectoryObjectInner> listOwners(String applicationObjectId, String tenantId);
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param applicationObjectId The object ID of the application for which to get owners.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> listOwners(String applicationObjectId, Context context);
+    PagedIterable<DirectoryObjectInner> listOwners(String applicationObjectId, String tenantId, Context context);
 
     /**
      * Add an owner to an application.
-     *
+     * 
      * @param applicationObjectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, String url);
+    Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, String tenantId, AddOwnerParameters parameters);
 
     /**
      * Add an owner to an application.
-     *
+     * 
      * @param applicationObjectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> addOwnerAsync(String applicationObjectId, String url);
+    Mono<Void> addOwnerAsync(String applicationObjectId, String tenantId, AddOwnerParameters parameters);
 
     /**
      * Add an owner to an application.
-     *
+     * 
      * @param applicationObjectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void addOwner(String applicationObjectId, String url);
+    void addOwner(String applicationObjectId, String tenantId, AddOwnerParameters parameters);
 
     /**
      * Add an owner to an application.
-     *
+     * 
      * @param applicationObjectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> addOwnerWithResponse(String applicationObjectId, String url, Context context);
+    Response<Void> addOwnerWithResponse(String applicationObjectId, String tenantId, AddOwnerParameters parameters, Context context);
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> removeOwnerWithResponseAsync(String applicationObjectId, String ownerObjectId);
+    Mono<Response<Void>> removeOwnerWithResponseAsync(String applicationObjectId, String ownerObjectId, String tenantId);
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> removeOwnerAsync(String applicationObjectId, String ownerObjectId);
+    Mono<Void> removeOwnerAsync(String applicationObjectId, String ownerObjectId, String tenantId);
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void removeOwner(String applicationObjectId, String ownerObjectId);
+    void removeOwner(String applicationObjectId, String ownerObjectId, String tenantId);
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> removeOwnerWithResponse(String applicationObjectId, String ownerObjectId, Context context);
+    Response<Void> removeOwnerWithResponse(String applicationObjectId, String ownerObjectId, String tenantId, Context context);
 
     /**
      * Get the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String applicationObjectId);
+    PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String applicationObjectId, String tenantId);
 
     /**
      * Get the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<KeyCredentialInner> listKeyCredentials(String applicationObjectId);
+    PagedIterable<KeyCredentialInner> listKeyCredentials(String applicationObjectId, String tenantId);
 
     /**
      * Get the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<KeyCredentialInner> listKeyCredentials(String applicationObjectId, Context context);
+    PagedIterable<KeyCredentialInner> listKeyCredentials(String applicationObjectId, String tenantId, Context context);
 
     /**
      * Update the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of KeyCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(
-        String applicationObjectId, List<KeyCredentialInner> value);
+    Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters);
 
     /**
      * Update the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of KeyCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updateKeyCredentialsAsync(String applicationObjectId, List<KeyCredentialInner> value);
+    Mono<Void> updateKeyCredentialsAsync(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters);
 
     /**
      * Update the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of KeyCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateKeyCredentials(String applicationObjectId, List<KeyCredentialInner> value);
+    void updateKeyCredentials(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters);
 
     /**
      * Update the keyCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of KeyCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update the keyCredentials of an existing application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateKeyCredentialsWithResponse(
-        String applicationObjectId, List<KeyCredentialInner> value, Context context);
+    Response<Void> updateKeyCredentialsWithResponse(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context);
 
     /**
      * Get the passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String applicationObjectId);
+    PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String applicationObjectId, String tenantId);
 
     /**
      * Get the passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId);
+    PagedIterable<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId, String tenantId);
 
     /**
      * Get the passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId, Context context);
+    PagedIterable<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId, String tenantId, Context context);
 
     /**
      * Update passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of PasswordCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update passwordCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
-        String applicationObjectId, List<PasswordCredentialInner> value);
+    Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters);
 
     /**
      * Update passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of PasswordCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update passwordCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updatePasswordCredentialsAsync(String applicationObjectId, List<PasswordCredentialInner> value);
+    Mono<Void> updatePasswordCredentialsAsync(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters);
 
     /**
      * Update passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of PasswordCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update passwordCredentials of an existing application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void updatePasswordCredentials(String applicationObjectId, List<PasswordCredentialInner> value);
+    void updatePasswordCredentials(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters);
 
     /**
      * Update passwordCredentials associated with an application.
-     *
+     * 
      * @param applicationObjectId Application object ID.
-     * @param value A collection of PasswordCredentials.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update passwordCredentials of an existing application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updatePasswordCredentialsWithResponse(
-        String applicationObjectId, List<PasswordCredentialInner> value, Context context);
+    Response<Void> updatePasswordCredentialsWithResponse(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context);
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(
-        String applicationId);
+    Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(String tenantId, String applicationId);
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdAsync(String applicationId);
+    Mono<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdAsync(String tenantId, String applicationId);
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServicePrincipalObjectResultInner getServicePrincipalsIdByAppId(String applicationId);
+    ServicePrincipalObjectResultInner getServicePrincipalsIdByAppId(String tenantId, String applicationId);
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdWithResponse(
-        String applicationId, Context context);
+    Response<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdWithResponse(String tenantId, String applicationId, Context context);
 }

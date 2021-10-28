@@ -5,14 +5,17 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Container network interface configuration properties. */
+/**
+ * Container network interface configuration properties.
+ */
 @Fluent
 public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     @JsonIgnore
@@ -33,15 +36,15 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     private List<SubResource> containerNetworkInterfaces;
 
     /*
-     * The provisioning state of the container network interface configuration
-     * resource.
+     * The provisioning state of the resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
-     * Get the ipConfigurations property: A list of ip configurations of the container network interface configuration.
-     *
+     * Get the ipConfigurations property: A list of ip configurations of the
+     * container network interface configuration.
+     * 
      * @return the ipConfigurations value.
      */
     public List<IpConfigurationProfileInner> ipConfigurations() {
@@ -49,21 +52,22 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the ipConfigurations property: A list of ip configurations of the container network interface configuration.
-     *
+     * Set the ipConfigurations property: A list of ip configurations of the
+     * container network interface configuration.
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
-     * @return the ContainerNetworkInterfaceConfigurationPropertiesFormat object itself.
+     * @return the ContainerNetworkInterfaceConfigurationPropertiesFormat
+     * object itself.
      */
-    public ContainerNetworkInterfaceConfigurationPropertiesFormat withIpConfigurations(
-        List<IpConfigurationProfileInner> ipConfigurations) {
+    public ContainerNetworkInterfaceConfigurationPropertiesFormat withIpConfigurations(List<IpConfigurationProfileInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
 
     /**
-     * Get the containerNetworkInterfaces property: A list of container network interfaces created from this container
-     * network interface configuration.
-     *
+     * Get the containerNetworkInterfaces property: A list of container network
+     * interfaces created from this container network interface configuration.
+     * 
      * @return the containerNetworkInterfaces value.
      */
     public List<SubResource> containerNetworkInterfaces() {
@@ -71,31 +75,32 @@ public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the containerNetworkInterfaces property: A list of container network interfaces created from this container
-     * network interface configuration.
-     *
-     * @param containerNetworkInterfaces the containerNetworkInterfaces value to set.
-     * @return the ContainerNetworkInterfaceConfigurationPropertiesFormat object itself.
+     * Set the containerNetworkInterfaces property: A list of container network
+     * interfaces created from this container network interface configuration.
+     * 
+     * @param containerNetworkInterfaces the containerNetworkInterfaces value
+     * to set.
+     * @return the ContainerNetworkInterfaceConfigurationPropertiesFormat
+     * object itself.
      */
-    public ContainerNetworkInterfaceConfigurationPropertiesFormat withContainerNetworkInterfaces(
-        List<SubResource> containerNetworkInterfaces) {
+    public ContainerNetworkInterfaceConfigurationPropertiesFormat withContainerNetworkInterfaces(List<SubResource> containerNetworkInterfaces) {
         this.containerNetworkInterfaces = containerNetworkInterfaces;
         return this;
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the container network interface configuration
+     * Get the provisioningState property: The provisioning state of the
      * resource.
-     *
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

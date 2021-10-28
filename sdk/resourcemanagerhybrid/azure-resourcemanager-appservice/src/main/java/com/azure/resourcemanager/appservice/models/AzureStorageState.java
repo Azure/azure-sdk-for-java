@@ -16,10 +16,7 @@ public enum AzureStorageState {
     INVALID_CREDENTIALS("InvalidCredentials"),
 
     /** Enum value InvalidShare. */
-    INVALID_SHARE("InvalidShare"),
-
-    /** Enum value NotValidated. */
-    NOT_VALIDATED("NotValidated");
+    INVALID_SHARE("InvalidShare");
 
     /** The actual serialized value for a AzureStorageState instance. */
     private final String value;

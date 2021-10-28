@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifying the claims to be included in the token. */
+/**
+ * Specifying the claims to be included in the token.
+ */
 @Fluent
 public final class OptionalClaims {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OptionalClaims.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OptionalClaims.class);
 
     /*
      * Optional claims requested to be included in the id token.
@@ -34,8 +39,9 @@ public final class OptionalClaims {
     private List<OptionalClaim> samlToken;
 
     /**
-     * Get the idToken property: Optional claims requested to be included in the id token.
-     *
+     * Get the idToken property: Optional claims requested to be included in
+     * the id token.
+     * 
      * @return the idToken value.
      */
     public List<OptionalClaim> idToken() {
@@ -43,8 +49,9 @@ public final class OptionalClaims {
     }
 
     /**
-     * Set the idToken property: Optional claims requested to be included in the id token.
-     *
+     * Set the idToken property: Optional claims requested to be included in
+     * the id token.
+     * 
      * @param idToken the idToken value to set.
      * @return the OptionalClaims object itself.
      */
@@ -54,8 +61,9 @@ public final class OptionalClaims {
     }
 
     /**
-     * Get the accessToken property: Optional claims requested to be included in the access token.
-     *
+     * Get the accessToken property: Optional claims requested to be included
+     * in the access token.
+     * 
      * @return the accessToken value.
      */
     public List<OptionalClaim> accessToken() {
@@ -63,8 +71,9 @@ public final class OptionalClaims {
     }
 
     /**
-     * Set the accessToken property: Optional claims requested to be included in the access token.
-     *
+     * Set the accessToken property: Optional claims requested to be included
+     * in the access token.
+     * 
      * @param accessToken the accessToken value to set.
      * @return the OptionalClaims object itself.
      */
@@ -74,8 +83,9 @@ public final class OptionalClaims {
     }
 
     /**
-     * Get the samlToken property: Optional claims requested to be included in the saml token.
-     *
+     * Get the samlToken property: Optional claims requested to be included in
+     * the saml token.
+     * 
      * @return the samlToken value.
      */
     public List<OptionalClaim> samlToken() {
@@ -83,8 +93,9 @@ public final class OptionalClaims {
     }
 
     /**
-     * Set the samlToken property: Optional claims requested to be included in the saml token.
-     *
+     * Set the samlToken property: Optional claims requested to be included in
+     * the saml token.
+     * 
      * @param samlToken the samlToken value to set.
      * @return the OptionalClaims object itself.
      */
@@ -95,7 +106,7 @@ public final class OptionalClaims {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

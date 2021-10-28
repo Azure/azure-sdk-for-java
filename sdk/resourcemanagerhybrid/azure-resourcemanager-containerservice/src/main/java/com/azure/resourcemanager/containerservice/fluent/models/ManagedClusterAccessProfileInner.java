@@ -5,16 +5,23 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Managed cluster Access Profile. */
+/**
+ * Managed cluster Access Profile.
+ */
 @Fluent
 public final class ManagedClusterAccessProfileInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAccessProfileInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedClusterAccessProfileInner.class);
 
     /*
      * AccessProfile of a managed cluster.
@@ -24,21 +31,25 @@ public final class ManagedClusterAccessProfileInner extends Resource {
 
     /**
      * Get the innerProperties property: AccessProfile of a managed cluster.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AccessProfile innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedClusterAccessProfileInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedClusterAccessProfileInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -46,8 +57,9 @@ public final class ManagedClusterAccessProfileInner extends Resource {
     }
 
     /**
-     * Get the kubeConfig property: Base64-encoded Kubernetes configuration file.
-     *
+     * Get the kubeConfig property: Base64-encoded Kubernetes configuration
+     * file.
+     * 
      * @return the kubeConfig value.
      */
     public byte[] kubeConfig() {
@@ -55,8 +67,9 @@ public final class ManagedClusterAccessProfileInner extends Resource {
     }
 
     /**
-     * Set the kubeConfig property: Base64-encoded Kubernetes configuration file.
-     *
+     * Set the kubeConfig property: Base64-encoded Kubernetes configuration
+     * file.
+     * 
      * @param kubeConfig the kubeConfig value to set.
      * @return the ManagedClusterAccessProfileInner object itself.
      */
@@ -70,7 +83,7 @@ public final class ManagedClusterAccessProfileInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

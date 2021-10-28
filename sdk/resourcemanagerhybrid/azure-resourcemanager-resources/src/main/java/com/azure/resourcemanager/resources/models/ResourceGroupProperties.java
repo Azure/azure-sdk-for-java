@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.resources.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource group properties. */
+/**
+ * The resource group properties.
+ */
 @Immutable
 public final class ResourceGroupProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGroupProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourceGroupProperties.class);
 
     /*
      * The provisioning state.
@@ -22,7 +27,7 @@ public final class ResourceGroupProperties {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -31,7 +36,7 @@ public final class ResourceGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

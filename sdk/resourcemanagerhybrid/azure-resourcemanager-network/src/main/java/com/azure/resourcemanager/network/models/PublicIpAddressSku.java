@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SKU of a public IP address. */
+/**
+ * SKU of a public IP address.
+ */
 @Fluent
 public final class PublicIpAddressSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressSku.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PublicIpAddressSku.class);
 
     /*
      * Name of a public IP address SKU.
@@ -20,15 +25,9 @@ public final class PublicIpAddressSku {
     @JsonProperty(value = "name")
     private PublicIpAddressSkuName name;
 
-    /*
-     * Tier of a public IP address SKU.
-     */
-    @JsonProperty(value = "tier")
-    private PublicIpAddressSkuTier tier;
-
     /**
      * Get the name property: Name of a public IP address SKU.
-     *
+     * 
      * @return the name value.
      */
     public PublicIpAddressSkuName name() {
@@ -37,7 +36,7 @@ public final class PublicIpAddressSku {
 
     /**
      * Set the name property: Name of a public IP address SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the PublicIpAddressSku object itself.
      */
@@ -47,28 +46,8 @@ public final class PublicIpAddressSku {
     }
 
     /**
-     * Get the tier property: Tier of a public IP address SKU.
-     *
-     * @return the tier value.
-     */
-    public PublicIpAddressSkuTier tier() {
-        return this.tier;
-    }
-
-    /**
-     * Set the tier property: Tier of a public IP address SKU.
-     *
-     * @param tier the tier value to set.
-     * @return the PublicIpAddressSku object itself.
-     */
-    public PublicIpAddressSku withTier(PublicIpAddressSkuTier tier) {
-        this.tier = tier;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

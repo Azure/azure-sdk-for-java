@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** List of properties of the device. */
+/**
+ * List of properties of the device.
+ */
 @Fluent
 public final class DeviceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeviceProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DeviceProperties.class);
 
     /*
      * Name of the device Vendor.
@@ -34,7 +39,7 @@ public final class DeviceProperties {
 
     /**
      * Get the deviceVendor property: Name of the device Vendor.
-     *
+     * 
      * @return the deviceVendor value.
      */
     public String deviceVendor() {
@@ -43,7 +48,7 @@ public final class DeviceProperties {
 
     /**
      * Set the deviceVendor property: Name of the device Vendor.
-     *
+     * 
      * @param deviceVendor the deviceVendor value to set.
      * @return the DeviceProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class DeviceProperties {
 
     /**
      * Get the deviceModel property: Model of the device.
-     *
+     * 
      * @return the deviceModel value.
      */
     public String deviceModel() {
@@ -63,7 +68,7 @@ public final class DeviceProperties {
 
     /**
      * Set the deviceModel property: Model of the device.
-     *
+     * 
      * @param deviceModel the deviceModel value to set.
      * @return the DeviceProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class DeviceProperties {
 
     /**
      * Get the linkSpeedInMbps property: Link speed.
-     *
+     * 
      * @return the linkSpeedInMbps value.
      */
     public Integer linkSpeedInMbps() {
@@ -83,7 +88,7 @@ public final class DeviceProperties {
 
     /**
      * Set the linkSpeedInMbps property: Link speed.
-     *
+     * 
      * @param linkSpeedInMbps the linkSpeedInMbps value to set.
      * @return the DeviceProperties object itself.
      */
@@ -94,7 +99,7 @@ public final class DeviceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

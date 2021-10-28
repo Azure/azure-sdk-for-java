@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Describes a virtual machine scale set sku. NOTE: If the new VM SKU is not supported on the hardware the scale set is
- * currently on, you need to deallocate the VMs in the scale set before you modify the SKU name.
+ * Describes a virtual machine scale set sku. NOTE: If the new VM SKU is not
+ * supported on the hardware the scale set is currently on, you need to
+ * deallocate the VMs in the scale set before you modify the SKU name.
  */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Sku.class);
 
     /*
      * The sku name.
@@ -38,7 +42,7 @@ public final class Sku {
 
     /**
      * Get the name property: The sku name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -47,7 +51,7 @@ public final class Sku {
 
     /**
      * Set the name property: The sku name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -57,9 +61,10 @@ public final class Sku {
     }
 
     /**
-     * Get the tier property: Specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible
-     * Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
-     *
+     * Get the tier property: Specifies the tier of virtual machines in a scale
+     * set.&lt;br /&gt;&lt;br /&gt; Possible Values:&lt;br /&gt;&lt;br /&gt;
+     * **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -67,9 +72,10 @@ public final class Sku {
     }
 
     /**
-     * Set the tier property: Specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible
-     * Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
-     *
+     * Set the tier property: Specifies the tier of virtual machines in a scale
+     * set.&lt;br /&gt;&lt;br /&gt; Possible Values:&lt;br /&gt;&lt;br /&gt;
+     * **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -79,8 +85,9 @@ public final class Sku {
     }
 
     /**
-     * Get the capacity property: Specifies the number of virtual machines in the scale set.
-     *
+     * Get the capacity property: Specifies the number of virtual machines in
+     * the scale set.
+     * 
      * @return the capacity value.
      */
     public Long capacity() {
@@ -88,8 +95,9 @@ public final class Sku {
     }
 
     /**
-     * Set the capacity property: Specifies the number of virtual machines in the scale set.
-     *
+     * Set the capacity property: Specifies the number of virtual machines in
+     * the scale set.
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -100,7 +108,7 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Usage strings container. */
+/**
+ * Usage strings container.
+ */
 @Immutable
 public final class VirtualNetworkUsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkUsageName.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualNetworkUsageName.class);
 
     /*
      * Localized subnet size and usage string.
@@ -28,7 +33,7 @@ public final class VirtualNetworkUsageName {
 
     /**
      * Get the localizedValue property: Localized subnet size and usage string.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -37,7 +42,7 @@ public final class VirtualNetworkUsageName {
 
     /**
      * Get the value property: Subnet size and usage string.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -46,7 +51,7 @@ public final class VirtualNetworkUsageName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

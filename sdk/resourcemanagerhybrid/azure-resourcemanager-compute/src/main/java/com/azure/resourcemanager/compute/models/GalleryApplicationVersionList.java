@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationVersionInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Gallery Application version operation response. */
+/**
+ * The List Gallery Application version operation response.
+ */
 @Fluent
 public final class GalleryApplicationVersionList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionList.class);
 
     /*
      * A list of gallery Application Versions.
@@ -32,7 +37,7 @@ public final class GalleryApplicationVersionList {
 
     /**
      * Get the value property: A list of gallery Application Versions.
-     *
+     * 
      * @return the value value.
      */
     public List<GalleryApplicationVersionInner> value() {
@@ -41,7 +46,7 @@ public final class GalleryApplicationVersionList {
 
     /**
      * Set the value property: A list of gallery Application Versions.
-     *
+     * 
      * @param value the value value to set.
      * @return the GalleryApplicationVersionList object itself.
      */
@@ -51,9 +56,10 @@ public final class GalleryApplicationVersionList {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of gallery Application Versions. Call ListNext() with
-     * this to fetch the next page of gallery Application Versions.
-     *
+     * Get the nextLink property: The uri to fetch the next page of gallery
+     * Application Versions. Call ListNext() with this to fetch the next page
+     * of gallery Application Versions.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,9 +67,10 @@ public final class GalleryApplicationVersionList {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of gallery Application Versions. Call ListNext() with
-     * this to fetch the next page of gallery Application Versions.
-     *
+     * Set the nextLink property: The uri to fetch the next page of gallery
+     * Application Versions. Call ListNext() with this to fetch the next page
+     * of gallery Application Versions.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GalleryApplicationVersionList object itself.
      */
@@ -74,15 +81,12 @@ public final class GalleryApplicationVersionList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model GalleryApplicationVersionList"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property value in model GalleryApplicationVersionList"));
         } else {
             value().forEach(e -> e.validate());
         }

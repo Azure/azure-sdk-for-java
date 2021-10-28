@@ -8,16 +8,21 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ProbeInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LoadBalancerProbesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * LoadBalancerProbesClient.
+ */
 public interface LoadBalancerProbesClient {
     /**
      * Gets all the load balancer probes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +35,7 @@ public interface LoadBalancerProbesClient {
 
     /**
      * Gets all the load balancer probes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +48,7 @@ public interface LoadBalancerProbesClient {
 
     /**
      * Gets all the load balancer probes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -57,7 +62,7 @@ public interface LoadBalancerProbesClient {
 
     /**
      * Gets load balancer probe.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param probeName The name of the probe.
@@ -67,12 +72,11 @@ public interface LoadBalancerProbesClient {
      * @return load balancer probe.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ProbeInner>> getWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, String probeName);
+    Mono<Response<ProbeInner>> getWithResponseAsync(String resourceGroupName, String loadBalancerName, String probeName);
 
     /**
      * Gets load balancer probe.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param probeName The name of the probe.
@@ -86,7 +90,7 @@ public interface LoadBalancerProbesClient {
 
     /**
      * Gets load balancer probe.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param probeName The name of the probe.
@@ -100,7 +104,7 @@ public interface LoadBalancerProbesClient {
 
     /**
      * Gets load balancer probe.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param probeName The name of the probe.
@@ -111,6 +115,5 @@ public interface LoadBalancerProbesClient {
      * @return load balancer probe.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProbeInner> getWithResponse(
-        String resourceGroupName, String loadBalancerName, String probeName, Context context);
+    Response<ProbeInner> getWithResponse(String resourceGroupName, String loadBalancerName, String probeName, Context context);
 }

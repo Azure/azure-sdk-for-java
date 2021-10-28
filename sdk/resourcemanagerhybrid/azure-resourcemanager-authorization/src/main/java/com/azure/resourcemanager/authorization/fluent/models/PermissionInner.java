@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Role definition permissions. */
+/**
+ * Role definition permissions.
+ */
 @Fluent
 public final class PermissionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PermissionInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PermissionInner.class);
 
     /*
      * Allowed actions.
@@ -27,21 +32,9 @@ public final class PermissionInner {
     @JsonProperty(value = "notActions")
     private List<String> notActions;
 
-    /*
-     * Allowed Data actions.
-     */
-    @JsonProperty(value = "dataActions")
-    private List<String> dataActions;
-
-    /*
-     * Denied Data actions.
-     */
-    @JsonProperty(value = "notDataActions")
-    private List<String> notDataActions;
-
     /**
      * Get the actions property: Allowed actions.
-     *
+     * 
      * @return the actions value.
      */
     public List<String> actions() {
@@ -50,7 +43,7 @@ public final class PermissionInner {
 
     /**
      * Set the actions property: Allowed actions.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the PermissionInner object itself.
      */
@@ -61,7 +54,7 @@ public final class PermissionInner {
 
     /**
      * Get the notActions property: Denied actions.
-     *
+     * 
      * @return the notActions value.
      */
     public List<String> notActions() {
@@ -70,7 +63,7 @@ public final class PermissionInner {
 
     /**
      * Set the notActions property: Denied actions.
-     *
+     * 
      * @param notActions the notActions value to set.
      * @return the PermissionInner object itself.
      */
@@ -80,48 +73,8 @@ public final class PermissionInner {
     }
 
     /**
-     * Get the dataActions property: Allowed Data actions.
-     *
-     * @return the dataActions value.
-     */
-    public List<String> dataActions() {
-        return this.dataActions;
-    }
-
-    /**
-     * Set the dataActions property: Allowed Data actions.
-     *
-     * @param dataActions the dataActions value to set.
-     * @return the PermissionInner object itself.
-     */
-    public PermissionInner withDataActions(List<String> dataActions) {
-        this.dataActions = dataActions;
-        return this;
-    }
-
-    /**
-     * Get the notDataActions property: Denied Data actions.
-     *
-     * @return the notDataActions value.
-     */
-    public List<String> notDataActions() {
-        return this.notDataActions;
-    }
-
-    /**
-     * Set the notDataActions property: Denied Data actions.
-     *
-     * @param notDataActions the notDataActions value to set.
-     * @return the PermissionInner object itself.
-     */
-    public PermissionInner withNotDataActions(List<String> notDataActions) {
-        this.notDataActions = notDataActions;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

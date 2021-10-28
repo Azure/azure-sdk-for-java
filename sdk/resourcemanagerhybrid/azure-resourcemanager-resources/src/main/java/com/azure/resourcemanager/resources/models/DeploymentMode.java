@@ -7,15 +7,23 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DeploymentMode. */
+/**
+ * Defines values for DeploymentMode.
+ */
 public enum DeploymentMode {
-    /** Enum value Incremental. */
+    /**
+     * Enum value Incremental.
+     */
     INCREMENTAL("Incremental"),
 
-    /** Enum value Complete. */
+    /**
+     * Enum value Complete.
+     */
     COMPLETE("Complete");
 
-    /** The actual serialized value for a DeploymentMode instance. */
+    /**
+     * The actual serialized value for a DeploymentMode instance.
+     */
     private final String value;
 
     DeploymentMode(String value) {
@@ -24,7 +32,7 @@ public enum DeploymentMode {
 
     /**
      * Parses a serialized value to a DeploymentMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DeploymentMode object, or null if unable to parse.
      */

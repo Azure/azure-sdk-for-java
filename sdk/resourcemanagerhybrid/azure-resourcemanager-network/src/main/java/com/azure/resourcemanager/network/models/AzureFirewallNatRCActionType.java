@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureFirewallNatRCActionType. */
+/**
+ * Defines values for AzureFirewallNatRCActionType.
+ */
 public final class AzureFirewallNatRCActionType extends ExpandableStringEnum<AzureFirewallNatRCActionType> {
-    /** Static value Snat for AzureFirewallNatRCActionType. */
+    /**
+     * Static value Snat for AzureFirewallNatRCActionType.
+     */
     public static final AzureFirewallNatRCActionType SNAT = fromString("Snat");
 
-    /** Static value Dnat for AzureFirewallNatRCActionType. */
+    /**
+     * Static value Dnat for AzureFirewallNatRCActionType.
+     */
     public static final AzureFirewallNatRCActionType DNAT = fromString("Dnat");
 
     /**
      * Creates or finds a AzureFirewallNatRCActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureFirewallNatRCActionType.
      */
@@ -27,7 +33,9 @@ public final class AzureFirewallNatRCActionType extends ExpandableStringEnum<Azu
         return fromString(name, AzureFirewallNatRCActionType.class);
     }
 
-    /** @return known AzureFirewallNatRCActionType values. */
+    /**
+     * @return known AzureFirewallNatRCActionType values.
+     */
     public static Collection<AzureFirewallNatRCActionType> values() {
         return values(AzureFirewallNatRCActionType.class);
     }

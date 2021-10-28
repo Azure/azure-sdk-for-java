@@ -5,70 +5,59 @@
 package com.azure.resourcemanager.resources.fluent;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** The interface for PolicyClient class. */
+/**
+ * The interface for PolicyClient class.
+ */
 public interface PolicyClient {
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
+
+    /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the DataPolicyManifestsClient object to access its operations.
-     *
-     * @return the DataPolicyManifestsClient object.
-     */
-    DataPolicyManifestsClient getDataPolicyManifests();
-
-    /**
-     * Gets the PolicyAssignmentsClient object to access its operations.
-     *
-     * @return the PolicyAssignmentsClient object.
-     */
-    PolicyAssignmentsClient getPolicyAssignments();
-
-    /**
      * Gets the PolicyDefinitionsClient object to access its operations.
-     *
+     * 
      * @return the PolicyDefinitionsClient object.
      */
     PolicyDefinitionsClient getPolicyDefinitions();
 
     /**
-     * Gets the PolicySetDefinitionsClient object to access its operations.
-     *
-     * @return the PolicySetDefinitionsClient object.
+     * Gets the PolicyAssignmentsClient object to access its operations.
+     * 
+     * @return the PolicyAssignmentsClient object.
      */
-    PolicySetDefinitionsClient getPolicySetDefinitions();
-
-    /**
-     * Gets the PolicyExemptionsClient object to access its operations.
-     *
-     * @return the PolicyExemptionsClient object.
-     */
-    PolicyExemptionsClient getPolicyExemptions();
+    PolicyAssignmentsClient getPolicyAssignments();
 }

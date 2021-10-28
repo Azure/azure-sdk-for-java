@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.OperationInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the request to list Microsoft.Resources operations. It contains a list of operations and a URL link to get
- * the next set of results.
+ * Result of the request to list Microsoft.Resources operations. It contains a
+ * list of operations and a URL link to get the next set of results.
  */
 @Fluent
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationListResult.class);
 
     /*
      * List of Microsoft.Resources operations.
@@ -33,7 +36,7 @@ public final class OperationListResult {
 
     /**
      * Get the value property: List of Microsoft.Resources operations.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -42,7 +45,7 @@ public final class OperationListResult {
 
     /**
      * Set the value property: List of Microsoft.Resources operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationListResult object itself.
      */
@@ -52,8 +55,9 @@ public final class OperationListResult {
     }
 
     /**
-     * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * Get the nextLink property: URL to get the next set of operation list
+     * results if there are any.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,8 +65,9 @@ public final class OperationListResult {
     }
 
     /**
-     * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * Set the nextLink property: URL to get the next set of operation list
+     * results if there are any.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationListResult object itself.
      */
@@ -73,7 +78,7 @@ public final class OperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

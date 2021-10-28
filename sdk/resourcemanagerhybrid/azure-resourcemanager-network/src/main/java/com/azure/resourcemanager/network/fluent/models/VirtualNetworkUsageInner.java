@@ -4,16 +4,21 @@
 
 package com.azure.resourcemanager.network.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.VirtualNetworkUsageName;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Usage details for subnet. */
+/**
+ * Usage details for subnet.
+ */
 @Immutable
 public final class VirtualNetworkUsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkUsageInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualNetworkUsageInner.class);
 
     /*
      * Indicates number of IPs used from the Subnet.
@@ -40,14 +45,15 @@ public final class VirtualNetworkUsageInner {
     private VirtualNetworkUsageName name;
 
     /*
-     * Usage units. Returns 'Count'.
+     * Usage units. Returns 'Count'
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /**
-     * Get the currentValue property: Indicates number of IPs used from the Subnet.
-     *
+     * Get the currentValue property: Indicates number of IPs used from the
+     * Subnet.
+     * 
      * @return the currentValue value.
      */
     public Double currentValue() {
@@ -56,7 +62,7 @@ public final class VirtualNetworkUsageInner {
 
     /**
      * Get the id property: Subnet identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -65,7 +71,7 @@ public final class VirtualNetworkUsageInner {
 
     /**
      * Get the limit property: Indicates the size of the subnet.
-     *
+     * 
      * @return the limit value.
      */
     public Double limit() {
@@ -73,8 +79,9 @@ public final class VirtualNetworkUsageInner {
     }
 
     /**
-     * Get the name property: The name containing common and localized value for usage.
-     *
+     * Get the name property: The name containing common and localized value
+     * for usage.
+     * 
      * @return the name value.
      */
     public VirtualNetworkUsageName name() {
@@ -83,7 +90,7 @@ public final class VirtualNetworkUsageInner {
 
     /**
      * Get the unit property: Usage units. Returns 'Count'.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -92,7 +99,7 @@ public final class VirtualNetworkUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

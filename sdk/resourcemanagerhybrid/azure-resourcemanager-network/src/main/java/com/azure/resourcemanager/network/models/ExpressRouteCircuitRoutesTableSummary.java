@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The routes table associated with the ExpressRouteCircuit. */
+/**
+ * The routes table associated with the ExpressRouteCircuit.
+ */
 @Fluent
 public final class ExpressRouteCircuitRoutesTableSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitRoutesTableSummary.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitRoutesTableSummary.class);
 
     /*
      * IP address of the neighbor.
@@ -48,7 +53,7 @@ public final class ExpressRouteCircuitRoutesTableSummary {
 
     /**
      * Get the neighbor property: IP address of the neighbor.
-     *
+     * 
      * @return the neighbor value.
      */
     public String neighbor() {
@@ -57,7 +62,7 @@ public final class ExpressRouteCircuitRoutesTableSummary {
 
     /**
      * Set the neighbor property: IP address of the neighbor.
-     *
+     * 
      * @param neighbor the neighbor value to set.
      * @return the ExpressRouteCircuitRoutesTableSummary object itself.
      */
@@ -68,7 +73,7 @@ public final class ExpressRouteCircuitRoutesTableSummary {
 
     /**
      * Get the v property: BGP version number spoken to the neighbor.
-     *
+     * 
      * @return the v value.
      */
     public Integer v() {
@@ -77,7 +82,7 @@ public final class ExpressRouteCircuitRoutesTableSummary {
 
     /**
      * Set the v property: BGP version number spoken to the neighbor.
-     *
+     * 
      * @param v the v value to set.
      * @return the ExpressRouteCircuitRoutesTableSummary object itself.
      */
@@ -88,7 +93,7 @@ public final class ExpressRouteCircuitRoutesTableSummary {
 
     /**
      * Get the as property: Autonomous system number.
-     *
+     * 
      * @return the as value.
      */
     public Integer as() {
@@ -97,7 +102,7 @@ public final class ExpressRouteCircuitRoutesTableSummary {
 
     /**
      * Set the as property: Autonomous system number.
-     *
+     * 
      * @param as the as value to set.
      * @return the ExpressRouteCircuitRoutesTableSummary object itself.
      */
@@ -107,9 +112,10 @@ public final class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Get the upDown property: The length of time that the BGP session has been in the Established state, or the
-     * current status if not in the Established state.
-     *
+     * Get the upDown property: The length of time that the BGP session has
+     * been in the Established state, or the current status if not in the
+     * Established state.
+     * 
      * @return the upDown value.
      */
     public String upDown() {
@@ -117,9 +123,10 @@ public final class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Set the upDown property: The length of time that the BGP session has been in the Established state, or the
-     * current status if not in the Established state.
-     *
+     * Set the upDown property: The length of time that the BGP session has
+     * been in the Established state, or the current status if not in the
+     * Established state.
+     * 
      * @param upDown the upDown value to set.
      * @return the ExpressRouteCircuitRoutesTableSummary object itself.
      */
@@ -129,9 +136,10 @@ public final class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Get the statePfxRcd property: Current state of the BGP session, and the number of prefixes that have been
-     * received from a neighbor or peer group.
-     *
+     * Get the statePfxRcd property: Current state of the BGP session, and the
+     * number of prefixes that have been received from a neighbor or peer
+     * group.
+     * 
      * @return the statePfxRcd value.
      */
     public String statePfxRcd() {
@@ -139,9 +147,10 @@ public final class ExpressRouteCircuitRoutesTableSummary {
     }
 
     /**
-     * Set the statePfxRcd property: Current state of the BGP session, and the number of prefixes that have been
-     * received from a neighbor or peer group.
-     *
+     * Set the statePfxRcd property: Current state of the BGP session, and the
+     * number of prefixes that have been received from a neighbor or peer
+     * group.
+     * 
      * @param statePfxRcd the statePfxRcd value to set.
      * @return the ExpressRouteCircuitRoutesTableSummary object itself.
      */
@@ -152,7 +161,7 @@ public final class ExpressRouteCircuitRoutesTableSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

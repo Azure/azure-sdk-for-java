@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the configuration of the OpenShift cluster VMs. */
+/**
+ * Defines the configuration of the OpenShift cluster VMs.
+ */
 @Fluent
 public final class OpenShiftManagedClusterAgentPoolProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterAgentPoolProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterAgentPoolProfile.class);
 
     /*
      * Unique name of the pool profile in the context of the subscription and
@@ -53,8 +58,9 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
     private OpenShiftAgentPoolProfileRole role;
 
     /**
-     * Get the name property: Unique name of the pool profile in the context of the subscription and resource group.
-     *
+     * Get the name property: Unique name of the pool profile in the context of
+     * the subscription and resource group.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,8 +68,9 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
     }
 
     /**
-     * Set the name property: Unique name of the pool profile in the context of the subscription and resource group.
-     *
+     * Set the name property: Unique name of the pool profile in the context of
+     * the subscription and resource group.
+     * 
      * @param name the name value to set.
      * @return the OpenShiftManagedClusterAgentPoolProfile object itself.
      */
@@ -73,8 +80,9 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
     }
 
     /**
-     * Get the count property: Number of agents (VMs) to host docker containers.
-     *
+     * Get the count property: Number of agents (VMs) to host docker
+     * containers.
+     * 
      * @return the count value.
      */
     public int count() {
@@ -82,8 +90,9 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
     }
 
     /**
-     * Set the count property: Number of agents (VMs) to host docker containers.
-     *
+     * Set the count property: Number of agents (VMs) to host docker
+     * containers.
+     * 
      * @param count the count value to set.
      * @return the OpenShiftManagedClusterAgentPoolProfile object itself.
      */
@@ -94,7 +103,7 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
 
     /**
      * Get the vmSize property: Size of agent VMs.
-     *
+     * 
      * @return the vmSize value.
      */
     public OpenShiftContainerServiceVMSize vmSize() {
@@ -103,7 +112,7 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
 
     /**
      * Set the vmSize property: Size of agent VMs.
-     *
+     * 
      * @param vmSize the vmSize value to set.
      * @return the OpenShiftManagedClusterAgentPoolProfile object itself.
      */
@@ -114,7 +123,7 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
 
     /**
      * Get the subnetCidr property: Subnet CIDR for the peering.
-     *
+     * 
      * @return the subnetCidr value.
      */
     public String subnetCidr() {
@@ -123,7 +132,7 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
 
     /**
      * Set the subnetCidr property: Subnet CIDR for the peering.
-     *
+     * 
      * @param subnetCidr the subnetCidr value to set.
      * @return the OpenShiftManagedClusterAgentPoolProfile object itself.
      */
@@ -133,8 +142,9 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
     }
 
     /**
-     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * Get the osType property: OsType to be used to specify os type. Choose
+     * from Linux and Windows. Default to Linux.
+     * 
      * @return the osType value.
      */
     public OSType osType() {
@@ -142,8 +152,9 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
     }
 
     /**
-     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * Set the osType property: OsType to be used to specify os type. Choose
+     * from Linux and Windows. Default to Linux.
+     * 
      * @param osType the osType value to set.
      * @return the OpenShiftManagedClusterAgentPoolProfile object itself.
      */
@@ -154,7 +165,7 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
 
     /**
      * Get the role property: Define the role of the AgentPoolProfile.
-     *
+     * 
      * @return the role value.
      */
     public OpenShiftAgentPoolProfileRole role() {
@@ -163,7 +174,7 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
 
     /**
      * Set the role property: Define the role of the AgentPoolProfile.
-     *
+     * 
      * @param role the role value to set.
      * @return the OpenShiftManagedClusterAgentPoolProfile object itself.
      */
@@ -174,21 +185,15 @@ public final class OpenShiftManagedClusterAgentPoolProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model OpenShiftManagedClusterAgentPoolProfile"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model OpenShiftManagedClusterAgentPoolProfile"));
         }
         if (vmSize() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmSize in model OpenShiftManagedClusterAgentPoolProfile"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property vmSize in model OpenShiftManagedClusterAgentPoolProfile"));
         }
     }
 }

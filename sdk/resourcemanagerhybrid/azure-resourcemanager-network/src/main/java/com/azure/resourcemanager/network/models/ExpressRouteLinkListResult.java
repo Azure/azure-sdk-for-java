@@ -5,16 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteLinkInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ExpressRouteLink List Result Response for ListExpressRouteLinks API service call. */
+/**
+ * ExpressRouteLink List Result Response for ListExpressRouteLinks API service
+ * call.
+ */
 @Fluent
 public final class ExpressRouteLinkListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteLinkListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteLinkListResult.class);
 
     /*
      * The list of ExpressRouteLink sub-resources.
@@ -30,7 +36,7 @@ public final class ExpressRouteLinkListResult {
 
     /**
      * Get the value property: The list of ExpressRouteLink sub-resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRouteLinkInner> value() {
@@ -39,7 +45,7 @@ public final class ExpressRouteLinkListResult {
 
     /**
      * Set the value property: The list of ExpressRouteLink sub-resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRouteLinkListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ExpressRouteLinkListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ExpressRouteLinkListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRouteLinkListResult object itself.
      */
@@ -70,7 +76,7 @@ public final class ExpressRouteLinkListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

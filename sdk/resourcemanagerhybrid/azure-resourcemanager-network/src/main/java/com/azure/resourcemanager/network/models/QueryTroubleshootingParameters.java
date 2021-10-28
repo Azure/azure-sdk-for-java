@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the resource to query the troubleshooting result. */
+/**
+ * Parameters that define the resource to query the troubleshooting result.
+ */
 @Fluent
 public final class QueryTroubleshootingParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryTroubleshootingParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(QueryTroubleshootingParameters.class);
 
     /*
      * The target resource ID to query the troubleshooting result.
@@ -21,8 +26,9 @@ public final class QueryTroubleshootingParameters {
     private String targetResourceId;
 
     /**
-     * Get the targetResourceId property: The target resource ID to query the troubleshooting result.
-     *
+     * Get the targetResourceId property: The target resource ID to query the
+     * troubleshooting result.
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -30,8 +36,9 @@ public final class QueryTroubleshootingParameters {
     }
 
     /**
-     * Set the targetResourceId property: The target resource ID to query the troubleshooting result.
-     *
+     * Set the targetResourceId property: The target resource ID to query the
+     * troubleshooting result.
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the QueryTroubleshootingParameters object itself.
      */
@@ -42,15 +49,12 @@ public final class QueryTroubleshootingParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model QueryTroubleshootingParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property targetResourceId in model QueryTroubleshootingParameters"));
         }
     }
 }

@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The instance view of a virtual machine boot diagnostics. */
+/**
+ * The instance view of a virtual machine boot diagnostics.
+ */
 @Immutable
 public final class BootDiagnosticsInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BootDiagnosticsInstanceView.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(BootDiagnosticsInstanceView.class);
 
     /*
      * The console screenshot blob URI. <br><br>NOTE: This will **not** be set
@@ -37,9 +42,10 @@ public final class BootDiagnosticsInstanceView {
     private InstanceViewStatus status;
 
     /**
-     * Get the consoleScreenshotBlobUri property: The console screenshot blob URI. &lt;br&gt;&lt;br&gt;NOTE: This will
-     * **not** be set if boot diagnostics is currently enabled with managed storage.
-     *
+     * Get the consoleScreenshotBlobUri property: The console screenshot blob
+     * URI. &lt;br&gt;&lt;br&gt;NOTE: This will **not** be set if boot
+     * diagnostics is currently enabled with managed storage.
+     * 
      * @return the consoleScreenshotBlobUri value.
      */
     public String consoleScreenshotBlobUri() {
@@ -47,9 +53,10 @@ public final class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Get the serialConsoleLogBlobUri property: The serial console log blob Uri. &lt;br&gt;&lt;br&gt;NOTE: This will
-     * **not** be set if boot diagnostics is currently enabled with managed storage.
-     *
+     * Get the serialConsoleLogBlobUri property: The serial console log blob
+     * Uri. &lt;br&gt;&lt;br&gt;NOTE: This will **not** be set if boot
+     * diagnostics is currently enabled with managed storage.
+     * 
      * @return the serialConsoleLogBlobUri value.
      */
     public String serialConsoleLogBlobUri() {
@@ -57,9 +64,10 @@ public final class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Get the status property: The boot diagnostics status information for the VM. &lt;br&gt;&lt;br&gt; NOTE: It will
-     * be set only if there are errors encountered in enabling boot diagnostics.
-     *
+     * Get the status property: The boot diagnostics status information for the
+     * VM. &lt;br&gt;&lt;br&gt; NOTE: It will be set only if there are errors
+     * encountered in enabling boot diagnostics.
+     * 
      * @return the status value.
      */
     public InstanceViewStatus status() {
@@ -68,7 +76,7 @@ public final class BootDiagnosticsInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,17 +4,22 @@
 
 package com.azure.resourcemanager.storage.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.BlobServicePropertiesInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The BlobServiceItems model. */
+/**
+ * The BlobServiceItems model.
+ */
 @Immutable
 public final class BlobServiceItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobServiceItems.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(BlobServiceItems.class);
 
     /*
      * List of blob services returned.
@@ -24,7 +29,7 @@ public final class BlobServiceItems {
 
     /**
      * Get the value property: List of blob services returned.
-     *
+     * 
      * @return the value value.
      */
     public List<BlobServicePropertiesInner> value() {
@@ -33,7 +38,7 @@ public final class BlobServiceItems {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

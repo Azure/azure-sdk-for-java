@@ -5,18 +5,24 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Contains information about a sign-in name of a local account user in an Azure Active Directory B2C tenant. */
+/**
+ * Contains information about a sign-in name of a local account user in an
+ * Azure Active Directory B2C tenant.
+ */
 @Fluent
 public final class SignInName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignInName.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SignInName.class);
 
     /*
      * A string value that can be used to classify user sign-in types in your
@@ -36,12 +42,13 @@ public final class SignInName {
      * Contains information about a sign-in name of a local account user in an
      * Azure Active Directory B2C tenant.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /**
-     * Get the type property: A string value that can be used to classify user sign-in types in your directory, such as
-     * 'emailAddress' or 'userName'.
-     *
+     * Get the type property: A string value that can be used to classify user
+     * sign-in types in your directory, such as 'emailAddress' or 'userName'.
+     * 
      * @return the type value.
      */
     public String type() {
@@ -49,9 +56,9 @@ public final class SignInName {
     }
 
     /**
-     * Set the type property: A string value that can be used to classify user sign-in types in your directory, such as
-     * 'emailAddress' or 'userName'.
-     *
+     * Set the type property: A string value that can be used to classify user
+     * sign-in types in your directory, such as 'emailAddress' or 'userName'.
+     * 
      * @param type the type value to set.
      * @return the SignInName object itself.
      */
@@ -61,9 +68,9 @@ public final class SignInName {
     }
 
     /**
-     * Get the value property: The sign-in used by the local account. Must be unique across the company/tenant. For
-     * example, 'johnc@example.com'.
-     *
+     * Get the value property: The sign-in used by the local account. Must be
+     * unique across the company/tenant. For example, 'johnc@example.com'.
+     * 
      * @return the value value.
      */
     public String value() {
@@ -71,9 +78,9 @@ public final class SignInName {
     }
 
     /**
-     * Set the value property: The sign-in used by the local account. Must be unique across the company/tenant. For
-     * example, 'johnc@example.com'.
-     *
+     * Set the value property: The sign-in used by the local account. Must be
+     * unique across the company/tenant. For example, 'johnc@example.com'.
+     * 
      * @param value the value value to set.
      * @return the SignInName object itself.
      */
@@ -83,9 +90,10 @@ public final class SignInName {
     }
 
     /**
-     * Get the additionalProperties property: Contains information about a sign-in name of a local account user in an
-     * Azure Active Directory B2C tenant.
-     *
+     * Get the additionalProperties property: Contains information about a
+     * sign-in name of a local account user in an Azure Active Directory B2C
+     * tenant.
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -94,9 +102,10 @@ public final class SignInName {
     }
 
     /**
-     * Set the additionalProperties property: Contains information about a sign-in name of a local account user in an
-     * Azure Active Directory B2C tenant.
-     *
+     * Set the additionalProperties property: Contains information about a
+     * sign-in name of a local account user in an Azure Active Directory B2C
+     * tenant.
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SignInName object itself.
      */
@@ -115,7 +124,7 @@ public final class SignInName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

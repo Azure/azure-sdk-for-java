@@ -7,15 +7,23 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for OperatingSystemTypes. */
+/**
+ * Defines values for OperatingSystemTypes.
+ */
 public enum OperatingSystemTypes {
-    /** Enum value Windows. */
+    /**
+     * Enum value Windows.
+     */
     WINDOWS("Windows"),
 
-    /** Enum value Linux. */
+    /**
+     * Enum value Linux.
+     */
     LINUX("Linux");
 
-    /** The actual serialized value for a OperatingSystemTypes instance. */
+    /**
+     * The actual serialized value for a OperatingSystemTypes instance.
+     */
     private final String value;
 
     OperatingSystemTypes(String value) {
@@ -24,7 +32,7 @@ public enum OperatingSystemTypes {
 
     /**
      * Parses a serialized value to a OperatingSystemTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed OperatingSystemTypes object, or null if unable to parse.
      */

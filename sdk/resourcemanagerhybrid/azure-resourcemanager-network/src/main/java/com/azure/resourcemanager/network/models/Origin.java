@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Origin. */
+/**
+ * Defines values for Origin.
+ */
 public final class Origin extends ExpandableStringEnum<Origin> {
-    /** Static value Local for Origin. */
+    /**
+     * Static value Local for Origin.
+     */
     public static final Origin LOCAL = fromString("Local");
 
-    /** Static value Inbound for Origin. */
+    /**
+     * Static value Inbound for Origin.
+     */
     public static final Origin INBOUND = fromString("Inbound");
 
-    /** Static value Outbound for Origin. */
+    /**
+     * Static value Outbound for Origin.
+     */
     public static final Origin OUTBOUND = fromString("Outbound");
 
     /**
      * Creates or finds a Origin from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Origin.
      */
@@ -30,7 +38,9 @@ public final class Origin extends ExpandableStringEnum<Origin> {
         return fromString(name, Origin.class);
     }
 
-    /** @return known Origin values. */
+    /**
+     * @return known Origin values.
+     */
     public static Collection<Origin> values() {
         return values(Origin.class);
     }

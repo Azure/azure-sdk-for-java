@@ -5,12 +5,17 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machines scale sets network configuration's DNS settings. */
+/**
+ * Describes a virtual machines scale sets network configuration's DNS
+ * settings.
+ */
 @Fluent
 public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
     @JsonIgnore
@@ -24,7 +29,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
 
     /**
      * Get the dnsServers property: List of DNS servers IP addresses.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -33,9 +38,10 @@ public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
 
     /**
      * Set the dnsServers property: List of DNS servers IP addresses.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
-     * @return the VirtualMachineScaleSetNetworkConfigurationDnsSettings object itself.
+     * @return the VirtualMachineScaleSetNetworkConfigurationDnsSettings object
+     * itself.
      */
     public VirtualMachineScaleSetNetworkConfigurationDnsSettings withDnsServers(List<String> dnsServers) {
         this.dnsServers = dnsServers;
@@ -44,7 +50,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

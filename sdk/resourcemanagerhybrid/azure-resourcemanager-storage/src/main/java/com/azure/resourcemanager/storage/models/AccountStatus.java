@@ -7,15 +7,23 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AccountStatus. */
+/**
+ * Defines values for AccountStatus.
+ */
 public enum AccountStatus {
-    /** Enum value available. */
+    /**
+     * Enum value available.
+     */
     AVAILABLE("available"),
 
-    /** Enum value unavailable. */
+    /**
+     * Enum value unavailable.
+     */
     UNAVAILABLE("unavailable");
 
-    /** The actual serialized value for a AccountStatus instance. */
+    /**
+     * The actual serialized value for a AccountStatus instance.
+     */
     private final String value;
 
     AccountStatus(String value) {
@@ -24,7 +32,7 @@ public enum AccountStatus {
 
     /**
      * Parses a serialized value to a AccountStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AccountStatus object, or null if unable to parse.
      */

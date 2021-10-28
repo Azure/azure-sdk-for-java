@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.compute.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes The SKU capabilities object. */
+/**
+ * Describes The SKU capabilities object.
+ */
 @Immutable
 public final class ResourceSkuCapabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCapabilities.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ResourceSkuCapabilities.class);
 
     /*
      * An invariant to describe the feature.
@@ -28,7 +33,7 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Get the name property: An invariant to describe the feature.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -36,8 +41,9 @@ public final class ResourceSkuCapabilities {
     }
 
     /**
-     * Get the value property: An invariant if the feature is measured by quantity.
-     *
+     * Get the value property: An invariant if the feature is measured by
+     * quantity.
+     * 
      * @return the value value.
      */
     public String value() {
@@ -46,7 +52,7 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

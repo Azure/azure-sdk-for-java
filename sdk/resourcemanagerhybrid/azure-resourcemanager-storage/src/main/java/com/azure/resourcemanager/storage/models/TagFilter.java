@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Blob index tag based filtering for blob objects. */
+/**
+ * Blob index tag based filtering for blob objects.
+ */
 @Fluent
 public final class TagFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagFilter.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TagFilter.class);
 
     /*
      * This is the filter tag name, it can have 1 - 128 characters
@@ -35,8 +40,9 @@ public final class TagFilter {
     private String value;
 
     /**
-     * Get the name property: This is the filter tag name, it can have 1 - 128 characters.
-     *
+     * Get the name property: This is the filter tag name, it can have 1 - 128
+     * characters.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,8 +50,9 @@ public final class TagFilter {
     }
 
     /**
-     * Set the name property: This is the filter tag name, it can have 1 - 128 characters.
-     *
+     * Set the name property: This is the filter tag name, it can have 1 - 128
+     * characters.
+     * 
      * @param name the name value to set.
      * @return the TagFilter object itself.
      */
@@ -55,9 +62,10 @@ public final class TagFilter {
     }
 
     /**
-     * Get the op property: This is the comparison operator which is used for object comparison and filtering. Only ==
-     * (equality operator) is currently supported.
-     *
+     * Get the op property: This is the comparison operator which is used for
+     * object comparison and filtering. Only == (equality operator) is
+     * currently supported.
+     * 
      * @return the op value.
      */
     public String op() {
@@ -65,9 +73,10 @@ public final class TagFilter {
     }
 
     /**
-     * Set the op property: This is the comparison operator which is used for object comparison and filtering. Only ==
-     * (equality operator) is currently supported.
-     *
+     * Set the op property: This is the comparison operator which is used for
+     * object comparison and filtering. Only == (equality operator) is
+     * currently supported.
+     * 
      * @param op the op value to set.
      * @return the TagFilter object itself.
      */
@@ -77,9 +86,9 @@ public final class TagFilter {
     }
 
     /**
-     * Get the value property: This is the filter tag value field used for tag based filtering, it can have 0 - 256
-     * characters.
-     *
+     * Get the value property: This is the filter tag value field used for tag
+     * based filtering, it can have 0 - 256 characters.
+     * 
      * @return the value value.
      */
     public String value() {
@@ -87,9 +96,9 @@ public final class TagFilter {
     }
 
     /**
-     * Set the value property: This is the filter tag value field used for tag based filtering, it can have 0 - 256
-     * characters.
-     *
+     * Set the value property: This is the filter tag value field used for tag
+     * based filtering, it can have 0 - 256 characters.
+     * 
      * @param value the value value to set.
      * @return the TagFilter object itself.
      */
@@ -100,22 +109,18 @@ public final class TagFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model TagFilter"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model TagFilter"));
         }
         if (op() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("Missing required property op in model TagFilter"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property op in model TagFilter"));
         }
         if (value() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model TagFilter"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property value in model TagFilter"));
         }
     }
 }

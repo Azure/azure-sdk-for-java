@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LeaseState. */
+/**
+ * Defines values for LeaseState.
+ */
 public final class LeaseState extends ExpandableStringEnum<LeaseState> {
-    /** Static value Available for LeaseState. */
+    /**
+     * Static value Available for LeaseState.
+     */
     public static final LeaseState AVAILABLE = fromString("Available");
 
-    /** Static value Leased for LeaseState. */
+    /**
+     * Static value Leased for LeaseState.
+     */
     public static final LeaseState LEASED = fromString("Leased");
 
-    /** Static value Expired for LeaseState. */
+    /**
+     * Static value Expired for LeaseState.
+     */
     public static final LeaseState EXPIRED = fromString("Expired");
 
-    /** Static value Breaking for LeaseState. */
+    /**
+     * Static value Breaking for LeaseState.
+     */
     public static final LeaseState BREAKING = fromString("Breaking");
 
-    /** Static value Broken for LeaseState. */
+    /**
+     * Static value Broken for LeaseState.
+     */
     public static final LeaseState BROKEN = fromString("Broken");
 
     /**
      * Creates or finds a LeaseState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LeaseState.
      */
@@ -36,7 +48,9 @@ public final class LeaseState extends ExpandableStringEnum<LeaseState> {
         return fromString(name, LeaseState.class);
     }
 
-    /** @return known LeaseState values. */
+    /**
+     * @return known LeaseState values.
+     */
     public static Collection<LeaseState> values() {
         return values(LeaseState.class);
     }

@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Connection draining allows open connections to a backend server to be active for a specified time after the backend
- * server got removed from the configuration.
+ * Connection draining allows open connections to a backend server to be active
+ * for a specified time after the backend server got removed from the
+ * configuration.
  */
 @Fluent
 public final class ApplicationGatewayConnectionDraining {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayConnectionDraining.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayConnectionDraining.class);
 
     /*
      * Whether connection draining is enabled or not.
@@ -32,7 +36,7 @@ public final class ApplicationGatewayConnectionDraining {
 
     /**
      * Get the enabled property: Whether connection draining is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -41,7 +45,7 @@ public final class ApplicationGatewayConnectionDraining {
 
     /**
      * Set the enabled property: Whether connection draining is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ApplicationGatewayConnectionDraining object itself.
      */
@@ -51,9 +55,9 @@ public final class ApplicationGatewayConnectionDraining {
     }
 
     /**
-     * Get the drainTimeoutInSec property: The number of seconds connection draining is active. Acceptable values are
-     * from 1 second to 3600 seconds.
-     *
+     * Get the drainTimeoutInSec property: The number of seconds connection
+     * draining is active. Acceptable values are from 1 second to 3600 seconds.
+     * 
      * @return the drainTimeoutInSec value.
      */
     public int drainTimeoutInSec() {
@@ -61,9 +65,9 @@ public final class ApplicationGatewayConnectionDraining {
     }
 
     /**
-     * Set the drainTimeoutInSec property: The number of seconds connection draining is active. Acceptable values are
-     * from 1 second to 3600 seconds.
-     *
+     * Set the drainTimeoutInSec property: The number of seconds connection
+     * draining is active. Acceptable values are from 1 second to 3600 seconds.
+     * 
      * @param drainTimeoutInSec the drainTimeoutInSec value to set.
      * @return the ApplicationGatewayConnectionDraining object itself.
      */
@@ -74,7 +78,7 @@ public final class ApplicationGatewayConnectionDraining {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

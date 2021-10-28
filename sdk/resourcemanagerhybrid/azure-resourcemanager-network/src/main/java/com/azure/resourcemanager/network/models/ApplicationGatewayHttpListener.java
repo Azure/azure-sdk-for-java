@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayHttpListenerPropertiesFormat;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Http listener of an application gateway. */
+/**
+ * Http listener of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayHttpListener extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayHttpListener.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayHttpListener.class);
 
     /*
-     * Properties of the application gateway HTTP listener.
+     * Properties of HTTP listener of an application gateway.
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewayHttpListenerPropertiesFormat innerProperties;
@@ -32,18 +37,19 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type")
     private String type;
 
     /**
-     * Get the innerProperties property: Properties of the application gateway HTTP listener.
-     *
+     * Get the innerProperties property: Properties of HTTP listener of an
+     * application gateway.
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayHttpListenerPropertiesFormat innerProperties() {
@@ -51,8 +57,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the name property: Name of the HTTP listener that is unique within an Application Gateway.
-     *
+     * Get the name property: Name of the HTTP listener that is unique within
+     * an Application Gateway.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,8 +67,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the name property: Name of the HTTP listener that is unique within an Application Gateway.
-     *
+     * Set the name property: Name of the HTTP listener that is unique within
+     * an Application Gateway.
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayHttpListener object itself.
      */
@@ -71,8 +79,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * Get the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,15 +89,40 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
+     * Set the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
+     * @param etag the etag value to set.
+     * @return the ApplicationGatewayHttpListener object itself.
+     */
+    public ApplicationGatewayHttpListener withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Set the type property: Type of the resource.
+     * 
+     * @param type the type value to set.
+     * @return the ApplicationGatewayHttpListener object itself.
+     */
+    public ApplicationGatewayHttpListener withType(String type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayHttpListener withId(String id) {
         super.withId(id);
@@ -96,8 +130,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
-     *
+     * Get the frontendIpConfiguration property: Frontend IP configuration
+     * resource of an application gateway.
+     * 
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
@@ -105,8 +140,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
-     *
+     * Set the frontendIpConfiguration property: Frontend IP configuration
+     * resource of an application gateway.
+     * 
      * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the ApplicationGatewayHttpListener object itself.
      */
@@ -119,8 +155,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the frontendPort property: Frontend port resource of an application gateway.
-     *
+     * Get the frontendPort property: Frontend port resource of an application
+     * gateway.
+     * 
      * @return the frontendPort value.
      */
     public SubResource frontendPort() {
@@ -128,8 +165,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the frontendPort property: Frontend port resource of an application gateway.
-     *
+     * Set the frontendPort property: Frontend port resource of an application
+     * gateway.
+     * 
      * @param frontendPort the frontendPort value to set.
      * @return the ApplicationGatewayHttpListener object itself.
      */
@@ -142,8 +180,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the protocol property: Protocol of the HTTP listener.
-     *
+     * Get the protocol property: Protocol of the HTTP listener. Possible
+     * values are 'Http' and 'Https'.
+     * 
      * @return the protocol value.
      */
     public ApplicationGatewayProtocol protocol() {
@@ -151,8 +190,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the protocol property: Protocol of the HTTP listener.
-     *
+     * Set the protocol property: Protocol of the HTTP listener. Possible
+     * values are 'Http' and 'Https'.
+     * 
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayHttpListener object itself.
      */
@@ -166,7 +206,7 @@ public final class ApplicationGatewayHttpListener extends SubResource {
 
     /**
      * Get the hostname property: Host name of HTTP listener.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -175,7 +215,7 @@ public final class ApplicationGatewayHttpListener extends SubResource {
 
     /**
      * Set the hostname property: Host name of HTTP listener.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the ApplicationGatewayHttpListener object itself.
      */
@@ -188,8 +228,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the sslCertificate property: SSL certificate resource of an application gateway.
-     *
+     * Get the sslCertificate property: SSL certificate resource of an
+     * application gateway.
+     * 
      * @return the sslCertificate value.
      */
     public SubResource sslCertificate() {
@@ -197,8 +238,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the sslCertificate property: SSL certificate resource of an application gateway.
-     *
+     * Set the sslCertificate property: SSL certificate resource of an
+     * application gateway.
+     * 
      * @param sslCertificate the sslCertificate value to set.
      * @return the ApplicationGatewayHttpListener object itself.
      */
@@ -211,32 +253,9 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the sslProfile property: SSL profile resource of the application gateway.
-     *
-     * @return the sslProfile value.
-     */
-    public SubResource sslProfile() {
-        return this.innerProperties() == null ? null : this.innerProperties().sslProfile();
-    }
-
-    /**
-     * Set the sslProfile property: SSL profile resource of the application gateway.
-     *
-     * @param sslProfile the sslProfile value to set.
-     * @return the ApplicationGatewayHttpListener object itself.
-     */
-    public ApplicationGatewayHttpListener withSslProfile(SubResource sslProfile) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
-        }
-        this.innerProperties().withSslProfile(sslProfile);
-        return this;
-    }
-
-    /**
-     * Get the requireServerNameIndication property: Applicable only if protocol is https. Enables SNI for
-     * multi-hosting.
-     *
+     * Get the requireServerNameIndication property: Applicable only if
+     * protocol is https. Enables SNI for multi-hosting.
+     * 
      * @return the requireServerNameIndication value.
      */
     public Boolean requireServerNameIndication() {
@@ -244,10 +263,11 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the requireServerNameIndication property: Applicable only if protocol is https. Enables SNI for
-     * multi-hosting.
-     *
-     * @param requireServerNameIndication the requireServerNameIndication value to set.
+     * Set the requireServerNameIndication property: Applicable only if
+     * protocol is https. Enables SNI for multi-hosting.
+     * 
+     * @param requireServerNameIndication the requireServerNameIndication value
+     * to set.
      * @return the ApplicationGatewayHttpListener object itself.
      */
     public ApplicationGatewayHttpListener withRequireServerNameIndication(Boolean requireServerNameIndication) {
@@ -259,17 +279,36 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the HTTP listener resource.
-     *
+     * Get the provisioningState property: Provisioning state of the HTTP
+     * listener resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the customErrorConfigurations property: Custom error configurations of the HTTP listener.
-     *
+     * Set the provisioningState property: Provisioning state of the HTTP
+     * listener resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayHttpListener object itself.
+     */
+    public ApplicationGatewayHttpListener withProvisioningState(String provisioningState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    /**
+     * Get the customErrorConfigurations property: Custom error configurations
+     * of the HTTP listener.
+     * 
      * @return the customErrorConfigurations value.
      */
     public List<ApplicationGatewayCustomError> customErrorConfigurations() {
@@ -277,13 +316,14 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Set the customErrorConfigurations property: Custom error configurations of the HTTP listener.
-     *
-     * @param customErrorConfigurations the customErrorConfigurations value to set.
+     * Set the customErrorConfigurations property: Custom error configurations
+     * of the HTTP listener.
+     * 
+     * @param customErrorConfigurations the customErrorConfigurations value to
+     * set.
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener withCustomErrorConfigurations(
-        List<ApplicationGatewayCustomError> customErrorConfigurations) {
+    public ApplicationGatewayHttpListener withCustomErrorConfigurations(List<ApplicationGatewayCustomError> customErrorConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
         }
@@ -292,54 +332,8 @@ public final class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the firewallPolicy property: Reference to the FirewallPolicy resource.
-     *
-     * @return the firewallPolicy value.
-     */
-    public SubResource firewallPolicy() {
-        return this.innerProperties() == null ? null : this.innerProperties().firewallPolicy();
-    }
-
-    /**
-     * Set the firewallPolicy property: Reference to the FirewallPolicy resource.
-     *
-     * @param firewallPolicy the firewallPolicy value to set.
-     * @return the ApplicationGatewayHttpListener object itself.
-     */
-    public ApplicationGatewayHttpListener withFirewallPolicy(SubResource firewallPolicy) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
-        }
-        this.innerProperties().withFirewallPolicy(firewallPolicy);
-        return this;
-    }
-
-    /**
-     * Get the hostNames property: List of Host names for HTTP Listener that allows special wildcard characters as well.
-     *
-     * @return the hostNames value.
-     */
-    public List<String> hostNames() {
-        return this.innerProperties() == null ? null : this.innerProperties().hostNames();
-    }
-
-    /**
-     * Set the hostNames property: List of Host names for HTTP Listener that allows special wildcard characters as well.
-     *
-     * @param hostNames the hostNames value to set.
-     * @return the ApplicationGatewayHttpListener object itself.
-     */
-    public ApplicationGatewayHttpListener withHostNames(List<String> hostNames) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGatewayHttpListenerPropertiesFormat();
-        }
-        this.innerProperties().withHostNames(hostNames);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

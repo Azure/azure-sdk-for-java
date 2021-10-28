@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DirectoryServiceOptions. */
+/**
+ * Defines values for DirectoryServiceOptions.
+ */
 public final class DirectoryServiceOptions extends ExpandableStringEnum<DirectoryServiceOptions> {
-    /** Static value None for DirectoryServiceOptions. */
+    /**
+     * Static value None for DirectoryServiceOptions.
+     */
     public static final DirectoryServiceOptions NONE = fromString("None");
 
-    /** Static value AADDS for DirectoryServiceOptions. */
+    /**
+     * Static value AADDS for DirectoryServiceOptions.
+     */
     public static final DirectoryServiceOptions AADDS = fromString("AADDS");
 
-    /** Static value AD for DirectoryServiceOptions. */
+    /**
+     * Static value AD for DirectoryServiceOptions.
+     */
     public static final DirectoryServiceOptions AD = fromString("AD");
 
     /**
      * Creates or finds a DirectoryServiceOptions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DirectoryServiceOptions.
      */
@@ -30,7 +38,9 @@ public final class DirectoryServiceOptions extends ExpandableStringEnum<Director
         return fromString(name, DirectoryServiceOptions.class);
     }
 
-    /** @return known DirectoryServiceOptions values. */
+    /**
+     * @return known DirectoryServiceOptions values.
+     */
     public static Collection<DirectoryServiceOptions> values() {
         return values(DirectoryServiceOptions.class);
     }

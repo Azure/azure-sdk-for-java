@@ -5,15 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** AddressSpace contains an array of IP address ranges that can be used by subnets of the virtual network. */
+/**
+ * AddressSpace contains an array of IP address ranges that can be used by
+ * subnets of the virtual network.
+ */
 @Fluent
 public final class AddressSpace {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressSpace.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AddressSpace.class);
 
     /*
      * A list of address blocks reserved for this virtual network in CIDR
@@ -23,8 +29,9 @@ public final class AddressSpace {
     private List<String> addressPrefixes;
 
     /**
-     * Get the addressPrefixes property: A list of address blocks reserved for this virtual network in CIDR notation.
-     *
+     * Get the addressPrefixes property: A list of address blocks reserved for
+     * this virtual network in CIDR notation.
+     * 
      * @return the addressPrefixes value.
      */
     public List<String> addressPrefixes() {
@@ -32,8 +39,9 @@ public final class AddressSpace {
     }
 
     /**
-     * Set the addressPrefixes property: A list of address blocks reserved for this virtual network in CIDR notation.
-     *
+     * Set the addressPrefixes property: A list of address blocks reserved for
+     * this virtual network in CIDR notation.
+     * 
      * @param addressPrefixes the addressPrefixes value to set.
      * @return the AddressSpace object itself.
      */
@@ -44,7 +52,7 @@ public final class AddressSpace {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

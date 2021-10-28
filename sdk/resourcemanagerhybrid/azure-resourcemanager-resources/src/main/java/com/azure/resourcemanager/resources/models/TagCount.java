@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Tag count. */
+/**
+ * Tag count.
+ */
 @Fluent
 public final class TagCount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagCount.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TagCount.class);
 
     /*
      * Type of count.
@@ -28,7 +33,7 @@ public final class TagCount {
 
     /**
      * Get the type property: Type of count.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -37,7 +42,7 @@ public final class TagCount {
 
     /**
      * Set the type property: Type of count.
-     *
+     * 
      * @param type the type value to set.
      * @return the TagCount object itself.
      */
@@ -48,7 +53,7 @@ public final class TagCount {
 
     /**
      * Get the value property: Value of count.
-     *
+     * 
      * @return the value value.
      */
     public Integer value() {
@@ -57,7 +62,7 @@ public final class TagCount {
 
     /**
      * Set the value property: Value of count.
-     *
+     * 
      * @param value the value value to set.
      * @return the TagCount object itself.
      */
@@ -68,7 +73,7 @@ public final class TagCount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicIpPrefixSkuName. */
+/**
+ * Defines values for PublicIpPrefixSkuName.
+ */
 public final class PublicIpPrefixSkuName extends ExpandableStringEnum<PublicIpPrefixSkuName> {
-    /** Static value Standard for PublicIpPrefixSkuName. */
+    /**
+     * Static value Standard for PublicIpPrefixSkuName.
+     */
     public static final PublicIpPrefixSkuName STANDARD = fromString("Standard");
 
     /**
      * Creates or finds a PublicIpPrefixSkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PublicIpPrefixSkuName.
      */
@@ -24,7 +28,9 @@ public final class PublicIpPrefixSkuName extends ExpandableStringEnum<PublicIpPr
         return fromString(name, PublicIpPrefixSkuName.class);
     }
 
-    /** @return known PublicIpPrefixSkuName values. */
+    /**
+     * @return known PublicIpPrefixSkuName values.
+     */
     public static Collection<PublicIpPrefixSkuName> values() {
         return values(PublicIpPrefixSkuName.class);
     }

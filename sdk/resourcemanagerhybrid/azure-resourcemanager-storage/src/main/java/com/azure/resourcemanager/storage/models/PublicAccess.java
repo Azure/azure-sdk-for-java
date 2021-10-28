@@ -7,18 +7,28 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PublicAccess. */
+/**
+ * Defines values for PublicAccess.
+ */
 public enum PublicAccess {
-    /** Enum value Container. */
+    /**
+     * Enum value Container.
+     */
     CONTAINER("Container"),
 
-    /** Enum value Blob. */
+    /**
+     * Enum value Blob.
+     */
     BLOB("Blob"),
 
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None");
 
-    /** The actual serialized value for a PublicAccess instance. */
+    /**
+     * The actual serialized value for a PublicAccess instance.
+     */
     private final String value;
 
     PublicAccess(String value) {
@@ -27,7 +37,7 @@ public enum PublicAccess {
 
     /**
      * Parses a serialized value to a PublicAccess instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PublicAccess object, or null if unable to parse.
      */

@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a Run Command metadata. */
+/**
+ * Describes the properties of a Run Command metadata.
+ */
 @Fluent
 public class RunCommandDocumentBaseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandDocumentBaseInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RunCommandDocumentBaseInner.class);
 
     /*
      * The VM run command schema.
@@ -47,7 +52,7 @@ public class RunCommandDocumentBaseInner {
 
     /**
      * Get the schema property: The VM run command schema.
-     *
+     * 
      * @return the schema value.
      */
     public String schema() {
@@ -56,7 +61,7 @@ public class RunCommandDocumentBaseInner {
 
     /**
      * Set the schema property: The VM run command schema.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the RunCommandDocumentBaseInner object itself.
      */
@@ -67,7 +72,7 @@ public class RunCommandDocumentBaseInner {
 
     /**
      * Get the id property: The VM run command id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +81,7 @@ public class RunCommandDocumentBaseInner {
 
     /**
      * Set the id property: The VM run command id.
-     *
+     * 
      * @param id the id value to set.
      * @return the RunCommandDocumentBaseInner object itself.
      */
@@ -87,7 +92,7 @@ public class RunCommandDocumentBaseInner {
 
     /**
      * Get the osType property: The Operating System type.
-     *
+     * 
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
@@ -96,7 +101,7 @@ public class RunCommandDocumentBaseInner {
 
     /**
      * Set the osType property: The Operating System type.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the RunCommandDocumentBaseInner object itself.
      */
@@ -107,7 +112,7 @@ public class RunCommandDocumentBaseInner {
 
     /**
      * Get the label property: The VM run command label.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -116,7 +121,7 @@ public class RunCommandDocumentBaseInner {
 
     /**
      * Set the label property: The VM run command label.
-     *
+     * 
      * @param label the label value to set.
      * @return the RunCommandDocumentBaseInner object itself.
      */
@@ -127,7 +132,7 @@ public class RunCommandDocumentBaseInner {
 
     /**
      * Get the description property: The VM run command description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -136,7 +141,7 @@ public class RunCommandDocumentBaseInner {
 
     /**
      * Set the description property: The VM run command description.
-     *
+     * 
      * @param description the description value to set.
      * @return the RunCommandDocumentBaseInner object itself.
      */
@@ -147,38 +152,24 @@ public class RunCommandDocumentBaseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (schema() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schema in model RunCommandDocumentBaseInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property schema in model RunCommandDocumentBaseInner"));
         }
         if (id() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model RunCommandDocumentBaseInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property id in model RunCommandDocumentBaseInner"));
         }
         if (osType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property osType in model RunCommandDocumentBaseInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property osType in model RunCommandDocumentBaseInner"));
         }
         if (label() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property label in model RunCommandDocumentBaseInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property label in model RunCommandDocumentBaseInner"));
         }
         if (description() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property description in model RunCommandDocumentBaseInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property description in model RunCommandDocumentBaseInner"));
         }
     }
 }

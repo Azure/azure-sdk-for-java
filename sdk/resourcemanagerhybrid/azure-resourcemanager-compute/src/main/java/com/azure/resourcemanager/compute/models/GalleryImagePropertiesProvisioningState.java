@@ -8,30 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GalleryImagePropertiesProvisioningState. */
-public final class GalleryImagePropertiesProvisioningState
-    extends ExpandableStringEnum<GalleryImagePropertiesProvisioningState> {
-    /** Static value Creating for GalleryImagePropertiesProvisioningState. */
+/**
+ * Defines values for GalleryImagePropertiesProvisioningState.
+ */
+public final class GalleryImagePropertiesProvisioningState extends ExpandableStringEnum<GalleryImagePropertiesProvisioningState> {
+    /**
+     * Static value Creating for GalleryImagePropertiesProvisioningState.
+     */
     public static final GalleryImagePropertiesProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for GalleryImagePropertiesProvisioningState. */
+    /**
+     * Static value Updating for GalleryImagePropertiesProvisioningState.
+     */
     public static final GalleryImagePropertiesProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Failed for GalleryImagePropertiesProvisioningState. */
+    /**
+     * Static value Failed for GalleryImagePropertiesProvisioningState.
+     */
     public static final GalleryImagePropertiesProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for GalleryImagePropertiesProvisioningState. */
+    /**
+     * Static value Succeeded for GalleryImagePropertiesProvisioningState.
+     */
     public static final GalleryImagePropertiesProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Deleting for GalleryImagePropertiesProvisioningState. */
+    /**
+     * Static value Deleting for GalleryImagePropertiesProvisioningState.
+     */
     public static final GalleryImagePropertiesProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Migrating for GalleryImagePropertiesProvisioningState. */
+    /**
+     * Static value Migrating for GalleryImagePropertiesProvisioningState.
+     */
     public static final GalleryImagePropertiesProvisioningState MIGRATING = fromString("Migrating");
 
     /**
      * Creates or finds a GalleryImagePropertiesProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GalleryImagePropertiesProvisioningState.
      */
@@ -40,7 +53,9 @@ public final class GalleryImagePropertiesProvisioningState
         return fromString(name, GalleryImagePropertiesProvisioningState.class);
     }
 
-    /** @return known GalleryImagePropertiesProvisioningState values. */
+    /**
+     * @return known GalleryImagePropertiesProvisioningState values.
+     */
     public static Collection<GalleryImagePropertiesProvisioningState> values() {
         return values(GalleryImagePropertiesProvisioningState.class);
     }

@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Application gateway BackendHealth pool. */
+/**
+ * Application gateway BackendHealth pool.
+ */
 @Fluent
 public final class ApplicationGatewayBackendHealthPool {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthPool.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthPool.class);
 
     /*
-     * Reference to an ApplicationGatewayBackendAddressPool resource.
+     * Reference of an ApplicationGatewayBackendAddressPool resource.
      */
     @JsonProperty(value = "backendAddressPool")
     private ApplicationGatewayBackendAddressPool backendAddressPool;
@@ -28,8 +33,9 @@ public final class ApplicationGatewayBackendHealthPool {
     private List<ApplicationGatewayBackendHealthHttpSettings> backendHttpSettingsCollection;
 
     /**
-     * Get the backendAddressPool property: Reference to an ApplicationGatewayBackendAddressPool resource.
-     *
+     * Get the backendAddressPool property: Reference of an
+     * ApplicationGatewayBackendAddressPool resource.
+     * 
      * @return the backendAddressPool value.
      */
     public ApplicationGatewayBackendAddressPool backendAddressPool() {
@@ -37,20 +43,21 @@ public final class ApplicationGatewayBackendHealthPool {
     }
 
     /**
-     * Set the backendAddressPool property: Reference to an ApplicationGatewayBackendAddressPool resource.
-     *
+     * Set the backendAddressPool property: Reference of an
+     * ApplicationGatewayBackendAddressPool resource.
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayBackendHealthPool object itself.
      */
-    public ApplicationGatewayBackendHealthPool withBackendAddressPool(
-        ApplicationGatewayBackendAddressPool backendAddressPool) {
+    public ApplicationGatewayBackendHealthPool withBackendAddressPool(ApplicationGatewayBackendAddressPool backendAddressPool) {
         this.backendAddressPool = backendAddressPool;
         return this;
     }
 
     /**
-     * Get the backendHttpSettingsCollection property: List of ApplicationGatewayBackendHealthHttpSettings resources.
-     *
+     * Get the backendHttpSettingsCollection property: List of
+     * ApplicationGatewayBackendHealthHttpSettings resources.
+     * 
      * @return the backendHttpSettingsCollection value.
      */
     public List<ApplicationGatewayBackendHealthHttpSettings> backendHttpSettingsCollection() {
@@ -58,20 +65,21 @@ public final class ApplicationGatewayBackendHealthPool {
     }
 
     /**
-     * Set the backendHttpSettingsCollection property: List of ApplicationGatewayBackendHealthHttpSettings resources.
-     *
-     * @param backendHttpSettingsCollection the backendHttpSettingsCollection value to set.
+     * Set the backendHttpSettingsCollection property: List of
+     * ApplicationGatewayBackendHealthHttpSettings resources.
+     * 
+     * @param backendHttpSettingsCollection the backendHttpSettingsCollection
+     * value to set.
      * @return the ApplicationGatewayBackendHealthPool object itself.
      */
-    public ApplicationGatewayBackendHealthPool withBackendHttpSettingsCollection(
-        List<ApplicationGatewayBackendHealthHttpSettings> backendHttpSettingsCollection) {
+    public ApplicationGatewayBackendHealthPool withBackendHttpSettingsCollection(List<ApplicationGatewayBackendHealthHttpSettings> backendHttpSettingsCollection) {
         this.backendHttpSettingsCollection = backendHttpSettingsCollection;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

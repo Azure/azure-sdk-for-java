@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A web application firewall rule. */
+/**
+ * A web application firewall rule.
+ */
 @Fluent
 public final class ApplicationGatewayFirewallRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallRule.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallRule.class);
 
     /*
      * The identifier of the web application firewall rule.
@@ -27,8 +32,9 @@ public final class ApplicationGatewayFirewallRule {
     private String description;
 
     /**
-     * Get the ruleId property: The identifier of the web application firewall rule.
-     *
+     * Get the ruleId property: The identifier of the web application firewall
+     * rule.
+     * 
      * @return the ruleId value.
      */
     public int ruleId() {
@@ -36,8 +42,9 @@ public final class ApplicationGatewayFirewallRule {
     }
 
     /**
-     * Set the ruleId property: The identifier of the web application firewall rule.
-     *
+     * Set the ruleId property: The identifier of the web application firewall
+     * rule.
+     * 
      * @param ruleId the ruleId value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -47,8 +54,9 @@ public final class ApplicationGatewayFirewallRule {
     }
 
     /**
-     * Get the description property: The description of the web application firewall rule.
-     *
+     * Get the description property: The description of the web application
+     * firewall rule.
+     * 
      * @return the description value.
      */
     public String description() {
@@ -56,8 +64,9 @@ public final class ApplicationGatewayFirewallRule {
     }
 
     /**
-     * Set the description property: The description of the web application firewall rule.
-     *
+     * Set the description property: The description of the web application
+     * firewall rule.
+     * 
      * @param description the description value to set.
      * @return the ApplicationGatewayFirewallRule object itself.
      */
@@ -68,7 +77,7 @@ public final class ApplicationGatewayFirewallRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

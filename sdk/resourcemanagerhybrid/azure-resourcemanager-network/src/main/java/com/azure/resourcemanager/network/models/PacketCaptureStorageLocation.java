@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The storage location for a packet capture session. */
+/**
+ * Describes the storage location for a packet capture session.
+ */
 @Fluent
 public final class PacketCaptureStorageLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureStorageLocation.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PacketCaptureStorageLocation.class);
 
     /*
      * The ID of the storage account to save the packet capture session.
@@ -38,9 +43,9 @@ public final class PacketCaptureStorageLocation {
     private String filePath;
 
     /**
-     * Get the storageId property: The ID of the storage account to save the packet capture session. Required if no
-     * local file path is provided.
-     *
+     * Get the storageId property: The ID of the storage account to save the
+     * packet capture session. Required if no local file path is provided.
+     * 
      * @return the storageId value.
      */
     public String storageId() {
@@ -48,9 +53,9 @@ public final class PacketCaptureStorageLocation {
     }
 
     /**
-     * Set the storageId property: The ID of the storage account to save the packet capture session. Required if no
-     * local file path is provided.
-     *
+     * Set the storageId property: The ID of the storage account to save the
+     * packet capture session. Required if no local file path is provided.
+     * 
      * @param storageId the storageId value to set.
      * @return the PacketCaptureStorageLocation object itself.
      */
@@ -60,9 +65,10 @@ public final class PacketCaptureStorageLocation {
     }
 
     /**
-     * Get the storagePath property: The URI of the storage path to save the packet capture. Must be a well-formed URI
-     * describing the location to save the packet capture.
-     *
+     * Get the storagePath property: The URI of the storage path to save the
+     * packet capture. Must be a well-formed URI describing the location to
+     * save the packet capture.
+     * 
      * @return the storagePath value.
      */
     public String storagePath() {
@@ -70,9 +76,10 @@ public final class PacketCaptureStorageLocation {
     }
 
     /**
-     * Set the storagePath property: The URI of the storage path to save the packet capture. Must be a well-formed URI
-     * describing the location to save the packet capture.
-     *
+     * Set the storagePath property: The URI of the storage path to save the
+     * packet capture. Must be a well-formed URI describing the location to
+     * save the packet capture.
+     * 
      * @param storagePath the storagePath value to set.
      * @return the PacketCaptureStorageLocation object itself.
      */
@@ -82,10 +89,11 @@ public final class PacketCaptureStorageLocation {
     }
 
     /**
-     * Get the filePath property: A valid local path on the targeting VM. Must include the name of the capture file
-     * (*.cap). For linux virtual machine it must start with /var/captures. Required if no storage ID is provided,
+     * Get the filePath property: A valid local path on the targeting VM. Must
+     * include the name of the capture file (*.cap). For linux virtual machine
+     * it must start with /var/captures. Required if no storage ID is provided,
      * otherwise optional.
-     *
+     * 
      * @return the filePath value.
      */
     public String filePath() {
@@ -93,10 +101,11 @@ public final class PacketCaptureStorageLocation {
     }
 
     /**
-     * Set the filePath property: A valid local path on the targeting VM. Must include the name of the capture file
-     * (*.cap). For linux virtual machine it must start with /var/captures. Required if no storage ID is provided,
+     * Set the filePath property: A valid local path on the targeting VM. Must
+     * include the name of the capture file (*.cap). For linux virtual machine
+     * it must start with /var/captures. Required if no storage ID is provided,
      * otherwise optional.
-     *
+     * 
      * @param filePath the filePath value to set.
      * @return the PacketCaptureStorageLocation object itself.
      */
@@ -107,7 +116,7 @@ public final class PacketCaptureStorageLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

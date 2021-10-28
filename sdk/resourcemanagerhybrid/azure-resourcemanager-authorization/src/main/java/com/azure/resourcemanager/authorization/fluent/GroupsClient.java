@@ -8,662 +8,632 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
 import com.azure.resourcemanager.authorization.fluent.models.CheckGroupMembershipResultInner;
 import com.azure.resourcemanager.authorization.fluent.models.DirectoryObjectInner;
+import com.azure.resourcemanager.authorization.models.AddOwnerParameters;
 import com.azure.resourcemanager.authorization.models.CheckGroupMembershipParameters;
+import com.azure.resourcemanager.authorization.models.GroupAddMemberParameters;
 import com.azure.resourcemanager.authorization.models.GroupCreateParameters;
+import com.azure.resourcemanager.authorization.models.GroupGetMemberGroupsParameters;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GroupsClient. */
-public interface GroupsClient {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * GroupsClient.
+ */
+public interface GroupsClient extends InnerSupportsDelete<Void> {
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
-     * specified group.
-     *
-     * @param parameters Request parameters for IsMemberOf API call.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The check group membership parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckGroupMembershipResultInner>> isMemberOfWithResponseAsync(
-        CheckGroupMembershipParameters parameters);
+    Mono<Response<CheckGroupMembershipResultInner>> isMemberOfWithResponseAsync(String tenantId, CheckGroupMembershipParameters parameters);
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
-     * specified group.
-     *
-     * @param parameters Request parameters for IsMemberOf API call.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The check group membership parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckGroupMembershipResultInner> isMemberOfAsync(CheckGroupMembershipParameters parameters);
+    Mono<CheckGroupMembershipResultInner> isMemberOfAsync(String tenantId, CheckGroupMembershipParameters parameters);
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
-     * specified group.
-     *
-     * @param parameters Request parameters for IsMemberOf API call.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The check group membership parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckGroupMembershipResultInner isMemberOf(CheckGroupMembershipParameters parameters);
+    CheckGroupMembershipResultInner isMemberOf(String tenantId, CheckGroupMembershipParameters parameters);
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
-     * specified group.
-     *
-     * @param parameters Request parameters for IsMemberOf API call.
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The check group membership parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckGroupMembershipResultInner> isMemberOfWithResponse(
-        CheckGroupMembershipParameters parameters, Context context);
+    Response<CheckGroupMembershipResultInner> isMemberOfWithResponse(String tenantId, CheckGroupMembershipParameters parameters, Context context);
 
     /**
      * Remove a member from a group.
-     *
+     * 
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> removeMemberWithResponseAsync(String groupObjectId, String memberObjectId);
+    Mono<Response<Void>> removeMemberWithResponseAsync(String groupObjectId, String memberObjectId, String tenantId);
 
     /**
      * Remove a member from a group.
-     *
+     * 
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> removeMemberAsync(String groupObjectId, String memberObjectId);
+    Mono<Void> removeMemberAsync(String groupObjectId, String memberObjectId, String tenantId);
 
     /**
      * Remove a member from a group.
-     *
+     * 
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void removeMember(String groupObjectId, String memberObjectId);
+    void removeMember(String groupObjectId, String memberObjectId, String tenantId);
 
     /**
      * Remove a member from a group.
-     *
+     * 
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> removeMemberWithResponse(String groupObjectId, String memberObjectId, Context context);
+    Response<Void> removeMemberWithResponse(String groupObjectId, String memberObjectId, String tenantId, Context context);
 
     /**
      * Add a member to a group.
-     *
+     * 
      * @param groupObjectId The object ID of the group to which to add the member.
-     * @param url A member object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the member (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> addMemberWithResponseAsync(String groupObjectId, String url);
+    Mono<Response<Void>> addMemberWithResponseAsync(String groupObjectId, String tenantId, GroupAddMemberParameters parameters);
 
     /**
      * Add a member to a group.
-     *
+     * 
      * @param groupObjectId The object ID of the group to which to add the member.
-     * @param url A member object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the member (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> addMemberAsync(String groupObjectId, String url);
+    Mono<Void> addMemberAsync(String groupObjectId, String tenantId, GroupAddMemberParameters parameters);
 
     /**
      * Add a member to a group.
-     *
+     * 
      * @param groupObjectId The object ID of the group to which to add the member.
-     * @param url A member object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the member (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void addMember(String groupObjectId, String url);
+    void addMember(String groupObjectId, String tenantId, GroupAddMemberParameters parameters);
 
     /**
      * Add a member to a group.
-     *
+     * 
      * @param groupObjectId The object ID of the group to which to add the member.
-     * @param url A member object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the member (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> addMemberWithResponse(String groupObjectId, String url, Context context);
+    Response<Void> addMemberWithResponse(String groupObjectId, String tenantId, GroupAddMemberParameters parameters, Context context);
 
     /**
      * Create a group in the directory.
-     *
-     * @param parameters Request parameters for creating a new group.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for the group to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ADGroupInner>> createWithResponseAsync(GroupCreateParameters parameters);
+    Mono<Response<ADGroupInner>> createWithResponseAsync(String tenantId, GroupCreateParameters parameters);
 
     /**
      * Create a group in the directory.
-     *
-     * @param parameters Request parameters for creating a new group.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for the group to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ADGroupInner> createAsync(GroupCreateParameters parameters);
+    Mono<ADGroupInner> createAsync(String tenantId, GroupCreateParameters parameters);
 
     /**
      * Create a group in the directory.
-     *
-     * @param parameters Request parameters for creating a new group.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for the group to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ADGroupInner create(GroupCreateParameters parameters);
+    ADGroupInner create(String tenantId, GroupCreateParameters parameters);
 
     /**
      * Create a group in the directory.
-     *
-     * @param parameters Request parameters for creating a new group.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters The parameters for the group to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ADGroupInner> createWithResponse(GroupCreateParameters parameters, Context context);
+    Response<ADGroupInner> createWithResponse(String tenantId, GroupCreateParameters parameters, Context context);
 
     /**
      * Gets list of groups for the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of groups for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ADGroupInner> listAsync(String filter);
+    PagedFlux<ADGroupInner> listAsync(String tenantId, String filter);
 
     /**
      * Gets list of groups for the current tenant.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of groups for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ADGroupInner> listAsync();
+    PagedFlux<ADGroupInner> listAsync(String tenantId);
 
     /**
      * Gets list of groups for the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of groups for the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ADGroupInner> list(String tenantId);
+
+    /**
+     * Gets list of groups for the current tenant.
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of groups for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ADGroupInner> list(String filter, Context context);
-
-    /**
-     * Gets list of groups for the current tenant.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of groups for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ADGroupInner> list();
+    PagedIterable<ADGroupInner> list(String tenantId, String filter, Context context);
 
     /**
      * Gets the members of a group.
-     *
+     * 
      * @param objectId The object ID of the group whose members should be retrieved.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the members of a group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DirectoryObjectInner> getGroupMembersAsync(String objectId);
+    PagedFlux<DirectoryObjectInner> getGroupMembersAsync(String objectId, String tenantId);
 
     /**
      * Gets the members of a group.
-     *
+     * 
      * @param objectId The object ID of the group whose members should be retrieved.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the members of a group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> getGroupMembers(String objectId);
+    PagedIterable<DirectoryObjectInner> getGroupMembers(String objectId, String tenantId);
 
     /**
      * Gets the members of a group.
-     *
+     * 
      * @param objectId The object ID of the group whose members should be retrieved.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the members of a group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> getGroupMembers(String objectId, Context context);
+    PagedIterable<DirectoryObjectInner> getGroupMembers(String objectId, String tenantId, Context context);
 
     /**
      * Gets group information from the directory.
-     *
+     * 
      * @param objectId The object ID of the user for which to get group information.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ADGroupInner>> getWithResponseAsync(String objectId);
+    Mono<Response<ADGroupInner>> getWithResponseAsync(String objectId, String tenantId);
 
     /**
      * Gets group information from the directory.
-     *
+     * 
      * @param objectId The object ID of the user for which to get group information.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ADGroupInner> getAsync(String objectId);
+    Mono<ADGroupInner> getAsync(String objectId, String tenantId);
 
     /**
      * Gets group information from the directory.
-     *
+     * 
      * @param objectId The object ID of the user for which to get group information.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ADGroupInner get(String objectId);
+    ADGroupInner get(String objectId, String tenantId);
 
     /**
      * Gets group information from the directory.
-     *
+     * 
      * @param objectId The object ID of the user for which to get group information.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ADGroupInner> getWithResponse(String objectId, Context context);
+    Response<ADGroupInner> getWithResponse(String objectId, String tenantId, Context context);
 
     /**
      * Delete a group from the directory.
-     *
+     * 
      * @param objectId The object ID of the group to delete.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String objectId);
+    Mono<Response<Void>> deleteWithResponseAsync(String objectId, String tenantId);
 
     /**
      * Delete a group from the directory.
-     *
+     * 
      * @param objectId The object ID of the group to delete.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String objectId);
+    Mono<Void> deleteAsync(String objectId, String tenantId);
 
     /**
      * Delete a group from the directory.
-     *
+     * 
      * @param objectId The object ID of the group to delete.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String objectId);
+    void delete(String objectId, String tenantId);
 
     /**
      * Delete a group from the directory.
-     *
+     * 
      * @param objectId The object ID of the group to delete.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String objectId, Context context);
+    Response<Void> deleteWithResponse(String objectId, String tenantId, Context context);
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     *
+     * 
      * @param objectId The object ID of the group for which to get group membership.
-     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
-     *     membership in all groups should be checked.
+     * @param tenantId The tenant ID.
+     * @param parameters Group filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly);
+    PagedFlux<String> getMemberGroupsAsync(String objectId, String tenantId, GroupGetMemberGroupsParameters parameters);
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     *
+     * 
      * @param objectId The object ID of the group for which to get group membership.
-     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
-     *     membership in all groups should be checked.
+     * @param tenantId The tenant ID.
+     * @param parameters Group filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly);
+    PagedIterable<String> getMemberGroups(String objectId, String tenantId, GroupGetMemberGroupsParameters parameters);
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     *
+     * 
      * @param objectId The object ID of the group for which to get group membership.
-     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
-     *     membership in all groups should be checked.
+     * @param tenantId The tenant ID.
+     * @param parameters Group filtering parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly, Context context);
+    PagedIterable<String> getMemberGroups(String objectId, String tenantId, GroupGetMemberGroupsParameters parameters, Context context);
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the group for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId);
+    PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId, String tenantId);
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the group for which to get owners.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> listOwners(String objectId);
+    PagedIterable<DirectoryObjectInner> listOwners(String objectId, String tenantId);
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     *
+     * 
      * @param objectId The object ID of the group for which to get owners.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> listOwners(String objectId, Context context);
+    PagedIterable<DirectoryObjectInner> listOwners(String objectId, String tenantId, Context context);
 
     /**
      * Add an owner to a group.
-     *
+     * 
      * @param objectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> addOwnerWithResponseAsync(String objectId, String url);
+    Mono<Response<Void>> addOwnerWithResponseAsync(String objectId, String tenantId, AddOwnerParameters parameters);
 
     /**
      * Add an owner to a group.
-     *
+     * 
      * @param objectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> addOwnerAsync(String objectId, String url);
+    Mono<Void> addOwnerAsync(String objectId, String tenantId, AddOwnerParameters parameters);
 
     /**
      * Add an owner to a group.
-     *
+     * 
      * @param objectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void addOwner(String objectId, String url);
+    void addOwner(String objectId, String tenantId, AddOwnerParameters parameters);
 
     /**
      * Add an owner to a group.
-     *
+     * 
      * @param objectId The object ID of the application to which to add the owner.
-     * @param url A owner object URL, such as
-     *     "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects"
-         + "/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     *     where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is
-     *     the objectId of the owner (user, application, servicePrincipal, group) to be added.
+     * @param tenantId The tenant ID.
+     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> addOwnerWithResponse(String objectId, String url, Context context);
+    Response<Void> addOwnerWithResponse(String objectId, String tenantId, AddOwnerParameters parameters, Context context);
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> removeOwnerWithResponseAsync(String objectId, String ownerObjectId);
+    Mono<Response<Void>> removeOwnerWithResponseAsync(String objectId, String ownerObjectId, String tenantId);
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> removeOwnerAsync(String objectId, String ownerObjectId);
+    Mono<Void> removeOwnerAsync(String objectId, String ownerObjectId, String tenantId);
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void removeOwner(String objectId, String ownerObjectId);
+    void removeOwner(String objectId, String ownerObjectId, String tenantId);
 
     /**
      * Remove a member from owners.
-     *
+     * 
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> removeOwnerWithResponse(String objectId, String ownerObjectId, Context context);
+    Response<Void> removeOwnerWithResponse(String objectId, String ownerObjectId, String tenantId, Context context);
 }

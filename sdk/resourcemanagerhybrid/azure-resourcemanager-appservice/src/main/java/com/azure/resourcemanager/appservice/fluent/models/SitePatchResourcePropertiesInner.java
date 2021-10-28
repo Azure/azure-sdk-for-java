@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.models.ClientCertMode;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
+import com.azure.resourcemanager.appservice.models.GeoDistribution;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.RedundancyMode;
@@ -158,17 +158,6 @@ public final class SitePatchResourcePropertiesInner {
     private Boolean clientCertEnabled;
 
     /*
-     * This composes with ClientCertEnabled setting.
-     * - ClientCertEnabled: false means ClientCert is ignored.
-     * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert
-     * is required.
-     * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert
-     * is optional or accepted.
-     */
-    @JsonProperty(value = "clientCertMode")
-    private ClientCertMode clientCertMode;
-
-    /*
      * client certificate authentication comma-separated exclusion paths
      */
     @JsonProperty(value = "clientCertExclusionPaths")
@@ -184,13 +173,6 @@ public final class SitePatchResourcePropertiesInner {
     private Boolean hostNamesDisabled;
 
     /*
-     * Unique identifier that verifies the custom domains assigned to the app.
-     * Customer will add this id to a txt record for verification.
-     */
-    @JsonProperty(value = "customDomainVerificationId")
-    private String customDomainVerificationId;
-
-    /*
      * List of IP addresses that the app uses for outbound connections (e.g.
      * database access). Includes VIPs from tenants that site can be hosted
      * with current settings. Read-only.
@@ -200,8 +182,7 @@ public final class SitePatchResourcePropertiesInner {
 
     /*
      * List of IP addresses that the app uses for outbound connections (e.g.
-     * database access). Includes VIPs from all tenants except dataComponent.
-     * Read-only.
+     * database access). Includes VIPs from all tenants. Read-only.
      */
     @JsonProperty(value = "possibleOutboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private String possibleOutboundIpAddresses;
@@ -284,25 +265,10 @@ public final class SitePatchResourcePropertiesInner {
     private UUID inProgressOperationId;
 
     /*
-     * Checks if Customer provided storage account is required
+     * GeoDistributions for this site
      */
-    @JsonProperty(value = "storageAccountRequired")
-    private Boolean storageAccountRequired;
-
-    /*
-     * Identity to use for Key Vault Reference authentication.
-     */
-    @JsonProperty(value = "keyVaultReferenceIdentity")
-    private String keyVaultReferenceIdentity;
-
-    /*
-     * Azure Resource Manager ID of the Virtual network and subnet to be joined
-     * by Regional VNET Integration.
-     * This must be of the form
-     * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
-     */
-    @JsonProperty(value = "virtualNetworkSubnetId")
-    private String virtualNetworkSubnetId;
+    @JsonProperty(value = "geoDistributions")
+    private List<GeoDistribution> geoDistributions;
 
     /**
      * Get the state property: Current state of the app.
@@ -624,30 +590,6 @@ public final class SitePatchResourcePropertiesInner {
     }
 
     /**
-     * Get the clientCertMode property: This composes with ClientCertEnabled setting. - ClientCertEnabled: false means
-     * ClientCert is ignored. - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required. -
-     * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
-     *
-     * @return the clientCertMode value.
-     */
-    public ClientCertMode clientCertMode() {
-        return this.clientCertMode;
-    }
-
-    /**
-     * Set the clientCertMode property: This composes with ClientCertEnabled setting. - ClientCertEnabled: false means
-     * ClientCert is ignored. - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required. -
-     * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
-     *
-     * @param clientCertMode the clientCertMode value to set.
-     * @return the SitePatchResourcePropertiesInner object itself.
-     */
-    public SitePatchResourcePropertiesInner withClientCertMode(ClientCertMode clientCertMode) {
-        this.clientCertMode = clientCertMode;
-        return this;
-    }
-
-    /**
      * Get the clientCertExclusionPaths property: client certificate authentication comma-separated exclusion paths.
      *
      * @return the clientCertExclusionPaths value.
@@ -692,28 +634,6 @@ public final class SitePatchResourcePropertiesInner {
     }
 
     /**
-     * Get the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
-     * app. Customer will add this id to a txt record for verification.
-     *
-     * @return the customDomainVerificationId value.
-     */
-    public String customDomainVerificationId() {
-        return this.customDomainVerificationId;
-    }
-
-    /**
-     * Set the customDomainVerificationId property: Unique identifier that verifies the custom domains assigned to the
-     * app. Customer will add this id to a txt record for verification.
-     *
-     * @param customDomainVerificationId the customDomainVerificationId value to set.
-     * @return the SitePatchResourcePropertiesInner object itself.
-     */
-    public SitePatchResourcePropertiesInner withCustomDomainVerificationId(String customDomainVerificationId) {
-        this.customDomainVerificationId = customDomainVerificationId;
-        return this;
-    }
-
-    /**
      * Get the outboundIpAddresses property: List of IP addresses that the app uses for outbound connections (e.g.
      * database access). Includes VIPs from tenants that site can be hosted with current settings. Read-only.
      *
@@ -725,7 +645,7 @@ public final class SitePatchResourcePropertiesInner {
 
     /**
      * Get the possibleOutboundIpAddresses property: List of IP addresses that the app uses for outbound connections
-     * (e.g. database access). Includes VIPs from all tenants except dataComponent. Read-only.
+     * (e.g. database access). Includes VIPs from all tenants. Read-only.
      *
      * @return the possibleOutboundIpAddresses value.
      */
@@ -900,66 +820,22 @@ public final class SitePatchResourcePropertiesInner {
     }
 
     /**
-     * Get the storageAccountRequired property: Checks if Customer provided storage account is required.
+     * Get the geoDistributions property: GeoDistributions for this site.
      *
-     * @return the storageAccountRequired value.
+     * @return the geoDistributions value.
      */
-    public Boolean storageAccountRequired() {
-        return this.storageAccountRequired;
+    public List<GeoDistribution> geoDistributions() {
+        return this.geoDistributions;
     }
 
     /**
-     * Set the storageAccountRequired property: Checks if Customer provided storage account is required.
+     * Set the geoDistributions property: GeoDistributions for this site.
      *
-     * @param storageAccountRequired the storageAccountRequired value to set.
+     * @param geoDistributions the geoDistributions value to set.
      * @return the SitePatchResourcePropertiesInner object itself.
      */
-    public SitePatchResourcePropertiesInner withStorageAccountRequired(Boolean storageAccountRequired) {
-        this.storageAccountRequired = storageAccountRequired;
-        return this;
-    }
-
-    /**
-     * Get the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
-     * @return the keyVaultReferenceIdentity value.
-     */
-    public String keyVaultReferenceIdentity() {
-        return this.keyVaultReferenceIdentity;
-    }
-
-    /**
-     * Set the keyVaultReferenceIdentity property: Identity to use for Key Vault Reference authentication.
-     *
-     * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
-     * @return the SitePatchResourcePropertiesInner object itself.
-     */
-    public SitePatchResourcePropertiesInner withKeyVaultReferenceIdentity(String keyVaultReferenceIdentity) {
-        this.keyVaultReferenceIdentity = keyVaultReferenceIdentity;
-        return this;
-    }
-
-    /**
-     * Get the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
-     * by Regional VNET Integration. This must be of the form
-     * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     *
-     * @return the virtualNetworkSubnetId value.
-     */
-    public String virtualNetworkSubnetId() {
-        return this.virtualNetworkSubnetId;
-    }
-
-    /**
-     * Set the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
-     * by Regional VNET Integration. This must be of the form
-     * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     *
-     * @param virtualNetworkSubnetId the virtualNetworkSubnetId value to set.
-     * @return the SitePatchResourcePropertiesInner object itself.
-     */
-    public SitePatchResourcePropertiesInner withVirtualNetworkSubnetId(String virtualNetworkSubnetId) {
-        this.virtualNetworkSubnetId = virtualNetworkSubnetId;
+    public SitePatchResourcePropertiesInner withGeoDistributions(List<GeoDistribution> geoDistributions) {
+        this.geoDistributions = geoDistributions;
         return this;
     }
 
@@ -983,6 +859,9 @@ public final class SitePatchResourcePropertiesInner {
         }
         if (slotSwapStatus() != null) {
             slotSwapStatus().validate();
+        }
+        if (geoDistributions() != null) {
+            geoDistributions().forEach(e -> e.validate());
         }
     }
 }

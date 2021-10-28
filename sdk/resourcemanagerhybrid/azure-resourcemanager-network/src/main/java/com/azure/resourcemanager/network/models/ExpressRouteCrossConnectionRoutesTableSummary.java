@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The routes table associated with the ExpressRouteCircuit. */
+/**
+ * The routes table associated with the ExpressRouteCircuit.
+ */
 @Fluent
 public final class ExpressRouteCrossConnectionRoutesTableSummary {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionRoutesTableSummary.class);
 
     /*
-     * IP address of Neighbor router.
+     * IP address of Neighbor router
      */
     @JsonProperty(value = "neighbor")
     private String neighbor;
@@ -43,7 +47,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
 
     /**
      * Get the neighbor property: IP address of Neighbor router.
-     *
+     * 
      * @return the neighbor value.
      */
     public String neighbor() {
@@ -52,7 +56,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
 
     /**
      * Set the neighbor property: IP address of Neighbor router.
-     *
+     * 
      * @param neighbor the neighbor value to set.
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.
      */
@@ -63,7 +67,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
 
     /**
      * Get the asn property: Autonomous system number.
-     *
+     * 
      * @return the asn value.
      */
     public Integer asn() {
@@ -72,7 +76,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
 
     /**
      * Set the asn property: Autonomous system number.
-     *
+     * 
      * @param asn the asn value to set.
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.
      */
@@ -82,9 +86,10 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
     }
 
     /**
-     * Get the upDown property: The length of time that the BGP session has been in the Established state, or the
-     * current status if not in the Established state.
-     *
+     * Get the upDown property: The length of time that the BGP session has
+     * been in the Established state, or the current status if not in the
+     * Established state.
+     * 
      * @return the upDown value.
      */
     public String upDown() {
@@ -92,9 +97,10 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
     }
 
     /**
-     * Set the upDown property: The length of time that the BGP session has been in the Established state, or the
-     * current status if not in the Established state.
-     *
+     * Set the upDown property: The length of time that the BGP session has
+     * been in the Established state, or the current status if not in the
+     * Established state.
+     * 
      * @param upDown the upDown value to set.
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.
      */
@@ -104,9 +110,10 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
     }
 
     /**
-     * Get the stateOrPrefixesReceived property: Current state of the BGP session, and the number of prefixes that have
-     * been received from a neighbor or peer group.
-     *
+     * Get the stateOrPrefixesReceived property: Current state of the BGP
+     * session, and the number of prefixes that have been received from a
+     * neighbor or peer group.
+     * 
      * @return the stateOrPrefixesReceived value.
      */
     public String stateOrPrefixesReceived() {
@@ -114,9 +121,10 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
     }
 
     /**
-     * Set the stateOrPrefixesReceived property: Current state of the BGP session, and the number of prefixes that have
-     * been received from a neighbor or peer group.
-     *
+     * Set the stateOrPrefixesReceived property: Current state of the BGP
+     * session, and the number of prefixes that have been received from a
+     * neighbor or peer group.
+     * 
      * @param stateOrPrefixesReceived the stateOrPrefixesReceived value to set.
      * @return the ExpressRouteCrossConnectionRoutesTableSummary object itself.
      */
@@ -127,7 +135,7 @@ public final class ExpressRouteCrossConnectionRoutesTableSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

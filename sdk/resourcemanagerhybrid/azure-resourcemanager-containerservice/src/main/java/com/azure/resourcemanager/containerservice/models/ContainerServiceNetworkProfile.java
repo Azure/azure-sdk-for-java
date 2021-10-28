@@ -5,30 +5,34 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Profile of network configuration. */
+/**
+ * Profile of network configuration.
+ */
 @Fluent
 public final class ContainerServiceNetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceNetworkProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ContainerServiceNetworkProfile.class);
 
     /*
-     * Network plugin used for building the Kubernetes network.
+     * Network plugin used for building Kubernetes network.
      */
     @JsonProperty(value = "networkPlugin")
     private NetworkPlugin networkPlugin;
 
     /*
-     * Network policy used for building the Kubernetes network.
+     * Network policy used for building Kubernetes network.
      */
     @JsonProperty(value = "networkPolicy")
     private NetworkPolicy networkPolicy;
 
     /*
-     * The network mode Azure CNI is configured with. This cannot be specified
-     * if networkPlugin is anything other than 'azure'.
+     * Network mode used for building Kubernetes network.
      */
     @JsonProperty(value = "networkMode")
     private NetworkMode networkMode;
@@ -63,19 +67,13 @@ public final class ContainerServiceNetworkProfile {
     private String dockerBridgeCidr;
 
     /*
-     * The outbound (egress) routing method. This can only be set at cluster
-     * creation time and cannot be changed later. For more information see
-     * [egress outbound
-     * type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
+     * The outbound (egress) routing method.
      */
     @JsonProperty(value = "outboundType")
     private OutboundType outboundType;
 
     /*
-     * The load balancer sku for the managed cluster. The default is
-     * 'standard'. See [Azure Load Balancer
-     * SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more
-     * information about the differences between load balancer SKUs.
+     * The load balancer sku for the managed cluster.
      */
     @JsonProperty(value = "loadBalancerSku")
     private LoadBalancerSku loadBalancerSku;
@@ -86,15 +84,10 @@ public final class ContainerServiceNetworkProfile {
     @JsonProperty(value = "loadBalancerProfile")
     private ManagedClusterLoadBalancerProfile loadBalancerProfile;
 
-    /*
-     * Profile of the cluster NAT gateway.
-     */
-    @JsonProperty(value = "natGatewayProfile")
-    private ManagedClusterNatGatewayProfile natGatewayProfile;
-
     /**
-     * Get the networkPlugin property: Network plugin used for building the Kubernetes network.
-     *
+     * Get the networkPlugin property: Network plugin used for building
+     * Kubernetes network.
+     * 
      * @return the networkPlugin value.
      */
     public NetworkPlugin networkPlugin() {
@@ -102,8 +95,9 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the networkPlugin property: Network plugin used for building the Kubernetes network.
-     *
+     * Set the networkPlugin property: Network plugin used for building
+     * Kubernetes network.
+     * 
      * @param networkPlugin the networkPlugin value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
@@ -113,8 +107,9 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the networkPolicy property: Network policy used for building the Kubernetes network.
-     *
+     * Get the networkPolicy property: Network policy used for building
+     * Kubernetes network.
+     * 
      * @return the networkPolicy value.
      */
     public NetworkPolicy networkPolicy() {
@@ -122,8 +117,9 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the networkPolicy property: Network policy used for building the Kubernetes network.
-     *
+     * Set the networkPolicy property: Network policy used for building
+     * Kubernetes network.
+     * 
      * @param networkPolicy the networkPolicy value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
@@ -133,9 +129,9 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the networkMode property: The network mode Azure CNI is configured with. This cannot be specified if
-     * networkPlugin is anything other than 'azure'.
-     *
+     * Get the networkMode property: Network mode used for building Kubernetes
+     * network.
+     * 
      * @return the networkMode value.
      */
     public NetworkMode networkMode() {
@@ -143,9 +139,9 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the networkMode property: The network mode Azure CNI is configured with. This cannot be specified if
-     * networkPlugin is anything other than 'azure'.
-     *
+     * Set the networkMode property: Network mode used for building Kubernetes
+     * network.
+     * 
      * @param networkMode the networkMode value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
@@ -155,8 +151,9 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the podCidr property: A CIDR notation IP range from which to assign pod IPs when kubenet is used.
-     *
+     * Get the podCidr property: A CIDR notation IP range from which to assign
+     * pod IPs when kubenet is used.
+     * 
      * @return the podCidr value.
      */
     public String podCidr() {
@@ -164,8 +161,9 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the podCidr property: A CIDR notation IP range from which to assign pod IPs when kubenet is used.
-     *
+     * Set the podCidr property: A CIDR notation IP range from which to assign
+     * pod IPs when kubenet is used.
+     * 
      * @param podCidr the podCidr value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
@@ -175,9 +173,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the serviceCidr property: A CIDR notation IP range from which to assign service cluster IPs. It must not
-     * overlap with any Subnet IP ranges.
-     *
+     * Get the serviceCidr property: A CIDR notation IP range from which to
+     * assign service cluster IPs. It must not overlap with any Subnet IP
+     * ranges.
+     * 
      * @return the serviceCidr value.
      */
     public String serviceCidr() {
@@ -185,9 +184,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the serviceCidr property: A CIDR notation IP range from which to assign service cluster IPs. It must not
-     * overlap with any Subnet IP ranges.
-     *
+     * Set the serviceCidr property: A CIDR notation IP range from which to
+     * assign service cluster IPs. It must not overlap with any Subnet IP
+     * ranges.
+     * 
      * @param serviceCidr the serviceCidr value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
@@ -197,9 +197,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the dnsServiceIp property: An IP address assigned to the Kubernetes DNS service. It must be within the
-     * Kubernetes service address range specified in serviceCidr.
-     *
+     * Get the dnsServiceIp property: An IP address assigned to the Kubernetes
+     * DNS service. It must be within the Kubernetes service address range
+     * specified in serviceCidr.
+     * 
      * @return the dnsServiceIp value.
      */
     public String dnsServiceIp() {
@@ -207,9 +208,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the dnsServiceIp property: An IP address assigned to the Kubernetes DNS service. It must be within the
-     * Kubernetes service address range specified in serviceCidr.
-     *
+     * Set the dnsServiceIp property: An IP address assigned to the Kubernetes
+     * DNS service. It must be within the Kubernetes service address range
+     * specified in serviceCidr.
+     * 
      * @param dnsServiceIp the dnsServiceIp value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
@@ -219,9 +221,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the dockerBridgeCidr property: A CIDR notation IP range assigned to the Docker bridge network. It must not
-     * overlap with any Subnet IP ranges or the Kubernetes service address range.
-     *
+     * Get the dockerBridgeCidr property: A CIDR notation IP range assigned to
+     * the Docker bridge network. It must not overlap with any Subnet IP ranges
+     * or the Kubernetes service address range.
+     * 
      * @return the dockerBridgeCidr value.
      */
     public String dockerBridgeCidr() {
@@ -229,9 +232,10 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the dockerBridgeCidr property: A CIDR notation IP range assigned to the Docker bridge network. It must not
-     * overlap with any Subnet IP ranges or the Kubernetes service address range.
-     *
+     * Set the dockerBridgeCidr property: A CIDR notation IP range assigned to
+     * the Docker bridge network. It must not overlap with any Subnet IP ranges
+     * or the Kubernetes service address range.
+     * 
      * @param dockerBridgeCidr the dockerBridgeCidr value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
@@ -241,10 +245,8 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the outboundType property: The outbound (egress) routing method. This can only be set at cluster creation
-     * time and cannot be changed later. For more information see [egress outbound
-     * type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
-     *
+     * Get the outboundType property: The outbound (egress) routing method.
+     * 
      * @return the outboundType value.
      */
     public OutboundType outboundType() {
@@ -252,10 +254,8 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the outboundType property: The outbound (egress) routing method. This can only be set at cluster creation
-     * time and cannot be changed later. For more information see [egress outbound
-     * type](https://docs.microsoft.com/azure/aks/egress-outboundtype).
-     *
+     * Set the outboundType property: The outbound (egress) routing method.
+     * 
      * @param outboundType the outboundType value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
@@ -265,10 +265,9 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the loadBalancerSku property: The load balancer sku for the managed cluster. The default is 'standard'. See
-     * [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the
-     * differences between load balancer SKUs.
-     *
+     * Get the loadBalancerSku property: The load balancer sku for the managed
+     * cluster.
+     * 
      * @return the loadBalancerSku value.
      */
     public LoadBalancerSku loadBalancerSku() {
@@ -276,10 +275,9 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the loadBalancerSku property: The load balancer sku for the managed cluster. The default is 'standard'. See
-     * [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for more information about the
-     * differences between load balancer SKUs.
-     *
+     * Set the loadBalancerSku property: The load balancer sku for the managed
+     * cluster.
+     * 
      * @param loadBalancerSku the loadBalancerSku value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
@@ -289,8 +287,9 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the loadBalancerProfile property: Profile of the cluster load balancer.
-     *
+     * Get the loadBalancerProfile property: Profile of the cluster load
+     * balancer.
+     * 
      * @return the loadBalancerProfile value.
      */
     public ManagedClusterLoadBalancerProfile loadBalancerProfile() {
@@ -298,48 +297,25 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Set the loadBalancerProfile property: Profile of the cluster load balancer.
-     *
+     * Set the loadBalancerProfile property: Profile of the cluster load
+     * balancer.
+     * 
      * @param loadBalancerProfile the loadBalancerProfile value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
-    public ContainerServiceNetworkProfile withLoadBalancerProfile(
-        ManagedClusterLoadBalancerProfile loadBalancerProfile) {
+    public ContainerServiceNetworkProfile withLoadBalancerProfile(ManagedClusterLoadBalancerProfile loadBalancerProfile) {
         this.loadBalancerProfile = loadBalancerProfile;
         return this;
     }
 
     /**
-     * Get the natGatewayProfile property: Profile of the cluster NAT gateway.
-     *
-     * @return the natGatewayProfile value.
-     */
-    public ManagedClusterNatGatewayProfile natGatewayProfile() {
-        return this.natGatewayProfile;
-    }
-
-    /**
-     * Set the natGatewayProfile property: Profile of the cluster NAT gateway.
-     *
-     * @param natGatewayProfile the natGatewayProfile value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile withNatGatewayProfile(ManagedClusterNatGatewayProfile natGatewayProfile) {
-        this.natGatewayProfile = natGatewayProfile;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (loadBalancerProfile() != null) {
             loadBalancerProfile().validate();
-        }
-        if (natGatewayProfile() != null) {
-            natGatewayProfile().validate();
         }
     }
 }

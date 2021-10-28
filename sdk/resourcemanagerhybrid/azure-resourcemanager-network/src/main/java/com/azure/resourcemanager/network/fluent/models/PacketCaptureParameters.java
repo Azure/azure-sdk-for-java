@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters that define the create packet capture operation. */
+/**
+ * Parameters that define the create packet capture operation.
+ */
 @Fluent
 public class PacketCaptureParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PacketCaptureParameters.class);
 
     /*
      * The ID of the targeted resource, only VM is currently supported.
@@ -27,13 +32,13 @@ public class PacketCaptureParameters {
      * Number of bytes captured per packet, the remaining bytes are truncated.
      */
     @JsonProperty(value = "bytesToCapturePerPacket")
-    private Long bytesToCapturePerPacket;
+    private Integer bytesToCapturePerPacket;
 
     /*
      * Maximum size of the capture output.
      */
     @JsonProperty(value = "totalBytesPerSession")
-    private Long totalBytesPerSession;
+    private Integer totalBytesPerSession;
 
     /*
      * Maximum duration of the capture session in seconds.
@@ -42,20 +47,21 @@ public class PacketCaptureParameters {
     private Integer timeLimitInSeconds;
 
     /*
-     * The storage location for a packet capture session.
+     * Describes the storage location for a packet capture session.
      */
     @JsonProperty(value = "storageLocation", required = true)
     private PacketCaptureStorageLocation storageLocation;
 
     /*
-     * A list of packet capture filters.
+     * The filters property.
      */
     @JsonProperty(value = "filters")
     private List<PacketCaptureFilter> filters;
 
     /**
-     * Get the target property: The ID of the targeted resource, only VM is currently supported.
-     *
+     * Get the target property: The ID of the targeted resource, only VM is
+     * currently supported.
+     * 
      * @return the target value.
      */
     public String target() {
@@ -63,8 +69,9 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the target property: The ID of the targeted resource, only VM is currently supported.
-     *
+     * Set the target property: The ID of the targeted resource, only VM is
+     * currently supported.
+     * 
      * @param target the target value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -74,48 +81,53 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
-     *
+     * Get the bytesToCapturePerPacket property: Number of bytes captured per
+     * packet, the remaining bytes are truncated.
+     * 
      * @return the bytesToCapturePerPacket value.
      */
-    public Long bytesToCapturePerPacket() {
+    public Integer bytesToCapturePerPacket() {
         return this.bytesToCapturePerPacket;
     }
 
     /**
-     * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
-     *
+     * Set the bytesToCapturePerPacket property: Number of bytes captured per
+     * packet, the remaining bytes are truncated.
+     * 
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set.
      * @return the PacketCaptureParameters object itself.
      */
-    public PacketCaptureParameters withBytesToCapturePerPacket(Long bytesToCapturePerPacket) {
+    public PacketCaptureParameters withBytesToCapturePerPacket(Integer bytesToCapturePerPacket) {
         this.bytesToCapturePerPacket = bytesToCapturePerPacket;
         return this;
     }
 
     /**
-     * Get the totalBytesPerSession property: Maximum size of the capture output.
-     *
+     * Get the totalBytesPerSession property: Maximum size of the capture
+     * output.
+     * 
      * @return the totalBytesPerSession value.
      */
-    public Long totalBytesPerSession() {
+    public Integer totalBytesPerSession() {
         return this.totalBytesPerSession;
     }
 
     /**
-     * Set the totalBytesPerSession property: Maximum size of the capture output.
-     *
+     * Set the totalBytesPerSession property: Maximum size of the capture
+     * output.
+     * 
      * @param totalBytesPerSession the totalBytesPerSession value to set.
      * @return the PacketCaptureParameters object itself.
      */
-    public PacketCaptureParameters withTotalBytesPerSession(Long totalBytesPerSession) {
+    public PacketCaptureParameters withTotalBytesPerSession(Integer totalBytesPerSession) {
         this.totalBytesPerSession = totalBytesPerSession;
         return this;
     }
 
     /**
-     * Get the timeLimitInSeconds property: Maximum duration of the capture session in seconds.
-     *
+     * Get the timeLimitInSeconds property: Maximum duration of the capture
+     * session in seconds.
+     * 
      * @return the timeLimitInSeconds value.
      */
     public Integer timeLimitInSeconds() {
@@ -123,8 +135,9 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the timeLimitInSeconds property: Maximum duration of the capture session in seconds.
-     *
+     * Set the timeLimitInSeconds property: Maximum duration of the capture
+     * session in seconds.
+     * 
      * @param timeLimitInSeconds the timeLimitInSeconds value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -134,8 +147,9 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Get the storageLocation property: The storage location for a packet capture session.
-     *
+     * Get the storageLocation property: Describes the storage location for a
+     * packet capture session.
+     * 
      * @return the storageLocation value.
      */
     public PacketCaptureStorageLocation storageLocation() {
@@ -143,8 +157,9 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the storageLocation property: The storage location for a packet capture session.
-     *
+     * Set the storageLocation property: Describes the storage location for a
+     * packet capture session.
+     * 
      * @param storageLocation the storageLocation value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -154,8 +169,8 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Get the filters property: A list of packet capture filters.
-     *
+     * Get the filters property: The filters property.
+     * 
      * @return the filters value.
      */
     public List<PacketCaptureFilter> filters() {
@@ -163,8 +178,8 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the filters property: A list of packet capture filters.
-     *
+     * Set the filters property: The filters property.
+     * 
      * @param filters the filters value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -175,20 +190,15 @@ public class PacketCaptureParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (target() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property target in model PacketCaptureParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property target in model PacketCaptureParameters"));
         }
         if (storageLocation() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageLocation in model PacketCaptureParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property storageLocation in model PacketCaptureParameters"));
         } else {
             storageLocation().validate();
         }

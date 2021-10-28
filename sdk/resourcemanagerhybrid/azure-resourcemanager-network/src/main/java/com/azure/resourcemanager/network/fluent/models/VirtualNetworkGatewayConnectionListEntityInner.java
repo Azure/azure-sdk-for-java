@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
-import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.azure.resourcemanager.network.models.TrafficSelectorPolicy;
 import com.azure.resourcemanager.network.models.TunnelConnectionHealth;
 import com.azure.resourcemanager.network.models.VirtualNetworkConnectionGatewayReference;
-import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionStatus;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A common class for general resource information. */
+/**
+ * A common class for general resource information.
+ */
 @Fluent
 public final class VirtualNetworkGatewayConnectionListEntityInner extends Resource {
     @JsonIgnore
@@ -32,13 +34,13 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
      * Properties of the virtual network gateway connection.
      */
     @JsonProperty(value = "properties", required = true)
-    private VirtualNetworkGatewayConnectionListEntityPropertiesFormat innerProperties =
-        new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
+    private VirtualNetworkGatewayConnectionListEntityPropertiesFormat innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * Gets a unique read-only string that changes whenever the resource is
+     * updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "etag")
     private String etag;
 
     /*
@@ -48,8 +50,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the virtual network gateway connection.
-     *
+     * Get the innerProperties property: Properties of the virtual network
+     * gateway connection.
+     * 
      * @return the innerProperties value.
      */
     private VirtualNetworkGatewayConnectionListEntityPropertiesFormat innerProperties() {
@@ -57,8 +60,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * Get the etag property: Gets a unique read-only string that changes
+     * whenever the resource is updated.
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -66,8 +70,21 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
+     * Set the etag property: Gets a unique read-only string that changes
+     * whenever the resource is updated.
+     * 
+     * @param etag the etag value to set.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
+     */
+    public VirtualNetworkGatewayConnectionListEntityInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,23 +93,28 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
     public VirtualNetworkGatewayConnectionListEntityInner withId(String id) {
         this.id = id;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkGatewayConnectionListEntityInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkGatewayConnectionListEntityInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -101,7 +123,7 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
 
     /**
      * Get the authorizationKey property: The authorizationKey.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -110,9 +132,10 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
 
     /**
      * Set the authorizationKey property: The authorizationKey.
-     *
+     * 
      * @param authorizationKey the authorizationKey value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
     public VirtualNetworkGatewayConnectionListEntityInner withAuthorizationKey(String authorizationKey) {
         if (this.innerProperties() == null) {
@@ -123,8 +146,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the virtualNetworkGateway1 property: The reference to virtual network gateway resource.
-     *
+     * Get the virtualNetworkGateway1 property: The reference to virtual
+     * network gateway resource.
+     * 
      * @return the virtualNetworkGateway1 value.
      */
     public VirtualNetworkConnectionGatewayReference virtualNetworkGateway1() {
@@ -132,13 +156,14 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Set the virtualNetworkGateway1 property: The reference to virtual network gateway resource.
-     *
+     * Set the virtualNetworkGateway1 property: The reference to virtual
+     * network gateway resource.
+     * 
      * @param virtualNetworkGateway1 the virtualNetworkGateway1 value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
-    public VirtualNetworkGatewayConnectionListEntityInner withVirtualNetworkGateway1(
-        VirtualNetworkConnectionGatewayReference virtualNetworkGateway1) {
+    public VirtualNetworkGatewayConnectionListEntityInner withVirtualNetworkGateway1(VirtualNetworkConnectionGatewayReference virtualNetworkGateway1) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
         }
@@ -147,8 +172,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the virtualNetworkGateway2 property: The reference to virtual network gateway resource.
-     *
+     * Get the virtualNetworkGateway2 property: The reference to virtual
+     * network gateway resource.
+     * 
      * @return the virtualNetworkGateway2 value.
      */
     public VirtualNetworkConnectionGatewayReference virtualNetworkGateway2() {
@@ -156,13 +182,14 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Set the virtualNetworkGateway2 property: The reference to virtual network gateway resource.
-     *
+     * Set the virtualNetworkGateway2 property: The reference to virtual
+     * network gateway resource.
+     * 
      * @param virtualNetworkGateway2 the virtualNetworkGateway2 value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
-    public VirtualNetworkGatewayConnectionListEntityInner withVirtualNetworkGateway2(
-        VirtualNetworkConnectionGatewayReference virtualNetworkGateway2) {
+    public VirtualNetworkGatewayConnectionListEntityInner withVirtualNetworkGateway2(VirtualNetworkConnectionGatewayReference virtualNetworkGateway2) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
         }
@@ -171,8 +198,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the localNetworkGateway2 property: The reference to local network gateway resource.
-     *
+     * Get the localNetworkGateway2 property: The reference to local network
+     * gateway resource.
+     * 
      * @return the localNetworkGateway2 value.
      */
     public VirtualNetworkConnectionGatewayReference localNetworkGateway2() {
@@ -180,13 +208,14 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Set the localNetworkGateway2 property: The reference to local network gateway resource.
-     *
+     * Set the localNetworkGateway2 property: The reference to local network
+     * gateway resource.
+     * 
      * @param localNetworkGateway2 the localNetworkGateway2 value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
-    public VirtualNetworkGatewayConnectionListEntityInner withLocalNetworkGateway2(
-        VirtualNetworkConnectionGatewayReference localNetworkGateway2) {
+    public VirtualNetworkGatewayConnectionListEntityInner withLocalNetworkGateway2(VirtualNetworkConnectionGatewayReference localNetworkGateway2) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
         }
@@ -195,8 +224,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the connectionType property: Gateway connection type.
-     *
+     * Get the connectionType property: Gateway connection type. Possible
+     * values are: 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient.
+     * 
      * @return the connectionType value.
      */
     public VirtualNetworkGatewayConnectionType connectionType() {
@@ -204,13 +234,14 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Set the connectionType property: Gateway connection type.
-     *
+     * Set the connectionType property: Gateway connection type. Possible
+     * values are: 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient.
+     * 
      * @param connectionType the connectionType value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
-    public VirtualNetworkGatewayConnectionListEntityInner withConnectionType(
-        VirtualNetworkGatewayConnectionType connectionType) {
+    public VirtualNetworkGatewayConnectionListEntityInner withConnectionType(VirtualNetworkGatewayConnectionType connectionType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
         }
@@ -219,8 +250,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the connectionProtocol property: Connection protocol used for this connection.
-     *
+     * Get the connectionProtocol property: Connection protocol used for this
+     * connection.
+     * 
      * @return the connectionProtocol value.
      */
     public VirtualNetworkGatewayConnectionProtocol connectionProtocol() {
@@ -228,13 +260,14 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Set the connectionProtocol property: Connection protocol used for this connection.
-     *
+     * Set the connectionProtocol property: Connection protocol used for this
+     * connection.
+     * 
      * @param connectionProtocol the connectionProtocol value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
-    public VirtualNetworkGatewayConnectionListEntityInner withConnectionProtocol(
-        VirtualNetworkGatewayConnectionProtocol connectionProtocol) {
+    public VirtualNetworkGatewayConnectionListEntityInner withConnectionProtocol(VirtualNetworkGatewayConnectionProtocol connectionProtocol) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
         }
@@ -244,7 +277,7 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
 
     /**
      * Get the routingWeight property: The routing weight.
-     *
+     * 
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
@@ -253,9 +286,10 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
 
     /**
      * Set the routingWeight property: The routing weight.
-     *
+     * 
      * @param routingWeight the routingWeight value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
     public VirtualNetworkGatewayConnectionListEntityInner withRoutingWeight(Integer routingWeight) {
         if (this.innerProperties() == null) {
@@ -266,32 +300,8 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the connectionMode property: The connection mode for this connection.
-     *
-     * @return the connectionMode value.
-     */
-    public VirtualNetworkGatewayConnectionMode connectionMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().connectionMode();
-    }
-
-    /**
-     * Set the connectionMode property: The connection mode for this connection.
-     *
-     * @param connectionMode the connectionMode value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
-     */
-    public VirtualNetworkGatewayConnectionListEntityInner withConnectionMode(
-        VirtualNetworkGatewayConnectionMode connectionMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
-        }
-        this.innerProperties().withConnectionMode(connectionMode);
-        return this;
-    }
-
-    /**
      * Get the sharedKey property: The IPSec shared key.
-     *
+     * 
      * @return the sharedKey value.
      */
     public String sharedKey() {
@@ -300,9 +310,10 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
 
     /**
      * Set the sharedKey property: The IPSec shared key.
-     *
+     * 
      * @param sharedKey the sharedKey value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
     public VirtualNetworkGatewayConnectionListEntityInner withSharedKey(String sharedKey) {
         if (this.innerProperties() == null) {
@@ -313,8 +324,10 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the connectionStatus property: Virtual Network Gateway connection status.
-     *
+     * Get the connectionStatus property: Virtual network Gateway connection
+     * status. Possible values are 'Unknown', 'Connecting', 'Connected' and
+     * 'NotConnected'.
+     * 
      * @return the connectionStatus value.
      */
     public VirtualNetworkGatewayConnectionStatus connectionStatus() {
@@ -322,8 +335,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the tunnelConnectionStatus property: Collection of all tunnels' connection health status.
-     *
+     * Get the tunnelConnectionStatus property: Collection of all tunnels'
+     * connection health status.
+     * 
      * @return the tunnelConnectionStatus value.
      */
     public List<TunnelConnectionHealth> tunnelConnectionStatus() {
@@ -331,8 +345,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the egressBytesTransferred property: The egress bytes transferred in this connection.
-     *
+     * Get the egressBytesTransferred property: The egress bytes transferred in
+     * this connection.
+     * 
      * @return the egressBytesTransferred value.
      */
     public Long egressBytesTransferred() {
@@ -340,8 +355,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the ingressBytesTransferred property: The ingress bytes transferred in this connection.
-     *
+     * Get the ingressBytesTransferred property: The ingress bytes transferred
+     * in this connection.
+     * 
      * @return the ingressBytesTransferred value.
      */
     public Long ingressBytesTransferred() {
@@ -350,7 +366,7 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
 
     /**
      * Get the peer property: The reference to peerings resource.
-     *
+     * 
      * @return the peer value.
      */
     public SubResource peer() {
@@ -359,9 +375,10 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
 
     /**
      * Set the peer property: The reference to peerings resource.
-     *
+     * 
      * @param peer the peer value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
     public VirtualNetworkGatewayConnectionListEntityInner withPeer(SubResource peer) {
         if (this.innerProperties() == null) {
@@ -373,7 +390,7 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
 
     /**
      * Get the enableBgp property: EnableBgp flag.
-     *
+     * 
      * @return the enableBgp value.
      */
     public Boolean enableBgp() {
@@ -382,9 +399,10 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
 
     /**
      * Set the enableBgp property: EnableBgp flag.
-     *
+     * 
      * @param enableBgp the enableBgp value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
     public VirtualNetworkGatewayConnectionListEntityInner withEnableBgp(Boolean enableBgp) {
         if (this.innerProperties() == null) {
@@ -395,8 +413,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
+     * Get the usePolicyBasedTrafficSelectors property: Enable policy-based
+     * traffic selectors.
+     * 
      * @return the usePolicyBasedTrafficSelectors value.
      */
     public Boolean usePolicyBasedTrafficSelectors() {
@@ -404,13 +423,15 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Set the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
-     * @param usePolicyBasedTrafficSelectors the usePolicyBasedTrafficSelectors value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * Set the usePolicyBasedTrafficSelectors property: Enable policy-based
+     * traffic selectors.
+     * 
+     * @param usePolicyBasedTrafficSelectors the usePolicyBasedTrafficSelectors
+     * value to set.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
-    public VirtualNetworkGatewayConnectionListEntityInner withUsePolicyBasedTrafficSelectors(
-        Boolean usePolicyBasedTrafficSelectors) {
+    public VirtualNetworkGatewayConnectionListEntityInner withUsePolicyBasedTrafficSelectors(Boolean usePolicyBasedTrafficSelectors) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
         }
@@ -419,8 +440,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     *
+     * Get the ipsecPolicies property: The IPSec Policies to be considered by
+     * this connection.
+     * 
      * @return the ipsecPolicies value.
      */
     public List<IpsecPolicy> ipsecPolicies() {
@@ -428,10 +450,12 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Set the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     *
+     * Set the ipsecPolicies property: The IPSec Policies to be considered by
+     * this connection.
+     * 
      * @param ipsecPolicies the ipsecPolicies value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
     public VirtualNetworkGatewayConnectionListEntityInner withIpsecPolicies(List<IpsecPolicy> ipsecPolicies) {
         if (this.innerProperties() == null) {
@@ -442,32 +466,9 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
-     * @return the trafficSelectorPolicies value.
-     */
-    public List<TrafficSelectorPolicy> trafficSelectorPolicies() {
-        return this.innerProperties() == null ? null : this.innerProperties().trafficSelectorPolicies();
-    }
-
-    /**
-     * Set the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
-     * @param trafficSelectorPolicies the trafficSelectorPolicies value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
-     */
-    public VirtualNetworkGatewayConnectionListEntityInner withTrafficSelectorPolicies(
-        List<TrafficSelectorPolicy> trafficSelectorPolicies) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
-        }
-        this.innerProperties().withTrafficSelectorPolicies(trafficSelectorPolicies);
-        return this;
-    }
-
-    /**
-     * Get the resourceGuid property: The resource GUID property of the virtual network gateway connection resource.
-     *
+     * Get the resourceGuid property: The resource GUID property of the
+     * VirtualNetworkGatewayConnection resource.
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -475,17 +476,36 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the virtual network gateway connection resource.
-     *
+     * Set the resourceGuid property: The resource GUID property of the
+     * VirtualNetworkGatewayConnection resource.
+     * 
+     * @param resourceGuid the resourceGuid value to set.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
+     */
+    public VirtualNetworkGatewayConnectionListEntityInner withResourceGuid(String resourceGuid) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
+        }
+        this.innerProperties().withResourceGuid(resourceGuid);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the
+     * VirtualNetworkGatewayConnection resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the expressRouteGatewayBypass property: Bypass ExpressRoute Gateway for data forwarding.
-     *
+     * Get the expressRouteGatewayBypass property: Bypass ExpressRoute Gateway
+     * for data forwarding.
+     * 
      * @return the expressRouteGatewayBypass value.
      */
     public Boolean expressRouteGatewayBypass() {
@@ -493,13 +513,15 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
     }
 
     /**
-     * Set the expressRouteGatewayBypass property: Bypass ExpressRoute Gateway for data forwarding.
-     *
-     * @param expressRouteGatewayBypass the expressRouteGatewayBypass value to set.
-     * @return the VirtualNetworkGatewayConnectionListEntityInner object itself.
+     * Set the expressRouteGatewayBypass property: Bypass ExpressRoute Gateway
+     * for data forwarding.
+     * 
+     * @param expressRouteGatewayBypass the expressRouteGatewayBypass value to
+     * set.
+     * @return the VirtualNetworkGatewayConnectionListEntityInner object
+     * itself.
      */
-    public VirtualNetworkGatewayConnectionListEntityInner withExpressRouteGatewayBypass(
-        Boolean expressRouteGatewayBypass) {
+    public VirtualNetworkGatewayConnectionListEntityInner withExpressRouteGatewayBypass(Boolean expressRouteGatewayBypass) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkGatewayConnectionListEntityPropertiesFormat();
         }
@@ -509,16 +531,12 @@ public final class VirtualNetworkGatewayConnectionListEntityInner extends Resour
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model"
-                            + " VirtualNetworkGatewayConnectionListEntityInner"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model VirtualNetworkGatewayConnectionListEntityInner"));
         } else {
             innerProperties().validate();
         }

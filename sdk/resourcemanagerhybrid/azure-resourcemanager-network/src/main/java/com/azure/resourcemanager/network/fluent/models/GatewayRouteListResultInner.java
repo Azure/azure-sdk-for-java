@@ -5,26 +5,31 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.GatewayRoute;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of virtual network gateway routes. */
+/**
+ * List of virtual network gateway routes.
+ */
 @Fluent
 public final class GatewayRouteListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayRouteListResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GatewayRouteListResultInner.class);
 
     /*
-     * List of gateway routes.
+     * List of gateway routes
      */
     @JsonProperty(value = "value")
     private List<GatewayRoute> value;
 
     /**
      * Get the value property: List of gateway routes.
-     *
+     * 
      * @return the value value.
      */
     public List<GatewayRoute> value() {
@@ -33,7 +38,7 @@ public final class GatewayRouteListResultInner {
 
     /**
      * Set the value property: List of gateway routes.
-     *
+     * 
      * @param value the value value to set.
      * @return the GatewayRouteListResultInner object itself.
      */
@@ -44,7 +49,7 @@ public final class GatewayRouteListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

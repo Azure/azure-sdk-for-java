@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The blob service properties for Last access time based tracking policy. */
+/**
+ * The blob service properties for Last access time based tracking policy.
+ */
 @Fluent
 public final class LastAccessTimeTrackingPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LastAccessTimeTrackingPolicy.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LastAccessTimeTrackingPolicy.class);
 
     /*
      * When set to true last access time based tracking is enabled.
@@ -44,8 +49,9 @@ public final class LastAccessTimeTrackingPolicy {
     private List<String> blobType;
 
     /**
-     * Get the enable property: When set to true last access time based tracking is enabled.
-     *
+     * Get the enable property: When set to true last access time based
+     * tracking is enabled.
+     * 
      * @return the enable value.
      */
     public boolean enable() {
@@ -53,8 +59,9 @@ public final class LastAccessTimeTrackingPolicy {
     }
 
     /**
-     * Set the enable property: When set to true last access time based tracking is enabled.
-     *
+     * Set the enable property: When set to true last access time based
+     * tracking is enabled.
+     * 
      * @param enable the enable value to set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
@@ -64,9 +71,9 @@ public final class LastAccessTimeTrackingPolicy {
     }
 
     /**
-     * Get the name property: Name of the policy. The valid value is AccessTimeTracking. This field is currently read
-     * only.
-     *
+     * Get the name property: Name of the policy. The valid value is
+     * AccessTimeTracking. This field is currently read only.
+     * 
      * @return the name value.
      */
     public Name name() {
@@ -74,9 +81,9 @@ public final class LastAccessTimeTrackingPolicy {
     }
 
     /**
-     * Set the name property: Name of the policy. The valid value is AccessTimeTracking. This field is currently read
-     * only.
-     *
+     * Set the name property: Name of the policy. The valid value is
+     * AccessTimeTracking. This field is currently read only.
+     * 
      * @param name the name value to set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
@@ -86,9 +93,10 @@ public final class LastAccessTimeTrackingPolicy {
     }
 
     /**
-     * Get the trackingGranularityInDays property: The field specifies blob object tracking granularity in days,
-     * typically how often the blob object should be tracked.This field is currently read only with value as 1.
-     *
+     * Get the trackingGranularityInDays property: The field specifies blob
+     * object tracking granularity in days, typically how often the blob object
+     * should be tracked.This field is currently read only with value as 1.
+     * 
      * @return the trackingGranularityInDays value.
      */
     public Integer trackingGranularityInDays() {
@@ -96,10 +104,12 @@ public final class LastAccessTimeTrackingPolicy {
     }
 
     /**
-     * Set the trackingGranularityInDays property: The field specifies blob object tracking granularity in days,
-     * typically how often the blob object should be tracked.This field is currently read only with value as 1.
-     *
-     * @param trackingGranularityInDays the trackingGranularityInDays value to set.
+     * Set the trackingGranularityInDays property: The field specifies blob
+     * object tracking granularity in days, typically how often the blob object
+     * should be tracked.This field is currently read only with value as 1.
+     * 
+     * @param trackingGranularityInDays the trackingGranularityInDays value to
+     * set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
     public LastAccessTimeTrackingPolicy withTrackingGranularityInDays(Integer trackingGranularityInDays) {
@@ -108,9 +118,10 @@ public final class LastAccessTimeTrackingPolicy {
     }
 
     /**
-     * Get the blobType property: An array of predefined supported blob types. Only blockBlob is the supported value.
-     * This field is currently read only.
-     *
+     * Get the blobType property: An array of predefined supported blob types.
+     * Only blockBlob is the supported value. This field is currently read
+     * only.
+     * 
      * @return the blobType value.
      */
     public List<String> blobType() {
@@ -118,9 +129,10 @@ public final class LastAccessTimeTrackingPolicy {
     }
 
     /**
-     * Set the blobType property: An array of predefined supported blob types. Only blockBlob is the supported value.
-     * This field is currently read only.
-     *
+     * Set the blobType property: An array of predefined supported blob types.
+     * Only blockBlob is the supported value. This field is currently read
+     * only.
+     * 
      * @param blobType the blobType value to set.
      * @return the LastAccessTimeTrackingPolicy object itself.
      */
@@ -131,7 +143,7 @@ public final class LastAccessTimeTrackingPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

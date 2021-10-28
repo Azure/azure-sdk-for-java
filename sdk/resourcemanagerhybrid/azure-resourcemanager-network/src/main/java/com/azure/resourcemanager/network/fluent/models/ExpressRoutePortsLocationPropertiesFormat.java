@@ -5,17 +5,22 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsLocationBandwidths;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ExpressRoutePorts Location Properties Properties specific to ExpressRoutePorts peering location resources. */
+/**
+ * ExpressRoutePorts Location Properties Properties specific to
+ * ExpressRoutePorts peering location resources.
+ */
 @Fluent
 public final class ExpressRoutePortsLocationPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationPropertiesFormat.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationPropertiesFormat.class);
 
     /*
      * Address of peering location.
@@ -36,14 +41,15 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
     private List<ExpressRoutePortsLocationBandwidths> availableBandwidths;
 
     /*
-     * The provisioning state of the express route port location resource.
+     * The provisioning state of the ExpressRoutePortLocation resource.
+     * Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
      * Get the address property: Address of peering location.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -52,7 +58,7 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
 
     /**
      * Get the contact property: Contact details of peering locations.
-     *
+     * 
      * @return the contact value.
      */
     public String contact() {
@@ -60,8 +66,9 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
     }
 
     /**
-     * Get the availableBandwidths property: The inventory of available ExpressRoutePort bandwidths.
-     *
+     * Get the availableBandwidths property: The inventory of available
+     * ExpressRoutePort bandwidths.
+     * 
      * @return the availableBandwidths value.
      */
     public List<ExpressRoutePortsLocationBandwidths> availableBandwidths() {
@@ -69,29 +76,31 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
     }
 
     /**
-     * Set the availableBandwidths property: The inventory of available ExpressRoutePort bandwidths.
-     *
+     * Set the availableBandwidths property: The inventory of available
+     * ExpressRoutePort bandwidths.
+     * 
      * @param availableBandwidths the availableBandwidths value to set.
      * @return the ExpressRoutePortsLocationPropertiesFormat object itself.
      */
-    public ExpressRoutePortsLocationPropertiesFormat withAvailableBandwidths(
-        List<ExpressRoutePortsLocationBandwidths> availableBandwidths) {
+    public ExpressRoutePortsLocationPropertiesFormat withAvailableBandwidths(List<ExpressRoutePortsLocationBandwidths> availableBandwidths) {
         this.availableBandwidths = availableBandwidths;
         return this;
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route port location resource.
-     *
+     * Get the provisioningState property: The provisioning state of the
+     * ExpressRoutePortLocation resource. Possible values are: 'Succeeded',
+     * 'Updating', 'Deleting', and 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

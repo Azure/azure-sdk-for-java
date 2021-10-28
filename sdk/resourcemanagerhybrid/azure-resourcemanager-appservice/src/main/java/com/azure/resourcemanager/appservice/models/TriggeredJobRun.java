@@ -6,80 +6,37 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.TriggeredJobRunProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Triggered Web Job Run Information. */
 @Fluent
-public final class TriggeredJobRun {
+public final class TriggeredJobRun extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredJobRun.class);
 
     /*
-     * Job ID.
+     * TriggeredJobRun resource specific properties
      */
-    @JsonProperty(value = "web_job_id")
-    private String webJobId;
+    @JsonProperty(value = "properties")
+    private TriggeredJobRunProperties innerProperties;
 
-    /*
-     * Job name.
+    /**
+     * Get the innerProperties property: TriggeredJobRun resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "web_job_name")
-    private String webJobName;
+    private TriggeredJobRunProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Job status.
-     */
-    @JsonProperty(value = "status")
-    private TriggeredWebJobStatus status;
-
-    /*
-     * Start time.
-     */
-    @JsonProperty(value = "start_time")
-    private OffsetDateTime startTime;
-
-    /*
-     * End time.
-     */
-    @JsonProperty(value = "end_time")
-    private OffsetDateTime endTime;
-
-    /*
-     * Job duration.
-     */
-    @JsonProperty(value = "duration")
-    private String duration;
-
-    /*
-     * Output URL.
-     */
-    @JsonProperty(value = "output_url")
-    private String outputUrl;
-
-    /*
-     * Error URL.
-     */
-    @JsonProperty(value = "error_url")
-    private String errorUrl;
-
-    /*
-     * Job URL.
-     */
-    @JsonProperty(value = "url")
-    private String url;
-
-    /*
-     * Job name.
-     */
-    @JsonProperty(value = "job_name")
-    private String jobName;
-
-    /*
-     * Job trigger.
-     */
-    @JsonProperty(value = "trigger")
-    private String trigger;
+    /** {@inheritDoc} */
+    @Override
+    public TriggeredJobRun withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the webJobId property: Job ID.
@@ -87,7 +44,7 @@ public final class TriggeredJobRun {
      * @return the webJobId value.
      */
     public String webJobId() {
-        return this.webJobId;
+        return this.innerProperties() == null ? null : this.innerProperties().webJobId();
     }
 
     /**
@@ -97,7 +54,10 @@ public final class TriggeredJobRun {
      * @return the TriggeredJobRun object itself.
      */
     public TriggeredJobRun withWebJobId(String webJobId) {
-        this.webJobId = webJobId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobRunProperties();
+        }
+        this.innerProperties().withWebJobId(webJobId);
         return this;
     }
 
@@ -107,7 +67,7 @@ public final class TriggeredJobRun {
      * @return the webJobName value.
      */
     public String webJobName() {
-        return this.webJobName;
+        return this.innerProperties() == null ? null : this.innerProperties().webJobName();
     }
 
     /**
@@ -117,7 +77,10 @@ public final class TriggeredJobRun {
      * @return the TriggeredJobRun object itself.
      */
     public TriggeredJobRun withWebJobName(String webJobName) {
-        this.webJobName = webJobName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobRunProperties();
+        }
+        this.innerProperties().withWebJobName(webJobName);
         return this;
     }
 
@@ -127,7 +90,7 @@ public final class TriggeredJobRun {
      * @return the status value.
      */
     public TriggeredWebJobStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -137,7 +100,10 @@ public final class TriggeredJobRun {
      * @return the TriggeredJobRun object itself.
      */
     public TriggeredJobRun withStatus(TriggeredWebJobStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobRunProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -147,7 +113,7 @@ public final class TriggeredJobRun {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -157,7 +123,10 @@ public final class TriggeredJobRun {
      * @return the TriggeredJobRun object itself.
      */
     public TriggeredJobRun withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobRunProperties();
+        }
+        this.innerProperties().withStartTime(startTime);
         return this;
     }
 
@@ -167,7 +136,7 @@ public final class TriggeredJobRun {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -177,7 +146,10 @@ public final class TriggeredJobRun {
      * @return the TriggeredJobRun object itself.
      */
     public TriggeredJobRun withEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobRunProperties();
+        }
+        this.innerProperties().withEndTime(endTime);
         return this;
     }
 
@@ -187,7 +159,7 @@ public final class TriggeredJobRun {
      * @return the duration value.
      */
     public String duration() {
-        return this.duration;
+        return this.innerProperties() == null ? null : this.innerProperties().duration();
     }
 
     /**
@@ -197,7 +169,10 @@ public final class TriggeredJobRun {
      * @return the TriggeredJobRun object itself.
      */
     public TriggeredJobRun withDuration(String duration) {
-        this.duration = duration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobRunProperties();
+        }
+        this.innerProperties().withDuration(duration);
         return this;
     }
 
@@ -207,7 +182,7 @@ public final class TriggeredJobRun {
      * @return the outputUrl value.
      */
     public String outputUrl() {
-        return this.outputUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().outputUrl();
     }
 
     /**
@@ -217,7 +192,10 @@ public final class TriggeredJobRun {
      * @return the TriggeredJobRun object itself.
      */
     public TriggeredJobRun withOutputUrl(String outputUrl) {
-        this.outputUrl = outputUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobRunProperties();
+        }
+        this.innerProperties().withOutputUrl(outputUrl);
         return this;
     }
 
@@ -227,7 +205,7 @@ public final class TriggeredJobRun {
      * @return the errorUrl value.
      */
     public String errorUrl() {
-        return this.errorUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().errorUrl();
     }
 
     /**
@@ -237,7 +215,10 @@ public final class TriggeredJobRun {
      * @return the TriggeredJobRun object itself.
      */
     public TriggeredJobRun withErrorUrl(String errorUrl) {
-        this.errorUrl = errorUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobRunProperties();
+        }
+        this.innerProperties().withErrorUrl(errorUrl);
         return this;
     }
 
@@ -247,7 +228,7 @@ public final class TriggeredJobRun {
      * @return the url value.
      */
     public String url() {
-        return this.url;
+        return this.innerProperties() == null ? null : this.innerProperties().url();
     }
 
     /**
@@ -257,7 +238,10 @@ public final class TriggeredJobRun {
      * @return the TriggeredJobRun object itself.
      */
     public TriggeredJobRun withUrl(String url) {
-        this.url = url;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobRunProperties();
+        }
+        this.innerProperties().withUrl(url);
         return this;
     }
 
@@ -267,7 +251,7 @@ public final class TriggeredJobRun {
      * @return the jobName value.
      */
     public String jobName() {
-        return this.jobName;
+        return this.innerProperties() == null ? null : this.innerProperties().jobName();
     }
 
     /**
@@ -277,7 +261,10 @@ public final class TriggeredJobRun {
      * @return the TriggeredJobRun object itself.
      */
     public TriggeredJobRun withJobName(String jobName) {
-        this.jobName = jobName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobRunProperties();
+        }
+        this.innerProperties().withJobName(jobName);
         return this;
     }
 
@@ -287,7 +274,7 @@ public final class TriggeredJobRun {
      * @return the trigger value.
      */
     public String trigger() {
-        return this.trigger;
+        return this.innerProperties() == null ? null : this.innerProperties().trigger();
     }
 
     /**
@@ -297,7 +284,10 @@ public final class TriggeredJobRun {
      * @return the TriggeredJobRun object itself.
      */
     public TriggeredJobRun withTrigger(String trigger) {
-        this.trigger = trigger;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobRunProperties();
+        }
+        this.innerProperties().withTrigger(trigger);
         return this;
     }
 
@@ -306,6 +296,11 @@ public final class TriggeredJobRun {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

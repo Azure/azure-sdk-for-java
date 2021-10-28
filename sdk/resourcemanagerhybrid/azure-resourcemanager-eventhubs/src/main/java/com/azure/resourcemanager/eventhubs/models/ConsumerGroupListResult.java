@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.ConsumerGroupInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result to the List Consumer Group operation. */
+/**
+ * The result to the List Consumer Group operation.
+ */
 @Fluent
 public final class ConsumerGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConsumerGroupListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ConsumerGroupListResult.class);
 
     /*
      * Result of the List Consumer Group operation.
@@ -31,7 +36,7 @@ public final class ConsumerGroupListResult {
 
     /**
      * Get the value property: Result of the List Consumer Group operation.
-     *
+     * 
      * @return the value value.
      */
     public List<ConsumerGroupInner> value() {
@@ -40,7 +45,7 @@ public final class ConsumerGroupListResult {
 
     /**
      * Set the value property: Result of the List Consumer Group operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConsumerGroupListResult object itself.
      */
@@ -50,9 +55,9 @@ public final class ConsumerGroupListResult {
     }
 
     /**
-     * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
-     * Consumer Group.
-     *
+     * Get the nextLink property: Link to the next set of results. Not empty if
+     * Value contains incomplete list of Consumer Group.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,9 +65,9 @@ public final class ConsumerGroupListResult {
     }
 
     /**
-     * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
-     * Consumer Group.
-     *
+     * Set the nextLink property: Link to the next set of results. Not empty if
+     * Value contains incomplete list of Consumer Group.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ConsumerGroupListResult object itself.
      */
@@ -73,7 +78,7 @@ public final class ConsumerGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

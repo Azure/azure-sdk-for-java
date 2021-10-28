@@ -4,17 +4,22 @@
 
 package com.azure.resourcemanager.storage.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.BlobInventoryPolicyInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of blob inventory policies returned. */
+/**
+ * List of blob inventory policies returned.
+ */
 @Immutable
 public final class ListBlobInventoryPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListBlobInventoryPolicy.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListBlobInventoryPolicy.class);
 
     /*
      * List of blob inventory policies.
@@ -24,7 +29,7 @@ public final class ListBlobInventoryPolicy {
 
     /**
      * Get the value property: List of blob inventory policies.
-     *
+     * 
      * @return the value value.
      */
     public List<BlobInventoryPolicyInner> value() {
@@ -33,7 +38,7 @@ public final class ListBlobInventoryPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

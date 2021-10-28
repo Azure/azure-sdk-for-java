@@ -7,25 +7,37 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/** A builder for creating a new instance of the FeatureClientImpl type. */
+/**
+ * A builder for creating a new instance of the FeatureClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = {FeatureClientImpl.class})
 public final class FeatureClientBuilder {
     /*
-     * The Azure subscription ID.
+     * The ID of the target subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets The Azure subscription ID.
-     *
+     * Sets The ID of the target subscription.
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the FeatureClientBuilder.
      */
@@ -41,7 +53,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the FeatureClientBuilder.
      */
@@ -57,7 +69,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the FeatureClientBuilder.
      */
@@ -73,7 +85,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the FeatureClientBuilder.
      */
@@ -89,7 +101,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the FeatureClientBuilder.
      */
@@ -105,7 +117,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the FeatureClientBuilder.
      */
@@ -116,7 +128,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Builds an instance of FeatureClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of FeatureClientImpl.
      */
     public FeatureClientImpl buildClient() {
@@ -130,17 +142,12 @@ public final class FeatureClientBuilder {
             this.defaultPollInterval = Duration.ofSeconds(30);
         }
         if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                    .build();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        FeatureClientImpl client =
-            new FeatureClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        FeatureClientImpl client = new FeatureClientImpl(pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

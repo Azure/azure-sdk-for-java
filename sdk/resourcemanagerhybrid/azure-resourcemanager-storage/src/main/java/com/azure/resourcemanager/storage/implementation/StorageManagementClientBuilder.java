@@ -7,15 +7,27 @@ package com.azure.resourcemanager.storage.implementation;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-/** A builder for creating a new instance of the StorageManagementClientImpl type. */
+/**
+ * A builder for creating a new instance of the StorageManagementClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = {StorageManagementClientImpl.class})
 public final class StorageManagementClientBuilder {
     /*
@@ -25,7 +37,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the StorageManagementClientBuilder.
      */
@@ -41,7 +53,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the StorageManagementClientBuilder.
      */
@@ -57,7 +69,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the StorageManagementClientBuilder.
      */
@@ -73,7 +85,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the StorageManagementClientBuilder.
      */
@@ -89,7 +101,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the StorageManagementClientBuilder.
      */
@@ -105,7 +117,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the StorageManagementClientBuilder.
      */
@@ -116,7 +128,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Builds an instance of StorageManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of StorageManagementClientImpl.
      */
     public StorageManagementClientImpl buildClient() {
@@ -130,17 +142,12 @@ public final class StorageManagementClientBuilder {
             this.defaultPollInterval = Duration.ofSeconds(30);
         }
         if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                    .build();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        StorageManagementClientImpl client =
-            new StorageManagementClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        StorageManagementClientImpl client = new StorageManagementClientImpl(pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

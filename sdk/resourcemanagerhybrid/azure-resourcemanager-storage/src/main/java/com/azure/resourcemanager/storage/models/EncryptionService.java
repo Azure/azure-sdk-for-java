@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A service that allows server-side encryption to be used. */
+/**
+ * A service that allows server-side encryption to be used.
+ */
 @Fluent
 public final class EncryptionService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionService.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EncryptionService.class);
 
     /*
      * A boolean indicating whether or not the service encrypts the data as it
@@ -40,8 +45,9 @@ public final class EncryptionService {
     private KeyType keyType;
 
     /**
-     * Get the enabled property: A boolean indicating whether or not the service encrypts the data as it is stored.
-     *
+     * Get the enabled property: A boolean indicating whether or not the
+     * service encrypts the data as it is stored.
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -49,8 +55,9 @@ public final class EncryptionService {
     }
 
     /**
-     * Set the enabled property: A boolean indicating whether or not the service encrypts the data as it is stored.
-     *
+     * Set the enabled property: A boolean indicating whether or not the
+     * service encrypts the data as it is stored.
+     * 
      * @param enabled the enabled value to set.
      * @return the EncryptionService object itself.
      */
@@ -60,10 +67,11 @@ public final class EncryptionService {
     }
 
     /**
-     * Get the lastEnabledTime property: Gets a rough estimate of the date/time when the encryption was last enabled by
-     * the user. Only returned when encryption is enabled. There might be some unencrypted blobs which were written
-     * after this time, as it is just a rough estimate.
-     *
+     * Get the lastEnabledTime property: Gets a rough estimate of the date/time
+     * when the encryption was last enabled by the user. Only returned when
+     * encryption is enabled. There might be some unencrypted blobs which were
+     * written after this time, as it is just a rough estimate.
+     * 
      * @return the lastEnabledTime value.
      */
     public OffsetDateTime lastEnabledTime() {
@@ -71,10 +79,11 @@ public final class EncryptionService {
     }
 
     /**
-     * Get the keyType property: Encryption key type to be used for the encryption service. 'Account' key type implies
-     * that an account-scoped encryption key will be used. 'Service' key type implies that a default service key is
-     * used.
-     *
+     * Get the keyType property: Encryption key type to be used for the
+     * encryption service. 'Account' key type implies that an account-scoped
+     * encryption key will be used. 'Service' key type implies that a default
+     * service key is used.
+     * 
      * @return the keyType value.
      */
     public KeyType keyType() {
@@ -82,10 +91,11 @@ public final class EncryptionService {
     }
 
     /**
-     * Set the keyType property: Encryption key type to be used for the encryption service. 'Account' key type implies
-     * that an account-scoped encryption key will be used. 'Service' key type implies that a default service key is
-     * used.
-     *
+     * Set the keyType property: Encryption key type to be used for the
+     * encryption service. 'Account' key type implies that an account-scoped
+     * encryption key will be used. 'Service' key type implies that a default
+     * service key is used.
+     * 
      * @param keyType the keyType value to set.
      * @return the EncryptionService object itself.
      */
@@ -96,7 +106,7 @@ public final class EncryptionService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

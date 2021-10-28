@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.LoadDistribution;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** Properties of the load balancer. */
+/**
+ * Properties of the load balancer.
+ */
 @Fluent
 public final class LoadBalancingRulePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancingRulePropertiesFormat.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LoadBalancingRulePropertiesFormat.class);
 
     /*
      * A reference to frontend IP addresses.
@@ -33,26 +36,22 @@ public final class LoadBalancingRulePropertiesFormat {
     private SubResource backendAddressPool;
 
     /*
-     * An array of references to pool of DIPs.
-     */
-    @JsonProperty(value = "backendAddressPools")
-    private List<SubResource> backendAddressPools;
-
-    /*
-     * The reference to the load balancer probe used by the load balancing
+     * The reference of the load balancer probe used by the load balancing
      * rule.
      */
     @JsonProperty(value = "probe")
     private SubResource probe;
 
     /*
-     * The reference to the transport protocol used by the load balancing rule.
+     * The transport protocol for the endpoint. Possible values are 'Udp' or
+     * 'Tcp' or 'All'.
      */
     @JsonProperty(value = "protocol", required = true)
     private TransportProtocol protocol;
 
     /*
-     * The load distribution policy for this rule.
+     * The load distribution policy for this rule. Possible values are
+     * 'Default', 'SourceIP', and 'SourceIPProtocol'.
      */
     @JsonProperty(value = "loadDistribution")
     private LoadDistribution loadDistribution;
@@ -60,14 +59,14 @@ public final class LoadBalancingRulePropertiesFormat {
     /*
      * The port for the external endpoint. Port numbers for each rule must be
      * unique within the Load Balancer. Acceptable values are between 0 and
-     * 65534. Note that value 0 enables "Any Port".
+     * 65534. Note that value 0 enables "Any Port"
      */
     @JsonProperty(value = "frontendPort", required = true)
     private int frontendPort;
 
     /*
      * The port used for internal connections on the endpoint. Acceptable
-     * values are between 0 and 65535. Note that value 0 enables "Any Port".
+     * values are between 0 and 65535. Note that value 0 enables "Any Port"
      */
     @JsonProperty(value = "backendPort")
     private Integer backendPort;
@@ -105,14 +104,16 @@ public final class LoadBalancingRulePropertiesFormat {
     private Boolean disableOutboundSnat;
 
     /*
-     * The provisioning state of the load balancing rule resource.
+     * Gets the provisioning state of the PublicIP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
-     * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
-     *
+     * Get the frontendIpConfiguration property: A reference to frontend IP
+     * addresses.
+     * 
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
@@ -120,8 +121,9 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the frontendIpConfiguration property: A reference to frontend IP addresses.
-     *
+     * Set the frontendIpConfiguration property: A reference to frontend IP
+     * addresses.
+     * 
      * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
      */
@@ -131,9 +133,9 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the backendAddressPool property: A reference to a pool of DIPs. Inbound traffic is randomly load balanced
-     * across IPs in the backend IPs.
-     *
+     * Get the backendAddressPool property: A reference to a pool of DIPs.
+     * Inbound traffic is randomly load balanced across IPs in the backend IPs.
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -141,9 +143,9 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the backendAddressPool property: A reference to a pool of DIPs. Inbound traffic is randomly load balanced
-     * across IPs in the backend IPs.
-     *
+     * Set the backendAddressPool property: A reference to a pool of DIPs.
+     * Inbound traffic is randomly load balanced across IPs in the backend IPs.
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
      */
@@ -153,28 +155,9 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the backendAddressPools property: An array of references to pool of DIPs.
-     *
-     * @return the backendAddressPools value.
-     */
-    public List<SubResource> backendAddressPools() {
-        return this.backendAddressPools;
-    }
-
-    /**
-     * Set the backendAddressPools property: An array of references to pool of DIPs.
-     *
-     * @param backendAddressPools the backendAddressPools value to set.
-     * @return the LoadBalancingRulePropertiesFormat object itself.
-     */
-    public LoadBalancingRulePropertiesFormat withBackendAddressPools(List<SubResource> backendAddressPools) {
-        this.backendAddressPools = backendAddressPools;
-        return this;
-    }
-
-    /**
-     * Get the probe property: The reference to the load balancer probe used by the load balancing rule.
-     *
+     * Get the probe property: The reference of the load balancer probe used by
+     * the load balancing rule.
+     * 
      * @return the probe value.
      */
     public SubResource probe() {
@@ -182,8 +165,9 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the probe property: The reference to the load balancer probe used by the load balancing rule.
-     *
+     * Set the probe property: The reference of the load balancer probe used by
+     * the load balancing rule.
+     * 
      * @param probe the probe value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
      */
@@ -193,8 +177,9 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the protocol property: The reference to the transport protocol used by the load balancing rule.
-     *
+     * Get the protocol property: The transport protocol for the endpoint.
+     * Possible values are 'Udp' or 'Tcp' or 'All'.
+     * 
      * @return the protocol value.
      */
     public TransportProtocol protocol() {
@@ -202,8 +187,9 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the protocol property: The reference to the transport protocol used by the load balancing rule.
-     *
+     * Set the protocol property: The transport protocol for the endpoint.
+     * Possible values are 'Udp' or 'Tcp' or 'All'.
+     * 
      * @param protocol the protocol value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
      */
@@ -213,8 +199,9 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the loadDistribution property: The load distribution policy for this rule.
-     *
+     * Get the loadDistribution property: The load distribution policy for this
+     * rule. Possible values are 'Default', 'SourceIP', and 'SourceIPProtocol'.
+     * 
      * @return the loadDistribution value.
      */
     public LoadDistribution loadDistribution() {
@@ -222,8 +209,9 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the loadDistribution property: The load distribution policy for this rule.
-     *
+     * Set the loadDistribution property: The load distribution policy for this
+     * rule. Possible values are 'Default', 'SourceIP', and 'SourceIPProtocol'.
+     * 
      * @param loadDistribution the loadDistribution value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
      */
@@ -233,9 +221,11 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the frontendPort property: The port for the external endpoint. Port numbers for each rule must be unique
-     * within the Load Balancer. Acceptable values are between 0 and 65534. Note that value 0 enables "Any Port".
-     *
+     * Get the frontendPort property: The port for the external endpoint. Port
+     * numbers for each rule must be unique within the Load Balancer.
+     * Acceptable values are between 0 and 65534. Note that value 0 enables
+     * "Any Port".
+     * 
      * @return the frontendPort value.
      */
     public int frontendPort() {
@@ -243,9 +233,11 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the frontendPort property: The port for the external endpoint. Port numbers for each rule must be unique
-     * within the Load Balancer. Acceptable values are between 0 and 65534. Note that value 0 enables "Any Port".
-     *
+     * Set the frontendPort property: The port for the external endpoint. Port
+     * numbers for each rule must be unique within the Load Balancer.
+     * Acceptable values are between 0 and 65534. Note that value 0 enables
+     * "Any Port".
+     * 
      * @param frontendPort the frontendPort value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
      */
@@ -255,9 +247,10 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the backendPort property: The port used for internal connections on the endpoint. Acceptable values are
-     * between 0 and 65535. Note that value 0 enables "Any Port".
-     *
+     * Get the backendPort property: The port used for internal connections on
+     * the endpoint. Acceptable values are between 0 and 65535. Note that value
+     * 0 enables "Any Port".
+     * 
      * @return the backendPort value.
      */
     public Integer backendPort() {
@@ -265,9 +258,10 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the backendPort property: The port used for internal connections on the endpoint. Acceptable values are
-     * between 0 and 65535. Note that value 0 enables "Any Port".
-     *
+     * Set the backendPort property: The port used for internal connections on
+     * the endpoint. Acceptable values are between 0 and 65535. Note that value
+     * 0 enables "Any Port".
+     * 
      * @param backendPort the backendPort value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
      */
@@ -277,9 +271,11 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
-     * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
-     *
+     * Get the idleTimeoutInMinutes property: The timeout for the TCP idle
+     * connection. The value can be set between 4 and 30 minutes. The default
+     * value is 4 minutes. This element is only used when the protocol is set
+     * to TCP.
+     * 
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -287,9 +283,11 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
-     * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
-     *
+     * Set the idleTimeoutInMinutes property: The timeout for the TCP idle
+     * connection. The value can be set between 4 and 30 minutes. The default
+     * value is 4 minutes. This element is only used when the protocol is set
+     * to TCP.
+     * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
      */
@@ -299,10 +297,12 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
-     * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
-     * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
-     *
+     * Get the enableFloatingIp property: Configures a virtual machine's
+     * endpoint for the floating IP capability required to configure a SQL
+     * AlwaysOn Availability Group. This setting is required when using the SQL
+     * AlwaysOn Availability Groups in SQL server. This setting can't be
+     * changed after you create the endpoint.
+     * 
      * @return the enableFloatingIp value.
      */
     public Boolean enableFloatingIp() {
@@ -310,10 +310,12 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
-     * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
-     * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
-     *
+     * Set the enableFloatingIp property: Configures a virtual machine's
+     * endpoint for the floating IP capability required to configure a SQL
+     * AlwaysOn Availability Group. This setting is required when using the SQL
+     * AlwaysOn Availability Groups in SQL server. This setting can't be
+     * changed after you create the endpoint.
+     * 
      * @param enableFloatingIp the enableFloatingIp value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
      */
@@ -323,9 +325,10 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
-     * connection termination. This element is only used when the protocol is set to TCP.
-     *
+     * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP
+     * flow idle timeout or unexpected connection termination. This element is
+     * only used when the protocol is set to TCP.
+     * 
      * @return the enableTcpReset value.
      */
     public Boolean enableTcpReset() {
@@ -333,9 +336,10 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
-     * connection termination. This element is only used when the protocol is set to TCP.
-     *
+     * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP
+     * flow idle timeout or unexpected connection termination. This element is
+     * only used when the protocol is set to TCP.
+     * 
      * @param enableTcpReset the enableTcpReset value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
      */
@@ -345,9 +349,10 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP address
-     * specified in the frontend of the load balancing rule.
-     *
+     * Get the disableOutboundSnat property: Configures SNAT for the VMs in the
+     * backend pool to use the publicIP address specified in the frontend of
+     * the load balancing rule.
+     * 
      * @return the disableOutboundSnat value.
      */
     public Boolean disableOutboundSnat() {
@@ -355,9 +360,10 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Set the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP address
-     * specified in the frontend of the load balancing rule.
-     *
+     * Set the disableOutboundSnat property: Configures SNAT for the VMs in the
+     * backend pool to use the publicIP address specified in the frontend of
+     * the load balancing rule.
+     * 
      * @param disableOutboundSnat the disableOutboundSnat value to set.
      * @return the LoadBalancingRulePropertiesFormat object itself.
      */
@@ -367,25 +373,37 @@ public final class LoadBalancingRulePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the load balancing rule resource.
-     *
+     * Get the provisioningState property: Gets the provisioning state of the
+     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
+     * Set the provisioningState property: Gets the provisioning state of the
+     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the LoadBalancingRulePropertiesFormat object itself.
+     */
+    public LoadBalancingRulePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (protocol() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocol in model LoadBalancingRulePropertiesFormat"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property protocol in model LoadBalancingRulePropertiesFormat"));
         }
     }
 }

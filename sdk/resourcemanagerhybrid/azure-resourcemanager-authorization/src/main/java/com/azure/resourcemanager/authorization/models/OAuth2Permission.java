@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents an OAuth 2.0 delegated permission scope. The specified OAuth 2.0 delegated permission scopes may be
- * requested by client applications (through the requiredResourceAccess collection on the Application object) when
- * calling a resource application. The oauth2Permissions property of the ServicePrincipal entity and of the Application
- * entity is a collection of OAuth2Permission.
+ * Represents an OAuth 2.0 delegated permission scope. The specified OAuth 2.0
+ * delegated permission scopes may be requested by client applications (through
+ * the requiredResourceAccess collection on the Application object) when
+ * calling a resource application. The oauth2Permissions property of the
+ * ServicePrincipal entity and of the Application entity is a collection of
+ * OAuth2Permission.
  */
 @Fluent
 public final class OAuth2Permission {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OAuth2Permission.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OAuth2Permission.class);
 
     /*
      * Permission help text that appears in the admin consent and app
@@ -78,9 +83,9 @@ public final class OAuth2Permission {
     private String value;
 
     /**
-     * Get the adminConsentDescription property: Permission help text that appears in the admin consent and app
-     * assignment experiences.
-     *
+     * Get the adminConsentDescription property: Permission help text that
+     * appears in the admin consent and app assignment experiences.
+     * 
      * @return the adminConsentDescription value.
      */
     public String adminConsentDescription() {
@@ -88,9 +93,9 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Set the adminConsentDescription property: Permission help text that appears in the admin consent and app
-     * assignment experiences.
-     *
+     * Set the adminConsentDescription property: Permission help text that
+     * appears in the admin consent and app assignment experiences.
+     * 
      * @param adminConsentDescription the adminConsentDescription value to set.
      * @return the OAuth2Permission object itself.
      */
@@ -100,9 +105,10 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Get the adminConsentDisplayName property: Display name for the permission that appears in the admin consent and
-     * app assignment experiences.
-     *
+     * Get the adminConsentDisplayName property: Display name for the
+     * permission that appears in the admin consent and app assignment
+     * experiences.
+     * 
      * @return the adminConsentDisplayName value.
      */
     public String adminConsentDisplayName() {
@@ -110,9 +116,10 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Set the adminConsentDisplayName property: Display name for the permission that appears in the admin consent and
-     * app assignment experiences.
-     *
+     * Set the adminConsentDisplayName property: Display name for the
+     * permission that appears in the admin consent and app assignment
+     * experiences.
+     * 
      * @param adminConsentDisplayName the adminConsentDisplayName value to set.
      * @return the OAuth2Permission object itself.
      */
@@ -122,8 +129,9 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Get the id property: Unique scope permission identifier inside the oauth2Permissions collection.
-     *
+     * Get the id property: Unique scope permission identifier inside the
+     * oauth2Permissions collection.
+     * 
      * @return the id value.
      */
     public String id() {
@@ -131,8 +139,9 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Set the id property: Unique scope permission identifier inside the oauth2Permissions collection.
-     *
+     * Set the id property: Unique scope permission identifier inside the
+     * oauth2Permissions collection.
+     * 
      * @param id the id value to set.
      * @return the OAuth2Permission object itself.
      */
@@ -142,10 +151,11 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Get the isEnabled property: When creating or updating a permission, this property must be set to true (which is
-     * the default). To delete a permission, this property must first be set to false. At that point, in a subsequent
-     * call, the permission may be removed.
-     *
+     * Get the isEnabled property: When creating or updating a permission, this
+     * property must be set to true (which is the default). To delete a
+     * permission, this property must first be set to false. At that point, in
+     * a subsequent call, the permission may be removed.
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -153,10 +163,11 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Set the isEnabled property: When creating or updating a permission, this property must be set to true (which is
-     * the default). To delete a permission, this property must first be set to false. At that point, in a subsequent
-     * call, the permission may be removed.
-     *
+     * Set the isEnabled property: When creating or updating a permission, this
+     * property must be set to true (which is the default). To delete a
+     * permission, this property must first be set to false. At that point, in
+     * a subsequent call, the permission may be removed.
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the OAuth2Permission object itself.
      */
@@ -166,10 +177,11 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Get the type property: Specifies whether this scope permission can be consented to by an end user, or whether it
-     * is a tenant-wide permission that must be consented to by a Company Administrator. Possible values are "User" or
-     * "Admin".
-     *
+     * Get the type property: Specifies whether this scope permission can be
+     * consented to by an end user, or whether it is a tenant-wide permission
+     * that must be consented to by a Company Administrator. Possible values
+     * are "User" or "Admin".
+     * 
      * @return the type value.
      */
     public String type() {
@@ -177,10 +189,11 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Set the type property: Specifies whether this scope permission can be consented to by an end user, or whether it
-     * is a tenant-wide permission that must be consented to by a Company Administrator. Possible values are "User" or
-     * "Admin".
-     *
+     * Set the type property: Specifies whether this scope permission can be
+     * consented to by an end user, or whether it is a tenant-wide permission
+     * that must be consented to by a Company Administrator. Possible values
+     * are "User" or "Admin".
+     * 
      * @param type the type value to set.
      * @return the OAuth2Permission object itself.
      */
@@ -190,8 +203,9 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Get the userConsentDescription property: Permission help text that appears in the end user consent experience.
-     *
+     * Get the userConsentDescription property: Permission help text that
+     * appears in the end user consent experience.
+     * 
      * @return the userConsentDescription value.
      */
     public String userConsentDescription() {
@@ -199,8 +213,9 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Set the userConsentDescription property: Permission help text that appears in the end user consent experience.
-     *
+     * Set the userConsentDescription property: Permission help text that
+     * appears in the end user consent experience.
+     * 
      * @param userConsentDescription the userConsentDescription value to set.
      * @return the OAuth2Permission object itself.
      */
@@ -210,9 +225,9 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Get the userConsentDisplayName property: Display name for the permission that appears in the end user consent
-     * experience.
-     *
+     * Get the userConsentDisplayName property: Display name for the permission
+     * that appears in the end user consent experience.
+     * 
      * @return the userConsentDisplayName value.
      */
     public String userConsentDisplayName() {
@@ -220,9 +235,9 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Set the userConsentDisplayName property: Display name for the permission that appears in the end user consent
-     * experience.
-     *
+     * Set the userConsentDisplayName property: Display name for the permission
+     * that appears in the end user consent experience.
+     * 
      * @param userConsentDisplayName the userConsentDisplayName value to set.
      * @return the OAuth2Permission object itself.
      */
@@ -232,9 +247,9 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Get the value property: The value of the scope claim that the resource application should expect in the OAuth 2.0
-     * access token.
-     *
+     * Get the value property: The value of the scope claim that the resource
+     * application should expect in the OAuth 2.0 access token.
+     * 
      * @return the value value.
      */
     public String value() {
@@ -242,9 +257,9 @@ public final class OAuth2Permission {
     }
 
     /**
-     * Set the value property: The value of the scope claim that the resource application should expect in the OAuth 2.0
-     * access token.
-     *
+     * Set the value property: The value of the scope claim that the resource
+     * application should expect in the OAuth 2.0 access token.
+     * 
      * @param value the value value to set.
      * @return the OAuth2Permission object itself.
      */
@@ -255,7 +270,7 @@ public final class OAuth2Permission {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

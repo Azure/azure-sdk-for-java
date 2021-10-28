@@ -5,28 +5,30 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
-import com.azure.resourcemanager.compute.models.ApplicationProfile;
 import com.azure.resourcemanager.compute.models.BillingProfile;
-import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.NetworkProfile;
 import com.azure.resourcemanager.compute.models.OSProfile;
-import com.azure.resourcemanager.compute.models.ScheduledEventsProfile;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineEvictionPolicyTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachinePriorityTypes;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a Virtual Machine. */
+/**
+ * Describes the properties of a Virtual Machine.
+ */
 @Fluent
 public final class VirtualMachinePropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinePropertiesInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachinePropertiesInner.class);
 
     /*
      * Specifies the hardware settings for the virtual machine.
@@ -77,12 +79,12 @@ public final class VirtualMachinePropertiesInner {
      * Specifies information about the availability set that the virtual
      * machine should be assigned to. Virtual machines specified in the same
      * availability set are allocated to different nodes to maximize
-     * availability. For more information about availability sets, see
-     * [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview).
-     * <br><br> For more information on Azure planned maintenance, see
-     * [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates)
+     * availability. For more information about availability sets, see [Manage
+     * the availability of virtual
+     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * <br><br> For more information on Azure planned maintenance, see [Planned
+     * maintenance for virtual machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
      * <br><br> Currently, a VM can only be added to availability set at
      * creation time. The availability set to which the VM is being added
      * should be under the same resource group as the availability set
@@ -198,51 +200,10 @@ public final class VirtualMachinePropertiesInner {
     @JsonProperty(value = "extensionsTimeBudget")
     private String extensionsTimeBudget;
 
-    /*
-     * Specifies the scale set logical fault domain into which the Virtual
-     * Machine will be created. By default, the Virtual Machine will by
-     * automatically assigned to a fault domain that best maintains balance
-     * across available fault domains.<br><li>This is applicable only if the
-     * 'virtualMachineScaleSet' property of this Virtual Machine is set.<li>The
-     * Virtual Machine Scale Set that is referenced, must have
-     * 'platformFaultDomainCount' &gt; 1.<li>This property cannot be updated
-     * once the Virtual Machine is created.<li>Fault domain assignment can be
-     * viewed in the Virtual Machine Instance View.<br><br>Minimum api‐version:
-     * 2020‐12‐01
-     */
-    @JsonProperty(value = "platformFaultDomain")
-    private Integer platformFaultDomain;
-
-    /*
-     * Specifies Scheduled Event related configurations.
-     */
-    @JsonProperty(value = "scheduledEventsProfile")
-    private ScheduledEventsProfile scheduledEventsProfile;
-
-    /*
-     * UserData for the VM, which must be base-64 encoded. Customer should not
-     * pass any secrets in here. <br><br>Minimum api-version: 2021-03-01
-     */
-    @JsonProperty(value = "userData")
-    private String userData;
-
-    /*
-     * Specifies information about the capacity reservation that is used to
-     * allocate virtual machine. <br><br>Minimum api-version: 2021-04-01.
-     */
-    @JsonProperty(value = "capacityReservation")
-    private CapacityReservationProfile capacityReservation;
-
-    /*
-     * Specifies the gallery applications that should be made available to the
-     * VM/VMSS
-     */
-    @JsonProperty(value = "applicationProfile")
-    private ApplicationProfile applicationProfile;
-
     /**
-     * Get the hardwareProfile property: Specifies the hardware settings for the virtual machine.
-     *
+     * Get the hardwareProfile property: Specifies the hardware settings for
+     * the virtual machine.
+     * 
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -250,8 +211,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the hardwareProfile property: Specifies the hardware settings for the virtual machine.
-     *
+     * Set the hardwareProfile property: Specifies the hardware settings for
+     * the virtual machine.
+     * 
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -261,8 +223,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * Get the storageProfile property: Specifies the storage settings for the
+     * virtual machine disks.
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -270,8 +233,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * Set the storageProfile property: Specifies the storage settings for the
+     * virtual machine disks.
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -281,9 +245,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the virtual
-     * machine.
-     *
+     * Get the additionalCapabilities property: Specifies additional
+     * capabilities enabled or disabled on the virtual machine.
+     * 
      * @return the additionalCapabilities value.
      */
     public AdditionalCapabilities additionalCapabilities() {
@@ -291,9 +255,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the virtual
-     * machine.
-     *
+     * Set the additionalCapabilities property: Specifies additional
+     * capabilities enabled or disabled on the virtual machine.
+     * 
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -303,9 +267,10 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
-     * of the settings cannot be changed once VM is provisioned.
-     *
+     * Get the osProfile property: Specifies the operating system settings used
+     * while creating the virtual machine. Some of the settings cannot be
+     * changed once VM is provisioned.
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -313,9 +278,10 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the osProfile property: Specifies the operating system settings used while creating the virtual machine. Some
-     * of the settings cannot be changed once VM is provisioned.
-     *
+     * Set the osProfile property: Specifies the operating system settings used
+     * while creating the virtual machine. Some of the settings cannot be
+     * changed once VM is provisioned.
+     * 
      * @param osProfile the osProfile value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -325,8 +291,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the networkProfile property: Specifies the network interfaces of the virtual machine.
-     *
+     * Get the networkProfile property: Specifies the network interfaces of the
+     * virtual machine.
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -334,8 +301,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the networkProfile property: Specifies the network interfaces of the virtual machine.
-     *
+     * Set the networkProfile property: Specifies the network interfaces of the
+     * virtual machine.
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -345,8 +313,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the securityProfile property: Specifies the Security related profile settings for the virtual machine.
-     *
+     * Get the securityProfile property: Specifies the Security related profile
+     * settings for the virtual machine.
+     * 
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -354,8 +323,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the securityProfile property: Specifies the Security related profile settings for the virtual machine.
-     *
+     * Set the securityProfile property: Specifies the Security related profile
+     * settings for the virtual machine.
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -365,9 +335,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
-     *
+     * Get the diagnosticsProfile property: Specifies the boot diagnostic
+     * settings state. &lt;br&gt;&lt;br&gt;Minimum api-version: 2015-06-15.
+     * 
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
@@ -375,9 +345,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the diagnosticsProfile property: Specifies the boot diagnostic settings state. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2015-06-15.
-     *
+     * Set the diagnosticsProfile property: Specifies the boot diagnostic
+     * settings state. &lt;br&gt;&lt;br&gt;Minimum api-version: 2015-06-15.
+     * 
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -387,17 +357,22 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the availabilitySet property: Specifies information about the availability set that the virtual machine
-     * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
-     * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. The availability set to which the VM is being added
-     * should be under the same resource group as the availability set resource. An existing VM cannot be added to an
-     * availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
+     * Get the availabilitySet property: Specifies information about the
+     * availability set that the virtual machine should be assigned to. Virtual
+     * machines specified in the same availability set are allocated to
+     * different nodes to maximize availability. For more information about
+     * availability sets, see [Manage the availability of virtual
+     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance,
+     * see [Planned maintenance for virtual machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
+     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability
+     * set at creation time. The availability set to which the VM is being
+     * added should be under the same resource group as the availability set
+     * resource. An existing VM cannot be added to an availability set.
+     * &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
      * properties.virtualMachineScaleSet reference.
-     *
+     * 
      * @return the availabilitySet value.
      */
     public SubResource availabilitySet() {
@@ -405,17 +380,22 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the availabilitySet property: Specifies information about the availability set that the virtual machine
-     * should be assigned to. Virtual machines specified in the same availability set are allocated to different nodes
-     * to maximize availability. For more information about availability sets, see [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). &lt;br&gt;&lt;br&gt; For
-     * more information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) &lt;br&gt;&lt;br&gt; Currently,
-     * a VM can only be added to availability set at creation time. The availability set to which the VM is being added
-     * should be under the same resource group as the availability set resource. An existing VM cannot be added to an
-     * availability set. &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
+     * Set the availabilitySet property: Specifies information about the
+     * availability set that the virtual machine should be assigned to. Virtual
+     * machines specified in the same availability set are allocated to
+     * different nodes to maximize availability. For more information about
+     * availability sets, see [Manage the availability of virtual
+     * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
+     * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance,
+     * see [Planned maintenance for virtual machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
+     * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability
+     * set at creation time. The availability set to which the VM is being
+     * added should be under the same resource group as the availability set
+     * resource. An existing VM cannot be added to an availability set.
+     * &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
      * properties.virtualMachineScaleSet reference.
-     *
+     * 
      * @param availabilitySet the availabilitySet value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -425,13 +405,16 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the virtualMachineScaleSet property: Specifies information about the virtual machine scale set that the
-     * virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are
-     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
-     * set at creation time. An existing VM cannot be added to a virtual machine scale set. &lt;br&gt;&lt;br&gt;This
-     * property cannot exist along with a non-null properties.availabilitySet reference. &lt;br&gt;&lt;br&gt;Minimum
+     * Get the virtualMachineScaleSet property: Specifies information about the
+     * virtual machine scale set that the virtual machine should be assigned
+     * to. Virtual machines specified in the same virtual machine scale set are
+     * allocated to different nodes to maximize availability. Currently, a VM
+     * can only be added to virtual machine scale set at creation time. An
+     * existing VM cannot be added to a virtual machine scale set.
+     * &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
+     * properties.availabilitySet reference. &lt;br&gt;&lt;br&gt;Minimum
      * api‐version: 2019‐03‐01.
-     *
+     * 
      * @return the virtualMachineScaleSet value.
      */
     public SubResource virtualMachineScaleSet() {
@@ -439,13 +422,16 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the virtualMachineScaleSet property: Specifies information about the virtual machine scale set that the
-     * virtual machine should be assigned to. Virtual machines specified in the same virtual machine scale set are
-     * allocated to different nodes to maximize availability. Currently, a VM can only be added to virtual machine scale
-     * set at creation time. An existing VM cannot be added to a virtual machine scale set. &lt;br&gt;&lt;br&gt;This
-     * property cannot exist along with a non-null properties.availabilitySet reference. &lt;br&gt;&lt;br&gt;Minimum
+     * Set the virtualMachineScaleSet property: Specifies information about the
+     * virtual machine scale set that the virtual machine should be assigned
+     * to. Virtual machines specified in the same virtual machine scale set are
+     * allocated to different nodes to maximize availability. Currently, a VM
+     * can only be added to virtual machine scale set at creation time. An
+     * existing VM cannot be added to a virtual machine scale set.
+     * &lt;br&gt;&lt;br&gt;This property cannot exist along with a non-null
+     * properties.availabilitySet reference. &lt;br&gt;&lt;br&gt;Minimum
      * api‐version: 2019‐03‐01.
-     *
+     * 
      * @param virtualMachineScaleSet the virtualMachineScaleSet value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -455,9 +441,10 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * virtual machine should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
-     *
+     * Get the proximityPlacementGroup property: Specifies information about
+     * the proximity placement group that the virtual machine should be
+     * assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
+     * 
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
@@ -465,9 +452,10 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * virtual machine should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
-     *
+     * Set the proximityPlacementGroup property: Specifies information about
+     * the proximity placement group that the virtual machine should be
+     * assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
+     * 
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -477,9 +465,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the priority property: Specifies the priority for the virtual machine. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2019-03-01.
-     *
+     * Get the priority property: Specifies the priority for the virtual
+     * machine. &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
+     * 
      * @return the priority value.
      */
     public VirtualMachinePriorityTypes priority() {
@@ -487,9 +475,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the priority property: Specifies the priority for the virtual machine. &lt;br&gt;&lt;br&gt;Minimum
-     * api-version: 2019-03-01.
-     *
+     * Set the priority property: Specifies the priority for the virtual
+     * machine. &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
+     * 
      * @param priority the priority value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -499,11 +487,14 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the evictionPolicy property: Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot
-     * scale set. &lt;br&gt;&lt;br&gt;For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and
-     * the minimum api-version is 2019-03-01. &lt;br&gt;&lt;br&gt;For Azure Spot scale sets, both 'Deallocate' and
-     * 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
-     *
+     * Get the evictionPolicy property: Specifies the eviction policy for the
+     * Azure Spot virtual machine and Azure Spot scale set.
+     * &lt;br&gt;&lt;br&gt;For Azure Spot virtual machines, both 'Deallocate'
+     * and 'Delete' are supported and the minimum api-version is 2019-03-01.
+     * &lt;br&gt;&lt;br&gt;For Azure Spot scale sets, both 'Deallocate' and
+     * 'Delete' are supported and the minimum api-version is
+     * 2017-10-30-preview.
+     * 
      * @return the evictionPolicy value.
      */
     public VirtualMachineEvictionPolicyTypes evictionPolicy() {
@@ -511,11 +502,14 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the evictionPolicy property: Specifies the eviction policy for the Azure Spot virtual machine and Azure Spot
-     * scale set. &lt;br&gt;&lt;br&gt;For Azure Spot virtual machines, both 'Deallocate' and 'Delete' are supported and
-     * the minimum api-version is 2019-03-01. &lt;br&gt;&lt;br&gt;For Azure Spot scale sets, both 'Deallocate' and
-     * 'Delete' are supported and the minimum api-version is 2017-10-30-preview.
-     *
+     * Set the evictionPolicy property: Specifies the eviction policy for the
+     * Azure Spot virtual machine and Azure Spot scale set.
+     * &lt;br&gt;&lt;br&gt;For Azure Spot virtual machines, both 'Deallocate'
+     * and 'Delete' are supported and the minimum api-version is 2019-03-01.
+     * &lt;br&gt;&lt;br&gt;For Azure Spot scale sets, both 'Deallocate' and
+     * 'Delete' are supported and the minimum api-version is
+     * 2017-10-30-preview.
+     * 
      * @param evictionPolicy the evictionPolicy value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -525,9 +519,10 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the billingProfile property: Specifies the billing related details of a Azure Spot virtual machine.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
-     *
+     * Get the billingProfile property: Specifies the billing related details
+     * of a Azure Spot virtual machine. &lt;br&gt;&lt;br&gt;Minimum
+     * api-version: 2019-03-01.
+     * 
      * @return the billingProfile value.
      */
     public BillingProfile billingProfile() {
@@ -535,9 +530,10 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the billingProfile property: Specifies the billing related details of a Azure Spot virtual machine.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2019-03-01.
-     *
+     * Set the billingProfile property: Specifies the billing related details
+     * of a Azure Spot virtual machine. &lt;br&gt;&lt;br&gt;Minimum
+     * api-version: 2019-03-01.
+     * 
      * @param billingProfile the billingProfile value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -547,9 +543,10 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the host property: Specifies information about the dedicated host that the virtual machine resides in.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-10-01.
-     *
+     * Get the host property: Specifies information about the dedicated host
+     * that the virtual machine resides in. &lt;br&gt;&lt;br&gt;Minimum
+     * api-version: 2018-10-01.
+     * 
      * @return the host value.
      */
     public SubResource host() {
@@ -557,9 +554,10 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the host property: Specifies information about the dedicated host that the virtual machine resides in.
-     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-10-01.
-     *
+     * Set the host property: Specifies information about the dedicated host
+     * that the virtual machine resides in. &lt;br&gt;&lt;br&gt;Minimum
+     * api-version: 2018-10-01.
+     * 
      * @param host the host value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -569,10 +567,12 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
-     * in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01. &lt;br&gt;&lt;br&gt;NOTE: User cannot specify both host
-     * and hostGroup properties.
-     *
+     * Get the hostGroup property: Specifies information about the dedicated
+     * host group that the virtual machine resides in.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     * &lt;br&gt;&lt;br&gt;NOTE: User cannot specify both host and hostGroup
+     * properties.
+     * 
      * @return the hostGroup value.
      */
     public SubResource hostGroup() {
@@ -580,10 +580,12 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine resides
-     * in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01. &lt;br&gt;&lt;br&gt;NOTE: User cannot specify both host
-     * and hostGroup properties.
-     *
+     * Set the hostGroup property: Specifies information about the dedicated
+     * host group that the virtual machine resides in.
+     * &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     * &lt;br&gt;&lt;br&gt;NOTE: User cannot specify both host and hostGroup
+     * properties.
+     * 
      * @param hostGroup the hostGroup value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -593,8 +595,9 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * Get the provisioningState property: The provisioning state, which only
+     * appears in the response.
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -603,7 +606,7 @@ public final class VirtualMachinePropertiesInner {
 
     /**
      * Get the instanceView property: The virtual machine instance view.
-     *
+     * 
      * @return the instanceView value.
      */
     public VirtualMachineInstanceViewInner instanceView() {
@@ -611,16 +614,19 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
-     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
-     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
-     * information, see [Azure Hybrid Use Benefit for Windows
+     * Get the licenseType property: Specifies that the image or disk that is
+     * being used was licensed on-premises. &lt;br&gt;&lt;br&gt; Possible
+     * values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
+     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt;
+     * Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS
+     * (for SUSE) &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid
+     * Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
-     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
-     * Minimum api-version: 2015-06-15.
-     *
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
+     * &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
+     * 
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -628,16 +634,19 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the licenseType property: Specifies that the image or disk that is being used was licensed on-premises.
-     * &lt;br&gt;&lt;br&gt; Possible values for Windows Server operating system are: &lt;br&gt;&lt;br&gt; Windows_Client
-     * &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt; Possible values for Linux Server operating system are:
-     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS (for SUSE) &lt;br&gt;&lt;br&gt; For more
-     * information, see [Azure Hybrid Use Benefit for Windows
+     * Set the licenseType property: Specifies that the image or disk that is
+     * being used was licensed on-premises. &lt;br&gt;&lt;br&gt; Possible
+     * values for Windows Server operating system are: &lt;br&gt;&lt;br&gt;
+     * Windows_Client &lt;br&gt;&lt;br&gt; Windows_Server &lt;br&gt;&lt;br&gt;
+     * Possible values for Linux Server operating system are:
+     * &lt;br&gt;&lt;br&gt; RHEL_BYOS (for RHEL) &lt;br&gt;&lt;br&gt; SLES_BYOS
+     * (for SUSE) &lt;br&gt;&lt;br&gt; For more information, see [Azure Hybrid
+     * Use Benefit for Windows
      * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
      * &lt;br&gt;&lt;br&gt; [Azure Hybrid Use Benefit for Linux
-     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) &lt;br&gt;&lt;br&gt;
-     * Minimum api-version: 2015-06-15.
-     *
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
+     * &lt;br&gt;&lt;br&gt; Minimum api-version: 2015-06-15.
+     * 
      * @param licenseType the licenseType value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -647,9 +656,10 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the vmId property: Specifies the VM unique ID which is a 128-bits identifier that is encoded and stored in
-     * all Azure IaaS VMs SMBIOS and can be read using platform BIOS commands.
-     *
+     * Get the vmId property: Specifies the VM unique ID which is a 128-bits
+     * identifier that is encoded and stored in all Azure IaaS VMs SMBIOS and
+     * can be read using platform BIOS commands.
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -657,10 +667,12 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the extensionsTimeBudget property: Specifies the time alloted for all extensions to start. The time duration
-     * should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default
-     * value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum api-version: 2020-06-01.
-     *
+     * Get the extensionsTimeBudget property: Specifies the time alloted for
+     * all extensions to start. The time duration should be between 15 minutes
+     * and 120 minutes (inclusive) and should be specified in ISO 8601 format.
+     * The default value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum
+     * api-version: 2020-06-01.
+     * 
      * @return the extensionsTimeBudget value.
      */
     public String extensionsTimeBudget() {
@@ -668,10 +680,12 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Set the extensionsTimeBudget property: Specifies the time alloted for all extensions to start. The time duration
-     * should be between 15 minutes and 120 minutes (inclusive) and should be specified in ISO 8601 format. The default
-     * value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum api-version: 2020-06-01.
-     *
+     * Set the extensionsTimeBudget property: Specifies the time alloted for
+     * all extensions to start. The time duration should be between 15 minutes
+     * and 120 minutes (inclusive) and should be specified in ISO 8601 format.
+     * The default value is 90 minutes (PT1H30M). &lt;br&gt;&lt;br&gt; Minimum
+     * api-version: 2020-06-01.
+     * 
      * @param extensionsTimeBudget the extensionsTimeBudget value to set.
      * @return the VirtualMachinePropertiesInner object itself.
      */
@@ -681,126 +695,8 @@ public final class VirtualMachinePropertiesInner {
     }
 
     /**
-     * Get the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
-     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
-     * maintains balance across available fault domains.&lt;br&gt;&lt;li&gt;This is applicable only if the
-     * 'virtualMachineScaleSet' property of this Virtual Machine is set.&lt;li&gt;The Virtual Machine Scale Set that is
-     * referenced, must have 'platformFaultDomainCount' &amp;gt; 1.&lt;li&gt;This property cannot be updated once the
-     * Virtual Machine is created.&lt;li&gt;Fault domain assignment can be viewed in the Virtual Machine Instance
-     * View.&lt;br&gt;&lt;br&gt;Minimum api‐version: 2020‐12‐01.
-     *
-     * @return the platformFaultDomain value.
-     */
-    public Integer platformFaultDomain() {
-        return this.platformFaultDomain;
-    }
-
-    /**
-     * Set the platformFaultDomain property: Specifies the scale set logical fault domain into which the Virtual Machine
-     * will be created. By default, the Virtual Machine will by automatically assigned to a fault domain that best
-     * maintains balance across available fault domains.&lt;br&gt;&lt;li&gt;This is applicable only if the
-     * 'virtualMachineScaleSet' property of this Virtual Machine is set.&lt;li&gt;The Virtual Machine Scale Set that is
-     * referenced, must have 'platformFaultDomainCount' &amp;gt; 1.&lt;li&gt;This property cannot be updated once the
-     * Virtual Machine is created.&lt;li&gt;Fault domain assignment can be viewed in the Virtual Machine Instance
-     * View.&lt;br&gt;&lt;br&gt;Minimum api‐version: 2020‐12‐01.
-     *
-     * @param platformFaultDomain the platformFaultDomain value to set.
-     * @return the VirtualMachinePropertiesInner object itself.
-     */
-    public VirtualMachinePropertiesInner withPlatformFaultDomain(Integer platformFaultDomain) {
-        this.platformFaultDomain = platformFaultDomain;
-        return this;
-    }
-
-    /**
-     * Get the scheduledEventsProfile property: Specifies Scheduled Event related configurations.
-     *
-     * @return the scheduledEventsProfile value.
-     */
-    public ScheduledEventsProfile scheduledEventsProfile() {
-        return this.scheduledEventsProfile;
-    }
-
-    /**
-     * Set the scheduledEventsProfile property: Specifies Scheduled Event related configurations.
-     *
-     * @param scheduledEventsProfile the scheduledEventsProfile value to set.
-     * @return the VirtualMachinePropertiesInner object itself.
-     */
-    public VirtualMachinePropertiesInner withScheduledEventsProfile(ScheduledEventsProfile scheduledEventsProfile) {
-        this.scheduledEventsProfile = scheduledEventsProfile;
-        return this;
-    }
-
-    /**
-     * Get the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     *
-     * @return the userData value.
-     */
-    public String userData() {
-        return this.userData;
-    }
-
-    /**
-     * Set the userData property: UserData for the VM, which must be base-64 encoded. Customer should not pass any
-     * secrets in here. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-03-01.
-     *
-     * @param userData the userData value to set.
-     * @return the VirtualMachinePropertiesInner object itself.
-     */
-    public VirtualMachinePropertiesInner withUserData(String userData) {
-        this.userData = userData;
-        return this;
-    }
-
-    /**
-     * Get the capacityReservation property: Specifies information about the capacity reservation that is used to
-     * allocate virtual machine. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
-     *
-     * @return the capacityReservation value.
-     */
-    public CapacityReservationProfile capacityReservation() {
-        return this.capacityReservation;
-    }
-
-    /**
-     * Set the capacityReservation property: Specifies information about the capacity reservation that is used to
-     * allocate virtual machine. &lt;br&gt;&lt;br&gt;Minimum api-version: 2021-04-01.
-     *
-     * @param capacityReservation the capacityReservation value to set.
-     * @return the VirtualMachinePropertiesInner object itself.
-     */
-    public VirtualMachinePropertiesInner withCapacityReservation(CapacityReservationProfile capacityReservation) {
-        this.capacityReservation = capacityReservation;
-        return this;
-    }
-
-    /**
-     * Get the applicationProfile property: Specifies the gallery applications that should be made available to the
-     * VM/VMSS.
-     *
-     * @return the applicationProfile value.
-     */
-    public ApplicationProfile applicationProfile() {
-        return this.applicationProfile;
-    }
-
-    /**
-     * Set the applicationProfile property: Specifies the gallery applications that should be made available to the
-     * VM/VMSS.
-     *
-     * @param applicationProfile the applicationProfile value to set.
-     * @return the VirtualMachinePropertiesInner object itself.
-     */
-    public VirtualMachinePropertiesInner withApplicationProfile(ApplicationProfile applicationProfile) {
-        this.applicationProfile = applicationProfile;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -830,15 +726,6 @@ public final class VirtualMachinePropertiesInner {
         }
         if (instanceView() != null) {
             instanceView().validate();
-        }
-        if (scheduledEventsProfile() != null) {
-            scheduledEventsProfile().validate();
-        }
-        if (capacityReservation() != null) {
-            capacityReservation().validate();
-        }
-        if (applicationProfile() != null) {
-            applicationProfile().validate();
         }
     }
 }

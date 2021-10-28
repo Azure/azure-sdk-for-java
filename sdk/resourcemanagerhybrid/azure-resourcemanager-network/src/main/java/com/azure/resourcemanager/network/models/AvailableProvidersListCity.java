@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** City or town details. */
+/**
+ * City or town details.
+ */
 @Fluent
 public final class AvailableProvidersListCity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListCity.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AvailableProvidersListCity.class);
 
     /*
      * The city or town name.
@@ -29,7 +34,7 @@ public final class AvailableProvidersListCity {
 
     /**
      * Get the cityName property: The city or town name.
-     *
+     * 
      * @return the cityName value.
      */
     public String cityName() {
@@ -38,7 +43,7 @@ public final class AvailableProvidersListCity {
 
     /**
      * Set the cityName property: The city or town name.
-     *
+     * 
      * @param cityName the cityName value to set.
      * @return the AvailableProvidersListCity object itself.
      */
@@ -49,7 +54,7 @@ public final class AvailableProvidersListCity {
 
     /**
      * Get the providers property: A list of Internet service providers.
-     *
+     * 
      * @return the providers value.
      */
     public List<String> providers() {
@@ -58,7 +63,7 @@ public final class AvailableProvidersListCity {
 
     /**
      * Set the providers property: A list of Internet service providers.
-     *
+     * 
      * @param providers the providers value to set.
      * @return the AvailableProvidersListCity object itself.
      */
@@ -69,7 +74,7 @@ public final class AvailableProvidersListCity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

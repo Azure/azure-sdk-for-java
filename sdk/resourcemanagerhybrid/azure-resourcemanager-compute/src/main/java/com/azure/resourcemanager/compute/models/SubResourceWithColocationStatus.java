@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SubResourceWithColocationStatus model. */
+/**
+ * The SubResourceWithColocationStatus model.
+ */
 @Fluent
 public final class SubResourceWithColocationStatus extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubResourceWithColocationStatus.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SubResourceWithColocationStatus.class);
 
     /*
      * Describes colocation status of a resource in the Proximity Placement
@@ -23,8 +28,9 @@ public final class SubResourceWithColocationStatus extends SubResource {
     private InstanceViewStatus colocationStatus;
 
     /**
-     * Get the colocationStatus property: Describes colocation status of a resource in the Proximity Placement Group.
-     *
+     * Get the colocationStatus property: Describes colocation status of a
+     * resource in the Proximity Placement Group.
+     * 
      * @return the colocationStatus value.
      */
     public InstanceViewStatus colocationStatus() {
@@ -32,8 +38,9 @@ public final class SubResourceWithColocationStatus extends SubResource {
     }
 
     /**
-     * Set the colocationStatus property: Describes colocation status of a resource in the Proximity Placement Group.
-     *
+     * Set the colocationStatus property: Describes colocation status of a
+     * resource in the Proximity Placement Group.
+     * 
      * @param colocationStatus the colocationStatus value to set.
      * @return the SubResourceWithColocationStatus object itself.
      */
@@ -42,7 +49,9 @@ public final class SubResourceWithColocationStatus extends SubResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SubResourceWithColocationStatus withId(String id) {
         super.withId(id);
@@ -51,7 +60,7 @@ public final class SubResourceWithColocationStatus extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

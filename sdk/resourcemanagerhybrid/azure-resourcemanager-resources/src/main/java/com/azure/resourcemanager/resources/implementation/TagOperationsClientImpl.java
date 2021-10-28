@@ -32,163 +32,111 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.TagOperationsClient;
 import com.azure.resourcemanager.resources.fluent.models.TagDetailsInner;
-import com.azure.resourcemanager.resources.fluent.models.TagValueInner;
 import com.azure.resourcemanager.resources.fluent.models.TagsResourceInner;
-import com.azure.resourcemanager.resources.models.Tags;
+import com.azure.resourcemanager.resources.fluent.models.TagValueInner;
 import com.azure.resourcemanager.resources.models.TagsListResult;
 import com.azure.resourcemanager.resources.models.TagsPatchResource;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TagOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * TagOperationsClient.
+ */
 public final class TagOperationsClientImpl implements TagOperationsClient {
     private final ClientLogger logger = new ClientLogger(TagOperationsClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TagOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ResourceManagementClientImpl client;
 
     /**
      * Initializes an instance of TagOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TagOperationsClientImpl(ResourceManagementClientImpl client) {
-        this.service =
-            RestProxy.create(TagOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(TagOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ResourceManagementClientTagOperations to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for
+     * ResourceManagementClientTagOperations to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ResourceManagementCl")
     private interface TagOperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteValue(
-            @HostParam("$host") String endpoint,
-            @PathParam("tagName") String tagName,
-            @PathParam("tagValue") String tagValue,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> deleteValue(@HostParam("$host") String endpoint, @PathParam("tagName") String tagName, @PathParam("tagValue") String tagValue, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagValueInner>> createOrUpdateValue(
-            @HostParam("$host") String endpoint,
-            @PathParam("tagName") String tagName,
-            @PathParam("tagValue") String tagValue,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TagValueInner>> createOrUpdateValue(@HostParam("$host") String endpoint, @PathParam("tagName") String tagName, @PathParam("tagValue") String tagValue, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/tagNames/{tagName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagDetailsInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("tagName") String tagName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TagDetailsInner>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("tagName") String tagName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/tagNames/{tagName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("tagName") String tagName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam("tagName") String tagName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/tagNames")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TagsListResult>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/{scope}/providers/Microsoft.Resources/tags/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagsResourceInner>> createOrUpdateAtScope(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") TagsResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TagsResourceInner>> createOrUpdateAtScope(@HostParam("$host") String endpoint, @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") TagsResourceInner parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{scope}/providers/Microsoft.Resources/tags/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagsResourceInner>> updateAtScope(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") TagsPatchResource parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TagsResourceInner>> updateAtScope(@HostParam("$host") String endpoint, @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") TagsPatchResource parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Resources/tags/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagsResourceInner>> getAtScope(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TagsResourceInner>> getAtScope(@HostParam("$host") String endpoint, @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.Resources/tags/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> deleteAtScope(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> deleteAtScope(@HostParam("$host") String endpoint, @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TagsListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
-     * The value being deleted must not be in use as a tag value for the given tag name for any resource.
-     *
+     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name. The value being deleted must not be in use as a tag value for the given tag name for any resource.
+     * 
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,10 +147,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteValueWithResponseAsync(String tagName, String tagValue) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -211,31 +156,16 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             return Mono.error(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteValue(
-                            this.client.getEndpoint(),
-                            tagName,
-                            tagValue,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.deleteValue(this.client.getEndpoint(), tagName, tagValue, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
-     * The value being deleted must not be in use as a tag value for the given tag name for any resource.
-     *
+     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name. The value being deleted must not be in use as a tag value for the given tag name for any resource.
+     * 
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to delete.
      * @param context The context to associate with this operation.
@@ -247,10 +177,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteValueWithResponseAsync(String tagName, String tagValue, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -259,28 +186,16 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             return Mono.error(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .deleteValue(
-                this.client.getEndpoint(),
-                tagName,
-                tagValue,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.deleteValue(this.client.getEndpoint(), tagName, tagValue, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
-     * The value being deleted must not be in use as a tag value for the given tag name for any resource.
-     *
+     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name. The value being deleted must not be in use as a tag value for the given tag name for any resource.
+     * 
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,13 +205,13 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteValueAsync(String tagName, String tagValue) {
-        return deleteValueWithResponseAsync(tagName, tagValue).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteValueWithResponseAsync(tagName, tagValue)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
-     * The value being deleted must not be in use as a tag value for the given tag name for any resource.
-     *
+     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name. The value being deleted must not be in use as a tag value for the given tag name for any resource.
+     * 
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,9 +224,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name.
-     * The value being deleted must not be in use as a tag value for the given tag name for any resource.
-     *
+     * This operation allows deleting a value from the list of predefined values for an existing predefined tag name. The value being deleted must not be in use as a tag value for the given tag name for any resource.
+     * 
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to delete.
      * @param context The context to associate with this operation.
@@ -326,9 +240,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
-     *
+     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag value can have a maximum of 256 characters.
+     * 
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -339,10 +252,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TagValueInner>> createOrUpdateValueWithResponseAsync(String tagName, String tagValue) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -351,31 +261,16 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             return Mono.error(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateValue(
-                            this.client.getEndpoint(),
-                            tagName,
-                            tagValue,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdateValue(this.client.getEndpoint(), tagName, tagValue, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
-     *
+     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag value can have a maximum of 256 characters.
+     * 
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
      * @param context The context to associate with this operation.
@@ -385,13 +280,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * @return tag information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TagValueInner>> createOrUpdateValueWithResponseAsync(
-        String tagName, String tagValue, Context context) {
+    private Mono<Response<TagValueInner>> createOrUpdateValueWithResponseAsync(String tagName, String tagValue, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
@@ -400,28 +291,16 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             return Mono.error(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateValue(
-                this.client.getEndpoint(),
-                tagName,
-                tagValue,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.createOrUpdateValue(this.client.getEndpoint(), tagName, tagValue, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
-     *
+     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag value can have a maximum of 256 characters.
+     * 
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -432,20 +311,18 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue) {
         return createOrUpdateValueWithResponseAsync(tagName, tagValue)
-            .flatMap(
-                (Response<TagValueInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<TagValueInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
-     *
+     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag value can have a maximum of 256 characters.
+     * 
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -459,9 +336,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag
-     * value can have a maximum of 256 characters.
-     *
+     * This operation allows adding a value to the list of predefined values for an existing predefined tag name. A tag value can have a maximum of 256 characters.
+     * 
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
      * @param context The context to associate with this operation.
@@ -476,10 +352,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
-     * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
-     * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
-     *
+     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which are reserved for Azure use: 'microsoft', 'azure', 'windows'.
+     * 
      * @param tagName The name of the tag to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -489,40 +363,22 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TagDetailsInner>> createOrUpdateWithResponseAsync(String tagName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            tagName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), tagName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
-     * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
-     * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
-     *
+     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which are reserved for Azure use: 'microsoft', 'azure', 'windows'.
+     * 
      * @param tagName The name of the tag to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -533,37 +389,22 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TagDetailsInner>> createOrUpdateWithResponseAsync(String tagName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                tagName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), tagName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
-     * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
-     * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
-     *
+     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which are reserved for Azure use: 'microsoft', 'azure', 'windows'.
+     * 
      * @param tagName The name of the tag to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -573,21 +414,18 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagDetailsInner> createOrUpdateAsync(String tagName) {
         return createOrUpdateWithResponseAsync(tagName)
-            .flatMap(
-                (Response<TagDetailsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<TagDetailsInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
-     * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
-     * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
-     *
+     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which are reserved for Azure use: 'microsoft', 'azure', 'windows'.
+     * 
      * @param tagName The name of the tag to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -600,10 +438,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name
-     * can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which
-     * are reserved for Azure use: 'microsoft', 'azure', 'windows'.
-     *
+     * This operation allows adding a name to the list of predefined tag names for the given subscription. A tag name can have a maximum of 512 characters and is case-insensitive. Tag names cannot have the following prefixes which are reserved for Azure use: 'microsoft', 'azure', 'windows'.
+     * 
      * @param tagName The name of the tag to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -617,10 +453,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
-     *
+     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name being deleted must not be in use as a tag name for any resource. All predefined values for the given name must have already been deleted.
+     * 
      * @param tagName The name of the tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -630,40 +464,22 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String tagName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            tagName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), tagName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
-     *
+     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name being deleted must not be in use as a tag name for any resource. All predefined values for the given name must have already been deleted.
+     * 
      * @param tagName The name of the tag.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -674,37 +490,22 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String tagName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tagName == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                tagName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), tagName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
-     *
+     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name being deleted must not be in use as a tag name for any resource. All predefined values for the given name must have already been deleted.
+     * 
      * @param tagName The name of the tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -713,14 +514,13 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String tagName) {
-        return deleteWithResponseAsync(tagName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(tagName)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
-     *
+     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name being deleted must not be in use as a tag name for any resource. All predefined values for the given name must have already been deleted.
+     * 
      * @param tagName The name of the tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -732,10 +532,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name
-     * being deleted must not be in use as a tag name for any resource. All predefined values for the given name must
-     * have already been deleted.
-     *
+     * This operation allows deleting a name from the list of predefined tag names for the given subscription. The name being deleted must not be in use as a tag name for any resource. All predefined values for the given name must have already been deleted.
+     * 
      * @param tagName The name of the tag.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -749,10 +547,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
-     *
+     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and returns a summary of usage for each tag name and value under the given subscription. In case of a large number of tags, this operation may return a previously cached result.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of subscription tags.
@@ -760,45 +556,26 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TagDetailsInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<TagDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<TagDetailsInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
-     *
+     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and returns a summary of usage for each tag name and value under the given subscription. In case of a large number of tags, this operation may return a previously cached result.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -808,56 +585,40 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TagDetailsInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
-     *
+     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and returns a summary of usage for each tag name and value under the given subscription. In case of a large number of tags, this operation may return a previously cached result.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of subscription tags.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TagDetailsInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
-     *
+     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and returns a summary of usage for each tag name and value under the given subscription. In case of a large number of tags, this operation may return a previously cached result.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -867,14 +628,13 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TagDetailsInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
-     *
+     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and returns a summary of usage for each tag name and value under the given subscription. In case of a large number of tags, this operation may return a previously cached result.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of subscription tags.
@@ -885,10 +645,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and
-     * returns a summary of usage for each tag name and value under the given subscription. In case of a large number of
-     * tags, this operation may return a previously cached result.
-     *
+     * This operation performs a union of predefined tags, resource tags, resource group tags and subscription tags, and returns a summary of usage for each tag name and value under the given subscription. In case of a large number of tags, this operation may return a previously cached result.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -901,162 +659,19 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
-     *
+     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The specified entity can have a maximum of 50 tags.
+     * 
      * @param scope The resource scope.
-     * @param properties The set of tags.
+     * @param parameters Wrapper resource for tags API requests and responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(String scope, Tags properties) {
+    public Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(String scope, TagsResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String accept = "application/json";
-        TagsResourceInner parameters = new TagsResourceInner();
-        parameters.withProperties(properties);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdateAtScope(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
-     *
-     * @param scope The resource scope.
-     * @param properties The set of tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(
-        String scope, Tags properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String accept = "application/json";
-        TagsResourceInner parameters = new TagsResourceInner();
-        parameters.withProperties(properties);
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdateAtScope(
-                this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context);
-    }
-
-    /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
-     *
-     * @param scope The resource scope.
-     * @param properties The set of tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, Tags properties) {
-        return createOrUpdateAtScopeWithResponseAsync(scope, properties)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
-     *
-     * @param scope The resource scope.
-     * @param properties The set of tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagsResourceInner createOrUpdateAtScope(String scope, Tags properties) {
-        return createOrUpdateAtScopeAsync(scope, properties).block();
-    }
-
-    /**
-     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The
-     * specified entity can have a maximum of 50 tags.
-     *
-     * @param scope The resource scope.
-     * @param properties The set of tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagsResourceInner> createOrUpdateAtScopeWithResponse(
-        String scope, Tags properties, Context context) {
-        return createOrUpdateAtScopeWithResponseAsync(scope, properties, context).block();
-    }
-
-    /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
-     *
-     * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags patch API request only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper resource for tags API requests and responses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TagsResourceInner>> updateAtScopeWithResponseAsync(
-        String scope, TagsPatchResource parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1067,24 +682,15 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             parameters.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateAtScope(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
+        return FluxUtil.withContext(context -> service.createOrUpdateAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
-     *
+     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The specified entity can have a maximum of 50 tags.
+     * 
      * @param scope The resource scope.
-     * @param parameters Wrapper resource for tags patch API request only.
+     * @param parameters Wrapper resource for tags API requests and responses.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1092,13 +698,9 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TagsResourceInner>> updateAtScopeWithResponseAsync(
-        String scope, TagsPatchResource parameters, Context context) {
+    private Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(String scope, TagsResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1110,17 +712,122 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context);
+        return service.createOrUpdateAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
-     *
+     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The specified entity can have a maximum of 50 tags.
+     * 
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, TagsResourceInner parameters) {
+        return createOrUpdateAtScopeWithResponseAsync(scope, parameters)
+            .flatMap((Response<TagsResourceInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
+    }
+
+    /**
+     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The specified entity can have a maximum of 50 tags.
+     * 
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TagsResourceInner createOrUpdateAtScope(String scope, TagsResourceInner parameters) {
+        return createOrUpdateAtScopeAsync(scope, parameters).block();
+    }
+
+    /**
+     * This operation allows adding or replacing the entire set of tags on the specified resource or subscription. The specified entity can have a maximum of 50 tags.
+     * 
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags API requests and responses.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TagsResourceInner> createOrUpdateAtScopeWithResponse(String scope, TagsResourceInner parameters, Context context) {
+        return createOrUpdateAtScopeWithResponseAsync(scope, parameters, context).block();
+    }
+
+    /**
+     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or name/value pairs.
+     * 
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags patch API request only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TagsResourceInner>> updateAtScopeWithResponseAsync(String scope, TagsPatchResource parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (scope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.updateAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or name/value pairs.
+     * 
+     * @param scope The resource scope.
+     * @param parameters Wrapper resource for tags patch API request only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper resource for tags API requests and responses.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<TagsResourceInner>> updateAtScopeWithResponseAsync(String scope, TagsPatchResource parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (scope == null) {
+            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.updateAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context);
+    }
+
+    /**
+     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or name/value pairs.
+     * 
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1131,23 +838,18 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagsResourceInner> updateAtScopeAsync(String scope, TagsPatchResource parameters) {
         return updateAtScopeWithResponseAsync(scope, parameters)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<TagsResourceInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
-     *
+     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or name/value pairs.
+     * 
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1161,12 +863,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
-     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription.
-     * The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the
-     * entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the
-     * values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or
-     * name/value pairs.
-     *
+     * This operation allows replacing, merging or selectively deleting tags on the specified resource or subscription. The specified entity can have a maximum of 50 tags at the end of the operation. The 'replace' option replaces the entire set of existing tags with a new set. The 'merge' option allows adding tags with new names and updating the values of tags with existing names. The 'delete' option allows selectively deleting tags based on given names or name/value pairs.
+     * 
      * @param scope The resource scope.
      * @param parameters Wrapper resource for tags patch API request only.
      * @param context The context to associate with this operation.
@@ -1176,14 +874,13 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TagsResourceInner> updateAtScopeWithResponse(
-        String scope, TagsPatchResource parameters, Context context) {
+    public Response<TagsResourceInner> updateAtScopeWithResponse(String scope, TagsPatchResource parameters, Context context) {
         return updateAtScopeWithResponseAsync(scope, parameters, context).block();
     }
 
     /**
      * Gets the entire set of tags on a resource or subscription.
-     *
+     * 
      * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1193,25 +890,19 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TagsResourceInner>> getAtScopeWithResponseAsync(String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.getAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
+        return FluxUtil.withContext(context -> service.getAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the entire set of tags on a resource or subscription.
-     *
+     * 
      * @param scope The resource scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1222,10 +913,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TagsResourceInner>> getAtScopeWithResponseAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1237,7 +925,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
 
     /**
      * Gets the entire set of tags on a resource or subscription.
-     *
+     * 
      * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1247,19 +935,18 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TagsResourceInner> getAtScopeAsync(String scope) {
         return getAtScopeWithResponseAsync(scope)
-            .flatMap(
-                (Response<TagsResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<TagsResourceInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets the entire set of tags on a resource or subscription.
-     *
+     * 
      * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1273,7 +960,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
 
     /**
      * Gets the entire set of tags on a resource or subscription.
-     *
+     * 
      * @param scope The resource scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1288,7 +975,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
 
     /**
      * Deletes the entire set of tags on a resource or subscription.
-     *
+     * 
      * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1298,26 +985,19 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAtScopeWithResponseAsync(String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
+        return FluxUtil.withContext(context -> service.deleteAtScope(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the entire set of tags on a resource or subscription.
-     *
+     * 
      * @param scope The resource scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1328,10 +1008,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteAtScopeWithResponseAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -1343,7 +1020,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
 
     /**
      * Deletes the entire set of tags on a resource or subscription.
-     *
+     * 
      * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1352,12 +1029,13 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtScopeAsync(String scope) {
-        return deleteAtScopeWithResponseAsync(scope).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteAtScopeWithResponseAsync(scope)
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Deletes the entire set of tags on a resource or subscription.
-     *
+     * 
      * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1370,7 +1048,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
 
     /**
      * Deletes the entire set of tags on a resource or subscription.
-     *
+     * 
      * @param scope The resource scope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1385,7 +1063,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1398,29 +1076,23 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TagDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TagDetailsInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1434,23 +1106,17 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 }

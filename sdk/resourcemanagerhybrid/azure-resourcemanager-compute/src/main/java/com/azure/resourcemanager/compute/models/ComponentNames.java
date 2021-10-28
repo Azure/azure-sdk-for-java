@@ -7,12 +7,18 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ComponentNames. */
+/**
+ * Defines values for ComponentNames.
+ */
 public enum ComponentNames {
-    /** Enum value Microsoft-Windows-Shell-Setup. */
+    /**
+     * Enum value Microsoft-Windows-Shell-Setup.
+     */
     MICROSOFT_WINDOWS_SHELL_SETUP("Microsoft-Windows-Shell-Setup");
 
-    /** The actual serialized value for a ComponentNames instance. */
+    /**
+     * The actual serialized value for a ComponentNames instance.
+     */
     private final String value;
 
     ComponentNames(String value) {
@@ -21,7 +27,7 @@ public enum ComponentNames {
 
     /**
      * Parses a serialized value to a ComponentNames instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ComponentNames object, or null if unable to parse.
      */

@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the source and destination endpoint. */
+/**
+ * Parameters that define the source and destination endpoint.
+ */
 @Fluent
 public final class NextHopParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NextHopParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NextHopParameters.class);
 
     /*
      * The resource identifier of the target resource against which the action
@@ -41,9 +46,9 @@ public final class NextHopParameters {
     private String targetNicResourceId;
 
     /**
-     * Get the targetResourceId property: The resource identifier of the target resource against which the action is to
-     * be performed.
-     *
+     * Get the targetResourceId property: The resource identifier of the target
+     * resource against which the action is to be performed.
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -51,9 +56,9 @@ public final class NextHopParameters {
     }
 
     /**
-     * Set the targetResourceId property: The resource identifier of the target resource against which the action is to
-     * be performed.
-     *
+     * Set the targetResourceId property: The resource identifier of the target
+     * resource against which the action is to be performed.
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the NextHopParameters object itself.
      */
@@ -64,7 +69,7 @@ public final class NextHopParameters {
 
     /**
      * Get the sourceIpAddress property: The source IP address.
-     *
+     * 
      * @return the sourceIpAddress value.
      */
     public String sourceIpAddress() {
@@ -73,7 +78,7 @@ public final class NextHopParameters {
 
     /**
      * Set the sourceIpAddress property: The source IP address.
-     *
+     * 
      * @param sourceIpAddress the sourceIpAddress value to set.
      * @return the NextHopParameters object itself.
      */
@@ -84,7 +89,7 @@ public final class NextHopParameters {
 
     /**
      * Get the destinationIpAddress property: The destination IP address.
-     *
+     * 
      * @return the destinationIpAddress value.
      */
     public String destinationIpAddress() {
@@ -93,7 +98,7 @@ public final class NextHopParameters {
 
     /**
      * Set the destinationIpAddress property: The destination IP address.
-     *
+     * 
      * @param destinationIpAddress the destinationIpAddress value to set.
      * @return the NextHopParameters object itself.
      */
@@ -103,9 +108,10 @@ public final class NextHopParameters {
     }
 
     /**
-     * Get the targetNicResourceId property: The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of
-     * the nics, then this parameter must be specified. Otherwise optional).
-     *
+     * Get the targetNicResourceId property: The NIC ID. (If VM has multiple
+     * NICs and IP forwarding is enabled on any of the nics, then this
+     * parameter must be specified. Otherwise optional).
+     * 
      * @return the targetNicResourceId value.
      */
     public String targetNicResourceId() {
@@ -113,9 +119,10 @@ public final class NextHopParameters {
     }
 
     /**
-     * Set the targetNicResourceId property: The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of
-     * the nics, then this parameter must be specified. Otherwise optional).
-     *
+     * Set the targetNicResourceId property: The NIC ID. (If VM has multiple
+     * NICs and IP forwarding is enabled on any of the nics, then this
+     * parameter must be specified. Otherwise optional).
+     * 
      * @param targetNicResourceId the targetNicResourceId value to set.
      * @return the NextHopParameters object itself.
      */
@@ -126,27 +133,18 @@ public final class NextHopParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model NextHopParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property targetResourceId in model NextHopParameters"));
         }
         if (sourceIpAddress() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceIpAddress in model NextHopParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property sourceIpAddress in model NextHopParameters"));
         }
         if (destinationIpAddress() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destinationIpAddress in model NextHopParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property destinationIpAddress in model NextHopParameters"));
         }
     }
 }

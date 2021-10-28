@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Contains information about pre authorized client application. */
+/**
+ * Contains information about pre authorized client application.
+ */
 @Fluent
 public final class PreAuthorizedApplication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreAuthorizedApplication.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PreAuthorizedApplication.class);
 
     /*
      * Represents the application id.
@@ -36,7 +41,7 @@ public final class PreAuthorizedApplication {
 
     /**
      * Get the appId property: Represents the application id.
-     *
+     * 
      * @return the appId value.
      */
     public String appId() {
@@ -45,7 +50,7 @@ public final class PreAuthorizedApplication {
 
     /**
      * Set the appId property: Represents the application id.
-     *
+     * 
      * @param appId the appId value to set.
      * @return the PreAuthorizedApplication object itself.
      */
@@ -55,8 +60,9 @@ public final class PreAuthorizedApplication {
     }
 
     /**
-     * Get the permissions property: Collection of required app permissions/entitlements from the resource application.
-     *
+     * Get the permissions property: Collection of required app
+     * permissions/entitlements from the resource application.
+     * 
      * @return the permissions value.
      */
     public List<PreAuthorizedApplicationPermission> permissions() {
@@ -64,8 +70,9 @@ public final class PreAuthorizedApplication {
     }
 
     /**
-     * Set the permissions property: Collection of required app permissions/entitlements from the resource application.
-     *
+     * Set the permissions property: Collection of required app
+     * permissions/entitlements from the resource application.
+     * 
      * @param permissions the permissions value to set.
      * @return the PreAuthorizedApplication object itself.
      */
@@ -75,8 +82,9 @@ public final class PreAuthorizedApplication {
     }
 
     /**
-     * Get the extensions property: Collection of extensions from the resource application.
-     *
+     * Get the extensions property: Collection of extensions from the resource
+     * application.
+     * 
      * @return the extensions value.
      */
     public List<PreAuthorizedApplicationExtension> extensions() {
@@ -84,8 +92,9 @@ public final class PreAuthorizedApplication {
     }
 
     /**
-     * Set the extensions property: Collection of extensions from the resource application.
-     *
+     * Set the extensions property: Collection of extensions from the resource
+     * application.
+     * 
      * @param extensions the extensions value to set.
      * @return the PreAuthorizedApplication object itself.
      */
@@ -96,7 +105,7 @@ public final class PreAuthorizedApplication {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

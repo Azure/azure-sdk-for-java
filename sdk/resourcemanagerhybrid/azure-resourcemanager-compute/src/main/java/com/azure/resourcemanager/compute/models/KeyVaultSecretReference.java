@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a reference to Key Vault Secret. */
+/**
+ * Describes a reference to Key Vault Secret.
+ */
 @Fluent
 public final class KeyVaultSecretReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultSecretReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(KeyVaultSecretReference.class);
 
     /*
      * The URL referencing a secret in a Key Vault.
@@ -29,7 +34,7 @@ public final class KeyVaultSecretReference {
 
     /**
      * Get the secretUrl property: The URL referencing a secret in a Key Vault.
-     *
+     * 
      * @return the secretUrl value.
      */
     public String secretUrl() {
@@ -38,7 +43,7 @@ public final class KeyVaultSecretReference {
 
     /**
      * Set the secretUrl property: The URL referencing a secret in a Key Vault.
-     *
+     * 
      * @param secretUrl the secretUrl value to set.
      * @return the KeyVaultSecretReference object itself.
      */
@@ -48,8 +53,9 @@ public final class KeyVaultSecretReference {
     }
 
     /**
-     * Get the sourceVault property: The relative URL of the Key Vault containing the secret.
-     *
+     * Get the sourceVault property: The relative URL of the Key Vault
+     * containing the secret.
+     * 
      * @return the sourceVault value.
      */
     public SubResource sourceVault() {
@@ -57,8 +63,9 @@ public final class KeyVaultSecretReference {
     }
 
     /**
-     * Set the sourceVault property: The relative URL of the Key Vault containing the secret.
-     *
+     * Set the sourceVault property: The relative URL of the Key Vault
+     * containing the secret.
+     * 
      * @param sourceVault the sourceVault value to set.
      * @return the KeyVaultSecretReference object itself.
      */
@@ -69,21 +76,15 @@ public final class KeyVaultSecretReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (secretUrl() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secretUrl in model KeyVaultSecretReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property secretUrl in model KeyVaultSecretReference"));
         }
         if (sourceVault() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceVault in model KeyVaultSecretReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property sourceVault in model KeyVaultSecretReference"));
         }
     }
 }

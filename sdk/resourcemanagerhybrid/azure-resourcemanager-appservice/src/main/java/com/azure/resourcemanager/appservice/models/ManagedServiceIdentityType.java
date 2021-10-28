@@ -4,50 +4,38 @@
 
 package com.azure.resourcemanager.appservice.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for ManagedServiceIdentityType. */
-public enum ManagedServiceIdentityType {
-    /** Enum value SystemAssigned. */
-    SYSTEM_ASSIGNED("SystemAssigned"),
+public final class ManagedServiceIdentityType extends ExpandableStringEnum<ManagedServiceIdentityType> {
+    /** Static value SystemAssigned for ManagedServiceIdentityType. */
+    public static final ManagedServiceIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
-    /** Enum value UserAssigned. */
-    USER_ASSIGNED("UserAssigned"),
+    /** Static value UserAssigned for ManagedServiceIdentityType. */
+    public static final ManagedServiceIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
-    /** Enum value SystemAssigned, UserAssigned. */
-    SYSTEM_ASSIGNED_USER_ASSIGNED("SystemAssigned, UserAssigned"),
+    /** Static value SystemAssigned, UserAssigned for ManagedServiceIdentityType. */
+    public static final ManagedServiceIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED =
+        fromString("SystemAssigned, UserAssigned");
 
-    /** Enum value None. */
-    NONE("None");
-
-    /** The actual serialized value for a ManagedServiceIdentityType instance. */
-    private final String value;
-
-    ManagedServiceIdentityType(String value) {
-        this.value = value;
-    }
+    /** Static value None for ManagedServiceIdentityType. */
+    public static final ManagedServiceIdentityType NONE = fromString("None");
 
     /**
-     * Parses a serialized value to a ManagedServiceIdentityType instance.
+     * Creates or finds a ManagedServiceIdentityType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed ManagedServiceIdentityType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding ManagedServiceIdentityType.
      */
     @JsonCreator
-    public static ManagedServiceIdentityType fromString(String value) {
-        ManagedServiceIdentityType[] items = ManagedServiceIdentityType.values();
-        for (ManagedServiceIdentityType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static ManagedServiceIdentityType fromString(String name) {
+        return fromString(name, ManagedServiceIdentityType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known ManagedServiceIdentityType values. */
+    public static Collection<ManagedServiceIdentityType> values() {
+        return values(ManagedServiceIdentityType.class);
     }
 }

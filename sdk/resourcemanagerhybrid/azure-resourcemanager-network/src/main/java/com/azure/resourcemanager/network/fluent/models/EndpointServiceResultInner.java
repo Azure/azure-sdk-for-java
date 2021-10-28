@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Endpoint service. */
+/**
+ * Endpoint service.
+ */
 @Fluent
 public final class EndpointServiceResultInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointServiceResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EndpointServiceResultInner.class);
 
     /*
      * Name of the endpoint service.
@@ -29,7 +34,7 @@ public final class EndpointServiceResultInner extends SubResource {
 
     /**
      * Get the name property: Name of the endpoint service.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,14 +43,16 @@ public final class EndpointServiceResultInner extends SubResource {
 
     /**
      * Get the type property: Type of the endpoint service.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EndpointServiceResultInner withId(String id) {
         super.withId(id);
@@ -54,7 +61,7 @@ public final class EndpointServiceResultInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

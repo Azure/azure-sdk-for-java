@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitArpTable;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListArpTable associated with the Express Route Circuits API. */
+/**
+ * Response for ListArpTable associated with the Express Route Circuits API.
+ */
 @Fluent
 public final class ExpressRouteCircuitsArpTableListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitsArpTableListResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitsArpTableListResultInner.class);
 
     /*
-     * A list of the ARP tables.
+     * Gets list of the ARP table.
      */
     @JsonProperty(value = "value")
     private List<ExpressRouteCircuitArpTable> value;
@@ -29,8 +34,8 @@ public final class ExpressRouteCircuitsArpTableListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: A list of the ARP tables.
-     *
+     * Get the value property: Gets list of the ARP table.
+     * 
      * @return the value value.
      */
     public List<ExpressRouteCircuitArpTable> value() {
@@ -38,8 +43,8 @@ public final class ExpressRouteCircuitsArpTableListResultInner {
     }
 
     /**
-     * Set the value property: A list of the ARP tables.
-     *
+     * Set the value property: Gets list of the ARP table.
+     * 
      * @param value the value value to set.
      * @return the ExpressRouteCircuitsArpTableListResultInner object itself.
      */
@@ -50,7 +55,7 @@ public final class ExpressRouteCircuitsArpTableListResultInner {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +64,7 @@ public final class ExpressRouteCircuitsArpTableListResultInner {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRouteCircuitsArpTableListResultInner object itself.
      */
@@ -70,7 +75,7 @@ public final class ExpressRouteCircuitsArpTableListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

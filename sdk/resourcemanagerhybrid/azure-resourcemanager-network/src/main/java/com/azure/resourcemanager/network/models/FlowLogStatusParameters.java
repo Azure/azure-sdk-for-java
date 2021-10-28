@@ -5,14 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define a resource to query flow log and traffic analytics (optional) status. */
+/**
+ * Parameters that define a resource to query flow log and traffic analytics
+ * (optional) status.
+ */
 @Fluent
 public final class FlowLogStatusParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowLogStatusParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FlowLogStatusParameters.class);
 
     /*
      * The target resource where getting the flow log and traffic analytics
@@ -22,9 +28,9 @@ public final class FlowLogStatusParameters {
     private String targetResourceId;
 
     /**
-     * Get the targetResourceId property: The target resource where getting the flow log and traffic analytics
-     * (optional) status.
-     *
+     * Get the targetResourceId property: The target resource where getting the
+     * flow log and traffic analytics (optional) status.
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -32,9 +38,9 @@ public final class FlowLogStatusParameters {
     }
 
     /**
-     * Set the targetResourceId property: The target resource where getting the flow log and traffic analytics
-     * (optional) status.
-     *
+     * Set the targetResourceId property: The target resource where getting the
+     * flow log and traffic analytics (optional) status.
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the FlowLogStatusParameters object itself.
      */
@@ -45,15 +51,12 @@ public final class FlowLogStatusParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model FlowLogStatusParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property targetResourceId in model FlowLogStatusParameters"));
         }
     }
 }

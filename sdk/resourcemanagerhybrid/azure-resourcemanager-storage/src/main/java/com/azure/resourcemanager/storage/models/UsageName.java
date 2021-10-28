@@ -4,15 +4,20 @@
 
 package com.azure.resourcemanager.storage.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The usage names that can be used; currently limited to StorageAccount. */
+/**
+ * The usage names that can be used; currently limited to StorageAccount.
+ */
 @Immutable
 public final class UsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageName.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UsageName.class);
 
     /*
      * Gets a string describing the resource name.
@@ -28,7 +33,7 @@ public final class UsageName {
 
     /**
      * Get the value property: Gets a string describing the resource name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -36,8 +41,9 @@ public final class UsageName {
     }
 
     /**
-     * Get the localizedValue property: Gets a localized string describing the resource name.
-     *
+     * Get the localizedValue property: Gets a localized string describing the
+     * resource name.
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -46,7 +52,7 @@ public final class UsageName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

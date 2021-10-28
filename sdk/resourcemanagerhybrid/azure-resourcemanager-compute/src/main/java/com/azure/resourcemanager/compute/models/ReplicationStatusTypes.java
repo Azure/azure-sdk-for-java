@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReplicationStatusTypes. */
+/**
+ * Defines values for ReplicationStatusTypes.
+ */
 public final class ReplicationStatusTypes extends ExpandableStringEnum<ReplicationStatusTypes> {
-    /** Static value ReplicationStatus for ReplicationStatusTypes. */
+    /**
+     * Static value ReplicationStatus for ReplicationStatusTypes.
+     */
     public static final ReplicationStatusTypes REPLICATION_STATUS = fromString("ReplicationStatus");
 
     /**
      * Creates or finds a ReplicationStatusTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReplicationStatusTypes.
      */
@@ -24,7 +28,9 @@ public final class ReplicationStatusTypes extends ExpandableStringEnum<Replicati
         return fromString(name, ReplicationStatusTypes.class);
     }
 
-    /** @return known ReplicationStatusTypes values. */
+    /**
+     * @return known ReplicationStatusTypes values.
+     */
     public static Collection<ReplicationStatusTypes> values() {
         return values(ReplicationStatusTypes.class);
     }

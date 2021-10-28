@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of an application rule. */
+/**
+ * Properties of an application rule.
+ */
 @Fluent
 public final class AzureFirewallApplicationRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallApplicationRule.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AzureFirewallApplicationRule.class);
 
     /*
      * Name of the application rule.
@@ -51,15 +56,9 @@ public final class AzureFirewallApplicationRule {
     @JsonProperty(value = "fqdnTags")
     private List<String> fqdnTags;
 
-    /*
-     * List of source IpGroups for this rule.
-     */
-    @JsonProperty(value = "sourceIpGroups")
-    private List<String> sourceIpGroups;
-
     /**
      * Get the name property: Name of the application rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +67,7 @@ public final class AzureFirewallApplicationRule {
 
     /**
      * Set the name property: Name of the application rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the AzureFirewallApplicationRule object itself.
      */
@@ -79,7 +78,7 @@ public final class AzureFirewallApplicationRule {
 
     /**
      * Get the description property: Description of the rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -88,7 +87,7 @@ public final class AzureFirewallApplicationRule {
 
     /**
      * Set the description property: Description of the rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the AzureFirewallApplicationRule object itself.
      */
@@ -98,8 +97,9 @@ public final class AzureFirewallApplicationRule {
     }
 
     /**
-     * Get the sourceAddresses property: List of source IP addresses for this rule.
-     *
+     * Get the sourceAddresses property: List of source IP addresses for this
+     * rule.
+     * 
      * @return the sourceAddresses value.
      */
     public List<String> sourceAddresses() {
@@ -107,8 +107,9 @@ public final class AzureFirewallApplicationRule {
     }
 
     /**
-     * Set the sourceAddresses property: List of source IP addresses for this rule.
-     *
+     * Set the sourceAddresses property: List of source IP addresses for this
+     * rule.
+     * 
      * @param sourceAddresses the sourceAddresses value to set.
      * @return the AzureFirewallApplicationRule object itself.
      */
@@ -119,7 +120,7 @@ public final class AzureFirewallApplicationRule {
 
     /**
      * Get the protocols property: Array of ApplicationRuleProtocols.
-     *
+     * 
      * @return the protocols value.
      */
     public List<AzureFirewallApplicationRuleProtocol> protocols() {
@@ -128,7 +129,7 @@ public final class AzureFirewallApplicationRule {
 
     /**
      * Set the protocols property: Array of ApplicationRuleProtocols.
-     *
+     * 
      * @param protocols the protocols value to set.
      * @return the AzureFirewallApplicationRule object itself.
      */
@@ -139,7 +140,7 @@ public final class AzureFirewallApplicationRule {
 
     /**
      * Get the targetFqdns property: List of FQDNs for this rule.
-     *
+     * 
      * @return the targetFqdns value.
      */
     public List<String> targetFqdns() {
@@ -148,7 +149,7 @@ public final class AzureFirewallApplicationRule {
 
     /**
      * Set the targetFqdns property: List of FQDNs for this rule.
-     *
+     * 
      * @param targetFqdns the targetFqdns value to set.
      * @return the AzureFirewallApplicationRule object itself.
      */
@@ -159,7 +160,7 @@ public final class AzureFirewallApplicationRule {
 
     /**
      * Get the fqdnTags property: List of FQDN Tags for this rule.
-     *
+     * 
      * @return the fqdnTags value.
      */
     public List<String> fqdnTags() {
@@ -168,7 +169,7 @@ public final class AzureFirewallApplicationRule {
 
     /**
      * Set the fqdnTags property: List of FQDN Tags for this rule.
-     *
+     * 
      * @param fqdnTags the fqdnTags value to set.
      * @return the AzureFirewallApplicationRule object itself.
      */
@@ -178,28 +179,8 @@ public final class AzureFirewallApplicationRule {
     }
 
     /**
-     * Get the sourceIpGroups property: List of source IpGroups for this rule.
-     *
-     * @return the sourceIpGroups value.
-     */
-    public List<String> sourceIpGroups() {
-        return this.sourceIpGroups;
-    }
-
-    /**
-     * Set the sourceIpGroups property: List of source IpGroups for this rule.
-     *
-     * @param sourceIpGroups the sourceIpGroups value to set.
-     * @return the AzureFirewallApplicationRule object itself.
-     */
-    public AzureFirewallApplicationRule withSourceIpGroups(List<String> sourceIpGroups) {
-        this.sourceIpGroups = sourceIpGroups;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

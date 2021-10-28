@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The protection policy of a virtual machine scale set VM. */
+/**
+ * The protection policy of a virtual machine scale set VM.
+ */
 @Fluent
 public final class VirtualMachineScaleSetVMProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMProtectionPolicy.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMProtectionPolicy.class);
 
     /*
      * Indicates that the virtual machine scale set VM shouldn't be considered
@@ -30,9 +35,10 @@ public final class VirtualMachineScaleSetVMProtectionPolicy {
     private Boolean protectFromScaleSetActions;
 
     /**
-     * Get the protectFromScaleIn property: Indicates that the virtual machine scale set VM shouldn't be considered for
-     * deletion during a scale-in operation.
-     *
+     * Get the protectFromScaleIn property: Indicates that the virtual machine
+     * scale set VM shouldn't be considered for deletion during a scale-in
+     * operation.
+     * 
      * @return the protectFromScaleIn value.
      */
     public Boolean protectFromScaleIn() {
@@ -40,9 +46,10 @@ public final class VirtualMachineScaleSetVMProtectionPolicy {
     }
 
     /**
-     * Set the protectFromScaleIn property: Indicates that the virtual machine scale set VM shouldn't be considered for
-     * deletion during a scale-in operation.
-     *
+     * Set the protectFromScaleIn property: Indicates that the virtual machine
+     * scale set VM shouldn't be considered for deletion during a scale-in
+     * operation.
+     * 
      * @param protectFromScaleIn the protectFromScaleIn value to set.
      * @return the VirtualMachineScaleSetVMProtectionPolicy object itself.
      */
@@ -52,9 +59,10 @@ public final class VirtualMachineScaleSetVMProtectionPolicy {
     }
 
     /**
-     * Get the protectFromScaleSetActions property: Indicates that model updates or actions (including scale-in)
-     * initiated on the virtual machine scale set should not be applied to the virtual machine scale set VM.
-     *
+     * Get the protectFromScaleSetActions property: Indicates that model
+     * updates or actions (including scale-in) initiated on the virtual machine
+     * scale set should not be applied to the virtual machine scale set VM.
+     * 
      * @return the protectFromScaleSetActions value.
      */
     public Boolean protectFromScaleSetActions() {
@@ -62,10 +70,12 @@ public final class VirtualMachineScaleSetVMProtectionPolicy {
     }
 
     /**
-     * Set the protectFromScaleSetActions property: Indicates that model updates or actions (including scale-in)
-     * initiated on the virtual machine scale set should not be applied to the virtual machine scale set VM.
-     *
-     * @param protectFromScaleSetActions the protectFromScaleSetActions value to set.
+     * Set the protectFromScaleSetActions property: Indicates that model
+     * updates or actions (including scale-in) initiated on the virtual machine
+     * scale set should not be applied to the virtual machine scale set VM.
+     * 
+     * @param protectFromScaleSetActions the protectFromScaleSetActions value
+     * to set.
      * @return the VirtualMachineScaleSetVMProtectionPolicy object itself.
      */
     public VirtualMachineScaleSetVMProtectionPolicy withProtectFromScaleSetActions(Boolean protectFromScaleSetActions) {
@@ -75,7 +85,7 @@ public final class VirtualMachineScaleSetVMProtectionPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

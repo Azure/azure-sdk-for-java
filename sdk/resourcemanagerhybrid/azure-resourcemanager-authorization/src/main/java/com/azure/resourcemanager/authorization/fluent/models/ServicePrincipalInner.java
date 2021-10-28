@@ -5,21 +5,27 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.models.AppRole;
 import com.azure.resourcemanager.authorization.models.OAuth2Permission;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Active Directory service principal information. */
+/**
+ * Active Directory service principal information.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("ServicePrincipal")
 @Fluent
 public final class ServicePrincipalInner extends DirectoryObjectInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServicePrincipalInner.class);
 
     /*
      * whether or not the service principal account is enabled
@@ -155,8 +161,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     private List<String> tags;
 
     /**
-     * Get the accountEnabled property: whether or not the service principal account is enabled.
-     *
+     * Get the accountEnabled property: whether or not the service principal
+     * account is enabled.
+     * 
      * @return the accountEnabled value.
      */
     public Boolean accountEnabled() {
@@ -164,8 +171,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the accountEnabled property: whether or not the service principal account is enabled.
-     *
+     * Set the accountEnabled property: whether or not the service principal
+     * account is enabled.
+     * 
      * @param accountEnabled the accountEnabled value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -176,7 +184,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
 
     /**
      * Get the alternativeNames property: alternative names.
-     *
+     * 
      * @return the alternativeNames value.
      */
     public List<String> alternativeNames() {
@@ -185,7 +193,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
 
     /**
      * Set the alternativeNames property: alternative names.
-     *
+     * 
      * @param alternativeNames the alternativeNames value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -195,8 +203,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the appDisplayName property: The display name exposed by the associated application.
-     *
+     * Get the appDisplayName property: The display name exposed by the
+     * associated application.
+     * 
      * @return the appDisplayName value.
      */
     public String appDisplayName() {
@@ -205,7 +214,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
 
     /**
      * Get the appId property: The application ID.
-     *
+     * 
      * @return the appId value.
      */
     public String appId() {
@@ -214,7 +223,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
 
     /**
      * Set the appId property: The application ID.
-     *
+     * 
      * @param appId the appId value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -225,7 +234,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
 
     /**
      * Get the appOwnerTenantId property: The appOwnerTenantId property.
-     *
+     * 
      * @return the appOwnerTenantId value.
      */
     public String appOwnerTenantId() {
@@ -233,9 +242,10 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the appRoleAssignmentRequired property: Specifies whether an AppRoleAssignment to a user or group is required
-     * before Azure AD will issue a user or access token to the application.
-     *
+     * Get the appRoleAssignmentRequired property: Specifies whether an
+     * AppRoleAssignment to a user or group is required before Azure AD will
+     * issue a user or access token to the application.
+     * 
      * @return the appRoleAssignmentRequired value.
      */
     public Boolean appRoleAssignmentRequired() {
@@ -243,10 +253,12 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the appRoleAssignmentRequired property: Specifies whether an AppRoleAssignment to a user or group is required
-     * before Azure AD will issue a user or access token to the application.
-     *
-     * @param appRoleAssignmentRequired the appRoleAssignmentRequired value to set.
+     * Set the appRoleAssignmentRequired property: Specifies whether an
+     * AppRoleAssignment to a user or group is required before Azure AD will
+     * issue a user or access token to the application.
+     * 
+     * @param appRoleAssignmentRequired the appRoleAssignmentRequired value to
+     * set.
      * @return the ServicePrincipalInner object itself.
      */
     public ServicePrincipalInner withAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
@@ -255,9 +267,10 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the appRoles property: The collection of application roles that an application may declare. These roles can
-     * be assigned to users, groups or service principals.
-     *
+     * Get the appRoles property: The collection of application roles that an
+     * application may declare. These roles can be assigned to users, groups or
+     * service principals.
+     * 
      * @return the appRoles value.
      */
     public List<AppRole> appRoles() {
@@ -265,9 +278,10 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the appRoles property: The collection of application roles that an application may declare. These roles can
-     * be assigned to users, groups or service principals.
-     *
+     * Set the appRoles property: The collection of application roles that an
+     * application may declare. These roles can be assigned to users, groups or
+     * service principals.
+     * 
      * @param appRoles the appRoles value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -278,7 +292,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
 
     /**
      * Get the displayName property: The display name of the service principal.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -287,7 +301,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
 
     /**
      * Set the displayName property: The display name of the service principal.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -297,9 +311,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the errorUrl property: A URL provided by the author of the associated application to report errors when using
-     * the application.
-     *
+     * Get the errorUrl property: A URL provided by the author of the
+     * associated application to report errors when using the application.
+     * 
      * @return the errorUrl value.
      */
     public String errorUrl() {
@@ -307,9 +321,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the errorUrl property: A URL provided by the author of the associated application to report errors when using
-     * the application.
-     *
+     * Set the errorUrl property: A URL provided by the author of the
+     * associated application to report errors when using the application.
+     * 
      * @param errorUrl the errorUrl value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -319,8 +333,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the homepage property: The URL to the homepage of the associated application.
-     *
+     * Get the homepage property: The URL to the homepage of the associated
+     * application.
+     * 
      * @return the homepage value.
      */
     public String homepage() {
@@ -328,8 +343,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the homepage property: The URL to the homepage of the associated application.
-     *
+     * Set the homepage property: The URL to the homepage of the associated
+     * application.
+     * 
      * @param homepage the homepage value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -339,8 +355,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the keyCredentials property: The collection of key credentials associated with the service principal.
-     *
+     * Get the keyCredentials property: The collection of key credentials
+     * associated with the service principal.
+     * 
      * @return the keyCredentials value.
      */
     public List<KeyCredentialInner> keyCredentials() {
@@ -348,8 +365,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the keyCredentials property: The collection of key credentials associated with the service principal.
-     *
+     * Set the keyCredentials property: The collection of key credentials
+     * associated with the service principal.
+     * 
      * @param keyCredentials the keyCredentials value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -359,8 +377,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the logoutUrl property: A URL provided by the author of the associated application to logout.
-     *
+     * Get the logoutUrl property: A URL provided by the author of the
+     * associated application to logout.
+     * 
      * @return the logoutUrl value.
      */
     public String logoutUrl() {
@@ -368,8 +387,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the logoutUrl property: A URL provided by the author of the associated application to logout.
-     *
+     * Set the logoutUrl property: A URL provided by the author of the
+     * associated application to logout.
+     * 
      * @param logoutUrl the logoutUrl value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -379,8 +399,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the oauth2Permissions property: The OAuth 2.0 permissions exposed by the associated application.
-     *
+     * Get the oauth2Permissions property: The OAuth 2.0 permissions exposed by
+     * the associated application.
+     * 
      * @return the oauth2Permissions value.
      */
     public List<OAuth2Permission> oauth2Permissions() {
@@ -388,9 +409,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the passwordCredentials property: The collection of password credentials associated with the service
-     * principal.
-     *
+     * Get the passwordCredentials property: The collection of password
+     * credentials associated with the service principal.
+     * 
      * @return the passwordCredentials value.
      */
     public List<PasswordCredentialInner> passwordCredentials() {
@@ -398,9 +419,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the passwordCredentials property: The collection of password credentials associated with the service
-     * principal.
-     *
+     * Set the passwordCredentials property: The collection of password
+     * credentials associated with the service principal.
+     * 
      * @param passwordCredentials the passwordCredentials value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -410,8 +431,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the preferredTokenSigningKeyThumbprint property: The thumbprint of preferred certificate to sign the token.
-     *
+     * Get the preferredTokenSigningKeyThumbprint property: The thumbprint of
+     * preferred certificate to sign the token.
+     * 
      * @return the preferredTokenSigningKeyThumbprint value.
      */
     public String preferredTokenSigningKeyThumbprint() {
@@ -419,9 +441,11 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the preferredTokenSigningKeyThumbprint property: The thumbprint of preferred certificate to sign the token.
-     *
-     * @param preferredTokenSigningKeyThumbprint the preferredTokenSigningKeyThumbprint value to set.
+     * Set the preferredTokenSigningKeyThumbprint property: The thumbprint of
+     * preferred certificate to sign the token.
+     * 
+     * @param preferredTokenSigningKeyThumbprint the
+     * preferredTokenSigningKeyThumbprint value to set.
      * @return the ServicePrincipalInner object itself.
      */
     public ServicePrincipalInner withPreferredTokenSigningKeyThumbprint(String preferredTokenSigningKeyThumbprint) {
@@ -430,8 +454,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the publisherName property: The publisher's name of the associated application.
-     *
+     * Get the publisherName property: The publisher's name of the associated
+     * application.
+     * 
      * @return the publisherName value.
      */
     public String publisherName() {
@@ -439,8 +464,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the publisherName property: The publisher's name of the associated application.
-     *
+     * Set the publisherName property: The publisher's name of the associated
+     * application.
+     * 
      * @param publisherName the publisherName value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -450,10 +476,11 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the replyUrls property: The URLs that user tokens are sent to for sign in with the associated application.
-     * The redirect URIs that the oAuth 2.0 authorization code and access tokens are sent to for the associated
-     * application.
-     *
+     * Get the replyUrls property: The URLs that user tokens are sent to for
+     * sign in with the associated application.  The redirect URIs that the
+     * oAuth 2.0 authorization code and access tokens are sent to for the
+     * associated application.
+     * 
      * @return the replyUrls value.
      */
     public List<String> replyUrls() {
@@ -461,10 +488,11 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the replyUrls property: The URLs that user tokens are sent to for sign in with the associated application.
-     * The redirect URIs that the oAuth 2.0 authorization code and access tokens are sent to for the associated
-     * application.
-     *
+     * Set the replyUrls property: The URLs that user tokens are sent to for
+     * sign in with the associated application.  The redirect URIs that the
+     * oAuth 2.0 authorization code and access tokens are sent to for the
+     * associated application.
+     * 
      * @param replyUrls the replyUrls value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -474,8 +502,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the samlMetadataUrl property: The URL to the SAML metadata of the associated application.
-     *
+     * Get the samlMetadataUrl property: The URL to the SAML metadata of the
+     * associated application.
+     * 
      * @return the samlMetadataUrl value.
      */
     public String samlMetadataUrl() {
@@ -483,8 +512,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the samlMetadataUrl property: The URL to the SAML metadata of the associated application.
-     *
+     * Set the samlMetadataUrl property: The URL to the SAML metadata of the
+     * associated application.
+     * 
      * @param samlMetadataUrl the samlMetadataUrl value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -494,8 +524,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the servicePrincipalNames property: A collection of service principal names.
-     *
+     * Get the servicePrincipalNames property: A collection of service
+     * principal names.
+     * 
      * @return the servicePrincipalNames value.
      */
     public List<String> servicePrincipalNames() {
@@ -503,8 +534,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the servicePrincipalNames property: A collection of service principal names.
-     *
+     * Set the servicePrincipalNames property: A collection of service
+     * principal names.
+     * 
      * @param servicePrincipalNames the servicePrincipalNames value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -514,8 +546,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the servicePrincipalType property: the type of the service principal.
-     *
+     * Get the servicePrincipalType property: the type of the service
+     * principal.
+     * 
      * @return the servicePrincipalType value.
      */
     public String servicePrincipalType() {
@@ -523,8 +556,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the servicePrincipalType property: the type of the service principal.
-     *
+     * Set the servicePrincipalType property: the type of the service
+     * principal.
+     * 
      * @param servicePrincipalType the servicePrincipalType value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -534,8 +568,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the tags property: Optional list of tags that you can apply to your service principals. Not nullable.
-     *
+     * Get the tags property: Optional list of tags that you can apply to your
+     * service principals. Not nullable.
+     * 
      * @return the tags value.
      */
     public List<String> tags() {
@@ -543,8 +578,9 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the tags property: Optional list of tags that you can apply to your service principals. Not nullable.
-     *
+     * Set the tags property: Optional list of tags that you can apply to your
+     * service principals. Not nullable.
+     * 
      * @param tags the tags value to set.
      * @return the ServicePrincipalInner object itself.
      */
@@ -555,7 +591,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

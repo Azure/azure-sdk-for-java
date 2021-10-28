@@ -8,16 +8,21 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteLinkInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExpressRouteLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ExpressRouteLinksClient.
+ */
 public interface ExpressRouteLinksClient {
     /**
      * Retrieves the specified ExpressRouteLink resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param linkName The name of the ExpressRouteLink resource.
@@ -27,12 +32,11 @@ public interface ExpressRouteLinksClient {
      * @return expressRouteLink.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String expressRoutePortName, String linkName);
+    Mono<Response<ExpressRouteLinkInner>> getWithResponseAsync(String resourceGroupName, String expressRoutePortName, String linkName);
 
     /**
      * Retrieves the specified ExpressRouteLink resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param linkName The name of the ExpressRouteLink resource.
@@ -46,7 +50,7 @@ public interface ExpressRouteLinksClient {
 
     /**
      * Retrieves the specified ExpressRouteLink resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param linkName The name of the ExpressRouteLink resource.
@@ -60,7 +64,7 @@ public interface ExpressRouteLinksClient {
 
     /**
      * Retrieves the specified ExpressRouteLink resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param linkName The name of the ExpressRouteLink resource.
@@ -71,12 +75,11 @@ public interface ExpressRouteLinksClient {
      * @return expressRouteLink.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteLinkInner> getWithResponse(
-        String resourceGroupName, String expressRoutePortName, String linkName, Context context);
+    Response<ExpressRouteLinkInner> getWithResponse(String resourceGroupName, String expressRoutePortName, String linkName, Context context);
 
     /**
      * Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +92,7 @@ public interface ExpressRouteLinksClient {
 
     /**
      * Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +105,7 @@ public interface ExpressRouteLinksClient {
 
     /**
      * Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param context The context to associate with this operation.

@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ScheduledEventsProfile model. */
+/**
+ * The ScheduledEventsProfile model.
+ */
 @Fluent
 public final class ScheduledEventsProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduledEventsProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ScheduledEventsProfile.class);
 
     /*
      * Specifies Terminate Scheduled Event related configurations.
@@ -21,8 +26,9 @@ public final class ScheduledEventsProfile {
     private TerminateNotificationProfile terminateNotificationProfile;
 
     /**
-     * Get the terminateNotificationProfile property: Specifies Terminate Scheduled Event related configurations.
-     *
+     * Get the terminateNotificationProfile property: Specifies Terminate
+     * Scheduled Event related configurations.
+     * 
      * @return the terminateNotificationProfile value.
      */
     public TerminateNotificationProfile terminateNotificationProfile() {
@@ -30,20 +36,21 @@ public final class ScheduledEventsProfile {
     }
 
     /**
-     * Set the terminateNotificationProfile property: Specifies Terminate Scheduled Event related configurations.
-     *
-     * @param terminateNotificationProfile the terminateNotificationProfile value to set.
+     * Set the terminateNotificationProfile property: Specifies Terminate
+     * Scheduled Event related configurations.
+     * 
+     * @param terminateNotificationProfile the terminateNotificationProfile
+     * value to set.
      * @return the ScheduledEventsProfile object itself.
      */
-    public ScheduledEventsProfile withTerminateNotificationProfile(
-        TerminateNotificationProfile terminateNotificationProfile) {
+    public ScheduledEventsProfile withTerminateNotificationProfile(TerminateNotificationProfile terminateNotificationProfile) {
         this.terminateNotificationProfile = terminateNotificationProfile;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

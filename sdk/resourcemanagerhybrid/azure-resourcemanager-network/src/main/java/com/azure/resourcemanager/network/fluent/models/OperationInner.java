@@ -5,19 +5,24 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.OperationDisplay;
 import com.azure.resourcemanager.network.models.OperationPropertiesFormatServiceSpecification;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network REST API operation definition. */
+/**
+ * Network REST API operation definition.
+ */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationInner.class);
 
     /*
-     * Operation name: {provider}/{resource}/{operation}.
+     * Operation name: {provider}/{resource}/{operation}
      */
     @JsonProperty(value = "name")
     private String name;
@@ -41,8 +46,9 @@ public final class OperationInner {
     private OperationPropertiesFormat innerProperties;
 
     /**
-     * Get the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * Get the name property: Operation name:
+     * {provider}/{resource}/{operation}.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,8 +56,9 @@ public final class OperationInner {
     }
 
     /**
-     * Set the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * Set the name property: Operation name:
+     * {provider}/{resource}/{operation}.
+     * 
      * @param name the name value to set.
      * @return the OperationInner object itself.
      */
@@ -61,8 +68,9 @@ public final class OperationInner {
     }
 
     /**
-     * Get the display property: Display metadata associated with the operation.
-     *
+     * Get the display property: Display metadata associated with the
+     * operation.
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -70,8 +78,9 @@ public final class OperationInner {
     }
 
     /**
-     * Set the display property: Display metadata associated with the operation.
-     *
+     * Set the display property: Display metadata associated with the
+     * operation.
+     * 
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
@@ -82,7 +91,7 @@ public final class OperationInner {
 
     /**
      * Get the origin property: Origin of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -91,7 +100,7 @@ public final class OperationInner {
 
     /**
      * Set the origin property: Origin of the operation.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationInner object itself.
      */
@@ -102,7 +111,7 @@ public final class OperationInner {
 
     /**
      * Get the innerProperties property: Operation properties format.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OperationPropertiesFormat innerProperties() {
@@ -111,7 +120,7 @@ public final class OperationInner {
 
     /**
      * Get the serviceSpecification property: Specification of the service.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public OperationPropertiesFormatServiceSpecification serviceSpecification() {
@@ -120,7 +129,7 @@ public final class OperationInner {
 
     /**
      * Set the serviceSpecification property: Specification of the service.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationInner object itself.
      */
@@ -134,7 +143,7 @@ public final class OperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

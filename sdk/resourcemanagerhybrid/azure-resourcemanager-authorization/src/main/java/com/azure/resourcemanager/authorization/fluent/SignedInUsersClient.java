@@ -8,92 +8,102 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.DirectoryObjectInner;
 import com.azure.resourcemanager.authorization.fluent.models.UserInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SignedInUsersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * SignedInUsersClient.
+ */
 public interface SignedInUsersClient {
     /**
      * Gets the details for the currently logged-in user.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for the currently logged-in user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<UserInner>> getWithResponseAsync();
+    Mono<Response<UserInner>> getWithResponseAsync(String tenantId);
 
     /**
      * Gets the details for the currently logged-in user.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for the currently logged-in user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<UserInner> getAsync();
+    Mono<UserInner> getAsync(String tenantId);
 
     /**
      * Gets the details for the currently logged-in user.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for the currently logged-in user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UserInner get();
+    UserInner get(String tenantId);
 
     /**
      * Gets the details for the currently logged-in user.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details for the currently logged-in user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserInner> getWithResponse(Context context);
+    Response<UserInner> getWithResponse(String tenantId, Context context);
 
     /**
      * Get the list of directory objects that are owned by the user.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of directory objects that are owned by the user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DirectoryObjectInner> listOwnedObjectsAsync();
+    PagedFlux<DirectoryObjectInner> listOwnedObjectsAsync(String tenantId);
 
     /**
      * Get the list of directory objects that are owned by the user.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of directory objects that are owned by the user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> listOwnedObjects();
+    PagedIterable<DirectoryObjectInner> listOwnedObjects(String tenantId);
 
     /**
      * Get the list of directory objects that are owned by the user.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of directory objects that are owned by the user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> listOwnedObjects(Context context);
+    PagedIterable<DirectoryObjectInner> listOwnedObjects(String tenantId, Context context);
 }

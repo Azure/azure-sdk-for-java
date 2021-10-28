@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitConnectionInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Response for ListConnections API service call retrieves all global reach connections that belongs to a Private
- * Peering for an ExpressRouteCircuit.
+ * Response for ListConnections API service call retrieves all global reach
+ * connections that belongs to a Private Peering for an ExpressRouteCircuit.
  */
 @Fluent
 public final class ExpressRouteCircuitConnectionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitConnectionListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitConnectionListResult.class);
 
     /*
      * The global reach connection associated with Private Peering in an
@@ -33,8 +36,9 @@ public final class ExpressRouteCircuitConnectionListResult {
     private String nextLink;
 
     /**
-     * Get the value property: The global reach connection associated with Private Peering in an ExpressRoute Circuit.
-     *
+     * Get the value property: The global reach connection associated with
+     * Private Peering in an ExpressRoute Circuit.
+     * 
      * @return the value value.
      */
     public List<ExpressRouteCircuitConnectionInner> value() {
@@ -42,8 +46,9 @@ public final class ExpressRouteCircuitConnectionListResult {
     }
 
     /**
-     * Set the value property: The global reach connection associated with Private Peering in an ExpressRoute Circuit.
-     *
+     * Set the value property: The global reach connection associated with
+     * Private Peering in an ExpressRoute Circuit.
+     * 
      * @param value the value value to set.
      * @return the ExpressRouteCircuitConnectionListResult object itself.
      */
@@ -54,7 +59,7 @@ public final class ExpressRouteCircuitConnectionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +68,7 @@ public final class ExpressRouteCircuitConnectionListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRouteCircuitConnectionListResult object itself.
      */
@@ -74,7 +79,7 @@ public final class ExpressRouteCircuitConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

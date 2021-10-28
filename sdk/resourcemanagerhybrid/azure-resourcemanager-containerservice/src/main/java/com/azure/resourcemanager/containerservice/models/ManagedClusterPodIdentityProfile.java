@@ -5,19 +5,20 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The pod identity profile of the Managed Cluster. See [use AAD pod
- * identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on pod identity
- * integration.
+ * The ManagedClusterPodIdentityProfile model.
  */
 @Fluent
 public final class ManagedClusterPodIdentityProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentityProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentityProfile.class);
 
     /*
      * Whether the pod identity addon is enabled.
@@ -26,31 +27,20 @@ public final class ManagedClusterPodIdentityProfile {
     private Boolean enabled;
 
     /*
-     * Whether pod identity is allowed to run on clusters with Kubenet
-     * networking. Running in Kubenet is disabled by default due to the
-     * security related nature of AAD Pod Identity and the risks of IP
-     * spoofing. See [using Kubenet network plugin with AAD Pod
-     * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities)
-     * for more information.
-     */
-    @JsonProperty(value = "allowNetworkPluginKubenet")
-    private Boolean allowNetworkPluginKubenet;
-
-    /*
-     * The pod identities to use in the cluster.
+     * User assigned pod identity settings.
      */
     @JsonProperty(value = "userAssignedIdentities")
     private List<ManagedClusterPodIdentity> userAssignedIdentities;
 
     /*
-     * The pod identity exceptions to allow.
+     * User assigned pod identity exception settings.
      */
     @JsonProperty(value = "userAssignedIdentityExceptions")
     private List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions;
 
     /**
      * Get the enabled property: Whether the pod identity addon is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -59,7 +49,7 @@ public final class ManagedClusterPodIdentityProfile {
 
     /**
      * Set the enabled property: Whether the pod identity addon is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
@@ -69,36 +59,9 @@ public final class ManagedClusterPodIdentityProfile {
     }
 
     /**
-     * Get the allowNetworkPluginKubenet property: Whether pod identity is allowed to run on clusters with Kubenet
-     * networking. Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and
-     * the risks of IP spoofing. See [using Kubenet network plugin with AAD Pod
-     * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities)
-     * for more information.
-     *
-     * @return the allowNetworkPluginKubenet value.
-     */
-    public Boolean allowNetworkPluginKubenet() {
-        return this.allowNetworkPluginKubenet;
-    }
-
-    /**
-     * Set the allowNetworkPluginKubenet property: Whether pod identity is allowed to run on clusters with Kubenet
-     * networking. Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and
-     * the risks of IP spoofing. See [using Kubenet network plugin with AAD Pod
-     * Identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity#using-kubenet-network-plugin-with-azure-active-directory-pod-managed-identities)
-     * for more information.
-     *
-     * @param allowNetworkPluginKubenet the allowNetworkPluginKubenet value to set.
-     * @return the ManagedClusterPodIdentityProfile object itself.
-     */
-    public ManagedClusterPodIdentityProfile withAllowNetworkPluginKubenet(Boolean allowNetworkPluginKubenet) {
-        this.allowNetworkPluginKubenet = allowNetworkPluginKubenet;
-        return this;
-    }
-
-    /**
-     * Get the userAssignedIdentities property: The pod identities to use in the cluster.
-     *
+     * Get the userAssignedIdentities property: User assigned pod identity
+     * settings.
+     * 
      * @return the userAssignedIdentities value.
      */
     public List<ManagedClusterPodIdentity> userAssignedIdentities() {
@@ -106,20 +69,21 @@ public final class ManagedClusterPodIdentityProfile {
     }
 
     /**
-     * Set the userAssignedIdentities property: The pod identities to use in the cluster.
-     *
+     * Set the userAssignedIdentities property: User assigned pod identity
+     * settings.
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
-    public ManagedClusterPodIdentityProfile withUserAssignedIdentities(
-        List<ManagedClusterPodIdentity> userAssignedIdentities) {
+    public ManagedClusterPodIdentityProfile withUserAssignedIdentities(List<ManagedClusterPodIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
-     * Get the userAssignedIdentityExceptions property: The pod identity exceptions to allow.
-     *
+     * Get the userAssignedIdentityExceptions property: User assigned pod
+     * identity exception settings.
+     * 
      * @return the userAssignedIdentityExceptions value.
      */
     public List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions() {
@@ -127,20 +91,21 @@ public final class ManagedClusterPodIdentityProfile {
     }
 
     /**
-     * Set the userAssignedIdentityExceptions property: The pod identity exceptions to allow.
-     *
-     * @param userAssignedIdentityExceptions the userAssignedIdentityExceptions value to set.
+     * Set the userAssignedIdentityExceptions property: User assigned pod
+     * identity exception settings.
+     * 
+     * @param userAssignedIdentityExceptions the userAssignedIdentityExceptions
+     * value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
-    public ManagedClusterPodIdentityProfile withUserAssignedIdentityExceptions(
-        List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions) {
+    public ManagedClusterPodIdentityProfile withUserAssignedIdentityExceptions(List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions) {
         this.userAssignedIdentityExceptions = userAssignedIdentityExceptions;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

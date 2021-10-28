@@ -8,323 +8,331 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.UserInner;
 import com.azure.resourcemanager.authorization.models.UserCreateParameters;
+import com.azure.resourcemanager.authorization.models.UserGetMemberGroupsParameters;
 import com.azure.resourcemanager.authorization.models.UserUpdateParameters;
+import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in UsersClient. */
-public interface UsersClient {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * UsersClient.
+ */
+public interface UsersClient extends InnerSupportsDelete<Void> {
     /**
      * Create a new user.
-     *
-     * @param parameters Request parameters for creating a new work or school account user.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory user information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<UserInner>> createWithResponseAsync(UserCreateParameters parameters);
+    Mono<Response<UserInner>> createWithResponseAsync(String tenantId, UserCreateParameters parameters);
 
     /**
      * Create a new user.
-     *
-     * @param parameters Request parameters for creating a new work or school account user.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory user information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<UserInner> createAsync(UserCreateParameters parameters);
+    Mono<UserInner> createAsync(String tenantId, UserCreateParameters parameters);
 
     /**
      * Create a new user.
-     *
-     * @param parameters Request parameters for creating a new work or school account user.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory user information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UserInner create(UserCreateParameters parameters);
+    UserInner create(String tenantId, UserCreateParameters parameters);
 
     /**
      * Create a new user.
-     *
-     * @param parameters Request parameters for creating a new work or school account user.
+     * 
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to create a user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory user information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserInner> createWithResponse(UserCreateParameters parameters, Context context);
+    Response<UserInner> createWithResponse(String tenantId, UserCreateParameters parameters, Context context);
 
     /**
      * Gets list of users for the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param expand The expand value for the operation result.
+     * @param top (Optional) Set the maximum number of results per response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<UserInner> listAsync(String filter, String expand);
+    PagedFlux<UserInner> listAsync(String tenantId, String filter, String expand, Integer top);
 
     /**
      * Gets list of users for the current tenant.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<UserInner> listAsync();
+    PagedFlux<UserInner> listAsync(String tenantId);
 
     /**
      * Gets list of users for the current tenant.
-     *
+     * 
+     * @param tenantId The tenant ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of users for the current tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<UserInner> list(String tenantId);
+
+    /**
+     * Gets list of users for the current tenant.
+     * 
+     * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param expand The expand value for the operation result.
+     * @param top (Optional) Set the maximum number of results per response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UserInner> list(String filter, String expand, Context context);
-
-    /**
-     * Gets list of users for the current tenant.
-     *
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of users for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UserInner> list();
+    PagedIterable<UserInner> list(String tenantId, String filter, String expand, Integer top, Context context);
 
     /**
      * Gets user information from the directory.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<UserInner>> getWithResponseAsync(String upnOrObjectId);
+    Mono<Response<UserInner>> getWithResponseAsync(String upnOrObjectId, String tenantId);
 
     /**
      * Gets user information from the directory.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<UserInner> getAsync(String upnOrObjectId);
+    Mono<UserInner> getAsync(String upnOrObjectId, String tenantId);
 
     /**
      * Gets user information from the directory.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UserInner get(String upnOrObjectId);
+    UserInner get(String upnOrObjectId, String tenantId);
 
     /**
      * Gets user information from the directory.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserInner> getWithResponse(String upnOrObjectId, Context context);
+    Response<UserInner> getWithResponse(String upnOrObjectId, String tenantId, Context context);
 
     /**
      * Updates a user.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user to update.
-     * @param parameters Request parameters for updating an existing work or school account user.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateWithResponseAsync(String upnOrObjectId, UserUpdateParameters parameters);
+    Mono<Response<Void>> updateWithResponseAsync(String upnOrObjectId, String tenantId, UserUpdateParameters parameters);
 
     /**
      * Updates a user.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user to update.
-     * @param parameters Request parameters for updating an existing work or school account user.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updateAsync(String upnOrObjectId, UserUpdateParameters parameters);
+    Mono<Void> updateAsync(String upnOrObjectId, String tenantId, UserUpdateParameters parameters);
 
     /**
      * Updates a user.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user to update.
-     * @param parameters Request parameters for updating an existing work or school account user.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String upnOrObjectId, UserUpdateParameters parameters);
+    void update(String upnOrObjectId, String tenantId, UserUpdateParameters parameters);
 
     /**
      * Updates a user.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user to update.
-     * @param parameters Request parameters for updating an existing work or school account user.
+     * @param tenantId The tenant ID.
+     * @param parameters Parameters to update an existing user.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(String upnOrObjectId, UserUpdateParameters parameters, Context context);
+    Response<Void> updateWithResponse(String upnOrObjectId, String tenantId, UserUpdateParameters parameters, Context context);
 
     /**
      * Delete a user.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user to delete.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String upnOrObjectId);
+    Mono<Response<Void>> deleteWithResponseAsync(String upnOrObjectId, String tenantId);
 
     /**
      * Delete a user.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user to delete.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String upnOrObjectId);
+    Mono<Void> deleteAsync(String upnOrObjectId, String tenantId);
 
     /**
      * Delete a user.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user to delete.
+     * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String upnOrObjectId);
+    void delete(String upnOrObjectId, String tenantId);
 
     /**
      * Delete a user.
-     *
+     * 
      * @param upnOrObjectId The object ID or principal name of the user to delete.
+     * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String upnOrObjectId, Context context);
+    Response<Void> deleteWithResponse(String upnOrObjectId, String tenantId, Context context);
 
     /**
      * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     *
+     * 
      * @param objectId The object ID of the user for which to get group membership.
-     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
-     *     membership in all groups should be checked.
+     * @param tenantId The tenant ID.
+     * @param parameters User filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<String> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly);
+    PagedFlux<String> getMemberGroupsAsync(String objectId, String tenantId, UserGetMemberGroupsParameters parameters);
 
     /**
      * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     *
+     * 
      * @param objectId The object ID of the user for which to get group membership.
-     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
-     *     membership in all groups should be checked.
+     * @param tenantId The tenant ID.
+     * @param parameters User filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly);
+    PagedIterable<String> getMemberGroups(String objectId, String tenantId, UserGetMemberGroupsParameters parameters);
 
     /**
      * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     *
+     * 
      * @param objectId The object ID of the user for which to get group membership.
-     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise,
-     *     membership in all groups should be checked.
+     * @param tenantId The tenant ID.
+     * @param parameters User filtering parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
-     *     server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly, Context context);
+    PagedIterable<String> getMemberGroups(String objectId, String tenantId, UserGetMemberGroupsParameters parameters, Context context);
 }

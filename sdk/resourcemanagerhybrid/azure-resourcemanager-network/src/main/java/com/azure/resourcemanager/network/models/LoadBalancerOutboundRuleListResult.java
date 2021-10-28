@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.OutboundRuleInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListOutboundRule API service call. */
+/**
+ * Response for ListOutboundRule API service call.
+ */
 @Fluent
 public final class LoadBalancerOutboundRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerOutboundRuleListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LoadBalancerOutboundRuleListResult.class);
 
     /*
      * A list of outbound rules in a load balancer.
@@ -30,7 +35,7 @@ public final class LoadBalancerOutboundRuleListResult {
 
     /**
      * Get the value property: A list of outbound rules in a load balancer.
-     *
+     * 
      * @return the value value.
      */
     public List<OutboundRuleInner> value() {
@@ -39,7 +44,7 @@ public final class LoadBalancerOutboundRuleListResult {
 
     /**
      * Set the value property: A list of outbound rules in a load balancer.
-     *
+     * 
      * @param value the value value to set.
      * @return the LoadBalancerOutboundRuleListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class LoadBalancerOutboundRuleListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +64,7 @@ public final class LoadBalancerOutboundRuleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

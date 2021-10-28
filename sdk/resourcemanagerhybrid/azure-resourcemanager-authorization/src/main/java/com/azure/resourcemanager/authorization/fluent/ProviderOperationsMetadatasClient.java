@@ -8,16 +8,21 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.ProviderOperationsMetadataInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProviderOperationsMetadatasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ProviderOperationsMetadatasClient.
+ */
 public interface ProviderOperationsMetadatasClient {
     /**
      * Gets provider operations metadata for the specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand Specifies whether to expand the values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,12 +31,11 @@ public interface ProviderOperationsMetadatasClient {
      * @return provider operations metadata for the specified resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ProviderOperationsMetadataInner>> getWithResponseAsync(
-        String resourceProviderNamespace, String expand);
+    Mono<Response<ProviderOperationsMetadataInner>> getWithResponseAsync(String resourceProviderNamespace, String expand);
 
     /**
      * Gets provider operations metadata for the specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand Specifies whether to expand the values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +48,7 @@ public interface ProviderOperationsMetadatasClient {
 
     /**
      * Gets provider operations metadata for the specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,7 +60,7 @@ public interface ProviderOperationsMetadatasClient {
 
     /**
      * Gets provider operations metadata for the specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -68,7 +72,7 @@ public interface ProviderOperationsMetadatasClient {
 
     /**
      * Gets provider operations metadata for the specified resource provider.
-     *
+     * 
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param expand Specifies whether to expand the values.
      * @param context The context to associate with this operation.
@@ -78,12 +82,11 @@ public interface ProviderOperationsMetadatasClient {
      * @return provider operations metadata for the specified resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProviderOperationsMetadataInner> getWithResponse(
-        String resourceProviderNamespace, String expand, Context context);
+    Response<ProviderOperationsMetadataInner> getWithResponse(String resourceProviderNamespace, String expand, Context context);
 
     /**
      * Gets provider operations metadata for all resource providers.
-     *
+     * 
      * @param expand Specifies whether to expand the values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -95,7 +98,7 @@ public interface ProviderOperationsMetadatasClient {
 
     /**
      * Gets provider operations metadata for all resource providers.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provider operations metadata for all resource providers.
@@ -105,7 +108,17 @@ public interface ProviderOperationsMetadatasClient {
 
     /**
      * Gets provider operations metadata for all resource providers.
-     *
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for all resource providers.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ProviderOperationsMetadataInner> list();
+
+    /**
+     * Gets provider operations metadata for all resource providers.
+     * 
      * @param expand Specifies whether to expand the values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,14 +128,4 @@ public interface ProviderOperationsMetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProviderOperationsMetadataInner> list(String expand, Context context);
-
-    /**
-     * Gets provider operations metadata for all resource providers.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return provider operations metadata for all resource providers.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProviderOperationsMetadataInner> list();
 }

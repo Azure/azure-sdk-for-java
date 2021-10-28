@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Request parameters for IsMemberOf API call. */
+/**
+ * Request parameters for IsMemberOf API call.
+ */
 @Fluent
 public final class CheckGroupMembershipParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckGroupMembershipParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(CheckGroupMembershipParameters.class);
 
     /*
      * The object ID of the group to check.
@@ -34,11 +39,12 @@ public final class CheckGroupMembershipParameters {
     /*
      * Request parameters for IsMemberOf API call.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /**
      * Get the groupId property: The object ID of the group to check.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -47,7 +53,7 @@ public final class CheckGroupMembershipParameters {
 
     /**
      * Set the groupId property: The object ID of the group to check.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the CheckGroupMembershipParameters object itself.
      */
@@ -57,9 +63,9 @@ public final class CheckGroupMembershipParameters {
     }
 
     /**
-     * Get the memberId property: The object ID of the contact, group, user, or service principal to check for
-     * membership in the specified group.
-     *
+     * Get the memberId property: The object ID of the contact, group, user, or
+     * service principal to check for membership in the specified group.
+     * 
      * @return the memberId value.
      */
     public String memberId() {
@@ -67,9 +73,9 @@ public final class CheckGroupMembershipParameters {
     }
 
     /**
-     * Set the memberId property: The object ID of the contact, group, user, or service principal to check for
-     * membership in the specified group.
-     *
+     * Set the memberId property: The object ID of the contact, group, user, or
+     * service principal to check for membership in the specified group.
+     * 
      * @param memberId the memberId value to set.
      * @return the CheckGroupMembershipParameters object itself.
      */
@@ -79,8 +85,9 @@ public final class CheckGroupMembershipParameters {
     }
 
     /**
-     * Get the additionalProperties property: Request parameters for IsMemberOf API call.
-     *
+     * Get the additionalProperties property: Request parameters for IsMemberOf
+     * API call.
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -89,8 +96,9 @@ public final class CheckGroupMembershipParameters {
     }
 
     /**
-     * Set the additionalProperties property: Request parameters for IsMemberOf API call.
-     *
+     * Set the additionalProperties property: Request parameters for IsMemberOf
+     * API call.
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the CheckGroupMembershipParameters object itself.
      */
@@ -109,21 +117,15 @@ public final class CheckGroupMembershipParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (groupId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groupId in model CheckGroupMembershipParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property groupId in model CheckGroupMembershipParameters"));
         }
         if (memberId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property memberId in model CheckGroupMembershipParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property memberId in model CheckGroupMembershipParameters"));
         }
     }
 }

@@ -4,16 +4,21 @@
 
 package com.azure.resourcemanager.storage.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A tag of the LegalHold of a blob container. */
+/**
+ * A tag of the LegalHold of a blob container.
+ */
 @Immutable
 public final class TagProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagProperty.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TagProperty.class);
 
     /*
      * The tag value.
@@ -48,7 +53,7 @@ public final class TagProperty {
 
     /**
      * Get the tag property: The tag value.
-     *
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -57,7 +62,7 @@ public final class TagProperty {
 
     /**
      * Get the timestamp property: Returns the date and time the tag was added.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -65,8 +70,9 @@ public final class TagProperty {
     }
 
     /**
-     * Get the objectIdentifier property: Returns the Object ID of the user who added the tag.
-     *
+     * Get the objectIdentifier property: Returns the Object ID of the user who
+     * added the tag.
+     * 
      * @return the objectIdentifier value.
      */
     public String objectIdentifier() {
@@ -74,8 +80,9 @@ public final class TagProperty {
     }
 
     /**
-     * Get the tenantId property: Returns the Tenant ID that issued the token for the user who added the tag.
-     *
+     * Get the tenantId property: Returns the Tenant ID that issued the token
+     * for the user who added the tag.
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -83,8 +90,9 @@ public final class TagProperty {
     }
 
     /**
-     * Get the upn property: Returns the User Principal Name of the user who added the tag.
-     *
+     * Get the upn property: Returns the User Principal Name of the user who
+     * added the tag.
+     * 
      * @return the upn value.
      */
     public String upn() {
@@ -93,7 +101,7 @@ public final class TagProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

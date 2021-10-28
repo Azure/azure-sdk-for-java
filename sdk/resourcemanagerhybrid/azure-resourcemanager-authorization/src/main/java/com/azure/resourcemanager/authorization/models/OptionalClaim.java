@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifying the claims to be included in a token. */
+/**
+ * Specifying the claims to be included in a token.
+ */
 @Fluent
 public final class OptionalClaim {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OptionalClaim.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OptionalClaim.class);
 
     /*
      * Claim name.
@@ -40,7 +45,7 @@ public final class OptionalClaim {
 
     /**
      * Get the name property: Claim name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +54,7 @@ public final class OptionalClaim {
 
     /**
      * Set the name property: Claim name.
-     *
+     * 
      * @param name the name value to set.
      * @return the OptionalClaim object itself.
      */
@@ -60,7 +65,7 @@ public final class OptionalClaim {
 
     /**
      * Get the source property: Claim source.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -69,7 +74,7 @@ public final class OptionalClaim {
 
     /**
      * Set the source property: Claim source.
-     *
+     * 
      * @param source the source value to set.
      * @return the OptionalClaim object itself.
      */
@@ -80,7 +85,7 @@ public final class OptionalClaim {
 
     /**
      * Get the essential property: Is this a required claim.
-     *
+     * 
      * @return the essential value.
      */
     public Boolean essential() {
@@ -89,7 +94,7 @@ public final class OptionalClaim {
 
     /**
      * Set the essential property: Is this a required claim.
-     *
+     * 
      * @param essential the essential value to set.
      * @return the OptionalClaim object itself.
      */
@@ -100,7 +105,7 @@ public final class OptionalClaim {
 
     /**
      * Get the additionalProperties property: Any object.
-     *
+     * 
      * @return the additionalProperties value.
      */
     public Object additionalProperties() {
@@ -109,7 +114,7 @@ public final class OptionalClaim {
 
     /**
      * Set the additionalProperties property: Any object.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the OptionalClaim object itself.
      */
@@ -120,7 +125,7 @@ public final class OptionalClaim {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

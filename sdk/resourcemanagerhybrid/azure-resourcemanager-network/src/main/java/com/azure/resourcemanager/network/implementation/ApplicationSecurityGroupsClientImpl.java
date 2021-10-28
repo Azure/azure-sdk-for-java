@@ -40,155 +40,98 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApplicationSecurityGroupsClient. */
-public final class ApplicationSecurityGroupsClientImpl
-    implements InnerSupportsGet<ApplicationSecurityGroupInner>,
-        InnerSupportsListing<ApplicationSecurityGroupInner>,
-        InnerSupportsDelete<Void>,
-        ApplicationSecurityGroupsClient {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ApplicationSecurityGroupsClient.
+ */
+public final class ApplicationSecurityGroupsClientImpl implements InnerSupportsGet<ApplicationSecurityGroupInner>, InnerSupportsListing<ApplicationSecurityGroupInner>, InnerSupportsDelete<Void>, ApplicationSecurityGroupsClient {
     private final ClientLogger logger = new ClientLogger(ApplicationSecurityGroupsClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApplicationSecurityGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of ApplicationSecurityGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationSecurityGroupsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ApplicationSecurityGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ApplicationSecurityGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientApplicationSecurityGroups to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for
+     * NetworkManagementClientApplicationSecurityGroups to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface ApplicationSecurityGroupsService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/applicationSecurityGroups/{applicationSecurityGroupName}")
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("applicationSecurityGroupName") String applicationSecurityGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("applicationSecurityGroupName") String applicationSecurityGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/applicationSecurityGroups/{applicationSecurityGroupName}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationSecurityGroupInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("applicationSecurityGroupName") String applicationSecurityGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationSecurityGroupInner>> getByResourceGroup(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("applicationSecurityGroupName") String applicationSecurityGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/applicationSecurityGroups/{applicationSecurityGroupName}")
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("applicationSecurityGroupName") String applicationSecurityGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ApplicationSecurityGroupInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("applicationSecurityGroupName") String applicationSecurityGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ApplicationSecurityGroupInner parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/applicationSecurityGroups/{applicationSecurityGroupName}")
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups/{applicationSecurityGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationSecurityGroupInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("applicationSecurityGroupName") String applicationSecurityGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> updateTags(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("applicationSecurityGroupName") String applicationSecurityGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") TagsObject parameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationSecurityGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationSecurityGroupListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationSecurityGroupListResult>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/applicationSecurityGroups")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationSecurityGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationSecurityGroupListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationSecurityGroupListResult>> listByResourceGroup(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationSecurityGroupListResult>> listAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationSecurityGroupListResult>> listAllNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationSecurityGroupListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationSecurityGroupListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Deletes the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -197,50 +140,27 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String applicationSecurityGroupName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (applicationSecurityGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter applicationSecurityGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationSecurityGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            applicationSecurityGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        final String apiVersion = "2018-11-01";
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, applicationSecurityGroupName, apiVersion, this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param context The context to associate with this operation.
@@ -250,47 +170,27 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String applicationSecurityGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (applicationSecurityGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter applicationSecurityGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationSecurityGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                applicationSecurityGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, applicationSecurityGroupName, apiVersion, this.client.getSubscriptionId(), context);
     }
 
     /**
      * Deletes the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,18 +199,14 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String applicationSecurityGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, applicationSecurityGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String applicationSecurityGroupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, applicationSecurityGroupName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param context The context to associate with this operation.
@@ -320,19 +216,15 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String applicationSecurityGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String applicationSecurityGroupName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, applicationSecurityGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, applicationSecurityGroupName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Deletes the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,14 +233,13 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String applicationSecurityGroupName) {
-        return beginDeleteAsync(resourceGroupName, applicationSecurityGroupName).getSyncPoller();
-    }
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationSecurityGroupName) {
+        return beginDeleteAsync(resourceGroupName, applicationSecurityGroupName)
+            .getSyncPoller();}
 
     /**
      * Deletes the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param context The context to associate with this operation.
@@ -358,14 +249,13 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String applicationSecurityGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, applicationSecurityGroupName, context).getSyncPoller();
-    }
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationSecurityGroupName, Context context) {
+        return beginDeleteAsync(resourceGroupName, applicationSecurityGroupName, context)
+            .getSyncPoller();}
 
     /**
      * Deletes the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,7 +272,7 @@ public final class ApplicationSecurityGroupsClientImpl
 
     /**
      * Deletes the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param context The context to associate with this operation.
@@ -400,7 +290,7 @@ public final class ApplicationSecurityGroupsClientImpl
 
     /**
      * Deletes the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,7 +304,7 @@ public final class ApplicationSecurityGroupsClientImpl
 
     /**
      * Deletes the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param context The context to associate with this operation.
@@ -429,7 +319,7 @@ public final class ApplicationSecurityGroupsClientImpl
 
     /**
      * Gets information about the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -438,50 +328,28 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return information about the specified application security group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ApplicationSecurityGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String applicationSecurityGroupName) {
+    public Mono<Response<ApplicationSecurityGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (applicationSecurityGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter applicationSecurityGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationSecurityGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            applicationSecurityGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, applicationSecurityGroupName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param context The context to associate with this operation.
@@ -491,47 +359,28 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return information about the specified application security group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationSecurityGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String applicationSecurityGroupName, Context context) {
+    private Mono<Response<ApplicationSecurityGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (applicationSecurityGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter applicationSecurityGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationSecurityGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                applicationSecurityGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, applicationSecurityGroupName, apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets information about the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -540,22 +389,20 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return information about the specified application security group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ApplicationSecurityGroupInner> getByResourceGroupAsync(
-        String resourceGroupName, String applicationSecurityGroupName) {
+    public Mono<ApplicationSecurityGroupInner> getByResourceGroupAsync(String resourceGroupName, String applicationSecurityGroupName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, applicationSecurityGroupName)
-            .flatMap(
-                (Response<ApplicationSecurityGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<ApplicationSecurityGroupInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets information about the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -564,14 +411,13 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return information about the specified application security group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationSecurityGroupInner getByResourceGroup(
-        String resourceGroupName, String applicationSecurityGroupName) {
+    public ApplicationSecurityGroupInner getByResourceGroup(String resourceGroupName, String applicationSecurityGroupName) {
         return getByResourceGroupAsync(resourceGroupName, applicationSecurityGroupName).block();
     }
 
     /**
      * Gets information about the specified application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param context The context to associate with this operation.
@@ -581,14 +427,13 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return information about the specified application security group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationSecurityGroupInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String applicationSecurityGroupName, Context context) {
+    public Response<ApplicationSecurityGroupInner> getByResourceGroupWithResponse(String resourceGroupName, String applicationSecurityGroupName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, applicationSecurityGroupName, context).block();
     }
 
     /**
      * Creates or updates an application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -598,56 +443,33 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (applicationSecurityGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter applicationSecurityGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationSecurityGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            applicationSecurityGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, applicationSecurityGroupName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -658,56 +480,33 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String applicationSecurityGroupName,
-        ApplicationSecurityGroupInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (applicationSecurityGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter applicationSecurityGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationSecurityGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                applicationSecurityGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, applicationSecurityGroupName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates or updates an application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -717,24 +516,14 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters);
-        return this
-            .client
-            .<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationSecurityGroupInner.class,
-                ApplicationSecurityGroupInner.class,
-                Context.NONE);
+    public PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters);
+        return this.client.<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResult(mono, this.client.getHttpPipeline(), ApplicationSecurityGroupInner.class, ApplicationSecurityGroupInner.class, Context.NONE);
     }
 
     /**
      * Creates or updates an application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -745,28 +534,15 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String applicationSecurityGroupName,
-            ApplicationSecurityGroupInner parameters,
-            Context context) {
+    private PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters, context);
-        return this
-            .client
-            .<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApplicationSecurityGroupInner.class,
-                ApplicationSecurityGroupInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters, context);
+        return this.client.<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResult(mono, this.client.getHttpPipeline(), ApplicationSecurityGroupInner.class, ApplicationSecurityGroupInner.class, context);
     }
 
     /**
      * Creates or updates an application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -776,14 +552,13 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdate(
-        String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, applicationSecurityGroupName, parameters).getSyncPoller();
-    }
+    public SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdate(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, applicationSecurityGroupName, parameters)
+            .getSyncPoller();}
 
     /**
      * Creates or updates an application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -794,18 +569,13 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String applicationSecurityGroupName,
-        ApplicationSecurityGroupInner parameters,
-        Context context) {
+    public SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdate(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, applicationSecurityGroupName, parameters, context)
-            .getSyncPoller();
-    }
+            .getSyncPoller();}
 
     /**
      * Creates or updates an application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -815,8 +585,7 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ApplicationSecurityGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
+    public Mono<ApplicationSecurityGroupInner> createOrUpdateAsync(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, applicationSecurityGroupName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -824,7 +593,7 @@ public final class ApplicationSecurityGroupsClientImpl
 
     /**
      * Creates or updates an application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -835,11 +604,7 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationSecurityGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String applicationSecurityGroupName,
-        ApplicationSecurityGroupInner parameters,
-        Context context) {
+    private Mono<ApplicationSecurityGroupInner> createOrUpdateAsync(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, applicationSecurityGroupName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -847,7 +612,7 @@ public final class ApplicationSecurityGroupsClientImpl
 
     /**
      * Creates or updates an application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -857,14 +622,13 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationSecurityGroupInner createOrUpdate(
-        String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
+    public ApplicationSecurityGroupInner createOrUpdate(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters) {
         return createOrUpdateAsync(resourceGroupName, applicationSecurityGroupName, parameters).block();
     }
 
     /**
      * Creates or updates an application security group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -875,17 +639,13 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationSecurityGroupInner createOrUpdate(
-        String resourceGroupName,
-        String applicationSecurityGroupName,
-        ApplicationSecurityGroupInner parameters,
-        Context context) {
+    public ApplicationSecurityGroupInner createOrUpdate(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, applicationSecurityGroupName, parameters, context).block();
     }
 
     /**
      * Updates an application security group's tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to update application security group tags.
@@ -895,56 +655,33 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ApplicationSecurityGroupInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (applicationSecurityGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter applicationSecurityGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationSecurityGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            applicationSecurityGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, applicationSecurityGroupName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an application security group's tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to update application security group tags.
@@ -955,53 +692,33 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationSecurityGroupInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (applicationSecurityGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter applicationSecurityGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter applicationSecurityGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                applicationSecurityGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), resourceGroupName, applicationSecurityGroupName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates an application security group's tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to update application security group tags.
@@ -1011,39 +728,14 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ApplicationSecurityGroupInner> updateTagsAsync(
-        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
-        return updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters)
-            .flatMap(
-                (Response<ApplicationSecurityGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTagsAsync(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters);
+        return this.client.<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResult(mono, this.client.getHttpPipeline(), ApplicationSecurityGroupInner.class, ApplicationSecurityGroupInner.class, Context.NONE);
     }
 
     /**
      * Updates an application security group's tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to update application security group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationSecurityGroupInner updateTags(
-        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters).block();
-    }
-
-    /**
-     * Updates an application security group's tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to update application security group tags.
@@ -1054,15 +746,118 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationSecurityGroupInner> updateTagsWithResponse(
-        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters, context)
-            .block();
+    private PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTagsAsync(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, applicationSecurityGroupName, parameters, context);
+        return this.client.<ApplicationSecurityGroupInner, ApplicationSecurityGroupInner>getLroResult(mono, this.client.getHttpPipeline(), ApplicationSecurityGroupInner.class, ApplicationSecurityGroupInner.class, context);
+    }
+
+    /**
+     * Updates an application security group's tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTags(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
+        return beginUpdateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters)
+            .getSyncPoller();}
+
+    /**
+     * Updates an application security group's tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTags(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters, context)
+            .getSyncPoller();}
+
+    /**
+     * Updates an application security group's tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ApplicationSecurityGroupInner> updateTagsAsync(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
+        return beginUpdateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates an application security group's tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ApplicationSecurityGroupInner> updateTagsAsync(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates an application security group's tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationSecurityGroupInner updateTags(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters) {
+        return updateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters).block();
+    }
+
+    /**
+     * Updates an application security group's tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to update application security group tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApplicationSecurityGroupInner updateTags(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context) {
+        return updateTagsAsync(resourceGroupName, applicationSecurityGroupName, parameters, context).block();
     }
 
     /**
      * Gets all application security groups in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application security groups in a subscription.
@@ -1070,39 +865,27 @@ public final class ApplicationSecurityGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationSecurityGroupInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<ApplicationSecurityGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ApplicationSecurityGroupInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all application security groups in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1112,48 +895,41 @@ public final class ApplicationSecurityGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationSecurityGroupInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all application security groups in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application security groups in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationSecurityGroupInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listAllNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(),
+            nextLink -> listAllNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all application security groups in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1163,12 +939,13 @@ public final class ApplicationSecurityGroupsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApplicationSecurityGroupInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(context),
+            nextLink -> listAllNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all application security groups in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application security groups in a subscription.
@@ -1180,7 +957,7 @@ public final class ApplicationSecurityGroupsClientImpl
 
     /**
      * Gets all application security groups in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1194,7 +971,7 @@ public final class ApplicationSecurityGroupsClientImpl
 
     /**
      * Gets all the application security groups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1202,52 +979,32 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return all the application security groups in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationSecurityGroupInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<ApplicationSecurityGroupInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ApplicationSecurityGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ApplicationSecurityGroupInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the application security groups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1256,49 +1013,32 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return all the application security groups in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationSecurityGroupInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ApplicationSecurityGroupInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all the application security groups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1308,12 +1048,13 @@ public final class ApplicationSecurityGroupsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationSecurityGroupInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName), nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the application security groups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1322,8 +1063,7 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return all the application security groups in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApplicationSecurityGroupInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
+    private PagedFlux<ApplicationSecurityGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -1331,7 +1071,7 @@ public final class ApplicationSecurityGroupsClientImpl
 
     /**
      * Gets all the application security groups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1345,7 +1085,7 @@ public final class ApplicationSecurityGroupsClientImpl
 
     /**
      * Gets all the application security groups in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1360,7 +1100,7 @@ public final class ApplicationSecurityGroupsClientImpl
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1373,29 +1113,23 @@ public final class ApplicationSecurityGroupsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listAllNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ApplicationSecurityGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listAllNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ApplicationSecurityGroupInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1404,35 +1138,28 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return a list of application security groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationSecurityGroupInner>> listAllNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ApplicationSecurityGroupInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAllNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAllNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1445,29 +1172,23 @@ public final class ApplicationSecurityGroupsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ApplicationSecurityGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ApplicationSecurityGroupInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1476,29 +1197,22 @@ public final class ApplicationSecurityGroupsClientImpl
      * @return a list of application security groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationSecurityGroupInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ApplicationSecurityGroupInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 }

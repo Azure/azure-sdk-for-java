@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AggregatedReplicationState. */
+/**
+ * Defines values for AggregatedReplicationState.
+ */
 public final class AggregatedReplicationState extends ExpandableStringEnum<AggregatedReplicationState> {
-    /** Static value Unknown for AggregatedReplicationState. */
+    /**
+     * Static value Unknown for AggregatedReplicationState.
+     */
     public static final AggregatedReplicationState UNKNOWN = fromString("Unknown");
 
-    /** Static value InProgress for AggregatedReplicationState. */
+    /**
+     * Static value InProgress for AggregatedReplicationState.
+     */
     public static final AggregatedReplicationState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Completed for AggregatedReplicationState. */
+    /**
+     * Static value Completed for AggregatedReplicationState.
+     */
     public static final AggregatedReplicationState COMPLETED = fromString("Completed");
 
-    /** Static value Failed for AggregatedReplicationState. */
+    /**
+     * Static value Failed for AggregatedReplicationState.
+     */
     public static final AggregatedReplicationState FAILED = fromString("Failed");
 
     /**
      * Creates or finds a AggregatedReplicationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AggregatedReplicationState.
      */
@@ -33,7 +43,9 @@ public final class AggregatedReplicationState extends ExpandableStringEnum<Aggre
         return fromString(name, AggregatedReplicationState.class);
     }
 
-    /** @return known AggregatedReplicationState values. */
+    /**
+     * @return known AggregatedReplicationState values.
+     */
     public static Collection<AggregatedReplicationState> values() {
         return values(AggregatedReplicationState.class);
     }

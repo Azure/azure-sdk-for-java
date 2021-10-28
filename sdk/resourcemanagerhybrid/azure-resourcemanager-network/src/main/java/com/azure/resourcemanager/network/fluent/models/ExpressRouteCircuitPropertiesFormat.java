@@ -5,22 +5,26 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitServiceProviderProperties;
-import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of ExpressRouteCircuit. */
+/**
+ * Properties of ExpressRouteCircuit.
+ */
 @Fluent
 public final class ExpressRouteCircuitPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPropertiesFormat.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPropertiesFormat.class);
 
     /*
-     * Allow classic operations.
+     * Allow classic operations
      */
     @JsonProperty(value = "allowClassicOperations")
     private Boolean allowClassicOperations;
@@ -32,7 +36,9 @@ public final class ExpressRouteCircuitPropertiesFormat {
     private String circuitProvisioningState;
 
     /*
-     * The ServiceProviderProvisioningState state of the resource.
+     * The ServiceProviderProvisioningState state of the resource. Possible
+     * values are 'NotProvisioned', 'Provisioning', 'Provisioned', and
+     * 'Deprovisioning'.
      */
     @JsonProperty(value = "serviceProviderProvisioningState")
     private ServiceProviderProvisioningState serviceProviderProvisioningState;
@@ -88,10 +94,11 @@ public final class ExpressRouteCircuitPropertiesFormat {
     private Integer stag;
 
     /*
-     * The provisioning state of the express route circuit resource.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /*
      * The GatewayManager Etag.
@@ -100,14 +107,14 @@ public final class ExpressRouteCircuitPropertiesFormat {
     private String gatewayManagerEtag;
 
     /*
-     * Flag denoting global reach status.
+     * Flag to enable Global Reach on the circuit.
      */
-    @JsonProperty(value = "globalReachEnabled")
-    private Boolean globalReachEnabled;
+    @JsonProperty(value = "allowGlobalReach")
+    private Boolean allowGlobalReach;
 
     /**
      * Get the allowClassicOperations property: Allow classic operations.
-     *
+     * 
      * @return the allowClassicOperations value.
      */
     public Boolean allowClassicOperations() {
@@ -116,7 +123,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the allowClassicOperations property: Allow classic operations.
-     *
+     * 
      * @param allowClassicOperations the allowClassicOperations value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -126,8 +133,9 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Get the circuitProvisioningState property: The CircuitProvisioningState state of the resource.
-     *
+     * Get the circuitProvisioningState property: The CircuitProvisioningState
+     * state of the resource.
+     * 
      * @return the circuitProvisioningState value.
      */
     public String circuitProvisioningState() {
@@ -135,9 +143,11 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Set the circuitProvisioningState property: The CircuitProvisioningState state of the resource.
-     *
-     * @param circuitProvisioningState the circuitProvisioningState value to set.
+     * Set the circuitProvisioningState property: The CircuitProvisioningState
+     * state of the resource.
+     * 
+     * @param circuitProvisioningState the circuitProvisioningState value to
+     * set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
     public ExpressRouteCircuitPropertiesFormat withCircuitProvisioningState(String circuitProvisioningState) {
@@ -146,8 +156,11 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Get the serviceProviderProvisioningState property: The ServiceProviderProvisioningState state of the resource.
-     *
+     * Get the serviceProviderProvisioningState property: The
+     * ServiceProviderProvisioningState state of the resource. Possible values
+     * are 'NotProvisioned', 'Provisioning', 'Provisioned', and
+     * 'Deprovisioning'.
+     * 
      * @return the serviceProviderProvisioningState value.
      */
     public ServiceProviderProvisioningState serviceProviderProvisioningState() {
@@ -155,20 +168,23 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Set the serviceProviderProvisioningState property: The ServiceProviderProvisioningState state of the resource.
-     *
-     * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
+     * Set the serviceProviderProvisioningState property: The
+     * ServiceProviderProvisioningState state of the resource. Possible values
+     * are 'NotProvisioned', 'Provisioning', 'Provisioned', and
+     * 'Deprovisioning'.
+     * 
+     * @param serviceProviderProvisioningState the
+     * serviceProviderProvisioningState value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitPropertiesFormat withServiceProviderProvisioningState(
-        ServiceProviderProvisioningState serviceProviderProvisioningState) {
+    public ExpressRouteCircuitPropertiesFormat withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState) {
         this.serviceProviderProvisioningState = serviceProviderProvisioningState;
         return this;
     }
 
     /**
      * Get the authorizations property: The list of authorizations.
-     *
+     * 
      * @return the authorizations value.
      */
     public List<ExpressRouteCircuitAuthorizationInner> authorizations() {
@@ -177,19 +193,18 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the authorizations property: The list of authorizations.
-     *
+     * 
      * @param authorizations the authorizations value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitPropertiesFormat withAuthorizations(
-        List<ExpressRouteCircuitAuthorizationInner> authorizations) {
+    public ExpressRouteCircuitPropertiesFormat withAuthorizations(List<ExpressRouteCircuitAuthorizationInner> authorizations) {
         this.authorizations = authorizations;
         return this;
     }
 
     /**
      * Get the peerings property: The list of peerings.
-     *
+     * 
      * @return the peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> peerings() {
@@ -198,7 +213,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the peerings property: The list of peerings.
-     *
+     * 
      * @param peerings the peerings value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -209,7 +224,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the serviceKey property: The ServiceKey.
-     *
+     * 
      * @return the serviceKey value.
      */
     public String serviceKey() {
@@ -218,7 +233,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the serviceKey property: The ServiceKey.
-     *
+     * 
      * @param serviceKey the serviceKey value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -229,7 +244,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Get the serviceProviderNotes property: The ServiceProviderNotes.
-     *
+     * 
      * @return the serviceProviderNotes value.
      */
     public String serviceProviderNotes() {
@@ -238,7 +253,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the serviceProviderNotes property: The ServiceProviderNotes.
-     *
+     * 
      * @param serviceProviderNotes the serviceProviderNotes value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -248,8 +263,9 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Get the serviceProviderProperties property: The ServiceProviderProperties.
-     *
+     * Get the serviceProviderProperties property: The
+     * ServiceProviderProperties.
+     * 
      * @return the serviceProviderProperties value.
      */
     public ExpressRouteCircuitServiceProviderProperties serviceProviderProperties() {
@@ -257,21 +273,23 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Set the serviceProviderProperties property: The ServiceProviderProperties.
-     *
-     * @param serviceProviderProperties the serviceProviderProperties value to set.
+     * Set the serviceProviderProperties property: The
+     * ServiceProviderProperties.
+     * 
+     * @param serviceProviderProperties the serviceProviderProperties value to
+     * set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitPropertiesFormat withServiceProviderProperties(
-        ExpressRouteCircuitServiceProviderProperties serviceProviderProperties) {
+    public ExpressRouteCircuitPropertiesFormat withServiceProviderProperties(ExpressRouteCircuitServiceProviderProperties serviceProviderProperties) {
         this.serviceProviderProperties = serviceProviderProperties;
         return this;
     }
 
     /**
-     * Get the expressRoutePort property: The reference to the ExpressRoutePort resource when the circuit is provisioned
-     * on an ExpressRoutePort resource.
-     *
+     * Get the expressRoutePort property: The reference to the ExpressRoutePort
+     * resource when the circuit is provisioned on an ExpressRoutePort
+     * resource.
+     * 
      * @return the expressRoutePort value.
      */
     public SubResource expressRoutePort() {
@@ -279,9 +297,10 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Set the expressRoutePort property: The reference to the ExpressRoutePort resource when the circuit is provisioned
-     * on an ExpressRoutePort resource.
-     *
+     * Set the expressRoutePort property: The reference to the ExpressRoutePort
+     * resource when the circuit is provisioned on an ExpressRoutePort
+     * resource.
+     * 
      * @param expressRoutePort the expressRoutePort value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -291,9 +310,9 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Get the bandwidthInGbps property: The bandwidth of the circuit when the circuit is provisioned on an
-     * ExpressRoutePort resource.
-     *
+     * Get the bandwidthInGbps property: The bandwidth of the circuit when the
+     * circuit is provisioned on an ExpressRoutePort resource.
+     * 
      * @return the bandwidthInGbps value.
      */
     public Float bandwidthInGbps() {
@@ -301,9 +320,9 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Set the bandwidthInGbps property: The bandwidth of the circuit when the circuit is provisioned on an
-     * ExpressRoutePort resource.
-     *
+     * Set the bandwidthInGbps property: The bandwidth of the circuit when the
+     * circuit is provisioned on an ExpressRoutePort resource.
+     * 
      * @param bandwidthInGbps the bandwidthInGbps value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -313,8 +332,9 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Get the stag property: The identifier of the circuit traffic. Outer tag for QinQ encapsulation.
-     *
+     * Get the stag property: The identifier of the circuit traffic. Outer tag
+     * for QinQ encapsulation.
+     * 
      * @return the stag value.
      */
     public Integer stag() {
@@ -322,17 +342,32 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route circuit resource.
-     *
+     * Get the provisioningState property: Gets the provisioning state of the
+     * public IP resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
+     * Set the provisioningState property: Gets the provisioning state of the
+     * public IP resource. Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ExpressRouteCircuitPropertiesFormat object itself.
+     */
+    public ExpressRouteCircuitPropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the gatewayManagerEtag property: The GatewayManager Etag.
-     *
+     * 
      * @return the gatewayManagerEtag value.
      */
     public String gatewayManagerEtag() {
@@ -341,7 +376,7 @@ public final class ExpressRouteCircuitPropertiesFormat {
 
     /**
      * Set the gatewayManagerEtag property: The GatewayManager Etag.
-     *
+     * 
      * @param gatewayManagerEtag the gatewayManagerEtag value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
@@ -351,28 +386,30 @@ public final class ExpressRouteCircuitPropertiesFormat {
     }
 
     /**
-     * Get the globalReachEnabled property: Flag denoting global reach status.
-     *
-     * @return the globalReachEnabled value.
+     * Get the allowGlobalReach property: Flag to enable Global Reach on the
+     * circuit.
+     * 
+     * @return the allowGlobalReach value.
      */
-    public Boolean globalReachEnabled() {
-        return this.globalReachEnabled;
+    public Boolean allowGlobalReach() {
+        return this.allowGlobalReach;
     }
 
     /**
-     * Set the globalReachEnabled property: Flag denoting global reach status.
-     *
-     * @param globalReachEnabled the globalReachEnabled value to set.
+     * Set the allowGlobalReach property: Flag to enable Global Reach on the
+     * circuit.
+     * 
+     * @param allowGlobalReach the allowGlobalReach value to set.
      * @return the ExpressRouteCircuitPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitPropertiesFormat withGlobalReachEnabled(Boolean globalReachEnabled) {
-        this.globalReachEnabled = globalReachEnabled;
+    public ExpressRouteCircuitPropertiesFormat withAllowGlobalReach(Boolean allowGlobalReach) {
+        this.allowGlobalReach = allowGlobalReach;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

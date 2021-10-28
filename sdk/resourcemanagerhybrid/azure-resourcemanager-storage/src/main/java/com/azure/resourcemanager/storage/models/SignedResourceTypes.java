@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SignedResourceTypes. */
+/**
+ * Defines values for SignedResourceTypes.
+ */
 public final class SignedResourceTypes extends ExpandableStringEnum<SignedResourceTypes> {
-    /** Static value s for SignedResourceTypes. */
+    /**
+     * Static value s for SignedResourceTypes.
+     */
     public static final SignedResourceTypes S = fromString("s");
 
-    /** Static value c for SignedResourceTypes. */
+    /**
+     * Static value c for SignedResourceTypes.
+     */
     public static final SignedResourceTypes C = fromString("c");
 
-    /** Static value o for SignedResourceTypes. */
+    /**
+     * Static value o for SignedResourceTypes.
+     */
     public static final SignedResourceTypes O = fromString("o");
 
     /**
      * Creates or finds a SignedResourceTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SignedResourceTypes.
      */
@@ -30,7 +38,9 @@ public final class SignedResourceTypes extends ExpandableStringEnum<SignedResour
         return fromString(name, SignedResourceTypes.class);
     }
 
-    /** @return known SignedResourceTypes values. */
+    /**
+     * @return known SignedResourceTypes values.
+     */
     public static Collection<SignedResourceTypes> values() {
         return values(SignedResourceTypes.class);
     }

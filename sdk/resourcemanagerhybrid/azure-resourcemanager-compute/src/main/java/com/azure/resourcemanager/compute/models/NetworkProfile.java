@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies the network interfaces or the networking configuration of the virtual machine. */
+/**
+ * Specifies the network interfaces of the virtual machine.
+ */
 @Fluent
 public final class NetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NetworkProfile.class);
 
     /*
      * Specifies the list of resource Ids for the network interfaces associated
@@ -22,24 +27,10 @@ public final class NetworkProfile {
     @JsonProperty(value = "networkInterfaces")
     private List<NetworkInterfaceReference> networkInterfaces;
 
-    /*
-     * specifies the Microsoft.Network API version used when creating
-     * networking resources in the Network Interface Configurations
-     */
-    @JsonProperty(value = "networkApiVersion")
-    private NetworkApiVersion networkApiVersion;
-
-    /*
-     * Specifies the networking configurations that will be used to create the
-     * virtual machine networking resources.
-     */
-    @JsonProperty(value = "networkInterfaceConfigurations")
-    private List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations;
-
     /**
-     * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
-     * the virtual machine.
-     *
+     * Get the networkInterfaces property: Specifies the list of resource Ids
+     * for the network interfaces associated with the virtual machine.
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceReference> networkInterfaces() {
@@ -47,9 +38,9 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
-     * the virtual machine.
-     *
+     * Set the networkInterfaces property: Specifies the list of resource Ids
+     * for the network interfaces associated with the virtual machine.
+     * 
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the NetworkProfile object itself.
      */
@@ -59,61 +50,13 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
-     * resources in the Network Interface Configurations.
-     *
-     * @return the networkApiVersion value.
-     */
-    public NetworkApiVersion networkApiVersion() {
-        return this.networkApiVersion;
-    }
-
-    /**
-     * Set the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
-     * resources in the Network Interface Configurations.
-     *
-     * @param networkApiVersion the networkApiVersion value to set.
-     * @return the NetworkProfile object itself.
-     */
-    public NetworkProfile withNetworkApiVersion(NetworkApiVersion networkApiVersion) {
-        this.networkApiVersion = networkApiVersion;
-        return this;
-    }
-
-    /**
-     * Get the networkInterfaceConfigurations property: Specifies the networking configurations that will be used to
-     * create the virtual machine networking resources.
-     *
-     * @return the networkInterfaceConfigurations value.
-     */
-    public List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations() {
-        return this.networkInterfaceConfigurations;
-    }
-
-    /**
-     * Set the networkInterfaceConfigurations property: Specifies the networking configurations that will be used to
-     * create the virtual machine networking resources.
-     *
-     * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set.
-     * @return the NetworkProfile object itself.
-     */
-    public NetworkProfile withNetworkInterfaceConfigurations(
-        List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations) {
-        this.networkInterfaceConfigurations = networkInterfaceConfigurations;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkInterfaces() != null) {
             networkInterfaces().forEach(e -> e.validate());
-        }
-        if (networkInterfaceConfigurations() != null) {
-            networkInterfaceConfigurations().forEach(e -> e.validate());
         }
     }
 }

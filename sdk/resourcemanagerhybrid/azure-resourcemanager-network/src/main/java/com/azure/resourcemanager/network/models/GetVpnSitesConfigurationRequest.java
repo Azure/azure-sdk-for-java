@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Vpn-Sites. */
+/**
+ * List of Vpn-Sites.
+ */
 @Fluent
 public final class GetVpnSitesConfigurationRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetVpnSitesConfigurationRequest.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GetVpnSitesConfigurationRequest.class);
 
     /*
      * List of resource-ids of the vpn-sites for which config is to be
@@ -23,14 +28,15 @@ public final class GetVpnSitesConfigurationRequest {
     private List<String> vpnSites;
 
     /*
-     * The sas-url to download the configurations for vpn-sites.
+     * The sas-url to download the configurations for vpn-sites
      */
-    @JsonProperty(value = "outputBlobSasUrl", required = true)
+    @JsonProperty(value = "outputBlobSasUrl")
     private String outputBlobSasUrl;
 
     /**
-     * Get the vpnSites property: List of resource-ids of the vpn-sites for which config is to be downloaded.
-     *
+     * Get the vpnSites property: List of resource-ids of the vpn-sites for
+     * which config is to be downloaded.
+     * 
      * @return the vpnSites value.
      */
     public List<String> vpnSites() {
@@ -38,8 +44,9 @@ public final class GetVpnSitesConfigurationRequest {
     }
 
     /**
-     * Set the vpnSites property: List of resource-ids of the vpn-sites for which config is to be downloaded.
-     *
+     * Set the vpnSites property: List of resource-ids of the vpn-sites for
+     * which config is to be downloaded.
+     * 
      * @param vpnSites the vpnSites value to set.
      * @return the GetVpnSitesConfigurationRequest object itself.
      */
@@ -49,8 +56,9 @@ public final class GetVpnSitesConfigurationRequest {
     }
 
     /**
-     * Get the outputBlobSasUrl property: The sas-url to download the configurations for vpn-sites.
-     *
+     * Get the outputBlobSasUrl property: The sas-url to download the
+     * configurations for vpn-sites.
+     * 
      * @return the outputBlobSasUrl value.
      */
     public String outputBlobSasUrl() {
@@ -58,8 +66,9 @@ public final class GetVpnSitesConfigurationRequest {
     }
 
     /**
-     * Set the outputBlobSasUrl property: The sas-url to download the configurations for vpn-sites.
-     *
+     * Set the outputBlobSasUrl property: The sas-url to download the
+     * configurations for vpn-sites.
+     * 
      * @param outputBlobSasUrl the outputBlobSasUrl value to set.
      * @return the GetVpnSitesConfigurationRequest object itself.
      */
@@ -70,15 +79,9 @@ public final class GetVpnSitesConfigurationRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (outputBlobSasUrl() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property outputBlobSasUrl in model GetVpnSitesConfigurationRequest"));
-        }
     }
 }

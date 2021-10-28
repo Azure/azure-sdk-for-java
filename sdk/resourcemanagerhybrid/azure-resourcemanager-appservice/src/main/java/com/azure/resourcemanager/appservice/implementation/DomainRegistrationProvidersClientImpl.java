@@ -83,8 +83,7 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
-     * provider.
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -116,8 +115,7 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
-     * provider.
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,8 +147,7 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
-     * provider.
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -163,8 +160,7 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
-     * provider.
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,8 +176,7 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
-     * provider.
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -193,8 +188,7 @@ public final class DomainRegistrationProvidersClientImpl implements DomainRegist
     }
 
     /**
-     * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
-     * provider.
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

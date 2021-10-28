@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IP rule with specific IP or IP range in CIDR format. */
+/**
+ * IP rule with specific IP or IP range in CIDR format.
+ */
 @Fluent
 public final class IpRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpRule.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(IpRule.class);
 
     /*
      * Specifies the IP or IP range in CIDR format. Only IPV4 address is
@@ -28,8 +33,9 @@ public final class IpRule {
     private Action action;
 
     /**
-     * Get the ipAddressOrRange property: Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
-     *
+     * Get the ipAddressOrRange property: Specifies the IP or IP range in CIDR
+     * format. Only IPV4 address is allowed.
+     * 
      * @return the ipAddressOrRange value.
      */
     public String ipAddressOrRange() {
@@ -37,8 +43,9 @@ public final class IpRule {
     }
 
     /**
-     * Set the ipAddressOrRange property: Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
-     *
+     * Set the ipAddressOrRange property: Specifies the IP or IP range in CIDR
+     * format. Only IPV4 address is allowed.
+     * 
      * @param ipAddressOrRange the ipAddressOrRange value to set.
      * @return the IpRule object itself.
      */
@@ -49,7 +56,7 @@ public final class IpRule {
 
     /**
      * Get the action property: The action of IP ACL rule.
-     *
+     * 
      * @return the action value.
      */
     public Action action() {
@@ -58,7 +65,7 @@ public final class IpRule {
 
     /**
      * Set the action property: The action of IP ACL rule.
-     *
+     * 
      * @param action the action value to set.
      * @return the IpRule object itself.
      */
@@ -69,14 +76,12 @@ public final class IpRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipAddressOrRange() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ipAddressOrRange in model IpRule"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property ipAddressOrRange in model IpRule"));
         }
     }
 }

@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.NetworkProfileInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListNetworkProfiles API service call. */
+/**
+ * Response for ListNetworkProfiles API service call.
+ */
 @Fluent
 public final class NetworkProfileListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfileListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NetworkProfileListResult.class);
 
     /*
      * A list of network profiles that exist in a resource group.
@@ -29,8 +34,9 @@ public final class NetworkProfileListResult {
     private String nextLink;
 
     /**
-     * Get the value property: A list of network profiles that exist in a resource group.
-     *
+     * Get the value property: A list of network profiles that exist in a
+     * resource group.
+     * 
      * @return the value value.
      */
     public List<NetworkProfileInner> value() {
@@ -38,8 +44,9 @@ public final class NetworkProfileListResult {
     }
 
     /**
-     * Set the value property: A list of network profiles that exist in a resource group.
-     *
+     * Set the value property: A list of network profiles that exist in a
+     * resource group.
+     * 
      * @param value the value value to set.
      * @return the NetworkProfileListResult object itself.
      */
@@ -50,7 +57,7 @@ public final class NetworkProfileListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +66,7 @@ public final class NetworkProfileListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkProfileListResult object itself.
      */
@@ -70,7 +77,7 @@ public final class NetworkProfileListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Vpn device configuration script generation parameters. */
+/**
+ * Vpn device configuration script generation parameters.
+ */
 @Fluent
 public final class VpnDeviceScriptParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnDeviceScriptParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VpnDeviceScriptParameters.class);
 
     /*
      * The vendor for the vpn device.
@@ -34,7 +39,7 @@ public final class VpnDeviceScriptParameters {
 
     /**
      * Get the vendor property: The vendor for the vpn device.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -43,7 +48,7 @@ public final class VpnDeviceScriptParameters {
 
     /**
      * Set the vendor property: The vendor for the vpn device.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the VpnDeviceScriptParameters object itself.
      */
@@ -54,7 +59,7 @@ public final class VpnDeviceScriptParameters {
 
     /**
      * Get the deviceFamily property: The device family for the vpn device.
-     *
+     * 
      * @return the deviceFamily value.
      */
     public String deviceFamily() {
@@ -63,7 +68,7 @@ public final class VpnDeviceScriptParameters {
 
     /**
      * Set the deviceFamily property: The device family for the vpn device.
-     *
+     * 
      * @param deviceFamily the deviceFamily value to set.
      * @return the VpnDeviceScriptParameters object itself.
      */
@@ -73,8 +78,9 @@ public final class VpnDeviceScriptParameters {
     }
 
     /**
-     * Get the firmwareVersion property: The firmware version for the vpn device.
-     *
+     * Get the firmwareVersion property: The firmware version for the vpn
+     * device.
+     * 
      * @return the firmwareVersion value.
      */
     public String firmwareVersion() {
@@ -82,8 +88,9 @@ public final class VpnDeviceScriptParameters {
     }
 
     /**
-     * Set the firmwareVersion property: The firmware version for the vpn device.
-     *
+     * Set the firmwareVersion property: The firmware version for the vpn
+     * device.
+     * 
      * @param firmwareVersion the firmwareVersion value to set.
      * @return the VpnDeviceScriptParameters object itself.
      */
@@ -94,7 +101,7 @@ public final class VpnDeviceScriptParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

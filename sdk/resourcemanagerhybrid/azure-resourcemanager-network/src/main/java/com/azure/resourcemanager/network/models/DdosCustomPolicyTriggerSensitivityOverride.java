@@ -8,24 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DdosCustomPolicyTriggerSensitivityOverride. */
-public final class DdosCustomPolicyTriggerSensitivityOverride
-    extends ExpandableStringEnum<DdosCustomPolicyTriggerSensitivityOverride> {
-    /** Static value Relaxed for DdosCustomPolicyTriggerSensitivityOverride. */
+/**
+ * Defines values for DdosCustomPolicyTriggerSensitivityOverride.
+ */
+public final class DdosCustomPolicyTriggerSensitivityOverride extends ExpandableStringEnum<DdosCustomPolicyTriggerSensitivityOverride> {
+    /**
+     * Static value Relaxed for DdosCustomPolicyTriggerSensitivityOverride.
+     */
     public static final DdosCustomPolicyTriggerSensitivityOverride RELAXED = fromString("Relaxed");
 
-    /** Static value Low for DdosCustomPolicyTriggerSensitivityOverride. */
+    /**
+     * Static value Low for DdosCustomPolicyTriggerSensitivityOverride.
+     */
     public static final DdosCustomPolicyTriggerSensitivityOverride LOW = fromString("Low");
 
-    /** Static value Default for DdosCustomPolicyTriggerSensitivityOverride. */
+    /**
+     * Static value Default for DdosCustomPolicyTriggerSensitivityOverride.
+     */
     public static final DdosCustomPolicyTriggerSensitivityOverride DEFAULT = fromString("Default");
 
-    /** Static value High for DdosCustomPolicyTriggerSensitivityOverride. */
+    /**
+     * Static value High for DdosCustomPolicyTriggerSensitivityOverride.
+     */
     public static final DdosCustomPolicyTriggerSensitivityOverride HIGH = fromString("High");
 
     /**
      * Creates or finds a DdosCustomPolicyTriggerSensitivityOverride from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DdosCustomPolicyTriggerSensitivityOverride.
      */
@@ -34,7 +43,9 @@ public final class DdosCustomPolicyTriggerSensitivityOverride
         return fromString(name, DdosCustomPolicyTriggerSensitivityOverride.class);
     }
 
-    /** @return known DdosCustomPolicyTriggerSensitivityOverride values. */
+    /**
+     * @return known DdosCustomPolicyTriggerSensitivityOverride values.
+     */
     public static Collection<DdosCustomPolicyTriggerSensitivityOverride> values() {
         return values(DdosCustomPolicyTriggerSensitivityOverride.class);
     }

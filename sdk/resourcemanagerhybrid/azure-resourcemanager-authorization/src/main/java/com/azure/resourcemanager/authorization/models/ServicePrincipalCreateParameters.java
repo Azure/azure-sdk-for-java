@@ -5,14 +5,22 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** Request parameters for creating a new service principal. */
+/**
+ * Request parameters for creating a new service principal.
+ */
 @Fluent
 public final class ServicePrincipalCreateParameters extends ServicePrincipalBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalCreateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServicePrincipalCreateParameters.class);
 
     /*
      * The application ID.
@@ -22,7 +30,7 @@ public final class ServicePrincipalCreateParameters extends ServicePrincipalBase
 
     /**
      * Get the appId property: The application ID.
-     *
+     * 
      * @return the appId value.
      */
     public String appId() {
@@ -31,7 +39,7 @@ public final class ServicePrincipalCreateParameters extends ServicePrincipalBase
 
     /**
      * Set the appId property: The application ID.
-     *
+     * 
      * @param appId the appId value to set.
      * @return the ServicePrincipalCreateParameters object itself.
      */
@@ -41,18 +49,69 @@ public final class ServicePrincipalCreateParameters extends ServicePrincipalBase
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalCreateParameters withAccountEnabled(Boolean accountEnabled) {
+        super.withAccountEnabled(accountEnabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalCreateParameters withAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
+        super.withAppRoleAssignmentRequired(appRoleAssignmentRequired);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalCreateParameters withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+        super.withKeyCredentials(keyCredentials);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalCreateParameters withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+        super.withPasswordCredentials(passwordCredentials);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalCreateParameters withServicePrincipalType(String servicePrincipalType) {
+        super.withServicePrincipalType(servicePrincipalType);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServicePrincipalCreateParameters withTags(List<String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (appId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property appId in model ServicePrincipalCreateParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property appId in model ServicePrincipalCreateParameters"));
         }
     }
 }

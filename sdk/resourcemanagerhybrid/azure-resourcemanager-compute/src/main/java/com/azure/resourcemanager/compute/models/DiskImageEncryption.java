@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is the disk image encryption base class. */
+/**
+ * This is the disk image encryption base class.
+ */
 @Fluent
 public class DiskImageEncryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskImageEncryption.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DiskImageEncryption.class);
 
     /*
      * A relative URI containing the resource ID of the disk encryption set.
@@ -21,8 +26,9 @@ public class DiskImageEncryption {
     private String diskEncryptionSetId;
 
     /**
-     * Get the diskEncryptionSetId property: A relative URI containing the resource ID of the disk encryption set.
-     *
+     * Get the diskEncryptionSetId property: A relative URI containing the
+     * resource ID of the disk encryption set.
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -30,8 +36,9 @@ public class DiskImageEncryption {
     }
 
     /**
-     * Set the diskEncryptionSetId property: A relative URI containing the resource ID of the disk encryption set.
-     *
+     * Set the diskEncryptionSetId property: A relative URI containing the
+     * resource ID of the disk encryption set.
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the DiskImageEncryption object itself.
      */
@@ -42,7 +49,7 @@ public class DiskImageEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

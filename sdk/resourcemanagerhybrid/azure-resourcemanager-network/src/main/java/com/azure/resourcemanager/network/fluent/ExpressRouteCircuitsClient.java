@@ -8,32 +8,35 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitInner;
-import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitStatsInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsArpTableListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsRoutesTableListResultInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitsRoutesTableSummaryListResultInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitStatsInner;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExpressRouteCircuitsClient. */
-public interface ExpressRouteCircuitsClient
-    extends InnerSupportsGet<ExpressRouteCircuitInner>,
-        InnerSupportsListing<ExpressRouteCircuitInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ExpressRouteCircuitsClient.
+ */
+public interface ExpressRouteCircuitsClient extends InnerSupportsGet<ExpressRouteCircuitInner>, InnerSupportsListing<ExpressRouteCircuitInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +49,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Deletes the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,7 +62,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Deletes the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,7 +75,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Deletes the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param context The context to associate with this operation.
@@ -86,7 +89,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Deletes the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +102,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Deletes the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -111,7 +114,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Deletes the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param context The context to associate with this operation.
@@ -124,7 +127,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Gets information about the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,12 +136,11 @@ public interface ExpressRouteCircuitsClient
      * @return information about the specified express route circuit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteCircuitInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String circuitName);
+    Mono<Response<ExpressRouteCircuitInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String circuitName);
 
     /**
      * Gets information about the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +153,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Gets information about the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,7 +166,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Gets information about the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of express route circuit.
      * @param context The context to associate with this operation.
@@ -174,12 +176,11 @@ public interface ExpressRouteCircuitsClient
      * @return information about the specified express route circuit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCircuitInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String circuitName, Context context);
+    Response<ExpressRouteCircuitInner> getByResourceGroupWithResponse(String resourceGroupName, String circuitName, Context context);
 
     /**
      * Creates or updates an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -189,12 +190,11 @@ public interface ExpressRouteCircuitsClient
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
 
     /**
      * Creates or updates an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -204,12 +204,11 @@ public interface ExpressRouteCircuitsClient
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
+    PollerFlux<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
 
     /**
      * Creates or updates an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -219,12 +218,11 @@ public interface ExpressRouteCircuitsClient
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdate(
-        String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
+    SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
 
     /**
      * Creates or updates an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -235,12 +233,11 @@ public interface ExpressRouteCircuitsClient
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdate(
-        String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, Context context);
+    SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginCreateOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, Context context);
 
     /**
      * Creates or updates an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -250,12 +247,11 @@ public interface ExpressRouteCircuitsClient
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitInner> createOrUpdateAsync(
-        String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
+    Mono<ExpressRouteCircuitInner> createOrUpdateAsync(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
 
     /**
      * Creates or updates an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -265,12 +261,11 @@ public interface ExpressRouteCircuitsClient
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitInner createOrUpdate(
-        String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
+    ExpressRouteCircuitInner createOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters);
 
     /**
      * Creates or updates an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to the create or update express route circuit operation.
@@ -281,12 +276,11 @@ public interface ExpressRouteCircuitsClient
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitInner createOrUpdate(
-        String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, Context context);
+    ExpressRouteCircuitInner createOrUpdate(String resourceGroupName, String circuitName, ExpressRouteCircuitInner parameters, Context context);
 
     /**
      * Updates an express route circuit tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to update express route circuit tags.
@@ -296,12 +290,54 @@ public interface ExpressRouteCircuitsClient
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteCircuitInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String circuitName, TagsObject parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String circuitName, TagsObject parameters);
 
     /**
      * Updates an express route circuit tags.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param parameters Parameters supplied to update express route circuit tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteCircuit resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginUpdateTagsAsync(String resourceGroupName, String circuitName, TagsObject parameters);
+
+    /**
+     * Updates an express route circuit tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param parameters Parameters supplied to update express route circuit tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteCircuit resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginUpdateTags(String resourceGroupName, String circuitName, TagsObject parameters);
+
+    /**
+     * Updates an express route circuit tags.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param circuitName The name of the circuit.
+     * @param parameters Parameters supplied to update express route circuit tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteCircuit resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ExpressRouteCircuitInner>, ExpressRouteCircuitInner> beginUpdateTags(String resourceGroupName, String circuitName, TagsObject parameters, Context context);
+
+    /**
+     * Updates an express route circuit tags.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to update express route circuit tags.
@@ -315,7 +351,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Updates an express route circuit tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to update express route circuit tags.
@@ -329,7 +365,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Updates an express route circuit tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param parameters Parameters supplied to update express route circuit tags.
@@ -340,12 +376,11 @@ public interface ExpressRouteCircuitsClient
      * @return expressRouteCircuit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCircuitInner> updateTagsWithResponse(
-        String resourceGroupName, String circuitName, TagsObject parameters, Context context);
+    ExpressRouteCircuitInner updateTags(String resourceGroupName, String circuitName, TagsObject parameters, Context context);
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -356,12 +391,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> listArpTableWithResponseAsync(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    Mono<Response<Flux<ByteBuffer>>> listArpTableWithResponseAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -372,12 +406,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
-        beginListArpTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    PollerFlux<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner> beginListArpTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -388,12 +421,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
-        beginListArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner> beginListArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -405,13 +437,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
-        beginListArpTable(
-            String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
+    SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner> beginListArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -422,12 +452,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitsArpTableListResultInner> listArpTableAsync(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    Mono<ExpressRouteCircuitsArpTableListResultInner> listArpTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -438,12 +467,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitsArpTableListResultInner listArpTable(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised ARP table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -455,12 +483,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised ARP table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitsArpTableListResultInner listArpTable(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
+    ExpressRouteCircuitsArpTableListResultInner listArpTable(String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -471,12 +498,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> listRoutesTableWithResponseAsync(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    Mono<Response<Flux<ByteBuffer>>> listRoutesTableWithResponseAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -487,13 +513,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<
-            PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
-        beginListRoutesTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    PollerFlux<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner> beginListRoutesTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -504,13 +528,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<
-            PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
-        beginListRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner> beginListRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -522,14 +544,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<
-            PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner>
-        beginListRoutesTable(
-            String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
+    SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableListResultInner>, ExpressRouteCircuitsRoutesTableListResultInner> beginListRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -540,12 +559,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    Mono<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -556,12 +574,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised routes table associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -573,12 +590,11 @@ public interface ExpressRouteCircuitsClient
      * @return the currently advertised routes table associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
+    ExpressRouteCircuitsRoutesTableListResultInner listRoutesTable(String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -586,16 +602,14 @@ public interface ExpressRouteCircuitsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table summary associated with the express route circuit in a resource
-     *     group.
+     * @return the currently advertised routes table summary associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> listRoutesTableSummaryWithResponseAsync(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    Mono<Response<Flux<ByteBuffer>>> listRoutesTableSummaryWithResponseAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -603,19 +617,14 @@ public interface ExpressRouteCircuitsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table summary associated with the express route circuit in a resource
-     *     group.
+     * @return the currently advertised routes table summary associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<
-            PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>,
-            ExpressRouteCircuitsRoutesTableSummaryListResultInner>
-        beginListRoutesTableSummaryAsync(
-            String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    PollerFlux<PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>, ExpressRouteCircuitsRoutesTableSummaryListResultInner> beginListRoutesTableSummaryAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -623,19 +632,14 @@ public interface ExpressRouteCircuitsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table summary associated with the express route circuit in a resource
-     *     group.
+     * @return the currently advertised routes table summary associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<
-            PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>,
-            ExpressRouteCircuitsRoutesTableSummaryListResultInner>
-        beginListRoutesTableSummary(
-            String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>, ExpressRouteCircuitsRoutesTableSummaryListResultInner> beginListRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -644,19 +648,14 @@ public interface ExpressRouteCircuitsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table summary associated with the express route circuit in a resource
-     *     group.
+     * @return the currently advertised routes table summary associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<
-            PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>,
-            ExpressRouteCircuitsRoutesTableSummaryListResultInner>
-        beginListRoutesTableSummary(
-            String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
+    SyncPoller<PollResult<ExpressRouteCircuitsRoutesTableSummaryListResultInner>, ExpressRouteCircuitsRoutesTableSummaryListResultInner> beginListRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -664,16 +663,14 @@ public interface ExpressRouteCircuitsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table summary associated with the express route circuit in a resource
-     *     group.
+     * @return the currently advertised routes table summary associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitsRoutesTableSummaryListResultInner> listRoutesTableSummaryAsync(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    Mono<ExpressRouteCircuitsRoutesTableSummaryListResultInner> listRoutesTableSummaryAsync(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -681,16 +678,14 @@ public interface ExpressRouteCircuitsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table summary associated with the express route circuit in a resource
-     *     group.
+     * @return the currently advertised routes table summary associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitsRoutesTableSummaryListResultInner listRoutesTableSummary(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath);
+    ExpressRouteCircuitsRoutesTableSummaryListResultInner listRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath);
 
     /**
      * Gets the currently advertised routes table summary associated with the express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -699,16 +694,14 @@ public interface ExpressRouteCircuitsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table summary associated with the express route circuit in a resource
-     *     group.
+     * @return the currently advertised routes table summary associated with the express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitsRoutesTableSummaryListResultInner listRoutesTableSummary(
-        String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
+    ExpressRouteCircuitsRoutesTableSummaryListResultInner listRoutesTableSummary(String resourceGroupName, String circuitName, String peeringName, String devicePath, Context context);
 
     /**
      * Gets all the stats from an express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -717,12 +710,11 @@ public interface ExpressRouteCircuitsClient
      * @return all the stats from an express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteCircuitStatsInner>> getStatsWithResponseAsync(
-        String resourceGroupName, String circuitName);
+    Mono<Response<ExpressRouteCircuitStatsInner>> getStatsWithResponseAsync(String resourceGroupName, String circuitName);
 
     /**
      * Gets all the stats from an express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -735,7 +727,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Gets all the stats from an express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -748,7 +740,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Gets all the stats from an express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param context The context to associate with this operation.
@@ -758,12 +750,11 @@ public interface ExpressRouteCircuitsClient
      * @return all the stats from an express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCircuitStatsInner> getStatsWithResponse(
-        String resourceGroupName, String circuitName, Context context);
+    Response<ExpressRouteCircuitStatsInner> getStatsWithResponse(String resourceGroupName, String circuitName, Context context);
 
     /**
      * Gets all stats from an express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -773,12 +764,11 @@ public interface ExpressRouteCircuitsClient
      * @return all stats from an express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteCircuitStatsInner>> getPeeringStatsWithResponseAsync(
-        String resourceGroupName, String circuitName, String peeringName);
+    Mono<Response<ExpressRouteCircuitStatsInner>> getPeeringStatsWithResponseAsync(String resourceGroupName, String circuitName, String peeringName);
 
     /**
      * Gets all stats from an express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -788,12 +778,11 @@ public interface ExpressRouteCircuitsClient
      * @return all stats from an express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitStatsInner> getPeeringStatsAsync(
-        String resourceGroupName, String circuitName, String peeringName);
+    Mono<ExpressRouteCircuitStatsInner> getPeeringStatsAsync(String resourceGroupName, String circuitName, String peeringName);
 
     /**
      * Gets all stats from an express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -807,7 +796,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Gets all stats from an express route circuit in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -818,12 +807,11 @@ public interface ExpressRouteCircuitsClient
      * @return all stats from an express route circuit in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCircuitStatsInner> getPeeringStatsWithResponse(
-        String resourceGroupName, String circuitName, String peeringName, Context context);
+    Response<ExpressRouteCircuitStatsInner> getPeeringStatsWithResponse(String resourceGroupName, String circuitName, String peeringName, Context context);
 
     /**
      * Gets all the express route circuits in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -835,7 +823,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Gets all the express route circuits in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -847,7 +835,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Gets all the express route circuits in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -860,7 +848,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Gets all the express route circuits in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the express route circuits in a subscription.
@@ -870,7 +858,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Gets all the express route circuits in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the express route circuits in a subscription.
@@ -880,7 +868,7 @@ public interface ExpressRouteCircuitsClient
 
     /**
      * Gets all the express route circuits in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

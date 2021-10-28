@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * DhcpOptions contains an array of DNS servers available to VMs deployed in the virtual network. Standard DHCP option
- * for a subnet overrides VNET DHCP options.
+ * DhcpOptions contains an array of DNS servers available to VMs deployed in
+ * the virtual network. Standard DHCP option for a subnet overrides VNET DHCP
+ * options.
  */
 @Fluent
 public final class DhcpOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DhcpOptions.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DhcpOptions.class);
 
     /*
      * The list of DNS servers IP addresses.
@@ -26,7 +30,7 @@ public final class DhcpOptions {
 
     /**
      * Get the dnsServers property: The list of DNS servers IP addresses.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -35,7 +39,7 @@ public final class DhcpOptions {
 
     /**
      * Set the dnsServers property: The list of DNS servers IP addresses.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the DhcpOptions object itself.
      */
@@ -46,7 +50,7 @@ public final class DhcpOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

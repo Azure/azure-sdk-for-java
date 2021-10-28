@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Customer error of an application gateway. */
+/**
+ * Customer error of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayCustomError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayCustomError.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayCustomError.class);
 
     /*
      * Status code of the application gateway customer error.
@@ -27,8 +32,9 @@ public final class ApplicationGatewayCustomError {
     private String customErrorPageUrl;
 
     /**
-     * Get the statusCode property: Status code of the application gateway customer error.
-     *
+     * Get the statusCode property: Status code of the application gateway
+     * customer error.
+     * 
      * @return the statusCode value.
      */
     public ApplicationGatewayCustomErrorStatusCode statusCode() {
@@ -36,8 +42,9 @@ public final class ApplicationGatewayCustomError {
     }
 
     /**
-     * Set the statusCode property: Status code of the application gateway customer error.
-     *
+     * Set the statusCode property: Status code of the application gateway
+     * customer error.
+     * 
      * @param statusCode the statusCode value to set.
      * @return the ApplicationGatewayCustomError object itself.
      */
@@ -47,8 +54,9 @@ public final class ApplicationGatewayCustomError {
     }
 
     /**
-     * Get the customErrorPageUrl property: Error page URL of the application gateway customer error.
-     *
+     * Get the customErrorPageUrl property: Error page URL of the application
+     * gateway customer error.
+     * 
      * @return the customErrorPageUrl value.
      */
     public String customErrorPageUrl() {
@@ -56,8 +64,9 @@ public final class ApplicationGatewayCustomError {
     }
 
     /**
-     * Set the customErrorPageUrl property: Error page URL of the application gateway customer error.
-     *
+     * Set the customErrorPageUrl property: Error page URL of the application
+     * gateway customer error.
+     * 
      * @param customErrorPageUrl the customErrorPageUrl value to set.
      * @return the ApplicationGatewayCustomError object itself.
      */
@@ -68,7 +77,7 @@ public final class ApplicationGatewayCustomError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

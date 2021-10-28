@@ -5,12 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of SSL certificates of an application gateway. */
+/**
+ * Properties of SSL certificates of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewaySslCertificatePropertiesFormat {
     @JsonIgnore
@@ -33,7 +36,7 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
      * Base-64 encoded Public cert data corresponding to pfx specified in data.
      * Only applicable in GET request.
      */
-    @JsonProperty(value = "publicCertData", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "publicCertData")
     private String publicCertData;
 
     /*
@@ -44,14 +47,16 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     private String keyVaultSecretId;
 
     /*
-     * The provisioning state of the SSL certificate resource.
+     * Provisioning state of the SSL certificate resource Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
-     * Get the data property: Base-64 encoded pfx certificate. Only applicable in PUT Request.
-     *
+     * Get the data property: Base-64 encoded pfx certificate. Only applicable
+     * in PUT Request.
+     * 
      * @return the data value.
      */
     public String data() {
@@ -59,10 +64,12 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     }
 
     /**
-     * Set the data property: Base-64 encoded pfx certificate. Only applicable in PUT Request.
-     *
+     * Set the data property: Base-64 encoded pfx certificate. Only applicable
+     * in PUT Request.
+     * 
      * @param data the data value to set.
-     * @return the ApplicationGatewaySslCertificatePropertiesFormat object itself.
+     * @return the ApplicationGatewaySslCertificatePropertiesFormat object
+     * itself.
      */
     public ApplicationGatewaySslCertificatePropertiesFormat withData(String data) {
         this.data = data;
@@ -70,8 +77,9 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     }
 
     /**
-     * Get the password property: Password for the pfx file specified in data. Only applicable in PUT request.
-     *
+     * Get the password property: Password for the pfx file specified in data.
+     * Only applicable in PUT request.
+     * 
      * @return the password value.
      */
     public String password() {
@@ -79,10 +87,12 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     }
 
     /**
-     * Set the password property: Password for the pfx file specified in data. Only applicable in PUT request.
-     *
+     * Set the password property: Password for the pfx file specified in data.
+     * Only applicable in PUT request.
+     * 
      * @param password the password value to set.
-     * @return the ApplicationGatewaySslCertificatePropertiesFormat object itself.
+     * @return the ApplicationGatewaySslCertificatePropertiesFormat object
+     * itself.
      */
     public ApplicationGatewaySslCertificatePropertiesFormat withPassword(String password) {
         this.password = password;
@@ -90,9 +100,9 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     }
 
     /**
-     * Get the publicCertData property: Base-64 encoded Public cert data corresponding to pfx specified in data. Only
-     * applicable in GET request.
-     *
+     * Get the publicCertData property: Base-64 encoded Public cert data
+     * corresponding to pfx specified in data. Only applicable in GET request.
+     * 
      * @return the publicCertData value.
      */
     public String publicCertData() {
@@ -100,9 +110,22 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     }
 
     /**
-     * Get the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
-     * object stored in KeyVault.
-     *
+     * Set the publicCertData property: Base-64 encoded Public cert data
+     * corresponding to pfx specified in data. Only applicable in GET request.
+     * 
+     * @param publicCertData the publicCertData value to set.
+     * @return the ApplicationGatewaySslCertificatePropertiesFormat object
+     * itself.
+     */
+    public ApplicationGatewaySslCertificatePropertiesFormat withPublicCertData(String publicCertData) {
+        this.publicCertData = publicCertData;
+        return this;
+    }
+
+    /**
+     * Get the keyVaultSecretId property: Secret Id of (base-64 encoded
+     * unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
+     * 
      * @return the keyVaultSecretId value.
      */
     public String keyVaultSecretId() {
@@ -110,11 +133,12 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     }
 
     /**
-     * Set the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
-     * object stored in KeyVault.
-     *
+     * Set the keyVaultSecretId property: Secret Id of (base-64 encoded
+     * unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
+     * 
      * @param keyVaultSecretId the keyVaultSecretId value to set.
-     * @return the ApplicationGatewaySslCertificatePropertiesFormat object itself.
+     * @return the ApplicationGatewaySslCertificatePropertiesFormat object
+     * itself.
      */
     public ApplicationGatewaySslCertificatePropertiesFormat withKeyVaultSecretId(String keyVaultSecretId) {
         this.keyVaultSecretId = keyVaultSecretId;
@@ -122,17 +146,33 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the SSL certificate resource.
-     *
+     * Get the provisioningState property: Provisioning state of the SSL
+     * certificate resource Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
+     * Set the provisioningState property: Provisioning state of the SSL
+     * certificate resource Possible values are: 'Updating', 'Deleting', and
+     * 'Failed'.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewaySslCertificatePropertiesFormat object
+     * itself.
+     */
+    public ApplicationGatewaySslCertificatePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NextHopType;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The information about next hop from the specified VM. */
+/**
+ * The information about next hop from the specified VM.
+ */
 @Fluent
 public final class NextHopResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NextHopResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NextHopResultInner.class);
 
     /*
      * Next hop type.
@@ -22,7 +27,7 @@ public final class NextHopResultInner {
     private NextHopType nextHopType;
 
     /*
-     * Next hop IP Address.
+     * Next hop IP Address
      */
     @JsonProperty(value = "nextHopIpAddress")
     private String nextHopIpAddress;
@@ -37,7 +42,7 @@ public final class NextHopResultInner {
 
     /**
      * Get the nextHopType property: Next hop type.
-     *
+     * 
      * @return the nextHopType value.
      */
     public NextHopType nextHopType() {
@@ -46,7 +51,7 @@ public final class NextHopResultInner {
 
     /**
      * Set the nextHopType property: Next hop type.
-     *
+     * 
      * @param nextHopType the nextHopType value to set.
      * @return the NextHopResultInner object itself.
      */
@@ -57,7 +62,7 @@ public final class NextHopResultInner {
 
     /**
      * Get the nextHopIpAddress property: Next hop IP Address.
-     *
+     * 
      * @return the nextHopIpAddress value.
      */
     public String nextHopIpAddress() {
@@ -66,7 +71,7 @@ public final class NextHopResultInner {
 
     /**
      * Set the nextHopIpAddress property: Next hop IP Address.
-     *
+     * 
      * @param nextHopIpAddress the nextHopIpAddress value to set.
      * @return the NextHopResultInner object itself.
      */
@@ -76,10 +81,11 @@ public final class NextHopResultInner {
     }
 
     /**
-     * Get the routeTableId property: The resource identifier for the route table associated with the route being
-     * returned. If the route being returned does not correspond to any user created routes then this field will be the
-     * string 'System Route'.
-     *
+     * Get the routeTableId property: The resource identifier for the route
+     * table associated with the route being returned. If the route being
+     * returned does not correspond to any user created routes then this field
+     * will be the string 'System Route'.
+     * 
      * @return the routeTableId value.
      */
     public String routeTableId() {
@@ -87,10 +93,11 @@ public final class NextHopResultInner {
     }
 
     /**
-     * Set the routeTableId property: The resource identifier for the route table associated with the route being
-     * returned. If the route being returned does not correspond to any user created routes then this field will be the
-     * string 'System Route'.
-     *
+     * Set the routeTableId property: The resource identifier for the route
+     * table associated with the route being returned. If the route being
+     * returned does not correspond to any user created routes then this field
+     * will be the string 'System Route'.
+     * 
      * @param routeTableId the routeTableId value to set.
      * @return the NextHopResultInner object itself.
      */
@@ -101,7 +108,7 @@ public final class NextHopResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

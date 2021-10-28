@@ -8,21 +8,21 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LoadBalancerBackendAddressPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * LoadBalancerBackendAddressPoolsClient.
+ */
 public interface LoadBalancerBackendAddressPoolsClient {
     /**
      * Gets all the load balancer backed address pools.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +35,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Gets all the load balancer backed address pools.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +48,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Gets all the load balancer backed address pools.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -62,7 +62,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Gets load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -72,12 +72,11 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return load balancer backend address pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BackendAddressPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
+    Mono<Response<BackendAddressPoolInner>> getWithResponseAsync(String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
 
     /**
      * Gets load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -87,12 +86,11 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return load balancer backend address pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BackendAddressPoolInner> getAsync(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
+    Mono<BackendAddressPoolInner> getAsync(String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
 
     /**
      * Gets load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -106,7 +104,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Gets load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -117,245 +115,5 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return load balancer backend address pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackendAddressPoolInner> getWithResponse(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context);
-
-    /**
-     * Creates or updates a load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pool of backend IP addresses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters);
-
-    /**
-     * Creates or updates a load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pool of backend IP addresses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters);
-
-    /**
-     * Creates or updates a load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pool of backend IP addresses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters);
-
-    /**
-     * Creates or updates a load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pool of backend IP addresses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters,
-        Context context);
-
-    /**
-     * Creates or updates a load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pool of backend IP addresses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BackendAddressPoolInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters);
-
-    /**
-     * Creates or updates a load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pool of backend IP addresses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendAddressPoolInner createOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters);
-
-    /**
-     * Creates or updates a load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param parameters Parameters supplied to the create or update load balancer backend address pool operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return pool of backend IP addresses.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendAddressPoolInner createOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters,
-        Context context);
-
-    /**
-     * Deletes the specified load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
-
-    /**
-     * Deletes the specified load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
-
-    /**
-     * Deletes the specified load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
-
-    /**
-     * Deletes the specified load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context);
-
-    /**
-     * Deletes the specified load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
-
-    /**
-     * Deletes the specified load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
-
-    /**
-     * Deletes the specified load balancer backend address pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param backendAddressPoolName The name of the backend address pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context);
+    Response<BackendAddressPoolInner> getWithResponse(String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context);
 }

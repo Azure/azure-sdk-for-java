@@ -35,122 +35,80 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ExpressRouteCrossConnectionPeeringsClient;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnectionPeeringInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionPeeringList;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in ExpressRouteCrossConnectionPeeringsClient.
+ * An instance of this class provides access to all the operations defined in
+ * ExpressRouteCrossConnectionPeeringsClient.
  */
 public final class ExpressRouteCrossConnectionPeeringsClientImpl implements ExpressRouteCrossConnectionPeeringsClient {
     private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionPeeringsClientImpl.class);
 
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExpressRouteCrossConnectionPeeringsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of ExpressRouteCrossConnectionPeeringsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExpressRouteCrossConnectionPeeringsClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ExpressRouteCrossConnectionPeeringsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ExpressRouteCrossConnectionPeeringsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientExpressRouteCrossConnectionPeerings to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for
+     * NetworkManagementClientExpressRouteCrossConnectionPeerings to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface ExpressRouteCrossConnectionPeeringsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteCrossConnections/{crossConnectionName}/peerings")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections/{crossConnectionName}/peerings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCrossConnectionPeeringList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("crossConnectionName") String crossConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExpressRouteCrossConnectionPeeringList>> list(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("crossConnectionName") String crossConnectionName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteCrossConnections/{crossConnectionName}/peerings/{peeringName}")
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections/{crossConnectionName}/peerings/{peeringName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("crossConnectionName") String crossConnectionName,
-            @PathParam("peeringName") String peeringName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("crossConnectionName") String crossConnectionName, @PathParam("peeringName") String peeringName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteCrossConnections/{crossConnectionName}/peerings/{peeringName}")
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections/{crossConnectionName}/peerings/{peeringName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCrossConnectionPeeringInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("crossConnectionName") String crossConnectionName,
-            @PathParam("peeringName") String peeringName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExpressRouteCrossConnectionPeeringInner>> get(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("crossConnectionName") String crossConnectionName, @PathParam("peeringName") String peeringName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/expressRouteCrossConnections/{crossConnectionName}/peerings/{peeringName}")
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/expressRouteCrossConnections/{crossConnectionName}/peerings/{peeringName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("crossConnectionName") String crossConnectionName,
-            @PathParam("peeringName") String peeringName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ExpressRouteCrossConnectionPeeringInner peeringParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("crossConnectionName") String crossConnectionName, @PathParam("peeringName") String peeringName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ExpressRouteCrossConnectionPeeringInner peeringParameters, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteCrossConnectionPeeringList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExpressRouteCrossConnectionPeeringList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,57 +117,35 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return all peerings in a specified ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteCrossConnectionPeeringInner>> listSinglePageAsync(
-        String resourceGroupName, String crossConnectionName) {
+    private Mono<PagedResponse<ExpressRouteCrossConnectionPeeringInner>> listSinglePageAsync(String resourceGroupName, String crossConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (crossConnectionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            crossConnectionName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ExpressRouteCrossConnectionPeeringInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, crossConnectionName, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ExpressRouteCrossConnectionPeeringInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param context The context to associate with this operation.
@@ -219,54 +155,35 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return all peerings in a specified ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteCrossConnectionPeeringInner>> listSinglePageAsync(
-        String resourceGroupName, String crossConnectionName, Context context) {
+    private Mono<PagedResponse<ExpressRouteCrossConnectionPeeringInner>> listSinglePageAsync(String resourceGroupName, String crossConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (crossConnectionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                crossConnectionName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), resourceGroupName, crossConnectionName, apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,8 +192,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return all peerings in a specified ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ExpressRouteCrossConnectionPeeringInner> listAsync(
-        String resourceGroupName, String crossConnectionName) {
+    public PagedFlux<ExpressRouteCrossConnectionPeeringInner> listAsync(String resourceGroupName, String crossConnectionName) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, crossConnectionName),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -284,7 +200,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
 
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param context The context to associate with this operation.
@@ -294,8 +210,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return all peerings in a specified ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExpressRouteCrossConnectionPeeringInner> listAsync(
-        String resourceGroupName, String crossConnectionName, Context context) {
+    private PagedFlux<ExpressRouteCrossConnectionPeeringInner> listAsync(String resourceGroupName, String crossConnectionName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, crossConnectionName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -303,7 +218,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
 
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -312,14 +227,13 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return all peerings in a specified ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressRouteCrossConnectionPeeringInner> list(
-        String resourceGroupName, String crossConnectionName) {
+    public PagedIterable<ExpressRouteCrossConnectionPeeringInner> list(String resourceGroupName, String crossConnectionName) {
         return new PagedIterable<>(listAsync(resourceGroupName, crossConnectionName));
     }
 
     /**
      * Gets all peerings in a specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param context The context to associate with this operation.
@@ -329,14 +243,13 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return all peerings in a specified ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressRouteCrossConnectionPeeringInner> list(
-        String resourceGroupName, String crossConnectionName, Context context) {
+    public PagedIterable<ExpressRouteCrossConnectionPeeringInner> list(String resourceGroupName, String crossConnectionName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, crossConnectionName, context));
     }
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -346,52 +259,30 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (crossConnectionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
         }
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            crossConnectionName,
-                            peeringName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        final String apiVersion = "2018-11-01";
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName, apiVersion, this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -402,49 +293,30 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (crossConnectionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
         }
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
-        final String accept = "application/json";
+        final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                crossConnectionName,
-                peeringName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName, apiVersion, this.client.getSubscriptionId(), context);
     }
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -454,18 +326,14 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, crossConnectionName, peeringName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String crossConnectionName, String peeringName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, crossConnectionName, peeringName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -476,19 +344,15 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, crossConnectionName, peeringName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, crossConnectionName, peeringName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -498,14 +362,13 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String crossConnectionName, String peeringName) {
-        return beginDeleteAsync(resourceGroupName, crossConnectionName, peeringName).getSyncPoller();
-    }
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String crossConnectionName, String peeringName) {
+        return beginDeleteAsync(resourceGroupName, crossConnectionName, peeringName)
+            .getSyncPoller();}
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -516,14 +379,13 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
-        return beginDeleteAsync(resourceGroupName, crossConnectionName, peeringName, context).getSyncPoller();
-    }
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
+        return beginDeleteAsync(resourceGroupName, crossConnectionName, peeringName, context)
+            .getSyncPoller();}
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -541,7 +403,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -552,8 +414,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
         return beginDeleteAsync(resourceGroupName, crossConnectionName, peeringName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -561,7 +422,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -576,7 +437,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
 
     /**
      * Deletes the specified peering from the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -592,7 +453,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -602,52 +463,31 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the specified peering for the ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExpressRouteCrossConnectionPeeringInner>> getWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName) {
+    public Mono<Response<ExpressRouteCrossConnectionPeeringInner>> getWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (crossConnectionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
         }
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            crossConnectionName,
-                            peeringName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -658,49 +498,31 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the specified peering for the ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExpressRouteCrossConnectionPeeringInner>> getWithResponseAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
+    private Mono<Response<ExpressRouteCrossConnectionPeeringInner>> getWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (crossConnectionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
         }
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                crossConnectionName,
-                peeringName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName, apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -710,22 +532,20 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the specified peering for the ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExpressRouteCrossConnectionPeeringInner> getAsync(
-        String resourceGroupName, String crossConnectionName, String peeringName) {
+    public Mono<ExpressRouteCrossConnectionPeeringInner> getAsync(String resourceGroupName, String crossConnectionName, String peeringName) {
         return getWithResponseAsync(resourceGroupName, crossConnectionName, peeringName)
-            .flatMap(
-                (Response<ExpressRouteCrossConnectionPeeringInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap((Response<ExpressRouteCrossConnectionPeeringInner> res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -735,14 +555,13 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the specified peering for the ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRouteCrossConnectionPeeringInner get(
-        String resourceGroupName, String crossConnectionName, String peeringName) {
+    public ExpressRouteCrossConnectionPeeringInner get(String resourceGroupName, String crossConnectionName, String peeringName) {
         return getAsync(resourceGroupName, crossConnectionName, peeringName).block();
     }
 
     /**
      * Gets the specified peering for the ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
@@ -753,86 +572,57 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return the specified peering for the ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExpressRouteCrossConnectionPeeringInner> getWithResponse(
-        String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
+    public Response<ExpressRouteCrossConnectionPeeringInner> getWithResponse(String resourceGroupName, String crossConnectionName, String peeringName, Context context) {
         return getWithResponseAsync(resourceGroupName, crossConnectionName, peeringName, context).block();
     }
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String crossConnectionName,
-        String peeringName,
-        ExpressRouteCrossConnectionPeeringInner peeringParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (crossConnectionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
         }
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (peeringParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter peeringParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter peeringParameters is required and cannot be null."));
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            crossConnectionName,
-                            peeringName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            peeringParameters,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName, apiVersion, this.client.getSubscriptionId(), peeringParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -840,97 +630,58 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String crossConnectionName,
-        String peeringName,
-        ExpressRouteCrossConnectionPeeringInner peeringParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (crossConnectionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter crossConnectionName is required and cannot be null."));
         }
         if (peeringName == null) {
             return Mono.error(new IllegalArgumentException("Parameter peeringName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (peeringParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter peeringParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter peeringParameters is required and cannot be null."));
         } else {
             peeringParameters.validate();
         }
-        final String apiVersion = "2021-03-01";
+        final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                crossConnectionName,
-                peeringName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                peeringParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, crossConnectionName, peeringName, apiVersion, this.client.getSubscriptionId(), peeringParameters, accept, context);
     }
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String crossConnectionName,
-            String peeringName,
-            ExpressRouteCrossConnectionPeeringInner peeringParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters);
-        return this
-            .client
-            .<ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ExpressRouteCrossConnectionPeeringInner.class,
-                ExpressRouteCrossConnectionPeeringInner.class,
-                Context.NONE);
+    public PollerFlux<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters);
+        return this.client.<ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringInner>getLroResult(mono, this.client.getHttpPipeline(), ExpressRouteCrossConnectionPeeringInner.class, ExpressRouteCrossConnectionPeeringInner.class, Context.NONE);
     }
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -938,59 +689,36 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String crossConnectionName,
-            String peeringName,
-            ExpressRouteCrossConnectionPeeringInner peeringParameters,
-            Context context) {
+    private PollerFlux<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, crossConnectionName, peeringName, peeringParameters, context);
-        return this
-            .client
-            .<ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ExpressRouteCrossConnectionPeeringInner.class,
-                ExpressRouteCrossConnectionPeeringInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters, context);
+        return this.client.<ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringInner>getLroResult(mono, this.client.getHttpPipeline(), ExpressRouteCrossConnectionPeeringInner.class, ExpressRouteCrossConnectionPeeringInner.class, context);
     }
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String crossConnectionName,
-            String peeringName,
-            ExpressRouteCrossConnectionPeeringInner peeringParameters) {
+    public SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner> beginCreateOrUpdate(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters)
-            .getSyncPoller();
-    }
+            .getSyncPoller();}
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -998,36 +726,24 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String crossConnectionName,
-            String peeringName,
-            ExpressRouteCrossConnectionPeeringInner peeringParameters,
-            Context context) {
+    public SyncPoller<PollResult<ExpressRouteCrossConnectionPeeringInner>, ExpressRouteCrossConnectionPeeringInner> beginCreateOrUpdate(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters, context)
-            .getSyncPoller();
-    }
+            .getSyncPoller();}
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExpressRouteCrossConnectionPeeringInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String crossConnectionName,
-        String peeringName,
-        ExpressRouteCrossConnectionPeeringInner peeringParameters) {
+    public Mono<ExpressRouteCrossConnectionPeeringInner> createOrUpdateAsync(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1035,12 +751,11 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1048,12 +763,7 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExpressRouteCrossConnectionPeeringInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String crossConnectionName,
-        String peeringName,
-        ExpressRouteCrossConnectionPeeringInner peeringParameters,
-        Context context) {
+    private Mono<ExpressRouteCrossConnectionPeeringInner> createOrUpdateAsync(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1061,34 +771,28 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRouteCrossConnectionPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String crossConnectionName,
-        String peeringName,
-        ExpressRouteCrossConnectionPeeringInner peeringParameters) {
+    public ExpressRouteCrossConnectionPeeringInner createOrUpdate(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters) {
         return createOrUpdateAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters).block();
     }
 
     /**
      * Creates or updates a peering in the specified ExpressRouteCrossConnection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param crossConnectionName The name of the ExpressRouteCrossConnection.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering
-     *     operation.
+     * @param peeringParameters Parameters supplied to the create or update ExpressRouteCrossConnection peering operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1096,25 +800,18 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
      * @return peering in an ExpressRoute Cross Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExpressRouteCrossConnectionPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String crossConnectionName,
-        String peeringName,
-        ExpressRouteCrossConnectionPeeringInner peeringParameters,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters, context)
-            .block();
+    public ExpressRouteCrossConnectionPeeringInner createOrUpdate(String resourceGroupName, String crossConnectionName, String peeringName, ExpressRouteCrossConnectionPeeringInner peeringParameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, crossConnectionName, peeringName, peeringParameters, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPeering API service call retrieves all peerings that belong to an
-     *     ExpressRouteCrossConnection.
+     * @return response for ListPeering API service call retrieves all peerings that belong to an ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExpressRouteCrossConnectionPeeringInner>> listNextSinglePageAsync(String nextLink) {
@@ -1122,61 +819,47 @@ public final class ExpressRouteCrossConnectionPeeringsClientImpl implements Expr
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ExpressRouteCrossConnectionPeeringInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ExpressRouteCrossConnectionPeeringInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListPeering API service call retrieves all peerings that belong to an
-     *     ExpressRouteCrossConnection.
+     * @return response for ListPeering API service call retrieves all peerings that belong to an ExpressRouteCrossConnection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteCrossConnectionPeeringInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ExpressRouteCrossConnectionPeeringInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null));
     }
 }

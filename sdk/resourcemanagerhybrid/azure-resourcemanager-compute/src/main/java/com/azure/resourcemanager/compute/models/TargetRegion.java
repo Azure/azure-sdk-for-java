@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the target region information. */
+/**
+ * Describes the target region information.
+ */
 @Fluent
 public final class TargetRegion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetRegion.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TargetRegion.class);
 
     /*
      * The name of the region.
@@ -43,7 +48,7 @@ public final class TargetRegion {
 
     /**
      * Get the name property: The name of the region.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +57,7 @@ public final class TargetRegion {
 
     /**
      * Set the name property: The name of the region.
-     *
+     * 
      * @param name the name value to set.
      * @return the TargetRegion object itself.
      */
@@ -62,9 +67,9 @@ public final class TargetRegion {
     }
 
     /**
-     * Get the regionalReplicaCount property: The number of replicas of the Image Version to be created per region. This
-     * property is updatable.
-     *
+     * Get the regionalReplicaCount property: The number of replicas of the
+     * Image Version to be created per region. This property is updatable.
+     * 
      * @return the regionalReplicaCount value.
      */
     public Integer regionalReplicaCount() {
@@ -72,9 +77,9 @@ public final class TargetRegion {
     }
 
     /**
-     * Set the regionalReplicaCount property: The number of replicas of the Image Version to be created per region. This
-     * property is updatable.
-     *
+     * Set the regionalReplicaCount property: The number of replicas of the
+     * Image Version to be created per region. This property is updatable.
+     * 
      * @param regionalReplicaCount the regionalReplicaCount value to set.
      * @return the TargetRegion object itself.
      */
@@ -84,9 +89,9 @@ public final class TargetRegion {
     }
 
     /**
-     * Get the storageAccountType property: Specifies the storage account type to be used to store the image. This
-     * property is not updatable.
-     *
+     * Get the storageAccountType property: Specifies the storage account type
+     * to be used to store the image. This property is not updatable.
+     * 
      * @return the storageAccountType value.
      */
     public StorageAccountType storageAccountType() {
@@ -94,9 +99,9 @@ public final class TargetRegion {
     }
 
     /**
-     * Set the storageAccountType property: Specifies the storage account type to be used to store the image. This
-     * property is not updatable.
-     *
+     * Set the storageAccountType property: Specifies the storage account type
+     * to be used to store the image. This property is not updatable.
+     * 
      * @param storageAccountType the storageAccountType value to set.
      * @return the TargetRegion object itself.
      */
@@ -106,9 +111,10 @@ public final class TargetRegion {
     }
 
     /**
-     * Get the encryption property: Optional. Allows users to provide customer managed keys for encrypting the OS and
-     * data disks in the gallery artifact.
-     *
+     * Get the encryption property: Optional. Allows users to provide customer
+     * managed keys for encrypting the OS and data disks in the gallery
+     * artifact.
+     * 
      * @return the encryption value.
      */
     public EncryptionImages encryption() {
@@ -116,9 +122,10 @@ public final class TargetRegion {
     }
 
     /**
-     * Set the encryption property: Optional. Allows users to provide customer managed keys for encrypting the OS and
-     * data disks in the gallery artifact.
-     *
+     * Set the encryption property: Optional. Allows users to provide customer
+     * managed keys for encrypting the OS and data disks in the gallery
+     * artifact.
+     * 
      * @param encryption the encryption value to set.
      * @return the TargetRegion object itself.
      */
@@ -129,14 +136,12 @@ public final class TargetRegion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model TargetRegion"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model TargetRegion"));
         }
         if (encryption() != null) {
             encryption().validate();

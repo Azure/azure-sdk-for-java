@@ -5,23 +5,28 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that determine how the connectivity check will be performed. */
+/**
+ * Parameters that determine how the connectivity check will be performed.
+ */
 @Fluent
 public final class ConnectivityParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ConnectivityParameters.class);
 
     /*
-     * The source of the connection.
+     * Parameters that define the source of the connection.
      */
     @JsonProperty(value = "source", required = true)
     private ConnectivitySource source;
 
     /*
-     * The destination of connection.
+     * Parameters that define destination of connection.
      */
     @JsonProperty(value = "destination", required = true)
     private ConnectivityDestination destination;
@@ -38,15 +43,10 @@ public final class ConnectivityParameters {
     @JsonProperty(value = "protocolConfiguration")
     private ProtocolConfiguration protocolConfiguration;
 
-    /*
-     * Preferred IP version of the connection.
-     */
-    @JsonProperty(value = "preferredIPVersion")
-    private IpVersion preferredIpVersion;
-
     /**
-     * Get the source property: The source of the connection.
-     *
+     * Get the source property: Parameters that define the source of the
+     * connection.
+     * 
      * @return the source value.
      */
     public ConnectivitySource source() {
@@ -54,8 +54,9 @@ public final class ConnectivityParameters {
     }
 
     /**
-     * Set the source property: The source of the connection.
-     *
+     * Set the source property: Parameters that define the source of the
+     * connection.
+     * 
      * @param source the source value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -65,8 +66,9 @@ public final class ConnectivityParameters {
     }
 
     /**
-     * Get the destination property: The destination of connection.
-     *
+     * Get the destination property: Parameters that define destination of
+     * connection.
+     * 
      * @return the destination value.
      */
     public ConnectivityDestination destination() {
@@ -74,8 +76,9 @@ public final class ConnectivityParameters {
     }
 
     /**
-     * Set the destination property: The destination of connection.
-     *
+     * Set the destination property: Parameters that define destination of
+     * connection.
+     * 
      * @param destination the destination value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -86,7 +89,7 @@ public final class ConnectivityParameters {
 
     /**
      * Get the protocol property: Network protocol.
-     *
+     * 
      * @return the protocol value.
      */
     public Protocol protocol() {
@@ -95,7 +98,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the protocol property: Network protocol.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -106,7 +109,7 @@ public final class ConnectivityParameters {
 
     /**
      * Get the protocolConfiguration property: Configuration of the protocol.
-     *
+     * 
      * @return the protocolConfiguration value.
      */
     public ProtocolConfiguration protocolConfiguration() {
@@ -115,7 +118,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the protocolConfiguration property: Configuration of the protocol.
-     *
+     * 
      * @param protocolConfiguration the protocolConfiguration value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -125,43 +128,18 @@ public final class ConnectivityParameters {
     }
 
     /**
-     * Get the preferredIpVersion property: Preferred IP version of the connection.
-     *
-     * @return the preferredIpVersion value.
-     */
-    public IpVersion preferredIpVersion() {
-        return this.preferredIpVersion;
-    }
-
-    /**
-     * Set the preferredIpVersion property: Preferred IP version of the connection.
-     *
-     * @param preferredIpVersion the preferredIpVersion value to set.
-     * @return the ConnectivityParameters object itself.
-     */
-    public ConnectivityParameters withPreferredIpVersion(IpVersion preferredIpVersion) {
-        this.preferredIpVersion = preferredIpVersion;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (source() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model ConnectivityParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property source in model ConnectivityParameters"));
         } else {
             source().validate();
         }
         if (destination() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destination in model ConnectivityParameters"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property destination in model ConnectivityParameters"));
         } else {
             destination().validate();
         }

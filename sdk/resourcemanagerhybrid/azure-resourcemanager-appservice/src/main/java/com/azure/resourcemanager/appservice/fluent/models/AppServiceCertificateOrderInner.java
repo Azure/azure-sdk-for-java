@@ -9,7 +9,6 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrderPropertiesAppServiceCertificateNotRenewableReasonsItem;
 import com.azure.resourcemanager.appservice.models.CertificateDetails;
-import com.azure.resourcemanager.appservice.models.CertificateOrderContact;
 import com.azure.resourcemanager.appservice.models.CertificateOrderStatus;
 import com.azure.resourcemanager.appservice.models.CertificateProductType;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
@@ -135,7 +134,7 @@ public final class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the validityInYears property: Duration in years (must be 1).
+     * Get the validityInYears property: Duration in years (must be between 1 and 3).
      *
      * @return the validityInYears value.
      */
@@ -144,7 +143,7 @@ public final class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the validityInYears property: Duration in years (must be 1).
+     * Set the validityInYears property: Duration in years (must be between 1 and 3).
      *
      * @param validityInYears the validityInYears value to set.
      * @return the AppServiceCertificateOrderInner object itself.
@@ -353,15 +352,6 @@ public final class AppServiceCertificateOrderInner extends Resource {
      */
     public OffsetDateTime nextAutoRenewalTimestamp() {
         return this.innerProperties() == null ? null : this.innerProperties().nextAutoRenewalTimestamp();
-    }
-
-    /**
-     * Get the contact property: Contact info.
-     *
-     * @return the contact value.
-     */
-    public CertificateOrderContact contact() {
-        return this.innerProperties() == null ? null : this.innerProperties().contact();
     }
 
     /**

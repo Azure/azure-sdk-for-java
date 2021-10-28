@@ -7,18 +7,28 @@ package com.azure.resourcemanager.compute.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for UpgradeMode. */
+/**
+ * Defines values for UpgradeMode.
+ */
 public enum UpgradeMode {
-    /** Enum value Automatic. */
+    /**
+     * Enum value Automatic.
+     */
     AUTOMATIC("Automatic"),
 
-    /** Enum value Manual. */
+    /**
+     * Enum value Manual.
+     */
     MANUAL("Manual"),
 
-    /** Enum value Rolling. */
+    /**
+     * Enum value Rolling.
+     */
     ROLLING("Rolling");
 
-    /** The actual serialized value for a UpgradeMode instance. */
+    /**
+     * The actual serialized value for a UpgradeMode instance.
+     */
     private final String value;
 
     UpgradeMode(String value) {
@@ -27,7 +37,7 @@ public enum UpgradeMode {
 
     /**
      * Parses a serialized value to a UpgradeMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed UpgradeMode object, or null if unable to parse.
      */

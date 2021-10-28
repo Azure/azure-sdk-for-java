@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a Encryption Settings for a Disk. */
+/**
+ * Describes a Encryption Settings for a Disk.
+ */
 @Fluent
 public final class DiskEncryptionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DiskEncryptionSettings.class);
 
     /*
      * Specifies the location of the disk encryption key, which is a Key Vault
@@ -35,9 +40,9 @@ public final class DiskEncryptionSettings {
     private Boolean enabled;
 
     /**
-     * Get the diskEncryptionKey property: Specifies the location of the disk encryption key, which is a Key Vault
-     * Secret.
-     *
+     * Get the diskEncryptionKey property: Specifies the location of the disk
+     * encryption key, which is a Key Vault Secret.
+     * 
      * @return the diskEncryptionKey value.
      */
     public KeyVaultSecretReference diskEncryptionKey() {
@@ -45,9 +50,9 @@ public final class DiskEncryptionSettings {
     }
 
     /**
-     * Set the diskEncryptionKey property: Specifies the location of the disk encryption key, which is a Key Vault
-     * Secret.
-     *
+     * Set the diskEncryptionKey property: Specifies the location of the disk
+     * encryption key, which is a Key Vault Secret.
+     * 
      * @param diskEncryptionKey the diskEncryptionKey value to set.
      * @return the DiskEncryptionSettings object itself.
      */
@@ -57,8 +62,9 @@ public final class DiskEncryptionSettings {
     }
 
     /**
-     * Get the keyEncryptionKey property: Specifies the location of the key encryption key in Key Vault.
-     *
+     * Get the keyEncryptionKey property: Specifies the location of the key
+     * encryption key in Key Vault.
+     * 
      * @return the keyEncryptionKey value.
      */
     public KeyVaultKeyReference keyEncryptionKey() {
@@ -66,8 +72,9 @@ public final class DiskEncryptionSettings {
     }
 
     /**
-     * Set the keyEncryptionKey property: Specifies the location of the key encryption key in Key Vault.
-     *
+     * Set the keyEncryptionKey property: Specifies the location of the key
+     * encryption key in Key Vault.
+     * 
      * @param keyEncryptionKey the keyEncryptionKey value to set.
      * @return the DiskEncryptionSettings object itself.
      */
@@ -77,8 +84,9 @@ public final class DiskEncryptionSettings {
     }
 
     /**
-     * Get the enabled property: Specifies whether disk encryption should be enabled on the virtual machine.
-     *
+     * Get the enabled property: Specifies whether disk encryption should be
+     * enabled on the virtual machine.
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -86,8 +94,9 @@ public final class DiskEncryptionSettings {
     }
 
     /**
-     * Set the enabled property: Specifies whether disk encryption should be enabled on the virtual machine.
-     *
+     * Set the enabled property: Specifies whether disk encryption should be
+     * enabled on the virtual machine.
+     * 
      * @param enabled the enabled value to set.
      * @return the DiskEncryptionSettings object itself.
      */
@@ -98,7 +107,7 @@ public final class DiskEncryptionSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

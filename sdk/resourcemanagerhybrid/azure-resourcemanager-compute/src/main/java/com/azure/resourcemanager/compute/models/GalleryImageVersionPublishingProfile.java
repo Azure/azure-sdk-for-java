@@ -5,61 +5,70 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The publishing profile of a gallery image Version. */
+/**
+ * The publishing profile of a gallery Image Version.
+ */
 @Fluent
 public final class GalleryImageVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionPublishingProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GalleryImageVersionPublishingProfile.class);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageVersionPublishingProfile withTargetRegions(List<TargetRegion> targetRegions) {
         super.withTargetRegions(targetRegions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageVersionPublishingProfile withReplicaCount(Integer replicaCount) {
         super.withReplicaCount(replicaCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageVersionPublishingProfile withExcludeFromLatest(Boolean excludeFromLatest) {
         super.withExcludeFromLatest(excludeFromLatest);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageVersionPublishingProfile withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
         super.withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageVersionPublishingProfile withStorageAccountType(StorageAccountType storageAccountType) {
         super.withStorageAccountType(storageAccountType);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public GalleryImageVersionPublishingProfile withReplicationMode(ReplicationMode replicationMode) {
-        super.withReplicationMode(replicationMode);
-        return this;
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

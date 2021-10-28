@@ -7,15 +7,23 @@ package com.azure.resourcemanager.eventhubs.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for EncodingCaptureDescription. */
+/**
+ * Defines values for EncodingCaptureDescription.
+ */
 public enum EncodingCaptureDescription {
-    /** Enum value Avro. */
+    /**
+     * Enum value Avro.
+     */
     AVRO("Avro"),
 
-    /** Enum value AvroDeflate. */
+    /**
+     * Enum value AvroDeflate.
+     */
     AVRO_DEFLATE("AvroDeflate");
 
-    /** The actual serialized value for a EncodingCaptureDescription instance. */
+    /**
+     * The actual serialized value for a EncodingCaptureDescription instance.
+     */
     private final String value;
 
     EncodingCaptureDescription(String value) {
@@ -24,7 +32,7 @@ public enum EncodingCaptureDescription {
 
     /**
      * Parses a serialized value to a EncodingCaptureDescription instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed EncodingCaptureDescription object, or null if unable to parse.
      */

@@ -5,12 +5,16 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machine scale set VM network profile. */
+/**
+ * Describes a virtual machine scale set VM network profile.
+ */
 @Fluent
 public final class VirtualMachineScaleSetVMNetworkProfileConfiguration {
     @JsonIgnore
@@ -23,8 +27,9 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration {
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
     /**
-     * Get the networkInterfaceConfigurations property: The list of network configurations.
-     *
+     * Get the networkInterfaceConfigurations property: The list of network
+     * configurations.
+     * 
      * @return the networkInterfaceConfigurations value.
      */
     public List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations() {
@@ -32,20 +37,22 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration {
     }
 
     /**
-     * Set the networkInterfaceConfigurations property: The list of network configurations.
-     *
-     * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set.
-     * @return the VirtualMachineScaleSetVMNetworkProfileConfiguration object itself.
+     * Set the networkInterfaceConfigurations property: The list of network
+     * configurations.
+     * 
+     * @param networkInterfaceConfigurations the networkInterfaceConfigurations
+     * value to set.
+     * @return the VirtualMachineScaleSetVMNetworkProfileConfiguration object
+     * itself.
      */
-    public VirtualMachineScaleSetVMNetworkProfileConfiguration withNetworkInterfaceConfigurations(
-        List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
+    public VirtualMachineScaleSetVMNetworkProfileConfiguration withNetworkInterfaceConfigurations(List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

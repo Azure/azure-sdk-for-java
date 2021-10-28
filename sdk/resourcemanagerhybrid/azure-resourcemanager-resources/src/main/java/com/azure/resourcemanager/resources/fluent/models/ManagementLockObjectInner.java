@@ -5,119 +5,126 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.LockLevel;
 import com.azure.resourcemanager.resources.models.ManagementLockOwner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The lock information. */
-@JsonFlatten
+/**
+ * The lock information.
+ */
 @Fluent
-public class ManagementLockObjectInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementLockObjectInner.class);
+public final class ManagementLockObjectInner extends ProxyResource {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagementLockObjectInner.class);
 
     /*
-     * The level of the lock. Possible values are: NotSpecified, CanNotDelete,
-     * ReadOnly. CanNotDelete means authorized users are able to read and
-     * modify the resources, but not delete. ReadOnly means authorized users
-     * can only read from a resource, but they can't modify or delete it.
+     * The properties of the lock.
      */
-    @JsonProperty(value = "properties.level", required = true)
-    private LockLevel level;
-
-    /*
-     * Notes about the lock. Maximum of 512 characters.
-     */
-    @JsonProperty(value = "properties.notes")
-    private String notes;
-
-    /*
-     * The owners of the lock.
-     */
-    @JsonProperty(value = "properties.owners")
-    private List<ManagementLockOwner> owners;
+    @JsonProperty(value = "properties", required = true)
+    private ManagementLockProperties innerProperties = new ManagementLockProperties();
 
     /**
-     * Get the level property: The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly.
-     * CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means
-     * authorized users can only read from a resource, but they can't modify or delete it.
-     *
-     * @return the level value.
+     * Get the innerProperties property: The properties of the lock.
+     * 
+     * @return the innerProperties value.
      */
-    public LockLevel level() {
-        return this.level;
+    private ManagementLockProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the level property: The level of the lock. Possible values are: NotSpecified, CanNotDelete, ReadOnly.
-     * CanNotDelete means authorized users are able to read and modify the resources, but not delete. ReadOnly means
-     * authorized users can only read from a resource, but they can't modify or delete it.
-     *
+     * Get the level property: The level of the lock. Possible values are:
+     * NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized
+     * users are able to read and modify the resources, but not delete.
+     * ReadOnly means authorized users can only read from a resource, but they
+     * can't modify or delete it.
+     * 
+     * @return the level value.
+     */
+    public LockLevel level() {
+        return this.innerProperties() == null ? null : this.innerProperties().level();
+    }
+
+    /**
+     * Set the level property: The level of the lock. Possible values are:
+     * NotSpecified, CanNotDelete, ReadOnly. CanNotDelete means authorized
+     * users are able to read and modify the resources, but not delete.
+     * ReadOnly means authorized users can only read from a resource, but they
+     * can't modify or delete it.
+     * 
      * @param level the level value to set.
      * @return the ManagementLockObjectInner object itself.
      */
     public ManagementLockObjectInner withLevel(LockLevel level) {
-        this.level = level;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementLockProperties();
+        }
+        this.innerProperties().withLevel(level);
         return this;
     }
 
     /**
      * Get the notes property: Notes about the lock. Maximum of 512 characters.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
-        return this.notes;
+        return this.innerProperties() == null ? null : this.innerProperties().notes();
     }
 
     /**
      * Set the notes property: Notes about the lock. Maximum of 512 characters.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the ManagementLockObjectInner object itself.
      */
     public ManagementLockObjectInner withNotes(String notes) {
-        this.notes = notes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementLockProperties();
+        }
+        this.innerProperties().withNotes(notes);
         return this;
     }
 
     /**
      * Get the owners property: The owners of the lock.
-     *
+     * 
      * @return the owners value.
      */
     public List<ManagementLockOwner> owners() {
-        return this.owners;
+        return this.innerProperties() == null ? null : this.innerProperties().owners();
     }
 
     /**
      * Set the owners property: The owners of the lock.
-     *
+     * 
      * @param owners the owners value to set.
      * @return the ManagementLockObjectInner object itself.
      */
     public ManagementLockObjectInner withOwners(List<ManagementLockOwner> owners) {
-        this.owners = owners;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagementLockProperties();
+        }
+        this.innerProperties().withOwners(owners);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (level() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property level in model ManagementLockObjectInner"));
-        }
-        if (owners() != null) {
-            owners().forEach(e -> e.validate());
+        if (innerProperties() == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model ManagementLockObjectInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

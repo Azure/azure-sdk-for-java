@@ -8,21 +8,27 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitConnectionInner;
+import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExpressRouteCircuitConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in
+ * ExpressRouteCircuitConnectionsClient.
+ */
 public interface ExpressRouteCircuitConnectionsClient {
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -33,12 +39,11 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String circuitName, String peeringName, String connectionName);
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -49,12 +54,11 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String circuitName, String peeringName, String connectionName);
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -65,12 +69,11 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String circuitName, String peeringName, String connectionName);
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -82,12 +85,11 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context);
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -102,7 +104,7 @@ public interface ExpressRouteCircuitConnectionsClient {
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -116,7 +118,7 @@ public interface ExpressRouteCircuitConnectionsClient {
 
     /**
      * Deletes the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -127,12 +129,11 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context);
+    void delete(String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context);
 
     /**
      * Gets the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -143,12 +144,11 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return the specified Express Route Circuit Connection from the specified express route circuit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteCircuitConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName);
+    Mono<Response<ExpressRouteCircuitConnectionInner>> getWithResponseAsync(String resourceGroupName, String circuitName, String peeringName, String connectionName);
 
     /**
      * Gets the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -159,12 +159,11 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return the specified Express Route Circuit Connection from the specified express route circuit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitConnectionInner> getAsync(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName);
+    Mono<ExpressRouteCircuitConnectionInner> getAsync(String resourceGroupName, String circuitName, String peeringName, String connectionName);
 
     /**
      * Gets the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -175,12 +174,11 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return the specified Express Route Circuit Connection from the specified express route circuit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitConnectionInner get(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName);
+    ExpressRouteCircuitConnectionInner get(String resourceGroupName, String circuitName, String peeringName, String connectionName);
 
     /**
      * Gets the specified Express Route Circuit Connection from the specified express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
@@ -192,85 +190,64 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return the specified Express Route Circuit Connection from the specified express route circuit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCircuitConnectionInner> getWithResponse(
-        String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context);
+    Response<ExpressRouteCircuitConnectionInner> getWithResponse(String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context);
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit
-     *     connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String circuitName, String peeringName, String connectionName, ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters);
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit
-     *     connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String circuitName,
-            String peeringName,
-            String connectionName,
-            ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters);
+    PollerFlux<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String peeringName, String connectionName, ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters);
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit
-     *     connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters);
+    SyncPoller<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner> beginCreateOrUpdate(String resourceGroupName, String circuitName, String peeringName, String connectionName, ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters);
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit
-     *     connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -278,67 +255,48 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters,
-        Context context);
+    SyncPoller<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner> beginCreateOrUpdate(String resourceGroupName, String circuitName, String peeringName, String connectionName, ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters, Context context);
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit
-     *     connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteCircuitConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters);
+    Mono<ExpressRouteCircuitConnectionInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String peeringName, String connectionName, ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters);
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit
-     *     connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters);
+    ExpressRouteCircuitConnectionInner createOrUpdate(String resourceGroupName, String circuitName, String peeringName, String connectionName, ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters);
 
     /**
      * Creates or updates a Express Route Circuit Connection in the specified express route circuits.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @param connectionName The name of the express route circuit connection.
-     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit
-     *     connection operation.
+     * @param expressRouteCircuitConnectionParameters Parameters supplied to the create or update express route circuit connection operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -346,17 +304,11 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteCircuitConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String circuitName,
-        String peeringName,
-        String connectionName,
-        ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters,
-        Context context);
+    ExpressRouteCircuitConnectionInner createOrUpdate(String resourceGroupName, String circuitName, String peeringName, String connectionName, ExpressRouteCircuitConnectionInner expressRouteCircuitConnectionParameters, Context context);
 
     /**
      * Gets all global reach connections associated with a private peering in an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -366,12 +318,11 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return all global reach connections associated with a private peering in an express route circuit.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ExpressRouteCircuitConnectionInner> listAsync(
-        String resourceGroupName, String circuitName, String peeringName);
+    PagedFlux<ExpressRouteCircuitConnectionInner> listAsync(String resourceGroupName, String circuitName, String peeringName);
 
     /**
      * Gets all global reach connections associated with a private peering in an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -381,12 +332,11 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return all global reach connections associated with a private peering in an express route circuit.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressRouteCircuitConnectionInner> list(
-        String resourceGroupName, String circuitName, String peeringName);
+    PagedIterable<ExpressRouteCircuitConnectionInner> list(String resourceGroupName, String circuitName, String peeringName);
 
     /**
      * Gets all global reach connections associated with a private peering in an express route circuit.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
      * @param peeringName The name of the peering.
@@ -397,6 +347,5 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @return all global reach connections associated with a private peering in an express route circuit.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExpressRouteCircuitConnectionInner> list(
-        String resourceGroupName, String circuitName, String peeringName, Context context);
+    PagedIterable<ExpressRouteCircuitConnectionInner> list(String resourceGroupName, String circuitName, String peeringName, Context context);
 }

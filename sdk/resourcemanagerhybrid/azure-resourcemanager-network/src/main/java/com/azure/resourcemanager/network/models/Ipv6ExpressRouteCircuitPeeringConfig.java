@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SubResource;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.RouteFilterInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains IPv6 peering config. */
+/**
+ * Contains IPv6 peering config.
+ */
 @Fluent
 public final class Ipv6ExpressRouteCircuitPeeringConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Ipv6ExpressRouteCircuitPeeringConfig.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(Ipv6ExpressRouteCircuitPeeringConfig.class);
 
     /*
      * The primary address prefix.
@@ -34,20 +39,20 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     private ExpressRouteCircuitPeeringConfig microsoftPeeringConfig;
 
     /*
-     * The reference to the RouteFilter resource.
+     * The reference of the RouteFilter resource.
      */
     @JsonProperty(value = "routeFilter")
-    private SubResource routeFilter;
+    private RouteFilterInner routeFilter;
 
     /*
-     * The state of peering.
+     * The state of peering. Possible values are: 'Disabled' and 'Enabled'
      */
     @JsonProperty(value = "state")
     private ExpressRouteCircuitPeeringState state;
 
     /**
      * Get the primaryPeerAddressPrefix property: The primary address prefix.
-     *
+     * 
      * @return the primaryPeerAddressPrefix value.
      */
     public String primaryPeerAddressPrefix() {
@@ -56,8 +61,9 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
 
     /**
      * Set the primaryPeerAddressPrefix property: The primary address prefix.
-     *
-     * @param primaryPeerAddressPrefix the primaryPeerAddressPrefix value to set.
+     * 
+     * @param primaryPeerAddressPrefix the primaryPeerAddressPrefix value to
+     * set.
      * @return the Ipv6ExpressRouteCircuitPeeringConfig object itself.
      */
     public Ipv6ExpressRouteCircuitPeeringConfig withPrimaryPeerAddressPrefix(String primaryPeerAddressPrefix) {
@@ -66,8 +72,9 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Get the secondaryPeerAddressPrefix property: The secondary address prefix.
-     *
+     * Get the secondaryPeerAddressPrefix property: The secondary address
+     * prefix.
+     * 
      * @return the secondaryPeerAddressPrefix value.
      */
     public String secondaryPeerAddressPrefix() {
@@ -75,9 +82,11 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Set the secondaryPeerAddressPrefix property: The secondary address prefix.
-     *
-     * @param secondaryPeerAddressPrefix the secondaryPeerAddressPrefix value to set.
+     * Set the secondaryPeerAddressPrefix property: The secondary address
+     * prefix.
+     * 
+     * @param secondaryPeerAddressPrefix the secondaryPeerAddressPrefix value
+     * to set.
      * @return the Ipv6ExpressRouteCircuitPeeringConfig object itself.
      */
     public Ipv6ExpressRouteCircuitPeeringConfig withSecondaryPeerAddressPrefix(String secondaryPeerAddressPrefix) {
@@ -86,8 +95,9 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Get the microsoftPeeringConfig property: The Microsoft peering configuration.
-     *
+     * Get the microsoftPeeringConfig property: The Microsoft peering
+     * configuration.
+     * 
      * @return the microsoftPeeringConfig value.
      */
     public ExpressRouteCircuitPeeringConfig microsoftPeeringConfig() {
@@ -95,40 +105,41 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Set the microsoftPeeringConfig property: The Microsoft peering configuration.
-     *
+     * Set the microsoftPeeringConfig property: The Microsoft peering
+     * configuration.
+     * 
      * @param microsoftPeeringConfig the microsoftPeeringConfig value to set.
      * @return the Ipv6ExpressRouteCircuitPeeringConfig object itself.
      */
-    public Ipv6ExpressRouteCircuitPeeringConfig withMicrosoftPeeringConfig(
-        ExpressRouteCircuitPeeringConfig microsoftPeeringConfig) {
+    public Ipv6ExpressRouteCircuitPeeringConfig withMicrosoftPeeringConfig(ExpressRouteCircuitPeeringConfig microsoftPeeringConfig) {
         this.microsoftPeeringConfig = microsoftPeeringConfig;
         return this;
     }
 
     /**
-     * Get the routeFilter property: The reference to the RouteFilter resource.
-     *
+     * Get the routeFilter property: The reference of the RouteFilter resource.
+     * 
      * @return the routeFilter value.
      */
-    public SubResource routeFilter() {
+    public RouteFilterInner routeFilter() {
         return this.routeFilter;
     }
 
     /**
-     * Set the routeFilter property: The reference to the RouteFilter resource.
-     *
+     * Set the routeFilter property: The reference of the RouteFilter resource.
+     * 
      * @param routeFilter the routeFilter value to set.
      * @return the Ipv6ExpressRouteCircuitPeeringConfig object itself.
      */
-    public Ipv6ExpressRouteCircuitPeeringConfig withRouteFilter(SubResource routeFilter) {
+    public Ipv6ExpressRouteCircuitPeeringConfig withRouteFilter(RouteFilterInner routeFilter) {
         this.routeFilter = routeFilter;
         return this;
     }
 
     /**
-     * Get the state property: The state of peering.
-     *
+     * Get the state property: The state of peering. Possible values are:
+     * 'Disabled' and 'Enabled'.
+     * 
      * @return the state value.
      */
     public ExpressRouteCircuitPeeringState state() {
@@ -136,8 +147,9 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     }
 
     /**
-     * Set the state property: The state of peering.
-     *
+     * Set the state property: The state of peering. Possible values are:
+     * 'Disabled' and 'Enabled'.
+     * 
      * @param state the state value to set.
      * @return the Ipv6ExpressRouteCircuitPeeringConfig object itself.
      */
@@ -148,12 +160,15 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (microsoftPeeringConfig() != null) {
             microsoftPeeringConfig().validate();
+        }
+        if (routeFilter() != null) {
+            routeFilter().validate();
         }
     }
 }

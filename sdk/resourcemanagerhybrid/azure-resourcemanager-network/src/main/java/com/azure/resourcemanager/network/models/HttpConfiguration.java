@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** HTTP configuration of the connectivity check. */
+/**
+ * HTTP configuration of the connectivity check.
+ */
 @Fluent
 public final class HttpConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpConfiguration.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(HttpConfiguration.class);
 
     /*
      * HTTP method.
@@ -35,7 +40,7 @@ public final class HttpConfiguration {
 
     /**
      * Get the method property: HTTP method.
-     *
+     * 
      * @return the method value.
      */
     public HttpMethod method() {
@@ -44,7 +49,7 @@ public final class HttpConfiguration {
 
     /**
      * Set the method property: HTTP method.
-     *
+     * 
      * @param method the method value to set.
      * @return the HttpConfiguration object itself.
      */
@@ -55,7 +60,7 @@ public final class HttpConfiguration {
 
     /**
      * Get the headers property: List of HTTP headers.
-     *
+     * 
      * @return the headers value.
      */
     public List<HttpHeader> headers() {
@@ -64,7 +69,7 @@ public final class HttpConfiguration {
 
     /**
      * Set the headers property: List of HTTP headers.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the HttpConfiguration object itself.
      */
@@ -75,7 +80,7 @@ public final class HttpConfiguration {
 
     /**
      * Get the validStatusCodes property: Valid status codes.
-     *
+     * 
      * @return the validStatusCodes value.
      */
     public List<Integer> validStatusCodes() {
@@ -84,7 +89,7 @@ public final class HttpConfiguration {
 
     /**
      * Set the validStatusCodes property: Valid status codes.
-     *
+     * 
      * @param validStatusCodes the validStatusCodes value to set.
      * @return the HttpConfiguration object itself.
      */
@@ -95,7 +100,7 @@ public final class HttpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

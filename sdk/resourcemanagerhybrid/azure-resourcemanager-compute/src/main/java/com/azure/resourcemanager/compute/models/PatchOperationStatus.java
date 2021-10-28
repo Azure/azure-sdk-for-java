@@ -8,26 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PatchOperationStatus. */
+/**
+ * Defines values for PatchOperationStatus.
+ */
 public final class PatchOperationStatus extends ExpandableStringEnum<PatchOperationStatus> {
-    /** Static value Unknown for PatchOperationStatus. */
-    public static final PatchOperationStatus UNKNOWN = fromString("Unknown");
-
-    /** Static value InProgress for PatchOperationStatus. */
+    /**
+     * Static value InProgress for PatchOperationStatus.
+     */
     public static final PatchOperationStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Failed for PatchOperationStatus. */
+    /**
+     * Static value Failed for PatchOperationStatus.
+     */
     public static final PatchOperationStatus FAILED = fromString("Failed");
 
-    /** Static value Succeeded for PatchOperationStatus. */
+    /**
+     * Static value Succeeded for PatchOperationStatus.
+     */
     public static final PatchOperationStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value CompletedWithWarnings for PatchOperationStatus. */
+    /**
+     * Static value CompletedWithWarnings for PatchOperationStatus.
+     */
     public static final PatchOperationStatus COMPLETED_WITH_WARNINGS = fromString("CompletedWithWarnings");
 
     /**
      * Creates or finds a PatchOperationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PatchOperationStatus.
      */
@@ -36,7 +43,9 @@ public final class PatchOperationStatus extends ExpandableStringEnum<PatchOperat
         return fromString(name, PatchOperationStatus.class);
     }
 
-    /** @return known PatchOperationStatus values. */
+    /**
+     * @return known PatchOperationStatus values.
+     */
     public static Collection<PatchOperationStatus> values() {
         return values(PatchOperationStatus.class);
     }

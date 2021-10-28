@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The publishing profile of a gallery image version. */
+/**
+ * The publishing profile of a gallery image version.
+ */
 @Fluent
 public final class GalleryApplicationVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionPublishingProfile.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionPublishingProfile.class);
 
     /*
      * The source image from which the Image Version is going to be created.
@@ -35,8 +40,9 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     private Boolean enableHealthCheck;
 
     /**
-     * Get the source property: The source image from which the Image Version is going to be created.
-     *
+     * Get the source property: The source image from which the Image Version
+     * is going to be created.
+     * 
      * @return the source value.
      */
     public UserArtifactSource source() {
@@ -44,8 +50,9 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     }
 
     /**
-     * Set the source property: The source image from which the Image Version is going to be created.
-     *
+     * Set the source property: The source image from which the Image Version
+     * is going to be created.
+     * 
      * @param source the source value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
      */
@@ -56,7 +63,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
 
     /**
      * Get the manageActions property: The manageActions property.
-     *
+     * 
      * @return the manageActions value.
      */
     public UserArtifactManage manageActions() {
@@ -65,7 +72,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
 
     /**
      * Set the manageActions property: The manageActions property.
-     *
+     * 
      * @param manageActions the manageActions value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
      */
@@ -75,8 +82,9 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     }
 
     /**
-     * Get the enableHealthCheck property: Optional. Whether or not this application reports health.
-     *
+     * Get the enableHealthCheck property: Optional. Whether or not this
+     * application reports health.
+     * 
      * @return the enableHealthCheck value.
      */
     public Boolean enableHealthCheck() {
@@ -84,8 +92,9 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     }
 
     /**
-     * Set the enableHealthCheck property: Optional. Whether or not this application reports health.
-     *
+     * Set the enableHealthCheck property: Optional. Whether or not this
+     * application reports health.
+     * 
      * @param enableHealthCheck the enableHealthCheck value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
      */
@@ -94,61 +103,61 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionPublishingProfile withTargetRegions(List<TargetRegion> targetRegions) {
         super.withTargetRegions(targetRegions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionPublishingProfile withReplicaCount(Integer replicaCount) {
         super.withReplicaCount(replicaCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionPublishingProfile withExcludeFromLatest(Boolean excludeFromLatest) {
         super.withExcludeFromLatest(excludeFromLatest);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionPublishingProfile withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
         super.withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionPublishingProfile withStorageAccountType(StorageAccountType storageAccountType) {
         super.withStorageAccountType(storageAccountType);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public GalleryApplicationVersionPublishingProfile withReplicationMode(ReplicationMode replicationMode) {
-        super.withReplicationMode(replicationMode);
-        return this;
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (source() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property source in model GalleryApplicationVersionPublishingProfile"));
+            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property source in model GalleryApplicationVersionPublishingProfile"));
         } else {
             source().validate();
         }

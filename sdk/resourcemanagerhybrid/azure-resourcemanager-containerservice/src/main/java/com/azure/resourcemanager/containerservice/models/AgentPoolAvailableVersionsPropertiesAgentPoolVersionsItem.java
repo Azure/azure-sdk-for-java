@@ -5,16 +5,19 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem model. */
+/**
+ * The AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem model.
+ */
 @Fluent
 public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem.class);
+    private final ClientLogger logger = new ClientLogger(AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem.class);
 
     /*
      * Whether this version is the default agent pool version.
@@ -23,7 +26,7 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     private Boolean defaultProperty;
 
     /*
-     * The Kubernetes version (major.minor.patch).
+     * Kubernetes version (major, minor, patch).
      */
     @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
@@ -35,8 +38,9 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     private Boolean isPreview;
 
     /**
-     * Get the defaultProperty property: Whether this version is the default agent pool version.
-     *
+     * Get the defaultProperty property: Whether this version is the default
+     * agent pool version.
+     * 
      * @return the defaultProperty value.
      */
     public Boolean defaultProperty() {
@@ -44,10 +48,12 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     }
 
     /**
-     * Set the defaultProperty property: Whether this version is the default agent pool version.
-     *
+     * Set the defaultProperty property: Whether this version is the default
+     * agent pool version.
+     * 
      * @param defaultProperty the defaultProperty value to set.
-     * @return the AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem object itself.
+     * @return the AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem
+     * object itself.
      */
     public AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem withDefaultProperty(Boolean defaultProperty) {
         this.defaultProperty = defaultProperty;
@@ -55,8 +61,9 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     }
 
     /**
-     * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * Get the kubernetesVersion property: Kubernetes version (major, minor,
+     * patch).
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -64,10 +71,12 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     }
 
     /**
-     * Set the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * Set the kubernetesVersion property: Kubernetes version (major, minor,
+     * patch).
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
-     * @return the AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem object itself.
+     * @return the AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem
+     * object itself.
      */
     public AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem withKubernetesVersion(String kubernetesVersion) {
         this.kubernetesVersion = kubernetesVersion;
@@ -75,8 +84,9 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     }
 
     /**
-     * Get the isPreview property: Whether Kubernetes version is currently in preview.
-     *
+     * Get the isPreview property: Whether Kubernetes version is currently in
+     * preview.
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -84,10 +94,12 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     }
 
     /**
-     * Set the isPreview property: Whether Kubernetes version is currently in preview.
-     *
+     * Set the isPreview property: Whether Kubernetes version is currently in
+     * preview.
+     * 
      * @param isPreview the isPreview value to set.
-     * @return the AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem object itself.
+     * @return the AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem
+     * object itself.
      */
     public AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem withIsPreview(Boolean isPreview) {
         this.isPreview = isPreview;
@@ -96,7 +108,7 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

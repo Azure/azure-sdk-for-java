@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExpressRoute circuit peering identifier. */
+/**
+ * ExpressRoute circuit peering identifier.
+ */
 @Fluent
 public final class ExpressRouteCircuitPeeringId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringId.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringId.class);
 
     /*
      * The ID of the ExpressRoute circuit peering.
@@ -22,7 +27,7 @@ public final class ExpressRouteCircuitPeeringId {
 
     /**
      * Get the id property: The ID of the ExpressRoute circuit peering.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +36,7 @@ public final class ExpressRouteCircuitPeeringId {
 
     /**
      * Set the id property: The ID of the ExpressRoute circuit peering.
-     *
+     * 
      * @param id the id value to set.
      * @return the ExpressRouteCircuitPeeringId object itself.
      */
@@ -42,7 +47,7 @@ public final class ExpressRouteCircuitPeeringId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

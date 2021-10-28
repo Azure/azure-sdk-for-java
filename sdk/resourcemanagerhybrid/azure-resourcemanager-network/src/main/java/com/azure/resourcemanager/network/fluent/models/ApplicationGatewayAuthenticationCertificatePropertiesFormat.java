@@ -5,17 +5,19 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Authentication certificates properties of an application gateway. */
+/**
+ * Authentication certificates properties of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
     @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(ApplicationGatewayAuthenticationCertificatePropertiesFormat.class);
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayAuthenticationCertificatePropertiesFormat.class);
 
     /*
      * Certificate public data.
@@ -24,14 +26,15 @@ public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
     private String data;
 
     /*
-     * The provisioning state of the authentication certificate resource.
+     * Provisioning state of the authentication certificate resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    @JsonProperty(value = "provisioningState")
+    private String provisioningState;
 
     /**
      * Get the data property: Certificate public data.
-     *
+     * 
      * @return the data value.
      */
     public String data() {
@@ -40,9 +43,10 @@ public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
 
     /**
      * Set the data property: Certificate public data.
-     *
+     * 
      * @param data the data value to set.
-     * @return the ApplicationGatewayAuthenticationCertificatePropertiesFormat object itself.
+     * @return the ApplicationGatewayAuthenticationCertificatePropertiesFormat
+     * object itself.
      */
     public ApplicationGatewayAuthenticationCertificatePropertiesFormat withData(String data) {
         this.data = data;
@@ -50,17 +54,33 @@ public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the authentication certificate resource.
-     *
+     * Get the provisioningState property: Provisioning state of the
+     * authentication certificate resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
+     * Set the provisioningState property: Provisioning state of the
+     * authentication certificate resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApplicationGatewayAuthenticationCertificatePropertiesFormat
+     * object itself.
+     */
+    public ApplicationGatewayAuthenticationCertificatePropertiesFormat withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

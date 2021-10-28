@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.models.ConsentType;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OAuth2PermissionGrant model. */
+/**
+ * The OAuth2PermissionGrant model.
+ */
 @Fluent
 public final class OAuth2PermissionGrantInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OAuth2PermissionGrantInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OAuth2PermissionGrantInner.class);
 
     /*
      * Microsoft.DirectoryServices.OAuth2PermissionGrant
@@ -75,8 +80,9 @@ public final class OAuth2PermissionGrantInner {
     private String expiryTime;
 
     /**
-     * Get the odataType property: Microsoft.DirectoryServices.OAuth2PermissionGrant.
-     *
+     * Get the odataType property:
+     * Microsoft.DirectoryServices.OAuth2PermissionGrant.
+     * 
      * @return the odataType value.
      */
     public String odataType() {
@@ -84,8 +90,9 @@ public final class OAuth2PermissionGrantInner {
     }
 
     /**
-     * Set the odataType property: Microsoft.DirectoryServices.OAuth2PermissionGrant.
-     *
+     * Set the odataType property:
+     * Microsoft.DirectoryServices.OAuth2PermissionGrant.
+     * 
      * @param odataType the odataType value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
@@ -95,9 +102,10 @@ public final class OAuth2PermissionGrantInner {
     }
 
     /**
-     * Get the clientId property: The id of the resource's service principal granted consent to impersonate the user
-     * when accessing the resource (represented by the resourceId property).
-     *
+     * Get the clientId property: The id of the resource's service principal
+     * granted consent to impersonate the user when accessing the resource
+     * (represented by the resourceId property).
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -105,9 +113,10 @@ public final class OAuth2PermissionGrantInner {
     }
 
     /**
-     * Set the clientId property: The id of the resource's service principal granted consent to impersonate the user
-     * when accessing the resource (represented by the resourceId property).
-     *
+     * Set the clientId property: The id of the resource's service principal
+     * granted consent to impersonate the user when accessing the resource
+     * (represented by the resourceId property).
+     * 
      * @param clientId the clientId value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
@@ -118,7 +127,7 @@ public final class OAuth2PermissionGrantInner {
 
     /**
      * Get the objectId property: The id of the permission grant.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -127,7 +136,7 @@ public final class OAuth2PermissionGrantInner {
 
     /**
      * Set the objectId property: The id of the permission grant.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
@@ -137,9 +146,9 @@ public final class OAuth2PermissionGrantInner {
     }
 
     /**
-     * Get the consentType property: Indicates if consent was provided by the administrator (on behalf of the
-     * organization) or by an individual.
-     *
+     * Get the consentType property: Indicates if consent was provided by the
+     * administrator (on behalf of the organization) or by an individual.
+     * 
      * @return the consentType value.
      */
     public ConsentType consentType() {
@@ -147,9 +156,9 @@ public final class OAuth2PermissionGrantInner {
     }
 
     /**
-     * Set the consentType property: Indicates if consent was provided by the administrator (on behalf of the
-     * organization) or by an individual.
-     *
+     * Set the consentType property: Indicates if consent was provided by the
+     * administrator (on behalf of the organization) or by an individual.
+     * 
      * @param consentType the consentType value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
@@ -159,9 +168,10 @@ public final class OAuth2PermissionGrantInner {
     }
 
     /**
-     * Get the principalId property: When consent type is Principal, this property specifies the id of the user that
-     * granted consent and applies only for that user.
-     *
+     * Get the principalId property: When consent type is Principal, this
+     * property specifies the id of the user that granted consent and applies
+     * only for that user.
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -169,9 +179,10 @@ public final class OAuth2PermissionGrantInner {
     }
 
     /**
-     * Set the principalId property: When consent type is Principal, this property specifies the id of the user that
-     * granted consent and applies only for that user.
-     *
+     * Set the principalId property: When consent type is Principal, this
+     * property specifies the id of the user that granted consent and applies
+     * only for that user.
+     * 
      * @param principalId the principalId value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
@@ -181,8 +192,9 @@ public final class OAuth2PermissionGrantInner {
     }
 
     /**
-     * Get the resourceId property: Object Id of the resource you want to grant.
-     *
+     * Get the resourceId property: Object Id of the resource you want to
+     * grant.
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -190,8 +202,9 @@ public final class OAuth2PermissionGrantInner {
     }
 
     /**
-     * Set the resourceId property: Object Id of the resource you want to grant.
-     *
+     * Set the resourceId property: Object Id of the resource you want to
+     * grant.
+     * 
      * @param resourceId the resourceId value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
@@ -201,9 +214,10 @@ public final class OAuth2PermissionGrantInner {
     }
 
     /**
-     * Get the scope property: Specifies the value of the scope claim that the resource application should expect in the
-     * OAuth 2.0 access token. For example, User.Read.
-     *
+     * Get the scope property: Specifies the value of the scope claim that the
+     * resource application should expect in the OAuth 2.0 access token. For
+     * example, User.Read.
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -211,9 +225,10 @@ public final class OAuth2PermissionGrantInner {
     }
 
     /**
-     * Set the scope property: Specifies the value of the scope claim that the resource application should expect in the
-     * OAuth 2.0 access token. For example, User.Read.
-     *
+     * Set the scope property: Specifies the value of the scope claim that the
+     * resource application should expect in the OAuth 2.0 access token. For
+     * example, User.Read.
+     * 
      * @param scope the scope value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
@@ -224,7 +239,7 @@ public final class OAuth2PermissionGrantInner {
 
     /**
      * Get the startTime property: Start time for TTL.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -233,7 +248,7 @@ public final class OAuth2PermissionGrantInner {
 
     /**
      * Set the startTime property: Start time for TTL.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
@@ -244,7 +259,7 @@ public final class OAuth2PermissionGrantInner {
 
     /**
      * Get the expiryTime property: Expiry time for TTL.
-     *
+     * 
      * @return the expiryTime value.
      */
     public String expiryTime() {
@@ -253,7 +268,7 @@ public final class OAuth2PermissionGrantInner {
 
     /**
      * Set the expiryTime property: Expiry time for TTL.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
@@ -264,7 +279,7 @@ public final class OAuth2PermissionGrantInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,15 +5,23 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a Virtual Machine Scale Set VM Reimage Parameters. */
+/**
+ * Describes a Virtual Machine Scale Set VM Reimage Parameters.
+ */
 @Fluent
 public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineReimageParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMReimageParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMReimageParameters.class);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineScaleSetVMReimageParameters withTempDisk(Boolean tempDisk) {
         super.withTempDisk(tempDisk);
@@ -22,7 +30,7 @@ public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineRei
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.models.GitHubActionConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -36,12 +35,6 @@ public final class SiteSourceControlProperties {
     private Boolean isManualIntegration;
 
     /*
-     * <code>true</code> if this is deployed via GitHub action.
-     */
-    @JsonProperty(value = "isGitHubAction")
-    private Boolean isGitHubAction;
-
-    /*
      * <code>true</code> to enable deployment rollback; otherwise,
      * <code>false</code>.
      */
@@ -54,12 +47,6 @@ public final class SiteSourceControlProperties {
      */
     @JsonProperty(value = "isMercurial")
     private Boolean isMercurial;
-
-    /*
-     * If GitHub Action is selected, than the associated configuration.
-     */
-    @JsonProperty(value = "gitHubActionConfiguration")
-    private GitHubActionConfiguration gitHubActionConfiguration;
 
     /**
      * Get the repoUrl property: Repository or source control URL.
@@ -126,26 +113,6 @@ public final class SiteSourceControlProperties {
     }
 
     /**
-     * Get the isGitHubAction property: &lt;code&gt;true&lt;/code&gt; if this is deployed via GitHub action.
-     *
-     * @return the isGitHubAction value.
-     */
-    public Boolean isGitHubAction() {
-        return this.isGitHubAction;
-    }
-
-    /**
-     * Set the isGitHubAction property: &lt;code&gt;true&lt;/code&gt; if this is deployed via GitHub action.
-     *
-     * @param isGitHubAction the isGitHubAction value to set.
-     * @return the SiteSourceControlProperties object itself.
-     */
-    public SiteSourceControlProperties withIsGitHubAction(Boolean isGitHubAction) {
-        this.isGitHubAction = isGitHubAction;
-        return this;
-    }
-
-    /**
      * Get the deploymentRollbackEnabled property: &lt;code&gt;true&lt;/code&gt; to enable deployment rollback;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
@@ -190,34 +157,10 @@ public final class SiteSourceControlProperties {
     }
 
     /**
-     * Get the gitHubActionConfiguration property: If GitHub Action is selected, than the associated configuration.
-     *
-     * @return the gitHubActionConfiguration value.
-     */
-    public GitHubActionConfiguration gitHubActionConfiguration() {
-        return this.gitHubActionConfiguration;
-    }
-
-    /**
-     * Set the gitHubActionConfiguration property: If GitHub Action is selected, than the associated configuration.
-     *
-     * @param gitHubActionConfiguration the gitHubActionConfiguration value to set.
-     * @return the SiteSourceControlProperties object itself.
-     */
-    public SiteSourceControlProperties withGitHubActionConfiguration(
-        GitHubActionConfiguration gitHubActionConfiguration) {
-        this.gitHubActionConfiguration = gitHubActionConfiguration;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (gitHubActionConfiguration() != null) {
-            gitHubActionConfiguration().validate();
-        }
     }
 }

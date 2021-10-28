@@ -5,22 +5,25 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkAdminState;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkConnectorType;
-import com.azure.resourcemanager.network.models.ExpressRouteLinkMacSecConfig;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExpressRouteLink ExpressRouteLink child resource definition. */
+/**
+ * ExpressRouteLink ExpressRouteLink child resource definition.
+ */
 @Fluent
 public final class ExpressRouteLinkInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteLinkInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ExpressRouteLinkInner.class);
 
     /*
-     * ExpressRouteLink Resource Properties ExpressRouteLink properties.
+     * ExpressRouteLink Resource Properties ExpressRouteLink properties
      */
     @JsonProperty(value = "properties")
     private ExpressRouteLinkPropertiesFormat innerProperties;
@@ -39,8 +42,9 @@ public final class ExpressRouteLinkInner extends SubResource {
     private String etag;
 
     /**
-     * Get the innerProperties property: ExpressRouteLink Resource Properties ExpressRouteLink properties.
-     *
+     * Get the innerProperties property: ExpressRouteLink Resource Properties
+     * ExpressRouteLink properties.
+     * 
      * @return the innerProperties value.
      */
     private ExpressRouteLinkPropertiesFormat innerProperties() {
@@ -48,8 +52,9 @@ public final class ExpressRouteLinkInner extends SubResource {
     }
 
     /**
-     * Get the name property: Name of child port resource that is unique among child port resources of the parent.
-     *
+     * Get the name property: Name of child port resource that is unique among
+     * child port resources of the parent.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,8 +62,9 @@ public final class ExpressRouteLinkInner extends SubResource {
     }
 
     /**
-     * Set the name property: Name of child port resource that is unique among child port resources of the parent.
-     *
+     * Set the name property: Name of child port resource that is unique among
+     * child port resources of the parent.
+     * 
      * @param name the name value to set.
      * @return the ExpressRouteLinkInner object itself.
      */
@@ -68,15 +74,18 @@ public final class ExpressRouteLinkInner extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * Get the etag property: A unique read-only string that changes whenever
+     * the resource is updated.
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteLinkInner withId(String id) {
         super.withId(id);
@@ -84,8 +93,9 @@ public final class ExpressRouteLinkInner extends SubResource {
     }
 
     /**
-     * Get the routerName property: Name of Azure router associated with physical port.
-     *
+     * Get the routerName property: Name of Azure router associated with
+     * physical port.
+     * 
      * @return the routerName value.
      */
     public String routerName() {
@@ -94,7 +104,7 @@ public final class ExpressRouteLinkInner extends SubResource {
 
     /**
      * Get the interfaceName property: Name of Azure router interface.
-     *
+     * 
      * @return the interfaceName value.
      */
     public String interfaceName() {
@@ -102,8 +112,9 @@ public final class ExpressRouteLinkInner extends SubResource {
     }
 
     /**
-     * Get the patchPanelId property: Mapping between physical port to patch panel port.
-     *
+     * Get the patchPanelId property: Mapping between physical port to patch
+     * panel port.
+     * 
      * @return the patchPanelId value.
      */
     public String patchPanelId() {
@@ -112,7 +123,7 @@ public final class ExpressRouteLinkInner extends SubResource {
 
     /**
      * Get the rackId property: Mapping of physical patch panel to rack.
-     *
+     * 
      * @return the rackId value.
      */
     public String rackId() {
@@ -121,7 +132,7 @@ public final class ExpressRouteLinkInner extends SubResource {
 
     /**
      * Get the connectorType property: Physical fiber port type.
-     *
+     * 
      * @return the connectorType value.
      */
     public ExpressRouteLinkConnectorType connectorType() {
@@ -130,7 +141,7 @@ public final class ExpressRouteLinkInner extends SubResource {
 
     /**
      * Get the adminState property: Administrative state of the physical port.
-     *
+     * 
      * @return the adminState value.
      */
     public ExpressRouteLinkAdminState adminState() {
@@ -139,7 +150,7 @@ public final class ExpressRouteLinkInner extends SubResource {
 
     /**
      * Set the adminState property: Administrative state of the physical port.
-     *
+     * 
      * @param adminState the adminState value to set.
      * @return the ExpressRouteLinkInner object itself.
      */
@@ -152,40 +163,19 @@ public final class ExpressRouteLinkInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the express route link resource.
-     *
+     * Get the provisioningState property: The provisioning state of the
+     * ExpressRouteLink resource. Possible values are: 'Succeeded', 'Updating',
+     * 'Deleting', and 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Get the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration. MacSec configuration.
-     *
-     * @return the macSecConfig value.
-     */
-    public ExpressRouteLinkMacSecConfig macSecConfig() {
-        return this.innerProperties() == null ? null : this.innerProperties().macSecConfig();
-    }
-
-    /**
-     * Set the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration. MacSec configuration.
-     *
-     * @param macSecConfig the macSecConfig value to set.
-     * @return the ExpressRouteLinkInner object itself.
-     */
-    public ExpressRouteLinkInner withMacSecConfig(ExpressRouteLinkMacSecConfig macSecConfig) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ExpressRouteLinkPropertiesFormat();
-        }
-        this.innerProperties().withMacSecConfig(macSecConfig);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

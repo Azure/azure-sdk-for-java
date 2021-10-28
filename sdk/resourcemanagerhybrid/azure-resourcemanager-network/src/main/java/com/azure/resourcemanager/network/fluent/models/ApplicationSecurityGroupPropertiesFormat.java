@@ -4,16 +4,20 @@
 
 package com.azure.resourcemanager.network.fluent.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application security group properties. */
+/**
+ * Application security group properties.
+ */
 @Immutable
 public final class ApplicationSecurityGroupPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationSecurityGroupPropertiesFormat.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationSecurityGroupPropertiesFormat.class);
 
     /*
      * The resource GUID property of the application security group resource.
@@ -25,15 +29,17 @@ public final class ApplicationSecurityGroupPropertiesFormat {
 
     /*
      * The provisioning state of the application security group resource.
+     * Possible values are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String provisioningState;
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the application security group resource. It uniquely
-     * identifies a resource, even if the user changes its name or migrate the resource across subscriptions or resource
-     * groups.
-     *
+     * Get the resourceGuid property: The resource GUID property of the
+     * application security group resource. It uniquely identifies a resource,
+     * even if the user changes its name or migrate the resource across
+     * subscriptions or resource groups.
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -41,17 +47,19 @@ public final class ApplicationSecurityGroupPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the application security group resource.
-     *
+     * Get the provisioningState property: The provisioning state of the
+     * application security group resource. Possible values are: 'Succeeded',
+     * 'Updating', 'Deleting', and 'Failed'.
+     * 
      * @return the provisioningState value.
      */
-    public ProvisioningState provisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

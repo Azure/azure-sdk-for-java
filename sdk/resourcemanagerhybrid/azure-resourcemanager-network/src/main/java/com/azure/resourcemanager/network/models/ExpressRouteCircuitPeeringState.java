@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressRouteCircuitPeeringState. */
+/**
+ * Defines values for ExpressRouteCircuitPeeringState.
+ */
 public final class ExpressRouteCircuitPeeringState extends ExpandableStringEnum<ExpressRouteCircuitPeeringState> {
-    /** Static value Disabled for ExpressRouteCircuitPeeringState. */
+    /**
+     * Static value Disabled for ExpressRouteCircuitPeeringState.
+     */
     public static final ExpressRouteCircuitPeeringState DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for ExpressRouteCircuitPeeringState. */
+    /**
+     * Static value Enabled for ExpressRouteCircuitPeeringState.
+     */
     public static final ExpressRouteCircuitPeeringState ENABLED = fromString("Enabled");
 
     /**
      * Creates or finds a ExpressRouteCircuitPeeringState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExpressRouteCircuitPeeringState.
      */
@@ -27,7 +33,9 @@ public final class ExpressRouteCircuitPeeringState extends ExpandableStringEnum<
         return fromString(name, ExpressRouteCircuitPeeringState.class);
     }
 
-    /** @return known ExpressRouteCircuitPeeringState values. */
+    /**
+     * @return known ExpressRouteCircuitPeeringState values.
+     */
     public static Collection<ExpressRouteCircuitPeeringState> values() {
         return values(ExpressRouteCircuitPeeringState.class);
     }

@@ -7,15 +7,23 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for StorageAccountExpand. */
+/**
+ * Defines values for StorageAccountExpand.
+ */
 public enum StorageAccountExpand {
-    /** Enum value geoReplicationStats. */
+    /**
+     * Enum value geoReplicationStats.
+     */
     GEO_REPLICATION_STATS("geoReplicationStats"),
 
-    /** Enum value blobRestoreStatus. */
+    /**
+     * Enum value blobRestoreStatus.
+     */
     BLOB_RESTORE_STATUS("blobRestoreStatus");
 
-    /** The actual serialized value for a StorageAccountExpand instance. */
+    /**
+     * The actual serialized value for a StorageAccountExpand instance.
+     */
     private final String value;
 
     StorageAccountExpand(String value) {
@@ -24,7 +32,7 @@ public enum StorageAccountExpand {
 
     /**
      * Parses a serialized value to a StorageAccountExpand instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed StorageAccountExpand object, or null if unable to parse.
      */

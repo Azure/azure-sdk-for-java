@@ -6,11 +6,8 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.models.DataProviderMetadata;
 import com.azure.resourcemanager.appservice.models.DetectorInfo;
 import com.azure.resourcemanager.appservice.models.DiagnosticData;
-import com.azure.resourcemanager.appservice.models.QueryUtterancesResults;
-import com.azure.resourcemanager.appservice.models.Status;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -31,25 +28,6 @@ public final class DetectorResponseProperties {
      */
     @JsonProperty(value = "dataset")
     private List<DiagnosticData> dataset;
-
-    /*
-     * Indicates status of the most severe insight.
-     */
-    @JsonProperty(value = "status")
-    private Status status;
-
-    /*
-     * Additional configuration for different data providers to be used by the
-     * UI
-     */
-    @JsonProperty(value = "dataProvidersMetadata")
-    private List<DataProviderMetadata> dataProvidersMetadata;
-
-    /*
-     * Suggested utterances where the detector can be applicable.
-     */
-    @JsonProperty(value = "suggestedUtterances")
-    private QueryUtterancesResults suggestedUtterances;
 
     /**
      * Get the metadata property: metadata for the detector.
@@ -92,68 +70,6 @@ public final class DetectorResponseProperties {
     }
 
     /**
-     * Get the status property: Indicates status of the most severe insight.
-     *
-     * @return the status value.
-     */
-    public Status status() {
-        return this.status;
-    }
-
-    /**
-     * Set the status property: Indicates status of the most severe insight.
-     *
-     * @param status the status value to set.
-     * @return the DetectorResponseProperties object itself.
-     */
-    public DetectorResponseProperties withStatus(Status status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Get the dataProvidersMetadata property: Additional configuration for different data providers to be used by the
-     * UI.
-     *
-     * @return the dataProvidersMetadata value.
-     */
-    public List<DataProviderMetadata> dataProvidersMetadata() {
-        return this.dataProvidersMetadata;
-    }
-
-    /**
-     * Set the dataProvidersMetadata property: Additional configuration for different data providers to be used by the
-     * UI.
-     *
-     * @param dataProvidersMetadata the dataProvidersMetadata value to set.
-     * @return the DetectorResponseProperties object itself.
-     */
-    public DetectorResponseProperties withDataProvidersMetadata(List<DataProviderMetadata> dataProvidersMetadata) {
-        this.dataProvidersMetadata = dataProvidersMetadata;
-        return this;
-    }
-
-    /**
-     * Get the suggestedUtterances property: Suggested utterances where the detector can be applicable.
-     *
-     * @return the suggestedUtterances value.
-     */
-    public QueryUtterancesResults suggestedUtterances() {
-        return this.suggestedUtterances;
-    }
-
-    /**
-     * Set the suggestedUtterances property: Suggested utterances where the detector can be applicable.
-     *
-     * @param suggestedUtterances the suggestedUtterances value to set.
-     * @return the DetectorResponseProperties object itself.
-     */
-    public DetectorResponseProperties withSuggestedUtterances(QueryUtterancesResults suggestedUtterances) {
-        this.suggestedUtterances = suggestedUtterances;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -164,15 +80,6 @@ public final class DetectorResponseProperties {
         }
         if (dataset() != null) {
             dataset().forEach(e -> e.validate());
-        }
-        if (status() != null) {
-            status().validate();
-        }
-        if (dataProvidersMetadata() != null) {
-            dataProvidersMetadata().forEach(e -> e.validate());
-        }
-        if (suggestedUtterances() != null) {
-            suggestedUtterances().validate();
         }
     }
 }

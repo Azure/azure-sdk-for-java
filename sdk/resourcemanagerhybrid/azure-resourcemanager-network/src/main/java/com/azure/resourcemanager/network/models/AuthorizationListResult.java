@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitAuthorizationInner;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Response for ListAuthorizations API service call retrieves all authorizations that belongs to an ExpressRouteCircuit.
+ * Response for ListAuthorizations API service call retrieves all
+ * authorizations that belongs to an ExpressRouteCircuit.
  */
 @Fluent
 public final class AuthorizationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AuthorizationListResult.class);
 
     /*
      * The authorizations in an ExpressRoute Circuit.
@@ -32,7 +36,7 @@ public final class AuthorizationListResult {
 
     /**
      * Get the value property: The authorizations in an ExpressRoute Circuit.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRouteCircuitAuthorizationInner> value() {
@@ -41,7 +45,7 @@ public final class AuthorizationListResult {
 
     /**
      * Set the value property: The authorizations in an ExpressRoute Circuit.
-     *
+     * 
      * @param value the value value to set.
      * @return the AuthorizationListResult object itself.
      */
@@ -52,7 +56,7 @@ public final class AuthorizationListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,7 +65,7 @@ public final class AuthorizationListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AuthorizationListResult object itself.
      */
@@ -72,7 +76,7 @@ public final class AuthorizationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

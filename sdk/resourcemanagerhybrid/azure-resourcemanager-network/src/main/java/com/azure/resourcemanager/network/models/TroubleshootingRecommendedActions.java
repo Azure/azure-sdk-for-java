@@ -5,14 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Recommended actions based on discovered issues. */
+/**
+ * Recommended actions based on discovered issues.
+ */
 @Fluent
 public final class TroubleshootingRecommendedActions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingRecommendedActions.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TroubleshootingRecommendedActions.class);
 
     /*
      * ID of the recommended action.
@@ -42,7 +47,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Get the actionId property: ID of the recommended action.
-     *
+     * 
      * @return the actionId value.
      */
     public String actionId() {
@@ -51,7 +56,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Set the actionId property: ID of the recommended action.
-     *
+     * 
      * @param actionId the actionId value to set.
      * @return the TroubleshootingRecommendedActions object itself.
      */
@@ -62,7 +67,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Get the actionText property: Description of recommended actions.
-     *
+     * 
      * @return the actionText value.
      */
     public String actionText() {
@@ -71,7 +76,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Set the actionText property: Description of recommended actions.
-     *
+     * 
      * @param actionText the actionText value to set.
      * @return the TroubleshootingRecommendedActions object itself.
      */
@@ -81,8 +86,9 @@ public final class TroubleshootingRecommendedActions {
     }
 
     /**
-     * Get the actionUri property: The uri linking to a documentation for the recommended troubleshooting actions.
-     *
+     * Get the actionUri property: The uri linking to a documentation for the
+     * recommended troubleshooting actions.
+     * 
      * @return the actionUri value.
      */
     public String actionUri() {
@@ -90,8 +96,9 @@ public final class TroubleshootingRecommendedActions {
     }
 
     /**
-     * Set the actionUri property: The uri linking to a documentation for the recommended troubleshooting actions.
-     *
+     * Set the actionUri property: The uri linking to a documentation for the
+     * recommended troubleshooting actions.
+     * 
      * @param actionUri the actionUri value to set.
      * @return the TroubleshootingRecommendedActions object itself.
      */
@@ -101,8 +108,9 @@ public final class TroubleshootingRecommendedActions {
     }
 
     /**
-     * Get the actionUriText property: The information from the URI for the recommended troubleshooting actions.
-     *
+     * Get the actionUriText property: The information from the URI for the
+     * recommended troubleshooting actions.
+     * 
      * @return the actionUriText value.
      */
     public String actionUriText() {
@@ -110,8 +118,9 @@ public final class TroubleshootingRecommendedActions {
     }
 
     /**
-     * Set the actionUriText property: The information from the URI for the recommended troubleshooting actions.
-     *
+     * Set the actionUriText property: The information from the URI for the
+     * recommended troubleshooting actions.
+     * 
      * @param actionUriText the actionUriText value to set.
      * @return the TroubleshootingRecommendedActions object itself.
      */
@@ -122,7 +131,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

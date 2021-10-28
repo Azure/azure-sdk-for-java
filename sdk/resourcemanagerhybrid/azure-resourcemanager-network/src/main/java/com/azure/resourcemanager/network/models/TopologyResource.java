@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The network resource topology information for the given resource group. */
+/**
+ * The network resource topology information for the given resource group.
+ */
 @Fluent
 public final class TopologyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyResource.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TopologyResource.class);
 
     /*
      * Name of the resource.
@@ -42,7 +47,7 @@ public final class TopologyResource {
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +56,7 @@ public final class TopologyResource {
 
     /**
      * Set the name property: Name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the TopologyResource object itself.
      */
@@ -62,7 +67,7 @@ public final class TopologyResource {
 
     /**
      * Get the id property: ID of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -71,7 +76,7 @@ public final class TopologyResource {
 
     /**
      * Set the id property: ID of the resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the TopologyResource object itself.
      */
@@ -82,7 +87,7 @@ public final class TopologyResource {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -91,7 +96,7 @@ public final class TopologyResource {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the TopologyResource object itself.
      */
@@ -101,9 +106,9 @@ public final class TopologyResource {
     }
 
     /**
-     * Get the associations property: Holds the associations the resource has with other resources in the resource
-     * group.
-     *
+     * Get the associations property: Holds the associations the resource has
+     * with other resources in the resource group.
+     * 
      * @return the associations value.
      */
     public List<TopologyAssociation> associations() {
@@ -111,9 +116,9 @@ public final class TopologyResource {
     }
 
     /**
-     * Set the associations property: Holds the associations the resource has with other resources in the resource
-     * group.
-     *
+     * Set the associations property: Holds the associations the resource has
+     * with other resources in the resource group.
+     * 
      * @param associations the associations value to set.
      * @return the TopologyResource object itself.
      */
@@ -124,7 +129,7 @@ public final class TopologyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

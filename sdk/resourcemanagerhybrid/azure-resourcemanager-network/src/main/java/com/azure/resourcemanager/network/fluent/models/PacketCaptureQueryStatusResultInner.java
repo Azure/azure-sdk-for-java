@@ -5,18 +5,23 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PcError;
 import com.azure.resourcemanager.network.models.PcStatus;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Status of packet capture session. */
+/**
+ * Status of packet capture session.
+ */
 @Fluent
 public final class PacketCaptureQueryStatusResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureQueryStatusResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PacketCaptureQueryStatusResultInner.class);
 
     /*
      * The name of the packet capture resource.
@@ -56,7 +61,7 @@ public final class PacketCaptureQueryStatusResultInner {
 
     /**
      * Get the name property: The name of the packet capture resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +70,7 @@ public final class PacketCaptureQueryStatusResultInner {
 
     /**
      * Set the name property: The name of the packet capture resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the PacketCaptureQueryStatusResultInner object itself.
      */
@@ -76,7 +81,7 @@ public final class PacketCaptureQueryStatusResultInner {
 
     /**
      * Get the id property: The ID of the packet capture resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -85,7 +90,7 @@ public final class PacketCaptureQueryStatusResultInner {
 
     /**
      * Set the id property: The ID of the packet capture resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the PacketCaptureQueryStatusResultInner object itself.
      */
@@ -95,8 +100,9 @@ public final class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Get the captureStartTime property: The start time of the packet capture session.
-     *
+     * Get the captureStartTime property: The start time of the packet capture
+     * session.
+     * 
      * @return the captureStartTime value.
      */
     public OffsetDateTime captureStartTime() {
@@ -104,8 +110,9 @@ public final class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Set the captureStartTime property: The start time of the packet capture session.
-     *
+     * Set the captureStartTime property: The start time of the packet capture
+     * session.
+     * 
      * @param captureStartTime the captureStartTime value to set.
      * @return the PacketCaptureQueryStatusResultInner object itself.
      */
@@ -115,8 +122,9 @@ public final class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Get the packetCaptureStatus property: The status of the packet capture session.
-     *
+     * Get the packetCaptureStatus property: The status of the packet capture
+     * session.
+     * 
      * @return the packetCaptureStatus value.
      */
     public PcStatus packetCaptureStatus() {
@@ -124,8 +132,9 @@ public final class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Set the packetCaptureStatus property: The status of the packet capture session.
-     *
+     * Set the packetCaptureStatus property: The status of the packet capture
+     * session.
+     * 
      * @param packetCaptureStatus the packetCaptureStatus value to set.
      * @return the PacketCaptureQueryStatusResultInner object itself.
      */
@@ -135,8 +144,9 @@ public final class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Get the stopReason property: The reason the current packet capture session was stopped.
-     *
+     * Get the stopReason property: The reason the current packet capture
+     * session was stopped.
+     * 
      * @return the stopReason value.
      */
     public String stopReason() {
@@ -144,8 +154,9 @@ public final class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Set the stopReason property: The reason the current packet capture session was stopped.
-     *
+     * Set the stopReason property: The reason the current packet capture
+     * session was stopped.
+     * 
      * @param stopReason the stopReason value to set.
      * @return the PacketCaptureQueryStatusResultInner object itself.
      */
@@ -155,8 +166,9 @@ public final class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Get the packetCaptureError property: List of errors of packet capture session.
-     *
+     * Get the packetCaptureError property: List of errors of packet capture
+     * session.
+     * 
      * @return the packetCaptureError value.
      */
     public List<PcError> packetCaptureError() {
@@ -164,8 +176,9 @@ public final class PacketCaptureQueryStatusResultInner {
     }
 
     /**
-     * Set the packetCaptureError property: List of errors of packet capture session.
-     *
+     * Set the packetCaptureError property: List of errors of packet capture
+     * session.
+     * 
      * @param packetCaptureError the packetCaptureError value to set.
      * @return the PacketCaptureQueryStatusResultInner object itself.
      */
@@ -176,7 +189,7 @@ public final class PacketCaptureQueryStatusResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
