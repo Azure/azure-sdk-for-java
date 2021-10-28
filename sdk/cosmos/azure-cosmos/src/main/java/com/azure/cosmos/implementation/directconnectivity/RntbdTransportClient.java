@@ -635,6 +635,7 @@ public class RntbdTransportClient extends TransportClient {
          * <pre>{@code RntbdTransportClient.class.getClassLoader().getResourceAsStream("azure.cosmos.directTcp.defaultOptions.json")}</pre>
          * <p>Example: <pre>{@code {
          *   "bufferPageSize": 8192,
+         *   "bufferPageSize": 8192,
          *   "connectionEndpointRediscoveryEnabled": false,
          *   "connectTimeout": "PT5S",
          *   "idleChannelTimeout": "PT0S",
