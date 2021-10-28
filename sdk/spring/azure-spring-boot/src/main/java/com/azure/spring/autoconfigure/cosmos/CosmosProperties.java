@@ -36,6 +36,11 @@ public class CosmosProperties implements InitializingBean {
     private String uri;
 
     /**
+     * Whether to validate the uri, default is true.
+     */
+    private boolean validateUri = true;
+
+    /**
      * Document DB key.
      */
     @NotEmpty
@@ -126,6 +131,14 @@ public class CosmosProperties implements InitializingBean {
         this.allowTelemetry = allowTelemetry;
     }
 
+    public boolean isValidateUri() {
+        return validateUri;
+    }
+
+    public void setValidateUri(boolean validateUri) {
+        this.validateUri = validateUri;
+    }
+
     public boolean isPopulateQueryMetrics() {
         return populateQueryMetrics;
     }
@@ -151,11 +164,14 @@ public class CosmosProperties implements InitializingBean {
     }
 
     private void validateUri() {
+        if (!isValidateUri()) {
+            return;
+        }
         if (Pattern.matches(LOCAL_URI_REGEX, uri)) {
             return;
         }
         if (!Pattern.matches(URI_REGEX, uri)) {
-            LOGGER.error("the uri's pattern specified in 'azure.cosmos.uri' is not supported, "
+            throw new IllegalArgumentException("the uri's pattern specified in 'azure.cosmos.uri' is not supported, "
                 + "only sql/core api is supported, please check https://docs.microsoft.com/en-us/azure/cosmos-db/ "
                 + "for more info.");
         }

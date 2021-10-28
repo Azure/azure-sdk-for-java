@@ -4,12 +4,14 @@ package com.azure.spring.autoconfigure.cosmos;
 
 
 import java.util.stream.Stream;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
@@ -22,7 +24,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.NOT_VALIDATE_URI;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.PROPERTY_URI;
+import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.PROPERTY_VALIDATE_URI;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.TEST_URI_FAIL;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.TEST_URI_HTTP;
 import static com.azure.spring.autoconfigure.cosmos.PropertySettingUtil.TEST_URI_HTTPS;
@@ -36,6 +40,8 @@ public class CosmosPropertiesTest {
 
     @Test
     public void uriPatternFail() {
+        Exception exception = null;
+
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         configureCosmosProperties(context);
         addInlinedPropertiesToEnvironment(
@@ -43,9 +49,31 @@ public class CosmosPropertiesTest {
             PROPERTY_URI + "=" + TEST_URI_FAIL
         );
         context.register(Config.class);
+
+        try {
+            context.refresh();
+        } catch (Exception e) {
+            exception = e;
+        }
+        Assert.assertNotNull(exception);
+        Assert.assertTrue(exception instanceof BeanCreationException);
+        Assert.assertNotNull(exception.getCause());
+        Assert.assertTrue(exception.getCause() instanceof IllegalArgumentException);
+    }
+
+    @Test
+    public void testValidateUri() {
+
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+
+        configureCosmosProperties(context);
+        addInlinedPropertiesToEnvironment(
+            context,
+            PROPERTY_URI + "=" + TEST_URI_FAIL,
+            PROPERTY_VALIDATE_URI+ "=" + NOT_VALIDATE_URI
+        );
+        context.register(Config.class);
         context.refresh();
-        final CosmosProperties properties = context.getBean(CosmosProperties.class);
-        assertThat(properties.getUri()).doesNotMatch(CosmosProperties.URI_REGEX);
     }
 
     @ParameterizedTest
@@ -90,9 +118,14 @@ public class CosmosPropertiesTest {
             PROPERTY_URI + "=" + arguments.getString(0)
         );
         context.register(Config.class);
-        context.refresh();
-        final CosmosProperties properties = context.getBean(CosmosProperties.class);
-        assertThat(properties.getUri()).doesNotMatch(CosmosProperties.LOCAL_URI_REGEX);
+        try {
+            context.refresh();
+        } catch (Exception e) {
+            exception = e;
+        }
+        Assert.assertNotNull(exception);
+        Assert.assertNotNull(exception.getCause());
+        Assert.assertTrue(exception.getCause() instanceof IllegalArgumentException);
     }
 
     static Stream<Arguments> localURIUnMatchedProvider() {
