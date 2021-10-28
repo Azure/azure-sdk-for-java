@@ -767,7 +767,11 @@ public class RntbdTransportClient extends TransportClient {
                     DEFAULT_OPTIONS.maxConcurrentRequestsPerEndpointOverride;
 
                 this.receiveHangDetectionTime = DEFAULT_OPTIONS.receiveHangDetectionTime;
-                this.requestTimeout = connectionPolicy.getRequestTimeout();
+                // TODO: [Annie] Currently requestTimeout is not public configurable, so it makes sense to get the value from DEFAULT_OPTIONS.
+                // This change will allow customer to override the request timeout by using system property.
+                // but it should be revisited if we allow configure requestTimeout in the future.
+                // https://github.com/Azure/azure-sdk-for-java/issues/25090
+                this.requestTimeout = DEFAULT_OPTIONS.requestTimeout;
                 this.requestTimerResolution = DEFAULT_OPTIONS.requestTimerResolution;
                 this.sendHangDetectionTime = DEFAULT_OPTIONS.sendHangDetectionTime;
                 this.shutdownTimeout = DEFAULT_OPTIONS.shutdownTimeout;

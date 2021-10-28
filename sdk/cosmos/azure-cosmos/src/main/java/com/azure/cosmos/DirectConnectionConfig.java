@@ -251,6 +251,8 @@ public final class DirectConnectionConfig {
      *
      * Default value is 5 seconds
      *
+     * ATTENTION! when this API become public, please revisit https://github.com/Azure/azure-sdk-for-java/issues/25090
+     *
      * @param requestTimeout the request timeout interval
      * @return the {@link DirectConnectionConfig}
      */
