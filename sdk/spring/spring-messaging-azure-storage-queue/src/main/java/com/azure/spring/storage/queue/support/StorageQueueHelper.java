@@ -21,5 +21,6 @@ public class StorageQueueHelper {
         map.put("dequeueCount", messageItem.getDequeueCount());
 
         return map.toString();
+        
     }
 }
