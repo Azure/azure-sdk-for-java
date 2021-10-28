@@ -25,7 +25,7 @@ final class ReverseProxyPolicy implements HttpPipelinePolicy {
      *
      * @param reverseProxyEndpoint The reverse proxy endpoint.
      */
-    public ReverseProxyPolicy(String reverseProxyEndpoint) {
+    ReverseProxyPolicy(String reverseProxyEndpoint) {
         this.reverseProxyEndpoint = reverseProxyEndpoint;
     }
 
