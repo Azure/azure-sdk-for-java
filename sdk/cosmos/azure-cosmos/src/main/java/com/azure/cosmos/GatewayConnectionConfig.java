@@ -44,7 +44,7 @@ public final class GatewayConnectionConfig {
      *
      * @return the network request timeout duration.
      */
-    public Duration getNetworkRequestTimeout() {
+    Duration getNetworkRequestTimeout() {
         return this.networkRequestTimeout;
     }
 
@@ -55,7 +55,7 @@ public final class GatewayConnectionConfig {
      * @param networkRequestTimeout the network request timeout duration.
      * @return the {@link GatewayConnectionConfig}.
      */
-    public GatewayConnectionConfig setNetworkRequestTimeout(Duration networkRequestTimeout) {
+    GatewayConnectionConfig setNetworkRequestTimeout(Duration networkRequestTimeout) {
         this.networkRequestTimeout = networkRequestTimeout;
         return this;
     }
