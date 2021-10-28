@@ -87,10 +87,10 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         // TODO (xiada): should we count this as authentication
         map.from(this.cosmosProperties.getResourceToken()).to(builder::resourceToken);
         map.from(this.cosmosProperties.getPermissions()).whenNot(List::isEmpty).to(builder::permissions);
-
-        builder.gatewayMode(this.cosmosProperties.getGatewayConnection());
         if (ConnectionMode.DIRECT.equals(this.cosmosProperties.getConnectionMode())) {
-            builder.directMode(this.cosmosProperties.getDirectConnection());
+            builder.directMode(this.cosmosProperties.getDirectConnection(), this.cosmosProperties.getGatewayConnection());
+        } else if (ConnectionMode.GATEWAY.equals(this.cosmosProperties.getConnectionMode())) {
+            builder.gatewayMode(this.cosmosProperties.getGatewayConnection());
         }
     }
 

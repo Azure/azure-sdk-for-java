@@ -72,13 +72,19 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     @Override
     protected void configureProxy(T builder) {
         final ProxyProperties proxyProperties = getAzureProperties().getProxy();
-        if (proxyProperties != null && proxyProperties instanceof HttpProxyProperties) {
+        if (proxyProperties == null) {
+            return;
+        }
+
+        if (proxyProperties instanceof HttpProxyProperties) {
             ProxyOptions proxyOptions = proxyOptionsConverter.convert((HttpProxyProperties) proxyProperties);
             if (proxyOptions != null) {
                 this.httpClientOptions.setProxyOptions(proxyOptions);
             } else {
                 LOGGER.debug("No HTTP proxy properties available.");
             }
+        } else {
+            LOGGER.warn("Non-http proxy configuration will not be applied.");
         }
     }
 

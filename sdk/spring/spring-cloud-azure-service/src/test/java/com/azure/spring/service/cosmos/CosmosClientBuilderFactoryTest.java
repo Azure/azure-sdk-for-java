@@ -21,7 +21,7 @@ public class CosmosClientBuilderFactoryTest extends AzureServiceClientBuilderFac
     private static final String ENDPOINT = "https://test.documents.azure.com:443/";
 
     @Test
-    void testGateConnectionModeConfigured() {
+    void testGatewayConnectionModeConfigured() {
         TestAzureCosmosProperties properties = createMinimalServiceProperties();
         properties.setConnectionMode(ConnectionMode.GATEWAY);
         final CosmosClientBuilderFactoryExt factoryExt = new CosmosClientBuilderFactoryExt(properties);
@@ -36,8 +36,8 @@ public class CosmosClientBuilderFactoryTest extends AzureServiceClientBuilderFac
         properties.setConnectionMode(ConnectionMode.DIRECT);
         final CosmosClientBuilderFactoryExt factoryExt = new CosmosClientBuilderFactoryExt(properties);
         final CosmosClientBuilder builder = factoryExt.build();
-        verify(builder, times(1)).gatewayMode(any(GatewayConnectionConfig.class));
-        verify(builder, times(1)).directMode(any(DirectConnectionConfig.class));
+        verify(builder, times(0)).gatewayMode(any(GatewayConnectionConfig.class));
+        verify(builder, times(1)).directMode(any(DirectConnectionConfig.class), any(GatewayConnectionConfig.class));
     }
 
     @Override
