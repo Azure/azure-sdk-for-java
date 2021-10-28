@@ -4,10 +4,6 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: textanalytics
-      Clouds: 'Public'
-      SupportedClouds: 'Public'
-      TimeoutInMinutes: 60
-      MaxParallel: 7
       Artifacts:
         - name: azure-ai-textanalytics
           groupId: com.azure
