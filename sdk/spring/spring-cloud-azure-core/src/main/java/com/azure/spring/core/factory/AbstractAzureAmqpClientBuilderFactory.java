@@ -12,6 +12,8 @@ import com.azure.spring.core.converter.AzureAmqpRetryOptionsConverter;
 import com.azure.spring.core.properties.client.AmqpClientProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.BiConsumer;
 
@@ -22,6 +24,7 @@ import java.util.function.BiConsumer;
  */
 public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractAzureServiceClientBuilderFactory<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureAmqpClientBuilderFactory.class);
     private ClientOptions clientOptions = new ClientOptions();
     private final AzureAmqpProxyOptionsConverter proxyOptionsConverter = new AzureAmqpProxyOptionsConverter();
     private final AzureAmqpRetryOptionsConverter retryOptionsConverter = new AzureAmqpRetryOptionsConverter();
@@ -78,8 +81,13 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         if (getAzureProperties().getProxy() == null) {
             return;
         }
+
         final ProxyOptions proxyOptions = proxyOptionsConverter.convert(getAzureProperties().getProxy());
-        consumeProxyOptions().accept(builder, proxyOptions);
+        if (proxyOptions != null) {
+            consumeProxyOptions().accept(builder, proxyOptions);
+        } else {
+            LOGGER.debug("No AMQP proxy properties available.");
+        }
     }
 
     protected ClientOptions getClientOptions() {

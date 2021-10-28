@@ -1,23 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.cosmos;
+package com.azure.spring.service.cosmos;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
-import com.azure.spring.service.cosmos.CosmosProperties;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import com.azure.spring.service.core.properties.TestAzureProperties;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +21,12 @@ import java.util.List;
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
-public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties implements CosmosProperties {
+public class TestAzureCosmosProperties extends TestAzureProperties implements CosmosProperties {
 
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 
-    @NestedConfigurationProperty
     private final HttpProxyProperties proxy = new HttpProxyProperties();
 
-    @NotEmpty
-    @Pattern(regexp = "http[s]{0,1}://.*.documents.azure.com.*")
     private String endpoint;
 
     private String key;
