@@ -5,15 +5,14 @@ package com.azure.resourcemanager.authorization;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.fluent.AuthorizationManagementClient;
-import com.azure.resourcemanager.authorization.fluent.MicrosoftGraphClient;
 import com.azure.resourcemanager.authorization.implementation.AuthorizationManagementClientBuilder;
+import com.azure.resourcemanager.authorization.fluent.GraphRbacManagementClient;
+import com.azure.resourcemanager.authorization.implementation.GraphRbacManagementClientBuilder;
 import com.azure.resourcemanager.authorization.implementation.ActiveDirectoryApplicationsImpl;
 import com.azure.resourcemanager.authorization.implementation.ActiveDirectoryGroupsImpl;
 import com.azure.resourcemanager.authorization.implementation.ActiveDirectoryUsersImpl;
-import com.azure.resourcemanager.authorization.implementation.MicrosoftGraphClientBuilder;
 import com.azure.resourcemanager.authorization.implementation.RoleAssignmentsImpl;
 import com.azure.resourcemanager.authorization.implementation.RoleDefinitionsImpl;
 import com.azure.resourcemanager.authorization.implementation.ServicePrincipalsImpl;
@@ -30,12 +29,11 @@ import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /** Entry point to Azure Authorization and Graph RBAC management. */
-public final class AuthorizationManager implements HasServiceClient<MicrosoftGraphClient> {
+public final class AuthorizationManager implements HasServiceClient<GraphRbacManagementClient> {
     private final String tenantId;
-    private final AzureEnvironment environment;
     private ResourceManagerUtils.InternalRuntimeContext internalContext;
     // The sdk clients
-    private final MicrosoftGraphClient microsoftGraphClient;
+    private final GraphRbacManagementClient graphRbacManagementClient;
     private final AuthorizationManagementClient authorizationManagementClient;
     // The collections
     private ActiveDirectoryUsers activeDirectoryUsers;
@@ -44,8 +42,6 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     private ActiveDirectoryApplications applications;
     private RoleAssignments roleAssignments;
     private RoleDefinitions roleDefinitions;
-
-    private static final String DEFAULT_GRAPH_ENDPOINT_SUFFIX = "v1.0";
 
     /**
      * Creates an instance of AuthorizationManager that exposes Authorization
@@ -81,8 +77,8 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     }
 
     @Override
-    public MicrosoftGraphClient serviceClient() {
-        return this.microsoftGraphClient;
+    public GraphRbacManagementClient serviceClient() {
+        return this.graphRbacManagementClient;
     }
 
     /** The interface allowing configurations to be set. */
@@ -107,15 +103,11 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     }
 
     private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        String graphEndpoint = profile.getEnvironment().getMicrosoftGraphEndpoint();
-        graphEndpoint = graphEndpoint.endsWith("/")
-            ? graphEndpoint + DEFAULT_GRAPH_ENDPOINT_SUFFIX
-            : graphEndpoint + "/" + DEFAULT_GRAPH_ENDPOINT_SUFFIX;
-
-        this.microsoftGraphClient =
-            new MicrosoftGraphClientBuilder()
+        this.graphRbacManagementClient =
+            new GraphRbacManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(graphEndpoint)
+                .endpoint(profile.getEnvironment().getGraphEndpoint())
+                .tenantId(profile.getTenantId())
                 .buildClient();
         this.authorizationManagementClient =
             new AuthorizationManagementClientBuilder()
@@ -124,7 +116,6 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
         this.tenantId = profile.getTenantId();
-        this.environment = profile.getEnvironment();
     }
 
     /**
@@ -138,11 +129,6 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     /** @return the tenant ID the graph client is associated with */
     public String tenantId() {
         return tenantId;
-    }
-
-    /** @return the environment the graph client is associated with */
-    public AzureEnvironment environment() {
-        return environment;
     }
 
     /** @return the {@link ResourceManagerUtils.InternalRuntimeContext} associated with this manager */
@@ -172,7 +158,7 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     /** @return the service principal management API entry point */
     public ServicePrincipals servicePrincipals() {
         if (servicePrincipals == null) {
-            servicePrincipals = new ServicePrincipalsImpl(this);
+            servicePrincipals = new ServicePrincipalsImpl(graphRbacManagementClient.getServicePrincipals(), this);
         }
         return servicePrincipals;
     }
@@ -180,7 +166,7 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     /** @return the application management API entry point */
     public ActiveDirectoryApplications applications() {
         if (applications == null) {
-            applications = new ActiveDirectoryApplicationsImpl(this);
+            applications = new ActiveDirectoryApplicationsImpl(graphRbacManagementClient.getApplications(), this);
         }
         return applications;
     }

@@ -127,7 +127,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition The values for the role definition.
+     * @param roleDefinition Role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -142,7 +142,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition The values for the role definition.
+     * @param roleDefinition Role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -157,7 +157,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition The values for the role definition.
+     * @param roleDefinition Role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -171,7 +171,7 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition The values for the role definition.
+     * @param roleDefinition Role definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -212,18 +212,6 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      * Get all role definitions that are applicable at scope and above.
      *
      * @param scope The scope of the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RoleDefinitionInner> list(String scope);
-
-    /**
-     * Get all role definitions that are applicable at scope and above.
-     *
-     * @param scope The scope of the role definition.
      * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
      *     well.
      * @param context The context to associate with this operation.
@@ -234,6 +222,18 @@ public interface RoleDefinitionsClient extends InnerSupportsDelete<RoleDefinitio
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleDefinitionInner> list(String scope, String filter, Context context);
+
+    /**
+     * Get all role definitions that are applicable at scope and above.
+     *
+     * @param scope The scope of the role definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<RoleDefinitionInner> list(String scope);
 
     /**
      * Gets a role definition by ID.

@@ -3,14 +3,14 @@
 
 package com.azure.resourcemanager.authorization;
 
+import java.time.Duration;
+
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.time.Duration;
 
 public class ApplicationsTests extends GraphRbacManagementTest {
     @Test
@@ -25,6 +25,7 @@ public class ApplicationsTests extends GraphRbacManagementTest {
                     .define(name)
                     .withSignOnUrl("http://easycreate.azure.com/" + name)
                     .definePasswordCredential("passwd")
+                    .withPasswordValue("P@ssw0rd")
                     .withDuration(Duration.ofDays(700))
                     .attach()
                     .defineCertificateCredential("cert")
@@ -39,14 +40,13 @@ public class ApplicationsTests extends GraphRbacManagementTest {
             Assertions.assertEquals(name, application.name());
             Assertions.assertEquals(1, application.certificateCredentials().size());
             Assertions.assertEquals(1, application.passwordCredentials().size());
-            Assertions.assertEquals(0, application.replyUrls().size());
-            Assertions.assertEquals(0, application.identifierUris().size());
+            Assertions.assertEquals(1, application.replyUrls().size());
+            Assertions.assertEquals(1, application.identifierUris().size());
             Assertions.assertEquals("http://easycreate.azure.com/" + name, application.signOnUrl().toString());
 
-            application.update().withoutCredential("passwd").withoutCredential("cert").apply();
+            application.update().withoutCredential("passwd").apply();
             System.out.println(application.id() + " - " + application.applicationId());
             Assertions.assertEquals(0, application.passwordCredentials().size());
-            Assertions.assertEquals(0, application.certificateCredentials().size());
         } finally {
             if (application != null) {
                 authorizationManager.applications().deleteById(application.id());
