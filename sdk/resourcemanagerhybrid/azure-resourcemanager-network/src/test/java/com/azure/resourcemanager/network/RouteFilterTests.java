@@ -21,7 +21,7 @@ public class RouteFilterTests extends NetworkManagementTest {
             networkManager
                 .routeFilters()
                 .define(rfName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withTag("tag1", "value1")
                 .create();
@@ -46,7 +46,7 @@ public class RouteFilterTests extends NetworkManagementTest {
             networkManager
                 .routeFilters()
                 .define(rfName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .create();
 

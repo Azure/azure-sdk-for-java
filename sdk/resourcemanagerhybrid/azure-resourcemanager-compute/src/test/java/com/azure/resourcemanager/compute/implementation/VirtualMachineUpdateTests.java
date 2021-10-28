@@ -47,7 +47,7 @@ public class VirtualMachineUpdateTests extends ComputeManagementTest {
 
         VirtualMachine vm = computeManager.virtualMachines()
             .define(vmname)
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withNewResourceGroup(rgName)
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()

@@ -36,7 +36,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
         String lbName = generateRandomResourceName("lb", 8);
 
         ResourceGroup resourceGroup =
-            resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+            resourceManager.resourceGroups().define(rgName).withRegion(locationOrDefault(Region.US_EAST)).create();
 
         Network network =
             networkManager
@@ -116,7 +116,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
         String outboundRuleName = lbName + "-OutboundRule1";
 
         ResourceGroup resourceGroup =
-            resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+            resourceManager.resourceGroups().define(rgName).withRegion(locationOrDefault(Region.US_EAST)).create();
 
         LoadBalancer loadBalancer = createLoadBalancerWithPublicFrontendAndOutboundRule(networkManager, resourceGroup, lbName, frontendName1, frontendName2, backendPoolName, publicIpName1, publicIpName2, outboundRuleName);
 
@@ -179,7 +179,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
         String outboundRuleName2 = lbName + "-OutboundRule2";
 
         ResourceGroup resourceGroup =
-            resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+            resourceManager.resourceGroups().define(rgName).withRegion(locationOrDefault(Region.US_EAST)).create();
 
 
 
@@ -322,7 +322,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
             networkManager
                 .publicIpAddresses()
                 .define(publicIpName1)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(PublicIPSkuType.STANDARD)
                 .withStaticIP()
@@ -332,7 +332,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
             networkManager
                 .publicIpAddresses()
                 .define(publicIpName2)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(PublicIPSkuType.STANDARD)
                 .withStaticIP()

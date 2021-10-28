@@ -69,7 +69,7 @@ import java.util.stream.Collectors;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_EAST2;
+    private final Region region = locationOrDefault(Region.US_EAST2);
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -695,7 +695,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // ZoneResilientLoadBalancer -> STANDARD LB -> [Since service deploy them to all zones, user don't have to set
         // zone explicitly, even if he does its a constrain as user can set only one zone at this time]
 
-        Region region2 = Region.US_EAST2;
+        Region region2 = locationOrDefault(Region.US_EAST2);
 
         ResourceGroup resourceGroup =
             this.resourceManager.resourceGroups().define(rgName).withRegion(region2).create();
@@ -807,7 +807,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Zone redundant VMSS is the one with multiple zones
         //
 
-        Region region2 = Region.US_EAST2;
+        Region region2 = locationOrDefault(Region.US_EAST2);
 
         ResourceGroup resourceGroup =
             this.resourceManager.resourceGroups().define(rgName).withRegion(region2).create();
@@ -1349,7 +1349,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
     @Test
     public void canDeleteVMSSInstance() throws Exception {
-        String region = "westus";
+        String region = locationOrDefault("westus");
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
             .withRegion(region)

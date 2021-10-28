@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 
 public class SharedGalleryImageTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_WEST_CENTRAL;
+    private final Region region = locationOrDefault(Region.US_WEST_CENTRAL);
     private final String vmName = "javavm";
 
     @Override
@@ -92,7 +92,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
@@ -198,7 +198,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
@@ -238,7 +238,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withLocation(region.toString())
                 .withSourceCustomImage(customImage)
                 // Options - Start
-                .withRegionAvailability(Region.US_WEST2, 1)
+                .withRegionAvailability(locationOrDefault(Region.US_WEST2), 1)
                 // Options - End
                 .create();
 
@@ -260,7 +260,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         //
         // Update image version
         //
-        imageVersion.update().withoutRegionAvailability(Region.US_WEST2).apply();
+        imageVersion.update().withoutRegionAvailability(locationOrDefault(Region.US_WEST2)).apply();
 
         Assertions.assertNotNull(imageVersion.availableRegions());
         Assertions.assertEquals(1, imageVersion.availableRegions().size());

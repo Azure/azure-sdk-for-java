@@ -29,7 +29,7 @@ public class SourceControlTests extends AppServiceTest {
             appServiceManager
                 .webApps()
                 .define(webappName)
-                .withRegion(Region.US_WEST)
+                .withRegion(locationOrDefault(Region.US_WEST))
                 .withNewResourceGroup(rgName)
                 .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .defineSourceControl()

@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineManagedServiceIdentityOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_EAST;
+    private final Region region = locationOrDefault(Region.US_EAST);
     private final String vmName = "javavm";
 
     @Override
@@ -170,7 +170,7 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
             storageManager
                 .storageAccounts()
                 .define(storageAccountName)
-                .withRegion(Region.US_EAST2)
+                .withRegion(locationOrDefault(Region.US_EAST2))
                 .withNewResourceGroup(rgName)
                 .create();
 

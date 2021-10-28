@@ -49,7 +49,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             resourceManager
                 .resourceGroups()
                 .define(rgName)
-                .withRegion(Region.US_EAST2)
+                .withRegion(locationOrDefault(Region.US_EAST2))
                 .withTag("type", "autoscale")
                 .withTag("tagname", "tagvalue")
                 .create();
@@ -58,7 +58,7 @@ public class AutoscaleTests extends MonitorManagementTest {
                 appServiceManager
                     .appServicePlans()
                     .define("HighlyAvailableWebApps")
-                    .withRegion(Region.US_EAST2)
+                    .withRegion(locationOrDefault(Region.US_EAST2))
                     .withExistingResourceGroup(rgName)
                     .withPricingTier(PricingTier.PREMIUM_P1)
                     .withOperatingSystem(OperatingSystem.WINDOWS)
@@ -68,7 +68,7 @@ public class AutoscaleTests extends MonitorManagementTest {
                 monitorManager
                     .autoscaleSettings()
                     .define("somesettingZ")
-                    .withRegion(Region.US_EAST2)
+                    .withRegion(locationOrDefault(Region.US_EAST2))
                     .withExistingResourceGroup(rgName)
                     .withTargetResource(servicePlan.id())
                     .defineAutoscaleProfile("Default")

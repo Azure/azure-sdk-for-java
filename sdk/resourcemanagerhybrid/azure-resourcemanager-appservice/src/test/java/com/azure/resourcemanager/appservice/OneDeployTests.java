@@ -32,7 +32,7 @@ public class OneDeployTests extends AppServiceTest {
             appServiceManager
                 .webApps()
                 .define(webAppName1)
-                .withRegion(Region.US_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .withJavaVersion(JavaVersion.JAVA_8_NEWEST)

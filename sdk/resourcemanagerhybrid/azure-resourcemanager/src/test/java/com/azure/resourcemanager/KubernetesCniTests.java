@@ -34,7 +34,7 @@ public class KubernetesCniTests extends ResourceManagerTestBase {
     private AzureResourceManager azureResourceManager;
     private String rgName;
 
-    private final Region region = Region.US_EAST;
+    private final Region region = locationOrDefault(Region.US_EAST);
 
     @Override
     protected HttpPipeline buildHttpPipeline(

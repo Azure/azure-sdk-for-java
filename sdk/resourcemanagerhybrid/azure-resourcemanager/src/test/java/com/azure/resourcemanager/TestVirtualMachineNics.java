@@ -31,7 +31,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         final String rgName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
         Creatable<ResourceGroup> resourceGroupCreatable =
-            virtualMachines.manager().resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST);
+            virtualMachines.manager().resourceManager().resourceGroups().define(rgName).withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST));
 
         // Prepare the virtual network definition [shared by primary and secondary network interfaces]
         final String vnetName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vnet", 10);
@@ -41,7 +41,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .networkManager
                 .networks()
                 .define(vnetName)
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withAddressSpace("10.0.0.0/28");
 
@@ -53,7 +53,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .networkManager
                 .networkInterfaces()
                 .define(secondaryNicName)
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIPAddressStatic("10.0.0.5");
@@ -68,7 +68,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .networkManager
                 .networkInterfaces()
                 .define(secondaryNicName2)
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIPAddressStatic("10.0.0.6");
@@ -80,7 +80,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         VirtualMachine virtualMachine =
             virtualMachines
                 .define(vmName)
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIPAddressStatic("10.0.0.4")

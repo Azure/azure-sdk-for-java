@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class ComputeUsageOperationsTests extends ComputeManagementTest {
     @Test
     public void canListComputeUsages() throws Exception {
-        PagedIterable<ComputeUsage> usages = computeManager.usages().listByRegion(Region.US_EAST);
+        PagedIterable<ComputeUsage> usages = computeManager.usages().listByRegion(locationOrDefault(Region.US_EAST));
         Assertions.assertTrue(TestUtilities.getSize(usages) > 0);
     }
 }

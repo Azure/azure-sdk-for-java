@@ -13,6 +13,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -34,19 +35,19 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
                 .resourceManager()
                 .resourceGroups()
                 .define(virtualMachines.manager().resourceManager().internalContext().randomResourceName("rg" + vmName, 20))
-                .withRegion(Region.US_EAST);
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST));
 
         Creatable<StorageAccount> storageCreatable =
             this
                 .storageAccounts
                 .define(virtualMachines.manager().resourceManager().internalContext().randomResourceName("stg", 20))
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgCreatable);
 
         VirtualMachine virtualMachine =
             virtualMachines
                 .define(vmName)
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgCreatable)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()

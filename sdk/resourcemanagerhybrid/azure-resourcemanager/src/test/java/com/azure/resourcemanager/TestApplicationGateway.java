@@ -27,6 +27,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.File;
@@ -39,7 +40,7 @@ import java.util.Map;
 /** Test of application gateway management. */
 public class TestApplicationGateway {
     String testId = "";
-    static final Region REGION = Region.US_WEST;
+    static final Region REGION = ResourceManagerTestBase.locationOrDefault(Region.US_WEST);
     String groupName = "";
     String appGatewayName = "";
     String[] pipNames = null;

@@ -10,6 +10,7 @@ import com.azure.resourcemanager.network.models.NetworkSecurityRule;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
@@ -24,7 +25,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         final String resourceGroupName = "rg" + postFix;
         final String nicName = "nic" + postFix;
         final String asgName = nsgs.manager().resourceManager().internalContext().randomResourceName("asg", 8);
-        final Region region = Region.US_WEST;
+        final Region region = ResourceManagerTestBase.locationOrDefault(Region.US_WEST);
 
         ApplicationSecurityGroup asg =
             nsgs

@@ -18,7 +18,7 @@ public class NetworkWatcherTests extends NetworkManagementTest {
     @Disabled("https://github.com/Azure/azure-rest-api-specs/issues/7579")
     public void canListProvidersAndGetReachabilityReport() throws Exception {
         String nwName = generateRandomResourceName("nw", 8);
-        Region region = Region.US_WEST;
+        Region region = locationOrDefault(Region.US_WEST);
         // make sure Network Watcher is disabled in current subscription and region as only one can exist
         PagedIterable<NetworkWatcher> nwList = networkManager.networkWatchers().list();
         for (NetworkWatcher nw : nwList) {
@@ -36,7 +36,7 @@ public class NetworkWatcherTests extends NetworkManagementTest {
         providers =
             nw
                 .availableProviders()
-                .withAzureLocation("West US")
+                .withAzureLocation(locationOrDefault("West US"))
                 .withCountry("United States")
                 .withState("washington")
                 .execute();
@@ -55,7 +55,7 @@ public class NetworkWatcherTests extends NetworkManagementTest {
                 .withStartTime(OffsetDateTime.parse("2018-04-10"))
                 .withEndTime(OffsetDateTime.parse("2018-04-12"))
                 .withProviders(localProvider)
-                .withAzureLocations("West US")
+                .withAzureLocations(locationOrDefault("West US"))
                 .execute();
         Assertions.assertEquals("State", report.aggregationLevel());
         Assertions.assertTrue(report.reachabilityReport().size() > 0);

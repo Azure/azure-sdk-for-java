@@ -15,14 +15,14 @@ public class NetworkProfileTests extends NetworkManagementTest {
     @Test
     public void canCRUDNetworkProfile() {
         Network network = networkManager.networks().define("vnet1")
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withNewResourceGroup(rgName)
             .withAddressSpace("10.0.0.0/24")
             .withSubnet("default", "10.0.0.0/24")
             .create();
 
         NetworkProfile networkProfile = networkManager.networkProfiles().define("profile1")
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withExistingResourceGroup(rgName)
             .withContainerNetworkInterfaceConfiguration("eth1", "ipconfig1", network.id(), "default")
             .withTag("tag.1", "value.1")

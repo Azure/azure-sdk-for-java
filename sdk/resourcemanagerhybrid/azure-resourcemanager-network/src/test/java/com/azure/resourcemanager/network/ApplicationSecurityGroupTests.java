@@ -20,7 +20,7 @@ public class ApplicationSecurityGroupTests extends NetworkManagementTest {
             networkManager
                 .applicationSecurityGroups()
                 .define(asgName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withTag("tag1", "value1")
                 .create();

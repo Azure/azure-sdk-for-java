@@ -45,7 +45,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -58,7 +58,7 @@ public class RegistryTaskTests extends RegistryTest {
                 .containerRegistryTasks()
                 .define(taskName)
                 .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
+                .withLocation(locationOrDefault(Region.US_WEST_CENTRAL).name())
                 .withLinux(Architecture.AMD64)
                 .defineFileTaskStep()
                 .withTaskPath(taskFilePath)
@@ -84,7 +84,7 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertEquals(rgName, registryTask.resourceGroupName());
 
         // Assert location is correct
-        Assertions.assertEquals(Region.US_WEST_CENTRAL.name(), registryTask.regionName());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST_CENTRAL).name(), registryTask.regionName());
 
         // Assert OS is correct
         Assertions.assertEquals(OS.LINUX, registryTask.platform().os());
@@ -123,7 +123,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -136,7 +136,7 @@ public class RegistryTaskTests extends RegistryTest {
                 .containerRegistryTasks()
                 .define(taskName)
                 .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
+                .withLocation(locationOrDefault(Region.US_WEST_CENTRAL).name())
                 .withLinux(Architecture.AMD64)
                 .defineFileTaskStep()
                 .withTaskPath(taskFilePath)
@@ -164,7 +164,7 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertEquals(rgName, registryTask.resourceGroupName());
 
         // Assert location is correct
-        Assertions.assertEquals(Region.US_WEST_CENTRAL.name(), registryTask.regionName());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST_CENTRAL).name(), registryTask.regionName());
 
         // Assert OS is correct
         Assertions.assertEquals(OS.LINUX, registryTask.platform().os());
@@ -212,7 +212,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -226,7 +226,7 @@ public class RegistryTaskTests extends RegistryTest {
                 .containerRegistryTasks()
                 .define(taskName)
                 .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
+                .withLocation(locationOrDefault(Region.US_WEST_CENTRAL).name())
                 .withLinux(Architecture.AMD64)
                 .defineEncodedTaskStep()
                 .withBase64EncodedTaskContent(encodedTaskContent)
@@ -252,7 +252,7 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertEquals(rgName, registryTask.resourceGroupName());
 
         // Assert location is correct
-        Assertions.assertEquals(Region.US_WEST_CENTRAL.name(), registryTask.regionName());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST_CENTRAL).name(), registryTask.regionName());
 
         // Assert OS is correct
         Assertions.assertEquals(OS.LINUX, registryTask.platform().os());
@@ -291,7 +291,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -305,7 +305,7 @@ public class RegistryTaskTests extends RegistryTest {
                 .containerRegistryTasks()
                 .define(taskName)
                 .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
+                .withLocation(locationOrDefault(Region.US_WEST_CENTRAL).name())
                 .withLinux(Architecture.AMD64)
                 .defineEncodedTaskStep()
                 .withBase64EncodedTaskContent(encodedTaskContent)
@@ -338,7 +338,7 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertEquals(rgName, registryTask.resourceGroupName());
 
         // Assert location is correct
-        Assertions.assertEquals(Region.US_WEST_CENTRAL.name(), registryTask.regionName());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST_CENTRAL).name(), registryTask.regionName());
 
         // Assert OS is correct
         Assertions.assertEquals(OS.LINUX, registryTask.platform().os());
@@ -387,7 +387,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -400,7 +400,7 @@ public class RegistryTaskTests extends RegistryTest {
                 .containerRegistryTasks()
                 .define(taskName)
                 .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
+                .withLocation(locationOrDefault(Region.US_WEST_CENTRAL).name())
                 .withLinux(Architecture.AMD64)
                 .defineDockerTaskStep()
                 .withDockerFilePath(dockerFilePath)
@@ -429,7 +429,7 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertEquals(rgName, registryTask.resourceGroupName());
 
         // Assert location is correct
-        Assertions.assertEquals(Region.US_WEST_CENTRAL.name(), registryTask.regionName());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST_CENTRAL).name(), registryTask.regionName());
 
         // Assert OS is correct
         Assertions.assertEquals(OS.LINUX, registryTask.platform().os());
@@ -480,7 +480,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -493,7 +493,7 @@ public class RegistryTaskTests extends RegistryTest {
                 .containerRegistryTasks()
                 .define(taskName)
                 .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
+                .withLocation(locationOrDefault(Region.US_WEST_CENTRAL).name())
                 .withLinux(Architecture.AMD64)
                 .defineDockerTaskStep()
                 .withDockerFilePath(dockerFilePath)
@@ -531,7 +531,7 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertEquals(rgName, registryTask.resourceGroupName());
 
         // Assert location is correct
-        Assertions.assertEquals(Region.US_WEST_CENTRAL.name(), registryTask.regionName());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST_CENTRAL).name(), registryTask.regionName());
 
         // Assert OS is correct
         Assertions.assertEquals(OS.LINUX, registryTask.platform().os());
@@ -581,7 +581,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -626,7 +626,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -673,7 +673,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -719,7 +719,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -768,7 +768,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -817,7 +817,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -874,7 +874,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -886,7 +886,7 @@ public class RegistryTaskTests extends RegistryTest {
                 .containerRegistryTasks()
                 .define(taskName)
                 .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
+                .withLocation(locationOrDefault(Region.US_WEST_CENTRAL).name())
                 .withLinux(Architecture.AMD64)
                 .defineDockerTaskStep()
                 .withDockerFilePath(dockerFilePath)
@@ -957,7 +957,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -969,7 +969,7 @@ public class RegistryTaskTests extends RegistryTest {
                 .containerRegistryTasks()
                 .define(taskName)
                 .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
+                .withLocation(locationOrDefault(Region.US_WEST_CENTRAL).name())
                 .withLinux(Architecture.AMD64)
                 .defineDockerTaskStep()
                 .withDockerFilePath(dockerFilePath)
@@ -1037,7 +1037,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -1072,7 +1072,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -1084,7 +1084,7 @@ public class RegistryTaskTests extends RegistryTest {
                 .containerRegistryTasks()
                 .define(taskName)
                 .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
+                .withLocation(locationOrDefault(Region.US_WEST_CENTRAL).name())
                 .withLinux(Architecture.AMD64)
                 .defineDockerTaskStep()
                 .withDockerFilePath(dockerFilePath)
@@ -1172,7 +1172,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -1217,7 +1217,7 @@ public class RegistryTaskTests extends RegistryTest {
             registryManager
                 .containerRegistries()
                 .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withPremiumSku()
                 .withRegistryNameAsAdminUser()
@@ -1230,7 +1230,7 @@ public class RegistryTaskTests extends RegistryTest {
                 .containerRegistryTasks()
                 .define(taskName)
                 .withExistingRegistry(rgName, acrName)
-                .withLocation(Region.US_WEST_CENTRAL.name())
+                .withLocation(locationOrDefault(Region.US_WEST_CENTRAL).name())
                 .withLinux(Architecture.AMD64)
                 .defineFileTaskStep()
                 .withTaskPath(taskFilePath)

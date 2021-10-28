@@ -46,10 +46,10 @@ public class GenericResourcesTests extends ResourceManagementTest {
         resourceGroups = resourceClient.resourceGroups();
         genericResources = resourceClient.genericResources();
         resourceGroups.define(rgName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .create();
         resourceGroups.define(newRgName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .create();
     }
 
@@ -64,7 +64,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
         final String resourceName = "rs" + testId;
         // Create
         GenericResource resource = genericResources.define(resourceName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .withExistingResourceGroup(rgName)
                 .withResourceType("sites")
                 .withProviderNamespace("Microsoft.Web")
@@ -107,7 +107,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
         final String resourceName = "rs" + testId;
         // Create
         Accepted<GenericResource> acceptedResource = genericResources.define(resourceName)
-            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
             .withExistingResourceGroup(rgName)
             .withResourceType("sites")
             .withProviderNamespace("Microsoft.Web")
@@ -155,7 +155,7 @@ public class GenericResourcesTests extends ResourceManagementTest {
         final String apiVersion = "2021-01-01";
 
         GenericResource storageResource = resourceClient.genericResources().define(resourceName)
-            .withRegion(Region.US_WEST)
+            .withRegion(locationOrDefault(Region.US_WEST))
             .withExistingResourceGroup(rgName)
             .withResourceType("storageAccounts")
             .withProviderNamespace("Microsoft.Storage")

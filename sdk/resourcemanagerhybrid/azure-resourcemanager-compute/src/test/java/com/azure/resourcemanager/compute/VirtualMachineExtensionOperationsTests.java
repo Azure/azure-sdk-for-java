@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineExtensionOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_EAST;
+    private Region region = locationOrDefault(Region.US_EAST);
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {

@@ -50,7 +50,7 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
         KubernetesCluster resource =
             kubernetesClusters
                 .define(newName)
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup()
                 .withDefaultVersion()
                 .withRootUsername("aksadmin")
@@ -66,7 +66,7 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
                 .withTag("tag1", "value1")
                 .create();
         Assertions.assertNotNull(resource.id(), "Container service not found.");
-        Assertions.assertEquals(Region.US_EAST, resource.region());
+        Assertions.assertEquals(ResourceManagerTestBase.locationOrDefault(Region.US_EAST), resource.region());
         Assertions.assertEquals("aksadmin", resource.linuxRootUsername());
         Assertions.assertEquals(1, resource.agentPools().size());
         Assertions.assertNotNull(resource.agentPools().get(agentPoolName));

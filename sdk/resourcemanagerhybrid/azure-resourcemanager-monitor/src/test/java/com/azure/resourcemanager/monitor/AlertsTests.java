@@ -54,7 +54,7 @@ public class AlertsTests extends MonitorManagementTest {
                 storageManager
                     .storageAccounts()
                     .define(saName)
-                    .withRegion(Region.US_EAST2)
+                    .withRegion(locationOrDefault(Region.US_EAST2))
                     .withNewResourceGroup(rgName)
                     .withOnlyHttpsTraffic()
                     .create();
@@ -343,7 +343,7 @@ public class AlertsTests extends MonitorManagementTest {
                 computeManager
                     .virtualMachines()
                     .define(vmName1)
-                    .withRegion(Region.US_EAST2)
+                    .withRegion(locationOrDefault(Region.US_EAST2))
                     .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
@@ -357,7 +357,7 @@ public class AlertsTests extends MonitorManagementTest {
                 computeManager
                     .virtualMachines()
                     .define(vmName2)
-                    .withRegion(Region.US_EAST2)
+                    .withRegion(locationOrDefault(Region.US_EAST2))
                     .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
@@ -442,7 +442,7 @@ public class AlertsTests extends MonitorManagementTest {
                 monitorManager
                     .actionGroups()
                     .define("simpleActionGroup")
-                    .withNewResourceGroup(rgName, Region.US_EAST2)
+                    .withNewResourceGroup(rgName, locationOrDefault(Region.US_EAST2))
                     .defineReceiver("first")
                     .withPushNotification("azurepush@outlook.com")
                     .withEmail("justemail@outlook.com")

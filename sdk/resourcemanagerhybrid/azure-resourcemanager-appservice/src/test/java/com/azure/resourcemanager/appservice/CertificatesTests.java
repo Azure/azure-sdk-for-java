@@ -28,7 +28,7 @@ public class CertificatesTests extends AppServiceTest {
             appServiceManager
                 .certificates()
                 .define("bananacert")
-                .withRegion(Region.US_WEST)
+                .withRegion(locationOrDefault(Region.US_WEST))
                 .withExistingResourceGroup(rgName)
                 .withExistingCertificateOrder(
                     appServiceManager.certificateOrders().getByResourceGroup(rgName, "graphwebapp319"))
@@ -40,7 +40,7 @@ public class CertificatesTests extends AppServiceTest {
             appServiceManager
                 .certificates()
                 .define(certificateName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(rgName)
                 .withPfxFile(new File("/Users/jianghlu/Documents/code/certs/myserver.pfx"))
                 .withPfxPassword("StrongPass!123")

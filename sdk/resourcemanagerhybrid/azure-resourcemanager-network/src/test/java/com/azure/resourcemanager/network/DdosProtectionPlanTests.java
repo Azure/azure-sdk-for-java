@@ -19,7 +19,7 @@ public class DdosProtectionPlanTests extends NetworkManagementTest {
             networkManager
                 .ddosProtectionPlans()
                 .define(ppName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withTag("tag1", "value1")
                 .create();

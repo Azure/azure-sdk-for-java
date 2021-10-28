@@ -97,9 +97,9 @@ public class ComputeSkuTests extends ComputeManagementTest {
 
     @Test
     public void canListSkusByRegion() throws Exception {
-        PagedIterable<ComputeSku> skus = this.computeManager.computeSkus().listByRegion(Region.US_EAST2);
+        PagedIterable<ComputeSku> skus = this.computeManager.computeSkus().listByRegion(locationOrDefault(Region.US_EAST2));
         for (ComputeSku sku : skus) {
-            Assertions.assertTrue(sku.regions().contains(Region.US_EAST2));
+            Assertions.assertTrue(sku.regions().contains(locationOrDefault(Region.US_EAST2)));
         }
 
         skus = this.computeManager.computeSkus().listByRegion(Region.fromName("Unknown"));
@@ -124,17 +124,17 @@ public class ComputeSkuTests extends ComputeManagementTest {
             this
                 .computeManager
                 .computeSkus()
-                .listByRegionAndResourceType(Region.US_EAST2, ComputeResourceType.VIRTUALMACHINES);
+                .listByRegionAndResourceType(locationOrDefault(Region.US_EAST2), ComputeResourceType.VIRTUALMACHINES);
         for (ComputeSku sku : skus) {
             Assertions.assertTrue(sku.resourceType().equals(ComputeResourceType.VIRTUALMACHINES));
-            Assertions.assertTrue(sku.regions().contains(Region.US_EAST2));
+            Assertions.assertTrue(sku.regions().contains(locationOrDefault(Region.US_EAST2)));
         }
 
         skus =
             this
                 .computeManager
                 .computeSkus()
-                .listByRegionAndResourceType(Region.US_EAST2, ComputeResourceType.fromString("Unknown"));
+                .listByRegionAndResourceType(locationOrDefault(Region.US_EAST2), ComputeResourceType.fromString("Unknown"));
         Assertions.assertNotNull(skus);
         Assertions.assertEquals(0, TestUtilities.getSize(skus));
     }

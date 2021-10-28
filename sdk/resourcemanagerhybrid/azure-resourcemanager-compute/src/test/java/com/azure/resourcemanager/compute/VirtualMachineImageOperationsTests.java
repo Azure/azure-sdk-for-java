@@ -17,12 +17,12 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
     @Test
     public void canListVirtualMachineImages() throws Exception {
         /*
-        PagedIterable<VirtualMachineImage> images = computeManager.virtualMachineImages().listByRegion(Region.US_EAST);
+        PagedIterable<VirtualMachineImage> images = computeManager.virtualMachineImages().listByRegion(locationOrDefault(Region.US_EAST));
         Assertions.assertTrue(TestUtilities.getSize(images) > 0);
          */
 
         PagedIterable<VirtualMachinePublisher> publishers =
-            computeManager.virtualMachineImages().publishers().listByRegion(Region.US_EAST);
+            computeManager.virtualMachineImages().publishers().listByRegion(locationOrDefault(Region.US_EAST));
 
         VirtualMachinePublisher canonicalPublisher = null;
         for (VirtualMachinePublisher publisher : publishers) {
@@ -59,7 +59,7 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
             computeManager
                 .virtualMachineImages()
                 .getImage(
-                    Region.US_EAST,
+                    locationOrDefault(Region.US_EAST),
                     firstVMImage.publisherName(),
                     firstVMImage.offer(),
                     firstVMImage.sku(),
@@ -70,7 +70,7 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
             computeManager
                 .virtualMachineImages()
                 .getImage(
-                    "eastus",
+                    locationOrDefault("eastus"),
                     firstVMImage.publisherName(),
                     firstVMImage.offer(),
                     firstVMImage.sku(),
@@ -80,7 +80,7 @@ public class VirtualMachineImageOperationsTests extends ComputeManagementTest {
         vmImage =
             computeManager
                 .virtualMachineImages()
-                .getImage("eastus", firstVMImage.publisherName(), firstVMImage.offer(), firstVMImage.sku(), "latest");
+                .getImage(locationOrDefault("eastus"), firstVMImage.publisherName(), firstVMImage.offer(), firstVMImage.sku(), "latest");
         Assertions.assertNotNull(vmImage);
     }
 }

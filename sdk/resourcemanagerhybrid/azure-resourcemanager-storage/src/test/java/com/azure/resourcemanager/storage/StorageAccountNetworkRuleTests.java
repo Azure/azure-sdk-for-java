@@ -38,7 +38,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName1)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .create();
 
@@ -62,7 +62,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName2)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(resourceGroup)
                 .withAccessFromIpAddress("23.20.0.0")
                 .create();
@@ -89,7 +89,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName3)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .withAccessFromAllNetworks()
                 .withAccessFromIpAddress("23.20.0.0")
@@ -117,7 +117,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName4)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(resourceGroup)
                 .withReadAccessToLogEntriesFromAnyNetwork()
                 .withReadAccessToMetricsFromAnyNetwork()
@@ -150,7 +150,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName1)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .create();
 

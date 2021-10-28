@@ -45,7 +45,7 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
         final String diskName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("disk", 10);
         final String ipName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("ip", 10);
         final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
-        final Region region = Region.US_EAST;
+        final Region region = ResourceManagerTestBase.locationOrDefault(Region.US_EAST);
 
         // network
         Network network =

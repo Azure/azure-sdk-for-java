@@ -24,7 +24,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
         Mono<VirtualMachine> resourceStream =
             virtualMachines
                 .define(vmName)
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()

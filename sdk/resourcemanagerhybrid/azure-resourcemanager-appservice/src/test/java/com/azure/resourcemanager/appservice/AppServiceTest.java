@@ -144,7 +144,7 @@ public class AppServiceTest extends ResourceManagerTestBase {
                 .withHostName("*." + domain.name())
                 .withWildcardSku()
                 .withDomainVerification(domain)
-                .withNewKeyVault("graphvault", Region.US_WEST)
+                .withNewKeyVault("graphvault", locationOrDefault(Region.US_WEST))
                 .withValidYears(1)
                 .create();
     }

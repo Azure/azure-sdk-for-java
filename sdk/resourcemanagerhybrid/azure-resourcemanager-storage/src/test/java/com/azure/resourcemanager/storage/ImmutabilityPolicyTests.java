@@ -34,7 +34,7 @@ public class ImmutabilityPolicyTests extends StorageManagementTest {
         String saName = generateRandomResourceName("javacsmsa", 15);
 
         StorageAccount storageAccount = storageManager.storageAccounts().define(saName)
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withNewResourceGroup(rgName)
             .create();
 

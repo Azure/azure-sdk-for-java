@@ -21,6 +21,7 @@ import com.azure.resourcemanager.dns.models.SrvRecordSet;
 import com.azure.resourcemanager.dns.models.TxtRecord;
 import com.azure.resourcemanager.dns.models.TxtRecordSet;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.HashMap;
@@ -36,7 +37,7 @@ import static com.azure.resourcemanager.dns.models.RecordType.TXT;
 public class TestDns extends TestTemplate<DnsZone, DnsZones> {
     @Override
     public DnsZone createResource(DnsZones dnsZones) throws Exception {
-        final Region region = Region.US_EAST;
+        final Region region = ResourceManagerTestBase.locationOrDefault(Region.US_EAST);
         final String testId = dnsZones.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String groupName = "rg" + testId;
         final String topLevelDomain = "www.contoso" + testId + ".com";

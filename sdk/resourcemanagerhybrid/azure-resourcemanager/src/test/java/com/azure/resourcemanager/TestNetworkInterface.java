@@ -12,6 +12,8 @@ import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.core.management.Region;
 import java.util.Collection;
 import java.util.List;
+
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
@@ -22,7 +24,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         final String nicName = "nic" + postfix;
         final String vnetName = "net" + postfix;
         final String pipName = "pip" + postfix;
-        final Region region = Region.US_EAST;
+        final Region region = ResourceManagerTestBase.locationOrDefault(Region.US_EAST);
 
         Network network =
             networkInterfaces

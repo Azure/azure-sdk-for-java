@@ -10,6 +10,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineUnmanagedDataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -19,7 +20,7 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
         VirtualMachine virtualMachine =
             virtualMachines
                 .define(vmName)
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()

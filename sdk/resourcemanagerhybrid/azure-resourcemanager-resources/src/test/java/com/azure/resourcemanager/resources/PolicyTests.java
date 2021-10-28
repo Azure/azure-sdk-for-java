@@ -86,7 +86,7 @@ public class PolicyTests extends ResourceManagementTest {
                     .create();
             // Create assignment
             ResourceGroup group = resourceClient.resourceGroups().define(rgName)
-                    .withRegion(Region.UK_WEST)
+                    .withRegion(locationOrDefault(Region.UK_WEST))
                     .create();
             PolicyAssignment assignment1 = resourceClient.policyAssignments().define(assignmentName1)
                     .forResourceGroup(group)
@@ -101,7 +101,7 @@ public class PolicyTests extends ResourceManagementTest {
             Assertions.assertNull(assignment1.parameters());
 
             GenericResource resource = resourceClient.genericResources().define(resourceName)
-                    .withRegion(Region.US_SOUTH_CENTRAL)
+                    .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
                     .withExistingResourceGroup(group)
                     .withResourceType("sites")
                     .withProviderNamespace("Microsoft.Web")

@@ -46,7 +46,7 @@ import org.junit.jupiter.api.Assertions;
 /** Test of load balancer management. */
 public class TestLoadBalancer {
     String testId = "";
-    Region region = Region.US_WEST;
+    Region region = ResourceManagerTestBase.locationOrDefault(Region.US_WEST);
     String groupName = "";
     String lbName = "";
     String[] pipNames = null;
@@ -917,7 +917,7 @@ public class TestLoadBalancer {
          * @param computeManager compute manager
          */
         public InternalWithZone(ComputeManager computeManager) {
-            region = Region.US_EAST2;
+            region = ResourceManagerTestBase.locationOrDefault(Region.US_EAST2);
             initializeResourceNames(computeManager.resourceManager().internalContext());
             this.computeManager = computeManager;
         }

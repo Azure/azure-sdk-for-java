@@ -36,7 +36,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_EAST2;
+    private final Region region = locationOrDefault(Region.US_EAST2);
     private final String vmName = "javavm";
 
     @Override

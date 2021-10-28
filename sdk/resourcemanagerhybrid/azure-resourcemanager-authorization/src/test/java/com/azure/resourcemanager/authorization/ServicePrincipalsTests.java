@@ -117,7 +117,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 ResourceManager
                     .authenticate(credentialFromFile(), profile())
                     .withSubscription(subscription);
-            ResourceGroup group = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
+            ResourceGroup group = resourceManager.resourceGroups().define(rgName).withRegion(locationOrDefault(Region.US_WEST)).create();
 
             // Update
             RoleAssignment ra = servicePrincipal.roleAssignments().iterator().next();
@@ -130,7 +130,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             ResourceManagerUtils.sleep(Duration.ofMinutes(2));
             Assertions.assertNotNull(resourceManager.resourceGroups().getByName(group.name()));
             try {
-                resourceManager.resourceGroups().define(rgName + "2").withRegion(Region.US_WEST).create();
+                resourceManager.resourceGroups().define(rgName + "2").withRegion(locationOrDefault(Region.US_WEST)).create();
                 Assertions.fail();
             } catch (Exception e) {
                 // expected

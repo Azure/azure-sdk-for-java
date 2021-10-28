@@ -52,7 +52,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName)
-                .withRegion(Region.ASIA_EAST)
+                .withRegion(locationOrDefault(Region.ASIA_EAST))
                 .withNewResourceGroup(rgName)
                 .withGeneralPurposeAccountKindV2()
                 .withTag("tag1", "value1")
@@ -123,7 +123,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName)
-                .withRegion(Region.US_EAST2)
+                .withRegion(locationOrDefault(Region.US_EAST2))
                 .withNewResourceGroup(rgName)
                 .withSku(StorageAccountSkuType.STANDARD_LRS)
                 .withLargeFileShares(true)
@@ -138,7 +138,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
 
         // default
         StorageAccount storageAccountDefault = storageManager.storageAccounts().define(saName)
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withNewResourceGroup(rgName)
             .create();
 
@@ -164,7 +164,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
 
         // new storage account configured as non-default
         storageAccount = storageManager.storageAccounts().define(saName2)
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withNewResourceGroup(rgName)
             .withSku(StorageAccountSkuType.STANDARD_LRS)
             .withGeneralPurposeAccountKind()

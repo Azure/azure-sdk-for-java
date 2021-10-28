@@ -11,6 +11,7 @@ import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -30,7 +31,7 @@ public class TestNetwork {
 
             String postFix = networks.manager().resourceManager().internalContext().randomResourceName("", 8);
             final String newName = "net" + postFix;
-            Region region = Region.US_WEST;
+            Region region = ResourceManagerTestBase.locationOrDefault(Region.US_WEST);
             String groupName = "rg" + postFix;
 
             // Create an NSG
@@ -155,7 +156,7 @@ public class TestNetwork {
         public Network createResource(Networks networks) throws Exception {
             String postfix = networks.manager().resourceManager().internalContext().randomResourceName("", 8);
             final String newName = "net" + postfix;
-            Region region = Region.US_WEST;
+            Region region = ResourceManagerTestBase.locationOrDefault(Region.US_WEST);
             String groupName = "rg" + postfix;
 
             // Create a network
@@ -249,7 +250,7 @@ public class TestNetwork {
     public class WithPeering extends TestTemplate<Network, Networks> {
         @Override
         public Network createResource(Networks networks) throws Exception {
-            Region region = Region.US_EAST;
+            Region region = ResourceManagerTestBase.locationOrDefault(Region.US_EAST);
             String groupName = networks.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
             String networkName = networks.manager().resourceManager().internalContext().randomResourceName("net", 15);
@@ -373,7 +374,7 @@ public class TestNetwork {
     public class WithDDosProtectionPlanAndVmProtection extends TestTemplate<Network, Networks> {
         @Override
         public Network createResource(Networks networks) throws Exception {
-            Region region = Region.US_EAST2;
+            Region region = ResourceManagerTestBase.locationOrDefault(Region.US_EAST2);
             String groupName = networks.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
             String networkName = networks.manager().resourceManager().internalContext().randomResourceName("net", 15);
@@ -409,7 +410,7 @@ public class TestNetwork {
     public class WithUpdateTags extends TestTemplate<Network, Networks> {
         @Override
         public Network createResource(Networks networks) throws Exception {
-            Region region = Region.US_SOUTH_CENTRAL;
+            Region region = ResourceManagerTestBase.locationOrDefault(Region.US_SOUTH_CENTRAL);
             String groupName = networks.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
             String networkName = networks.manager().resourceManager().internalContext().randomResourceName("net", 15);

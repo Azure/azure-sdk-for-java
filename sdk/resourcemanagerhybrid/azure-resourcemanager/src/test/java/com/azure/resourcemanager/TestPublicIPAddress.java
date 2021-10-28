@@ -9,6 +9,7 @@ import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 /** Tests public IPs. */
@@ -20,7 +21,7 @@ public class TestPublicIPAddress extends TestTemplate<PublicIpAddress, PublicIpA
         PublicIpAddress pip =
             pips
                 .define(newPipName)
-                .withRegion(Region.US_WEST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_WEST))
                 .withNewResourceGroup()
                 .withDynamicIP()
                 .withLeafDomainLabel(newPipName)

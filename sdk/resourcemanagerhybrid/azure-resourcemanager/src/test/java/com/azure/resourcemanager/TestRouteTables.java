@@ -8,6 +8,7 @@ import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class TestRouteTables {
             netName = routeTables.manager().resourceManager().internalContext().randomResourceName("net", 10);
             final String newName = routeTables.manager().resourceManager().internalContext().randomResourceName("rt", 10);
 
-            Region region = Region.US_WEST;
+            Region region = ResourceManagerTestBase.locationOrDefault(Region.US_WEST);
             String groupName = routeTables.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
             final String route1AddressPrefix = "10.0.1.0/29";

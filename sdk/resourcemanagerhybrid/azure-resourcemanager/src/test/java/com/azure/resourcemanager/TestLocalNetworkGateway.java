@@ -6,12 +6,13 @@ import com.azure.resourcemanager.network.models.LocalNetworkGateway;
 import com.azure.resourcemanager.network.models.LocalNetworkGateways;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 /** Tests Local Network Gateway. */
 public class TestLocalNetworkGateway extends TestTemplate<LocalNetworkGateway, LocalNetworkGateways> {
     private String testId = "";
-    private static final Region REGION = Region.US_NORTH_CENTRAL;
+    private static final Region REGION = ResourceManagerTestBase.locationOrDefault(Region.US_NORTH_CENTRAL);
     private String groupName;
     private String lngwName;
 

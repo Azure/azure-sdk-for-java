@@ -51,7 +51,7 @@ public class EventHubTests extends ResourceManagerTestBase {
     protected StorageManager storageManager;
     protected ResourceManager resourceManager;
     private String rgName = "";
-    private final Region region = Region.US_EAST;
+    private final Region region = locationOrDefault(Region.US_EAST);
 
     @Override
     protected HttpPipeline buildHttpPipeline(
@@ -516,13 +516,13 @@ public class EventHubTests extends ResourceManagerTestBase {
 
         EventHubNamespace primaryNamespace = eventHubsManager.namespaces()
                 .define(namespaceName1)
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .create();
 
         EventHubNamespace secondaryNamespace = eventHubsManager.namespaces()
                 .define(namespaceName2)
-                .withRegion(Region.US_NORTH_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_NORTH_CENTRAL))
                 .withExistingResourceGroup(rgName)
                 .create();
 

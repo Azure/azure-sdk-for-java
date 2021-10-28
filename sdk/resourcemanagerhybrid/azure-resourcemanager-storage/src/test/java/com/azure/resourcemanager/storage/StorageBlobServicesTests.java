@@ -35,7 +35,7 @@ public class StorageBlobServicesTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .create();
 
@@ -59,7 +59,7 @@ public class StorageBlobServicesTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .create();
 

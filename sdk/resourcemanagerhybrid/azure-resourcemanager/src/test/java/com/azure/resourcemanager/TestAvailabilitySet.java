@@ -6,6 +6,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySets;
 import com.azure.resourcemanager.compute.models.VirtualMachineSize;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +18,7 @@ public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, Availabil
         AvailabilitySet aset =
             availabilitySets
                 .define(newName)
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup()
                 .withFaultDomainCount(2)
                 .withUpdateDomainCount(4)

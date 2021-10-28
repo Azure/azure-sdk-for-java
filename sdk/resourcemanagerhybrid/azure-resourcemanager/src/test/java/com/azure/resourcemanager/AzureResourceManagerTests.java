@@ -236,7 +236,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
             azureResourceManager
                 .deployments()
                 .define("depl" + testId)
-                .withNewResourceGroup("rg" + testId, Region.US_WEST)
+                .withNewResourceGroup("rg" + testId, locationOrDefault(Region.US_WEST))
                 .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
                 .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
                 .withMode(DeploymentMode.COMPLETE)
@@ -258,13 +258,13 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
             azureResourceManager
                 .networkSecurityGroups()
                 .define(azureResourceManager.networkSecurityGroups().manager().resourceManager().internalContext().randomResourceName("nsg", 13))
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup()
                 .create();
         azureResourceManager
             .publicIpAddresses()
             .define(azureResourceManager.networkSecurityGroups().manager().resourceManager().internalContext().randomResourceName("pip", 13))
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withExistingResourceGroup(nsg.resourceGroupName())
             .create();
 
@@ -301,7 +301,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         final String storageName = generateRandomResourceName("st", 15);
         final String diskName = generateRandomResourceName("dsk", 15);
         final String netName = generateRandomResourceName("net", 15);
-        final Region region = Region.US_WEST;
+        final Region region = locationOrDefault(Region.US_WEST);
 
         ResourceGroup resourceGroup = null;
         ManagementLock lockGroup = null,
@@ -508,7 +508,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     @Test
     public void testVMImages() throws ManagementException, IOException {
         PagedIterable<VirtualMachinePublisher> publishers =
-            azureResourceManager.virtualMachineImages().publishers().listByRegion(Region.US_WEST);
+            azureResourceManager.virtualMachineImages().publishers().listByRegion(locationOrDefault(Region.US_WEST));
         Assertions.assertTrue(TestUtilities.getSize(publishers) > 0);
         for (VirtualMachinePublisher p : publishers.stream().limit(5).toArray(VirtualMachinePublisher[]::new)) {
             System.out.println(String.format("Publisher name: %s, region: %s", p.name(), p.region()));
@@ -520,7 +520,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
             }
         }
         // TODO: limit vm images by filter
-        PagedIterable<VirtualMachineImage> images = azureResourceManager.virtualMachineImages().listByRegion(Region.US_WEST);
+        PagedIterable<VirtualMachineImage> images = azureResourceManager.virtualMachineImages().listByRegion(locationOrDefault(Region.US_WEST));
         Assertions.assertTrue(TestUtilities.getSize(images) > 0);
         // Seems to help avoid connection refused error on subsequent mock test
         ResourceManagerUtils.sleep(Duration.ofSeconds(2));
@@ -614,7 +614,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
             azureResourceManager
                 .virtualMachines()
                 .define(linuxVM2Name)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
@@ -736,8 +736,8 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         }
 
         // Look up built-in region
-        Region region = Region.fromName("westus");
-        Assertions.assertTrue(region == Region.US_WEST);
+        Region region = locationOrDefault(Region.fromName("westus"));
+        Assertions.assertTrue(region == locationOrDefault(Region.US_WEST));
 
         // Add a region
         Region region2 = Region.fromName("madeUpRegion");
@@ -1050,9 +1050,9 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
             Assertions.assertEquals(region.name().toLowerCase(), location.name().toLowerCase());
         }
 
-        Location location = subscription.getLocationByRegion(Region.US_WEST);
+        Location location = subscription.getLocationByRegion(locationOrDefault(Region.US_WEST));
         Assertions.assertNotNull(location);
-        Assertions.assertTrue(Region.US_WEST.name().equalsIgnoreCase(location.name()));
+        Assertions.assertTrue(locationOrDefault(Region.US_WEST).name().equalsIgnoreCase(location.name()));
     }
 
     /**
@@ -1084,7 +1084,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
             azureResourceManager
                 .storageAccounts()
                 .define(storageAccountName)
-                .withRegion(Region.ASIA_EAST)
+                .withRegion(locationOrDefault(Region.ASIA_EAST))
                 .withNewResourceGroup()
                 .withSku(StorageAccountSkuType.PREMIUM_LRS)
                 .create();

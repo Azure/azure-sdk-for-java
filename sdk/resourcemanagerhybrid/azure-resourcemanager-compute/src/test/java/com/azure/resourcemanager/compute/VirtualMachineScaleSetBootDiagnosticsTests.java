@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineScaleSetBootDiagnosticsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_SOUTH_CENTRAL;
+    private final Region region = locationOrDefault(Region.US_SOUTH_CENTRAL);
     private final String vmName = "javavm";
 
     @Override

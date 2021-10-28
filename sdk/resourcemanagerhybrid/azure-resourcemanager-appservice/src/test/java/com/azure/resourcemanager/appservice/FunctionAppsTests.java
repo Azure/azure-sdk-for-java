@@ -81,14 +81,14 @@ public class FunctionAppsTests extends AppServiceTest {
             appServiceManager
                 .functionApps()
                 .define(webappName1)
-                .withRegion(Region.US_WEST)
+                .withRegion(locationOrDefault(Region.US_WEST))
                 .withNewResourceGroup(rgName1)
                 .create();
         Assertions.assertNotNull(functionApp1);
-        Assertions.assertEquals(Region.US_WEST, functionApp1.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST), functionApp1.region());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST), plan1.region());
         Assertions.assertEquals(new PricingTier("Dynamic", "Y1"), plan1.pricingTier());
 
         FunctionAppResource functionAppResource1 = getStorageAccount(storageManager, functionApp1);
@@ -114,20 +114,20 @@ public class FunctionAppsTests extends AppServiceTest {
                 .withExistingStorageAccount(functionApp1.storageAccount())
                 .create();
         Assertions.assertNotNull(functionApp2);
-        Assertions.assertEquals(Region.US_WEST, functionApp2.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST), functionApp2.region());
 
         // Create with app service plan
         FunctionApp functionApp3 =
             appServiceManager
                 .functionApps()
                 .define(webappName3)
-                .withRegion(Region.US_WEST)
+                .withRegion(locationOrDefault(Region.US_WEST))
                 .withExistingResourceGroup(rgName2)
                 .withNewAppServicePlan(PricingTier.BASIC_B1)
                 .withExistingStorageAccount(functionApp1.storageAccount())
                 .create();
         Assertions.assertNotNull(functionApp2);
-        Assertions.assertEquals(Region.US_WEST, functionApp2.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST), functionApp2.region());
 
         // app service plan does not have this 2 settings
         // https://github.com/Azure/azure-libraries-for-net/issues/485
@@ -210,7 +210,7 @@ public class FunctionAppsTests extends AppServiceTest {
             appServiceManager
                 .functionApps()
                 .define(webappName1)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName1)
                 .withNewLinuxConsumptionPlan()
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
@@ -222,7 +222,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_EAST, plan1.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_EAST), plan1.region());
         Assertions.assertEquals(new PricingTier(SkuName.DYNAMIC.toString(), "Y1"), plan1.pricingTier());
         Assertions.assertTrue(plan1.innerModel().reserved());
         Assertions
@@ -239,7 +239,7 @@ public class FunctionAppsTests extends AppServiceTest {
             appServiceManager
                 .functionApps()
                 .define(webappName2)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(rgName1)
                 .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
@@ -299,7 +299,7 @@ public class FunctionAppsTests extends AppServiceTest {
             appServiceManager
                 .functionApps()
                 .define(webappName1)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName1)
                 .withNewLinuxAppServicePlan(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"))
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
@@ -332,7 +332,7 @@ public class FunctionAppsTests extends AppServiceTest {
             appServiceManager
                 .functionApps()
                 .define(webappName1)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName1)
                 .withNewLinuxAppServicePlan(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"))
                 .withPrivateRegistryImage(
@@ -354,7 +354,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // function app with consumption plan
         FunctionApp functionApp1 = appServiceManager.functionApps().define(webappName1)
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withNewResourceGroup(rgName1)
             .withNewLinuxConsumptionPlan()
             .withBuiltInImage(FunctionRuntimeStack.JAVA_11)

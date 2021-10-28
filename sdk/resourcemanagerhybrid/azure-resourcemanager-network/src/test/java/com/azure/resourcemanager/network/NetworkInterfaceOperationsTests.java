@@ -46,7 +46,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             networkManager
                 .networks()
                 .define(networkName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .withAddressSpace("10.0.0.0/27")
                 .withSubnet("subnet1", "10.0.0.0/28")
@@ -61,7 +61,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                         (networkManager
                             .networkInterfaces()
                             .define(nicNames[0])
-                            .withRegion(Region.US_EAST)
+                            .withRegion(locationOrDefault(Region.US_EAST))
                             .withNewResourceGroup(rgName)
                             .withExistingPrimaryNetwork(network)
                             .withSubnet("subnet1")
@@ -71,7 +71,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                     networkManager
                         .networkInterfaces()
                         .define(nicNames[1])
-                        .withRegion(Region.US_EAST)
+                        .withRegion(locationOrDefault(Region.US_EAST))
                         .withNewResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("subnet1")
@@ -86,7 +86,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                     networkManager
                         .networkInterfaces()
                         .define(nicNames[2])
-                        .withRegion(Region.US_EAST)
+                        .withRegion(locationOrDefault(Region.US_EAST))
                         .withNewResourceGroup(rgName)
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("subnet1")
@@ -240,13 +240,13 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Networks networks = networkManager.networks();
         NetworkInterfaces networkInterfaces = networkManager.networkInterfaces();
 
-        Creatable<ResourceGroup> resourceGroupCreatable = resourceGroups.define(rgName).withRegion(Region.US_EAST);
+        Creatable<ResourceGroup> resourceGroupCreatable = resourceGroups.define(rgName).withRegion(locationOrDefault(Region.US_EAST));
 
         final String vnetName = "vnet1212";
         Creatable<Network> networkCreatable =
             networks
                 .define(vnetName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withAddressSpace("10.0.0.0/28");
 
@@ -256,7 +256,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Creatable<NetworkInterface> networkInterface1Creatable =
             networkInterfaces
                 .define(nic1Name)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIPAddressStatic("10.0.0.5");
@@ -265,7 +265,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Creatable<NetworkInterface> networkInterface2Creatable =
             networkInterfaces
                 .define(nic2Name)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIPAddressStatic("10.0.0.6");
@@ -274,7 +274,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Creatable<NetworkInterface> networkInterface3Creatable =
             networkInterfaces
                 .define(nic3Name)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIPAddressStatic("10.0.0.7");
@@ -283,7 +283,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Creatable<NetworkInterface> networkInterface4Creatable =
             networkInterfaces
                 .define(nic4Name)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(resourceGroupCreatable)
                 .withNewPrimaryNetwork(networkCreatable)
                 .withPrimaryPrivateIPAddressStatic("10.0.0.8");
@@ -323,7 +323,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             networkManager
                 .networks()
                 .define("vnet1")
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .withAddressSpace("10.0.0.0/27")
                 .withSubnet("subnet1", "10.0.0.0/28")
@@ -331,12 +331,12 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                 .create();
 
         ApplicationSecurityGroup asg1 = networkManager.applicationSecurityGroups().define("asg1")
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withExistingResourceGroup(rgName)
             .create();
 
         NetworkInterface nic = networkManager.networkInterfaces().define("nic1")
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withExistingResourceGroup(rgName)
             .withExistingPrimaryNetwork(network)
             .withSubnet("subnet1")
@@ -349,7 +349,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Assertions.assertEquals("asg1", applicationSecurityGroups.iterator().next().name());
 
         ApplicationSecurityGroup asg2 = networkManager.applicationSecurityGroups().define("asg2")
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withExistingResourceGroup(rgName)
             .create();
 
@@ -393,7 +393,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         networkManager
             .networks()
             .define(vnetName)
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withNewResourceGroup(rgName)
             .withAddressSpace("172.16.0.0/16")
             .defineSubnet("Front-end")

@@ -53,7 +53,7 @@ public class WebAppsMsiTests extends AppServiceTest {
             appServiceManager
                 .webApps()
                 .define(webappName1)
-                .withRegion(Region.US_WEST)
+                .withRegion(locationOrDefault(Region.US_WEST))
                 .withNewResourceGroup(rgName1)
                 .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
@@ -63,10 +63,10 @@ public class WebAppsMsiTests extends AppServiceTest {
                 .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                 .create();
         Assertions.assertNotNull(webApp);
-        Assertions.assertEquals(Region.US_WEST, webApp.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST), webApp.region());
         AppServicePlan plan = appServiceManager.appServicePlans().getById(webApp.appServicePlanId());
         Assertions.assertNotNull(plan);
-        Assertions.assertEquals(Region.US_WEST, plan.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST), plan.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan.pricingTier());
         Assertions.assertNotNull(webApp.systemAssignedManagedServiceIdentityPrincipalId());
         Assertions.assertNotNull(webApp.systemAssignedManagedServiceIdentityTenantId());

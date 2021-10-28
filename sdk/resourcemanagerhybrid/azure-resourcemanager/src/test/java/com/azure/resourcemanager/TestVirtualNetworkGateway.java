@@ -13,6 +13,7 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateways;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Flux;
@@ -28,7 +29,7 @@ import java.util.Map;
 /** Tests Virtual Network Gateway. */
 public class TestVirtualNetworkGateway {
     private String testId = "";
-    private Region region = Region.US_NORTH_CENTRAL;
+    private Region region = ResourceManagerTestBase.locationOrDefault(Region.US_NORTH_CENTRAL);
     private String groupName;
     private String gatewayName1;
     private String gatewayName2;

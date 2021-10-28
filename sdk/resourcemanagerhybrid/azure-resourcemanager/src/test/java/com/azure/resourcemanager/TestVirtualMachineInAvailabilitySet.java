@@ -21,7 +21,7 @@ public class TestVirtualMachineInAvailabilitySet extends TestTemplate<VirtualMac
         VirtualMachine vm =
             virtualMachines
                 .define(vmName)
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(newRgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()

@@ -34,7 +34,7 @@ public class ActionGroupsTests extends MonitorManagementTest {
             monitorManager
                 .actionGroups()
                 .define("simpleActionGroup")
-                .withNewResourceGroup(rgName, Region.AUSTRALIA_SOUTHEAST)
+                .withNewResourceGroup(rgName, locationOrDefault(Region.AUSTRALIA_SOUTHEAST))
                 .defineReceiver("first")
                 .withPushNotification("azurepush@outlook.com")
                 .withEmail("justemail@outlook.com")

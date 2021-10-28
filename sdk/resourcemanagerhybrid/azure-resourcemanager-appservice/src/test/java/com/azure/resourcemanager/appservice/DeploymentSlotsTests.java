@@ -39,14 +39,14 @@ public class DeploymentSlotsTests extends AppServiceTest {
             appServiceManager
                 .webApps()
                 .define(webappName)
-                .withRegion(Region.US_WEST)
+                .withRegion(locationOrDefault(Region.US_WEST))
                 .withNewResourceGroup(rgName)
                 .withNewWindowsPlan(PricingTier.STANDARD_S2)
                 .withJavaVersion(JavaVersion.JAVA_1_7_0_51)
                 .withWebContainer(WebContainer.TOMCAT_7_0_50)
                 .create();
         Assertions.assertNotNull(webApp);
-        Assertions.assertEquals(Region.US_WEST, webApp.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST), webApp.region());
 
         // Create a deployment slot with web app's config
         DeploymentSlot slot2 = webApp.deploymentSlots().define(slotName2).withConfigurationFromParent().create();

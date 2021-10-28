@@ -58,7 +58,7 @@ public class DeploymentsTests extends ResourceManagementTest {
         resourceGroups = resourceClient.resourceGroups();
         rgName = "rg" + testId;
         resourceGroup = resourceGroups.define(rgName)
-            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
             .create();
     }
 
@@ -177,7 +177,7 @@ public class DeploymentsTests extends ResourceManagementTest {
 
         //What if
         WhatIfOperationResult result = deployment.prepareWhatIf()
-            .withLocation("westus")
+            .withLocation(locationOrDefault("westus"))
             .withIncrementalMode()
             .withWhatIfTemplateLink(BLANK_TEMPLATE_URI, CONTENT_VERSION)
             .whatIfAtSubscriptionScope();
@@ -321,7 +321,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             // storage name conflict
             acceptedDeployment = resourceClient.deployments()
                 .define(dp2)
-                .withNewResourceGroup(newRgName, Region.US_EAST2)
+                .withNewResourceGroup(newRgName, locationOrDefault(Region.US_EAST2))
                 .withTemplate(templateJson)
                 .withParameters("{}")
                 .withMode(DeploymentMode.COMPLETE)
@@ -436,7 +436,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             // with context
             Accepted<Deployment> deployment1 = resourceClient.deployments()
                 .define(dpName)
-                .withNewResourceGroup(rgName1, Region.US_SOUTH_CENTRAL)
+                .withNewResourceGroup(rgName1, locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
                 .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
                 .withMode(DeploymentMode.COMPLETE)
@@ -445,7 +445,7 @@ public class DeploymentsTests extends ResourceManagementTest {
             // with context
             Deployment deployment2 = resourceClient.deployments()
                 .define(dpName)
-                .withNewResourceGroup(rgName2, Region.US_SOUTH_CENTRAL)
+                .withNewResourceGroup(rgName2, locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .withTemplateLink(TEMPLATE_URI, CONTENT_VERSION)
                 .withParametersLink(PARAMETERS_URI, CONTENT_VERSION)
                 .withMode(DeploymentMode.COMPLETE)

@@ -37,7 +37,7 @@ public class DiagnosticLogsTests extends AppServiceTest {
             appServiceManager
                 .webApps()
                 .define(webappName1)
-                .withRegion(Region.US_WEST)
+                .withRegion(locationOrDefault(Region.US_WEST))
                 .withNewResourceGroup(rgName1)
                 .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .defineDiagnosticLogsConfiguration()
@@ -53,10 +53,10 @@ public class DiagnosticLogsTests extends AppServiceTest {
                 .attach()
                 .create();
         Assertions.assertNotNull(webApp1);
-        Assertions.assertEquals(Region.US_WEST, webApp1.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST), webApp1.region());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_WEST, plan1.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_WEST), plan1.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
 
         Assertions.assertNotNull(webApp1.diagnosticLogsConfig());

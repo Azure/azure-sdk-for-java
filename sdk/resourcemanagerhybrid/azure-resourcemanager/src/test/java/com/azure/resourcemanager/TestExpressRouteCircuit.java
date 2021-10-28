@@ -9,12 +9,13 @@ import com.azure.resourcemanager.network.models.ExpressRouteCircuits;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 /** Tests Express Route Circuit. */
 public class TestExpressRouteCircuit {
     private String testId = "";
-    private static final Region REGION = Region.ASIA_SOUTHEAST;
+    private static final Region REGION = ResourceManagerTestBase.locationOrDefault(Region.ASIA_SOUTHEAST);
     private String circuitName;
 
     private void initializeResourceNames(ResourceManagerUtils.InternalRuntimeContext internalContext) {

@@ -58,9 +58,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String rgName = "";
     private String rgName2 = "";
-    private final Region region = Region.US_EAST;
-    private final Region regionProxPlacementGroup = Region.US_WEST;
-    private final Region regionProxPlacementGroup2 = Region.US_EAST;
+    private final Region region = locationOrDefault(Region.US_EAST);
+    private final Region regionProxPlacementGroup = locationOrDefault(Region.US_WEST);
+    private final Region regionProxPlacementGroup2 = locationOrDefault(Region.US_EAST);
     private final String vmName = "javavm";
     private final String proxGroupName = "testproxgroup1";
     private final String proxGroupName2 = "testproxgroup2";
@@ -887,7 +887,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // Create
         computeManager.virtualMachines()
             .define(vmName)
-            .withRegion("eastus2euap")
+            .withRegion(locationOrDefault("eastus2euap"))
             .withNewResourceGroup(rgName)
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
@@ -899,7 +899,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // Get
         VirtualMachine virtualMachine = computeManager.virtualMachines().getByResourceGroup(rgName, vmName);
         Assertions.assertNotNull(virtualMachine);
-        Assertions.assertEquals(Region.fromName("eastus2euap"), virtualMachine.region());
+        Assertions.assertEquals(locationOrDefault(Region.fromName("eastus2euap")), virtualMachine.region());
         String nicId = virtualMachine.primaryNetworkInterfaceId();
 
         // Force delete

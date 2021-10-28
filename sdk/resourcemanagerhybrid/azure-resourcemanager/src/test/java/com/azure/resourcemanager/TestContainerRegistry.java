@@ -9,6 +9,7 @@ import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.Webhook;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
@@ -21,7 +22,7 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
         Registry registry =
             registries
                 .define(newName + "1")
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .withStandardSku()
                 .withRegistryNameAsAdminUser()
@@ -41,7 +42,7 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
         Registry registry2 =
             registries
                 .define(newName + "2")
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .withBasicSku()
                 .withRegistryNameAsAdminUser()

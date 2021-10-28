@@ -44,7 +44,7 @@ public class WarDeployTests extends AppServiceTest {
                 appServiceManager
                     .webApps()
                     .define(webappName)
-                    .withRegion(Region.US_WEST)
+                    .withRegion(locationOrDefault(Region.US_WEST))
                     .withNewResourceGroup(rgName)
                     .withNewWindowsPlan(PricingTier.STANDARD_S1)
                     .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
@@ -73,7 +73,7 @@ public class WarDeployTests extends AppServiceTest {
             appServiceManager
                 .webApps()
                 .define(webappName)
-                .withRegion(Region.US_WEST)
+                .withRegion(locationOrDefault(Region.US_WEST))
                 .withNewResourceGroup(rgName)
                 .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .withJavaVersion(JavaVersion.JAVA_8_NEWEST)

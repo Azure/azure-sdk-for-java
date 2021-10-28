@@ -22,7 +22,7 @@ public class VirtualMachineExtensionImageOperationsTests extends ComputeManageme
         final int maxListing = 20;
         int count = 0;
         PagedIterable<VirtualMachineExtensionImage> extensionImages =
-            computeManager.virtualMachineExtensionImages().listByRegion(Region.US_EAST);
+            computeManager.virtualMachineExtensionImages().listByRegion(locationOrDefault(Region.US_EAST));
         // Lazy listing
         for (VirtualMachineExtensionImage extensionImage : extensionImages) {
             Assertions.assertNotNull(extensionImage);
@@ -37,7 +37,7 @@ public class VirtualMachineExtensionImageOperationsTests extends ComputeManageme
     @Test
     public void canGetExtensionTypeVersionAndImage() throws Exception {
         PagedIterable<VirtualMachineExtensionImage> extensionImages =
-            computeManager.virtualMachineExtensionImages().listByRegion(Region.US_EAST);
+            computeManager.virtualMachineExtensionImages().listByRegion(locationOrDefault(Region.US_EAST));
 
         final String dockerExtensionPublisherName = "Microsoft.Azure.Extensions";
         final String dockerExtensionImageTypeName = "DockerExtension";
@@ -45,7 +45,7 @@ public class VirtualMachineExtensionImageOperationsTests extends ComputeManageme
         // Lookup Azure docker extension publisher
         //
         PagedIterable<VirtualMachinePublisher> publishers =
-            computeManager.virtualMachineExtensionImages().publishers().listByRegion(Region.US_EAST);
+            computeManager.virtualMachineExtensionImages().publishers().listByRegion(locationOrDefault(Region.US_EAST));
 
         VirtualMachinePublisher azureDockerExtensionPublisher = null;
         for (VirtualMachinePublisher publisher : publishers) {
@@ -72,7 +72,7 @@ public class VirtualMachineExtensionImageOperationsTests extends ComputeManageme
 
         Assertions.assertNotNull(dockerExtensionImageType.id());
         Assertions.assertTrue(dockerExtensionImageType.name().equalsIgnoreCase(dockerExtensionImageTypeName));
-        Assertions.assertTrue(dockerExtensionImageType.regionName().equalsIgnoreCase(Region.US_EAST.toString()));
+        Assertions.assertTrue(dockerExtensionImageType.regionName().equalsIgnoreCase(locationOrDefault(Region.US_EAST).toString()));
         Assertions
             .assertTrue(
                 dockerExtensionImageType
@@ -113,7 +113,7 @@ public class VirtualMachineExtensionImageOperationsTests extends ComputeManageme
         //
         VirtualMachineExtensionImage dockerExtensionImage = extensionImageFirstVersion.getImage();
 
-        Assertions.assertTrue(dockerExtensionImage.regionName().equalsIgnoreCase(Region.US_EAST.toString()));
+        Assertions.assertTrue(dockerExtensionImage.regionName().equalsIgnoreCase(locationOrDefault(Region.US_EAST).toString()));
         Assertions.assertTrue(dockerExtensionImage.publisherName().equalsIgnoreCase(dockerExtensionPublisherName));
         Assertions.assertTrue(dockerExtensionImage.typeName().equalsIgnoreCase(dockerExtensionImageTypeName));
         Assertions.assertTrue(dockerExtensionImage.versionName().equalsIgnoreCase(versionName));

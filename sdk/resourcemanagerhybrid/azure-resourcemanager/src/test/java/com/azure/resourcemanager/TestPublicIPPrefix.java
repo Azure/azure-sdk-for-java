@@ -9,6 +9,7 @@ import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSkuName;
 import com.azure.resourcemanager.network.models.PublicIpPrefixes;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import org.junit.jupiter.api.Assertions;
 
 /** Tests public Prefixes. */
@@ -18,7 +19,7 @@ public class TestPublicIPPrefix extends TestTemplate<PublicIpPrefix, PublicIpPre
         final String newPipName = pips.manager().resourceManager().internalContext().randomResourceName("pip", 10);
 
         PublicIpPrefix pip = pips.define(newPipName)
-            .withRegion(Region.US_WEST)
+            .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_WEST))
             .withNewResourceGroup()
             .withPrefixLength(30)
             .withSku(new PublicIpPrefixSku().withName(PublicIpPrefixSkuName.STANDARD))

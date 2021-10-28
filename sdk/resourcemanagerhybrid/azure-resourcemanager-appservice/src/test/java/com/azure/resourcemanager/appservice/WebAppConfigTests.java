@@ -38,7 +38,7 @@ public class WebAppConfigTests extends AppServiceTest {
         appServiceManager
             .webApps()
             .define(webappName)
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withNewResourceGroup(rgName)
             .withNewWindowsPlan(PricingTier.BASIC_B1)
             .withNetFrameworkVersion(NetFrameworkVersion.V3_0)
@@ -47,7 +47,7 @@ public class WebAppConfigTests extends AppServiceTest {
 
         WebApp webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Assertions.assertNotNull(webApp);
-        Assertions.assertEquals(Region.US_EAST, webApp.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_EAST), webApp.region());
         Assertions.assertEquals(NetFrameworkVersion.V3_0, webApp.netFrameworkVersion());
         Assertions.assertEquals(SupportedTlsVersions.ONE_ONE, webApp.minTlsVersion());
 
@@ -117,7 +117,7 @@ public class WebAppConfigTests extends AppServiceTest {
         appServiceManager
             .webApps()
             .define(webappName)
-            .withRegion(Region.US_EAST)
+            .withRegion(locationOrDefault(Region.US_EAST))
             .withNewResourceGroup(rgName)
             .withNewWindowsPlan(PricingTier.BASIC_B1)
             .withNetFrameworkVersion(NetFrameworkVersion.V3_0)
@@ -125,7 +125,7 @@ public class WebAppConfigTests extends AppServiceTest {
 
         WebApp webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Assertions.assertNotNull(webApp);
-        Assertions.assertEquals(Region.US_EAST, webApp.region());
+        Assertions.assertEquals(locationOrDefault(Region.US_EAST), webApp.region());
         Assertions.assertEquals(NetFrameworkVersion.V3_0, webApp.netFrameworkVersion());
 
         // Java version

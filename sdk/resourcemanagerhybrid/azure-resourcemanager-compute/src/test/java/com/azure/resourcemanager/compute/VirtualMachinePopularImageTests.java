@@ -33,7 +33,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
         for (KnownWindowsVirtualMachineImage image : KnownWindowsVirtualMachineImage.values()) {
             Mono<VirtualMachine> mono = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/24")
                 .withPrimaryPrivateIPAddressDynamic()
@@ -52,7 +52,7 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
 
             Mono<VirtualMachine> mono = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/24")
                 .withPrimaryPrivateIPAddressDynamic()

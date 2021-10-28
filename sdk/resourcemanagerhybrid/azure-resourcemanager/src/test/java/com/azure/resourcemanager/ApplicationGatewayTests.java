@@ -102,7 +102,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
     public void testAppGatewayBackendHealthCheck() throws Exception {
         String testId = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("", 15);
         String name = "ag" + testId;
-        Region region = Region.US_EAST;
+        Region region = locationOrDefault(Region.US_EAST);
         String password = ResourceManagerTestBase.password();
         String vnetName = "net" + testId;
         String rgName = "rg" + testId;
@@ -282,7 +282,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
     @Test
     public void testAppGatewaysStartStop() throws Exception {
         String rgName = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("rg", 13);
-        Region region = Region.US_EAST;
+        Region region = locationOrDefault(Region.US_EAST);
         String name = azureResourceManager.resourceGroups().manager().internalContext().randomResourceName("ag", 15);
         ApplicationGateway appGateway =
             azureResourceManager
@@ -313,7 +313,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
     @Test
     public void testApplicationGatewaysInParallel() throws Exception {
         String rgName = azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("rg", 13);
-        Region region = Region.US_EAST;
+        Region region = locationOrDefault(Region.US_EAST);
         Creatable<ResourceGroup> resourceGroup = azureResourceManager.resourceGroups().define(rgName).withRegion(region);
         List<Creatable<ApplicationGateway>> agCreatables = new ArrayList<>();
 
@@ -322,7 +322,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
                 azureResourceManager
                     .applicationGateways()
                     .define(azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("ag", 13))
-                    .withRegion(Region.US_EAST)
+                    .withRegion(locationOrDefault(Region.US_EAST))
                     .withNewResourceGroup(resourceGroup)
                     .defineRequestRoutingRule("rule1")
                     .fromPrivateFrontend()
@@ -337,7 +337,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestBase {
                 azureResourceManager
                     .applicationGateways()
                     .define(azureResourceManager.applicationGateways().manager().resourceManager().internalContext().randomResourceName("ag", 13))
-                    .withRegion(Region.US_EAST)
+                    .withRegion(locationOrDefault(Region.US_EAST))
                     .withNewResourceGroup(resourceGroup)
                     .defineRequestRoutingRule("rule1")
                     .fromPrivateFrontend()

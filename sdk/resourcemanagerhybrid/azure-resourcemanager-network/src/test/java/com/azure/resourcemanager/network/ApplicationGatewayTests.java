@@ -53,7 +53,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             networkManager
                 .publicIpAddresses()
                 .define(appPublicIp)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .withSku(PublicIPSkuType.STANDARD)
                 .withStaticIP()
@@ -63,7 +63,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             networkManager
                 .applicationGateways()
                 .define(appGatewayName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(rgName)
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
@@ -146,7 +146,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             networkManager
                 .publicIpAddresses()
                 .define(appPublicIp)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .withSku(PublicIPSkuType.STANDARD)
                 .withStaticIP()
@@ -156,7 +156,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             msiManager
                 .identities()
                 .define(identityName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(rgName)
                 .create();
 
@@ -172,7 +172,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             networkManager
                 .applicationGateways()
                 .define(appGatewayName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(rgName)
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
@@ -216,7 +216,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             networkManager
                 .publicIpAddresses()
                 .define(appPublicIp)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup(rgName)
                 .withSku(PublicIPSkuType.STANDARD)
                 .withStaticIP()
@@ -226,7 +226,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             msiManager
                 .identities()
                 .define(identityName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(rgName)
                 .create();
 
@@ -241,7 +241,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             networkManager
                 .applicationGateways()
                 .define(appGatewayName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(rgName)
                 // Request routing rules
                 .defineRequestRoutingRule("rule1")
@@ -275,7 +275,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             keyVaultManager
                 .vaults()
                 .define(vaultName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(rgName)
                 .defineAccessPolicy()
                     .forServicePrincipal(servicePrincipal)
@@ -315,7 +315,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             keyVaultManager
                 .vaults()
                 .define(vaultName)
-                .withRegion(Region.US_EAST)
+                .withRegion(locationOrDefault(Region.US_EAST))
                 .withExistingResourceGroup(rgName)
                 .defineAccessPolicy()
                 .forServicePrincipal(servicePrincipal)

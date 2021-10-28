@@ -20,7 +20,7 @@ public class LocksTests extends ResourceManagementTest {
         String lockName = generateRandomResourceName("lock", 15);
 
         ResourceGroup resourceGroup = resourceClient.resourceGroups().define(rgName)
-            .withRegion(Region.US_WEST)
+            .withRegion(locationOrDefault(Region.US_WEST))
             .create();
 
         ManagementLock lock = resourceClient.managementLocks().define(lockName)
@@ -50,7 +50,7 @@ public class LocksTests extends ResourceManagementTest {
         String lockName = generateRandomResourceName("lock", 15);
 
         ResourceGroup resourceGroup = resourceClient.resourceGroups().define(rgName)
-            .withRegion(Region.US_WEST)
+            .withRegion(locationOrDefault(Region.US_WEST))
             .create();
 
         ManagementLock lock = resourceClient.managementLocks().define(lockName)

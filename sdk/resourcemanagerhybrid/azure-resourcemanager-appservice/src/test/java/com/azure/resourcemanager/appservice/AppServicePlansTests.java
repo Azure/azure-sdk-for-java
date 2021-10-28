@@ -38,7 +38,7 @@ public class AppServicePlansTests extends AppServiceTest {
             appServiceManager
                 .appServicePlans()
                 .define(appServicePlanName)
-                .withRegion(Region.US_WEST)
+                .withRegion(locationOrDefault(Region.US_WEST))
                 .withNewResourceGroup(rgName)
                 .withPricingTier(PricingTier.PREMIUM_P1)
                 .withOperatingSystem(OperatingSystem.WINDOWS)
@@ -82,7 +82,7 @@ public class AppServicePlansTests extends AppServiceTest {
     @Test
     public void failOnAppServiceNotFound() {
         resourceManager.resourceGroups().define(rgName)
-            .withRegion(Region.US_WEST)
+            .withRegion(locationOrDefault(Region.US_WEST))
             .create();
         Assertions.assertThrows(ManagementException.class, () -> {
             appServiceManager.appServicePlans().getByResourceGroup("rgName", "no_such_appservice");

@@ -23,10 +23,10 @@ public class ResourceGroupsTests extends ResourceManagementTest {
     @Test
     public void canCreateResourceGroup() throws Exception {
         final String rgName = generateRandomResourceName("rg", 9);
-        Region region = Region.US_SOUTH_CENTRAL;
+        Region region = locationOrDefault(Region.US_SOUTH_CENTRAL);
         // Create
         resourceGroups.define(rgName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_SOUTH_CENTRAL))
                 .withTag("department", "finance")
                 .withTag("tagname", "tagvalue")
                 .create();

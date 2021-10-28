@@ -55,7 +55,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
         }
 
         final int desiredVMCount = 40;
-        final Region region = Region.US_EAST;
+        final Region region = locationOrDefault(Region.US_EAST);
         final String resourceGroupName = rgName;
 
         // Create one resource group for everything, to ensure no reliance on resource groups

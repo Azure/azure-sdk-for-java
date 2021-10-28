@@ -34,7 +34,7 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
         PublicIpAddress pip =
             pips
                 .define(publicIpDnsLabel)
-                .withRegion(Region.US_EAST)
+                .withRegion(ResourceManagerTestBase.locationOrDefault(Region.US_EAST))
                 .withNewResourceGroup()
                 .withLeafDomainLabel(publicIpDnsLabel)
                 .create();

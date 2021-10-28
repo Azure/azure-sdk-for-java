@@ -41,7 +41,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withBlobStorageAccountKind()
                 .withAccessTier(AccessTier.COOL)
@@ -138,7 +138,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withBlobStorageAccountKind()
                 .withAccessTier(AccessTier.COOL)
@@ -199,7 +199,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
             storageManager
                 .storageAccounts()
                 .define(saName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(locationOrDefault(Region.US_WEST_CENTRAL))
                 .withNewResourceGroup(rgName)
                 .withBlobStorageAccountKind()
                 .withAccessTier(AccessTier.COOL)

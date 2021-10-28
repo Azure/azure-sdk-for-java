@@ -38,7 +38,7 @@ public class VaultTests extends KeyVaultManagementTest {
                 keyVaultManager
                     .vaults()
                     .define(vaultName)
-                    .withRegion(Region.US_WEST)
+                    .withRegion(locationOrDefault(Region.US_WEST))
                     .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
                     .forServicePrincipal("http://" + sp)
@@ -113,7 +113,7 @@ public class VaultTests extends KeyVaultManagementTest {
             // DELETE
             keyVaultManager.vaults().deleteById(vault.id());
             //ResourceManagerUtils.sleep(Duration.ofSeconds(20));
-            //assertVaultDeleted(vaultName, Region.US_WEST.toString());
+            //assertVaultDeleted(vaultName, locationOrDefault(Region.US_WEST).toString());
         } finally {
             authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
             //            graphRbacManager.users().deleteById(user.id());
@@ -122,7 +122,7 @@ public class VaultTests extends KeyVaultManagementTest {
 
     @Test void canCRUDVaultWithRbac() {
         Vault vault = keyVaultManager.vaults().define(vaultName)
-            .withRegion(Region.US_WEST)
+            .withRegion(locationOrDefault(Region.US_WEST))
             .withNewResourceGroup(rgName)
             .withRoleBasedAccessControl()
             .create();
@@ -153,7 +153,7 @@ public class VaultTests extends KeyVaultManagementTest {
                 keyVaultManager
                     .vaults()
                     .define(vaultName)
-                    .withRegion(Region.US_WEST)
+                    .withRegion(locationOrDefault(Region.US_WEST))
                     .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
                     .forServicePrincipal("http://" + sp)
@@ -224,7 +224,7 @@ public class VaultTests extends KeyVaultManagementTest {
             // DELETE
             keyVaultManager.vaults().deleteByIdAsync(vault.id()).block();
             //ResourceManagerUtils.sleep(Duration.ofSeconds(20));
-            //assertVaultDeleted(vaultName, Region.US_WEST.toString());
+            //assertVaultDeleted(vaultName, locationOrDefault(Region.US_WEST).toString());
         } finally {
             authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
             //            graphRbacManager.users().deleteById(user.id());
@@ -248,7 +248,7 @@ public class VaultTests extends KeyVaultManagementTest {
                 keyVaultManager
                     .vaults()
                     .define(otherVaultName)
-                    .withRegion(Region.US_WEST)
+                    .withRegion(locationOrDefault(Region.US_WEST))
                     .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
                     .forServicePrincipal("http://" + sp)
@@ -270,12 +270,12 @@ public class VaultTests extends KeyVaultManagementTest {
 
             ResourceManagerUtils.sleep(Duration.ofSeconds(20));
             // Can still see deleted vault.
-            Assertions.assertNotNull(keyVaultManager.vaults().getDeleted(otherVaultName, Region.US_WEST.toString()));
+            Assertions.assertNotNull(keyVaultManager.vaults().getDeleted(otherVaultName, locationOrDefault(Region.US_WEST).toString()));
 
-            keyVaultManager.vaults().purgeDeleted(otherVaultName, Region.US_WEST.toString());
+            keyVaultManager.vaults().purgeDeleted(otherVaultName, locationOrDefault(Region.US_WEST).toString());
             ResourceManagerUtils.sleep(Duration.ofSeconds(20));
             // Vault is purged
-            assertVaultDeleted(otherVaultName, Region.US_WEST.toString());
+            assertVaultDeleted(otherVaultName, locationOrDefault(Region.US_WEST).toString());
         } finally {
             authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
             // graphRbacManager.users().deleteById(user.id());

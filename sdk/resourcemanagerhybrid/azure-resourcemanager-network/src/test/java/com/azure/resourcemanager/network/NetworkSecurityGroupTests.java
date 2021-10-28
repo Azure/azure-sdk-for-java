@@ -27,7 +27,7 @@ public class NetworkSecurityGroupTests extends NetworkManagementTest {
         final String asgName6 = generateRandomResourceName("asg", 8);
         final String nsgName = generateRandomResourceName("nsg", 8);
 
-        final Region region = Region.US_SOUTH_CENTRAL;
+        final Region region = locationOrDefault(Region.US_SOUTH_CENTRAL);
 
         ApplicationSecurityGroup asg = networkManager.applicationSecurityGroups().define(asgName)
             .withRegion(region)

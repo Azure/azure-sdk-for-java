@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 
 public class ManagedDiskOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_WEST_CENTRAL;
+    private Region region = locationOrDefault(Region.US_WEST_CENTRAL);
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {

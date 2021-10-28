@@ -70,7 +70,7 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Test
     public void canCreateZoneWithDefaultETag() throws Exception {
-        final Region region = Region.US_EAST;
+        final Region region = locationOrDefault(Region.US_EAST);
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
         DnsZone dnsZone =
@@ -90,7 +90,7 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Test
     public void canUpdateZoneWithExplicitETag() throws Exception {
-        final Region region = Region.US_EAST;
+        final Region region = locationOrDefault(Region.US_EAST);
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
         final DnsZone dnsZone =
@@ -104,7 +104,7 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Test
     public void canDeleteZoneWithExplicitETag() throws Exception {
-        final Region region = Region.US_EAST;
+        final Region region = locationOrDefault(Region.US_EAST);
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
         final DnsZone dnsZone =
@@ -118,7 +118,7 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Test
     public void canCreateRecordSetsWithDefaultETag() throws Exception {
-        final Region region = Region.US_EAST;
+        final Region region = locationOrDefault(Region.US_EAST);
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
         DnsZone dnsZone =
@@ -211,7 +211,7 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Test
     public void canUpdateRecordSetWithExplicitETag() throws Exception {
-        final Region region = Region.US_EAST;
+        final Region region = locationOrDefault(Region.US_EAST);
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
         DnsZone dnsZone =
@@ -301,7 +301,7 @@ public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
 
     @Test
     public void canDeleteRecordSetWithExplicitETag() throws Exception {
-        final Region region = Region.US_EAST;
+        final Region region = locationOrDefault(Region.US_EAST);
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
         DnsZone dnsZone =

@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Assertions;
 /** Tests Network Watcher. */
 public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatchers> {
     private String testId = "";
-    private static final Region REGION = Region.EUROPE_NORTH;
+    private static final Region REGION = ResourceManagerTestBase.locationOrDefault(Region.EUROPE_NORTH);
     private String groupName;
     private String nwName;
 

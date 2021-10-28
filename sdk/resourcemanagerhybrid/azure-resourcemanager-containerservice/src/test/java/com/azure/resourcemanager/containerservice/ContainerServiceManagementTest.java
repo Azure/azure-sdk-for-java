@@ -49,7 +49,7 @@ public class ContainerServiceManagementTest extends ResourceManagerTestBase {
         rgName = generateRandomResourceName("javaacsrg", 15);
         containerServiceManager = buildManager(ContainerServiceManager.class, httpPipeline, profile);
         resourceManager = containerServiceManager.resourceManager();
-        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        resourceManager.resourceGroups().define(rgName).withRegion(locationOrDefault(Region.US_EAST)).create();
     }
 
     @Override
