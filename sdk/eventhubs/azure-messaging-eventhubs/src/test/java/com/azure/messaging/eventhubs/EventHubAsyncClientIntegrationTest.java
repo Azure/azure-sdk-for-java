@@ -168,7 +168,7 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                         assertTrue(batch.tryAdd(testData));
                         return asyncProducerClient.send(batch);
                     })
-            ).as("EventHubAsyncClientIntegrationTest.sendAndReceiveEventByAzureNameKeyCredential").verifyComplete();
+            ).verifyComplete();
         } finally {
             asyncProducerClient.close();
         }
@@ -196,7 +196,7 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                         assertTrue(batch.tryAdd(testData));
                         return asyncProducerClient.send(batch);
                     })
-            ).as("EventHubAsyncClientIntegrationTest.sendAndReceiveEventByAzureSasCredential").verifyComplete();
+            ).verifyComplete();
         } finally {
             asyncProducerClient.close();
         }

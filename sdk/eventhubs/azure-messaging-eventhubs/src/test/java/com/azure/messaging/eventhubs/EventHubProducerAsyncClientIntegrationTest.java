@@ -187,7 +187,6 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(client);
         }
-
     }
 
     @Test

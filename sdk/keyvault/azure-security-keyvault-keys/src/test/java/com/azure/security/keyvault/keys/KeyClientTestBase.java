@@ -49,13 +49,7 @@ import java.math.BigInteger;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
@@ -748,5 +742,10 @@ public abstract class KeyClientTestBase extends TestBase {
                 assertEquals(expectedLifetimeAction.getTimeBeforeExpiry(), actualLifetimeAction.getTimeBeforeExpiry());
             }
         }
+    }
+
+    protected boolean isPublicCloud() {
+        return ".vault.azure.net".equals(
+            Configuration.getGlobalConfiguration().get("KEY_VAULT_ENDPOINT_SUFFIX", ".vault.azure.net"));
     }
 }
