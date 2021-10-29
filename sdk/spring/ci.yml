@@ -33,11 +33,8 @@ trigger:
       - sdk/spring/spring-cloud-azure-actuator/pom.xml
       - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
       - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
-      - sdk/spring/spring-cloud-azure-messaging/pom.xml
       - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-cache/pom.xml
       - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-eventhubs-kafka/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
@@ -90,11 +87,8 @@ pr:
       - sdk/spring/spring-cloud-azure-actuator/pom.xml
       - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
       - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
-      - sdk/spring/spring-cloud-azure-messaging/pom.xml
       - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-cache/pom.xml
       - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-eventhubs-kafka/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
@@ -211,31 +205,15 @@ extends:
       - name: spring-integration-azure-storage-queue
         groupId: com.azure.spring
         safeName: springintegrationazurestoragequeue
-      - name: spring-cloud-azure-messaging
-        groupId: com.azure.spring
-        safeName: springcloudazuremessaging
-        skipPublishDocMs: true
       - name: spring-cloud-azure-starter-actuator
         groupId: com.azure.spring
         safeName: springcloudazurestarteractuator
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-cache
-        groupId: com.azure.spring
-        safeName: springcloudazurestartercache
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestartereventhubs
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-eventhubs-kafka
-        groupId: com.azure.spring
-        safeName: springcloudazurestartereventhubskafka
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true

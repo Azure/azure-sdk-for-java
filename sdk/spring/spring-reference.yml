@@ -526,31 +526,3 @@
           springProperties:
             bom: azure-spring-cloud-dependencies
             compatibilityRange: "[2.5.0,2.5.5)"
-    - name: Event Hubs - Kafka
-      description: The Event Hubs for Apache Kafka feature provides a protocol head on top of Azure Event Hubs that is protocol compatible with Apache Kafka clients built for Apache Kafka server versions 1.0 and later and supports for both reading from and writing to Event Hubs, which are equivalent to Apache Kafka topics.
-      msdocs: https://docs.microsoft.com/azure/event-hubs/event-hubs-for-kafka-ecosystem-overview
-      artifacts:
-        - artifactId: spring-cloud-azure-starter-eventhubs-kafka
-          groupId: com.azure.spring
-          versionGA: 4.0.0
-          versionPreview: 2.0.0-beta.1
-          description: Microsoft's Spring Cloud Stream Binder helps developers to finish the auto-configuration of Event Hubs with Kafka protocol.
-          type: spring
-          links:
-            repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-eventhubs-kafka
-            msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-kafka-azure-event-hub
-            github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-eventhubs-kafka
-            sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/spring-cloud-azure-starter-eventhubs-kafka
-          springProperties:
-            starter: true
-            bom: azure-spring-cloud-dependencies
-            compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
-            mappings:
-              - compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
-                groupId: com.microsoft.azure
-                artifactId: spring-cloud-starter-azure-eventhubs-kafka
-                version: 1.2.4
-              - compatibilityRange: "[2.2.11.RELEASE,2.4.0-M1)"
-                groupId: com.azure.spring
-                artifactId: azure-spring-cloud-starter-eventhubs-kafka
-                version: 2.2.0

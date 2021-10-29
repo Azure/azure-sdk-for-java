@@ -298,7 +298,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -320,7 +320,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
         context = this.client.mergeContext(context);
@@ -342,7 +342,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkName, String subnetName) {
         return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName).getSyncPoller();
@@ -360,7 +360,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualNetworkName, subnetName, context).getSyncPoller();
@@ -774,7 +774,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -798,7 +798,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String virtualNetworkName,
@@ -827,7 +827,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters)
@@ -847,7 +847,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualNetworkName,
@@ -1095,7 +1095,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPrepareNetworkPoliciesAsync(
         String resourceGroupName,
         String virtualNetworkName,
@@ -1123,7 +1123,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPrepareNetworkPoliciesAsync(
         String resourceGroupName,
         String virtualNetworkName,
@@ -1152,7 +1152,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(
         String resourceGroupName,
         String virtualNetworkName,
@@ -1177,7 +1177,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(
         String resourceGroupName,
         String virtualNetworkName,
@@ -1439,7 +1439,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginUnprepareNetworkPoliciesAsync(
         String resourceGroupName,
         String virtualNetworkName,
@@ -1467,7 +1467,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUnprepareNetworkPoliciesAsync(
         String resourceGroupName,
         String virtualNetworkName,
@@ -1496,7 +1496,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(
         String resourceGroupName,
         String virtualNetworkName,
@@ -1521,7 +1521,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(
         String resourceGroupName,
         String virtualNetworkName,

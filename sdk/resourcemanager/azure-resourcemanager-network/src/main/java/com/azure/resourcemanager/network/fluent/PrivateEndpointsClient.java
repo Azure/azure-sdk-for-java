@@ -49,7 +49,7 @@ public interface PrivateEndpointsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateEndpointName);
 
     /**
@@ -62,7 +62,7 @@ public interface PrivateEndpointsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateEndpointName);
 
     /**
@@ -76,7 +76,7 @@ public interface PrivateEndpointsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateEndpointName, Context context);
 
@@ -216,7 +216,7 @@ public interface PrivateEndpointsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PrivateEndpointInner>, PrivateEndpointInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters);
 
@@ -231,7 +231,7 @@ public interface PrivateEndpointsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointInner>, PrivateEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters);
 
@@ -247,7 +247,7 @@ public interface PrivateEndpointsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointInner>, PrivateEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String privateEndpointName, PrivateEndpointInner parameters, Context context);
 
