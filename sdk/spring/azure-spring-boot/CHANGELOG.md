@@ -1,6 +1,6 @@
 # Release History
 
-## 3.10.0-beta.1 (Unreleased)
+## 3.10.0 (2021-10-29)
 
 ### Features Added
 Add property for JmsDefaultPrefetchPolicy.([#24304](https://github.com/Azure/azure-sdk-for-java/issues/24304))
