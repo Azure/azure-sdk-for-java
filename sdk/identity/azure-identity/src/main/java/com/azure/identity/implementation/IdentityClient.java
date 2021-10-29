@@ -15,7 +15,6 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -339,6 +338,11 @@ public class IdentityClient {
         try {
             IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
             IntelliJAuthMethodDetails authDetails = cacheAccessor.getAuthDetailsIfAvailable();
+            if (authDetails == null) {
+                throw logger.logExceptionAsError(
+                    new CredentialUnavailableException("IntelliJ Authentication not available."
+                        + " Please log in with Azure Tools for IntelliJ plugin in the IDE."));
+            }
             String authType = authDetails.getAuthMethod();
             if (authType.equalsIgnoreCase("SP")) {
                 Map<String, String> spDetails = cacheAccessor
@@ -1288,9 +1292,8 @@ public class IdentityClient {
             return Mono.error(exception);
         }
 
-        String endpoint = Configuration.getGlobalConfiguration().get(
-            Configuration.PROPERTY_AZURE_POD_IDENTITY_TOKEN_URL,
-            IdentityConstants.DEFAULT_IMDS_ENDPOINT);
+        String endpoint = options.getImdsAuthorityHost().replaceAll("/+$", "")
+            + "/" + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
 
         return checkIMDSAvailable(endpoint).flatMap(available -> Mono.fromCallable(() -> {
             int retry = 1;
