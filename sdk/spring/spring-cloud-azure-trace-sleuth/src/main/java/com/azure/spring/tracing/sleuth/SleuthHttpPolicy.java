@@ -90,7 +90,7 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy {
         // run the next policy and handle success and error
         return next.process()
                    .doOnEach(SleuthHttpPolicy::handleResponse)
-                   .contextWrite(Context.of("TRACING_SPAN", span, "REQUEST", request));
+                   .contextWrite(Context.of("TRACING_SPAN", span));
     }
 
     private static void addSpanRequestAttributes(Span span, HttpRequest request,

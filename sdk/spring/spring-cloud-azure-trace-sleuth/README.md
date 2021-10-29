@@ -4,6 +4,9 @@ This package provides the common framework for all Azure Spring libraries.
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs]
 
 ## Getting started
+Spring Cloud for Azure Sleuth Trace is the solution for users who manually instrumented their applications with Sleuth and are looking to add observability into HTTP requests made by Azure SDKs.
+
+For everyone else, we recommend using [OpenTelemetry](https://opentelemetry.io/) as a ubiquitous and portable observability solution for tracing, metrics, and logs supported by [most APM tools](https://opentelemetry.io/registry/?language=all&component=exporter#) with extensive [integrations](https://opentelemetry.io/registry/?s=&component=instrumentation&language=java#)  across Java ecosystem
 
 ### Prerequisites
 - [Environment checklist][environment_checklist]
