@@ -10,9 +10,14 @@
 
 #### Other Changes
 
+### 4.20.1 (2021-10-27)
+#### Key Bug Fixes
+* Removed `AfterBurner` module for Java version 16+.
+* Fixed `BadRequestException` issue when using `Distinct` with matched `orderBy` queries via `continuationToken`.
+
 ### 4.20.0 (2021-10-14)
 #### Features Added
-* Enabling `queryplan` cache by default
+* Enabling `queryplan` cache by default.
 
 #### Key Bug Fixes
 * Fixed issue with bulk reads when `contentResponseOnWrite` is not explicitly enabled on the cosmos client.

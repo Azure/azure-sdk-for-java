@@ -124,7 +124,7 @@ public abstract class AbstractQueryGenerator {
                 && CriteriaType.isBinary(type),
             "Criteria type should be binary and closure operation");
 
-        return String.join(" ", left, type.getSqlKeyword(), right);
+        return String.format("(%s %s %s)", left, type.getSqlKeyword(), right);
     }
 
     @SuppressWarnings("unchecked")

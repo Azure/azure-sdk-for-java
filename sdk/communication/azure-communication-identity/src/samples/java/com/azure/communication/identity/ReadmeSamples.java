@@ -143,11 +143,11 @@ public class ReadmeSamples {
     /**
      * Sample code for exchanging an AAD access token of a Teams User for a new Communication Identity access token.
      */
-    public void exchangeTeamsUserAadToken() {
+    public void getTokenForTeamsUser() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         try {
             String teamsUserAadToken = generateTeamsUserAadToken();
-            AccessToken accessToken = communicationIdentityClient.exchangeTeamsUserAadToken(teamsUserAadToken);
+            AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken);
             System.out.println("User token value: " + accessToken.getToken());
             System.out.println("Expires at: " + accessToken.getExpiresAt());
         } catch (Exception ex) {

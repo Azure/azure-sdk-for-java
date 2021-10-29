@@ -228,6 +228,15 @@ public interface RntbdEndpoint extends AutoCloseable {
         @JsonProperty
         public boolean isChannelAcquisitionContextEnabled() { return this.options.isChannelAcquisitionContextEnabled(); }
 
+        @JsonProperty
+        public int tcpKeepIntvl() { return this.options.tcpKeepIntvl(); }
+
+        @JsonProperty
+        public int tcpKeepIdle() { return this.options.tcpKeepIdle(); }
+
+        @JsonProperty
+        public boolean preferTcpNative() { return this.options.preferTcpNative(); }
+
         @Override
         public String toString() {
             return RntbdObjectMapper.toString(this);

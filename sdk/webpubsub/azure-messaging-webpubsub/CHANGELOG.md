@@ -1,7 +1,23 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.5 (2021-10-26)
 
+### Features Added
+
+- Added support for method `closeUserConnectionsWithResponse`, `closeGroupConnectionsWithResponse`, `closeAllConnectionsWithResponse` in `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient`.
+
+### Breaking Changes
+
+- Renamed method `getAuthenticationToken` to `getClientAccessToken` in `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient`.
+- Type changed from `String` to `WebPubSubPermission` in method `checkPermissionWithResponse`, `grantPermissionWithResponse`, `revokePermissionWithResponse`, in `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient`.
+- Renamed class `WebPubSubAuthenticationToken` to `WebPubSubClientAccessToken`.
+- Renamed method `getAuthToken` to `getToken` in `WebPubSubClientAccessToken`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-10-01`.
 
 ## 1.0.0-beta.4 (2021-09-08)
 
