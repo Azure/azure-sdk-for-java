@@ -6,6 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -20,7 +23,7 @@ public class CosmosLazyPageImpl<T> extends PageImpl<T> {
     private static final long serialVersionUID = -2805108120909259912L;
 
     private final String continuationToken;
-    private final transient Supplier<Long> totalFunction;
+    private transient Supplier<Long> totalFunction;
     private Long totalElements;
 
     public CosmosLazyPageImpl(List<T> content, Pageable pageable, Supplier<Long> totalFunction, String continuationToken) {
@@ -67,12 +70,23 @@ public class CosmosLazyPageImpl<T> extends PageImpl<T> {
             return false;
         }
         final CosmosLazyPageImpl<?> that = (CosmosLazyPageImpl<?>) o;
-        return continuationToken == that.continuationToken;
+        return continuationToken != null
+            ? continuationToken.equalsIgnoreCase(that.continuationToken)
+            : that.continuationToken == null;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), continuationToken);
+    }
+
+    private void writeObject(ObjectOutputStream stream) throws IOException {
+        stream.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        stream.defaultReadObject();
+        totalFunction = null;
     }
 
     /**
