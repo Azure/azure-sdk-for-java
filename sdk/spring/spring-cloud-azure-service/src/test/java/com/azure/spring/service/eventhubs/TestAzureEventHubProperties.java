@@ -22,97 +22,10 @@ import java.util.Map;
  */
 public class TestAzureEventHubProperties extends TestAzureEventHubCommonProperties implements EventHubProperties {
 
-    public static final String PREFIX = "spring.cloud.azure.eventhubs";
-
     private Boolean isSharedConnection;
     private final Producer producer = new Producer();
     private final Consumer consumer = new Consumer();
     private final Processor processor = new Processor();
-
-    public Producer buildProducerProperties() {
-//        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-
-        Producer properties = new Producer();
-        AzurePropertiesUtils.copyAzureCommonProperties(this.producer, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
-
-//        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
-//        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
-//        propertyMapper.from(this.getEventHubName()).to(properties::setEventHubName);
-//        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
-//        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-//        propertyMapper.from(this.getPrefetchCount()).to(properties::setPrefetchCount);
-//
-//        propertyMapper.from(this.producer.getDomainName()).to(properties::setDomainName);
-//        propertyMapper.from(this.producer.getNamespace()).to(properties::setNamespace);
-//        propertyMapper.from(this.producer.getEventHubName()).to(properties::setEventHubName);
-//        propertyMapper.from(this.producer.getConnectionString()).to(properties::setConnectionString);
-//        propertyMapper.from(this.producer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-//        propertyMapper.from(this.producer.getPrefetchCount()).to(properties::setPrefetchCount);
-
-        return properties;
-    }
-
-    public Consumer buildConsumerProperties() {
-//        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-
-        Consumer properties = new Consumer();
-        AzurePropertiesUtils.copyAzureCommonProperties(this.consumer, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
-
-//        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
-//        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
-//        propertyMapper.from(this.getEventHubName()).to(properties::setEventHubName);
-//        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
-//        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-//        propertyMapper.from(this.getPrefetchCount()).to(properties::setPrefetchCount);
-//
-//        propertyMapper.from(this.consumer.getDomainName()).to(properties::setDomainName);
-//        propertyMapper.from(this.consumer.getNamespace()).to(properties::setNamespace);
-//        propertyMapper.from(this.consumer.getEventHubName()).to(properties::setEventHubName);
-//        propertyMapper.from(this.consumer.getConnectionString()).to(properties::setConnectionString);
-//        propertyMapper.from(this.consumer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-//        propertyMapper.from(this.consumer.getPrefetchCount()).to(properties::setPrefetchCount);
-//        propertyMapper.from(this.consumer.getConsumerGroup()).to(properties::setConsumerGroup);
-
-        return properties;
-    }
-
-    public Processor buildProcessorProperties() {
-//        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-
-        Processor properties = new Processor();
-        AzurePropertiesUtils.copyAzureCommonProperties(this.processor, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
-
-//        propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
-//        propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
-//        propertyMapper.from(this.getEventHubName()).to(properties::setEventHubName);
-//        propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
-//        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-//        propertyMapper.from(this.getPrefetchCount()).to(properties::setPrefetchCount);
-//
-//        propertyMapper.from(this.processor.getDomainName()).to(properties::setDomainName);
-//        propertyMapper.from(this.processor.getNamespace()).to(properties::setNamespace);
-//        propertyMapper.from(this.processor.getEventHubName()).to(properties::setEventHubName);
-//        propertyMapper.from(this.processor.getConnectionString()).to(properties::setConnectionString);
-//        propertyMapper.from(this.processor.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
-//        propertyMapper.from(this.processor.getPrefetchCount()).to(properties::setPrefetchCount);
-//        propertyMapper.from(this.processor.getConsumerGroup()).to(properties::setConsumerGroup);
-//
-//        propertyMapper.from(this.processor.trackLastEnqueuedEventProperties).to(properties::setTrackLastEnqueuedEventProperties);
-//        propertyMapper.from(this.processor.initialPartitionEventPosition).to(properties::setInitialPartitionEventPosition);
-//        propertyMapper.from(this.processor.partitionOwnershipExpirationInterval).to(properties::setPartitionOwnershipExpirationInterval);
-//        propertyMapper.from(this.processor.batch.maxSize).to(properties.batch::setMaxSize);
-//        propertyMapper.from(this.processor.batch.maxWaitTime).to(properties.batch::setMaxWaitTime);
-//        propertyMapper.from(this.processor.loadBalancing.strategy).to(properties.loadBalancing::setStrategy);
-//        propertyMapper.from(this.processor.loadBalancing.updateInterval).to(properties.loadBalancing::setUpdateInterval);
-
-        AzurePropertiesUtils.copyAzureCommonProperties(this.processor.checkpointStore, properties.checkpointStore);
-        BeanUtils.copyProperties(this.processor.checkpointStore, properties.checkpointStore);
-
-        return properties;
-    }
 
     public Boolean getSharedConnection() {
         return isSharedConnection;
