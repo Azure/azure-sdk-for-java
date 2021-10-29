@@ -49,11 +49,6 @@ public abstract class MetricsSeriesTestBase extends MetricsAdvisorClientTestBase
         final String metricId = METRIC_ID;
     }
 
-    protected static class ListEnrichmentStatusOutput {
-        static final ListEnrichmentStatusOutput INSTANCE = new ListEnrichmentStatusOutput();
-        final int expectedStatuses = 27;
-    }
-
     static void validateEnrichmentStatus(EnrichmentStatus actualEnrichmentStatus) {
         assertNotNull(actualEnrichmentStatus.getStatus());
         assertNotNull(actualEnrichmentStatus.getMessage());

@@ -126,7 +126,6 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
             .thenConsumeWhile(enrichmentStatuses::add)
             .verifyComplete();
 
-        assertEquals(ListEnrichmentStatusOutput.INSTANCE.expectedStatuses, enrichmentStatuses.size());
         enrichmentStatuses.forEach(MetricsSeriesTestBase::validateEnrichmentStatus);
     }
 }

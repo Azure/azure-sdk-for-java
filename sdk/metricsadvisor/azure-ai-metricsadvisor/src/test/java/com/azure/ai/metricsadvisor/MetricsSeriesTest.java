@@ -121,7 +121,6 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
                 .stream()
                 .collect(Collectors.toList());
 
-        assertEquals(ListEnrichmentStatusOutput.INSTANCE.expectedStatuses, enrichmentStatuses.size());
         enrichmentStatuses.forEach(MetricsSeriesTestBase::validateEnrichmentStatus);
     }
 }
