@@ -4,10 +4,10 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.spring.test.AppRunner;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
@@ -25,15 +25,15 @@ public class EventHubBinderHealthIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderHealthIT.class);
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     @Test
+    @Disabled
     public void testSpringBootActuatorHealth() {
         LOGGER.info("testSpringBootActuatorHealth begin.");
         String resourceName = "test-eventhub-health";
         try (AppRunner app = new AppRunner(Application.class)) {
-
-            app.property("spring.cloud.azure.eventhub.processor.checkpoint-store.container-name", resourceName);
+            app.property("spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name", resourceName);
             app.property("spring.cloud.stream.bindings.consume-in-0.destination", resourceName);
             app.property("spring.cloud.stream.bindings.supply-out-0.destination", resourceName);
 
@@ -71,9 +71,7 @@ public class EventHubBinderHealthIT {
 
         @Bean
         public Consumer<Message<String>> consume() {
-            return message -> {
-                LOGGER.info("Message received: {}", message);
-            };
+            return message -> LOGGER.info("Message received: {}", message);
         }
 
     }
