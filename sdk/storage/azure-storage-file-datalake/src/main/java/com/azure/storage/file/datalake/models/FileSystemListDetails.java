@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
 
 /**
