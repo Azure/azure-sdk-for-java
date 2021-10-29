@@ -250,7 +250,7 @@ public final class DirectConnectionConfig {
      * This represents the time to wait for response from network peer
      *
      * Default value is 5 seconds.
-     * This value will impact the number of times retry within SDK, so the recommended setting is  <= 10s.
+     * This value will impact the number of times retry within SDK, recommend setting the value no greater than 10s.
      *
      * @param networkRequestTimeout the network request timeout interval
      * @return the {@link DirectConnectionConfig}
