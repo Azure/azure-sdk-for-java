@@ -10,7 +10,7 @@ import com.azure.spring.core.properties.profile.AzureProfile;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
 
-public class TestAzureProperties implements AzureProperties {
+public abstract class TestAzureAmqpProperties implements AzureProperties {
 
     private final ClientProperties client = new ClientProperties();
     private final ProxyProperties proxy = new ProxyProperties();
@@ -29,11 +29,6 @@ public class TestAzureProperties implements AzureProperties {
     }
 
     @Override
-    public RetryProperties getRetry() {
-        return retry;
-    }
-
-    @Override
     public TokenCredentialProperties getCredential() {
         return credential;
     }
@@ -41,5 +36,10 @@ public class TestAzureProperties implements AzureProperties {
     @Override
     public AzureProfile getProfile() {
         return profile;
+    }
+
+    @Override
+    public RetryProperties getRetry() {
+        return retry;
     }
 }

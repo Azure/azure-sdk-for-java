@@ -15,6 +15,7 @@ import com.azure.spring.service.core.http.TestHttpClientProvider;
 import com.azure.spring.service.core.http.TestPerCallHttpPipelinePolicy;
 import com.azure.spring.service.core.http.TestPerRetryHttpPipelinePolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.junit.jupiter.api.Test;
@@ -31,14 +32,14 @@ import static org.mockito.Mockito.when;
  * @author Xiaolu Dai, 2021/8/25.
  */
 class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBuilderFactoryTestBase<ShareServiceClientBuilder,
-    TestAzureStorageFileShareProperties, ShareServiceClientBuilderFactory> {
+    TestAzureStorageFileShareHttpProperties, ShareServiceClientBuilderFactory> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureStorageFileShareClientBuilderFactoryTest.class);
     private static final String ENDPOINT = "https://abc.file.core.windows.net/";
 
     @Test
     void testStorageSharedKeyCredentialConfigured() {
-        TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
+        TestAzureStorageFileShareHttpProperties properties = createMinimalServiceProperties();
         properties.setAccountName("test_account_name");
         properties.setAccountKey("test_account_key");
         final ShareServiceClientBuilder builder = new ShareServiceClientBuilderFactoryExt(properties).build();
@@ -48,7 +49,7 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBu
 
     @Test
     void testAzureSasCredentialConfigured() {
-        TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
+        TestAzureStorageFileShareHttpProperties properties = createMinimalServiceProperties();
         properties.setSasToken("test");
         final ShareServiceClientBuilder builder = new ShareServiceClientBuilderFactoryExt(properties).build();
         final ShareServiceClient client = builder.buildClient();
@@ -57,7 +58,7 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBu
 
     @Test
     void testHttpClientConfigured() {
-        TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
+        TestAzureStorageFileShareHttpProperties properties = createMinimalServiceProperties();
 
         final ShareServiceClientBuilderFactory builderFactory = new ShareServiceClientBuilderFactoryExt(properties);
 
@@ -71,7 +72,7 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBu
 
     @Test
     void testDefaultHttpPipelinePoliciesConfigured() {
-        TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
+        TestAzureStorageFileShareHttpProperties properties = createMinimalServiceProperties();
 
         final ShareServiceClientBuilderFactory builderFactory = new ShareServiceClientBuilderFactoryExt(properties);
 
@@ -88,7 +89,7 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBu
 
     @Test
     void testProxyPropertiesConfigured() {
-        TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
+        TestAzureStorageFileShareHttpProperties properties = createMinimalServiceProperties();
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
@@ -102,16 +103,25 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBu
         verify(defaultHttpClientProvider, times(1)).createInstance(any(HttpClientOptions.class));
     }
 
+    @Test
+    void testRetryOptionsConfigured() {
+        TestAzureStorageFileShareHttpProperties properties = createMinimalServiceProperties();
+        final ShareServiceClientBuilderFactoryExt builderFactory = new ShareServiceClientBuilderFactoryExt(properties);
+        final ShareServiceClientBuilder builder = builderFactory.build();
+        final ShareServiceClient client = builder.buildClient();
+        verify(builder, times(1)).retryOptions(any(RequestRetryOptions.class));
+    }
+
     @Override
-    protected TestAzureStorageFileShareProperties createMinimalServiceProperties() {
-        TestAzureStorageFileShareProperties properties = new TestAzureStorageFileShareProperties();
+    protected TestAzureStorageFileShareHttpProperties createMinimalServiceProperties() {
+        TestAzureStorageFileShareHttpProperties properties = new TestAzureStorageFileShareHttpProperties();
         properties.setEndpoint(ENDPOINT);
         return properties;
     }
 
     static class ShareServiceClientBuilderFactoryExt extends ShareServiceClientBuilderFactory {
 
-        ShareServiceClientBuilderFactoryExt(TestAzureStorageFileShareProperties blobProperties) {
+        ShareServiceClientBuilderFactoryExt(TestAzureStorageFileShareHttpProperties blobProperties) {
             super(blobProperties);
         }
 
@@ -125,7 +135,7 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBu
 
         private HttpClientProvider httpClientProvider = mock(DefaultHttpProvider.class);
 
-        ShareServiceClientBuilderFactoryProxyExt(TestAzureStorageFileShareProperties blobProperties) {
+        ShareServiceClientBuilderFactoryProxyExt(TestAzureStorageFileShareHttpProperties blobProperties) {
             super(blobProperties);
 
             HttpClient httpClient = mock(HttpClient.class);

@@ -11,6 +11,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureServiceConfigurationProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
+import com.azure.spring.core.properties.retry.RetryProperties;
 import com.azure.spring.service.cosmos.CosmosProperties;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -31,6 +32,9 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
 
     @NestedConfigurationProperty
     private final HttpProxyProperties proxy = new HttpProxyProperties();
+
+    @NestedConfigurationProperty
+    private final RetryProperties retry = new RetryProperties();
 
     @NotEmpty
     @Pattern(regexp = "http[s]{0,1}://.*.documents.azure.com.*")
@@ -73,8 +77,6 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
     public HttpProxyProperties getProxy() {
         return proxy;
     }
-    @NestedConfigurationProperty
-    private final RetryProperties retry = new RetryProperties();
 
     @Override
     public RetryProperties getRetry() {

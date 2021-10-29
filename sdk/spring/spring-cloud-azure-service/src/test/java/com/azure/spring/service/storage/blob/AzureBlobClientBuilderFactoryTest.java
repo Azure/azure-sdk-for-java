@@ -17,6 +17,7 @@ import com.azure.spring.core.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.common.policy.RequestRetryOptions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,14 +32,14 @@ import static org.mockito.Mockito.when;
  * @author Xiaolu Dai, 2021/8/25.
  */
 class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactoryTestBase<BlobServiceClientBuilder,
-    TestAzureStorageBlobProperties, BlobServiceClientBuilderFactory> {
+    TestAzureStorageBlobHttpProperties, BlobServiceClientBuilderFactory> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureBlobClientBuilderFactoryTest.class);
     private static final String ENDPOINT = "https://abc.blob.core.windows.net/";
 
     @Test
     void testMinimalSettings() {
-        TestAzureStorageBlobProperties properties = createMinimalServiceProperties();
+        TestAzureStorageBlobHttpProperties properties = createMinimalServiceProperties();
 
         final BlobServiceClientBuilder clientBuilder = new BlobServiceClientBuilderFactory(properties).build();
         final BlobServiceClient client = clientBuilder.buildClient();
@@ -46,7 +47,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
 
     @Test
     void testClientSecretTokenCredentialConfigured() {
-        TestAzureStorageBlobProperties properties = createMinimalServiceProperties();
+        TestAzureStorageBlobHttpProperties properties = createMinimalServiceProperties();
 
         properties.getCredential().setClientId("test-client");
         properties.getCredential().setClientSecret("test-secret");
@@ -60,7 +61,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
 
     @Test
     void testClientCertificateTokenCredentialConfigured() {
-        TestAzureStorageBlobProperties properties = createMinimalServiceProperties();
+        TestAzureStorageBlobHttpProperties properties = createMinimalServiceProperties();
 
         properties.getCredential().setClientId("test-client");
         properties.getCredential().setClientCertificatePath("test-cert-path");
@@ -73,7 +74,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
 
     @Test
     void testHttpClientConfigured() {
-        TestAzureStorageBlobProperties properties = createMinimalServiceProperties();
+        TestAzureStorageBlobHttpProperties properties = createMinimalServiceProperties();
 
         final BlobServiceClientBuilderFactory builderFactory = new BlobServiceClientBuilderFactoryExt(properties);
 
@@ -87,7 +88,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
 
     @Test
     void testDefaultHttpPipelinePoliciesConfigured() {
-        TestAzureStorageBlobProperties properties = createMinimalServiceProperties();
+        TestAzureStorageBlobHttpProperties properties = createMinimalServiceProperties();
 
         final BlobServiceClientBuilderFactory builderFactory = new BlobServiceClientBuilderFactoryExt(properties);
 
@@ -104,7 +105,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
 
     @Test
     void testProxyPropertiesConfigured() {
-        TestAzureStorageBlobProperties properties = createMinimalServiceProperties();
+        TestAzureStorageBlobHttpProperties properties = createMinimalServiceProperties();
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
@@ -118,16 +119,25 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
         verify(defaultHttpClientProvider, times(1)).createInstance(any(HttpClientOptions.class));
     }
 
+    @Test
+    void testRetryOptionsConfigured() {
+        TestAzureStorageBlobHttpProperties properties = createMinimalServiceProperties();
+        final BlobServiceClientBuilderFactoryExt builderFactory = new BlobServiceClientBuilderFactoryExt(properties);
+        final BlobServiceClientBuilder builder = builderFactory.build();
+        final BlobServiceClient client = builder.buildClient();
+        verify(builder, times(1)).retryOptions(any(RequestRetryOptions.class));
+    }
+
     @Override
-    protected TestAzureStorageBlobProperties createMinimalServiceProperties() {
-        TestAzureStorageBlobProperties properties = new TestAzureStorageBlobProperties();
+    protected TestAzureStorageBlobHttpProperties createMinimalServiceProperties() {
+        TestAzureStorageBlobHttpProperties properties = new TestAzureStorageBlobHttpProperties();
         properties.setEndpoint(ENDPOINT);
         return properties;
     }
 
     static class BlobServiceClientBuilderFactoryExt extends BlobServiceClientBuilderFactory {
 
-        BlobServiceClientBuilderFactoryExt(TestAzureStorageBlobProperties blobProperties) {
+        BlobServiceClientBuilderFactoryExt(TestAzureStorageBlobHttpProperties blobProperties) {
             super(blobProperties);
         }
 
@@ -141,7 +151,7 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
 
         private HttpClientProvider httpClientProvider = mock(DefaultHttpProvider.class);
 
-        BlobServiceClientBuilderFactoryProxyExt(TestAzureStorageBlobProperties blobProperties) {
+        BlobServiceClientBuilderFactoryProxyExt(TestAzureStorageBlobHttpProperties blobProperties) {
             super(blobProperties);
 
             HttpClient httpClient = mock(HttpClient.class);

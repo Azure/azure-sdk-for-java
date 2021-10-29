@@ -3,10 +3,11 @@
 
 package com.azure.spring.service.storage.blob;
 
-import com.azure.spring.service.core.properties.TestAzureProperties;
+import com.azure.spring.core.properties.retry.StorageRetryProperties;
+import com.azure.spring.service.core.properties.TestAzureHttpProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 
-class TestAzureStorageBlobProperties extends TestAzureProperties implements StorageBlobProperties {
+public class TestAzureStorageBlobHttpProperties extends TestAzureHttpProperties implements StorageBlobProperties {
 
 
     private String customerProvidedKey;
@@ -19,6 +20,13 @@ class TestAzureStorageBlobProperties extends TestAzureProperties implements Stor
     private String sasToken;
     private String connectionString;
     private String accountName;
+
+    private final StorageRetryProperties retry = new StorageRetryProperties();
+
+    @Override
+    public StorageRetryProperties getRetry() {
+        return retry;
+    }
 
     @Override
     public String getCustomerProvidedKey() {

@@ -19,13 +19,11 @@ public final class AzureRetryPolicyConverter implements Converter<HttpRetryPrope
 
     @Override
     public RetryPolicy convert(HttpRetryProperties properties) {
-        if (properties == null) {
+        if (properties == null || properties.getMaxAttempts() == null) {
             return new RetryPolicy();
         }
 
-        Assert.notNull(properties.getMaxAttempts(), "MaxAttempts can not be null");
         Assert.isTrue(properties.getMaxAttempts().intValue() >= 0, "MaxAttempts can not be less than 0");
-
         RetryStrategy retryStrategy = null;
         final RetryProperties.BackoffProperties backoff = properties.getBackoff();
         int maxAttempts = properties.getMaxAttempts().intValue();

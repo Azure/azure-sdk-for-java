@@ -11,7 +11,8 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
-import com.azure.spring.service.core.properties.TestAzureProperties;
+import com.azure.spring.core.properties.retry.RetryProperties;
+import com.azure.spring.service.core.properties.TestAzureHttpProperties;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
-public class TestAzureCosmosProperties extends TestAzureProperties implements CosmosProperties {
+public class TestAzureCosmosHttpProperties extends TestAzureHttpProperties implements CosmosProperties {
 
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 
@@ -61,6 +62,12 @@ public class TestAzureCosmosProperties extends TestAzureProperties implements Co
      * Populate Diagnostics Strings and Query metrics
      */
     private boolean populateQueryMetrics;
+    private final RetryProperties retry = new RetryProperties();
+
+    @Override
+    public RetryProperties getRetry() {
+        return retry;
+    }
 
     @Override
     public HttpProxyProperties getProxy() {
