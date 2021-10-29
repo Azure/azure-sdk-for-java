@@ -41,7 +41,7 @@ public class ClassifyDocumentMultiCategory {
         );
 
         // See the service documentation for regional support and how to train a model to classify your documents,
-        // see https://aka.ms/azsdk/textanalytics/customfunctionalities:
+        // see https://aka.ms/azsdk/textanalytics/customfunctionalities
         SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setMultiCategoryClassifyActions(

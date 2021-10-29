@@ -41,7 +41,7 @@ public class ClassifyDocumentMultiCategoryAsync {
         );
 
         // See the service documentation for regional support and how to train a model to classify your documents,
-        // see https://aka.ms/azsdk/textanalytics/customfunctionalities:
+        // see https://aka.ms/azsdk/textanalytics/customfunctionalities
         client.beginAnalyzeActions(documents,
             new TextAnalyticsActions().setMultiCategoryClassifyActions(
                 new MultiCategoryClassifyAction("{project_name}", "{deployment_name}")),

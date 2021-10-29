@@ -49,7 +49,7 @@ public class ClassifyDocumentSingleCategoryAsync {
         );
 
         // See the service documentation for regional support and how to train a model to classify your documents,
-        // see https://aka.ms/azsdk/textanalytics/customfunctionalities:
+        // see https://aka.ms/azsdk/textanalytics/customfunctionalities
         client.beginAnalyzeActions(documents,
             new TextAnalyticsActions().setSingleCategoryClassifyActions(
                 new SingleCategoryClassifyAction("{project_name}", "{deployment_name}")),

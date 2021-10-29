@@ -73,8 +73,8 @@ Batch Samples:
 - [Execute multiple actions with asynchronous client][async_sample_execute_multiple_actions]
 - [Execute an extractive text summarization action][sample_execute_extractive_summarization_action]
 - [Execute an extractive text summarization action with asynchronous client][async_sample_execute_extractive_summarization_action]
-- [Recognize a custom entities action][sample_recognize_custom_entities_action]
-- [Recognize a custom entities action with asynchronous client][async_sample_recognize_custom_entities_action]
+- [Execute a custom entities action][sample_execute_custom_entities_action]
+- [Execute a custom entities action with asynchronous client][async_sample_execute_custom_entities_action]
 - [Execute a custom single-label classification action][sample_execute_single_classification_action]
 - [Execute a custom single-label classification action with asynchronous client][async_sample_execute_single_classification_action]
 - [Execute a custom multi-label classification action][sample_execute_multi_classification_action]
@@ -122,7 +122,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [async_sample_cancel_healthcare_task]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/CancelAnalyzeHealthcareEntitiesAsync.java
 [async_sample_execute_multiple_actions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeActionsAsync.java
 [async_sample_execute_extractive_summarization_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeExtractiveSummarizationAsync.java
-[async_sample_recognize_custom_entities_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntitiesAsync.java
+[async_sample_execute_custom_entities_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntitiesAsync.java
 [async_sample_execute_single_classification_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentSingleCategoryAsync.java
 [async_sample_execute_multi_classification_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentMultiCategoryAsync.java
 
@@ -150,7 +150,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_cancel_healthcare_task]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/CancelAnalyzeHealthcareEntities.java
 [sample_execute_multiple_actions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeActions.java
 [sample_execute_extractive_summarization_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeExtractiveSummarization.java
-[sample_recognize_custom_entities_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntities.java
+[sample_execute_custom_entities_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntities.java
 [sample_execute_single_classification_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentSingleCategory.java
 [sample_execute_multi_classification_action]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentMultiCategory.java
 

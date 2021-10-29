@@ -3,11 +3,10 @@ Text Analytics is a cloud-based service that provides advanced natural language 
 and includes the main features below:
 
 - Sentiment Analysis
-- Entity Recognition (Named, Linked, and Personally Identifiable Information (PII) entities)
+- Entity Recognition (Healthcare, Linked, Named, and Personally Identifiable Information (PII) entities)
 - Language Detection
 - Key Phrase Extraction
 - Multiple Actions Analysis Per Document
-- Healthcare Entity Recognition
 - Extractive Text Summarization
 - Custom Entity Recognition
 - Custom Single and Multi Category Classification
@@ -413,12 +412,18 @@ syncPoller.getFinalResult().forEach(
 
 ### Analyze multiple actions
 The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same
-set of documents. Currently, the supported features are: `entity recognition`, `linked entity recognition`,
-`Personally Identifiable Information (PII) entity recognition`, `key phrase extraction`, `sentiment analysis`,
-`extractive summarization`(see sample [here][extractive_summarization_sample]),
-`custom entities recognition`(see sample [here][custon_entities_sample]), 
-`custom single classification`(see sample [here][custom_single_classification_sample]) and
-`custom multi classification`(see sample [here][custom_multi_classification_sample]). 
+set of documents. Currently, the supported features are:
+
+- Entities Recognition
+- PII Entities Recognition
+- Linked Entity Recognition
+- Key Phrase Extraction
+- Sentiment Analysis
+- Extractive Summarization (see sample [here][extractive_summarization_sample])
+- Custom Entity Recognition (see sample [here][custom_entities_sample])
+- Custom Single Category Classification (see sample [here][custom_single_classification_sample])
+- Custom Multi Category Classification (see sample [here][custom_multi_classification_sample])
+
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L243-L291 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(
@@ -573,7 +578,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
 [recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
 [extractive_summarization_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AnalyzeExtractiveSummarization.java
-[custon_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntities.java
+[custom_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/RecognizeCustomEntities.java``
 [custom_single_classification_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentSingleCategory.java
 [custom_multi_classification_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ClassifyDocumentMultiCategory.java
 
