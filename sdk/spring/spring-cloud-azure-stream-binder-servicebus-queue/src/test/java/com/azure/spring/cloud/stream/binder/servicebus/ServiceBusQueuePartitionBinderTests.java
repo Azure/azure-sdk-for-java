@@ -5,7 +5,7 @@ package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
-import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceQueueProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusQueueProcessorClientFactory;
 import com.azure.spring.cloud.stream.binder.servicebus.support.ServiceBusQueueTestOperation;
 import com.azure.spring.cloud.stream.binder.servicebus.test.AzurePartitionBinderTests;
 import org.junit.Before;
@@ -30,7 +30,7 @@ public class ServiceBusQueuePartitionBinderTests
     // unit tests.
 
     @Mock
-    ServiceBusNamespaceQueueProcessorClientFactory clientFactory;
+    ServiceBusQueueProcessorClientFactory clientFactory;
 
     private ServiceBusQueueTestBinder binder;
 

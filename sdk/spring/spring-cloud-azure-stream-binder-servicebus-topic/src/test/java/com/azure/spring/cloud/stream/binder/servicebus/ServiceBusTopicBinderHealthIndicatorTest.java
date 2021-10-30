@@ -4,11 +4,11 @@
 package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.core.ServiceBusMessageProcessor;
-import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
-import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
 import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
+import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -28,8 +28,10 @@ import static org.mockito.Mockito.when;
 
 public class ServiceBusTopicBinderHealthIndicatorTest {
     @Mock
-    private ServiceBusNamespaceTopicProcessorClientFactory serviceBusTopicClientFactory;
+    private ServiceBusTopicProcessorClientFactory serviceBusTopicProcessorClientFactory;
 
+    @Mock
+    private ServiceBusSenderClientFactory serviceBusTopicSenderClientFactory;
     @Mock
     private ServiceBusProcessorClient processorClient;
 
@@ -43,7 +45,8 @@ public class ServiceBusTopicBinderHealthIndicatorTest {
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        serviceBusTopicTemplate = new ServiceBusTopicTemplate(serviceBusTopicClientFactory);
+        serviceBusTopicTemplate = new ServiceBusTopicTemplate(serviceBusTopicSenderClientFactory,
+            serviceBusTopicProcessorClientFactory);
         serviceBusTopicHealthIndicator = new ServiceBusTopicHealthIndicator(serviceBusTopicTemplate);
     }
 
@@ -56,8 +59,7 @@ public class ServiceBusTopicBinderHealthIndicatorTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void testServiceBusTopicIsUp() {
-        when(serviceBusTopicClientFactory.createProcessor(anyString(), anyString(),
-            any(ServiceBusClientConfig.class),
+        when(serviceBusTopicProcessorClientFactory.createProcessor(anyString(), anyString(),
             any(ServiceBusMessageProcessor.class))).thenReturn(processorClient);
         serviceBusTopicTemplate.subscribe("topic-test-1", "topicSubTest", consumer, byte[].class);
         final Health health = serviceBusTopicHealthIndicator.health();
@@ -67,8 +69,7 @@ public class ServiceBusTopicBinderHealthIndicatorTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void testServiceBusTopicIsDown() {
-        when(serviceBusTopicClientFactory.createProcessor(anyString(), anyString(),
-            any(ServiceBusClientConfig.class),
+        when(serviceBusTopicProcessorClientFactory.createProcessor(anyString(), anyString(),
             any(ServiceBusMessageProcessor.class))).thenReturn(processorClient);
         doThrow(NullPointerException.class).when(processorClient).start();
         assertThrows(ServiceBusRuntimeException.class, () -> {

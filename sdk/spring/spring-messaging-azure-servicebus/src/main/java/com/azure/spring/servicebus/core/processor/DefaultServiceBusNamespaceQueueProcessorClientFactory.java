@@ -25,17 +25,17 @@ import java.util.function.Consumer;
 
 
 /**
- * Default implementation of {@link ServiceBusNamespaceQueueProcessorClientFactory}. Client will be cached to improve performance
+ * Default implementation of {@link ServiceBusQueueProcessorClientFactory}. Client will be cached to improve performance
  *
  * @author Warren Zhu
  */
-public class DefaultServiceBusNamespaceQueueProcessorClientFactory implements ServiceBusNamespaceQueueProcessorClientFactory, DisposableBean {
+public class DefaultServiceBusNamespaceQueueProcessorClientFactory implements ServiceBusQueueProcessorClientFactory, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceQueueProcessorClientFactory.class);
     private final Map<String, ServiceBusProcessorClient> queueProcessorMap = new ConcurrentHashMap<>();
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
-    private final PropertiesSupplier<Tuple2<String, String>, ProcessorProperties> propertiesSupplier;
+    private final PropertiesSupplier<String, ProcessorProperties> propertiesSupplier;
     private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
 
 
@@ -50,7 +50,7 @@ public class DefaultServiceBusNamespaceQueueProcessorClientFactory implements Se
     }
 
     public DefaultServiceBusNamespaceQueueProcessorClientFactory(NamespaceProperties namespaceProperties,
-                                                                 PropertiesSupplier<Tuple2<String, String>, ProcessorProperties> supplier) {
+                                                                 PropertiesSupplier<String, ProcessorProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
     }
@@ -72,7 +72,7 @@ public class DefaultServiceBusNamespaceQueueProcessorClientFactory implements Se
 
     @Override
     public ServiceBusProcessorClient createProcessor(String queue, ServiceBusMessageProcessor messageProcessor) {
-        return doCreateProcessor(queue, messageProcessor, this.propertiesSupplier.getProperties(name));
+        return doCreateProcessor(queue, messageProcessor, this.propertiesSupplier.getProperties(queue));
     }
 
     private ServiceBusProcessorClient doCreateProcessor(String queue, ServiceBusMessageProcessor messageProcessor,

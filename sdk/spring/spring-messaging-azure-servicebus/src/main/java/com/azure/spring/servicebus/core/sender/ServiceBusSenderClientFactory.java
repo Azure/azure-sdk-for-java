@@ -12,7 +12,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
  *
  * @author Warren Zhu
  */
-public interface ServiceBusSenderFactory {
+public interface ServiceBusSenderClientFactory {
 
     /**
      * Return a function which accepts service bus topic or queue name, then returns {@link ServiceBusSenderClient}

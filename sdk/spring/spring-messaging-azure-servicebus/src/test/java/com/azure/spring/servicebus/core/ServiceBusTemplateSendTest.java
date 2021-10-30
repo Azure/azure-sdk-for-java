@@ -7,7 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
-import com.azure.spring.servicebus.core.sender.ServiceBusSenderFactory;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.messaging.core.SendOperationTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
  * @param <T>
  * @param <C>
  */
-public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFactory,
+public abstract class ServiceBusTemplateSendTest<P, T extends ServiceBusSenderClientFactory,
                                                     C extends ServiceBusSenderAsyncClient>
     extends SendOperationTest<SendOperation> {
 
@@ -42,21 +42,22 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
     protected String partitionKey = "key";
     protected String payload = "payload";
     private String partitionId = "1";
-    protected C mockClient;
-    protected T mockClientFactory;
+    protected C mockSenderClient;
+    protected T mockSenderClientFactory;
+    protected P mockProcessorClientFactory;
 
     @BeforeEach
     public abstract void setUp();
 
     @Override
     protected void setupError(String errorMessage) {
-        when(this.mockClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(Mono.error(new IllegalArgumentException(
+        when(this.mockSenderClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(Mono.error(new IllegalArgumentException(
             errorMessage)));
     }
 
     @Override
     protected void verifySendCalled(int times) {
-        verify(this.mockClient, times(times)).sendMessage(isA(ServiceBusMessage.class));
+        verify(this.mockSenderClient, times(times)).sendMessage(isA(ServiceBusMessage.class));
     }
 
     @Test
@@ -130,12 +131,12 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
 
     @Override
     protected void whenSendWithException() {
-        when(this.mockClientFactory.createSender(anyString())).thenThrow(ServiceBusRuntimeException.class);
+        when(this.mockSenderClientFactory.createSender(anyString())).thenThrow(ServiceBusRuntimeException.class);
     }
 
     @Override
     protected void verifyGetClientCreator(int times) {
-        verify(this.mockClientFactory, times(times)).createSender(anyString());
+        verify(this.mockSenderClientFactory, times(times)).createSender(anyString());
     }
 
     protected void verifySendWithPartitionKey(int times) {

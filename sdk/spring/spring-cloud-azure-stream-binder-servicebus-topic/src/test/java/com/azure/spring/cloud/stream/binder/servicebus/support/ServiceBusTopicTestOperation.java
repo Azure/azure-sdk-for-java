@@ -8,7 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.servicebus.core.processor.DefaultServiceBusMessageProcessor;
-import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
 import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
@@ -34,7 +34,7 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
     private final Map<String, Map<String, DefaultServiceBusMessageProcessor>> processorsByTopicAndSub =
         new ConcurrentHashMap<>();
 
-    public ServiceBusTopicTestOperation(ServiceBusNamespaceTopicProcessorClientFactory clientFactory) {
+    public ServiceBusTopicTestOperation(ServiceBusTopicProcessorClientFactory clientFactory) {
         super(clientFactory);
     }
 

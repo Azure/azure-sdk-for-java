@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Warren Zhu
  */
-abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactory, DisposableBean {
+abstract class AbstractServiceBusSenderClientFactory implements ServiceBusSenderClientFactory, DisposableBean {
 
     protected final List<Listener> listeners = new ArrayList<>();
     protected final NamespaceProperties namespaceProperties;
@@ -29,12 +29,12 @@ abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactor
     protected final Map<Tuple2<String, ProducerProperties>, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
     protected final ProducerPropertiesParentMerger parentMerger = new ProducerPropertiesParentMerger();
 
-    public AbstractServiceBusSenderFactory(NamespaceProperties namespaceProperties) {
+    public AbstractServiceBusSenderClientFactory(NamespaceProperties namespaceProperties) {
         this(namespaceProperties, key -> null);
     }
 
-    public AbstractServiceBusSenderFactory(NamespaceProperties namespaceProperties,
-                                                              PropertiesSupplier<String, ProducerProperties> supplier) {
+    public AbstractServiceBusSenderClientFactory(NamespaceProperties namespaceProperties,
+                                                 PropertiesSupplier<String, ProducerProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier;
     }

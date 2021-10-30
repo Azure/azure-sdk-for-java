@@ -5,11 +5,12 @@ package com.azure.spring.servicebus.core.topic;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.servicebus.core.processor.DefaultServiceBusMessageProcessor;
+import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
-import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceTopicProcessorClientFactory;
 import com.azure.spring.servicebus.health.Instrumentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ import reactor.util.function.Tuples;
  * @author Warren Zhu
  * @author Eduardo Sciullo
  */
-public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusNamespaceTopicProcessorClientFactory>
+public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusSenderClientFactory, ServiceBusTopicProcessorClientFactory>
     implements ServiceBusTopicOperation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTopicTemplate.class);
@@ -40,13 +41,14 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusNamesp
 
     private final Set<Tuple2<String, String>> nameAndConsumerGroups = ConcurrentHashMap.newKeySet();
 
-    public ServiceBusTopicTemplate(ServiceBusNamespaceTopicProcessorClientFactory clientFactory) {
-        super(clientFactory);
+    public ServiceBusTopicTemplate(ServiceBusSenderClientFactory senderFactory, ServiceBusTopicProcessorClientFactory processorFactory) {
+        super(senderFactory, processorFactory);
     }
 
-    public ServiceBusTopicTemplate(ServiceBusNamespaceTopicProcessorClientFactory clientFactory,
+    public ServiceBusTopicTemplate(ServiceBusSenderClientFactory senderFactory,
+                                   ServiceBusTopicProcessorClientFactory processorFactory,
                                    ServiceBusMessageConverter messageConverter) {
-        super(clientFactory, messageConverter);
+        super(senderFactory, processorFactory, messageConverter);
     }
 
     @Override
@@ -116,8 +118,8 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusNamesp
         Instrumentation instrumentation = new Instrumentation(name + consumerGroup, Instrumentation.Type.CONSUME);
         try {
             instrumentationManager.addHealthInstrumentation(instrumentation);
-            ServiceBusProcessorClient processorClient = this.clientFactory.createProcessor(name, consumerGroup,
-                this.clientConfig, messageProcessor);
+            ServiceBusProcessorClient processorClient = this.processorClientFactory.createProcessor(name, consumerGroup,
+                messageProcessor);
             processorClient.start();
             instrumentationManager.getHealthInstrumentation(instrumentation).markStartedSuccessfully();
         } catch (Exception e) {

@@ -4,7 +4,7 @@
 package com.azure.spring.servicebus.core.queue;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceQueueProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusQueueProcessorClientFactory;
 import com.azure.spring.servicebus.support.ServiceBusQueueTestOperation;
 import com.azure.spring.messaging.core.SendSubscribeWithoutGroupOperationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -25,7 +25,7 @@ public class ServiceBusQueueOperationSendSubscribeTest
     private AutoCloseable closeable;
 
     @Mock
-    ServiceBusNamespaceQueueProcessorClientFactory clientFactory;
+    ServiceBusQueueProcessorClientFactory clientFactory;
 
     @BeforeEach
     @Override

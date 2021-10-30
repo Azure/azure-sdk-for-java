@@ -12,7 +12,7 @@ import com.azure.spring.servicebus.core.ServiceBusMessageProcessor;
  *
  * @author Warren Zhu
  */
-public interface ServiceBusNamespaceQueueProcessorClientFactory {
+public interface ServiceBusQueueProcessorClientFactory {
 
     /**
      * Return a function which accepts service bus queue name, then returns {@link ServiceBusProcessorClient}

@@ -9,7 +9,7 @@ import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
-import com.azure.spring.servicebus.core.sender.ServiceBusSenderFactory;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
@@ -34,23 +34,25 @@ import static com.azure.spring.messaging.checkpoint.CheckpointMode.RECORD;
  * @author Warren Zhu
  * @author Eduardo Sciullo
  */
-public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements SendOperation {
+public class ServiceBusTemplate<T extends ServiceBusSenderClientFactory, P> implements SendOperation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTemplate.class);
     private static final CheckpointConfig CHECKPOINT_RECORD = CheckpointConfig.builder().checkpointMode(RECORD).build();
     private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();
     protected InstrumentationManager instrumentationManager = new InstrumentationManager();
-    protected final T clientFactory;
+    protected final T senderClientFactory;
+    protected final P processorClientFactory;
     protected CheckpointConfig checkpointConfig = CHECKPOINT_RECORD;
     protected ServiceBusClientConfig clientConfig = ServiceBusClientConfig.builder().build();
     protected ServiceBusMessageConverter messageConverter;
 
-    public ServiceBusTemplate(@NonNull T senderFactory) {
-        this(senderFactory, DEFAULT_CONVERTER);
+    public ServiceBusTemplate(@NonNull T senderFactory, @NonNull P processorFactory) {
+        this(senderFactory, processorFactory, DEFAULT_CONVERTER);
     }
 
-    public ServiceBusTemplate(@NonNull T senderFactory, @NonNull ServiceBusMessageConverter messageConverter) {
-        this.clientFactory = senderFactory;
+    public ServiceBusTemplate(@NonNull T senderFactory, @NonNull P processorFactory, @NonNull ServiceBusMessageConverter messageConverter) {
+        this.senderClientFactory = senderFactory;
+        this.processorClientFactory = processorFactory;
         this.messageConverter = messageConverter;
         LOGGER.info("Started ServiceBusTemplate with properties: {}", checkpointConfig);
     }
@@ -70,7 +72,7 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
         Instrumentation instrumentation = new Instrumentation(destination, Instrumentation.Type.PRODUCE);
         try {
             instrumentationManager.addHealthInstrumentation(instrumentation);
-            senderAsyncClient = this.clientFactory.createSender(destination);
+            senderAsyncClient = this.senderClientFactory.createSender(destination);
             instrumentationManager.getHealthInstrumentation(instrumentation).markStartedSuccessfully();
         } catch (Exception e) {
             instrumentationManager.getHealthInstrumentation(instrumentation).markStartFailed(e);

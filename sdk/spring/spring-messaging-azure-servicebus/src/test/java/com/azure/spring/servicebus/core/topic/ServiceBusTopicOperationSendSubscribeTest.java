@@ -4,7 +4,7 @@
 package com.azure.spring.servicebus.core.topic;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
 import com.azure.spring.servicebus.support.ServiceBusTopicTestOperation;
 import com.azure.spring.messaging.core.SendSubscribeWithGroupOperationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -22,7 +22,7 @@ public class ServiceBusTopicOperationSendSubscribeTest
     extends SendSubscribeWithGroupOperationTest<ServiceBusTopicOperation> {
 
     @Mock
-    ServiceBusNamespaceTopicProcessorClientFactory clientFactory;
+    ServiceBusTopicProcessorClientFactory clientFactory;
 
     private AutoCloseable closeable;
 

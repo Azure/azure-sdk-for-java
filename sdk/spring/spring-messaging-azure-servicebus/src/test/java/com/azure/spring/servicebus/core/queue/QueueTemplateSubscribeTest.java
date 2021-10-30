@@ -3,30 +3,26 @@
 
 package com.azure.spring.servicebus.core.queue;
 
-import com.azure.spring.servicebus.support.ServiceBusClientConfig;
-import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
-import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceQueueProcessorClientFactory;
-import com.azure.spring.servicebus.support.ServiceBusProcessorClientWrapper;
 import com.azure.spring.messaging.core.SubscribeOperationTest;
+import com.azure.spring.servicebus.core.processor.ServiceBusQueueProcessorClientFactory;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
+import com.azure.spring.servicebus.support.ServiceBusProcessorClientWrapper;
+import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBusQueueOperation> {
 
     @Mock
-    private ServiceBusNamespaceQueueProcessorClientFactory mockClientFactory;
-
+    private ServiceBusQueueProcessorClientFactory mockClientFactory;
+    @Mock
+    private ServiceBusSenderClientFactory mockSenderClientFactory;
     private ServiceBusProcessorClientWrapper processorClientWrapper;
 
     private AutoCloseable closeable;
@@ -36,8 +32,8 @@ public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBu
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.processorClientWrapper = new ServiceBusProcessorClientWrapper();
-        this.subscribeOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
-        when(this.mockClientFactory.createProcessor(eq(this.destination), any(), any())).thenReturn(
+        this.subscribeOperation = new ServiceBusQueueTemplate(mockSenderClientFactory, mockClientFactory, new ServiceBusMessageConverter());
+        when(this.mockClientFactory.createProcessor(eq(this.destination), any())).thenReturn(
             processorClientWrapper.getClient());
     }
 
@@ -48,14 +44,12 @@ public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBu
 
     @Override
     protected void verifySubscriberCreatorCalled() {
-        verify(this.mockClientFactory, atLeastOnce()).createProcessor(anyString(),
-            any(ServiceBusClientConfig.class), any());
+        verify(this.mockClientFactory, atLeastOnce()).createProcessor(anyString(), any());
     }
 
     @Override
     protected void verifySubscriberCreatorNotCalled() {
-        verify(this.mockClientFactory, never()).createProcessor(anyString(), any(ServiceBusClientConfig.class),
-            any());
+        verify(this.mockClientFactory, never()).createProcessor(anyString(), any());
     }
 
     @Override

@@ -16,7 +16,7 @@ import reactor.util.function.Tuples;
  * if a configuration entry is provided at both producer and namespace level, the producer level configuration will
  * take advantage.
  */
-public class DefaultServiceBusNamespaceTopicSenderClientFactory extends AbstractServiceBusSenderFactory {
+public class DefaultServiceBusNamespaceTopicSenderClientFactory extends AbstractServiceBusSenderClientFactory {
     public DefaultServiceBusNamespaceTopicSenderClientFactory(NamespaceProperties namespaceProperties) {
         this(namespaceProperties, key -> null);
     }

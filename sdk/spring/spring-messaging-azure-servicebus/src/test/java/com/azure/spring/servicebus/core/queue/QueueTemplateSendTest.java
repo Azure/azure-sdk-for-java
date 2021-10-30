@@ -6,8 +6,9 @@ package com.azure.spring.servicebus.core.queue;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.servicebus.core.ServiceBusTemplateSendTest;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
-import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceQueueProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusQueueProcessorClientFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
@@ -18,7 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class QueueTemplateSendTest
-    extends ServiceBusTemplateSendTest<ServiceBusNamespaceQueueProcessorClientFactory, ServiceBusSenderAsyncClient> {
+    extends ServiceBusTemplateSendTest<ServiceBusQueueProcessorClientFactory, ServiceBusSenderClientFactory,ServiceBusSenderAsyncClient> {
 
     private AutoCloseable closeable;
 
@@ -26,13 +27,13 @@ public class QueueTemplateSendTest
     @Override
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.mockClientFactory = mock(ServiceBusNamespaceQueueProcessorClientFactory.class);
-        this.mockClient = mock(ServiceBusSenderAsyncClient.class);
+        this.mockSenderClientFactory = mock(ServiceBusSenderClientFactory.class);
+        this.mockSenderClient = mock(ServiceBusSenderAsyncClient.class);
 
-        when(this.mockClientFactory.createSender(anyString())).thenReturn(this.mockClient);
-        when(this.mockClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(this.mono);
+        when(this.mockSenderClientFactory.createSender(anyString())).thenReturn(this.mockSenderClient);
+        when(this.mockSenderClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(this.mono);
 
-        this.sendOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
+        this.sendOperation = new ServiceBusQueueTemplate(mockSenderClientFactory, mockProcessorClientFactory, new ServiceBusMessageConverter());
     }
 
 

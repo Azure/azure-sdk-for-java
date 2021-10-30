@@ -3,7 +3,7 @@
 
 package com.azure.spring.integration.servicebus.inbound;
 
-import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
 import com.azure.spring.servicebus.support.ServiceBusTopicTestOperation;
 import com.azure.spring.integration.endpoint.InboundChannelAdapterTest;
 import org.junit.jupiter.api.AfterEach;
@@ -14,7 +14,7 @@ import org.mockito.MockitoAnnotations;
 public class ServiceBusTopicInboundAdapterTest extends InboundChannelAdapterTest<ServiceBusTopicInboundChannelAdapter> {
 
     @Mock
-    ServiceBusNamespaceTopicProcessorClientFactory clientFactory;
+    ServiceBusTopicProcessorClientFactory clientFactory;
 
     private AutoCloseable closeable;
 

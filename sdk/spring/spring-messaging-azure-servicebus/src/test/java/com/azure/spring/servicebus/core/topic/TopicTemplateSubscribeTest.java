@@ -3,7 +3,8 @@
 
 package com.azure.spring.servicebus.core.topic;
 
-import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import com.azure.spring.servicebus.support.ServiceBusProcessorClientWrapper;
 import com.azure.spring.messaging.core.SubscribeByGroupOperationTest;
@@ -23,8 +24,10 @@ import static org.mockito.Mockito.when;
 public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<ServiceBusTopicOperation> {
 
     @Mock
-    private ServiceBusNamespaceTopicProcessorClientFactory mockClientFactory;
+    private ServiceBusTopicProcessorClientFactory mockProcessorClientFactory;
     private ServiceBusProcessorClientWrapper processorClientWrapper;
+    @Mock
+    private ServiceBusSenderClientFactory mockSenderClientFactory;
     private AutoCloseable closeable;
     @BeforeEach
     public void setUp() {
@@ -32,14 +35,12 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
         this.processorClientWrapper = new ServiceBusProcessorClientWrapper();
         ServiceBusProcessorClientWrapper anotherProcessorClientWrapper = new ServiceBusProcessorClientWrapper();
 
-        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());
-        when(this.mockClientFactory.createProcessor(eq(this.destination),
+        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockSenderClientFactory, mockProcessorClientFactory, new ServiceBusMessageConverter());
+        when(this.mockProcessorClientFactory.createProcessor(eq(this.destination),
                                                          eq(this.consumerGroup),
-                                                         any(),
                                                          any())).thenReturn(this.processorClientWrapper.getClient());
-        when(this.mockClientFactory.createProcessor(eq(this.destination),
+        when(this.mockProcessorClientFactory.createProcessor(eq(this.destination),
                                                          eq(this.anotherConsumerGroup),
-                                                         any(),
                                                          any())).thenReturn(anotherProcessorClientWrapper.getClient());
     }
 
@@ -50,17 +51,15 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
 
     @Override
     protected void verifySubscriberCreatorCalled() {
-        verify(this.mockClientFactory, atLeastOnce()).createProcessor(eq(this.destination),
+        verify(this.mockProcessorClientFactory, atLeastOnce()).createProcessor(eq(this.destination),
                                                                            eq(this.consumerGroup),
-                                                                           any(),
                                                                            any());
     }
 
     @Override
     protected void verifySubscriberCreatorNotCalled() {
-        verify(this.mockClientFactory, never()).createProcessor(eq(this.destination),
+        verify(this.mockProcessorClientFactory, never()).createProcessor(eq(this.destination),
                                                                      eq(this.consumerGroup),
-                                                                     any(),
                                                                      any());
     }
 

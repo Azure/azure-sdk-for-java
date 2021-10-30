@@ -25,11 +25,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
- * Default implementation of {@link ServiceBusNamespaceTopicProcessorClientFactory}. Client will be cached to improve performance
+ * Default implementation of {@link ServiceBusTopicProcessorClientFactory}. Client will be cached to improve performance
  *
  * @author Warren Zhu
  */
-public class DefaultServiceBusNamespaceTopicProcessorClientFactory implements ServiceBusNamespaceTopicProcessorClientFactory, DisposableBean {
+public class DefaultServiceBusNamespaceTopicProcessorClientFactory implements ServiceBusTopicProcessorClientFactory, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceTopicProcessorClientFactory.class);
     private final Map<Tuple2<String, String>, ServiceBusProcessorClient> topicProcessorMap = new ConcurrentHashMap<>();

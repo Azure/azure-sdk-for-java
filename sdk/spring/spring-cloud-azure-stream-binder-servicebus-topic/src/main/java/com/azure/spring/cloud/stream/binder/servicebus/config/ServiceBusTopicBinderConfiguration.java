@@ -14,7 +14,7 @@ import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusTo
 import com.azure.spring.servicebus.provisioning.ServiceBusTopicProvisioner;
 import com.azure.spring.servicebus.core.topic.ServiceBusTopicOperation;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusTopicMessageChannelBinder;
-import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicOperationAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicMessagingAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -33,7 +33,7 @@ import org.springframework.context.annotation.Import;
     AzureServiceBusAutoConfiguration.class,
     AzureResourceManagerAutoConfiguration.class,
     AzureServiceBusResourceManagerAutoConfiguration.class,
-    AzureServiceBusTopicOperationAutoConfiguration.class,
+    AzureServiceBusTopicMessagingAutoConfiguration.class,
     ServiceBusTopicBinderHealthIndicatorConfiguration.class
 })
 @EnableConfigurationProperties(ServiceBusTopicExtendedBindingProperties.class)
