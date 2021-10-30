@@ -10,13 +10,10 @@ import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusCh
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.core.SendOperation;
+import com.azure.spring.servicebus.core.ServiceBusTemplate;
+import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
-import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
-import org.springframework.cloud.stream.binder.BinderHeaders;
-import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
-import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
-import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
-import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
+import org.springframework.cloud.stream.binder.*;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.integration.expression.FunctionExpression;
 import org.springframework.integration.support.DefaultErrorMessageStrategy;
@@ -24,8 +21,11 @@ import org.springframework.integration.support.ErrorMessageStrategy;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
+import org.springframework.util.Assert;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Warren Zhu
@@ -39,7 +39,9 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
     ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
 
     protected T bindingProperties;
-
+    protected NamespaceProperties namespaceProperties;
+    protected ServiceBusTemplate serviceBusTemplate;
+    protected final Map<String, ServiceBusInformation> serviceBusInUse = new ConcurrentHashMap<>();
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
 
     protected static final String EXCEPTION_MESSAGE = "exception-message";
@@ -53,8 +55,10 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
         ProducerDestination destination,
         ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties,
         MessageChannel errorChannel) {
+        Assert.notNull(getServiceBusTemplate(), "ServiceBusTemplate can't be null when create a producer");
+        serviceBusInUse.put(destination.getName(), new ServiceBusInformation(null));
 
-        DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), getSendOperation());
+        DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), this.serviceBusTemplate);
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
@@ -127,6 +131,22 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
                                      .build();
     }
 
-    abstract SendOperation getSendOperation();
+    static class ServiceBusInformation {
 
+        private final String subscription;
+
+        ServiceBusInformation(String subscription) {
+            this.subscription = subscription;
+        }
+
+        public String getSubscription() {
+            return subscription;
+        }
+    }
+
+    protected abstract ServiceBusTemplate getServiceBusTemplate();
+
+    public void setNamespaceProperties(NamespaceProperties namespaceProperties) {
+        this.namespaceProperties = namespaceProperties;
+    }
 }

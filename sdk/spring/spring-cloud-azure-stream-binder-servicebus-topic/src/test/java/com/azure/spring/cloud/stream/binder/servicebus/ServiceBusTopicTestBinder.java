@@ -21,10 +21,10 @@ public class ServiceBusTopicTestBinder
                                   ExtendedConsumerProperties<ServiceBusConsumerProperties>,
                                   ExtendedProducerProperties<ServiceBusProducerProperties>> {
 
-    ServiceBusTopicTestBinder(ServiceBusTopicOperation operation) {
+    ServiceBusTopicTestBinder() {
 
         ServiceBusTopicMessageChannelBinder binder = new ServiceBusTopicMessageChannelBinder(
-            BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner(), operation);
+            BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
         GenericApplicationContext context = new GenericApplicationContext();
         binder.setApplicationContext(context);
         this.setBinder(binder);

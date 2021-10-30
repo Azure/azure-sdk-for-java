@@ -3,12 +3,19 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus;
 
+import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusQueueExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
-import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusQueueInboundChannelAdapter;
+import com.azure.spring.messaging.core.SendOperation;
+import com.azure.spring.servicebus.core.ServiceBusTemplate;
+import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceQueueProcessorClientFactory;
+import com.azure.spring.servicebus.core.properties.ProcessorProperties;
+import com.azure.spring.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueOperation;
+import com.azure.spring.servicebus.core.queue.ServiceBusQueueTemplate;
+import com.azure.spring.servicebus.core.sender.DefaultServiceBusNamespaceQueueSenderClientFactory;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.integration.core.MessageProducer;
@@ -17,6 +24,10 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.util.Assert;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
+
+import java.util.Map;
 
 /**
  * @author Warren Zhu
@@ -24,26 +35,23 @@ import org.springframework.util.Assert;
 public class ServiceBusQueueMessageChannelBinder extends
     ServiceBusMessageChannelBinder<ServiceBusQueueExtendedBindingProperties> {
 
-    private final ServiceBusQueueOperation serviceBusQueueOperation;
-
     public ServiceBusQueueMessageChannelBinder(String[] headersToEmbed,
-                                               @NonNull ServiceBusChannelProvisioner provisioningProvider,
-                                               @NonNull ServiceBusQueueOperation serviceBusQueueOperation) {
+                                               @NonNull ServiceBusChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
-        this.serviceBusQueueOperation = serviceBusQueueOperation;
         this.bindingProperties = new ServiceBusQueueExtendedBindingProperties();
     }
 
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
-        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+                                                     ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        Assert.notNull(getServiceBusTemplate(), "ServiceBusTemplate can't be null when create a consumer");
+        serviceBusInUse.put(destination.getName(), new ServiceBusInformation(group));
 
         // TODO (xiada) the instance of service bus operation is shared among consumer endpoints, if each of them
         //  doesn't share the same configuration the last will win。 Is it possible that's this is a bug here？
-        this.serviceBusQueueOperation.setCheckpointConfig(buildCheckpointConfig(properties));
-        this.serviceBusQueueOperation.setClientConfig(buildClientConfig(properties));
+        this.serviceBusTemplate.setCheckpointConfig(buildCheckpointConfig(properties));
         ServiceBusQueueInboundChannelAdapter inboundAdapter =
-                new ServiceBusQueueInboundChannelAdapter(destination.getName(), this.serviceBusQueueOperation);
+            new ServiceBusQueueInboundChannelAdapter(destination.getName(), this.serviceBusTemplate);
         inboundAdapter.setBeanFactory(getBeanFactory());
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, group, properties);
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
@@ -51,16 +59,11 @@ public class ServiceBusQueueMessageChannelBinder extends
     }
 
     @Override
-    SendOperation getSendOperation() {
-        return this.serviceBusQueueOperation;
-    }
-
-    @Override
     protected MessageHandler getErrorMessageHandler(ConsumerDestination destination,
-        String group, final ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+                                                    String group, final ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         return message -> {
             Assert.state(message instanceof ErrorMessage, "Expected an ErrorMessage, not a "
-                    + message.getClass().toString() + " for: " + message);
+                + message.getClass().toString() + " for: " + message);
 
             ErrorMessage errorMessage = (ErrorMessage) message;
             Message<?> amqpMessage = errorMessage.getOriginalMessage();
@@ -71,12 +74,50 @@ public class ServiceBusQueueMessageChannelBinder extends
                 Throwable cause = (Throwable) message.getPayload();
 
                 if (properties.getExtension().isRequeueRejected()) {
-                    serviceBusQueueOperation.deadLetter(destination.getName(), amqpMessage, EXCEPTION_MESSAGE,
-                            cause.getCause() != null ? cause.getCause().getMessage() : cause.getMessage());
+                    ServiceBusTemplate.deadLetter(destination.getName(), amqpMessage, EXCEPTION_MESSAGE,
+                        cause.getCause() != null ? cause.getCause().getMessage() : cause.getMessage());
                 } else {
-                    serviceBusQueueOperation.abandon(destination.getName(), amqpMessage);
+                    ServiceBusTemplate.abandon(destination.getName(), amqpMessage);
                 }
             }
+        };
+    }
+
+    @Override
+    protected ServiceBusTemplate getServiceBusTemplate() {
+        if (this.serviceBusTemplate == null) {
+            this.serviceBusTemplate = new ServiceBusQueueTemplate(
+                new DefaultServiceBusNamespaceQueueSenderClientFactory(this.namespaceProperties,
+                    getProducerPropertiesSupplier()),
+                new DefaultServiceBusNamespaceQueueProcessorClientFactory(this.namespaceProperties,
+                    getProcessorPropertiesSupplier()));
+        }
+        return this.serviceBusTemplate;
+    }
+
+    private PropertiesSupplier<String, ProducerProperties> getProducerPropertiesSupplier() {
+        return key -> {
+            Map<String, ServiceBusBindingProperties> bindings = bindingProperties.getBindings();
+            for (Map.Entry<String, ServiceBusBindingProperties> entry : bindings.entrySet()) {
+                ProducerProperties properties = bindings.get(entry.getKey()).getProducer().getProducer();
+                if (key.equalsIgnoreCase(properties.getQueueName())) {
+                    return properties;
+                }
+            }
+            return null;
+        };
+    }
+
+    private PropertiesSupplier<String, ProcessorProperties> getProcessorPropertiesSupplier() {
+        return key -> {
+            Map<String, ServiceBusBindingProperties> bindings = bindingProperties.getBindings();
+            for (Map.Entry<String, ServiceBusBindingProperties> entry : bindings.entrySet()) {
+                ProcessorProperties properties = bindings.get(entry.getKey()).getConsumer().getProcessor();
+                if (key.equals(properties.getQueueName())) {
+                    return properties;
+                }
+            }
+            return null;
         };
     }
 

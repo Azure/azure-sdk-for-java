@@ -43,7 +43,6 @@ public class ServiceBusTemplate<T extends ServiceBusSenderClientFactory, P> impl
     protected final T senderClientFactory;
     protected final P processorClientFactory;
     protected CheckpointConfig checkpointConfig = CHECKPOINT_RECORD;
-    protected ServiceBusClientConfig clientConfig = ServiceBusClientConfig.builder().build();
     protected ServiceBusMessageConverter messageConverter;
 
     public ServiceBusTemplate(@NonNull T senderFactory, @NonNull P processorFactory) {

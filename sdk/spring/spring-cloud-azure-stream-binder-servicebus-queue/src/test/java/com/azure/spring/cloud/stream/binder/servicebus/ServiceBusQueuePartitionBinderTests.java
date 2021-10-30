@@ -36,7 +36,7 @@ public class ServiceBusQueuePartitionBinderTests
 
     @Before
     public void setUp() {
-        this.binder = new ServiceBusQueueTestBinder(new ServiceBusQueueTestOperation(this.clientFactory));
+        this.binder = new ServiceBusQueueTestBinder();
     }
 
     @Override

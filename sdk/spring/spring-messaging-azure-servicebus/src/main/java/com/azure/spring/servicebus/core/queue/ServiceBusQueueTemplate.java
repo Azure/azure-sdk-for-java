@@ -89,11 +89,6 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusSender
     }
 
     @Override
-    public void setClientConfig(@NonNull ServiceBusClientConfig clientConfig) {
-        this.clientConfig = clientConfig;
-    }
-
-    @Override
     public <T> void deadLetter(String destination,
                                Message<T> message,
                                String deadLetterReason,

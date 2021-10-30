@@ -7,14 +7,15 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoCon
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusQueueMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusQueueExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusQueueChannelResourceManagerProvisioner;
-import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusQueueMessageChannelBinder;
-import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueMessagingAutoConfiguration;
+import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.provisioning.ServiceBusQueueProvisioner;
-import com.azure.spring.servicebus.core.queue.ServiceBusQueueOperation;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -40,7 +41,7 @@ import org.springframework.context.annotation.Import;
 public class ServiceBusQueueBinderConfiguration {
 
     @Bean
-    @ConditionalOnBean(ServiceBusQueueProvisioner.class)
+    @ConditionalOnBean({ ServiceBusQueueProvisioner.class, AzureServiceBusProperties.class })
     public ServiceBusChannelProvisioner serviceBusChannelArmProvisioner(AzureServiceBusProperties serviceBusProperties,
                                                                         ServiceBusQueueProvisioner queueProvisioner) {
 
@@ -58,13 +59,13 @@ public class ServiceBusQueueBinderConfiguration {
 
     @Bean
     public ServiceBusQueueMessageChannelBinder serviceBusQueueBinder(ServiceBusChannelProvisioner channelProvisioner,
-                                                                     ServiceBusQueueOperation serviceBusQueueOperation,
-                                                                     ServiceBusQueueExtendedBindingProperties bindingProperties) {
+                                                                     ServiceBusQueueExtendedBindingProperties bindingProperties,
+                                                                     ObjectProvider<NamespaceProperties> namespaceProperties) {
 
         ServiceBusQueueMessageChannelBinder binder = new ServiceBusQueueMessageChannelBinder(null,
-                                                                                             channelProvisioner,
-                                                                                             serviceBusQueueOperation);
+                                                                                             channelProvisioner);
         binder.setBindingProperties(bindingProperties);
+        binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
         return binder;
     }
 }

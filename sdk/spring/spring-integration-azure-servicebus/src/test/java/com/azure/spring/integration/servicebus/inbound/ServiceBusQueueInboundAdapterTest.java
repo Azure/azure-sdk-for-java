@@ -4,6 +4,7 @@
 package com.azure.spring.integration.servicebus.inbound;
 
 import com.azure.spring.servicebus.core.processor.ServiceBusQueueProcessorClientFactory;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
 import com.azure.spring.servicebus.support.ServiceBusQueueTestOperation;
 import com.azure.spring.integration.endpoint.InboundChannelAdapterTest;
 import org.junit.jupiter.api.AfterEach;
@@ -14,7 +15,9 @@ import org.mockito.MockitoAnnotations;
 public class ServiceBusQueueInboundAdapterTest extends InboundChannelAdapterTest<ServiceBusQueueInboundChannelAdapter> {
 
     @Mock
-    ServiceBusQueueProcessorClientFactory clientFactory;
+    ServiceBusQueueProcessorClientFactory processorClientFactory;
+    @Mock
+    ServiceBusSenderClientFactory senderClientFactory;
 
     private AutoCloseable closeable;
 
@@ -23,7 +26,7 @@ public class ServiceBusQueueInboundAdapterTest extends InboundChannelAdapterTest
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.adapter = new ServiceBusQueueInboundChannelAdapter(destination,
-            new ServiceBusQueueTestOperation(clientFactory));
+            new ServiceBusQueueTestOperation(senderClientFactory, processorClientFactory));
     }
 
     @AfterEach

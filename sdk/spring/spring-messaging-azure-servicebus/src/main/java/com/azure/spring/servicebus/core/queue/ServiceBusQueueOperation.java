@@ -21,8 +21,6 @@ public interface ServiceBusQueueOperation extends SendOperation, SubscribeOperat
 
     InstrumentationManager getInstrumentationManager();
 
-    void setClientConfig(ServiceBusClientConfig clientConfig);
-
     /**
      * Send a {@link Message} to the given destination deadletterqueue.
      * @param destination destination

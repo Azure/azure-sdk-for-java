@@ -36,7 +36,7 @@ public class ServiceBusTopicPartitionBinderTests
 
     @Before
     public void setUp() {
-        this.binder = new ServiceBusTopicTestBinder(new ServiceBusTopicTestOperation(this.clientFactory));
+        this.binder = new ServiceBusTopicTestBinder();
     }
 
     @Override

@@ -3,12 +3,15 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.properties;
 
+import com.azure.spring.servicebus.core.properties.ProducerProperties;
+
 /**
  * @author Warren Zhu
  */
 public class ServiceBusProducerProperties {
     private boolean sync = false;
     private long sendTimeout = 10000;
+    private final ProducerProperties producer = new ProducerProperties();
 
     public boolean isSync() {
         return sync;
@@ -24,5 +27,9 @@ public class ServiceBusProducerProperties {
 
     public void setSendTimeout(long sendTimeout) {
         this.sendTimeout = sendTimeout;
+    }
+
+    public ProducerProperties getProducer() {
+        return producer;
     }
 }

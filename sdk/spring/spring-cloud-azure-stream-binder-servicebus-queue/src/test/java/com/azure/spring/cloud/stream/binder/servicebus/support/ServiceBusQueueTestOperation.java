@@ -10,6 +10,7 @@ import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.servicebus.core.processor.DefaultServiceBusMessageProcessor;
 import com.azure.spring.servicebus.core.processor.ServiceBusQueueProcessorClientFactory;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueTemplate;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Mono;
@@ -38,8 +39,8 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     private final Map<String, List<ServiceBusReceivedMessageContext>> queuesByName = new HashMap<>();
     private final Map<String, List<DefaultServiceBusMessageProcessor>> processorsByQueue = new HashMap<>();
 
-    public ServiceBusQueueTestOperation(ServiceBusQueueProcessorClientFactory clientFactory) {
-        super(clientFactory);
+    public ServiceBusQueueTestOperation(ServiceBusSenderClientFactory senderClientFactory, ServiceBusQueueProcessorClientFactory processorClientFactory) {
+        super(senderClientFactory, processorClientFactory);
     }
 
     @Override
