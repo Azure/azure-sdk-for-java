@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.spring.servicebus.core.sender.AbstractServiceBusSenderFactory;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +67,7 @@ public class DefaultServiceBusTopicClientFactory extends AbstractServiceBusSende
     }
 
     @Override
-    public ServiceBusSenderAsyncClient getOrCreateSender(String name) {
+    public ServiceBusSenderAsyncClient createSender(String name) {
         return this.topicSenderMap.computeIfAbsent(name, this::createTopicSender);
     }
 

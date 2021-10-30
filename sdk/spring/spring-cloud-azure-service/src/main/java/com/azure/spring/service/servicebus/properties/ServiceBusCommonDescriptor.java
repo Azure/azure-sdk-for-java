@@ -8,7 +8,7 @@ import com.azure.spring.core.properties.AzureProperties;
 /**
  *
  */
-public interface ServiceBusCommonProperties extends AzureProperties {
+public interface ServiceBusCommonDescriptor extends AzureProperties {
 
     String getFQDN();
 

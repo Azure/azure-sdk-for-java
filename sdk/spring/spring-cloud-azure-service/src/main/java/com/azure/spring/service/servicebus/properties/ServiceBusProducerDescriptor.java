@@ -6,10 +6,10 @@ package com.azure.spring.service.servicebus.properties;
 /**
  *
  */
-public interface ServiceBusProcessorProperties extends ServiceBusConsumerProperties {
+public interface ServiceBusProducerDescriptor extends ServiceBusCommonDescriptor {
 
-    Integer getMaxConcurrentCalls();
+    String getQueueName();
 
-    Integer getMaxConcurrentSessions();
+    String getTopicName();
 
 }

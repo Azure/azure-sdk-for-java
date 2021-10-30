@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  *
  */
-public interface ServiceBusConsumerProperties extends ServiceBusCommonProperties {
+public interface ServiceBusConsumerDescriptor extends ServiceBusCommonDescriptor {
 
     Boolean getSessionAware();
 

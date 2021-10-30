@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpConfigurationProperties;
+import com.azure.spring.core.connectionstring.implementation.ServiceBusConnectionString;
 
 /**
  *
@@ -18,8 +19,15 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
 
     protected String connectionString;
 
+    private String extractFqdnFromConnectionString() {
+        if (this.connectionString == null) {
+            return null;
+        }
+        return new ServiceBusConnectionString(this.connectionString).getFullyQualifiedNamespace();
+    }
+
     public String getFQDN() {
-        return this.namespace + "." + this.domainName;
+        return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }
 
     public String getDomainName() {

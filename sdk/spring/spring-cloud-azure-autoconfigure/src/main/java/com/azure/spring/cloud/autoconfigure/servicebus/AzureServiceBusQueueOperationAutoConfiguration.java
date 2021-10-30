@@ -31,10 +31,10 @@ public class AzureServiceBusQueueOperationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ServiceBusQueueClientFactory queueClientFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                           ObjectProvider<ServiceBusQueueProvisioner> serviceBusQueueProvisioners) {
+    public ServiceBusQueueClientFactory queueClientFactory(ServiceBusClientBuilder serviceBusClientBuilder) {
+//                                                           ObjectProvider<ServiceBusQueueProvisioner> serviceBusQueueProvisioners) {
         DefaultServiceBusQueueClientFactory clientFactory = new DefaultServiceBusQueueClientFactory(serviceBusClientBuilder);
-        clientFactory.setQueueProvisioner(serviceBusQueueProvisioners.getIfAvailable());
+//        clientFactory.setQueueProvisioner(serviceBusQueueProvisioners.getIfAvailable());
         return clientFactory;
     }
 

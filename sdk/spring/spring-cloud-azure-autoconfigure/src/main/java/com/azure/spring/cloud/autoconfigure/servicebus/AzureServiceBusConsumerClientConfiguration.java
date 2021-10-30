@@ -6,8 +6,6 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
-import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
@@ -16,10 +14,11 @@ import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBu
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.servicebus.ServiceBusClientBuilderFactory;
+import com.azure.spring.service.servicebus.factory.CommonServiceBusClientBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.PropertyMapper;
@@ -38,7 +37,8 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SER
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
 /**
- * Configuration for a {@link ServiceBusSenderClient} or a {@link ServiceBusSenderAsyncClient}.
+ * Configuration for a {@link ServiceBusReceiverClient} and a {@link ServiceBusReceiverAsyncClient} or a
+ * {@link ServiceBusSessionReceiverAsyncClient} and a {@link ServiceBusSessionReceiverClient}.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus.consumer", name = { "queue-name", "topic-name" })
@@ -64,9 +64,9 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
         @ConditionalOnMissingBean(name = SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-        public ServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForConsumer() {
+        public CommonServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForConsumer() {
 
-            final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.consumerProperties);
+            final CommonServiceBusClientBuilderFactory builderFactory = new CommonServiceBusClientBuilderFactory(this.consumerProperties);
 
             builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
                 this.consumerProperties.getConnectionString()));
@@ -77,7 +77,7 @@ class AzureServiceBusConsumerClientConfiguration {
         @Bean(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
         @ConditionalOnMissingBean(name = SERVICE_BUS_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
         public ServiceBusClientBuilder serviceBusClientBuilderForConsumer(
-            @Qualifier(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME) ServiceBusClientBuilderFactory clientBuilderFactory) {
+            @Qualifier(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME) CommonServiceBusClientBuilderFactory clientBuilderFactory) {
 
             return clientBuilderFactory.build();
         }
@@ -103,6 +103,8 @@ class AzureServiceBusConsumerClientConfiguration {
     }
 
     @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.servicebus.consumer", name = { "connection-string", "namespace" })
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "connection-string", "namespace" })
+    @ConditionalOnBean(ServiceBusClientBuilder.class)
     @Configuration(proxyBeanMethods = false)
     static class ShareConsumerConnectionConfiguration {
 

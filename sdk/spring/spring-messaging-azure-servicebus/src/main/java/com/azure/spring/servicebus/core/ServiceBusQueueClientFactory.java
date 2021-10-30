@@ -5,6 +5,7 @@ package com.azure.spring.servicebus.core;
 
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderFactory;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 
 /**

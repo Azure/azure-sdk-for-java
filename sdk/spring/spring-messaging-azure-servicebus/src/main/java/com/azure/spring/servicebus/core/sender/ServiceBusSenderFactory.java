@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.servicebus.core;
+package com.azure.spring.servicebus.core.sender;
 
 
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
@@ -20,5 +20,27 @@ public interface ServiceBusSenderFactory {
      * @param name sender name
      * @return message sender implement instance
      */
-    ServiceBusSenderAsyncClient getOrCreateSender(String name);
+    ServiceBusSenderAsyncClient createSender(String name);
+
+    default void addListener(Listener listener) {
+
+    }
+
+    default boolean removeListener(Listener listener) {
+        return false;
+    }
+
+    /**
+     * Called whenever a producer is added or removed.
+     */
+    interface Listener {
+
+        default void producerAdded(String name) {
+
+        }
+
+        default void producerRemoved(String name) {
+        }
+
+    }
 }

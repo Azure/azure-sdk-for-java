@@ -7,6 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderFactory;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.messaging.core.SendOperationTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -129,12 +130,12 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
 
     @Override
     protected void whenSendWithException() {
-        when(this.mockClientFactory.getOrCreateSender(anyString())).thenThrow(ServiceBusRuntimeException.class);
+        when(this.mockClientFactory.createSender(anyString())).thenThrow(ServiceBusRuntimeException.class);
     }
 
     @Override
     protected void verifyGetClientCreator(int times) {
-        verify(this.mockClientFactory, times(times)).getOrCreateSender(anyString());
+        verify(this.mockClientFactory, times(times)).createSender(anyString());
     }
 
     protected void verifySendWithPartitionKey(int times) {

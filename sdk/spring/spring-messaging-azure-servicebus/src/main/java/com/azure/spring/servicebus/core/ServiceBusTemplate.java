@@ -9,6 +9,7 @@ import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
+import com.azure.spring.servicebus.core.sender.ServiceBusSenderFactory;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
@@ -69,7 +70,7 @@ public class ServiceBusTemplate<T extends ServiceBusSenderFactory> implements Se
         Instrumentation instrumentation = new Instrumentation(destination, Instrumentation.Type.PRODUCE);
         try {
             instrumentationManager.addHealthInstrumentation(instrumentation);
-            senderAsyncClient = this.clientFactory.getOrCreateSender(destination);
+            senderAsyncClient = this.clientFactory.createSender(destination);
             instrumentationManager.getHealthInstrumentation(instrumentation).markStartedSuccessfully();
         } catch (Exception e) {
             instrumentationManager.getHealthInstrumentation(instrumentation).markStartFailed(e);

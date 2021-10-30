@@ -29,7 +29,7 @@ public class TopicTemplateSendTest
         this.mockClientFactory = mock(ServiceBusTopicClientFactory.class);
         this.mockClient = mock(ServiceBusSenderAsyncClient.class);
 
-        when(this.mockClientFactory.getOrCreateSender(anyString())).thenReturn(this.mockClient);
+        when(this.mockClientFactory.createSender(anyString())).thenReturn(this.mockClient);
         when(this.mockClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(this.mono);
 
         this.sendOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.service.servicebus;
+package com.azure.spring.service.servicebus.factory;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
@@ -17,8 +17,10 @@ import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.core.PropertyMapper;
-import com.azure.spring.service.servicebus.properties.ServiceBusCommonProperties;
-import com.azure.spring.service.servicebus.properties.ServiceBusProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusCommonDescriptor;
+import com.azure.spring.service.servicebus.properties.ServiceBusConsumerDescriptor;
+import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceDescriptor;
+import com.azure.spring.service.servicebus.properties.ServiceBusProducerDescriptor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,11 +29,11 @@ import java.util.function.BiConsumer;
 /**
  * Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder}.
  */
-public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<ServiceBusClientBuilder> {
+public class CommonServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<ServiceBusClientBuilder> {
 
-    private final ServiceBusCommonProperties serviceBusProperties;
+    protected final ServiceBusCommonDescriptor serviceBusProperties;
 
-    public ServiceBusClientBuilderFactory(ServiceBusCommonProperties serviceBusProperties) {
+    public CommonServiceBusClientBuilderFactory(ServiceBusCommonDescriptor serviceBusProperties) {
         this.serviceBusProperties = serviceBusProperties;
     }
 
@@ -81,8 +83,8 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
     protected void configureService(ServiceBusClientBuilder builder) {
         PropertyMapper mapper = new PropertyMapper();
 
-        if (this.serviceBusProperties instanceof ServiceBusProperties) {
-            mapper.from(((ServiceBusProperties) this.serviceBusProperties).getCrossEntityTransactions())
+        if (this.serviceBusProperties instanceof ServiceBusNamespaceDescriptor) {
+            mapper.from(((ServiceBusNamespaceDescriptor) this.serviceBusProperties).getCrossEntityTransactions())
                   .whenTrue().to(t -> builder.enableCrossEntityTransactions());
         }
     }

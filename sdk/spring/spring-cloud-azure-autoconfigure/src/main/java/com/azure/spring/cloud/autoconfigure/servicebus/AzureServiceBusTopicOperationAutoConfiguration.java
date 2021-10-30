@@ -31,13 +31,13 @@ public class AzureServiceBusTopicOperationAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean()
     @ConditionalOnBean(ServiceBusClientBuilder.class)
-    public ServiceBusTopicClientFactory topicClientFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                           ObjectProvider<ServiceBusTopicProvisioner> serviceBusTopicProvisioners) {
+    public ServiceBusTopicClientFactory topicClientFactory(ServiceBusClientBuilder serviceBusClientBuilder) {
+//                                                           ObjectProvider<ServiceBusTopicProvisioner> serviceBusTopicProvisioners) {
         DefaultServiceBusTopicClientFactory clientFactory = new DefaultServiceBusTopicClientFactory(serviceBusClientBuilder);
 
         // TODO (xiada) the application id should be different for spring integration
 
-        clientFactory.setTopicProvisioner(serviceBusTopicProvisioners.getIfAvailable());
+//        clientFactory.setTopicProvisioner(serviceBusTopicProvisioners.getIfAvailable());
         return clientFactory;
     }
 

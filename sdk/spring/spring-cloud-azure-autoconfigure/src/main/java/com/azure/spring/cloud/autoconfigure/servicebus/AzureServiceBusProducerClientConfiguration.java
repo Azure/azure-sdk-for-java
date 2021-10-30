@@ -4,8 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
-import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
@@ -14,7 +12,7 @@ import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBu
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.servicebus.ServiceBusClientBuilderFactory;
+import com.azure.spring.service.servicebus.factory.CommonServiceBusClientBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,7 +28,7 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SER
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
 /**
- * Configuration for a {@link ServiceBusReceiverClient} or a {@link ServiceBusReceiverAsyncClient}.
+ * Configuration for a {@link ServiceBusSenderClient} and a {@link ServiceBusSenderAsyncClient}.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus.producer", name = { "topic-name", "queue-name" })
@@ -44,6 +42,7 @@ class AzureServiceBusProducerClientConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProducerClientConfiguration.class);
 
     @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.servicebus.producer", name = { "connection-string", "namespace" })
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "connection-string", "namespace" })
     @ConditionalOnBean(ServiceBusClientBuilder.class)
     @Configuration(proxyBeanMethods = false)
     static class SharedProducerConnectionConfiguration {
@@ -70,8 +69,8 @@ class AzureServiceBusProducerClientConfiguration {
 
         @Bean(SERVICE_BUS_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
         @ConditionalOnMissingBean(name = SERVICE_BUS_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-        public ServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForProducer() {
-            final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.producerProperties);
+        public CommonServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForProducer() {
+            final CommonServiceBusClientBuilderFactory builderFactory = new CommonServiceBusClientBuilderFactory(this.producerProperties);
 
             builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
                 this.producerProperties.getConnectionString()));
@@ -83,7 +82,7 @@ class AzureServiceBusProducerClientConfiguration {
         @Bean(SERVICE_BUS_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
         @ConditionalOnMissingBean(name = SERVICE_BUS_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
         public ServiceBusClientBuilder serviceBusClientBuilderForProducer(
-            @Qualifier(SERVICE_BUS_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME) ServiceBusClientBuilderFactory clientBuilderFactory) {
+            @Qualifier(SERVICE_BUS_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME) CommonServiceBusClientBuilderFactory clientBuilderFactory) {
 
             return clientBuilderFactory.build();
         }
