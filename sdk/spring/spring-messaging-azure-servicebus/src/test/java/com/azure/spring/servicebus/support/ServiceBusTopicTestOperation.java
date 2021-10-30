@@ -7,8 +7,8 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.messaging.PartitionSupplier;
-import com.azure.spring.servicebus.core.DefaultServiceBusMessageProcessor;
-import com.azure.spring.servicebus.core.ServiceBusTopicClientFactory;
+import com.azure.spring.servicebus.core.processor.DefaultServiceBusMessageProcessor;
+import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceTopicProcessorClientFactory;
 import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
@@ -38,7 +38,7 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
     private final AtomicInteger abandonCalledTimes = new AtomicInteger(0);
     private final AtomicInteger completeCalledTimes = new AtomicInteger(0);
 
-    public ServiceBusTopicTestOperation(ServiceBusTopicClientFactory clientFactory) {
+    public ServiceBusTopicTestOperation(ServiceBusNamespaceTopicProcessorClientFactory clientFactory) {
         super(clientFactory);
     }
 

@@ -3,33 +3,63 @@
 
 package com.azure.spring.servicebus.core.sender;
 
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.spring.servicebus.core.properties.NamespaceProperties;
+import com.azure.spring.servicebus.core.properties.ProducerProperties;
+import com.azure.spring.servicebus.core.properties.merger.ProducerPropertiesParentMerger;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.lang.Nullable;
+import reactor.util.function.Tuple2;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Base class of service bus client factory to provide connection string
  *
  * @author Warren Zhu
  */
-abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactory {
+abstract class AbstractServiceBusSenderFactory implements ServiceBusSenderFactory, DisposableBean {
 
-//    @Nullable
-//    protected ServiceBusQueueProvisioner queueProvisioner;
-//
-//    @Nullable
-//    protected ServiceBusTopicProvisioner topicProvisioner;
+    protected final List<Listener> listeners = new ArrayList<>();
+    protected final NamespaceProperties namespaceProperties;
+    protected final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
+    protected final Map<Tuple2<String, ProducerProperties>, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
+    protected final ProducerPropertiesParentMerger parentMerger = new ProducerPropertiesParentMerger();
 
-    protected final ServiceBusClientBuilder serviceBusClientBuilder;
-
-    AbstractServiceBusSenderFactory(ServiceBusClientBuilder serviceBusClientBuilder) {
-        this.serviceBusClientBuilder = serviceBusClientBuilder;
+    public AbstractServiceBusSenderFactory(NamespaceProperties namespaceProperties) {
+        this(namespaceProperties, key -> null);
     }
 
-//    public void setQueueProvisioner(@Nullable ServiceBusQueueProvisioner queueProvisioner) {
-//        this.queueProvisioner = queueProvisioner;
-//    }
-//
-//    public void setTopicProvisioner(@Nullable ServiceBusTopicProvisioner topicProvisioner) {
-//        this.topicProvisioner = topicProvisioner;
-//    }
+    public AbstractServiceBusSenderFactory(NamespaceProperties namespaceProperties,
+                                                              PropertiesSupplier<String, ProducerProperties> supplier) {
+        this.namespaceProperties = namespaceProperties;
+        this.propertiesSupplier = supplier;
+    }
+
+    @Override
+    public ServiceBusSenderAsyncClient createSender(String name) {
+        return doCreateProducer(name, this.propertiesSupplier.getProperties(name));
+    }
+
+    protected abstract ServiceBusSenderAsyncClient doCreateProducer(String name, @Nullable ProducerProperties properties);
+
+    @Override
+    public void addListener(Listener listener) {
+        this.listeners.add(listener);
+    }
+
+    @Override
+    public boolean removeListener(Listener listener) {
+        return this.listeners.remove(listener);
+    }
+
+    @Override
+    public void destroy() {
+        this.clients.values().forEach(ServiceBusSenderAsyncClient::close);
+        this.clients.clear();
+    }
 
 }

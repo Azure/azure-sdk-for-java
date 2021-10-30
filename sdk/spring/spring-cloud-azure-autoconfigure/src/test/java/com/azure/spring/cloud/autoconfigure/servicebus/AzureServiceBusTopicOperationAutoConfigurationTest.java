@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.servicebus.core.ServiceBusTopicClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceTopicProcessorClientFactory;
 import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.junit.jupiter.api.Test;
@@ -25,19 +25,19 @@ class AzureServiceBusTopicOperationAutoConfigurationTest {
     @Test
     void testAzureServiceBusDisabled() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.servicebus.enabled=false")
-                          .run(context -> assertThat(context).doesNotHaveBean(ServiceBusTopicClientFactory.class));
+                          .run(context -> assertThat(context).doesNotHaveBean(ServiceBusNamespaceTopicProcessorClientFactory.class));
     }
 
     @Test
     void testWithoutAzureServiceBusTopicClient() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusTopicClientFactory.class))
-                          .run(context -> assertThat(context).doesNotHaveBean(ServiceBusTopicClientFactory.class));
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusNamespaceTopicProcessorClientFactory.class))
+                          .run(context -> assertThat(context).doesNotHaveBean(ServiceBusNamespaceTopicProcessorClientFactory.class));
     }
 
     @Test
     void testTopicClientFactoryCreated() {
         this.contextRunner.withBean(ServiceBusClientBuilder.class)
-                          .run(context -> assertThat(context).hasSingleBean(ServiceBusTopicClientFactory.class)
+                          .run(context -> assertThat(context).hasSingleBean(ServiceBusNamespaceTopicProcessorClientFactory.class)
                                                              .hasSingleBean(ServiceBusTopicTemplate.class));
     }
 

@@ -6,7 +6,7 @@ package com.azure.spring.cloud.stream.binder.servicebus;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.test.AzurePartitionBinderTests;
-import com.azure.spring.servicebus.core.ServiceBusTopicClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceTopicProcessorClientFactory;
 import com.azure.spring.cloud.stream.binder.servicebus.support.ServiceBusTopicTestOperation;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ public class ServiceBusTopicPartitionBinderTests
     //TODO (Xiaobing Zhu): It is currently impossible to upgrade JUnit 4 to JUnit 5 due to the inheritance of Spring unit tests.
 
     @Mock
-    ServiceBusTopicClientFactory clientFactory;
+    ServiceBusNamespaceTopicProcessorClientFactory clientFactory;
 
     private ServiceBusTopicTestBinder binder;
 

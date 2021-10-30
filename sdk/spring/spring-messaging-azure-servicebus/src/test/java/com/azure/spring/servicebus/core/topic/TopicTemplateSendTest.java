@@ -6,8 +6,8 @@ package com.azure.spring.servicebus.core.topic;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.servicebus.core.ServiceBusTemplateSendTest;
+import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceTopicProcessorClientFactory;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
-import com.azure.spring.servicebus.core.ServiceBusTopicClientFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.MockitoAnnotations;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TopicTemplateSendTest
-    extends ServiceBusTemplateSendTest<ServiceBusTopicClientFactory, ServiceBusSenderAsyncClient> {
+    extends ServiceBusTemplateSendTest<ServiceBusNamespaceTopicProcessorClientFactory, ServiceBusSenderAsyncClient> {
 
     private AutoCloseable closeable;
 
@@ -26,7 +26,7 @@ public class TopicTemplateSendTest
     @Override
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.mockClientFactory = mock(ServiceBusTopicClientFactory.class);
+        this.mockClientFactory = mock(ServiceBusNamespaceTopicProcessorClientFactory.class);
         this.mockClient = mock(ServiceBusSenderAsyncClient.class);
 
         when(this.mockClientFactory.createSender(anyString())).thenReturn(this.mockClient);

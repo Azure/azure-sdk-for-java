@@ -7,7 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.core.ServiceBusMessageProcessor;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
-import com.azure.spring.servicebus.core.ServiceBusTopicClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceTopicProcessorClientFactory;
 import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
 
 public class ServiceBusTopicBinderHealthIndicatorTest {
     @Mock
-    private ServiceBusTopicClientFactory serviceBusTopicClientFactory;
+    private ServiceBusNamespaceTopicProcessorClientFactory serviceBusTopicClientFactory;
 
     @Mock
     private ServiceBusProcessorClient processorClient;
@@ -56,7 +56,7 @@ public class ServiceBusTopicBinderHealthIndicatorTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void testServiceBusTopicIsUp() {
-        when(serviceBusTopicClientFactory.getOrCreateProcessor(anyString(), anyString(),
+        when(serviceBusTopicClientFactory.createProcessor(anyString(), anyString(),
             any(ServiceBusClientConfig.class),
             any(ServiceBusMessageProcessor.class))).thenReturn(processorClient);
         serviceBusTopicTemplate.subscribe("topic-test-1", "topicSubTest", consumer, byte[].class);
@@ -67,7 +67,7 @@ public class ServiceBusTopicBinderHealthIndicatorTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void testServiceBusTopicIsDown() {
-        when(serviceBusTopicClientFactory.getOrCreateProcessor(anyString(), anyString(),
+        when(serviceBusTopicClientFactory.createProcessor(anyString(), anyString(),
             any(ServiceBusClientConfig.class),
             any(ServiceBusMessageProcessor.class))).thenReturn(processorClient);
         doThrow(NullPointerException.class).when(processorClient).start();

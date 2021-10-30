@@ -5,7 +5,7 @@ package com.azure.spring.servicebus.core.queue;
 
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
-import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceQueueProcessorClientFactory;
 import com.azure.spring.servicebus.support.ServiceBusProcessorClientWrapper;
 import com.azure.spring.messaging.core.SubscribeOperationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBusQueueOperation> {
 
     @Mock
-    private ServiceBusQueueClientFactory mockClientFactory;
+    private ServiceBusNamespaceQueueProcessorClientFactory mockClientFactory;
 
     private ServiceBusProcessorClientWrapper processorClientWrapper;
 
@@ -37,7 +37,7 @@ public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBu
         this.closeable = MockitoAnnotations.openMocks(this);
         this.processorClientWrapper = new ServiceBusProcessorClientWrapper();
         this.subscribeOperation = new ServiceBusQueueTemplate(mockClientFactory, new ServiceBusMessageConverter());
-        when(this.mockClientFactory.getOrCreateProcessor(eq(this.destination), any(), any())).thenReturn(
+        when(this.mockClientFactory.createProcessor(eq(this.destination), any(), any())).thenReturn(
             processorClientWrapper.getClient());
     }
 
@@ -48,13 +48,13 @@ public class QueueTemplateSubscribeTest extends SubscribeOperationTest<ServiceBu
 
     @Override
     protected void verifySubscriberCreatorCalled() {
-        verify(this.mockClientFactory, atLeastOnce()).getOrCreateProcessor(anyString(),
+        verify(this.mockClientFactory, atLeastOnce()).createProcessor(anyString(),
             any(ServiceBusClientConfig.class), any());
     }
 
     @Override
     protected void verifySubscriberCreatorNotCalled() {
-        verify(this.mockClientFactory, never()).getOrCreateProcessor(anyString(), any(ServiceBusClientConfig.class),
+        verify(this.mockClientFactory, never()).createProcessor(anyString(), any(ServiceBusClientConfig.class),
             any());
     }
 

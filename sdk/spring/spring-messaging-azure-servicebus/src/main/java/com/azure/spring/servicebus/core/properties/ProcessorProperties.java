@@ -7,8 +7,8 @@ import com.azure.spring.service.servicebus.properties.ServiceBusProcessorDescrip
 
 public class ProcessorProperties extends ConsumerProperties implements ServiceBusProcessorDescriptor {
 
-    private Integer maxConcurrentCalls;
-    private Integer maxConcurrentSessions;
+    private Integer maxConcurrentCalls = 1;
+    private Integer maxConcurrentSessions = null;
 
     public Integer getMaxConcurrentCalls() {
         return maxConcurrentCalls;

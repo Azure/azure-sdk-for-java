@@ -7,8 +7,8 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.messaging.PartitionSupplier;
-import com.azure.spring.servicebus.core.DefaultServiceBusMessageProcessor;
-import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
+import com.azure.spring.servicebus.core.processor.DefaultServiceBusMessageProcessor;
+import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceQueueProcessorClientFactory;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
@@ -38,7 +38,7 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     private final Map<String, List<ServiceBusReceivedMessageContext>> queuesByName = new HashMap<>();
     private final Map<String, List<DefaultServiceBusMessageProcessor>> processorsByQueue = new HashMap<>();
 
-    public ServiceBusQueueTestOperation(ServiceBusQueueClientFactory clientFactory) {
+    public ServiceBusQueueTestOperation(ServiceBusNamespaceQueueProcessorClientFactory clientFactory) {
         super(clientFactory);
     }
 

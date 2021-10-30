@@ -14,7 +14,7 @@ import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBu
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.servicebus.factory.CommonServiceBusClientBuilderFactory;
+import com.azure.spring.service.servicebus.factory.ServiceBusClientBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -64,9 +64,9 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
         @ConditionalOnMissingBean(name = SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-        public CommonServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForConsumer() {
+        public ServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForConsumer() {
 
-            final CommonServiceBusClientBuilderFactory builderFactory = new CommonServiceBusClientBuilderFactory(this.consumerProperties);
+            final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.consumerProperties);
 
             builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
                 this.consumerProperties.getConnectionString()));
@@ -77,7 +77,7 @@ class AzureServiceBusConsumerClientConfiguration {
         @Bean(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
         @ConditionalOnMissingBean(name = SERVICE_BUS_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
         public ServiceBusClientBuilder serviceBusClientBuilderForConsumer(
-            @Qualifier(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME) CommonServiceBusClientBuilderFactory clientBuilderFactory) {
+            @Qualifier(SERVICE_BUS_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME) ServiceBusClientBuilderFactory clientBuilderFactory) {
 
             return clientBuilderFactory.build();
         }

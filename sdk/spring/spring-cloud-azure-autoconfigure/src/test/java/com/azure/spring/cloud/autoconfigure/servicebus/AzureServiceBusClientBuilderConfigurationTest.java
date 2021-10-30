@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.servicebus.factory.CommonServiceBusClientBuilderFactory;
+import com.azure.spring.service.servicebus.factory.ServiceBusClientBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -35,7 +35,7 @@ class AzureServiceBusClientBuilderConfigurationTest {
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusClientBuilderConfiguration.class);
-                assertThat(context).hasSingleBean(CommonServiceBusClientBuilderFactory.class);
+                assertThat(context).hasSingleBean(ServiceBusClientBuilderFactory.class);
                 assertThat(context).hasSingleBean(ServiceBusClientBuilder.class);
                 assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
                 StaticConnectionStringProvider connectionStringProvider = context.getBean(StaticConnectionStringProvider.class);

@@ -4,10 +4,10 @@
 package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceQueueProcessorClientFactory;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.core.ServiceBusMessageProcessor;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
-import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueTemplate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class ServiceBusQueueBinderHealthIndicatorTest {
 
     @Mock
-    private ServiceBusQueueClientFactory serviceBusQueueClientFactory;
+    private ServiceBusNamespaceQueueProcessorClientFactory serviceBusQueueClientFactory;
 
     @Mock
     private ServiceBusProcessorClient processorClient;
@@ -57,7 +57,7 @@ public class ServiceBusQueueBinderHealthIndicatorTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void testServiceBusQueueIsUp() {
-        when(serviceBusQueueClientFactory.getOrCreateProcessor(anyString(), any(ServiceBusClientConfig.class),
+        when(serviceBusQueueClientFactory.createProcessor(anyString(), any(ServiceBusClientConfig.class),
             any(ServiceBusMessageProcessor.class))).thenReturn(processorClient);
         serviceBusQueueTemplate.subscribe("queue-test-1", consumer, byte[].class);
         final Health health = serviceBusQueueHealthIndicator.health();
@@ -67,7 +67,7 @@ public class ServiceBusQueueBinderHealthIndicatorTest {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
     public void testServiceBusQueueIsDown() {
-        when(serviceBusQueueClientFactory.getOrCreateProcessor(anyString(), any(ServiceBusClientConfig.class),
+        when(serviceBusQueueClientFactory.createProcessor(anyString(), any(ServiceBusClientConfig.class),
             any(ServiceBusMessageProcessor.class))).thenReturn(processorClient);
         doThrow(NullPointerException.class).when(processorClient).start();
         assertThrows(ServiceBusRuntimeException.class, () -> {

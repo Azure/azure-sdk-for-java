@@ -15,11 +15,11 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
     private Boolean autoComplete;
     private Integer prefetchCount;
     private String queueName;
-    private SubQueue subQueue;
+    private SubQueue subQueue = SubQueue.NONE;
     private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
     private String subscriptionName;
     private String topicName;
-    private Duration maxAutoLockRenewDuration;
+    private Duration maxAutoLockRenewDuration = Duration.ofMinutes(5);
 
     @Override
     public Boolean getSessionAware() {

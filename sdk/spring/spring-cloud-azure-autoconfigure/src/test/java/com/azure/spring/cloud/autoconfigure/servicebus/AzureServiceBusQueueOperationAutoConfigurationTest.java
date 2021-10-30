@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
-import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceQueueProcessorClientFactory;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueOperation;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueTemplate;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
@@ -31,14 +31,14 @@ class AzureServiceBusQueueOperationAutoConfigurationTest {
 
     @Test
     void testWithoutAzureServiceBusQueueClient() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusQueueClientFactory.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusNamespaceQueueProcessorClientFactory.class))
                           .run(context -> assertThat(context).doesNotHaveBean(ServiceBusQueueOperation.class));
     }
 
     @Test
     void testQueueClientFactoryCreated() {
         this.contextRunner.withBean(ServiceBusClientBuilder.class)
-                          .run(context -> assertThat(context).hasSingleBean(ServiceBusQueueClientFactory.class)
+                          .run(context -> assertThat(context).hasSingleBean(ServiceBusNamespaceQueueProcessorClientFactory.class)
                                                              .hasSingleBean(ServiceBusQueueOperation.class));
     }
 

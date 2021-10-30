@@ -29,11 +29,11 @@ import java.util.function.BiConsumer;
 /**
  * Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder}.
  */
-public class CommonServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<ServiceBusClientBuilder> {
+public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<ServiceBusClientBuilder> {
 
     protected final ServiceBusCommonDescriptor serviceBusProperties;
 
-    public CommonServiceBusClientBuilderFactory(ServiceBusCommonDescriptor serviceBusProperties) {
+    public ServiceBusClientBuilderFactory(ServiceBusCommonDescriptor serviceBusProperties) {
         this.serviceBusProperties = serviceBusProperties;
     }
 

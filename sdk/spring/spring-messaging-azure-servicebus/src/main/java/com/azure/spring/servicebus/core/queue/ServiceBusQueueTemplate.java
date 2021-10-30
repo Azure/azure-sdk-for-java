@@ -5,13 +5,13 @@ package com.azure.spring.servicebus.core.queue;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.servicebus.core.DefaultServiceBusMessageProcessor;
+import com.azure.spring.servicebus.core.processor.DefaultServiceBusMessageProcessor;
+import com.azure.spring.servicebus.core.processor.ServiceBusNamespaceQueueProcessorClientFactory;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders;
-import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
 import com.azure.spring.servicebus.health.Instrumentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,7 @@ import java.util.function.Consumer;
 /**
  * Default implementation of {@link ServiceBusQueueOperation}.
  */
-public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueClientFactory>
+public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusNamespaceQueueProcessorClientFactory>
     implements ServiceBusQueueOperation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusQueueTemplate.class);
@@ -37,11 +37,11 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
 
     private final Set<String> subscribedQueues = ConcurrentHashMap.newKeySet();
 
-    public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory) {
+    public ServiceBusQueueTemplate(ServiceBusNamespaceQueueProcessorClientFactory clientFactory) {
         super(clientFactory);
     }
 
-    public ServiceBusQueueTemplate(ServiceBusQueueClientFactory clientFactory,
+    public ServiceBusQueueTemplate(ServiceBusNamespaceQueueProcessorClientFactory clientFactory,
                                    ServiceBusMessageConverter messageConverter) {
         super(clientFactory, messageConverter);
     }
@@ -76,7 +76,7 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
         Instrumentation instrumentation = new Instrumentation(name, Instrumentation.Type.CONSUME);
         try {
             instrumentationManager.addHealthInstrumentation(instrumentation);
-            ServiceBusProcessorClient processorClient = this.clientFactory.getOrCreateProcessor(name, clientConfig,
+            ServiceBusProcessorClient processorClient = this.clientFactory.createProcessor(name, clientConfig,
                 messageProcessor);
             processorClient.start();
             instrumentationManager.getHealthInstrumentation(instrumentation).markStartedSuccessfully();

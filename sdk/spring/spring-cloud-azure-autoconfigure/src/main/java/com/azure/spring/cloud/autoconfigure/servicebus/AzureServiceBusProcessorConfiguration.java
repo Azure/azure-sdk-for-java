@@ -11,7 +11,7 @@ import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBu
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.servicebus.factory.CommonServiceBusClientBuilderFactory;
+import com.azure.spring.service.servicebus.factory.ServiceBusClientBuilderFactory;
 import com.azure.spring.servicebus.core.ServiceBusMessageProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,9 +62,9 @@ class AzureServiceBusProcessorConfiguration {
 
         @Bean(SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME)
         @ConditionalOnMissingBean(name = SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-        public CommonServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForProcessor() {
+        public ServiceBusClientBuilderFactory serviceBusClientBuilderFactoryForProcessor() {
 
-            final CommonServiceBusClientBuilderFactory builderFactory = new CommonServiceBusClientBuilderFactory(this.processorProperties);
+            final ServiceBusClientBuilderFactory builderFactory = new ServiceBusClientBuilderFactory(this.processorProperties);
             builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
                 this.processorProperties.getConnectionString()));
             builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
@@ -75,7 +75,7 @@ class AzureServiceBusProcessorConfiguration {
         @Bean(SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_BEAN_NAME)
         @ConditionalOnMissingBean(name = SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_BEAN_NAME)
         public ServiceBusClientBuilder serviceBusClientBuilderForProcessor(
-            @Qualifier(SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME) CommonServiceBusClientBuilderFactory clientBuilderFactory) {
+            @Qualifier(SERVICE_BUS_PROCESSOR_CLIENT_BUILDER_FACTORY_BEAN_NAME) ServiceBusClientBuilderFactory clientBuilderFactory) {
 
             return clientBuilderFactory.build();
         }
