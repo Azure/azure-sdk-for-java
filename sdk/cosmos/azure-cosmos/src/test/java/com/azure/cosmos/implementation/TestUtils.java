@@ -6,7 +6,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
-import com.azure.cosmos.implementation.uuid.impl.UUIDUtil;
 import org.mockito.Mockito;
 
 import java.util.UUID;
@@ -38,8 +37,8 @@ public class TestUtils {
 
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + COLLECTIONS_PATH_SEGMENT + "/" +collectionId + "/" + DOCUMENTS_PATH_SEGMENT + "/" + docId;
     }
-
     public static String getUserNameLink(String databaseId, String userId) {
+
         return DATABASES_PATH_SEGMENT + "/" + databaseId + "/" + USERS_PATH_SEGMENT + "/" + userId;
     }
 
@@ -56,7 +55,7 @@ public class TestUtils {
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
         dsr.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
         Mockito.doReturn(clientContext.createDiagnostics()).when(dsr).createCosmosDiagnostics();
-        Mockito.doReturn(Utils.randomUUID()).when(dsr).getActivityId();
+        Mockito.doReturn(UUID.randomUUID()).when(dsr).getActivityId();
         return dsr;
     }
 
