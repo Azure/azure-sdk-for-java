@@ -46,9 +46,16 @@ spring.jms.servicebus.listener.reply-pub-sub-domain| Whether the reply destinati
 spring.jms.servicebus.listener.reply-qos-settings.*|Configure the QosSettings to use when sending a reply. Can be set to null to indicate that the broker's defaults should be used. |
 spring.jms.servicebus.listener.subscription-durable|Whether to make the subscription durable. Only works for the bean of topicJmsListenerContainerFactory. The default value is true.|Boolean|
 spring.jms.servicebus.listener.subscription-durable|Whether to make the subscription shared. Only works for the bean of topicJmsListenerContainerFactory.|Boolean|
-spring.jms.servicebus.listener.phase|Specify the phase in which this container should be started and stopped.|Integer|
+spring.jms.servicebus.listener.phase|Specify the phase in which this container should be started and stopped. Default=0|int|
+spring.jms.servicebus.prefetch-policy.all|Specify the default value for all prefetchPolicy fields. Default=0|int|
+spring.jms.servicebus.durable-topic-prefetch|Specify durable topic prefetch value. Default=0|int|
+spring.jms.servicebus.queue-browser-prefetch|Specify the queueBrowserPrefetch value. Default=0|int|
+spring.jms.servicebus.queue-prefetch|Specify the queuePrefetch value. Default=0|int|
+spring.jms.servicebus.topic-prefetch|Specify the topicPrefetch value. Default=0|int|
 
-Note: `JmsListenerContainerFactory` beans also support all [Spring native application properties of JmsListener][Spring_jms_configuration].
+
+Note: `JmsListenerContainerFactory` beans also support all [Spring native application properties of JmsListener][Spring_jms_configuration].    
+For more infomation about prefetch, please refer to this [doc](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-prefetch?tabs=java).
 
 ### Implement basic Service Bus functionality
 
