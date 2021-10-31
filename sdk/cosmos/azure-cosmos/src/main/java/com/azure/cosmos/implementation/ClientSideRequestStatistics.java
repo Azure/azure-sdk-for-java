@@ -82,7 +82,7 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.storeResult = storeResult;
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
-        activityId = storeResult.activityId;
+        activityId = request.getActivityId().toString();
 
 
         URI locationEndPoint = null;
