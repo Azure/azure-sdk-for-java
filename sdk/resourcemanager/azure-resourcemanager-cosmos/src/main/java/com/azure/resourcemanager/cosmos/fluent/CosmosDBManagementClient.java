@@ -171,6 +171,13 @@ public interface CosmosDBManagementClient {
     GremlinResourcesClient getGremlinResources();
 
     /**
+     * Gets the LocationsClient object to access its operations.
+     *
+     * @return the LocationsClient object.
+     */
+    LocationsClient getLocations();
+
+    /**
      * Gets the NotebookWorkspacesClient object to access its operations.
      *
      * @return the NotebookWorkspacesClient object.
@@ -239,4 +246,18 @@ public interface CosmosDBManagementClient {
      * @return the RestorableMongodbResourcesClient object.
      */
     RestorableMongodbResourcesClient getRestorableMongodbResources();
+
+    /**
+     * Gets the CassandraClustersClient object to access its operations.
+     *
+     * @return the CassandraClustersClient object.
+     */
+    CassandraClustersClient getCassandraClusters();
+
+    /**
+     * Gets the CassandraDataCentersClient object to access its operations.
+     *
+     * @return the CassandraDataCentersClient object.
+     */
+    CassandraDataCentersClient getCassandraDataCenters();
 }
