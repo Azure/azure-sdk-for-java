@@ -35,8 +35,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EventHubBinderRecordModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderRecordModeIT.class);
-    private static String message = UUID.randomUUID().toString();
-    private static CountDownLatch latch = new CountDownLatch(1);
+    private static final String message = UUID.randomUUID().toString();
+    private static final CountDownLatch latch = new CountDownLatch(1);
 
     @Autowired
     private Sinks.Many<Message<String>> many;
@@ -73,7 +73,7 @@ public class EventHubBinderRecordModeIT {
         EventHubBinderRecordModeIT.latch.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + message + ".");
         many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubBinderRecordModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubBinderRecordModeIT.latch.await(30, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderRecordModeIT end.");
     }
 }

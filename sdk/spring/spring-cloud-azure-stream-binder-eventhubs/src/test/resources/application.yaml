@@ -21,3 +21,12 @@ spring:
       default:
         producer:
           errorChannelEnabled: true
+logging:
+  level:
+    com.azure:
+      core:
+        amqp: WARN
+      messaging:
+        servicebus: WARN
+        eventhubs: WARN
+      identity: WARN

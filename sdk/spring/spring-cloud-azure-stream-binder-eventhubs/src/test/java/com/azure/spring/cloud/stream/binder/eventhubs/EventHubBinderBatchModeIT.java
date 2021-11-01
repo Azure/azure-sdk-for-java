@@ -36,9 +36,9 @@ public class EventHubBinderBatchModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderBatchModeIT.class);
 
-    private static String message = UUID.randomUUID().toString();
+    private static final String message = UUID.randomUUID().toString();
 
-    private static CountDownLatch latch = new CountDownLatch(1);
+    private static final CountDownLatch latch = new CountDownLatch(1);
 
     @Autowired
     private Sinks.Many<Message<String>> many;
@@ -75,7 +75,7 @@ public class EventHubBinderBatchModeIT {
         EventHubBinderBatchModeIT.latch.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + message + ".");
         many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubBinderBatchModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubBinderBatchModeIT.latch.await(30, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderBatchModeIT end.");
     }
 }
