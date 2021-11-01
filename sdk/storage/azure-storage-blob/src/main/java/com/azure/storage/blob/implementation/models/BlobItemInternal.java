@@ -5,7 +5,6 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.blob.models.BlobName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.Map;
@@ -63,9 +62,9 @@ public final class BlobItemInternal {
     private BlobTags blobTags;
 
     /*
-         * Dictionary of <string>
+     * Dictionary of <string>
+     */
     @JsonProperty(value = "OrMetadata")
-         */
     private Map<String, String> objectReplicationMetadata;
 
     /*
