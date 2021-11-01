@@ -1,67 +1,46 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/51c57c98051c57c98f4f48896749239c6b8644d4daed?restype=share",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/51c57c98051c57c9813955349f4ed3903d08b40fd8a5?restype=share",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f83c471d-4207-4c58-b341-a538d00fa8ef"
+      "x-ms-version" : "2021-02-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "628e5c62-99ca-4348-a5ee-ebe432097180"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2020-06-12",
+      "x-ms-version" : "2021-02-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "eTag" : "0x8D910031B83DD0E",
-      "Last-Modified" : "Wed, 05 May 2021 20:19:38 GMT",
+      "eTag" : "0x8D99D77E0407F2F",
+      "Last-Modified" : "Mon, 01 Nov 2021 20:40:43 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "aa3ba5c6-f01a-000c-2aeb-41a144000000",
-      "x-ms-client-request-id" : "f83c471d-4207-4c58-b341-a538d00fa8ef",
-      "Date" : "Wed, 05 May 2021 20:19:37 GMT"
+      "x-ms-request-id" : "e98e163f-401a-003c-0e60-cf5546000000",
+      "x-ms-client-request-id" : "628e5c62-99ca-4348-a5ee-ebe432097180",
+      "Date" : "Mon, 01 Nov 2021 20:40:43 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&include=",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net?comp=list&include=",
     "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "ae46349f-6659-440b-aaee-a66ed962fa7c"
+      "x-ms-version" : "2021-02-12",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.12.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "75a7518f-a1c9-45ff-8db9-750941bef32e"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2020-06-12",
+      "x-ms-version" : "2021-02-12",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "aa3ba5cc-f01a-000c-2ceb-41a144000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolpremiumcanaryfile.file.core.windows.net/\"><Shares><Share><Name>51c57c98051c57c98177984628b08a39401f84d35982</Name><Properties><Last-Modified>Wed, 05 May 2021 19:16:15 GMT</Last-Modified><Etag>\"0x8D90FFA40DDED85\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 19:16:15 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>51c57c98051c57c983231618025b24f242d6f40c5b5d</Name><Properties><Last-Modified>Wed, 05 May 2021 20:04:18 GMT</Last-Modified><Etag>\"0x8D91000F75DA68D\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 20:04:18 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>51c57c98051c57c98f4f48896749239c6b8644d4daed</Name><Properties><Last-Modified>Wed, 05 May 2021 20:19:38 GMT</Last-Modified><Etag>\"0x8D910031B83DD0E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 20:19:38 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>e1ae039b0e1ae039b8ed7631406c3a0f6907e4d7fa45</Name><Properties><Last-Modified>Wed, 05 May 2021 20:04:19 GMT</Last-Modified><Etag>\"0x8D91000F7A6DA4E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 20:04:19 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>e1ae039b0e1ae039bc02931343e5259114920490a9ba</Name><Properties><Last-Modified>Wed, 05 May 2021 19:16:18 GMT</Last-Modified><Etag>\"0x8D90FFA42E53681\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 19:16:18 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>e1ae039b0e1ae039beb363014bb3dd0f1ca6744a9af6</Name><Properties><Last-Modified>Wed, 05 May 2021 20:19:38 GMT</Last-Modified><Etag>\"0x8D910031B845322\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Wed, 05 May 2021 20:19:38 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>jtsshareapitestsgetpropertiespremium05297687e65c4d0d</Name><Properties><Last-Modified>Tue, 12 May 2020 20:02:51 GMT</Last-Modified><Etag>\"0x8D7F6AF735E7E50\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedIngressMBps>44</ProvisionedIngressMBps><ProvisionedEgressMBps>66</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Tue, 12 May 2020 20:02:51 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share></Shares><NextMarker /></EnumerationResults>",
-      "x-ms-client-request-id" : "ae46349f-6659-440b-aaee-a66ed962fa7c",
-      "Date" : "Wed, 05 May 2021 20:19:37 GMT",
-      "Content-Type" : "application/xml"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=51c57c98&include=",
-    "Headers" : {
-      "x-ms-version" : "2020-06-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9653631f-c1b6-49e7-a363-5521f563852c"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2020-06-12",
-      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-request-id" : "6a5aa590-501a-0019-2beb-414a0a000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanadacentral.file.core.windows.net/\"><Prefix>51c57c98</Prefix><Shares /><NextMarker /></EnumerationResults>",
-      "x-ms-client-request-id" : "9653631f-c1b6-49e7-a363-5521f563852c",
-      "Date" : "Wed, 05 May 2021 20:19:37 GMT",
+      "x-ms-request-id" : "e98e164b-401a-003c-1760-cf5546000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://u5gxscnapams20ptf01c.file.preprod.core.windows.net/\"><Shares><Share><Name>51c57c98051c57c9813955349f4ed3903d08b40fd8a5</Name><Properties><Last-Modified>Mon, 01 Nov 2021 20:40:43 GMT</Last-Modified><Etag>\"0x8D99D77E0407F2F\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedBandwidthMiBps>110</ProvisionedBandwidthMiBps><ProvisionedIngressMBps>110</ProvisionedIngressMBps><ProvisionedEgressMBps>110</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Mon, 01 Nov 2021 20:40:43 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>51c57c98051c57c98b58523952a5a28bb318b4d429a6</Name><Properties><Last-Modified>Mon, 01 Nov 2021 20:39:44 GMT</Last-Modified><Etag>\"0x8D99D77BCC039DC\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedBandwidthMiBps>110</ProvisionedBandwidthMiBps><ProvisionedIngressMBps>110</ProvisionedIngressMBps><ProvisionedEgressMBps>110</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Mon, 01 Nov 2021 20:39:44 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share><Share><Name>share1</Name><Properties><Last-Modified>Thu, 28 Oct 2021 23:39:25 GMT</Last-Modified><Etag>\"0x8D99A6C2D3F6D3E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><Quota>100</Quota><EnabledProtocols>SMB</EnabledProtocols><AccessTier>Premium</AccessTier><ProvisionedIops>500</ProvisionedIops><ProvisionedBandwidthMiBps>110</ProvisionedBandwidthMiBps><ProvisionedIngressMBps>110</ProvisionedIngressMBps><ProvisionedEgressMBps>110</ProvisionedEgressMBps><NextAllowedQuotaDowngradeTime>Thu, 28 Oct 2021 05:53:03 GMT</NextAllowedQuotaDowngradeTime><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride></Properties></Share></Shares><NextMarker /></EnumerationResults>",
+      "x-ms-client-request-id" : "75a7518f-a1c9-45ff-8db9-750941bef32e",
+      "Date" : "Mon, 01 Nov 2021 20:40:43 GMT",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "51c57c9851c57c98f4f05301e3dec33189894af4b8", "51c57c98051c57c98f4f48896749239c6b8644d4daed" ]
+  "variables" : [ "51c57c9851c57c981390541673af954817fd4a79a3", "51c57c98051c57c9813955349f4ed3903d08b40fd8a5" ]
 }

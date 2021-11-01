@@ -326,7 +326,6 @@ class ShareAPITests extends APISpec {
     }
 
     @Unroll
-    @PlaybackOnly
     def "Get properties premium"() {
         given:
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols(protocol)
