@@ -210,9 +210,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isEqualTo(patchedItem);
     }
 
-    //  Disabling this test for now, because of emulator issues, something related to a header change.
-    //  Will enable it once the emulator issues are fixed.
-    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
     public void itemPatchFailure() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
@@ -245,7 +243,7 @@ public class PatchTest extends TestSuiteBase {
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
             assertThat(ex.getMessage())
-                .contains("Add Operation only support adding a leaf node of an existing node(array or object), no path found beyond: 'nonExistentParent'");
+                .contains("no path found beyond: 'nonExistentParent'");
         }
 
         // precondition failure - 412 response
