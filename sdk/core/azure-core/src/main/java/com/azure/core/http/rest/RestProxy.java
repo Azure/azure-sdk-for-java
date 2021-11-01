@@ -398,7 +398,7 @@ public final class RestProxy implements InvocationHandler {
         // If the response was success or configured to not return an error status when the request fails, return the
         // decoded response.
         if (methodParser.isExpectedResponseStatusCode(responseStatusCode)
-            || (options != null && !options.isThrowOnError())) {
+            || (options != null && options.getErrorOptions() == ErrorOptions.NO_THROW)) {
             return Mono.just(decodedResponse);
         }
 

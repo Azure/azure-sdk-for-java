@@ -95,12 +95,14 @@ public class Context {
      *
      * <!-- src_embed com.azure.core.util.context.addData#object-object -->
      * <pre>
-     * &#47;&#47; Users can send parent span information and pass additional metadata to attach to spans of the calling methods
-     * &#47;&#47; using the Context object
+     * &#47;&#47; Users can pass parent trace context information and additional metadata to attach to spans create by SDKs
+     * &#47;&#47; using the com.azure.core.util.Context object.
      * final String hostNameValue = &quot;host-name-value&quot;;
      * final String entityPathValue = &quot;entity-path-value&quot;;
-     * final String userParentSpan = &quot;user-parent-span&quot;;
-     * Context parentSpanContext = new Context&#40;PARENT_TRACE_CONTEXT_KEY, userParentSpan&#41;;
+     *
+     * &#47;&#47; TraceContext represents tracing solution context type - io.opentelemetry.context.Context for for OpenTelemetry.
+     * final TraceContext parentContext = TraceContext.root&#40;&#41;;
+     * Context parentSpanContext = new Context&#40;PARENT_TRACE_CONTEXT_KEY, parentContext&#41;;
      *
      * &#47;&#47; Add a new key value pair to the existing context object.
      * Context updatedContext = parentSpanContext.addData&#40;HOST_NAME_KEY, hostNameValue&#41;

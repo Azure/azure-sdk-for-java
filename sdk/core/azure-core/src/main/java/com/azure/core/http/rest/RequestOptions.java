@@ -112,7 +112,7 @@ import java.util.function.Consumer;
  */
 public final class RequestOptions {
     private Consumer<HttpRequest> requestCallback = request -> { };
-    private boolean throwOnError = true;
+    private ErrorOptions errorOptions = ErrorOptions.THROW;
 
     /**
      * Gets the request callback, applying all the configurations set on this RequestOptions.
@@ -123,13 +123,15 @@ public final class RequestOptions {
     }
 
     /**
-     * Gets whether an exception is thrown when an HTTP response with a status code indicating an error
-     * (400 or above) is received.
+     * Gets the {@link ErrorOptions} that determines how error responses (400 or above) are handled.
+     * <p>
+     * Default is {@link ErrorOptions#THROW}.
      *
-     * @return true if to throw on status codes of 400 or above, false if not. Default is true.
+     * @return The {@link ErrorOptions} that determines how error responses (400 or above) are handled. Default is
+     * {@link ErrorOptions#THROW}.
      */
-    boolean isThrowOnError() {
-        return this.throwOnError;
+    ErrorOptions getErrorOptions() {
+        return this.errorOptions;
     }
 
     /**
@@ -208,14 +210,15 @@ public final class RequestOptions {
     }
 
     /**
-     * Sets whether exception is thrown when an HTTP response with a status code indicating an error
-     * (400 or above) is received. By default, an exception will be thrown when an error response is received.
+     * Sets the {@link ErrorOptions} that determines how error responses (400 or above) are handled.
+     * <p>
+     * Default is {@link ErrorOptions#THROW}.
      *
-     * @param throwOnError true if to throw on status codes of 400 or above, false if not. Default is true.
+     * @param errorOptions The {@link ErrorOptions} that determines how error responses (400 or above) are handled.
      * @return the modified RequestOptions object
      */
-    public RequestOptions setThrowOnError(boolean throwOnError) {
-        this.throwOnError = throwOnError;
+    public RequestOptions setErrorOptions(ErrorOptions errorOptions) {
+        this.errorOptions = errorOptions;
         return this;
     }
 }
