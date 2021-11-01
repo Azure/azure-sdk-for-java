@@ -14,11 +14,12 @@ public final class ETag {
 
     private static final String QUOTE_STRING = "\"";
     private static final String WEAK_ETAG_PREFIX_QUOTE = "W/\"";
+    private static final String ASTERISK = "*";
 
     /**
      * The asterisk is a special value representing any resource.
      */
-    public static final ETag ALL = new ETag("*");
+    public static final ETag ALL = new ETag(ASTERISK);
 
     private final String eTag;
 
@@ -52,6 +53,11 @@ public final class ETag {
         return this.eTag.hashCode();
     }
 
+    @Override
+    public String toString() {
+        return eTag;
+    }
+
     /**
      * Checks if the {@code eTag} a valid ETag value. Valid ETags show below,
      *  - The special character, '*'.
@@ -61,8 +67,9 @@ public final class ETag {
      * @param eTag ETag string value.
      */
     private void checkValidETag(String eTag) {
-        if (eTag == null || ALL.equals(eTag))
+        if (eTag == null || ASTERISK.equals(eTag)) {
             return;
+        }
 
         if (!((eTag.startsWith(QUOTE_STRING) || eTag.startsWith(WEAK_ETAG_PREFIX_QUOTE))
                   && eTag.endsWith(QUOTE_STRING))) {
