@@ -7,13 +7,8 @@ package com.azure.storage.blob.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import reactor.core.Exceptions;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 
 /**
@@ -65,13 +60,7 @@ public final class ContainersListBlobFlatSegmentHeaders {
      */
     public OffsetDateTime getDateProperty() {
         if (!this.datePropertySet) {
-            try {
-                this.dateProperty = JacksonAdapter.createDefaultSerializerAdapter()
-                    .deserialize(rawHeaders.getValue("Date"), DateTimeRfc1123.class, SerializerEncoding.JSON);
-                this.datePropertySet = true;
-            } catch (IOException ex) {
-                throw Exceptions.propagate(new UncheckedIOException(ex));
-            }
+            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
         }
 
         if (dateProperty == null) {

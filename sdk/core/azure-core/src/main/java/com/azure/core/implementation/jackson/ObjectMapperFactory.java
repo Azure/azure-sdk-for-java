@@ -138,6 +138,7 @@ final class ObjectMapperFactory {
             .addModule(DateTimeSerializer.getModule())
             .addModule(DateTimeDeserializer.getModule())
             .addModule(DateTimeRfc1123Serializer.getModule())
+            .addModule(DateTimeRfc1123Deserializer.getModule())
             .addModule(DurationSerializer.getModule())
             .addModule(HttpHeadersSerializer.getModule())
             .addModule(UnixTimeSerializer.getModule())

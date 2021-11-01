@@ -298,11 +298,12 @@ public final class ObjectMapperShim {
             MethodHandle constructorHandle = getFromCache(HEADER_TYPE_TO_CONSTRUCTOR_CACHE, headerType.getRawClass(),
                 ObjectMapperShim::getConstructorHandle);
 
-            return (T) constructorHandle.invoke(headers);
-        } catch (NoSuchMethodException ex) {
-            // Ignore not being able to find a method that doesn't exist.
+            // constructorHandle can be null if lookup fails.
+            if (constructorHandle != null) {
+                return (T) constructorHandle.invoke(headers);
+            }
         } catch (Throwable ex) {
-            throw new RuntimeException(LOGGER.logThrowableAsError(ex));
+            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
 
         T deserializedHeaders = mapper.convertValue(headers, headerType);
@@ -403,7 +404,11 @@ public final class ObjectMapperShim {
             return MethodHandles.lookup().findConstructor(headerClass,
                 MethodType.methodType(void.class, HttpHeaders.class));
         } catch (ReflectiveOperationException ex) {
-            sneakyThrow(ex);
+            // Log a warning message and return a null MethodHandle to indicate that lookup failed.
+            // Returning null will also short-circuit future lookups that are known to fail.
+            LOGGER.log(LogLevel.VERBOSE, () -> "Failed to get constructor 'MethodHandle' that accepts 'HttpHeaders' "
+                + "as the only constructor argument for class " + headerClass.getName() + ", using fallback handling.",
+                ex);
             return null;
         }
     }
@@ -417,10 +422,5 @@ public final class ObjectMapperShim {
         }
 
         return map.computeIfAbsent(key, compute);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <E extends Throwable> void sneakyThrow(Throwable e) throws E {
-        throw (E) e;
     }
 }

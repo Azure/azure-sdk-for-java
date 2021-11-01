@@ -41,8 +41,6 @@ public class JacksonAdapter implements SerializerAdapter {
     private ObjectMapper rawOuterMapper;
     private ObjectMapper rawInnerMapper;
 
-    private static final SerializerAdapter SERIALIZER_ADAPTER = new JacksonAdapter();
-
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
@@ -98,13 +96,17 @@ public class JacksonAdapter implements SerializerAdapter {
         return rawInnerMapper;
     }
 
+    private static final class SerializerAdapterHolder {
+        private static final SerializerAdapter SERIALIZER_ADAPTER = new JacksonAdapter();
+    }
+
     /**
      * maintain singleton instance of the default serializer adapter.
      *
      * @return the default serializer
      */
     public static SerializerAdapter createDefaultSerializerAdapter() {
-        return SERIALIZER_ADAPTER;
+        return SerializerAdapterHolder.SERIALIZER_ADAPTER;
     }
 
     /**
