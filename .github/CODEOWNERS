@@ -56,7 +56,7 @@
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @zhichengliu12581 @moarychan
 
 # PRLabel: %Digital Twins
-/sdk/digitaltwins/                                  @drwill-ms @azabbasi @johngallardo
+/sdk/digitaltwins/                                  @johngallardo
 
 # PRLabel: %Models Repository
 /sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andykwong-ms
