@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
 
+import java.util.EnumSet;
 import java.util.function.Consumer;
 
 /**
@@ -111,8 +112,10 @@ import java.util.function.Consumer;
  * <!-- end com.azure.core.http.rest.requestoptions.postrequest -->
  */
 public final class RequestOptions {
+    private static final EnumSet<ErrorOptions> DEFAULT = EnumSet.noneOf(ErrorOptions.class);
+
     private Consumer<HttpRequest> requestCallback = request -> { };
-    private ErrorOptions errorOptions = ErrorOptions.THROW;
+    private EnumSet<ErrorOptions> errorOptions = DEFAULT;
 
     /**
      * Gets the request callback, applying all the configurations set on this RequestOptions.
@@ -125,12 +128,12 @@ public final class RequestOptions {
     /**
      * Gets the {@link ErrorOptions} that determines how error responses (400 or above) are handled.
      * <p>
-     * Default is {@link ErrorOptions#THROW}.
+     * Default is to throw.
      *
      * @return The {@link ErrorOptions} that determines how error responses (400 or above) are handled. Default is
-     * {@link ErrorOptions#THROW}.
+     * to throw.
      */
-    ErrorOptions getErrorOptions() {
+    EnumSet<ErrorOptions> getErrorOptions() {
         return this.errorOptions;
     }
 
@@ -212,12 +215,12 @@ public final class RequestOptions {
     /**
      * Sets the {@link ErrorOptions} that determines how error responses (400 or above) are handled.
      * <p>
-     * Default is {@link ErrorOptions#THROW}.
+     * Default is to throw.
      *
      * @param errorOptions The {@link ErrorOptions} that determines how error responses (400 or above) are handled.
      * @return the modified RequestOptions object
      */
-    public RequestOptions setErrorOptions(ErrorOptions errorOptions) {
+    public RequestOptions setErrorOptions(EnumSet<ErrorOptions> errorOptions) {
         this.errorOptions = errorOptions;
         return this;
     }

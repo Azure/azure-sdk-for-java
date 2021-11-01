@@ -43,6 +43,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -522,7 +523,7 @@ public class SwaggerMethodParserTests {
         RequestOptions urlOptions = new RequestOptions()
             .addRequestCallback(httpRequest -> httpRequest.setUrl("https://foo.host.com"));
 
-        RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(ErrorOptions.NO_THROW);
+        RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
 
         return Stream.of(
             Arguments.of(swaggerMethodParser, null, null),

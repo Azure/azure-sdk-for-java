@@ -8,11 +8,6 @@ package com.azure.core.http.rest;
  */
 public enum ErrorOptions {
     /**
-     * Throw exceptions when an HTTP response with a status code indicating an error (400 or above) is received.
-     */
-    THROW,
-
-    /**
      * Do not throw exceptions when an HTTP response with a status code indicating an error (400 or above) is received.
      */
     NO_THROW
