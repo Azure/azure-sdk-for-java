@@ -33,13 +33,13 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.eventhub.bindings.input.consumer.checkpoint-mode=MANUAL",
     "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-manual",
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-manual",
-    "spring.cloud.azure.eventhub.processor.checkpoint-store.container-name=test-eventhub-manual"
+    "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-manual"
     })
 public class EventHubBinderManualModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderManualModeIT.class);
-    private static String message = UUID.randomUUID().toString();
-    private static CountDownLatch latch = new CountDownLatch(1);
+    private static final String MESSAGE = UUID.randomUUID().toString();
+    private static final CountDownLatch LATCH = new CountDownLatch(1);
 
     @Autowired
     private Sinks.Many<Message<String>> many;
@@ -63,12 +63,12 @@ public class EventHubBinderManualModeIT {
         public Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("EventHubBinderManualModeIT: New message received: '{}'", message.getPayload());
-                if (message.getPayload().equals(EventHubBinderManualModeIT.message)) {
+                if (message.getPayload().equals(EventHubBinderManualModeIT.MESSAGE)) {
                     Checkpointer checkpointer = (Checkpointer) message.getHeaders().get(AzureHeaders.CHECKPOINTER);
                     checkpointer.success().handle((r, ex) -> {
                         Assertions.assertNull(ex);
                     });
-                    latch.countDown();
+                    LATCH.countDown();
                 }
             };
         }
@@ -77,10 +77,10 @@ public class EventHubBinderManualModeIT {
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderManualModeIT begin.");
-        EventHubBinderManualModeIT.latch.await(15, TimeUnit.SECONDS);
-        LOGGER.info("Send a message:" + message + ".");
-        many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubBinderManualModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        EventHubBinderManualModeIT.LATCH.await(15, TimeUnit.SECONDS);
+        LOGGER.info("Send a message:" + MESSAGE + ".");
+        many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
+        assertThat(EventHubBinderManualModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderManualModeIT end.");
     }
 }
