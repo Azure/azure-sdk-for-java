@@ -16,7 +16,6 @@ import com.azure.resourcemanager.containerregistry.models.RegistryUsage;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
-import com.azure.resourcemanager.containerregistry.models.StorageAccountProperties;
 import com.azure.resourcemanager.containerregistry.models.WebhookOperations;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -67,9 +66,9 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
         if (isInCreateMode()) {
             if (self.creatableStorageAccountKey != null) {
                 StorageAccount storageAccount = self.<StorageAccount>taskResult(this.creatableStorageAccountKey);
-                self.innerModel().storageAccount().withId(storageAccount.id());
+//                self.innerModel().storageAccount().withId(storageAccount.id());
             } else if (storageAccountId != null) {
-                self.innerModel().storageAccount().withId(storageAccountId);
+//                self.innerModel().storageAccount().withId(storageAccountId);
             }
 
             return manager()
@@ -115,27 +114,29 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     public String storageAccountName() {
-        if (this.innerModel().storageAccount() == null) {
-            return null;
-        }
-
-        return ResourceUtils.nameFromResourceId(this.innerModel().storageAccount().id());
+//        if (this.innerModel().storageAccount() == null) {
+//            return null;
+//        }
+//
+//        return ResourceUtils.nameFromResourceId(this.innerModel().storageAccount().id());
+        return null;
     }
 
     @Override
     public String storageAccountId() {
-        if (this.innerModel().storageAccount() == null) {
-            return null;
-        }
-
-        return this.innerModel().storageAccount().id();
+//        if (this.innerModel().storageAccount() == null) {
+//            return null;
+//        }
+//
+//        return this.innerModel().storageAccount().id();
+        return null;
     }
 
     @Override
     public RegistryImpl withClassicSku() {
         if (this.isInCreateMode()) {
             this.innerModel().withSku(new Sku().withName(SkuName.CLASSIC));
-            this.innerModel().withStorageAccount(new StorageAccountProperties());
+//            this.innerModel().withStorageAccount(new StorageAccountProperties());
         }
 
         return this;
@@ -159,7 +160,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     private RegistryImpl setManagedSku(Sku sku) {
         if (this.isInCreateMode()) {
             this.innerModel().withSku(sku);
-            this.innerModel().withStorageAccount(null);
+//            this.innerModel().withStorageAccount(null);
         } else {
             this.updateParameters.withSku(sku);
         }
