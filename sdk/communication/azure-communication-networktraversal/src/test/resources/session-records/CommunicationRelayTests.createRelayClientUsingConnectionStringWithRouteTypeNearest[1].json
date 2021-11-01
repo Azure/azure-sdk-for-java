@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2021-03-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.1.3 (1.8.0_301; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "a7f8d4b6-9975-4c6b-9013-138602deea64",
+      "x-ms-client-request-id" : "57f1b338-aabc-47f5-b773-79f0ed02a8b3",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,13 +13,13 @@
       "api-supported-versions" : "2020-07-20-preview2, 2021-02-22-preview1, 2021-03-07, 2021-03-31-preview1, 2021-10-31-preview",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Mon, 01 Nov 2021 01:38:57 GMT",
+      "Date" : "Mon, 01 Nov 2021 02:15:18 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "23ms",
-      "MS-CV" : "ggJeKGhesUSMTIzWZHsGFQ.0",
-      "X-Azure-Ref" : "0MUV/YQAAAACO3r5Cess5TreuCX65GjaTV1NURURHRTA4MTcAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "X-Processing-Time" : "22ms",
+      "MS-CV" : "QZRUYB46AESBnQe6QYBo7w.0",
+      "X-Azure-Ref" : "0tk1/YQAAAADFeKOK0A57S7u9AEw7zGTsV1NURURHRTA4MDYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
       "Body" : "{\"identity\":{\"id\":\"REDACTED\"}}",
-      "x-ms-client-request-id" : "a7f8d4b6-9975-4c6b-9013-138602deea64",
+      "x-ms-client-request-id" : "57f1b338-aabc-47f5-b773-79f0ed02a8b3",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
@@ -29,23 +29,23 @@
     "Uri" : "https://REDACTED.communication.azure.com/networktraversal/:issueRelayConfiguration?api-version=2021-10-08-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-networktraversal/1.0.0-beta.2 (1.8.0_301; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1fe6728b-be96-453d-9aa8-2fd5ff5f4511",
+      "x-ms-client-request-id" : "ffacdd24-32a9-462c-8821-9ccb4604f789",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
+      "content-length" : "305",
       "api-supported-versions" : "2021-02-22-preview1, 2021-06-21-preview, 2021-10-08-preview",
       "retry-after" : "0",
-      "StatusCode" : "400",
-      "Date" : "Mon, 01 Nov 2021 01:38:57 GMT",
+      "StatusCode" : "200",
+      "Date" : "Mon, 01 Nov 2021 02:15:18 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "21ms",
-      "MS-CV" : "SVoR4qedI0eXsTOONOQCzg.0",
-      "X-Azure-Ref" : "0MUV/YQAAAAAa3EsieFdER4+9G4sak1prV1NURURHRTA4MTcAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
-      "Body" : "{\"error\":{\"code\":\"WrongIdentityFormat\",\"message\":\"Provided identity has invalid format.\"}}",
-      "x-ms-client-request-id" : "1fe6728b-be96-453d-9aa8-2fd5ff5f4511",
-      "Content-Type" : "application/json",
+      "X-Processing-Time" : "22ms",
+      "MS-CV" : "bPaQNG9HbE+A8CbBEo3heA.0",
+      "X-Azure-Ref" : "0tk1/YQAAAABUHPQOCj+DT6leDRAMXuw6V1NURURHRTA4MDYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
+      "Body" : "{\"iceServers\":[{\"routeType\":\"nearest\",\"urls\":[\"redacted.skype.com:3400\"],\"username\":\"REDACTED\",\"credential\":\"REDACTED\"}],\"expiresOn\":\"2021-11-01T02:15:18.4924006+00:00\"}",
+      "x-ms-client-request-id" : "ffacdd24-32a9-462c-8821-9ccb4604f789",
+      "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
     "Exception" : null

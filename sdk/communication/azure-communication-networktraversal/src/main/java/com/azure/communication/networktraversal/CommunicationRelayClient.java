@@ -4,6 +4,7 @@
 package com.azure.communication.networktraversal;
 
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
+import com.azure.communication.networktraversal.models.CommunicationRelayConfigurationRequestRouteType;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -28,6 +29,16 @@ public final class CommunicationRelayClient {
     /**
      * Creates a new CommunicationRelayConfiguration.
      *
+     * @return The obtained Communication Relay Configuration
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationRelayConfiguration getRelayConfiguration() {
+        return client.getRelayConfiguration().block();
+    }
+
+    /**
+     * Creates a new CommunicationRelayConfiguration.
+     *
      * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
      * @return The obtained Communication Relay Configuration
      */
@@ -40,12 +51,25 @@ public final class CommunicationRelayClient {
     /**
      * Creates a new CommunicationRelayConfiguration.
      *
+     * @param routeType The specified CommunicationRelayConfigurationRequestRouteType for the relay request
      * @return The obtained Communication Relay Configuration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRelayConfiguration getRelayConfiguration() {
-        return client.getRelayConfiguration().block();
+    public CommunicationRelayConfiguration getRelayConfiguration(CommunicationRelayConfigurationRequestRouteType routeType) {
+        return client.getRelayConfiguration(routeType).block();
 
+    }
+
+    /**
+     * Creates a new CommunicationRelayConfiguration.
+     *
+     * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
+     * @param routeType The specified CommunicationRelayConfigurationRequestRouteType for the relay request
+     * @return The obtained Communication Relay Configuration
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationRelayConfiguration getRelayConfiguration(CommunicationUserIdentifier communicationUser, CommunicationRelayConfigurationRequestRouteType routeType) {
+        return client.getRelayConfiguration(communicationUser, routeType).block();
     }
 
     /**
@@ -58,7 +82,38 @@ public final class CommunicationRelayClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Response<CommunicationRelayConfiguration> response =
-            client.getRelayConfigurationWithResponse(communicationUser, context).block();
+            client.getRelayConfigurationWithResponse(communicationUser, null, context).block();
+
+        return response;
+    }
+
+    /**
+     * Creates a new CommunicationRelayConfiguration with response.
+     *
+     * @param routeType The specified CommunicationRelayConfigurationRequestRouteType for the relay request
+     * @param context A {@link Context} representing the request context.
+     * @return The obtained Communication Relay Configuration
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(CommunicationRelayConfigurationRequestRouteType routeType, Context context) {
+        Response<CommunicationRelayConfiguration> response =
+            client.getRelayConfigurationWithResponse(null, routeType, context).block();
+
+        return response;
+    }
+
+    /**
+     * Creates a new CommunicationRelayConfiguration with response.
+     *
+     * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
+     * @param routeType The specified CommunicationRelayConfigurationRequestRouteType for the relay request
+     * @param context A {@link Context} representing the request context.
+     * @return The obtained Communication Relay Configuration
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, CommunicationRelayConfigurationRequestRouteType routeType, Context context) {
+        Response<CommunicationRelayConfiguration> response =
+            client.getRelayConfigurationWithResponse(communicationUser, routeType, context).block();
 
         return response;
     }
@@ -72,7 +127,7 @@ public final class CommunicationRelayClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(Context context) {
         Response<CommunicationRelayConfiguration> response =
-            client.getRelayConfigurationWithResponse(null, context).block();
+            client.getRelayConfigurationWithResponse(null, null, context).block();
 
         return response;
     }

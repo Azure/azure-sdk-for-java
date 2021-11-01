@@ -4,9 +4,12 @@ package com.azure.communication.networktraversal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
+import com.azure.communication.networktraversal.models.CommunicationRelayConfigurationRequestRouteType;
+import com.azure.communication.networktraversal.models.CommunicationIceServerRouteType;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
 
 import com.azure.core.http.HttpClient;
@@ -55,7 +58,7 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createRelayClientWithoutUserIdUsingManagedIdentity(HttpClient httpClient) {
+    public void createRelayClientUsingManagedIdentityWithRouteTypeAny(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
         CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
@@ -63,9 +66,10 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
 
         // Action & Assert
         assertNotNull(asyncClient);
+        assertNotNull(user.getId());
 
         if (user != null) {
-            Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration();
+            Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration(user, CommunicationRelayConfigurationRequestRouteType.ANY);
 
             StepVerifier.create(relayResponse)
             .assertNext(relayConfig -> {
@@ -73,6 +77,7 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
                 for (CommunicationIceServer iceS : relayConfig.getIceServers()) {
                     assertNotNull(iceS.getUsername());
                     assertNotNull(iceS.getCredential());
+                    assertEquals(CommunicationIceServerRouteType.ANY, iceS.getRouteType());
                 }
             }).verifyComplete();
         }
@@ -91,31 +96,6 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
         assertNotNull(user.getId());
         if (user != null) {
             Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration(user);
-
-            StepVerifier.create(relayResponse)
-            .assertNext(relayConfig -> {
-                assertNotNull(relayConfig.getIceServers());
-                for (CommunicationIceServer iceS : relayConfig.getIceServers()) {
-                    assertNotNull(iceS.getUrls());
-                    assertNotNull(iceS.getUsername());
-                    assertNotNull(iceS.getCredential());
-                }
-            }).verifyComplete();
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createRelayClientWithoutUserIdUsingConnectionString(HttpClient httpClient) {
-        // Arrange
-        setupTest(httpClient);
-        CommunicationRelayClientBuilder builder = createClientBuilderUsingConnectionString(httpClient);
-        asyncClient = setupAsyncClient(builder, "createIdentityClientUsingConnectionStringAsync");
-
-        // Action & Assert
-        assertNotNull(asyncClient);
-        if (user != null) {
-            Mono<CommunicationRelayConfiguration> relayResponse = asyncClient.getRelayConfiguration();
 
             StepVerifier.create(relayResponse)
             .assertNext(relayConfig -> {
@@ -159,7 +139,7 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getRelayConfigWithoutUserIdWithResponse(HttpClient httpClient) {
+    public void getRelayConfigWithResponseWithRouteTypeNearest(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
         CommunicationRelayClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
@@ -167,9 +147,10 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
 
         // Action & Assert
         assertNotNull(asyncClient);
+        assertNotNull(user.getId());
 
         if (user != null) {
-            Mono<Response<CommunicationRelayConfiguration>> relayConfig = asyncClient.getRelayConfigurationWithResponse();
+            Mono<Response<CommunicationRelayConfiguration>> relayConfig = asyncClient.getRelayConfigurationWithResponse(user, CommunicationRelayConfigurationRequestRouteType.NEAREST);
 
             StepVerifier.create(relayConfig)
             .assertNext(response -> {
@@ -179,6 +160,7 @@ public class CommunicationRelayAsyncTests extends CommunicationRelayClientTestBa
                     assertNotNull(iceS.getUrls());
                     assertNotNull(iceS.getUsername());
                     assertNotNull(iceS.getCredential());
+                    assertEquals(CommunicationIceServerRouteType.NEAREST, iceS.getRouteType());
                 }
             }).verifyComplete();
         }
