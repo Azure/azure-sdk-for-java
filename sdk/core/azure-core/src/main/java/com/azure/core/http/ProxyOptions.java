@@ -6,6 +6,7 @@ package com.azure.core.http;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -15,7 +16,9 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * This represents proxy configuration to be used in http clients..
@@ -46,6 +49,16 @@ public class ProxyOptions {
 
     private static final String HTTP = "http";
     private static final int DEFAULT_HTTP_PORT = 80;
+
+    /*
+     * The 'http.nonProxyHosts' system property is expected to be delimited by '|', but don't split escaped '|'s.
+     */
+    private static final Pattern HTTP_NON_PROXY_HOSTS_SPLIT = Pattern.compile("(?<!\\\\)\\|");
+
+    /*
+     * The 'NO_PROXY' environment variable is expected to be delimited by ',', but don't split escaped ','s.
+     */
+    private static final Pattern NO_PROXY_SPLIT = Pattern.compile("(?<!\\\\),");
 
     private final InetSocketAddress address;
     private final Type type;
@@ -252,6 +265,8 @@ public class ProxyOptions {
             String nonProxyHostsString = configuration.get(Configuration.PROPERTY_NO_PROXY);
             if (!CoreUtils.isNullOrEmpty(nonProxyHostsString)) {
                 proxyOptions.nonProxyHosts = sanitizeNoProxy(nonProxyHostsString);
+
+                LOGGER.log(LogLevel.VERBOSE, () -> "Using non-proxy host regex: " + proxyOptions.nonProxyHosts);
             }
 
             String userInfo = proxyUrl.getUserInfo();
@@ -279,14 +294,8 @@ public class ProxyOptions {
     /*
      * Helper function that sanitizes 'NO_PROXY' into a Pattern safe string.
      */
-    private static String sanitizeNoProxy(String noProxyString) {
-        /*
-         * The 'NO_PROXY' environment variable is expected to be delimited by ','.
-         */
-        String[] nonProxyHosts = noProxyString.split(",");
-
-        // Do an in-place replacement with the sanitized value.
-        for (int i = 0; i < nonProxyHosts.length; i++) {
+    static String sanitizeNoProxy(String noProxyString) {
+        return sanitizeNonProxyHosts(NO_PROXY_SPLIT.split(noProxyString), rawHost -> {
             /*
              * 'NO_PROXY' doesn't have a strongly standardized format, for now we are going to support values beginning
              * and ending with '*' or '.' to exclude an entire domain and will quote the value between the prefix and
@@ -295,7 +304,7 @@ public class ProxyOptions {
              */
             String prefixWildcard = "";
             String suffixWildcard = "";
-            String body = nonProxyHosts[i];
+            String body = rawHost;
 
             /*
              * First check if the non-proxy host begins with a qualified quantifier and extract it from being quoted,
@@ -328,10 +337,8 @@ public class ProxyOptions {
              * without quoting the '.' in the string would be treated as the match any character instead of the literal
              * '.' character.
              */
-            nonProxyHosts[i] = prefixWildcard + Pattern.quote(body) + suffixWildcard;
-        }
-
-        return String.join("|", nonProxyHosts);
+            return prefixWildcard + Pattern.quote(body) + suffixWildcard;
+        });
     }
 
     private static ProxyOptions attemptToLoadJavaProxy(Configuration configuration, boolean createUnresolved,
@@ -358,7 +365,9 @@ public class ProxyOptions {
 
         String nonProxyHostsString = configuration.get(JAVA_NON_PROXY_HOSTS);
         if (!CoreUtils.isNullOrEmpty(nonProxyHostsString)) {
-            proxyOptions.setNonProxyHosts(nonProxyHostsString);
+            proxyOptions.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHostsString);
+
+            LOGGER.log(LogLevel.VERBOSE, () -> "Using non-proxy host regex: " + proxyOptions.nonProxyHosts);
         }
 
         String username = configuration.get(type + "." + JAVA_PROXY_USER);
@@ -374,21 +383,15 @@ public class ProxyOptions {
     /*
      * Helper function that sanitizes 'http.nonProxyHosts' into a Pattern safe string.
      */
-    private static String sanitizeJavaHttpNonProxyHosts(String nonProxyHostsString) {
-        /*
-         * The 'http.nonProxyHosts' system property is expected to be delimited by '|'.
-         */
-        String[] nonProxyHosts = nonProxyHostsString.split("\\|");
-
-        // Do an in-place replacement with the sanitized value.
-        for (int i = 0; i < nonProxyHosts.length; i++) {
+    static String sanitizeJavaHttpNonProxyHosts(String nonProxyHostsString) {
+        return sanitizeNonProxyHosts(HTTP_NON_PROXY_HOSTS_SPLIT.split(nonProxyHostsString), rawHost -> {
             /*
              * 'http.nonProxyHosts' values are allowed to begin and end with '*' but this is an invalid value for a
              * pattern, so we need to qualify the quantifier with the match all '.' character.
              */
             String prefixWildcard = "";
             String suffixWildcard = "";
-            String body = nonProxyHosts[i];
+            String body = rawHost;
 
             if (body.startsWith("*")) {
                 prefixWildcard = ".*";
@@ -407,7 +410,17 @@ public class ProxyOptions {
              * without quoting the '.' in the string would be treated as the match any character instead of the literal
              * '.' character.
              */
-            nonProxyHosts[i] = prefixWildcard + Pattern.quote(body) + suffixWildcard;
+            return prefixWildcard + Pattern.quote(body) + suffixWildcard;
+        });
+    }
+
+    private static String sanitizeNonProxyHosts(String[] nonProxyHosts, Function<String, String> sanitizer) {
+        for (int i = 0; i < nonProxyHosts.length; i++) {
+            try {
+                nonProxyHosts[i] = Pattern.compile(nonProxyHosts[i]).pattern();
+            } catch (PatternSyntaxException ex) {
+                nonProxyHosts[i] = sanitizer.apply(nonProxyHosts[i]);
+            }
         }
 
         return String.join("|", nonProxyHosts);
