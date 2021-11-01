@@ -5,10 +5,7 @@ package com.azure.cosmos;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
@@ -108,7 +105,7 @@ public class CosmosClientBuilder {
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
     private boolean clientTelemetryEnabled = false;
-    private string apiType = "Sql";
+    private ApiType apiType = ApiType.SQL;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -130,12 +127,12 @@ public class CosmosClientBuilder {
         return this.state;
     }
 
-    CosmosClientBuilder setApiType(string apiType){
+    CosmosClientBuilder setApiType(ApiType apiType){
         this.apiType = apiType;
         return this;
     }
 
-    string apiType(){ return this.apiType; }
+    ApiType apiType(){ return this.apiType; }
 
     /**
      * Session capturing is enabled by default for {@link ConsistencyLevel#SESSION}.
@@ -855,20 +852,14 @@ public class CosmosClientBuilder {
                 public CosmosClientMetadataCachesSnapshot getCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder) {
                     return builder.metadataCaches();
                 }
-            });
-    }
-
-    static {
-        CosmosClientBuilderHelper.setCosmosClientBuilderAccessor(
-            new CosmosClientBuilderHelper.CosmosClientBuilderApiType() {
 
                 @Override
-                public void setCosmosClientApiType(CosmosClientBuilder builder, string apiType) {
+                public void setCosmosClientApiType(CosmosClientBuilder builder, ApiType apiType) {
                     builder.setApiType(apiType);
                 }
 
                 @Override
-                public string getCosmosClientApiType(CosmosClientBuilder builder) {
+                public ApiType getCosmosClientApiType(CosmosClientBuilder builder) {
                     return builder.apiType();
                 }
             });

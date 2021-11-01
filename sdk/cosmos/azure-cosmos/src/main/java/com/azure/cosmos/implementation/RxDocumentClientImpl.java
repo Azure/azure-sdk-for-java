@@ -148,7 +148,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final int clientId;
     private ClientTelemetry clientTelemetry;
-    private string apiType;
+    private ApiType apiType;
 
     // RetryPolicy retries a request when it encounters session unavailable (see ClientRetryPolicy).
     // Once it exhausts all write regions it clears the session container, then it uses RxClientCollectionCache
@@ -190,7 +190,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
-                                string apiType) {
+                                ApiType apiType) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
             credential, null, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot, apiType);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
@@ -209,7 +209,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
-                                string apiType) {
+                                ApiType apiType) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
             credential, tokenCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot, apiType);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
@@ -227,7 +227,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
                                 CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
-                                string apiType) {
+                                ApiType apiType) {
         this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs,
             credential, tokenCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot, apiType);
 
@@ -284,7 +284,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          boolean connectionSharingAcrossClientsEnabled,
                          boolean contentResponseOnWriteEnabled,
                          CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
-                         string apiType) {
+                         ApiType apiType) {
 
         activeClientsCnt.incrementAndGet();
         this.clientId = clientIdGenerator.getAndDecrement();
@@ -1513,7 +1513,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (this.apiType != null)
         {
-            request.getHeaders().put(HttpConstants.HttpHeaders.API_TYPE, this.apiType);
+            request.getHeaders().put(HttpConstants.HttpHeaders.API_TYPE, this.apiType.toString());
         }
 
         if ((RequestVerb.POST.equals(httpMethod) || RequestVerb.PUT.equals(httpMethod))

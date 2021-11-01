@@ -6,18 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.AuthorizationTokenType;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -171,7 +160,8 @@ public class BarrierRequestHelperTest {
                 false,
                 false,
                 false,
-                null);
+                null,
+                ApiType.NONE);
 
         ResourceType resourceType = ResourceType.DocumentCollection;
         OperationType operationType = OperationType.Read;
