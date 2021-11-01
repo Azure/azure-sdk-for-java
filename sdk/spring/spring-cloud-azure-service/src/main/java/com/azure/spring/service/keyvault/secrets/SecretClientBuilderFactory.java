@@ -13,9 +13,9 @@ import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.core.PropertyMapper;
+import com.azure.spring.service.storage.AbstractAzureStorageClientBuilderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ import java.util.function.BiConsumer;
 /**
  * Azure Key Vault certificate client builder factory, it builds the {@link SecretClientBuilder}.
  */
-public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFactory<SecretClientBuilder> {
+public class SecretClientBuilderFactory extends AbstractAzureStorageClientBuilderFactory<SecretClientBuilder> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecretClientBuilderFactory.class);
 

@@ -77,7 +77,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
                 addKeyVaultPropertySource(environment, properties);
             }
         } else {
-            logger.debug("Key Vault property source is not enabled");
+            logger.debug("Key Vault 'propertySourceEnabled' or 'enabled' is not enabled");
         }
     }
 
@@ -171,8 +171,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @return true if the key vault is enabled, false otherwise.
      */
     private boolean isKeyVaultPropertySourceEnabled(AzureKeyVaultSecretProperties properties) {
-        return Boolean.TRUE.equals(properties.getPropertySourceEnabled())
-                   || !properties.getPropertySources().isEmpty();
+        return (Boolean.TRUE.equals(properties.getPropertySourceEnabled()) || !properties.getPropertySources().isEmpty())
+            && Boolean.TRUE.equals(properties.isEnabled());
     }
 
     private boolean isKeyVaultClientAvailable() {

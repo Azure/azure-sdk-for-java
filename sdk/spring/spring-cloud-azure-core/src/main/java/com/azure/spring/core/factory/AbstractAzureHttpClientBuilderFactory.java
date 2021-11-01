@@ -15,18 +15,15 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.spring.core.converter.AzureHttpLogOptionsConverter;
 import com.azure.spring.core.converter.AzureHttpProxyOptionsConverter;
 import com.azure.spring.core.converter.AzureRetryPolicyConverter;
-import com.azure.spring.core.converter.AzureRequestRetryOptionsConverter;
 import com.azure.spring.core.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.client.HttpClientProperties;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.azure.spring.core.properties.retry.HttpRetryProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
-import com.azure.spring.core.properties.retry.StorageRetryProperties;
-import com.azure.storage.common.policy.RequestRetryOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +46,6 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     private final AzureHttpProxyOptionsConverter proxyOptionsConverter = new AzureHttpProxyOptionsConverter();
     private final AzureHttpLogOptionsConverter logOptionsConverter = new AzureHttpLogOptionsConverter();
     private final AzureRetryPolicyConverter httpRetryOptionsConverter = new AzureRetryPolicyConverter();
-    private final AzureRequestRetryOptionsConverter requestRetryOptionsConverter = new AzureRequestRetryOptionsConverter();
     protected abstract BiConsumer<T, HttpClient> consumeHttpClient();
 
     protected abstract BiConsumer<T, HttpPipelinePolicy> consumeHttpPipelinePolicy();
@@ -59,10 +55,6 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     protected abstract BiConsumer<T, HttpLogOptions> consumeHttpLogOptions();
 
     protected BiConsumer<T, RetryPolicy> consumeRetryPolicy() {
-        return (a, b) -> { };
-    }
-
-    protected BiConsumer<T, RequestRetryOptions> consumeRequestRetryOptions() {
         return (a, b) -> { };
     }
 
@@ -143,10 +135,6 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
         if (retryProperties instanceof HttpRetryProperties) {
             RetryPolicy retryPolicy = httpRetryOptionsConverter.convert((HttpRetryProperties) retryProperties);
             consumeRetryPolicy().accept(builder, retryPolicy);
-        } else if (retryProperties instanceof StorageRetryProperties) {
-            RequestRetryOptions requestRetryOptions =
-                requestRetryOptionsConverter.convert((StorageRetryProperties) retryProperties);
-            consumeRequestRetryOptions().accept(builder, requestRetryOptions);
         }
     }
 

@@ -5,13 +5,11 @@ package com.azure.spring.service.eventhubs;
 
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.spring.core.properties.AzurePropertiesUtils;
 import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.service.eventhubs.properties.EventHubProcessorProperties;
 import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.service.eventhubs.properties.EventHubProperties;
 import com.azure.spring.service.storage.blob.TestAzureStorageBlobHttpProperties;
-import org.springframework.beans.BeanUtils;
 
 import java.time.Duration;
 import java.util.HashMap;

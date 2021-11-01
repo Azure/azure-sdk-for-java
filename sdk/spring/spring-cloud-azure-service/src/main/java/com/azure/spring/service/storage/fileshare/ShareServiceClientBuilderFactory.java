@@ -11,9 +11,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Configuration;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.core.PropertyMapper;
+import com.azure.spring.service.storage.AbstractAzureStorageClientBuilderFactory;
 import com.azure.spring.service.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
@@ -31,7 +31,7 @@ import static com.azure.spring.core.ApplicationId.VERSION;
  * Storage File Share Service client builder factory, it builds the storage blob client according the configuration
  * context and blob properties.
  */
-public class ShareServiceClientBuilderFactory extends AbstractAzureHttpClientBuilderFactory<ShareServiceClientBuilder> {
+public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClientBuilderFactory<ShareServiceClientBuilder> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShareServiceClientBuilderFactory.class);
 
