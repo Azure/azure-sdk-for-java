@@ -139,7 +139,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
 
     @Override
     protected BiConsumer<EventProcessorClientBuilder, String> consumeConnectionString() {
-        return EventProcessorClientBuilder::connectionString;
+        return (builder, s) -> builder.connectionString(s, this.processorProperties.getEventHubName());
     }
 
     private void configureCheckpointStore(EventProcessorClientBuilder builder) {

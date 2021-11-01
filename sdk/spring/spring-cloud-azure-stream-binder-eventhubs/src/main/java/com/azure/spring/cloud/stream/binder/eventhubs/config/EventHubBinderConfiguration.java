@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
+import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubMessagingAutoConfiguration;
@@ -61,10 +62,12 @@ public class EventHubBinderConfiguration {
     @ConditionalOnMissingBean
     public EventHubMessageChannelBinder eventHubBinder(EventHubChannelProvisioner eventHubChannelProvisioner,
                                                        EventHubExtendedBindingProperties bindingProperties,
-                                                       ObjectProvider<NamespaceProperties> namespaceProperties) {
+                                                       ObjectProvider<NamespaceProperties> namespaceProperties,
+                                                       CheckpointStore checkpointStore) {
         EventHubMessageChannelBinder binder = new EventHubMessageChannelBinder(null, eventHubChannelProvisioner);
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
+        binder.setCheckpointStore(checkpointStore);
         return binder;
     }
 

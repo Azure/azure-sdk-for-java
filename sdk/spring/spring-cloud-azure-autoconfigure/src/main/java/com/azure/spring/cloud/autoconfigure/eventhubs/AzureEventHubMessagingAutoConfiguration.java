@@ -67,6 +67,7 @@ public class AzureEventHubMessagingAutoConfiguration {
             ObjectProvider<PropertiesSupplier<Tuple2<String, String>, ProcessorProperties>> suppliers) {
             return new DefaultEventHubNamespaceProcessorFactory(checkpointStore, properties, suppliers.getIfAvailable());
         }
+
         @Bean
         @ConditionalOnMissingBean
         public EventHubProcessorContainer eventProcessorContainer(EventHubProcessorFactory processorFactory) {

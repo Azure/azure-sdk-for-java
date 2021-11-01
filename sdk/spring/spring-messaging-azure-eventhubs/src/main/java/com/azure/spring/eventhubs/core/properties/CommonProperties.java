@@ -5,12 +5,13 @@ package com.azure.spring.eventhubs.core.properties;
 
 import com.azure.spring.core.connectionstring.implementation.EventHubConnectionString;
 import com.azure.spring.core.properties.AzureSdkProperties;
+import com.azure.spring.core.properties.aware.credential.ConnectionStringAware;
 import com.azure.spring.service.eventhubs.properties.EventHubCommonDescriptor;
 
 /**
  * Common properties shared by event hub namespace, a producer, and a consumer.
  */
-abstract class CommonProperties extends AzureSdkProperties implements EventHubCommonDescriptor {
+abstract class CommonProperties extends AzureSdkProperties implements EventHubCommonDescriptor, ConnectionStringAware {
 
 
     private String domainName = "servicebus.windows.net";
@@ -74,6 +75,7 @@ abstract class CommonProperties extends AzureSdkProperties implements EventHubCo
         return connectionString;
     }
 
+    @Override
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }

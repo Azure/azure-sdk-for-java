@@ -4,11 +4,12 @@
 package com.azure.spring.service.eventhubs.properties;
 
 import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.core.properties.aware.credential.ConnectionStringAware;
 
 /**
  * Azure Event Hub common related properties.
  */
-public interface EventHubCommonDescriptor extends AzureProperties {
+public interface EventHubCommonDescriptor extends AzureProperties, ConnectionStringAware {
 
     String getFQDN();
 
@@ -17,8 +18,6 @@ public interface EventHubCommonDescriptor extends AzureProperties {
     String getNamespace();
 
     String getEventHubName();
-
-    String getConnectionString();
 
     String getCustomEndpointAddress();
 

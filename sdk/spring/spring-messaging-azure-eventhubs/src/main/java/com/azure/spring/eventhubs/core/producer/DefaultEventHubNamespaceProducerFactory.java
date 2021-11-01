@@ -54,6 +54,7 @@ public final class DefaultEventHubNamespaceProducerFactory implements EventHubPr
             return this.clients.get(key);
         }
 
+        producerProperties.setEventHubName(eventHub);
         EventHubProducerAsyncClient producerClient = new EventHubClientBuilderFactory(producerProperties)
             .build().buildAsyncProducerClient();
 

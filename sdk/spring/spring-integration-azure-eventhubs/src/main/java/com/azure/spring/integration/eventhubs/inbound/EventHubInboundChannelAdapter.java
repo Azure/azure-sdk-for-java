@@ -95,8 +95,8 @@ public class EventHubInboundChannelAdapter extends MessageProducerSupport {
 
     private class IntegrationRecordEventProcessingListener implements RecordEventProcessingListener {
 
-        private EventHubMessageConverter messageConverter;
-        private Class<?> payloadType;
+        private EventHubMessageConverter messageConverter = new EventHubMessageConverter();
+        private Class<?> payloadType = byte[].class;
 
 
         @Override

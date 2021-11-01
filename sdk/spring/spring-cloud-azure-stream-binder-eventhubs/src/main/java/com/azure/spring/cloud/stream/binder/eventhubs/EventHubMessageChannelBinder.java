@@ -161,6 +161,9 @@ public class EventHubMessageChannelBinder extends
             Map<String, EventHubBindingProperties> bindings = bindingProperties.getBindings();
             for (Map.Entry<String, EventHubBindingProperties> entry : bindings.entrySet()) {
                 ProducerProperties properties = bindings.get(entry.getKey()).getProducer().getProducer();
+                if (properties.getEventHubName() == null) {
+                    continue;
+                }
                 if (key.equalsIgnoreCase(properties.getEventHubName())) {
                     return properties;
                 }
@@ -174,6 +177,9 @@ public class EventHubMessageChannelBinder extends
             Map<String, EventHubBindingProperties> bindings = bindingProperties.getBindings();
             for (Map.Entry<String, EventHubBindingProperties> entry : bindings.entrySet()) {
                 ProcessorProperties properties = bindings.get(entry.getKey()).getConsumer().getProcessor();
+                if (properties.getEventHubName() == null || properties.getConsumerGroup() == null) {
+                    continue;
+                }
                 if (key.equals(Tuples.of(properties.getEventHubName(), properties.getConsumerGroup()))) {
                     return properties;
                 }
