@@ -36,9 +36,9 @@ public class EventHubBinderBatchModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderBatchModeIT.class);
 
-    private static final String message = UUID.randomUUID().toString();
+    private static final String MESSAGE = UUID.randomUUID().toString();
 
-    private static final CountDownLatch latch = new CountDownLatch(1);
+    private static final CountDownLatch LATCH = new CountDownLatch(1);
 
     @Autowired
     private Sinks.Many<Message<String>> many;
@@ -62,8 +62,8 @@ public class EventHubBinderBatchModeIT {
         public Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("EventHubBinderBatchModeIT: New message received: '{}'", message.getPayload());
-                if (message.getPayload().equals(EventHubBinderBatchModeIT.message)) {
-                    latch.countDown();
+                if (message.getPayload().equals(EventHubBinderBatchModeIT.MESSAGE)) {
+                    LATCH.countDown();
                 }
             };
         }
@@ -72,10 +72,10 @@ public class EventHubBinderBatchModeIT {
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderBatchModeIT begin.");
-        EventHubBinderBatchModeIT.latch.await(15, TimeUnit.SECONDS);
-        LOGGER.info("Send a message:" + message + ".");
-        many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubBinderBatchModeIT.latch.await(30, TimeUnit.SECONDS)).isTrue();
+        EventHubBinderBatchModeIT.LATCH.await(15, TimeUnit.SECONDS);
+        LOGGER.info("Send a message:" + MESSAGE + ".");
+        many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
+        assertThat(EventHubBinderBatchModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderBatchModeIT end.");
     }
 }

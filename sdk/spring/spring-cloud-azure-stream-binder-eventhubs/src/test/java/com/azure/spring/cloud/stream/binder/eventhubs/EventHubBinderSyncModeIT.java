@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EventHubBinderSyncModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderSyncModeIT.class);
-    private static final String message = UUID.randomUUID().toString();
+    private static final String MESSAGE = UUID.randomUUID().toString();
 
     @Autowired
     private Sinks.Many<Message<String>> many;
@@ -45,7 +45,7 @@ public class EventHubBinderSyncModeIT {
     @Rule
     public OutputCaptureRule capture = new OutputCaptureRule();
 
-    private static final CountDownLatch latch = new CountDownLatch(1);
+    private static final CountDownLatch LATCH = new CountDownLatch(1);
 
     @EnableAutoConfiguration
     public static class TestConfig {
@@ -66,8 +66,8 @@ public class EventHubBinderSyncModeIT {
         public Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("EventHubBinderRecordModeIT: New message received: '{}'", message.getPayload());
-                if (message.getPayload().equals(EventHubBinderSyncModeIT.message) && message.getHeaders().containsKey("x-opt-enqueued-time")) {
-                    latch.countDown();
+                if (message.getPayload().equals(EventHubBinderSyncModeIT.MESSAGE) && message.getHeaders().containsKey("x-opt-enqueued-time")) {
+                    LATCH.countDown();
                 }
             };
         }
@@ -76,10 +76,10 @@ public class EventHubBinderSyncModeIT {
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderSyncModeIT begin.");
-        EventHubBinderSyncModeIT.latch.await(15, TimeUnit.SECONDS);
-        LOGGER.info("Send a message:" + message + ".");
-        many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubBinderSyncModeIT.latch.await(30, TimeUnit.SECONDS)).isTrue();
+        EventHubBinderSyncModeIT.LATCH.await(15, TimeUnit.SECONDS);
+        LOGGER.info("Send a message:" + MESSAGE + ".");
+        many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
+        assertThat(EventHubBinderSyncModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderSyncModeIT end.");
     }
 }
