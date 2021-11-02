@@ -10,7 +10,6 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureServiceConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.validation.AzureEndpoint;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.service.cosmos.CosmosProperties;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
@@ -20,8 +19,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.azure.spring.cloud.autoconfigure.validation.AzureEndpoint.AzureService.COSMOS_CORE;
 
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
@@ -35,7 +32,6 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
     private final HttpProxyProperties proxy = new HttpProxyProperties();
 
     @NotEmpty
-    @AzureEndpoint(azureServices = COSMOS_CORE)
     //@AzureEndpoint
     private String endpoint;
 
