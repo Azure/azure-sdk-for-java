@@ -1,5 +1,15 @@
 # Release History
 
+## 3.11.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 3.10.0 (2021-11-02)
 ### Breaking Changes
 Rename `azure.keyvault.jca.certificates-refresh-interval` to `azure.keyvault.jca.certificates-refresh-interval-in-ms`.
