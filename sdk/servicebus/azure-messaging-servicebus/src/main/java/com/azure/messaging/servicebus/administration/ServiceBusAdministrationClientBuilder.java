@@ -124,7 +124,7 @@ public final class ServiceBusAdministrationClientBuilder {
             .apiVersion(apiVersion.getVersion())
             .buildClient();
 
-        return new ServiceBusAdministrationAsyncClient(client, serializer);
+        return new ServiceBusAdministrationAsyncClient(client, serializer, tokenCredential);
     }
 
     /**

@@ -3,12 +3,12 @@
 
 package com.azure.messaging.servicebus.administration;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
+import com.azure.core.http.*;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -56,10 +56,12 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -77,6 +79,7 @@ import static org.mockito.Mockito.when;
  */
 class ServiceBusAdministrationAsyncClientTest {
     private static final int HTTP_UNAUTHORIZED = 401;
+    private static final String forwardToURL = "https://endpoint.servicebus.foo/forward-to-entity";
 
     @Mock
     private ServiceBusManagementClientImpl serviceClient;
@@ -90,10 +93,18 @@ class ServiceBusAdministrationAsyncClientTest {
     private Response<Object> objectResponse;
     @Mock
     private Response<Object> secondObjectResponse;
+    @Mock
+    private TokenCredential credential;
+    private AutoCloseable mockClosable;
 
     private final String queueName = "some-queue";
     private final String responseString = "some-xml-response-string";
     private final String secondResponseString = "second-xml-response";
+    private final String validToken = "some-valid-token";
+    private final String dummyEndpoint = "endpoint.servicebus.foo";
+    private final String forwardToEntity = "forward-to-entity";
+    private final String serviceBusSupplementaryAuthorizationHeaderName = "ServiceBusSupplementaryAuthorization";
+    private final String serviceBusDlqSupplementaryAuthorizationHeaderName = "ServiceBusDlqSupplementaryAuthorization";
     private final HttpHeaders httpHeaders = new HttpHeaders().put("foo", "baz");
     private final HttpRequest httpRequest;
 
@@ -119,7 +130,7 @@ class ServiceBusAdministrationAsyncClientTest {
 
     @BeforeEach
     void beforeEach() {
-        MockitoAnnotations.initMocks(this);
+        mockClosable = MockitoAnnotations.openMocks(this);
 
         when(objectResponse.getValue()).thenReturn(responseString);
         int statusCode = 202;
@@ -133,14 +144,16 @@ class ServiceBusAdministrationAsyncClientTest {
         when(secondObjectResponse.getRequest()).thenReturn(httpRequest);
 
         when(serviceClient.getEntities()).thenReturn(entitys);
+        when(serviceClient.getEndpoint()).thenReturn(dummyEndpoint);
         when(serviceClient.getSubscriptions()).thenReturn(subscriptions);
 
-        client = new ServiceBusAdministrationAsyncClient(serviceClient, serializer);
+        client = new ServiceBusAdministrationAsyncClient(serviceClient, serializer, credential);
     }
 
     @AfterEach
-    void afterEach() {
+    void afterEach() throws Exception{
         Mockito.framework().clearInlineMock(this);
+        mockClosable.close();
     }
 
     @Test
@@ -179,6 +192,38 @@ class ServiceBusAdministrationAsyncClientTest {
             argThat(arg -> createBodyContentEquals(arg, description)), isNull(), any(Context.class)))
             .thenReturn(Mono.just(objectResponse));
 
+        when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
+
+        // Act & Assert
+        StepVerifier.create(client.createQueueWithResponse(queueName, description))
+            .assertNext(response -> {
+                assertResponse(objectResponse, response);
+                assertEquals(updatedName, response.getValue().getName());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    void createQueueWithForwarding() throws IOException {
+        // Arrange
+        final String updatedName = "some-new-name";
+        final CreateQueueOptions description = new CreateQueueOptions();
+        description.setForwardTo(forwardToEntity);
+        description.setForwardDeadLetteredMessagesTo(forwardToEntity);
+        final QueueDescription expectedDescription = EntityHelper.getQueueDescription(description);
+        final QueueDescriptionEntry expected = new QueueDescriptionEntry()
+            .setTitle(getResponseTitle(updatedName))
+            .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
+        final AccessToken token = new AccessToken(validToken, OffsetDateTime.now());
+
+        when(entitys.putWithResponseAsync(eq(queueName),
+            argThat(arg -> createBodyContentEquals(arg, description)), isNull(),
+            argThat(ctx -> (verifyAdditionalAuthHeaderPresent(ctx,
+                serviceBusSupplementaryAuthorizationHeaderName, validToken) &&
+                verifyAdditionalAuthHeaderPresent(ctx,
+                    serviceBusDlqSupplementaryAuthorizationHeaderName, validToken)))))
+            .thenReturn(Mono.just(objectResponse));
+        when(credential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.just(token));
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
 
         // Act & Assert
@@ -488,6 +533,7 @@ class ServiceBusAdministrationAsyncClientTest {
     void updateQueueWithResponse() throws IOException {
         // Arrange
         final QueueDescription description = new QueueDescription();
+        description.setForwardTo(forwardToEntity);
         final QueueProperties properties = EntityHelper.toModel(description);
         EntityHelper.setQueueName(properties, queueName);
 
@@ -496,6 +542,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
+        final AccessToken token = new AccessToken(validToken, OffsetDateTime.now());
 
         when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> {
@@ -504,12 +551,19 @@ class ServiceBusAdministrationAsyncClientTest {
                 }
 
                 final CreateQueueBody argument = (CreateQueueBody) arg;
-                return argument.getContent() != null && argument.getContent().getQueueDescription() != null;
+                if ( argument.getContent() == null || argument.getContent().getQueueDescription() == null) {
+                    return false;
+                }
+                assertEquals(argument.getContent().getQueueDescription().getForwardTo(), forwardToURL,
+                    "Update queue does not set the forward To entity to an absolute URL");
+                return true;
             }),
             eq("*"),
-            any(Context.class)))
+            argThat(ctx -> verifyAdditionalAuthHeaderPresent(ctx,
+                serviceBusSupplementaryAuthorizationHeaderName, validToken))))
             .thenReturn(Mono.just(objectResponse));
 
+        when(credential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.just(token));
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
 
         // Act & Assert
@@ -569,6 +623,15 @@ class ServiceBusAdministrationAsyncClientTest {
             return false;
         }
 
+        //If forwarding options are enabled, check the value is an absolute URL
+        if(!Objects.isNull(properties.getForwardTo())) {
+            assertEquals(properties.getForwardTo(), forwardToURL);
+        }
+
+        if(!Objects.isNull(properties.getForwardDeadLetteredMessagesTo())) {
+            assertEquals(properties.getForwardDeadLetteredMessagesTo(), forwardToURL);
+        }
+
         return equals(expected.getAutoDeleteOnIdle(), properties.getAutoDeleteOnIdle())
             && equals(expected.getDefaultMessageTimeToLive(), properties.getDefaultMessageTimeToLive())
             && equals(expected.isDeadLetteringOnMessageExpiration(), properties.isDeadLetteringOnMessageExpiration())
@@ -585,6 +648,23 @@ class ServiceBusAdministrationAsyncClientTest {
             && equals(expected.isSessionRequired(), properties.isRequiresSession())
             && equals(expected.getUserMetadata(), properties.getUserMetadata())
             && "application/xml".equals(content.getType());
+    }
+
+    private static boolean verifyAdditionalAuthHeaderPresent(Context context, String requiredHeader, String token) {
+        return context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).map(headers -> {
+            if (headers instanceof HttpHeaders) {
+                HttpHeaders customHttpHeaders = (HttpHeaders) headers;
+                // loop through customHttpHeaders and check if the required Header is present
+                for (HttpHeader httpHeader : customHttpHeaders) {
+                    if (!Objects.isNull(httpHeader.getName()) && !Objects.isNull(httpHeader.getValue())) {
+                        if (httpHeader.getName().equals(requiredHeader) && httpHeader.getValue().equals(token)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }).orElse(false);
     }
 
     private static LinkedHashMap<String, String> getResponseTitle(String entityName) {
