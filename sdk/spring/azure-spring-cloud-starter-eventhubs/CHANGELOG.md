@@ -1,5 +1,15 @@
 # Release History
 
+## 2.11.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.10.0 (2021-11-02)
 ### Other Changes
 - Deprecate RxJava support APIs, which will be dropped from version 4.0.0.
