@@ -2608,6 +2608,10 @@ public final class ServiceBusAdministrationAsyncClient {
     private void addAdditionalAuthHeader(String headerName, HttpHeaders headers) {
         final String scope;
 
+        if (headers == null) {
+            return;
+        }
+
         if (tokenCredential instanceof ServiceBusSharedKeyCredential) {
             scope = String.format("https://%s", managementClient.getEndpoint());
         } else {
