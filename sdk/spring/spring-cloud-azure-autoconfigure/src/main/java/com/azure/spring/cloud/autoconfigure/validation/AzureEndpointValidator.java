@@ -20,7 +20,7 @@ public class AzureEndpointValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        if (target instanceof AzureEndpointValidator) {
+        if (target instanceof AzureCosmosProperties) {
             AzureCosmosProperties azureCosmosProperties = (AzureCosmosProperties) target;
             if (!azureCosmosProperties.isNeedvalidate()) {
                 return;
