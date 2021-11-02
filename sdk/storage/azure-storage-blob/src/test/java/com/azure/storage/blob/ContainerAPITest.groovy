@@ -1564,7 +1564,7 @@ class ContainerAPITest extends APISpec {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
     def "List blobs hier invalid xml"() {
         setup:
-        def blobName = "dir1/dir2/file\uFFFF.blob";
+        def blobName = 'dir1/dir2/file\uFFFF.blob';
         cc.getBlobClient(blobName).getAppendBlobClient().create()
 
         when:
