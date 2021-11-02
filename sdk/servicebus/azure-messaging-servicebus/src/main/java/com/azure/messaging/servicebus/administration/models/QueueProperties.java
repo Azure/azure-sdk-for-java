@@ -45,6 +45,7 @@ public final class QueueProperties {
     private final Boolean isAnonymousAccessible;
     private Duration lockDuration;
     private int maxDeliveryCount;
+    private long maxMessageSizeInKilobytes;
     private long maxSizeInMegabytes;
     private final int messageCount;
     private final MessageCountDetails messageCountDetails;
@@ -78,6 +79,7 @@ public final class QueueProperties {
                     .setIsAnonymousAccessible(queue.isAnonymousAccessible)
                     .setLockDuration(queue.getLockDuration())
                     .setMaxSizeInMegabytes(queue.getMaxSizeInMegabytes())
+                    .setMaxMessageSizeInKilobytes(queue.getMaxMessageSizeInKilobytes())
                     .setMaxDeliveryCount(queue.getMaxDeliveryCount())
                     .setMessageCount(queue.messageCount)
                     .setMessageCountDetails(queue.getMessageCountDetails())
@@ -132,6 +134,7 @@ public final class QueueProperties {
         this.forwardDeadLetteredMessagesTo = description.getForwardDeadLetteredMessagesTo();
         this.lockDuration = description.getLockDuration();
         this.maxDeliveryCount = toPrimitive(description.getMaxDeliveryCount());
+        this.maxMessageSizeInKilobytes = toPrimitive(description.getMaxMessageSizeInKilobytes());
         this.maxSizeInMegabytes = toPrimitive(description.getMaxSizeInMegabytes());
         this.messageCount = toPrimitive(description.getMessageCount());
         this.messageCountDetails = description.getMessageCountDetails();
@@ -468,6 +471,26 @@ public final class QueueProperties {
      */
     public QueueProperties setUserMetadata(String userMetadata) {
         this.userMetadata = userMetadata;
+        return this;
+    }
+
+    /**
+     * Get the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @return the maxMessageSizeInKilobytes value.
+     */
+    public long getMaxMessageSizeInKilobytes() {
+        return this.maxMessageSizeInKilobytes;
+    }
+
+    /**
+     * Set the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
+     * @return the QueueDescription object itself.
+     */
+    public QueueProperties setMaxMessageSizeInKilobytes(long maxMessageSizeInKilobytes) {
+        this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
         return this;
     }
 

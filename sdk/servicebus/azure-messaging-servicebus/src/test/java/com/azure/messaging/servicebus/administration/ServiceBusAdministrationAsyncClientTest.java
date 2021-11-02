@@ -183,6 +183,7 @@ class ServiceBusAdministrationAsyncClientTest {
         // Arrange
         final String updatedName = "some-new-name";
         final CreateQueueOptions description = new CreateQueueOptions();
+        description.setMaxMessageSizeInKilobytes(1024L);
         final QueueDescription expectedDescription = EntityHelper.getQueueDescription(description);
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
@@ -647,6 +648,7 @@ class ServiceBusAdministrationAsyncClientTest {
             && equals(expected.isDuplicateDetectionRequired(), properties.isRequiresDuplicateDetection())
             && equals(expected.isSessionRequired(), properties.isRequiresSession())
             && equals(expected.getUserMetadata(), properties.getUserMetadata())
+            && equals(expected.getMaxMessageSizeInKilobytes(), properties.getMaxMessageSizeInKilobytes())
             && "application/xml".equals(content.getType());
     }
 
