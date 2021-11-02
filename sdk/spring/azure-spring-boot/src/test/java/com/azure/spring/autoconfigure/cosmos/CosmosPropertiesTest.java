@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -58,7 +59,7 @@ public class CosmosPropertiesTest {
         Assert.assertNotNull(exception);
         Assert.assertTrue(exception instanceof BeanCreationException);
         Assert.assertNotNull(exception.getCause());
-        Assert.assertTrue(exception.getCause() instanceof IllegalArgumentException);
+        Assert.assertTrue(exception.getCause() instanceof BindException);
     }
 
     @Test
@@ -88,7 +89,7 @@ public class CosmosPropertiesTest {
             context.register(Config.class);
             context.refresh();
             final CosmosProperties properties = context.getBean(CosmosProperties.class);
-            assertThat(properties.getUri()).matches(CosmosProperties.LOCAL_URI_REGEX);
+            assertThat(properties.getUri()).matches(CosmosUriValidator.LOCAL_URI_REGEX);
         }
     }
 
@@ -125,7 +126,7 @@ public class CosmosPropertiesTest {
         }
         Assert.assertNotNull(exception);
         Assert.assertNotNull(exception.getCause());
-        Assert.assertTrue(exception.getCause() instanceof IllegalArgumentException);
+        Assert.assertTrue(exception.getCause() instanceof BindException);
     }
 
     static Stream<Arguments> localURIUnMatchedProvider() {
@@ -148,7 +149,7 @@ public class CosmosPropertiesTest {
             context.register(Config.class);
             context.refresh();
             final CosmosProperties properties = context.getBean(CosmosProperties.class);
-            assertThat(properties.getUri()).matches(CosmosProperties.URI_REGEX);
+            assertThat(properties.getUri()).matches(CosmosUriValidator.URI_REGEX);
         }
     }
 
@@ -163,7 +164,7 @@ public class CosmosPropertiesTest {
             context.register(Config.class);
             context.refresh();
             final CosmosProperties properties = context.getBean(CosmosProperties.class);
-            assertThat(properties.getUri()).matches(CosmosProperties.URI_REGEX);
+            assertThat(properties.getUri()).matches(CosmosUriValidator.URI_REGEX);
         }
     }
 
@@ -184,10 +185,13 @@ public class CosmosPropertiesTest {
     }
 
     @Test
-    public void emptySettingNotAllowed() {
+    public void emptyKeyDatabaseNotAllowed() {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             Exception exception = null;
-
+            addInlinedPropertiesToEnvironment(
+                context,
+                PROPERTY_URI + "=" + TEST_URI_HTTPS
+            );
             context.register(Config.class);
 
             try {
@@ -207,8 +211,7 @@ public class CosmosPropertiesTest {
 
             final List<String> errorStringsExpected = Arrays.asList(
                 "Field error in object 'azure.cosmos' on field 'database': rejected value [null];",
-                "Field error in object 'azure.cosmos' on field 'key': rejected value [null];",
-                "Field error in object 'azure.cosmos' on field 'uri': rejected value [null];"
+                "Field error in object 'azure.cosmos' on field 'key': rejected value [null];"
             );
 
             assertThat(errorStrings.size()).isEqualTo(errorStringsExpected.size());

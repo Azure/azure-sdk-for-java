@@ -8,31 +8,26 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.regex.Pattern;
 
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
 @ConfigurationProperties("azure.cosmos")
-public class CosmosProperties implements InitializingBean {
+public class CosmosProperties {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosProperties.class);
-
-    public static final String URI_REGEX = "http[s]{0,1}://.*.documents.azure.com.*";
-
-    public static final String LOCAL_URI_REGEX = "^(http[s]{0,1}://)*localhost.*|^127(?:\\.[0-9]+){0,2}\\.[0-9]+.*";
 
     /**
      * Document DB URI.
      */
     @NotEmpty
+    @ValidCosmosUri
     private String uri;
 
     /**
@@ -82,11 +77,6 @@ public class CosmosProperties implements InitializingBean {
                 LOGGER.info("Response Diagnostics {}", responseDiagnostics);
             }
         };
-
-    @Override
-    public void afterPropertiesSet() {
-        validateUri();
-    }
 
     public String getUri() {
         return uri;
@@ -163,17 +153,4 @@ public class CosmosProperties implements InitializingBean {
         this.connectionMode = connectionMode;
     }
 
-    private void validateUri() {
-        if (!isValidateUri()) {
-            return;
-        }
-        if (Pattern.matches(LOCAL_URI_REGEX, uri)) {
-            return;
-        }
-        if (!Pattern.matches(URI_REGEX, uri)) {
-            throw new IllegalArgumentException("the uri's pattern specified in 'azure.cosmos.uri' is not supported, "
-                + "only sql/core api is supported, please check https://docs.microsoft.com/en-us/azure/cosmos-db/ "
-                + "for more info.");
-        }
-    }
 }
