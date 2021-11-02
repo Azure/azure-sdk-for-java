@@ -48,8 +48,8 @@ public class ClientTelemetrySerializer extends StdSerializer<ClientTelemetryInfo
         }
 
         if (telemetry.getPreferredRegions() != null && telemetry.getPreferredRegions().size() > 0) {
-            generator.writeStringField("preferredRegions",
-                telemetry.getPreferredRegions().toString());
+            generator.writeObjectField("preferredRegions",
+                telemetry.getPreferredRegions());
         }
 
         generator.writeNumberField("aggregationIntervalInSec", telemetry.getAggregationIntervalInSec());

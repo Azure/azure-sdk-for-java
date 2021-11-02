@@ -322,7 +322,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         }
 
         if (shouldContainsPreferredRegion) {
-            assertThat(ctJson).contains("\"preferredRegions\":\"[East US 2, West US]\"");
+            assertThat(ctJson).contains("\"preferredRegions\":[\"East US 2\",\"West US\"]");
         } else {
             assertThat(ctJson).doesNotContain("preferredRegions");
         }
