@@ -62,8 +62,6 @@ public class SchemaRegistryClientBuilder {
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final AddHeadersPolicy API_HEADER_POLICY = new AddHeadersPolicy(new HttpHeaders()
-        .set("api-version", "2020-09-01-preview"));
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -281,7 +279,6 @@ public class SchemaRegistryClientBuilder {
                 clientVersion, buildConfiguration));
             policies.add(new RequestIdPolicy());
             policies.add(new AddHeadersFromContextPolicy());
-            policies.add(API_HEADER_POLICY);
 
             policies.addAll(perCallPolicies);
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
