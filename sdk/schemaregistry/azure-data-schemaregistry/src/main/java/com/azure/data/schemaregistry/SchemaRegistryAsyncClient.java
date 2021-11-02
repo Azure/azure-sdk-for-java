@@ -6,12 +6,14 @@ package com.azure.data.schemaregistry;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
+import com.azure.data.schemaregistry.implementation.models.ErrorException;
 import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
 import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
 import com.azure.data.schemaregistry.models.SchemaFormat;
@@ -164,6 +166,20 @@ public final class SchemaRegistryAsyncClient {
         }
 
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
+            .onErrorMap(ErrorException.class, (error) -> {
+                if (error.getResponse().getStatusCode() == 404) {
+                    final String message;
+                    if (error.getValue() != null && error.getValue().getError() != null) {
+                        message = error.getValue().getError().getMessage();
+                    } else {
+                        message = error.getMessage();
+                    }
+
+                    return new ResourceNotFoundException(message, error.getResponse(), error);
+                }
+
+                return error;
+            })
             .map(response -> {
                 //TODO (conniey): Will this change in the future if they support additional formats?
                 final SchemaFormat schemaFormat = SchemaFormat.AVRO;
