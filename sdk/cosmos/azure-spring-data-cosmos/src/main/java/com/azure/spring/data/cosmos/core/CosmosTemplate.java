@@ -133,7 +133,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         this.responseDiagnosticsProcessor = cosmosConfig.getResponseDiagnosticsProcessor();
         this.queryMetricsEnabled = cosmosConfig.isQueryMetricsEnabled();
         this.databaseThroughputConfig = cosmosConfig.getDatabaseThroughputConfig();
-        this.pageFactory = cosmosConfig.isLazyPageTotalCount() ? new CosmosLazyPageImpl.Factory() : new CosmosPageImpl.Factory();
+        this.pageFactory = cosmosConfig.isEagerPageCountEnabled() ? new CosmosPageImpl.Factory() : new CosmosLazyPageImpl.Factory();
     }
 
     /**

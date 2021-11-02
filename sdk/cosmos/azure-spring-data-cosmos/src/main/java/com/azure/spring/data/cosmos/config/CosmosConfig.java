@@ -42,7 +42,7 @@ public class CosmosConfig {
     public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
                         DatabaseThroughputConfig databaseThroughputConfig,
                         boolean queryMetricsEnabled) {
-        this(responseDiagnosticsProcessor, databaseThroughputConfig, queryMetricsEnabled, true);
+        this(responseDiagnosticsProcessor, databaseThroughputConfig, queryMetricsEnabled, false);
     }
 
     /**
@@ -51,16 +51,16 @@ public class CosmosConfig {
      * @param responseDiagnosticsProcessor must not be {@literal null}
      * @param databaseThroughputConfig may be @{literal null}
      * @param queryMetricsEnabled must not be {@literal null}
-     * @param lazyPageTotalCount true if Page:getTotalCount should be lazily invoked
+     * @param eagerPageCountEnabled true if Page:getTotalCount should be eagerly resolved
      */
     @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "eagerPageCountEnabled"})
     private CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
                         DatabaseThroughputConfig databaseThroughputConfig,
-                        boolean queryMetricsEnabled, boolean lazyPageTotalCount) {
+                        boolean queryMetricsEnabled, boolean eagerPageCountEnabled) {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
-        this.lazyPageTotalCount = lazyPageTotalCount;
+        this.eagerPageCountEnabled = eagerPageCountEnabled;
     }
 
     /**
@@ -86,8 +86,8 @@ public class CosmosConfig {
      *
      * @return boolean, whether to resolve the page count lazily.
      */
-    public boolean eagerPageCountEnabled() {
-        return lazyPageTotalCount;
+    public boolean isEagerPageCountEnabled() {
+        return eagerPageCountEnabled;
     }
 
     /**
@@ -115,7 +115,7 @@ public class CosmosConfig {
         private ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
         private DatabaseThroughputConfig databaseThroughputConfig;
         private boolean queryMetricsEnabled;
-        private boolean eagerPageCountEnabled = false;
+        private boolean eagerPageCountEnabled;
 
         CosmosConfigBuilder() {
         }
@@ -151,7 +151,7 @@ public class CosmosConfig {
          * @return CosmosConfigBuilder
          */
         public CosmosConfigBuilder enableEagerPageCount() {
-            this.eagerPageCount = true;
+            this.eagerPageCountEnabled = true;
             return this;
         }
 
@@ -167,7 +167,7 @@ public class CosmosConfig {
          */
         public CosmosConfig build() {
             return new CosmosConfig(this.responseDiagnosticsProcessor, this.databaseThroughputConfig,
-                                    this.queryMetricsEnabled, this.lazyPageTotalCount);
+                                    this.queryMetricsEnabled, this.eagerPageCountEnabled);
         }
 
         @Override
@@ -176,7 +176,7 @@ public class CosmosConfig {
                 + "responseDiagnosticsProcessor=" + responseDiagnosticsProcessor
                 + ", databaseThroughputConfig=" + databaseThroughputConfig
                 + ", queryMetricsEnabled=" + queryMetricsEnabled
-                + ", lazyPageTotalCount=" + lazyPageTotalCount
+                + ", eagerPageCountEnabled=" + eagerPageCountEnabled
                 + '}';
         }
     }

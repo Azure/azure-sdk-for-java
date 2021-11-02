@@ -740,7 +740,7 @@ public class CosmosTemplateIT {
                               new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
 
         final CosmosConfig config = CosmosConfig.builder()
-            .eagerFetchPageTotalCount()
+            .enableEagerPageCount()
             .build();
         final CosmosTemplate eagerCountCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
 
