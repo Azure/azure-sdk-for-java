@@ -61,13 +61,10 @@ public class CosmosClientBuilderTest {
         directConnectionConfig.setIdleEndpointTimeout(IDLE_ENDPOINT_TIMEOUT);
         directConnectionConfig.setMaxConnectionsPerEndpoint(100);
         directConnectionConfig.setMaxRequestsPerConnection(100);
-        final List<String> preferredRegions = new ArrayList<>();
-        preferredRegions.add("West US");
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-            .endpoint(hostName)
+            .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .directMode(directConnectionConfig)
-            .preferredRegions(preferredRegions)
             .userAgentSuffix("custom-direct-client")
             .multipleWriteRegionsEnabled(false)
             .endpointDiscoveryEnabled(false)
