@@ -17,7 +17,7 @@ public class CosmosConfig {
 
     private final boolean queryMetricsEnabled;
 
-    private final boolean lazyPageTotalCount;
+    private final boolean eagerPageCountEnabled;
 
     /**
      * Initialization
@@ -53,7 +53,7 @@ public class CosmosConfig {
      * @param queryMetricsEnabled must not be {@literal null}
      * @param lazyPageTotalCount true if Page:getTotalCount should be lazily invoked
      */
-    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "lazyPageTotalCount"})
+    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "eagerPageCountEnabled"})
     private CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
                         DatabaseThroughputConfig databaseThroughputConfig,
                         boolean queryMetricsEnabled, boolean lazyPageTotalCount) {
@@ -86,7 +86,7 @@ public class CosmosConfig {
      *
      * @return boolean, whether to resolve the page count lazily.
      */
-    public boolean isLazyPageTotalCount() {
+    public boolean eagerPageCountEnabled() {
         return lazyPageTotalCount;
     }
 
@@ -115,7 +115,7 @@ public class CosmosConfig {
         private ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
         private DatabaseThroughputConfig databaseThroughputConfig;
         private boolean queryMetricsEnabled;
-        private boolean lazyPageTotalCount = true;
+        private boolean eagerPageCountEnabled = false;
 
         CosmosConfigBuilder() {
         }
@@ -150,8 +150,8 @@ public class CosmosConfig {
          *
          * @return CosmosConfigBuilder
          */
-        public CosmosConfigBuilder eagerFetchPageTotalCount() {
-            this.lazyPageTotalCount = false;
+        public CosmosConfigBuilder enableEagerPageCount() {
+            this.eagerPageCount = true;
             return this;
         }
 
