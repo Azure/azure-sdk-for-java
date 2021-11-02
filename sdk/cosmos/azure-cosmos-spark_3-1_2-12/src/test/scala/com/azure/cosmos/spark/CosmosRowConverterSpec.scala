@@ -50,22 +50,6 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     objectNode.get(colName2).asText() shouldEqual colVal2
   }
 
-  "basic with t spark row" should "translate to ObjectNode" in {
-
-    val colName1 = "testCol1"
-    val colName2 = "testCol2"
-    val colVal1 = 8
-    val colVal2 = "strVal"
-
-    val row = new GenericRowWithSchema(
-      Array(colVal1, colVal2),
-      StructType(Seq(StructField(colName1, IntegerType), StructField(colName2, StringType))))
-
-    val objectNode = defaultRowConverter.fromRowToObjectNode(row)
-    objectNode.get(colName1).asInt() shouldEqual colVal1
-    objectNode.get(colName2).asText() shouldEqual colVal2
-  }
-
   "null type in spark row" should "translate to null in ObjectNode" in {
 
     val colName1 = "testCol1"
