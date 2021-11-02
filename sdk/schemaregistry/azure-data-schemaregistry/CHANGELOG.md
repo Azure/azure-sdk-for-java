@@ -4,7 +4,11 @@
 
 ### Features Added
 
+- Regenerated REST API based off 2021-10 swagger.
+
 ### Breaking Changes
+
+- Removed preview `SchemaRegistryVersion`.
 
 ### Bugs Fixed
 
