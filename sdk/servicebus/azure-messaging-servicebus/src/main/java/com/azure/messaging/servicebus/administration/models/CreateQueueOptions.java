@@ -12,7 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.*;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_DUPLICATE_DETECTION_DURATION;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_LOCK_DURATION;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_MAX_DELIVERY_COUNT;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_QUEUE_SIZE;
 
 /**
  * Represents the set of options that can be specified for the creation of a queue.
@@ -34,7 +38,7 @@ public final class CreateQueueOptions {
     private String forwardDeadLetteredMessagesTo;
     private Duration lockDuration;
     private int maxDeliveryCount;
-    public long maxMessageSizeInKilobytes;
+    private long maxMessageSizeInKilobytes;
     private long maxSizeInMegabytes;
     private boolean requiresDuplicateDetection;
     private boolean requiresSession;
