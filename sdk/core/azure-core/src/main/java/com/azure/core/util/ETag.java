@@ -37,15 +37,15 @@ public final class ETag {
     public boolean equals(Object o) {
         if (o == this) {
             return true;
-        }
-
-        if (!(o instanceof ETag)) {
+        } else if (o == null) {
             return false;
+        } else if (!(o instanceof ETag)) {
+            return false;
+        } else if (this.eTag == null) {
+            return ((ETag) o).eTag == null;
+        } else {
+            return this.eTag.equals(((ETag) o).eTag);
         }
-
-        ETag oETag = (ETag) o;
-
-        return this.eTag.equals(oETag.eTag);
     }
 
     @Override

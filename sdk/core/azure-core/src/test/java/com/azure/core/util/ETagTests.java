@@ -6,7 +6,9 @@ package com.azure.core.util;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link ETag}.
@@ -41,5 +43,19 @@ public class ETagTests {
         // Valid Weak ETag
         String weakETagExpect = WEAK_ETAG_PREFIX_QUOTE + ETAG_CONTENT;
         assertThrows(IllegalArgumentException.class, () -> new ETag(weakETagExpect));
+    }
+
+    @Test
+    public void equals() {
+        ETag validStrongETag = new ETag(QUOTE_STRING + ETAG_CONTENT + QUOTE_STRING);
+        assertFalse(validStrongETag.equals(null));
+        ETag nullETag = new ETag(null);
+        assertTrue(nullETag.equals(new ETag(null)));
+        assertFalse(nullETag.equals(validStrongETag));
+        assertFalse(validStrongETag.equals(nullETag));
+        assertTrue(validStrongETag.equals(validStrongETag));
+
+        ETag validStrongETagCopy = new ETag(QUOTE_STRING + ETAG_CONTENT + QUOTE_STRING);
+        assertEquals(validStrongETag, validStrongETagCopy);
     }
 }
