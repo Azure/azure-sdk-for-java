@@ -50,6 +50,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -121,8 +122,12 @@ public final class RestProxy implements InvocationHandler {
         try {
             final SwaggerMethodParser methodParser = getMethodParser(method);
             final HttpRequest request = createHttpRequest(methodParser, args);
-            Context context = methodParser.setContext(args)
-                .addData("caller-method", methodParser.getFullyQualifiedMethodName())
+            Context context = methodParser.setContext(args);
+
+            RequestOptions options = methodParser.setRequestOptions(args);
+            context = mergeRequestOptionsContext(context, options);
+
+            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
                 .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
             context = startTracingSpan(method, context);
 
@@ -130,7 +135,6 @@ public final class RestProxy implements InvocationHandler {
                 request.setBody(validateLength(request));
             }
 
-            RequestOptions options = methodParser.setRequestOptions(args);
             if (options != null) {
                 options.getRequestCallback().accept(request);
             }
@@ -153,6 +157,24 @@ public final class RestProxy implements InvocationHandler {
         if (method.isAnnotationPresent(com.azure.core.annotation.ResumeOperation.class)) {
             throw logger.logExceptionAsError(Exceptions.propagate(new Exception("'ResumeOperation' isn't supported.")));
         }
+    }
+
+    static Context mergeRequestOptionsContext(Context context, RequestOptions options) {
+        if (options == null) {
+            return context;
+        }
+
+        Context optionsContext = options.getContext();
+        if (optionsContext != null && optionsContext != Context.NONE) {
+            // For now, get the 'Context' key-value map to ensure only the latest versions of a 'Context'
+            // key-value pair is merged into 'context'.
+            // In the future this can be further optimized: https://github.com/Azure/azure-sdk-for-java/issues/25153
+            for (Map.Entry<Object, Object> kvp : optionsContext.getValues().entrySet()) {
+                context = context.addData(kvp.getKey(), kvp.getValue());
+            }
+        }
+
+        return context;
     }
 
     static Flux<ByteBuffer> validateLength(final HttpRequest request) {
