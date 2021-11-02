@@ -46,11 +46,11 @@ public final class DefaultEventHubNamespaceProducerFactory implements EventHubPr
     }
 
     private EventHubProducerAsyncClient doCreateProducer(String eventHub, @Nullable ProducerProperties properties) {
-        ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
         if (this.clients.containsKey(eventHub)) {
             return this.clients.get(eventHub);
         }
 
+        ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
         producerProperties.setEventHubName(eventHub);
         EventHubProducerAsyncClient producerClient = new EventHubClientBuilderFactory(producerProperties)
             .build().buildAsyncProducerClient();
