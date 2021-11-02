@@ -1,6 +1,6 @@
 # Release History
 
-## 2.10.0 (2021-10-29)
+## 2.10.0 (2021-11-02)
 ### Features Added
 - Support batch consumers.
 
