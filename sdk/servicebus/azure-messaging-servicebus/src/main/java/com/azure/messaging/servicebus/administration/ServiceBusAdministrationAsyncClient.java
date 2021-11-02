@@ -2608,10 +2608,6 @@ public final class ServiceBusAdministrationAsyncClient {
     private void addAdditionalAuthHeader(String headerName, HttpHeaders headers) {
         final String scope;
 
-        if (headers == null) {
-            return;
-        }
-
         if (tokenCredential instanceof ServiceBusSharedKeyCredential) {
             scope = String.format("https://%s", managementClient.getEndpoint());
         } else {
@@ -2620,6 +2616,9 @@ public final class ServiceBusAdministrationAsyncClient {
         final Mono<AccessToken> tokenMono = tokenCredential.getToken(new TokenRequestContext().addScopes(scope));
         final AccessToken token = tokenMono.block(ServiceBusConstants.OPERATION_TIMEOUT);
 
+        if (headers == null || token == null) {
+            return;
+        }
         headers.add(headerName, token.getToken());
     }
 
