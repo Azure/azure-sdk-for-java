@@ -284,7 +284,7 @@ public class ModelHelper {
     }
 
     public static String toBlobNameString(BlobName blobName) {
-        return blobName.isEncoded()
+        return blobName.isEncoded() != null && blobName.isEncoded()
             ? Utility.urlDecode(blobName.getContent())
             : blobName.getContent();
     }

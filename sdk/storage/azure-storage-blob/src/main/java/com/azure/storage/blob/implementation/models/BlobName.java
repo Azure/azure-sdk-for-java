@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlText;
 
 /** The BlobName model. */
 @JacksonXmlRootElement(localName = "BlobName")
@@ -22,7 +23,7 @@ public final class BlobName {
     /*
      * The name of the blob.
      */
-    @JsonProperty(value = "content")
+    @JacksonXmlText
     private String content;
 
     /**

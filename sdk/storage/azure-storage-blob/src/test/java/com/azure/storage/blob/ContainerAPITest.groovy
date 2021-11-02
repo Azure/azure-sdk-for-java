@@ -1570,14 +1570,14 @@ class ContainerAPITest extends APISpec {
         when:
         def blobItem
         if (!delimiter) {
-            blobItem = cc.listBlobsByHierarchy("").iterator().next()
+            blobItem = cc.listBlobsByHierarchy("", null, null).iterator().next()
         } else {
             blobItem = cc.listBlobsByHierarchy(".b", null, null).iterator().next()
         }
 
         then:
-        blobItem.getName() == blobName
-        blobItem.isPrefix() == delimiter
+        blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFF.b" : blobName)
+        blobItem.isPrefix() == (delimiter ? true : null)
 
         where:
         delimiter | _
