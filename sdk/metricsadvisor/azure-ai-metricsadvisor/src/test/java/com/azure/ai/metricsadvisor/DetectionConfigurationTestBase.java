@@ -161,7 +161,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
                 new SuppressCondition(2, 2)));
 
         final DimensionKey seriesKey = new DimensionKey()
-            .put("city", "Shenzhen")
+            .put("region", "Shenzhen")
             .put("category", "Jewelry");
 
         final MetricSingleSeriesDetectionCondition seriesCondition
@@ -172,7 +172,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
                 new SuppressCondition(1, 100)));
 
         final DimensionKey seriesGroupKey = new DimensionKey()
-            .put("city", "Sao Paulo");
+            .put("region", "Sao Paulo");
 
         final MetricSeriesGroupDetectionCondition seriesGroupCondition
             = new MetricSeriesGroupDetectionCondition(seriesGroupKey)
@@ -338,7 +338,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
                 new SuppressCondition(2, 2)));
 
         final DimensionKey seriesKey1 = new DimensionKey()
-            .put("city", "Shenzhen")
+            .put("region", "Shenzhen")
             .put("category", "Jewelry");
 
         final MetricSingleSeriesDetectionCondition seriesCondition1
@@ -361,7 +361,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
                 new SuppressCondition(2, 2)));
 
         final DimensionKey seriesKey2 = new DimensionKey()
-            .put("city", "Osaka")
+            .put("region", "Osaka")
             .put("category", "Cell Phones");
 
         final MetricSingleSeriesDetectionCondition seriesCondition2
@@ -372,7 +372,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
                 new SuppressCondition(1, 100)));
 
         final DimensionKey seriesGroupKey1 = new DimensionKey()
-            .put("city", "Sao Paulo");
+            .put("region", "Sao Paulo");
 
         final MetricSeriesGroupDetectionCondition seriesGroupCondition1
             = new MetricSeriesGroupDetectionCondition(seriesGroupKey1)
@@ -394,7 +394,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
                 new SuppressCondition(2, 2)));
 
         final DimensionKey seriesGroupKey2 = new DimensionKey()
-            .put("city", "Seoul");
+            .put("region", "Seoul");
 
         final MetricSeriesGroupDetectionCondition seriesGroupCondition2
             = new MetricSeriesGroupDetectionCondition(seriesGroupKey2)
@@ -706,7 +706,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
                 new SuppressCondition(2, 2)));
 
         final DimensionKey seriesKey1 = new DimensionKey()
-            .put("city", "Shenzhen")
+            .put("region", "Shenzhen")
             .put("category", "Jewelry");
 
         final MetricSingleSeriesDetectionCondition seriesCondition1
@@ -729,7 +729,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
                 new SuppressCondition(2, 2)));
 
         final DimensionKey seriesKey2 = new DimensionKey()
-            .put("city", "Osaka")
+            .put("region", "Osaka")
             .put("category", "Cell Phones");
 
         final MetricSingleSeriesDetectionCondition seriesCondition2
@@ -740,7 +740,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
                 new SuppressCondition(1, 100)));
 
         final DimensionKey seriesGroupKey1 = new DimensionKey()
-            .put("city", "Sao Paulo");
+            .put("region", "Sao Paulo");
 
         final MetricSeriesGroupDetectionCondition seriesGroupCondition1
             = new MetricSeriesGroupDetectionCondition(seriesGroupKey1)
@@ -773,7 +773,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
         final DimensionKey seriesKeyToRemoveOnUpdate = seriesKey2;
 
         final DimensionKey seriesGroupKeyToAddOnUpdate = new DimensionKey()
-            .put("city", "Seoul");
+            .put("region", "Seoul");
 
         final MetricSeriesGroupDetectionCondition seriesGroupConditionToAddOnUpdate
             = new MetricSeriesGroupDetectionCondition(seriesGroupKeyToAddOnUpdate)
@@ -795,7 +795,7 @@ public abstract class DetectionConfigurationTestBase extends MetricsAdvisorAdmin
             new DataFeedMetric("cost").setDisplayName("cost"),
             new DataFeedMetric("revenue").setDisplayName("revenue")))
             .setDimensions(Arrays.asList(
-                new DataFeedDimension("city").setDisplayName("city"),
+                new DataFeedDimension("region").setDisplayName("region"),
                 new DataFeedDimension("category").setDisplayName("category"))))
             .setName("java_data_feed_for_detection" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
