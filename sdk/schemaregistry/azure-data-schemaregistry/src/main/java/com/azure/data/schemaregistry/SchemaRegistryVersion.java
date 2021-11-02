@@ -16,7 +16,7 @@ public enum SchemaRegistryVersion implements ServiceVersion {
     /**
      * 2020 version.
      */
-    V2020_09_01_PREVIEW("2020-09-01-preview");
+    V2021_10("2021-10");
 
     private final String version;
 
@@ -35,6 +35,6 @@ public enum SchemaRegistryVersion implements ServiceVersion {
      * @return The latest version.
      */
     public static SchemaRegistryVersion getLatest() {
-        return V2020_09_01_PREVIEW;
+        return V2021_10;
     }
 }
