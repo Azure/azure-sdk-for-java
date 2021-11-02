@@ -95,7 +95,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>commons-io:commons-io:[2.5]</include> <!-- {x-include-update;commons-io:commons-io;external_dependency} -->
+                <include>commons-io:commons-io:[2.7]</include> <!-- {x-include-update;commons-io:commons-io;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-aop:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-aop;external_dependency} -->
                 <include>org.springframework:spring-context-support:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
