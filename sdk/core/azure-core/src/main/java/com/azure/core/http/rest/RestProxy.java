@@ -50,6 +50,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -121,18 +122,26 @@ public final class RestProxy implements InvocationHandler {
         try {
             final SwaggerMethodParser methodParser = getMethodParser(method);
             final HttpRequest request = createHttpRequest(methodParser, args);
-            Context context = methodParser.setContext(args)
-                .addData("caller-method", methodParser.getFullyQualifiedMethodName())
+            Context context = methodParser.setContext(args);
+
+            RequestOptions options = methodParser.setRequestOptions(args);
+            if (options != null) {
+                options.getRequestCallback().accept(request);
+
+                Context optionsContext = options.getContext();
+                if (optionsContext != null && optionsContext != Context.NONE) {
+                    for (Map.Entry<Object, Object> kvp : optionsContext.getValues().entrySet()) {
+                        context = context.addData(kvp.getKey(), kvp.getValue());
+                    }
+                }
+            }
+
+            context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
                 .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
             context = startTracingSpan(method, context);
 
             if (request.getBody() != null) {
                 request.setBody(validateLength(request));
-            }
-
-            RequestOptions options = methodParser.setRequestOptions(args);
-            if (options != null) {
-                options.getRequestCallback().accept(request);
             }
 
             final Mono<HttpResponse> asyncResponse = send(request, context);
