@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,7 +47,7 @@ public class ETagTests {
     }
 
     @Test
-    public void equals() {
+    public void equalsTest() {
         ETag validStrongETag = new ETag(QUOTE_STRING + ETAG_CONTENT + QUOTE_STRING);
         assertFalse(validStrongETag.equals(null));
         ETag nullETag = new ETag(null);
@@ -57,5 +58,13 @@ public class ETagTests {
 
         ETag validStrongETagCopy = new ETag(QUOTE_STRING + ETAG_CONTENT + QUOTE_STRING);
         assertEquals(validStrongETag, validStrongETagCopy);
+    }
+
+    @Test
+    public void hashCodeTest() {
+        ETag nullETag = new ETag(null);
+        ETag validStrongETag = new ETag(QUOTE_STRING + ETAG_CONTENT + QUOTE_STRING);
+        assertEquals(0, nullETag.hashCode());
+        assertNotEquals(0, validStrongETag.hashCode());
     }
 }
