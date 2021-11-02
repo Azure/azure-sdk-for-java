@@ -10,10 +10,6 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum SchemaRegistryVersion implements ServiceVersion {
     /**
-     * 2017 version
-     */
-    V2017_04("2017-04"),
-    /**
      * 2020 version.
      */
     V2021_10("2021-10");
