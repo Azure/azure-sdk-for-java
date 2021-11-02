@@ -448,7 +448,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             clientTelemetry = new ClientTelemetry(null, UUID.randomUUID().toString(),
                 ManagementFactory.getRuntimeMXBean().getName(), userAgentContainer.getUserAgent(),
                 connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
-                null, null, this.reactorHttpClient, connectionPolicy.isClientTelemetryEnabled(), this);
+                null, null, this.reactorHttpClient, connectionPolicy.isClientTelemetryEnabled(), this, this.connectionPolicy.getPreferredRegions());
             clientTelemetry.init();
             this.queryPlanCache = new ConcurrentHashMap<>();
         } catch (Exception e) {
