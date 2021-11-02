@@ -35,6 +35,17 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
     //@AzureEndpoint
     private String endpoint;
 
+    //todo test
+    private boolean needvalidate = true;
+
+    public boolean isNeedvalidate() {
+        return needvalidate;
+    }
+
+    public void setNeedvalidate(boolean needvalidate) {
+        this.needvalidate = needvalidate;
+    }
+
     private String key;
 
     private String database;

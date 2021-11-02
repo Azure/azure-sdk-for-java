@@ -22,7 +22,11 @@ public class AzureEndpointValidator implements Validator {
     public void validate(Object target, Errors errors) {
         if (target instanceof AzureEndpointValidator) {
             AzureCosmosProperties azureCosmosProperties = (AzureCosmosProperties) target;
+            if (!azureCosmosProperties.isNeedvalidate()) {
+                return;
+            }
             String endpoint = azureCosmosProperties.getEndpoint();
+
             if (Pattern.matches(COSMOS_LOCAL_URI_REGEX, endpoint)) {
                 return ;
             }
