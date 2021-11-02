@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointProperty;
@@ -14,34 +13,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A private endpoint connection. */
-@JsonFlatten
 @Fluent
-public class PrivateEndpointConnectionInner extends ProxyResource {
+public final class PrivateEndpointConnectionInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
 
     /*
-     * Private endpoint which the connection belongs to.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.privateEndpoint")
-    private PrivateEndpointProperty privateEndpoint;
+    @JsonProperty(value = "properties")
+    private PrivateEndpointConnectionProperties innerProperties;
 
-    /*
-     * Connection State of the Private Endpoint Connection.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.privateLinkServiceConnectionState")
-    private PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState;
-
-    /*
-     * Group id of the private endpoint.
-     */
-    @JsonProperty(value = "properties.groupId")
-    private String groupId;
-
-    /*
-     * Provisioning state of the private endpoint.
-     */
-    @JsonProperty(value = "properties.provisioningState")
-    private String provisioningState;
+    private PrivateEndpointConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the privateEndpoint property: Private endpoint which the connection belongs to.
@@ -49,7 +38,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the privateEndpoint value.
      */
     public PrivateEndpointProperty privateEndpoint() {
-        return this.privateEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpoint();
     }
 
     /**
@@ -59,7 +48,10 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the PrivateEndpointConnectionInner object itself.
      */
     public PrivateEndpointConnectionInner withPrivateEndpoint(PrivateEndpointProperty privateEndpoint) {
-        this.privateEndpoint = privateEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
+        }
+        this.innerProperties().withPrivateEndpoint(privateEndpoint);
         return this;
     }
 
@@ -69,7 +61,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState() {
-        return this.privateLinkServiceConnectionState;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceConnectionState();
     }
 
     /**
@@ -80,7 +72,10 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      */
     public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
         PrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState) {
-        this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
+        }
+        this.innerProperties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }
 
@@ -90,7 +85,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the groupId value.
      */
     public String groupId() {
-        return this.groupId;
+        return this.innerProperties() == null ? null : this.innerProperties().groupId();
     }
 
     /**
@@ -100,7 +95,10 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the PrivateEndpointConnectionInner object itself.
      */
     public PrivateEndpointConnectionInner withGroupId(String groupId) {
-        this.groupId = groupId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
+        }
+        this.innerProperties().withGroupId(groupId);
         return this;
     }
 
@@ -110,7 +108,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -120,7 +118,10 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * @return the PrivateEndpointConnectionInner object itself.
      */
     public PrivateEndpointConnectionInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
+        }
+        this.innerProperties().withProvisioningState(provisioningState);
         return this;
     }
 
@@ -130,11 +131,8 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (privateEndpoint() != null) {
-            privateEndpoint().validate();
-        }
-        if (privateLinkServiceConnectionState() != null) {
-            privateLinkServiceConnectionState().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

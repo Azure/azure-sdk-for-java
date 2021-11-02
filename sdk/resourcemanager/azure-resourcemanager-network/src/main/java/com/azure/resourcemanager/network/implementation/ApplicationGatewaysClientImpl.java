@@ -460,7 +460,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, applicationGatewayName);
@@ -480,7 +480,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String applicationGatewayName, Context context) {
         context = this.client.mergeContext(context);
@@ -501,7 +501,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationGatewayName) {
         return beginDeleteAsync(resourceGroupName, applicationGatewayName).getSyncPoller();
     }
@@ -517,7 +517,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String applicationGatewayName, Context context) {
         return beginDeleteAsync(resourceGroupName, applicationGatewayName, context).getSyncPoller();
@@ -868,7 +868,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -895,7 +895,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -922,7 +922,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters).getSyncPoller();
@@ -940,7 +940,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return application gateway resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationGatewayInner>, ApplicationGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, applicationGatewayName, parameters, context).getSyncPoller();
@@ -1600,7 +1600,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, applicationGatewayName);
         return this
@@ -1619,7 +1619,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String applicationGatewayName, Context context) {
         context = this.client.mergeContext(context);
@@ -1640,7 +1640,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String applicationGatewayName) {
         return beginStartAsync(resourceGroupName, applicationGatewayName).getSyncPoller();
     }
@@ -1656,7 +1656,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String applicationGatewayName, Context context) {
         return beginStartAsync(resourceGroupName, applicationGatewayName, context).getSyncPoller();
@@ -1836,7 +1836,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String applicationGatewayName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, applicationGatewayName);
         return this
@@ -1855,7 +1855,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String applicationGatewayName, Context context) {
         context = this.client.mergeContext(context);
@@ -1876,7 +1876,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String applicationGatewayName) {
         return beginStopAsync(resourceGroupName, applicationGatewayName).getSyncPoller();
     }
@@ -1892,7 +1892,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String applicationGatewayName, Context context) {
         return beginStopAsync(resourceGroupName, applicationGatewayName, context).getSyncPoller();
@@ -2077,7 +2077,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backend health of the specified application gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -2104,7 +2104,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backend health of the specified application gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealthAsync(
             String resourceGroupName, String applicationGatewayName, String expand, Context context) {
@@ -2132,7 +2132,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backend health of the specified application gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand) {
         return beginBackendHealthAsync(resourceGroupName, applicationGatewayName, expand).getSyncPoller();
@@ -2150,7 +2150,7 @@ public final class ApplicationGatewaysClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backend health of the specified application gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>
         beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand, Context context) {
         return beginBackendHealthAsync(resourceGroupName, applicationGatewayName, expand, context).getSyncPoller();
@@ -2408,7 +2408,7 @@ public final class ApplicationGatewaysClientImpl
      * @return the backend health for given combination of backend pool and http setting of the specified application
      *     gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<
             PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
         beginBackendHealthOnDemandAsync(
@@ -2443,7 +2443,7 @@ public final class ApplicationGatewaysClientImpl
      * @return the backend health for given combination of backend pool and http setting of the specified application
      *     gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<
             PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
         beginBackendHealthOnDemandAsync(
@@ -2480,7 +2480,7 @@ public final class ApplicationGatewaysClientImpl
      * @return the backend health for given combination of backend pool and http setting of the specified application
      *     gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
         beginBackendHealthOnDemand(
@@ -2507,7 +2507,7 @@ public final class ApplicationGatewaysClientImpl
      * @return the backend health for given combination of backend pool and http setting of the specified application
      *     gateway in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<
             PollResult<ApplicationGatewayBackendHealthOnDemandInner>, ApplicationGatewayBackendHealthOnDemandInner>
         beginBackendHealthOnDemand(

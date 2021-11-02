@@ -117,7 +117,20 @@ jobs:
           python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}} --sr
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Setup Dev versioning
-
+        
+      - ${{if ne(parameters.ServiceDirectory, '')}}:
+        - task: Powershell@2
+          inputs:
+            filePath: $(Build.SourcesDirectory)/eng/common/scripts/Save-Package-Properties.ps1
+            arguments: >
+              -ServiceDirectory ${{parameters.ServiceDirectory}}
+              -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
+              -AddDevVersion
+            pwsh: true
+            workingDirectory: $(Pipeline.Workspace)
+          displayName: Update package properties with dev version
+          condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+          
       - script: |
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
@@ -153,6 +166,10 @@ jobs:
         parameters:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
           ArtifactName: '$(ArtifactName)'
+
+      - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
 
       - template: ../steps/upload-repository-on-failure.yml
 

@@ -2,14 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.communication.identity;
 
+import java.net.MalformedURLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.IPublicClientApplication;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 
 public class ReadmeSamples {
     /**
@@ -129,6 +138,44 @@ public class ReadmeSamples {
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         // delete a previously created user
         communicationIdentityClient.deleteUser(user);
+    }
+
+    /**
+     * Sample code for exchanging an AAD access token of a Teams User for a new Communication Identity access token.
+     */
+    public void getTokenForTeamsUser() {
+        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+        try {
+            String teamsUserAadToken = generateTeamsUserAadToken();
+            AccessToken accessToken = communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken);
+            System.out.println("User token value: " + accessToken.getToken());
+            System.out.println("Expires at: " + accessToken.getExpiresAt());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    /**
+     * Sample code for generating an AAD access token of a Teams User
+     */
+    private static String generateTeamsUserAadToken() throws MalformedURLException, ExecutionException, InterruptedException {
+        String teamsUserAadToken = "";
+        try {
+            IPublicClientApplication publicClientApplication = PublicClientApplication.builder("<M365_APP_ID>")
+                .authority("<M365_AAD_AUTHORITY>" + "/" + "<M365_AAD_TENANT>")
+                .build();
+            //M365 scopes
+            Set<String> scopes = Collections.singleton("https://auth.msft.communication.azure.com/VoIP");
+            char[] password = "<MSAL_PASSWORD>".toCharArray();
+            UserNamePasswordParameters userNamePasswordParameters =  UserNamePasswordParameters.builder(scopes, "<MSAL_USERNAME>", password)
+                .build();
+            Arrays.fill(password, '0');
+            IAuthenticationResult result = publicClientApplication.acquireToken(userNamePasswordParameters).get();
+            teamsUserAadToken = result.accessToken();
+        } catch (Exception e) {
+            throw e;
+        }
+        return teamsUserAadToken;
     }
 
     /**

@@ -654,7 +654,7 @@ public final class WebPubSubSharedPrivateLinkResourcesClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Shared Private Link Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner>
         beginCreateOrUpdateAsync(
             String sharedPrivateLinkResourceName,
@@ -687,7 +687,7 @@ public final class WebPubSubSharedPrivateLinkResourcesClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Shared Private Link Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner>
         beginCreateOrUpdateAsync(
             String sharedPrivateLinkResourceName,
@@ -722,7 +722,7 @@ public final class WebPubSubSharedPrivateLinkResourcesClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Shared Private Link Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String sharedPrivateLinkResourceName,
         String resourceGroupName,
@@ -746,7 +746,7 @@ public final class WebPubSubSharedPrivateLinkResourcesClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Shared Private Link Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
         String sharedPrivateLinkResourceName,
         String resourceGroupName,
@@ -980,7 +980,7 @@ public final class WebPubSubSharedPrivateLinkResourcesClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1003,7 +1003,7 @@ public final class WebPubSubSharedPrivateLinkResourcesClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
@@ -1026,7 +1026,7 @@ public final class WebPubSubSharedPrivateLinkResourcesClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
         return beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName).getSyncPoller();
@@ -1045,7 +1045,7 @@ public final class WebPubSubSharedPrivateLinkResourcesClientImpl implements WebP
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
         return beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context)

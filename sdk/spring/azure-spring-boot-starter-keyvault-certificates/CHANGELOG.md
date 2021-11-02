@@ -1,14 +1,10 @@
 # Release History
 
-## 3.3.0-beta.1 (Unreleased)
-
-### Features Added
-
+## 3.10.0 (2021-11-02)
 ### Breaking Changes
-
-### Bugs Fixed
-
+Rename `azure.keyvault.jca.certificates-refresh-interval` to `azure.keyvault.jca.certificates-refresh-interval-in-ms`.
 ### Other Changes
+- Skip minor versions to make version align to other azure-spring-boot-starters
 
 ## 3.2.0 (2021-09-27)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.

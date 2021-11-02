@@ -29,9 +29,9 @@ param(
   [Parameter(Mandatory=$false)][boolean]$PushToRemote
 )
 
-function TestPathThrow($Path) {
+function TestPathThrow($Path, $PathName) {
   if(!(Test-Path $Path)) {
-   LogError "$Path not found. Exiting ..."
+   LogError "$($PathName): $($Path) not found. Exiting ..."
    exit 1
   }
 }
@@ -51,7 +51,7 @@ $ArtifactDirPath = Join-Path $ServiceDirPath $ArtifactName
 $GroupId = "com.azure"
 
 
-TestPathThrow -Path $RepoRoot
+TestPathThrow -Path $RepoRoot -PathName 'RepoRoot'
 
 . (Join-Path $EngCommonScriptsDir common.ps1)
 
@@ -79,38 +79,6 @@ function GetRemoteName($MainRemoteUrl) {
   return $null
 }
 
-function UpdateChangeLog($ArtifactName, $ServiceDirectoryName, $Version) {
-  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
-  $ChangelogPath = $pkgProperties.ChangeLogPath
-  
-  if (!(Test-Path $ChangelogPath)) {
-    LogError "Changelog path [$ChangelogPath] is invalid."
-    exit 1
-  }
-  
-  $ReleaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
-  $ReleaseStatus = "($ReleaseStatus)"
-  $ChangeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $ChangelogPath
-  LogDebug "Adding new ChangeLog entry for Version [$Version]"
-  $Content = @()
-  $Content += ""
-  $Content += "### Other Changes"
-  $Content += ""
-  $Content += "#### Dependency Updates"
-  $Content += ""
-  $Content += "- Upgraded ``azure-core`` and other dependencies for the library."
-  $Content += ""
-  $newChangeLogEntry = New-ChangeLogEntry -Version $Version -Status $ReleaseStatus -Content $Content
-  if ($newChangeLogEntry) {
-    $ChangeLogEntries.Insert(0, $Version, $newChangeLogEntry)
-  }
-  else {
-    LogError "Failed to create new changelog entry"
-    exit 1
-    }
-  Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $ChangeLogEntries
-}
-
 function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName) {
   $ReleaseTag = "${ArtifactName}_${ReleaseVersion}"
   Write-Information "Resetting the $ArtifactName sources to the release $ReleaseTag."
@@ -119,7 +87,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   $ServiceDirPath = Join-Path $SdkDirPath $ServiceDirectoryName
 
   $ArtifactDirPath = Join-Path $ServiceDirPath $ArtifactName
-  TestPathThrow -Path $ArtifactDirPath
+  TestPathThrow -Path $ArtifactDirPath -PathName 'ArtifactDirPath'
   
   $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
   $currentPackageVersion = $pkgProperties.Version
@@ -172,14 +140,34 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   }
 }
 
+function parsePomFileDependencies($PomFilePath, $DependencyToVersion) {
+  $pomFileContent = New-Object System.Xml.XmlDocument
+  $pomFileContent.PreserveWhitespace = $true
+  $pomFileContent.Load($PomFilePath)
+  foreach($dependency in $pomFileContent.project.dependencies.dependency) {
+    $scope = $dependency.scope
+    if($scope -ne 'test') {
+      $DependencyToVersion.add($dependency.artifactId, $dependency.version)
+    }
+  }
+}
+
 function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion, $RepoRoot, $GroupId = "com.azure") {
   $EngDir = Join-Path $RepoRoot "eng"
   $EngVersioningDir = Join-Path $EngDir "versioning"
   $SetVersionFilePath = Join-Path $EngVersioningDir "set_versions.py"
   $UpdateVersionFilePath = Join-Path $EngVersioningDir "update_versions.py"
+  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
+  $ChangelogPath = $pkgProperties.ChangeLogPath
+  $PomFilePath = Join-Path $pkgProperties.DirectoryPath "pom.xml"
   
-  TestPathThrow -Path $SetVersionFilePath
-  TestPathThrow -Path $UpdateVersionFilePath
+  TestPathThrow -Path $SetVersionFilePath -PathName 'SetVersionFilePath'
+  TestPathThrow -Path $UpdateVersionFilePath -PathName 'UpdateVersionFilePath'
+  TestPathThrow -Path $ChangelogPath -PathName 'ChangelogPath'
+  TestPathThrow -Path $PomFilePath -PathName 'PomFilePath'
+  
+  $oldDependenciesToVersion = New-Object "System.Collections.Generic.Dictionary``2[System.String,System.String]"
+  parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $oldDependenciesToVersion
   
   ## Create the patch release
   $cmdOutput = python $SetVersionFilePath --bt client --new-version $PatchVersion --ar $ArtifactName --gi $GroupId
@@ -194,12 +182,43 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
     exit 1
   }
   
-  $cmdOutput = UpdateChangeLog -ArtifactName $ArtifactName -Version $PatchVersion -ServiceDirectory $ServiceDirectoryName
+  $newDependenciesToVersion = New-Object "System.Collections.Generic.Dictionary``2[System.String,System.String]"
+  parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $newDependenciesToVersion
+  
+  
+  $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
+  $releaseStatus = "($releaseStatus)"
+  $changeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $ChangelogPath
+  LogDebug "Adding new ChangeLog entry for Version [$Version]"
+  $Content = @()
+  $Content += ""
+  $Content += "### Other Changes"
+  $Content += ""
+  $Content += "#### Dependency Updates"
+  $Content += ""
+  
+  foreach($key in $oldDependenciesToVersion.Keys) {
+    $oldVersion = $($oldDependenciesToVersion[$key]).Trim()
+    $newVersion = $($newDependenciesToVersion[$key]).Trim()
+    if($oldVersion -ne $newVersion) {
+      $Content += "- Upgraded ``$key`` from ``$oldVersion`` to version ``$newVersion``."
+    }
+  }
+  
+  $Content += ""
+  $newChangeLogEntry = New-ChangeLogEntry -Version $Version -Status $releaseStatus -Content $Content
+  if ($newChangeLogEntry) {
+    $changeLogEntries.Insert(0, $Version, $newChangeLogEntry)
+  }
+  else {
+    LogError "Failed to create new changelog entry"
+    exit 1
+    }
+  Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $changeLogEntries
   if($LASTEXITCODE -ne 0) {
     LogError "Could not update the changelog.. Exiting..."
     exit 1
   }
-  
 }
 
 if(!$PatchVersion) {

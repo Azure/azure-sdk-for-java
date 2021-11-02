@@ -1,6 +1,6 @@
 # Release History
 
-## 11.5.0-beta.4 (Unreleased)
+## 11.5.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,34 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.4.4 (2021-10-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` and other dependencies for the library.
+- 
+## 11.5.0-beta.4 (2021-10-12)
+
+### Features Added
+
+- Added APIs to [reset documents](https://docs.microsoft.com/azure/search/search-howto-run-reset-indexers#reset-docs-preview) 
+  and [skills](https://docs.microsoft.com/azure/search/search-howto-run-reset-indexers#reset-skills-preview).
+
+### Breaking Changes
+
+- Renamed `QueryAnswer` to `QueryAnswerType`, `QueryCaption` to `QueryCaptionType`, and `QuerySpeller` to `QuerySpellerType`.
+- Renamed `SearchOptions` `queryCaptionHighlight` to `queryCaptionHighlightEnabled`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `azure-core` from `1.20.0` to `1.21.0`.
+- Updated `azure-core-http-netty` from `1.11.0` to `1.11.1`.
+- Updated `azure-core-serializer-json-jackson` from `1.2.7` to `1.2.8`.
 
 ## 11.4.3 (2021-09-09)
 

@@ -37,8 +37,20 @@ import java.util.stream.Stream;
 public abstract class TestBase implements BeforeEachCallback {
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
+
+    /**
+     * Specifies to use all HttpClient implementations in testing.
+     */
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
+
+    /**
+     * Specifies to use Netty HttpClient implementation in testing.
+     */
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
+
+    /**
+     * Specifies to use all service versions in testing.
+     */
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
     private static final Duration PLAYBACK_POLL_INTERVAL = Duration.ofMillis(1);
@@ -67,8 +79,19 @@ public abstract class TestBase implements BeforeEachCallback {
 
     private final ClientLogger logger = new ClientLogger(TestBase.class);
 
+    /**
+     * {@link InterceptorManager} used for this test run.
+     */
     protected InterceptorManager interceptorManager;
+
+    /**
+     * {@link TestResourceNamer} used for this test run.
+     */
     protected TestResourceNamer testResourceNamer;
+
+    /**
+     * {@link TestContextManager} used for this test run.
+     */
     protected TestContextManager testContextManager;
 
     private ExtensionContext extensionContext;

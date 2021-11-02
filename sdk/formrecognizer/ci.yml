@@ -1,40 +1,40 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 
 trigger:
-  branches:
-    include:
-      - main
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/formrecognizer/
-    exclude:
-      - sdk/formrecognizer/pom.xml
-      - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
-      - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
+    branches:
+        include:
+            - main
+            - hotfix/*
+            - release/*
+    paths:
+        include:
+            - sdk/formrecognizer/
+        exclude:
+            - sdk/formrecognizer/pom.xml
+            - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
+            - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
 
 
 pr:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/formrecognizer/
-    exclude:
-      - sdk/formrecognizer/pom.xml
-      - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
-      - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
+    branches:
+        include:
+            - main
+            - feature/*
+            - hotfix/*
+            - release/*
+    paths:
+        include:
+            - sdk/formrecognizer/
+        exclude:
+            - sdk/formrecognizer/pom.xml
+            - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
+            - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
-  parameters:
-    ServiceDirectory: formrecognizer
-    Artifacts:
-      - name: azure-ai-formrecognizer
-        groupId: com.azure
-        safeName: azureaiformrecognizer
+    template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+    parameters:
+        ServiceDirectory: formrecognizer
+        Artifacts:
+            - name: azure-ai-formrecognizer
+              groupId: com.azure
+              safeName: azureaiformrecognizer

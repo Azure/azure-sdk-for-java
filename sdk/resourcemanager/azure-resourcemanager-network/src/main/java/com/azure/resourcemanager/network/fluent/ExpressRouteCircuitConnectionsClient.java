@@ -48,7 +48,7 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String circuitName, String peeringName, String connectionName);
 
@@ -64,7 +64,7 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String peeringName, String connectionName);
 
@@ -81,7 +81,7 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String circuitName, String peeringName, String connectionName, Context context);
 
@@ -231,7 +231,7 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -254,7 +254,7 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String circuitName,
@@ -277,7 +277,7 @@ public interface ExpressRouteCircuitConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitConnectionInner>, ExpressRouteCircuitConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String circuitName,
