@@ -1,6 +1,7 @@
 # Release History
 
-## 1.10.0 (2021-10-29)
+## 1.10.0 (2021-11-02)
+Regular updates for dependency versions.
 
 ## 1.9.0 (2021-09-27)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
