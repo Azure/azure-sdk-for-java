@@ -33,7 +33,7 @@ This library can be used to do the following actions. Details about the terms us
 
 [//]: # ({x-version-update-end})
 
-### Create a Web PubSub client using connection string
+### Create a `WebPubSubServiceClient` using connection string
 
 <!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L21-L24 -->
 ```java
@@ -43,7 +43,7 @@ WebPubSubServiceClient webPubSubServiceClient = new WebPubSubServiceClientBuilde
     .buildClient();
 ```
 
-### Create a Web PubSub client using access key
+### Create a `WebPubSubServiceClient` using access key
 
 <!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L31-L35 -->
 ```java
