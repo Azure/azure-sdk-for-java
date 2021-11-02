@@ -5,6 +5,8 @@ package com.azure.core.util;
 
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Objects;
+
 /**
  * This class represents an HTTP ETag. A ETag value could be strong or weak ETag.
  * More information, check https://en.wikipedia.org/wiki/HTTP_ETag
@@ -41,16 +43,16 @@ public final class ETag {
             return false;
         } else if (!(o instanceof ETag)) {
             return false;
-        } else if (this.eTag == null) {
+        } else if (eTag == null) {
             return ((ETag) o).eTag == null;
         } else {
-            return this.eTag.equals(((ETag) o).eTag);
+            return eTag.equals(((ETag) o).eTag);
         }
     }
 
     @Override
     public int hashCode() {
-        return this.eTag.hashCode();
+        return Objects.hashCode(eTag);
     }
 
     @Override
