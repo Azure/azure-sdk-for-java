@@ -28,8 +28,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryBuilder;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImplBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -316,7 +316,7 @@ public class SchemaRegistryClientBuilder {
 
         ServiceVersion version = (serviceVersion == null) ? SchemaRegistryVersion.getLatest() : serviceVersion;
 
-        AzureSchemaRegistry restService = new AzureSchemaRegistryBuilder()
+        AzureSchemaRegistryImpl restService = new AzureSchemaRegistryImplBuilder()
             .endpoint(fullyQualifiedNamespace)
             .apiVersion(version.getVersion())
             .pipeline(buildPipeline)
