@@ -11,9 +11,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.schemaregistry.implementation.AzureSchemaRegistry;
-import com.azure.data.schemaregistry.implementation.models.SchemaId;
-import com.azure.data.schemaregistry.implementation.models.SerializationType;
+import com.azure.data.schemaregistry.implementation.AzureSchemaRegistryImpl;
+import com.azure.data.schemaregistry.implementation.models.SchemasQueryIdByContentHeaders;
+import com.azure.data.schemaregistry.implementation.models.SchemasRegisterHeaders;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -46,9 +46,9 @@ public final class SchemaRegistryAsyncClient {
     static final Charset SCHEMA_REGISTRY_SERVICE_ENCODING = StandardCharsets.UTF_8;
 
     private final ClientLogger logger = new ClientLogger(SchemaRegistryAsyncClient.class);
-    private final AzureSchemaRegistry restService;
+    private final AzureSchemaRegistryImpl restService;
 
-    SchemaRegistryAsyncClient(AzureSchemaRegistry restService) {
+    SchemaRegistryAsyncClient(AzureSchemaRegistryImpl restService) {
         this.restService = restService;
     }
 
@@ -116,24 +116,17 @@ public final class SchemaRegistryAsyncClient {
             return FluxUtil.monoError(logger, new NullPointerException("'format' should not be null."));
         }
 
-        // Context is not used yet in our auto-generated layer. comment this back in when it is.
-        // if (Objects.isNull(context)) {
-        //     context = Context.NONE;
-        // }
-
         logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
             groupName, name, format, schemaDefinition);
 
-        return restService.getSchemas().registerWithResponseAsync(groupName, name, getSerialization(format),
-            schemaDefinition)
-            .handle((response, sink) -> {
-                SchemaId schemaId = response.getValue();
-                SchemaProperties registered = new SchemaProperties(schemaId.getId(), format);
+        return restService.getSchemas().registerWithResponseAsync(groupName, name, schemaDefinition, context)
+            .map(response -> {
+                final SchemasRegisterHeaders deserializedHeaders = response.getDeserializedHeaders();
+                final SchemaProperties registered = new SchemaProperties(deserializedHeaders.getSchemaId(), format);
 
-                SimpleResponse<SchemaProperties> schemaRegistryObjectSimpleResponse = new SimpleResponse<>(
+                return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), registered);
-                sink.next(schemaRegistryObjectSimpleResponse);
             });
     }
 
@@ -170,17 +163,15 @@ public final class SchemaRegistryAsyncClient {
             return FluxUtil.monoError(logger, new NullPointerException("'schemaId' should not be null."));
         }
 
-        return this.restService.getSchemas().getByIdWithResponseAsync(schemaId)
-            .handle((response, sink) -> {
-                final SchemaFormat schemaFormat =
-                    SchemaFormat.fromString(response.getDeserializedHeaders().getSchemaType());
+        return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
+            .map(response -> {
+                //TODO (conniey): Will this change in the future if they support additional formats?
+                final SchemaFormat schemaFormat = SchemaFormat.AVRO;
                 final SchemaProperties schemaObject = new SchemaProperties(schemaId, schemaFormat);
-                final String schemaDefinition = new String(response.getValue(), SCHEMA_REGISTRY_SERVICE_ENCODING);
-                final SimpleResponse<SchemaRegistrySchema> schemaRegistryResponse = new SimpleResponse<>(
-                    response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, schemaDefinition));
 
-                sink.next(schemaRegistryResponse);
+                return new SimpleResponse<>(
+                    response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, response.getValue()));
             });
     }
 
@@ -236,32 +227,14 @@ public final class SchemaRegistryAsyncClient {
         String schemaDefinition, SchemaFormat format, Context context) {
 
         return restService.getSchemas()
-            .queryIdByContentWithResponseAsync(groupName, name, getSerialization(format), schemaDefinition)
-            .handle((response, sink) -> {
-                SchemaId schemaId = response.getValue();
-                SchemaProperties properties = new SchemaProperties(schemaId.getId(), format);
-                SimpleResponse<SchemaProperties> schemaIdResponse = new SimpleResponse<>(
+            .queryIdByContentWithResponseAsync(groupName, name, schemaDefinition, context)
+            .map(response -> {
+                final SchemasQueryIdByContentHeaders deserializedHeaders = response.getDeserializedHeaders();
+                final SchemaProperties properties = new SchemaProperties(deserializedHeaders.getSchemaId(), format);
+
+                return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), properties);
-
-                sink.next(schemaIdResponse);
             });
-    }
-
-    /**
-     * Gets the matching implementation class serialization type.
-     *
-     * @param format Model serialization type.
-     *
-     * @return Implementation serialization type.
-     *
-     * @throws UnsupportedOperationException if the serialization type is not supported.
-     */
-    private static SerializationType getSerialization(SchemaFormat format) {
-        if (format == SchemaFormat.AVRO) {
-            return SerializationType.AVRO;
-        } else {
-            throw new UnsupportedOperationException("Serialization type is not supported: " + format);
-        }
     }
 }
