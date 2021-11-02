@@ -395,10 +395,23 @@ public final class RestProxy implements InvocationHandler {
         final SwaggerMethodParser methodParser, RequestOptions options) {
         final int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
 
+        boolean requestOptionsNoThrow = false;
+        boolean requestOptionsThrow = false;
+        if (options != null) {
+            requestOptionsNoThrow = options.getErrorOptions().contains(ErrorOptions.NO_THROW);
+            requestOptionsThrow = options.getErrorOptions().contains(ErrorOptions.THROW);
+        }
+
+        if (requestOptionsNoThrow && requestOptionsThrow) {
+            // This is bad configuration but shouldn't halt runtime.
+            logger.info("Both 'NO_THROW' and 'THROW' were set as the error handling in 'RequestOptions'. 'NO_THROW' "
+                + "is being ignored and error responses will be thrown.");
+        }
+
         // If the response was success or configured to not return an error status when the request fails, return the
         // decoded response.
         if (methodParser.isExpectedResponseStatusCode(responseStatusCode)
-            || (options != null && options.getErrorOptions().contains(ErrorOptions.NO_THROW))) {
+            || (requestOptionsNoThrow && !requestOptionsThrow)) {
             return Mono.just(decodedResponse);
         }
 
