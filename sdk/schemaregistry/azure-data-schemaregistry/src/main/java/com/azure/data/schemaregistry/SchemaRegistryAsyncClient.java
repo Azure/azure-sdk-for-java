@@ -166,20 +166,7 @@ public final class SchemaRegistryAsyncClient {
         }
 
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
-            .onErrorMap(ErrorException.class, (error) -> {
-                if (error.getResponse().getStatusCode() == 404) {
-                    final String message;
-                    if (error.getValue() != null && error.getValue().getError() != null) {
-                        message = error.getValue().getError().getMessage();
-                    } else {
-                        message = error.getMessage();
-                    }
-
-                    return new ResourceNotFoundException(message, error.getResponse(), error);
-                }
-
-                return error;
-            })
+            .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
                 //TODO (conniey): Will this change in the future if they support additional formats?
                 final SchemaFormat schemaFormat = SchemaFormat.AVRO;
@@ -244,6 +231,7 @@ public final class SchemaRegistryAsyncClient {
 
         return restService.getSchemas()
             .queryIdByContentWithResponseAsync(groupName, name, schemaDefinition, context)
+            .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
                 final SchemasQueryIdByContentHeaders deserializedHeaders = response.getDeserializedHeaders();
                 final SchemaProperties properties = new SchemaProperties(deserializedHeaders.getSchemaId(), format);
@@ -252,5 +240,27 @@ public final class SchemaRegistryAsyncClient {
                     response.getRequest(), response.getStatusCode(),
                     response.getHeaders(), properties);
             });
+    }
+
+    /**
+     * Remaps a generic ErrorException to more specific HTTP exceptions.
+     *
+     * @param error Error to map.
+     *
+     * @return The remapped error.
+     */
+    private static Throwable remapError(ErrorException error) {
+        if (error.getResponse().getStatusCode() == 404) {
+            final String message;
+            if (error.getValue() != null && error.getValue().getError() != null) {
+                message = error.getValue().getError().getMessage();
+            } else {
+                message = error.getMessage();
+            }
+
+            return new ResourceNotFoundException(message, error.getResponse(), error);
+        }
+
+        return error;
     }
 }
