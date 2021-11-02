@@ -751,6 +751,7 @@
         <module>sdk/datalakeanalytics</module>
         <module>sdk/datalakestore</module>
         <module>sdk/datamigration</module>
+        <module>sdk/dataprotection</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deploymentmanager</module>
         <module>sdk/deviceprovisioningservices</module>
