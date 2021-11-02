@@ -127,11 +127,20 @@ public class CosmosClientBuilder {
         return this.state;
     }
 
+    /**
+     * Sets an apiType for the builder.
+     * @param apiType
+     * @return current cosmosClientBuilder
+     */
     CosmosClientBuilder setApiType(ApiType apiType){
         this.apiType = apiType;
         return this;
     }
 
+    /**
+     * Returns apiType for the Builder.
+     * @return
+     */
     ApiType apiType(){ return this.apiType; }
 
     /**
@@ -860,6 +869,7 @@ public class CosmosClientBuilder {
 
                 @Override
                 public ApiType getCosmosClientApiType(CosmosClientBuilder builder) {
+
                     return builder.apiType();
                 }
             });

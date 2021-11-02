@@ -3,7 +3,9 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.guava27.Strings;
 import org.testng.ITest;
 import org.testng.annotations.AfterMethod;
@@ -25,6 +27,10 @@ public abstract class CosmosAsyncClientTest implements ITest {
     }
 
     public final CosmosClientBuilder getClientBuilder() {
+        ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor accessor =
+            ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
+        accessor.setCosmosClientApiType(this.clientBuilder, ApiType.TABLE);
+
         return this.clientBuilder;
     }
 
