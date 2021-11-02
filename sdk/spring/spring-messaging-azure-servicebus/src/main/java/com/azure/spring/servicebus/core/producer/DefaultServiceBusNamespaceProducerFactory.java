@@ -7,6 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
+import com.azure.spring.servicebus.core.properties.PropertiesSupplier;
 import com.azure.spring.servicebus.core.properties.merger.ProducerPropertiesParentMerger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.Nullable;

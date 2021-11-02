@@ -25,7 +25,7 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
     public ServiceBusProcessorClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                    ServiceBusProcessorDescriptor processorDescriptor,
                                                    MessageProcessingListener listener) {
-        super(processorDescriptor, serviceBusClientBuilder);
+        super(serviceBusClientBuilder, processorDescriptor);
         this.processorDescriptor = processorDescriptor;
         this.listener = listener;
     }

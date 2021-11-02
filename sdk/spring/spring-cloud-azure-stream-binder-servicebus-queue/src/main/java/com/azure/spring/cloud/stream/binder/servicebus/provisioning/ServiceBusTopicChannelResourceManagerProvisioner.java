@@ -8,7 +8,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
 /**
- * @author Warren Zhu
  */
 public class ServiceBusTopicChannelResourceManagerProvisioner extends ServiceBusChannelProvisioner {
 

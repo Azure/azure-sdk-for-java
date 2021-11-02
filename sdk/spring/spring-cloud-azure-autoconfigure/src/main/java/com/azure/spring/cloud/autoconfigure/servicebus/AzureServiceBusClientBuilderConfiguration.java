@@ -33,8 +33,6 @@ class AzureServiceBusClientBuilderConfiguration {
         this.serviceBusProperties = serviceBusProperties;
     }
 
-    @Bean(SERVICE_BUS_DEFAULT_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    @ConditionalOnMissingBean(name = SERVICE_BUS_DEFAULT_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     public ServiceBusClientBuilderFactory serviceBusClientBuilderFactory(
         ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
 

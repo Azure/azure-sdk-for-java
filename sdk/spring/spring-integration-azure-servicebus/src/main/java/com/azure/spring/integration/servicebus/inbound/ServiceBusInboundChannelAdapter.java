@@ -93,7 +93,11 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
             this.listener = recordEventProcessor;
         }
 
-        this.processorContainer.subscribe(this.destination, this.listener);
+        if (TOPIC.equals(this.type)) {
+            this.processorContainer.subscribe(this.destination, this.subscription, this.listener);
+        } else {
+            this.processorContainer.subscribe(this.destination, this.listener);
+        }
     }
 
     public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
