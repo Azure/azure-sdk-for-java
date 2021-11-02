@@ -126,22 +126,29 @@ public final class RestProxy implements InvocationHandler {
 
             RequestOptions options = methodParser.setRequestOptions(args);
             if (options != null) {
-                options.getRequestCallback().accept(request);
-
                 Context optionsContext = options.getContext();
                 if (optionsContext != null && optionsContext != Context.NONE) {
+                    // For now, get the 'Context' key-value map to ensure only the latest versions of a 'Context'
+                    // key-value pair is merged into 'context'.
+                    // In the future this can be further optimized.
                     for (Map.Entry<Object, Object> kvp : optionsContext.getValues().entrySet()) {
                         context = context.addData(kvp.getKey(), kvp.getValue());
                     }
                 }
             }
 
-            context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
+            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
                 .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
             context = startTracingSpan(method, context);
 
             if (request.getBody() != null) {
                 request.setBody(validateLength(request));
+            }
+
+            // This second if check on 'options' is to maintain previous execution ordering, as the change to include
+            // 'Context' in 'RequestOptions' came in late in a development cycle.
+            if (options != null) {
+                options.getRequestCallback().accept(request);
             }
 
             final Mono<HttpResponse> asyncResponse = send(request, context);
