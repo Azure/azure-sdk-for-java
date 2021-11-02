@@ -322,15 +322,15 @@ feature-variant:
       color: "#DDD"
 ```
 
-A Dynamic Feature has two main parts the assigner and a list of variants. The assigner in this case `feature-management.DiscountBanner.assigner` is pointing the `FeatureFilter` `Microsoft.Targeting` that will evaluate the list of variants and choose which configuration-reference will be used. Each variant has; a name, configuration-reference, and assignment-parameters, and one of them needs to be set as the default variant. The name field is just meta data to reference the variant and just needs to be unique. The configuration-reference is a link to the configurations defined under `feature-variant` in the configuration file. **Note:** the colon notation is required when denoting parts of the configuration. If it is needed multiple colons can be used to reference sub configurations. i.e. `DiscountBanner:Big:size` would return the `Integer` 400.
+A Dynamic Feature has two main parts the assigner and a list of variants, the assigner in this case `feature-management.DiscountBanner.assigner` is pointing the `FeatureFilter` `Microsoft.Targeting` that will evaluate the list of variants and choose which configuration-reference will be used. Each variant has: a name, configuration-reference, and assignment-parameters. One of the listed variants needs to be configured as the default variant for the feature. The name field is meta data to reference the variant and just needs to be unique. The configuration-reference is a reference to the configurations defined under `feature-variant` in the configuration file. **Note:** the colon notation is required when denoting parts of the configuration. If it is needed multiple colons can be used to reference sub configurations. i.e. `DiscountBanner:Big:size` would return the `Integer` 400.
 
-The assignment-parameters work similarly to the other `FeatureFilters`. It can take in a `Map` which contains the evaluation criteria. In the case of `Microsoft.Targeting` it contains the `Audience` object. This enables custom assigners to be created.
+The assignment-parameters work similarly to the other `FeatureFilters`. It can take in a `Map` which contains the evaluation criteria. This enables custom assigners to be created. In the case of `Microsoft.Targeting` it contains the `Audience` object.
 
 The `Microsoft.Targeting` assigner uses three evaluation criteria to assign a variant; users, groups, and defaultRolloutPercentage. Assignment requires the definition of the `ITargetingContextAccessor` where a user defines how the user and group parameters are defined.
 
-If a users is listed in a variant then they are automatically given that variant. If they are in more than one variant they are returned to the first listed variant.
+If a users is listed in a variant then they are automatically assigned to that variant. If they are in more than one variant they are returned to the first listed variant.
 
-Groups have a rollout percentage. Using the user and group information users in groups are bucketed into parts of the rollout. This enables the a rollout where 10 of a group gets a variant, then when it increases to 50% that 10% still gets the variant with an additional 40% of the group now getting the variant. The rolloutPercentage for a group is shared across all variants that use that group.
+Groups have a rollout percentage. Using the user and group information users in groups are bucketed into parts of the rollout. This enables a rollout where 10 of a group gets a variant, then when it increases to 50% that 10% still gets the variant with an additional 40% of the group now getting the variant. The rolloutPercentage for a group is shared across all variants that use that group.
 
 If Variant A has Group "Dev" which is set to 50, and Variant B also has Group "Dev" which is also set to 50 then, if you need to increase Variant A to have 60% for "Dev" then Variant B needs to be decreased to 40 as the max rollout percentage is 100.
 
@@ -338,9 +338,9 @@ In a different setup Variant A has "Dev" set to 50 and Variant B has it set to 4
 
 A variant as shown can be part of multiple groups, as can a user be in multiple groups. Being in multiple groups results in multiple evaluation chances per group.
 
-If a user isn't listed, isn't in a group, or wan't in the rollout percentage of a group then they will be evaluated as part of the default rollout percentage. The default rollout percentage works the same as the group rollout percentage. It's value across all variants can't add up to more than 100% and each user is bucketed into a different part of the rollout. Because of this all users need to have a user id defined otherwise they will all return the same variant.
+If a user isn't listed, isn't in a group, or wasn't in the rollout percentage of a group then they will be evaluated as part of the default rollout percentage. The default rollout percentage works the same as the group rollout percentage. It's value across all variants can't add up to more than 100% and each user is bucketed into a different part of the rollout. Because of this all users need to have a user id defined otherwise they will all return the same variant.
 
-If the default rollout percentage doesn't add up to 100 then any un assigned user will be given the default variant.
+Any unassigned user will be given the default variant, if not assigned in any other way.
 
 ### Defining custom Variant Assigners
 
