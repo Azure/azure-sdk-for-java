@@ -1,16 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.eventhubs.core;
+package com.azure.spring.eventhubs.core.processor;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
-import com.azure.spring.eventhubs.core.processor.DefaultEventHubNamespaceProcessorFactory;
-import com.azure.spring.eventhubs.core.processor.EventHubProcessorFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
+import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.stubbing.Answer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -22,7 +20,7 @@ class DefaultEventHubNamespaceProcessorFactoryTest {
     private final String eventHubName = "eventHub";
     private final String consumerGroup = "group";
     private final String anotherConsumerGroup = "group2";
-    private final RecordEventProcessingListenerImpl listener = new RecordEventProcessingListenerImpl();
+    private final RecordEventProcessingListener listener = eventContext -> { };
     private int processorAddedTimes = 0;
 
     @BeforeEach
@@ -67,13 +65,4 @@ class DefaultEventHubNamespaceProcessorFactoryTest {
         assertEquals(2, processorAddedTimes);
     }
 
-    static class BuilderReturn {
-        private static Answer<?> self = (Answer<Object>) invocation -> {
-            if (invocation.getMethod().getReturnType().isAssignableFrom(invocation.getMock().getClass())) {
-                return invocation.getMock();
-            }
-
-            return null;
-        };
-    }
 }

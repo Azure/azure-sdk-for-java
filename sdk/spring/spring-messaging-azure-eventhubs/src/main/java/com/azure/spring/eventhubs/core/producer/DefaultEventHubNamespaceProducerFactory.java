@@ -11,8 +11,6 @@ import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.Nullable;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +27,7 @@ public final class DefaultEventHubNamespaceProducerFactory implements EventHubPr
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
-    private final Map<Tuple2<String, ProducerProperties>, EventHubProducerAsyncClient> clients = new ConcurrentHashMap<>();
+    private final Map<String, EventHubProducerAsyncClient> clients = new ConcurrentHashMap<>();
     private final ProducerPropertiesParentMerger parentMerger = new ProducerPropertiesParentMerger();
 
     public DefaultEventHubNamespaceProducerFactory(NamespaceProperties namespaceProperties) {
@@ -49,9 +47,8 @@ public final class DefaultEventHubNamespaceProducerFactory implements EventHubPr
 
     private EventHubProducerAsyncClient doCreateProducer(String eventHub, @Nullable ProducerProperties properties) {
         ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
-        Tuple2<String, ProducerProperties> key = Tuples.of(eventHub, producerProperties);
-        if (this.clients.containsKey(key)) {
-            return this.clients.get(key);
+        if (this.clients.containsKey(eventHub)) {
+            return this.clients.get(eventHub);
         }
 
         producerProperties.setEventHubName(eventHub);
@@ -60,7 +57,7 @@ public final class DefaultEventHubNamespaceProducerFactory implements EventHubPr
 
         this.listeners.forEach(l -> l.producerAdded(eventHub));
 
-        this.clients.put(key, producerClient);
+        this.clients.put(eventHub, producerClient);
         return producerClient;
     }
 

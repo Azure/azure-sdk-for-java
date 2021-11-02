@@ -6,6 +6,7 @@ package com.azure.spring.eventhubs.core;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.spring.eventhubs.core.processor.EventHubProcessorFactory;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
+import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +35,7 @@ class EventHubProcessorsContainerTest {
     private EventProcessorClient anotherEventProcessorClient;
 
     private EventHubProcessorContainer processorContainer;
-    private final RecordEventProcessingListenerImpl listener = new RecordEventProcessingListenerImpl();
+    private final RecordEventProcessingListener listener = eventContext -> { };
 
     private AutoCloseable closeable;
     private final String consumerGroup = "consumer-group";

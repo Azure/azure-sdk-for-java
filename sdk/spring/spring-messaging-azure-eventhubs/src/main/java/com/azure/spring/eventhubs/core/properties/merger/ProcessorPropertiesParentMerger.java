@@ -30,8 +30,7 @@ public class ProcessorPropertiesParentMerger implements ParentMerger<ProcessorPr
 
         PropertyMapper propertyMapper = new PropertyMapper();
 
-        AzurePropertiesUtils.copyAzureCommonProperties(child, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(parent, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(parent, child, properties);
 
         propertyMapper.from(parent.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(parent.getNamespace()).to(properties::setNamespace);

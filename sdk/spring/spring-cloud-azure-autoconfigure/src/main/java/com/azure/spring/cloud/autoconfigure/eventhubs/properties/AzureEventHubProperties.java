@@ -32,8 +32,7 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
         PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
 
         Producer properties = new Producer();
-        AzurePropertiesUtils.copyAzureCommonProperties(this.producer, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(this, this.producer, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
@@ -54,8 +53,7 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
         PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
 
         Consumer properties = new Consumer();
-        AzurePropertiesUtils.copyAzureCommonProperties(this.consumer, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(this, this.consumer, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
@@ -78,8 +76,7 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
         PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
 
         Processor properties = new Processor();
-        AzurePropertiesUtils.copyAzureCommonProperties(this.processor, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(this, this.processor, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
