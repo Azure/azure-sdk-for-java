@@ -3,30 +3,37 @@
 
 package com.azure.spring.integration.servicebus.inbound;
 
-import com.azure.spring.servicebus.core.processor.ServiceBusQueueProcessorClientFactory;
-import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
-import com.azure.spring.servicebus.support.ServiceBusQueueTestOperation;
+import com.azure.spring.messaging.checkpoint.CheckpointConfig;
+import com.azure.spring.messaging.checkpoint.CheckpointMode;
+import com.azure.spring.servicebus.core.processor.container.ServiceBusQueueProcessorContainer;
+import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.integration.endpoint.InboundChannelAdapterTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-public class ServiceBusQueueInboundAdapterTest extends InboundChannelAdapterTest<ServiceBusQueueInboundChannelAdapter> {
+import static org.mockito.Mockito.mock;
+
+public class ServiceBusQueueInboundAdapterTest extends InboundChannelAdapterTest<ServiceBusInboundChannelAdapter> {
 
     @Mock
-    ServiceBusQueueProcessorClientFactory processorClientFactory;
+    ServiceBusProcessorFactory processorClientFactory;
     @Mock
-    ServiceBusSenderClientFactory senderClientFactory;
+    ServiceBusProducerFactory senderClientFactory;
 
     private AutoCloseable closeable;
 
     @BeforeEach
     @Override
     public void setUp() {
+        ServiceBusQueueProcessorContainer processorsContainer = mock(ServiceBusQueueProcessorContainer.class);
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.adapter = new ServiceBusQueueInboundChannelAdapter(destination,
-            new ServiceBusQueueTestOperation(senderClientFactory, processorClientFactory));
+        this.adapter = new ServiceBusInboundChannelAdapter(processorsContainer, destination,
+            CheckpointConfig.builder()
+                            .checkpointMode(CheckpointMode.RECORD)
+                            .build());
     }
 
     @AfterEach

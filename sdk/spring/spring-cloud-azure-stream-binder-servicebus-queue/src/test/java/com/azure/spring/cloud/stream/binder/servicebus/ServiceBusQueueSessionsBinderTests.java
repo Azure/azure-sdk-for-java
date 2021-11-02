@@ -23,7 +23,7 @@ public class ServiceBusQueueSessionsBinderTests extends
     protected ExtendedConsumerProperties<ServiceBusConsumerProperties> createConsumerProperties() {
 
         ServiceBusConsumerProperties serviceBusConsumerProperties = new ServiceBusConsumerProperties();
-        serviceBusConsumerProperties.setSessionsEnabled(true);
+        serviceBusConsumerProperties.getProcessor().setSessionAware(true);
 
         ExtendedConsumerProperties<ServiceBusConsumerProperties> properties = new ExtendedConsumerProperties<>(
                 serviceBusConsumerProperties);

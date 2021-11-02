@@ -3,27 +3,27 @@
 
 package com.azure.spring.servicebus.core.properties;
 
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.service.servicebus.properties.ServiceBusProducerDescriptor;
 
 public class ProducerProperties extends CommonProperties implements ServiceBusProducerDescriptor {
 
-    private String queueName;
-    private String topicName;
+    private String name;
+    private ServiceBusEntityType type;
 
-    public String getQueueName() {
-        return queueName;
+    public String getName() {
+        return name;
     }
 
-    public void setQueueName(String queueName) {
-        this.queueName = queueName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTopicName() {
-        return topicName;
+    public ServiceBusEntityType getType() {
+        return type;
     }
 
-    public void setTopicName(String topicName) {
-        this.topicName = topicName;
+    public void setType(ServiceBusEntityType type) {
+        this.type = type;
     }
-
 }

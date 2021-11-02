@@ -7,7 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
-import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.messaging.core.SendOperationTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
  * @param <T>
  * @param <C>
  */
-public abstract class ServiceBusTemplateSendTest<P, T extends ServiceBusSenderClientFactory,
+public abstract class ServiceBusTemplateSendTest<P, T extends ServiceBusProducerFactory,
                                                     C extends ServiceBusSenderAsyncClient>
     extends SendOperationTest<SendOperation> {
 
@@ -131,12 +131,12 @@ public abstract class ServiceBusTemplateSendTest<P, T extends ServiceBusSenderCl
 
     @Override
     protected void whenSendWithException() {
-        when(this.mockSenderClientFactory.createSender(anyString())).thenThrow(ServiceBusRuntimeException.class);
+        when(this.mockSenderClientFactory.createProducer(anyString())).thenThrow(ServiceBusRuntimeException.class);
     }
 
     @Override
     protected void verifyGetClientCreator(int times) {
-        verify(this.mockSenderClientFactory, times(times)).createSender(anyString());
+        verify(this.mockSenderClientFactory, times(times)).createProducer(anyString());
     }
 
     protected void verifySendWithPartitionKey(int times) {

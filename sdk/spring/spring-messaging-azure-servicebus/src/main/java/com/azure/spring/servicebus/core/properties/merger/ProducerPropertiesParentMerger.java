@@ -39,8 +39,8 @@ public class ProducerPropertiesParentMerger {
         propertyMapper.from(child.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(child.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(child.getConnectionString()).to(properties::setConnectionString);
-        propertyMapper.from(child.getQueueName()).to(properties::setQueueName);
-        propertyMapper.from(child.getTopicName()).to(properties::setTopicName);
+        propertyMapper.from(child.getName()).to(properties::setQueueName);
+        propertyMapper.from(child.getType()).to(properties::setTopicName);
 
         return properties;
 

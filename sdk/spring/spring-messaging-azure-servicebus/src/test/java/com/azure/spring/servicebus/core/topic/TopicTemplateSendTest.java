@@ -7,7 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.servicebus.core.ServiceBusTemplateSendTest;
 import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
-import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TopicTemplateSendTest
-    extends ServiceBusTemplateSendTest<ServiceBusTopicProcessorClientFactory, ServiceBusSenderClientFactory, ServiceBusSenderAsyncClient> {
+    extends ServiceBusTemplateSendTest<ServiceBusTopicProcessorClientFactory, ServiceBusProducerFactory, ServiceBusSenderAsyncClient> {
 
     private AutoCloseable closeable;
 
@@ -27,13 +27,13 @@ public class TopicTemplateSendTest
     @Override
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.mockSenderClientFactory = mock(ServiceBusSenderClientFactory.class);
+        this.mockSenderClientFactory = mock(ServiceBusProducerFactory.class);
         this.mockSenderClient = mock(ServiceBusSenderAsyncClient.class);
 
-        when(this.mockSenderClientFactory.createSender(anyString())).thenReturn(this.mockSenderClient);
+        when(this.mockSenderClientFactory.createProducer(anyString())).thenReturn(this.mockSenderClient);
         when(this.mockSenderClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(this.mono);
 
-        this.sendOperation = new ServiceBusTopicTemplate(mockSenderClientFactory, mockProcessorClientFactory, new ServiceBusMessageConverter());
+        this.sendOperation = new ServiceBusTopicTemplate(mockSenderClientFactory, new ServiceBusMessageConverter());
     }
 
     @AfterEach

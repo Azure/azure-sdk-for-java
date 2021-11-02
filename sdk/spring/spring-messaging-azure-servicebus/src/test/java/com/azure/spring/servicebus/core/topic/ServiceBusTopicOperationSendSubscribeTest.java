@@ -5,6 +5,7 @@ package com.azure.spring.servicebus.core.topic;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.support.ServiceBusTopicTestOperation;
 import com.azure.spring.messaging.core.SendSubscribeWithGroupOperationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -22,14 +23,15 @@ public class ServiceBusTopicOperationSendSubscribeTest
     extends SendSubscribeWithGroupOperationTest<ServiceBusTopicOperation> {
 
     @Mock
-    ServiceBusTopicProcessorClientFactory clientFactory;
-
+    ServiceBusTopicProcessorClientFactory processorClientFactory;
+    @Mock
+    ServiceBusProducerFactory senderClientFactory;
     private AutoCloseable closeable;
 
     @BeforeEach
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.sendSubscribeOperation = new ServiceBusTopicTestOperation(clientFactory);
+        this.sendSubscribeOperation = new ServiceBusTopicTestOperation(senderClientFactory, processorClientFactory);
     }
 
     @AfterEach

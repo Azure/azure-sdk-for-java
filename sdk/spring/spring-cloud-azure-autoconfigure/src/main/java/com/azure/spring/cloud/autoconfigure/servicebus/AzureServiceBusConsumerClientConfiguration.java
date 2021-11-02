@@ -173,8 +173,8 @@ class AzureServiceBusConsumerClientConfiguration {
         final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder = serviceBusClientBuilder.receiver();
 
         PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-        propertyMapper.from(consumerProperties.getQueueName()).to(receiverClientBuilder::queueName);
-        propertyMapper.from(consumerProperties.getTopicName()).to(receiverClientBuilder::topicName);
+        propertyMapper.from(consumerProperties.getName()).to(receiverClientBuilder::queueName);
+        propertyMapper.from(consumerProperties.getType()).to(receiverClientBuilder::topicName);
         propertyMapper.from(consumerProperties.getSubscriptionName()).to(receiverClientBuilder::subscriptionName);
         propertyMapper.from(consumerProperties.getReceiveMode()).to(receiverClientBuilder::receiveMode);
         propertyMapper.from(consumerProperties.getSubQueue()).to(receiverClientBuilder::subQueue);
@@ -183,8 +183,8 @@ class AzureServiceBusConsumerClientConfiguration {
                       .to(receiverClientBuilder::maxAutoLockRenewDuration);
         propertyMapper.from(consumerProperties.getAutoComplete()).whenFalse().to(t -> receiverClientBuilder.disableAutoComplete());
 
-        if (StringUtils.hasText(consumerProperties.getQueueName())
-            && StringUtils.hasText(consumerProperties.getTopicName())
+        if (StringUtils.hasText(consumerProperties.getName())
+            && StringUtils.hasText(consumerProperties.getType())
             && StringUtils.hasText(consumerProperties.getSubscriptionName())) {
             LOGGER.warn("Both queue and topic name configured for a service bus receiver, but only the queue name"
                 + " will take effective");
@@ -197,8 +197,8 @@ class AzureServiceBusConsumerClientConfiguration {
         final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionReceiverClientBuilder = serviceBusClientBuilder.sessionReceiver();
 
         PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-        propertyMapper.from(consumerProperties.getQueueName()).to(sessionReceiverClientBuilder::queueName);
-        propertyMapper.from(consumerProperties.getTopicName()).to(sessionReceiverClientBuilder::topicName);
+        propertyMapper.from(consumerProperties.getName()).to(sessionReceiverClientBuilder::queueName);
+        propertyMapper.from(consumerProperties.getType()).to(sessionReceiverClientBuilder::topicName);
         propertyMapper.from(consumerProperties.getSubscriptionName()).to(sessionReceiverClientBuilder::subscriptionName);
         propertyMapper.from(consumerProperties.getReceiveMode()).to(sessionReceiverClientBuilder::receiveMode);
         propertyMapper.from(consumerProperties.getSubQueue()).to(sessionReceiverClientBuilder::subQueue);
@@ -207,8 +207,8 @@ class AzureServiceBusConsumerClientConfiguration {
                       .to(sessionReceiverClientBuilder::maxAutoLockRenewDuration);
         propertyMapper.from(consumerProperties.getAutoComplete()).whenFalse().to(t -> sessionReceiverClientBuilder.disableAutoComplete());
 
-        if (StringUtils.hasText(consumerProperties.getQueueName())
-            && StringUtils.hasText(consumerProperties.getTopicName())
+        if (StringUtils.hasText(consumerProperties.getName())
+            && StringUtils.hasText(consumerProperties.getType())
             && StringUtils.hasText(consumerProperties.getSubscriptionName())) {
             LOGGER.warn("Both queue and topic name configured for a service bus receiver, but only the queue name"
                 + " will take effective");

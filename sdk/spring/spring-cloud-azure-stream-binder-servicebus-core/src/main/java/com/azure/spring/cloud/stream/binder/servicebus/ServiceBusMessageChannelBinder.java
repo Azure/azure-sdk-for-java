@@ -10,10 +10,13 @@ import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusCh
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.core.SendOperation;
-import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.servicebus.support.ServiceBusClientConfig;
-import org.springframework.cloud.stream.binder.*;
+import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
+import org.springframework.cloud.stream.binder.BinderHeaders;
+import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
+import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
+import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
+import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.integration.expression.FunctionExpression;
 import org.springframework.integration.support.DefaultErrorMessageStrategy;
@@ -24,7 +27,6 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.util.Assert;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -38,9 +40,9 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
     implements
     ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
 
+    protected SendOperation sendOperation;
     protected T bindingProperties;
     protected NamespaceProperties namespaceProperties;
-    protected ServiceBusTemplate serviceBusTemplate;
     protected final Map<String, ServiceBusInformation> serviceBusInUse = new ConcurrentHashMap<>();
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
 
@@ -55,10 +57,10 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
         ProducerDestination destination,
         ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties,
         MessageChannel errorChannel) {
-        Assert.notNull(getServiceBusTemplate(), "ServiceBusTemplate can't be null when create a producer");
+        Assert.notNull(getSendOperation(), "ServiceBusTemplate can't be null when create a producer");
         serviceBusInUse.put(destination.getName(), new ServiceBusInformation(null));
 
-        DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), this.serviceBusTemplate);
+        DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), getSendOperation());
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
@@ -110,26 +112,26 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
                                .build();
     }
 
-    protected ServiceBusClientConfig buildClientConfig(
-        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-
-        ServiceBusConsumerProperties consumerProperties = properties.getExtension();
-        return ServiceBusClientConfig.builder()
-                                     .setPrefetchCount(consumerProperties.getPrefetchCount())
-                                     .setConcurrency(consumerProperties.getConcurrency())
-                                     .setSessionsEnabled(consumerProperties.isSessionsEnabled())
-                                     // When session disabled, if user don't set maxConcurrentCalls, we should use concurrency
-                                     .setMaxConcurrentCalls(Optional.ofNullable(consumerProperties.getMaxConcurrentCalls())
-                                                                    .orElse(consumerProperties.isSessionsEnabled()
-                                                                        ? 1 : consumerProperties.getConcurrency()))
-                                    // When session enabled, if user don't set maxConcurrentSessions, we should use concurrency
-                                    .setMaxConcurrentSessions(Optional.ofNullable(consumerProperties.getMaxConcurrentSessions())
-                                                                      .orElse(consumerProperties.isSessionsEnabled()
-                                                                          ? consumerProperties.getConcurrency() : 1))
-                                     .setServiceBusReceiveMode(consumerProperties.getServiceBusReceiveMode())
-                                     .setEnableAutoComplete(consumerProperties.isEnableAutoComplete())
-                                     .build();
-    }
+//    protected ServiceBusClientConfig buildClientConfig(
+//        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+//
+//        ServiceBusConsumerProperties consumerProperties = properties.getExtension();
+//        return ServiceBusClientConfig.builder()
+//                                     .setPrefetchCount(consumerProperties.getPrefetchCount())
+//                                     .setConcurrency(consumerProperties.getConcurrency())
+//                                     .setSessionsEnabled(consumerProperties.isSessionsEnabled())
+//                                     // When session disabled, if user don't set maxConcurrentCalls, we should use concurrency
+//                                     .setMaxConcurrentCalls(Optional.ofNullable(consumerProperties.getMaxConcurrentCalls())
+//                                                                    .orElse(consumerProperties.isSessionsEnabled()
+//                                                                        ? 1 : consumerProperties.getConcurrency()))
+//                                    // When session enabled, if user don't set maxConcurrentSessions, we should use concurrency
+//                                    .setMaxConcurrentSessions(Optional.ofNullable(consumerProperties.getMaxConcurrentSessions())
+//                                                                      .orElse(consumerProperties.isSessionsEnabled()
+//                                                                          ? consumerProperties.getConcurrency() : 1))
+//                                     .setServiceBusReceiveMode(consumerProperties.getServiceBusReceiveMode())
+//                                     .setEnableAutoComplete(consumerProperties.isEnableAutoComplete())
+//                                     .build();
+//    }
 
     static class ServiceBusInformation {
 
@@ -144,7 +146,7 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
         }
     }
 
-    protected abstract ServiceBusTemplate getServiceBusTemplate();
+    protected abstract SendOperation getSendOperation();
 
     public void setNamespaceProperties(NamespaceProperties namespaceProperties) {
         this.namespaceProperties = namespaceProperties;

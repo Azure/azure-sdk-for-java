@@ -31,7 +31,7 @@ import java.util.function.BiConsumer;
  */
 public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<ServiceBusClientBuilder> {
 
-    protected final ServiceBusCommonDescriptor serviceBusProperties;
+    private final ServiceBusCommonDescriptor serviceBusProperties;
 
     public ServiceBusClientBuilderFactory(ServiceBusCommonDescriptor serviceBusProperties) {
         this.serviceBusProperties = serviceBusProperties;

@@ -4,9 +4,10 @@
 package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.servicebus.core.ServiceBusMessageProcessor;
+import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
+import com.azure.spring.servicebus.core.processor.container.ServiceBusTopicProcessorContainer;
 import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
-import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,15 +30,18 @@ import static org.mockito.Mockito.when;
 public class ServiceBusTopicBinderHealthIndicatorTest {
     @Mock
     private ServiceBusTopicProcessorClientFactory serviceBusTopicProcessorClientFactory;
-
     @Mock
-    private ServiceBusSenderClientFactory serviceBusTopicSenderClientFactory;
+    private ServiceBusProducerFactory serviceBusTopicSenderClientFactory;
     @Mock
     private ServiceBusProcessorClient processorClient;
+    @Mock
+    private MessageProcessingListener listener;
 
     private ServiceBusTopicHealthIndicator serviceBusTopicHealthIndicator;
 
     private ServiceBusTopicTemplate serviceBusTopicTemplate;
+
+    private ServiceBusTopicProcessorContainer serviceBusTopicProcessorContainer;
 
     private Consumer<Message<?>> consumer = message -> {
     };
@@ -45,8 +49,8 @@ public class ServiceBusTopicBinderHealthIndicatorTest {
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        serviceBusTopicTemplate = new ServiceBusTopicTemplate(serviceBusTopicSenderClientFactory,
-            serviceBusTopicProcessorClientFactory);
+        serviceBusTopicTemplate = new ServiceBusTopicTemplate(serviceBusTopicSenderClientFactory);
+        serviceBusTopicProcessorContainer = new ServiceBusTopicProcessorContainer(serviceBusTopicProcessorClientFactory);
         serviceBusTopicHealthIndicator = new ServiceBusTopicHealthIndicator(serviceBusTopicTemplate);
     }
 
@@ -60,8 +64,8 @@ public class ServiceBusTopicBinderHealthIndicatorTest {
     @Test
     public void testServiceBusTopicIsUp() {
         when(serviceBusTopicProcessorClientFactory.createProcessor(anyString(), anyString(),
-            any(ServiceBusMessageProcessor.class))).thenReturn(processorClient);
-        serviceBusTopicTemplate.subscribe("topic-test-1", "topicSubTest", consumer, byte[].class);
+            any(MessageProcessingListener.class))).thenReturn(processorClient);
+        serviceBusTopicProcessorContainer.subscribe("topic-test-1", "topicSubTest", listener);
         final Health health = serviceBusTopicHealthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
     }
@@ -70,10 +74,10 @@ public class ServiceBusTopicBinderHealthIndicatorTest {
     @Test
     public void testServiceBusTopicIsDown() {
         when(serviceBusTopicProcessorClientFactory.createProcessor(anyString(), anyString(),
-            any(ServiceBusMessageProcessor.class))).thenReturn(processorClient);
+            any(MessageProcessingListener.class))).thenReturn(processorClient);
         doThrow(NullPointerException.class).when(processorClient).start();
         assertThrows(ServiceBusRuntimeException.class, () -> {
-            serviceBusTopicTemplate.subscribe("topic-test-1", "topicSubTest", consumer, byte[].class);
+            serviceBusTopicProcessorContainer.subscribe("topic-test-1", "topicSubTest", listener);
         });
         final Health health = serviceBusTopicHealthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.DOWN);

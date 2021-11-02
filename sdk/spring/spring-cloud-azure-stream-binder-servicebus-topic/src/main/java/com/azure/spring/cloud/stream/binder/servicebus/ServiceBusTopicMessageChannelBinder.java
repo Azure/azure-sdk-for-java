@@ -7,15 +7,14 @@ import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusBind
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusTopicExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
-import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusTopicInboundChannelAdapter;
+import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
-import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceQueueProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.container.ServiceBusTopicProcessorContainer;
+import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceTopicProcessorClientFactory;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.servicebus.core.queue.ServiceBusQueueTemplate;
-import com.azure.spring.servicebus.core.sender.DefaultServiceBusNamespaceQueueSenderClientFactory;
-import com.azure.spring.servicebus.core.topic.ServiceBusTopicOperation;
+import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceTopicProducerClientFactory;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.integration.core.MessageProducer;
@@ -34,6 +33,8 @@ import java.util.UUID;
 public class ServiceBusTopicMessageChannelBinder extends
         ServiceBusMessageChannelBinder<ServiceBusTopicExtendedBindingProperties> {
 
+    private ServiceBusTopicProcessorContainer processorContainer;
+
     public ServiceBusTopicMessageChannelBinder(String[] headersToEmbed,
             @NonNull ServiceBusChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
@@ -43,16 +44,15 @@ public class ServiceBusTopicMessageChannelBinder extends
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
             ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
-        Assert.notNull(getServiceBusTemplate(), "ServiceBusTemplate can't be null when create a consumer");
+        Assert.notNull(getProcessorContainer(), "Service Bus Topic Processor Container can't be null when create a consumer");
         serviceBusInUse.put(destination.getName(), new ServiceBusInformation(group));
 
-        this.serviceBusTemplate.setCheckpointConfig(buildCheckpointConfig(properties));
         boolean anonymous = !StringUtils.hasText(group);
         if (anonymous) {
             group = "anonymous." + UUID.randomUUID();
         }
         ServiceBusTopicInboundChannelAdapter inboundAdapter =
-                new ServiceBusTopicInboundChannelAdapter(destination.getName(), this.serviceBusTemplate, group);
+                new ServiceBusTopicInboundChannelAdapter(this.processorContainer, destination.getName(), group, buildCheckpointConfig(properties));
         inboundAdapter.setBeanFactory(getBeanFactory());
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, group, properties);
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
@@ -60,23 +60,21 @@ public class ServiceBusTopicMessageChannelBinder extends
     }
 
     @Override
-    protected ServiceBusTemplate getServiceBusTemplate() {
-        if (this.serviceBusTemplate == null) {
-            this.serviceBusTemplate = new ServiceBusQueueTemplate(
-                new DefaultServiceBusNamespaceQueueSenderClientFactory(this.namespaceProperties,
-                    getProducerPropertiesSupplier()),
-                new DefaultServiceBusNamespaceQueueProcessorClientFactory(this.namespaceProperties,
-                    getProcessorPropertiesSupplier()));
+    protected SendOperation getSendOperation() {
+        if (this.sendOperation == null) {
+                this.sendOperation = new ServiceBusTemplate(
+                    new DefaultServiceBusNamespaceTopicProducerClientFactory(this.namespaceProperties,
+                        getProducerPropertiesSupplier()));
         }
-        return this.serviceBusTemplate;
+        return this.sendOperation;
     }
 
-    private PropertiesSupplier<Tuple2<String, String>, ProducerProperties> getProducerPropertiesSupplier() {
+    protected PropertiesSupplier<Tuple2<String, String>, ProducerProperties> getProducerPropertiesSupplier() {
         return key -> {
             Map<String, ServiceBusBindingProperties> bindings = bindingProperties.getBindings();
             for (Map.Entry<String, ServiceBusBindingProperties> entry : bindings.entrySet()) {
                 ProducerProperties properties = bindings.get(entry.getKey()).getProducer().getProducer();
-                if (key.equalsIgnoreCase(properties.getTopicName())) {
+                if (key.equalsIgnoreCase(properties.getType())) {
                     return properties;
                 }
             }
@@ -89,11 +87,19 @@ public class ServiceBusTopicMessageChannelBinder extends
             Map<String, ServiceBusBindingProperties> bindings = bindingProperties.getBindings();
             for (Map.Entry<String, ServiceBusBindingProperties> entry : bindings.entrySet()) {
                 ProcessorProperties properties = bindings.get(entry.getKey()).getConsumer().getProcessor();
-                if (key.equals(Tuples.of(properties.getTopicName(), properties.getSubscriptionName()))) {
+                if (key.equals(Tuples.of(properties.getType(), properties.getSubscriptionName()))) {
                     return properties;
                 }
             }
             return null;
         };
+    }
+
+    private ServiceBusTopicProcessorContainer getProcessorContainer() {
+        if (this.processorContainer == null) {
+            this.processorContainer = new ServiceBusTopicProcessorContainer(
+                new DefaultServiceBusNamespaceTopicProcessorClientFactory(this.namespaceProperties, getProcessorPropertiesSupplier()));
+        }
+        return this.processorContainer;
     }
 }

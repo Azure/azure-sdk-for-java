@@ -8,9 +8,9 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.servicebus.core.processor.DefaultServiceBusMessageProcessor;
-import com.azure.spring.servicebus.core.processor.ServiceBusQueueProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.queue.ServiceBusQueueTemplate;
-import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Mono;
@@ -44,8 +44,8 @@ public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     private final AtomicInteger completeCalledTimes = new AtomicInteger(0);
     private final AtomicInteger deadLetterCalledTimes = new AtomicInteger(0);
 
-    public ServiceBusQueueTestOperation(ServiceBusSenderClientFactory senderClientFactory,
-                                        ServiceBusQueueProcessorClientFactory processorClientFactory) {
+    public ServiceBusQueueTestOperation(ServiceBusProducerFactory senderClientFactory,
+                                        ServiceBusProcessorFactory processorClientFactory) {
         super(senderClientFactory, processorClientFactory);
     }
 

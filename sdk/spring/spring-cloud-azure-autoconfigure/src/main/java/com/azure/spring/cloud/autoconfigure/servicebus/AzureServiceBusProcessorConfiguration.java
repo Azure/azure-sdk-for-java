@@ -164,8 +164,8 @@ class AzureServiceBusProcessorConfiguration {
 
         PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
 
-        propertyMapper.from(processorProperties.getQueueName()).to(processorClientBuilder::queueName);
-        propertyMapper.from(processorProperties.getTopicName()).to(processorClientBuilder::topicName);
+        propertyMapper.from(processorProperties.getName()).to(processorClientBuilder::queueName);
+        propertyMapper.from(processorProperties.getType()).to(processorClientBuilder::topicName);
         propertyMapper.from(processorProperties.getSubscriptionName()).to(processorClientBuilder::subscriptionName);
         propertyMapper.from(processorProperties.getReceiveMode()).to(processorClientBuilder::receiveMode);
         propertyMapper.from(processorProperties.getSubQueue()).to(processorClientBuilder::subQueue);
@@ -174,8 +174,8 @@ class AzureServiceBusProcessorConfiguration {
         propertyMapper.from(processorProperties.getAutoComplete()).whenFalse().to(t -> processorClientBuilder.disableAutoComplete());
         propertyMapper.from(processorProperties.getMaxConcurrentCalls()).to(processorClientBuilder::maxConcurrentCalls);
 
-        if (StringUtils.hasText(processorProperties.getQueueName())
-            && StringUtils.hasText(processorProperties.getTopicName())
+        if (StringUtils.hasText(processorProperties.getName())
+            && StringUtils.hasText(processorProperties.getType())
             && StringUtils.hasText(processorProperties.getSubscriptionName())) {
             LOGGER.warn(
                 "Both queue and topic name configured for a service bus processor, but only the queue name will take effective");
@@ -190,8 +190,8 @@ class AzureServiceBusProcessorConfiguration {
         final ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder sessionProcessorClientBuilder = serviceBusClientBuilder.sessionProcessor();
 
         PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
-        propertyMapper.from(processorProperties.getQueueName()).to(sessionProcessorClientBuilder::queueName);
-        propertyMapper.from(processorProperties.getTopicName()).to(sessionProcessorClientBuilder::topicName);
+        propertyMapper.from(processorProperties.getName()).to(sessionProcessorClientBuilder::queueName);
+        propertyMapper.from(processorProperties.getType()).to(sessionProcessorClientBuilder::topicName);
         propertyMapper.from(processorProperties.getSubscriptionName()).to(sessionProcessorClientBuilder::subscriptionName);
         propertyMapper.from(processorProperties.getReceiveMode()).to(sessionProcessorClientBuilder::receiveMode);
         propertyMapper.from(processorProperties.getSubQueue()).to(sessionProcessorClientBuilder::subQueue);
@@ -201,8 +201,8 @@ class AzureServiceBusProcessorConfiguration {
         propertyMapper.from(processorProperties.getMaxConcurrentCalls()).to(sessionProcessorClientBuilder::maxConcurrentCalls);
         propertyMapper.from(processorProperties.getMaxConcurrentSessions()).to(sessionProcessorClientBuilder::maxConcurrentSessions);
 
-        if (StringUtils.hasText(processorProperties.getQueueName())
-            && StringUtils.hasText(processorProperties.getTopicName())
+        if (StringUtils.hasText(processorProperties.getName())
+            && StringUtils.hasText(processorProperties.getType())
             && StringUtils.hasText(processorProperties.getSubscriptionName())) {
             LOGGER.warn("Both queue and topic name configured for a service bus processor, but only the queue "
                 + "name will take effective");

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.servicebus.core.sender;
+package com.azure.spring.servicebus.core.producer;
 
 
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
@@ -12,7 +12,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
  *
  * @author Warren Zhu
  */
-public interface ServiceBusSenderClientFactory {
+public interface ServiceBusProducerFactory {
 
     /**
      * Return a function which accepts service bus topic or queue name, then returns {@link ServiceBusSenderClient}
@@ -20,7 +20,7 @@ public interface ServiceBusSenderClientFactory {
      * @param name sender name
      * @return message sender implement instance
      */
-    ServiceBusSenderAsyncClient createSender(String name);
+    ServiceBusSenderAsyncClient createProducer(String name);
 
     default void addListener(Listener listener) {
 

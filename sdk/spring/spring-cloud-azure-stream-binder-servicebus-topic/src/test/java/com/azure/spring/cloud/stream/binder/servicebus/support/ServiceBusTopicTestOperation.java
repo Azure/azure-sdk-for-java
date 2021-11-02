@@ -7,8 +7,9 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.messaging.PartitionSupplier;
+import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.core.processor.DefaultServiceBusMessageProcessor;
-import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
@@ -20,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -28,14 +28,14 @@ import static org.mockito.Mockito.when;
 /**
  * A test implementation of {@link ServiceBusTopicTemplate}. This is used for testing.
  */
-public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
+public class ServiceBusTopicTestOperation extends ServiceBusTemplate<ServiceBusProducerFactory> {
 
     private final Map<String, List<ServiceBusReceivedMessageContext>> topicsByName = new HashMap<>();
     private final Map<String, Map<String, DefaultServiceBusMessageProcessor>> processorsByTopicAndSub =
         new ConcurrentHashMap<>();
 
-    public ServiceBusTopicTestOperation(ServiceBusTopicProcessorClientFactory clientFactory) {
-        super(clientFactory);
+    public ServiceBusTopicTestOperation(ServiceBusProducerFactory senderClientFactory) {
+        super(senderClientFactory);
     }
 
     @Override
@@ -55,27 +55,27 @@ public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
         return Mono.empty();
     }
 
-    @Override
-    public boolean unsubscribe(String name, String consumerGroup) {
-        processorsByTopicAndSub.get(name).remove(consumerGroup);
-        return true;
-    }
-
-    @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected void internalSubscribe(String name,
-                                     String consumerGroup,
-                                     Consumer<Message<?>> consumer,
-                                     Class<?> payloadType) {
-
-        // client
-        DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
-            this.checkpointConfig, payloadType, consumer, this.messageConverter);
-
-
-        processorsByTopicAndSub.computeIfAbsent(name, t -> new ConcurrentHashMap<>())
-                               .put(consumerGroup, messageProcessor);
-    }
+//    @Override
+//    public boolean unsubscribe(String name, String consumerGroup) {
+//        processorsByTopicAndSub.get(name).remove(consumerGroup);
+//        return true;
+//    }
+//
+//    @Override
+//    @SuppressWarnings({ "rawtypes", "unchecked" })
+//    protected void internalSubscribe(String name,
+//                                     String consumerGroup,
+//                                     Consumer<Message<?>> consumer,
+//                                     Class<?> payloadType) {
+//
+//        // client
+//        DefaultServiceBusMessageProcessor messageProcessor = new DefaultServiceBusMessageProcessor(
+//            this.checkpointConfig, payloadType, consumer, this.messageConverter);
+//
+//
+//        processorsByTopicAndSub.computeIfAbsent(name, t -> new ConcurrentHashMap<>())
+//                               .put(consumerGroup, messageProcessor);
+//    }
 
     private ServiceBusReceivedMessageContext mockReceivedMessageContext(@NonNull ServiceBusMessage message) {
         ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);

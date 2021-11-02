@@ -8,8 +8,8 @@ package com.azure.spring.service.servicebus.properties;
  */
 public interface ServiceBusProducerDescriptor extends ServiceBusCommonDescriptor {
 
-    String getQueueName();
+    String getName();
 
-    String getTopicName();
+    ServiceBusEntityType getType();
 
 }

@@ -6,6 +6,7 @@ package com.azure.spring.servicebus.core.properties;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import com.azure.spring.service.servicebus.properties.ServiceBusConsumerDescriptor;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 import java.time.Duration;
 
@@ -14,11 +15,11 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
     private Boolean sessionAware;
     private Boolean autoComplete;
     private Integer prefetchCount;
-    private String queueName;
+    private String name;
     private SubQueue subQueue = SubQueue.NONE;
     private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
     private String subscriptionName;
-    private String topicName;
+    private ServiceBusEntityType type;
     private Duration maxAutoLockRenewDuration = Duration.ofMinutes(5);
 
     @Override
@@ -49,12 +50,12 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
     }
 
     @Override
-    public String getQueueName() {
-        return queueName;
+    public String getName() {
+        return name;
     }
 
-    public void setQueueName(String queueName) {
-        this.queueName = queueName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -85,12 +86,12 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
     }
 
     @Override
-    public String getTopicName() {
-        return topicName;
+    public ServiceBusEntityType getType() {
+        return type;
     }
 
-    public void setTopicName(String topicName) {
-        this.topicName = topicName;
+    public void setType(ServiceBusEntityType type) {
+        this.type = type;
     }
 
     @Override

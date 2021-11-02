@@ -118,10 +118,10 @@ class AzureServiceBusProducerClientConfiguration {
         final PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
         final ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderClientBuilder = builder.sender();
 
-        propertyMapper.from(producerProperties.getQueueName()).to(senderClientBuilder::queueName);
-        propertyMapper.from(producerProperties.getTopicName()).to(senderClientBuilder::topicName);
+        propertyMapper.from(producerProperties.getName()).to(senderClientBuilder::queueName);
+        propertyMapper.from(producerProperties.getType()).to(senderClientBuilder::topicName);
 
-        if (StringUtils.hasText(producerProperties.getQueueName()) && StringUtils.hasText(producerProperties.getTopicName())) {
+        if (StringUtils.hasText(producerProperties.getName()) && StringUtils.hasText(producerProperties.getType())) {
             LOGGER.warn("Both queue and topic name configured for a service bus sender, but only the queue name will take effective");
         }
 

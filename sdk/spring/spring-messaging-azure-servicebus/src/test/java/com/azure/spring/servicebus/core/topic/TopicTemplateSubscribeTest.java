@@ -4,7 +4,7 @@
 package com.azure.spring.servicebus.core.topic;
 
 import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
-import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import com.azure.spring.servicebus.support.ServiceBusProcessorClientWrapper;
 import com.azure.spring.messaging.core.SubscribeByGroupOperationTest;
@@ -27,7 +27,7 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
     private ServiceBusTopicProcessorClientFactory mockProcessorClientFactory;
     private ServiceBusProcessorClientWrapper processorClientWrapper;
     @Mock
-    private ServiceBusSenderClientFactory mockSenderClientFactory;
+    private ServiceBusProducerFactory mockSenderClientFactory;
     private AutoCloseable closeable;
     @BeforeEach
     public void setUp() {
@@ -35,7 +35,7 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
         this.processorClientWrapper = new ServiceBusProcessorClientWrapper();
         ServiceBusProcessorClientWrapper anotherProcessorClientWrapper = new ServiceBusProcessorClientWrapper();
 
-        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockSenderClientFactory, mockProcessorClientFactory, new ServiceBusMessageConverter());
+        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockSenderClientFactory, new ServiceBusMessageConverter());
         when(this.mockProcessorClientFactory.createProcessor(eq(this.destination),
                                                          eq(this.consumerGroup),
                                                          any())).thenReturn(this.processorClientWrapper.getClient());

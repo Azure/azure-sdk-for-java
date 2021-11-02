@@ -4,7 +4,8 @@
 package com.azure.spring.servicebus.core.queue;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.servicebus.core.processor.ServiceBusQueueProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.support.ServiceBusQueueTestOperation;
 import com.azure.spring.messaging.core.SendSubscribeWithoutGroupOperationTest;
 import org.junit.jupiter.api.AfterEach;
@@ -25,13 +26,16 @@ public class ServiceBusQueueOperationSendSubscribeTest
     private AutoCloseable closeable;
 
     @Mock
-    ServiceBusQueueProcessorClientFactory clientFactory;
+    ServiceBusProcessorFactory processorClientFactory;
+
+    @Mock
+    ServiceBusProducerFactory senderClientFactory;
 
     @BeforeEach
     @Override
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.sendSubscribeOperation = new ServiceBusQueueTestOperation(clientFactory);
+        this.sendSubscribeOperation = new ServiceBusQueueTestOperation(senderClientFactory, processorClientFactory);
     }
 
     @AfterEach

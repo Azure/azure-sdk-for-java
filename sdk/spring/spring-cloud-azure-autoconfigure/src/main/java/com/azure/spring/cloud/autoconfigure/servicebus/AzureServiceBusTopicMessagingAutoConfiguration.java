@@ -6,11 +6,13 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceTopicProcessorClientFactory;
 import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.processor.container.ServiceBusTopicProcessorContainer;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.servicebus.core.sender.DefaultServiceBusNamespaceTopicSenderClientFactory;
-import com.azure.spring.servicebus.core.sender.ServiceBusSenderClientFactory;
+import com.azure.spring.servicebus.core.queue.ServiceBusQueueOperation;
+import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceTopicProducerClientFactory;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.core.topic.ServiceBusTopicOperation;
 import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
@@ -24,9 +26,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import reactor.util.function.Tuple2;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_TOPIC_SENDER_CLIENT_FACTORY_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SERVICE_BUS_TOPIC_TEMPLATE_BEAN_NAME;
 
 /**
  * An auto-configuration for Service Bus topic
@@ -35,6 +39,10 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.SER
 @ConditionalOnClass(ServiceBusTopicProcessorClientFactory.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter(AzureServiceBusAutoConfiguration.class)
+@Import({
+    AzureServiceBusTopicMessagingAutoConfiguration.ServiceBusTopicTemplateConfiguration.class,
+    AzureServiceBusTopicMessagingAutoConfiguration.ProcessorContainerConfiguration.class
+})
 public class AzureServiceBusTopicMessagingAutoConfiguration {
 
     @Bean
@@ -44,35 +52,51 @@ public class AzureServiceBusTopicMessagingAutoConfiguration {
         BeanUtils.copyProperties(properties, namespaceProperties);
         return namespaceProperties;
     }
+    /**
+     * Configure the {@link ServiceBusTopicProcessorClientFactory}
+     */
+    @Configuration(proxyBeanMethods = false)
+    public static class ProcessorContainerConfiguration {
+        @Bean
+        @ConditionalOnMissingBean
+        public ServiceBusTopicProcessorClientFactory defaultServiceBusNamespaceTopicProcessorFactory(NamespaceProperties properties,
+                                                                                                     ObjectProvider<PropertiesSupplier<Tuple2<String, String>, ProcessorProperties>> suppliers) {
+            return new DefaultServiceBusNamespaceTopicProcessorClientFactory(properties, suppliers.getIfAvailable());
+        }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public ServiceBusTopicProcessorClientFactory defaultServiceBusNamespaceTopicProcessorFactory(NamespaceProperties properties,
-                                                                              ObjectProvider<PropertiesSupplier<Tuple2<String, String>, ProcessorProperties>> suppliers) {
-        return new DefaultServiceBusNamespaceTopicProcessorClientFactory(properties, suppliers.getIfAvailable());
+        @Bean
+        @ConditionalOnMissingBean
+        public ServiceBusTopicProcessorContainer eventProcessorContainer(ServiceBusTopicProcessorClientFactory processorFactory) {
+            return new ServiceBusTopicProcessorContainer(processorFactory);
+        }
     }
 
-    @Bean(SERVICE_BUS_TOPIC_SENDER_CLIENT_FACTORY_BEAN_NAME)
-    @ConditionalOnMissingBean(name = SERVICE_BUS_TOPIC_SENDER_CLIENT_FACTORY_BEAN_NAME)
-    public ServiceBusSenderClientFactory defaultServiceBusNamespaceTopicProducerFactory(
-        NamespaceProperties properties,
-        ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers) {
-        return new DefaultServiceBusNamespaceTopicSenderClientFactory(properties, suppliers.getIfAvailable());
-    }
+    /**
+     * Configure the {@link ServiceBusQueueOperation}
+     */
+    @Configuration(proxyBeanMethods = false)
+    public static class ServiceBusTopicTemplateConfiguration {
+        @Bean(SERVICE_BUS_TOPIC_SENDER_CLIENT_FACTORY_BEAN_NAME)
+        @ConditionalOnMissingBean(name = SERVICE_BUS_TOPIC_SENDER_CLIENT_FACTORY_BEAN_NAME)
+        public ServiceBusProducerFactory defaultServiceBusNamespaceTopicProducerFactory(
+            NamespaceProperties properties,
+            ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers) {
+            return new DefaultServiceBusNamespaceTopicProducerClientFactory(properties, suppliers.getIfAvailable());
+        }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public ServiceBusMessageConverter messageConverter() {
-        return new ServiceBusMessageConverter();
-    }
+        @Bean
+        @ConditionalOnMissingBean
+        public ServiceBusMessageConverter messageConverter() {
+            return new ServiceBusMessageConverter();
+        }
 
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnBean({ ServiceBusTopicProcessorClientFactory.class, ServiceBusSenderClientFactory.class })
-    public ServiceBusTopicOperation topicOperation(
-        @Qualifier(SERVICE_BUS_TOPIC_SENDER_CLIENT_FACTORY_BEAN_NAME) ServiceBusSenderClientFactory senderClientfactory,
-                                                   ServiceBusTopicProcessorClientFactory processorClientFactory,
-                                                   ServiceBusMessageConverter messageConverter) {
-        return new ServiceBusTopicTemplate(senderClientfactory, processorClientFactory, messageConverter);
+        @Bean(SERVICE_BUS_TOPIC_TEMPLATE_BEAN_NAME)
+        @ConditionalOnMissingBean(name = SERVICE_BUS_TOPIC_TEMPLATE_BEAN_NAME)
+        @ConditionalOnBean(name = SERVICE_BUS_TOPIC_SENDER_CLIENT_FACTORY_BEAN_NAME)
+        public ServiceBusTopicOperation topicOperation(
+            @Qualifier(SERVICE_BUS_TOPIC_SENDER_CLIENT_FACTORY_BEAN_NAME) ServiceBusProducerFactory senderClientfactory,
+            ServiceBusMessageConverter messageConverter) {
+            return new ServiceBusTopicTemplate(senderClientfactory, messageConverter);
+        }
     }
 }

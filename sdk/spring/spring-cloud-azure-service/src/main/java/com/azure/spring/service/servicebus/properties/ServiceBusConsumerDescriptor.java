@@ -19,7 +19,7 @@ public interface ServiceBusConsumerDescriptor extends ServiceBusCommonDescriptor
 
     Integer getPrefetchCount();
 
-    String getQueueName();
+    String getName();
 
     SubQueue getSubQueue();
 
@@ -27,7 +27,7 @@ public interface ServiceBusConsumerDescriptor extends ServiceBusCommonDescriptor
 
     String getSubscriptionName();
 
-    String getTopicName();
+    ServiceBusEntityType getType();
 
     Duration getMaxAutoLockRenewDuration();
 
