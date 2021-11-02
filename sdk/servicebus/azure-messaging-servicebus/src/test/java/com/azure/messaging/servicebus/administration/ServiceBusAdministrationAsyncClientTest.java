@@ -79,7 +79,7 @@ import static org.mockito.Mockito.when;
  */
 class ServiceBusAdministrationAsyncClientTest {
     private static final int HTTP_UNAUTHORIZED = 401;
-    private static final String forwardToURL = "https://endpoint.servicebus.foo/forward-to-entity";
+    private static final String FORWARD_TO_ENTITY = "https://endpoint.servicebus.foo/forward-to-entity";
 
     @Mock
     private ServiceBusManagementClientImpl serviceClient;
@@ -151,7 +151,7 @@ class ServiceBusAdministrationAsyncClientTest {
     }
 
     @AfterEach
-    void afterEach() throws Exception{
+    void afterEach() throws Exception {
         Mockito.framework().clearInlineMock(this);
         mockClosable.close();
     }
@@ -219,8 +219,8 @@ class ServiceBusAdministrationAsyncClientTest {
         when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> createBodyContentEquals(arg, description)), isNull(),
             argThat(ctx -> (verifyAdditionalAuthHeaderPresent(ctx,
-                serviceBusSupplementaryAuthorizationHeaderName, validToken) &&
-                verifyAdditionalAuthHeaderPresent(ctx,
+                serviceBusSupplementaryAuthorizationHeaderName, validToken)
+                && verifyAdditionalAuthHeaderPresent(ctx,
                     serviceBusDlqSupplementaryAuthorizationHeaderName, validToken)))))
             .thenReturn(Mono.just(objectResponse));
         when(credential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.just(token));
@@ -551,10 +551,10 @@ class ServiceBusAdministrationAsyncClientTest {
                 }
 
                 final CreateQueueBody argument = (CreateQueueBody) arg;
-                if ( argument.getContent() == null || argument.getContent().getQueueDescription() == null) {
+                if (argument.getContent() == null || argument.getContent().getQueueDescription() == null) {
                     return false;
                 }
-                assertEquals(argument.getContent().getQueueDescription().getForwardTo(), forwardToURL,
+                assertEquals(argument.getContent().getQueueDescription().getForwardTo(), FORWARD_TO_ENTITY,
                     "Update queue does not set the forward To entity to an absolute URL");
                 return true;
             }),
@@ -624,12 +624,12 @@ class ServiceBusAdministrationAsyncClientTest {
         }
 
         //If forwarding options are enabled, check the value is an absolute URL
-        if(!Objects.isNull(properties.getForwardTo())) {
-            assertEquals(properties.getForwardTo(), forwardToURL);
+        if (!Objects.isNull(properties.getForwardTo())) {
+            assertEquals(properties.getForwardTo(), FORWARD_TO_ENTITY);
         }
 
-        if(!Objects.isNull(properties.getForwardDeadLetteredMessagesTo())) {
-            assertEquals(properties.getForwardDeadLetteredMessagesTo(), forwardToURL);
+        if (!Objects.isNull(properties.getForwardDeadLetteredMessagesTo())) {
+            assertEquals(properties.getForwardDeadLetteredMessagesTo(), FORWARD_TO_ENTITY);
         }
 
         return equals(expected.getAutoDeleteOnIdle(), properties.getAutoDeleteOnIdle())
