@@ -34,5 +34,6 @@ com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueOperationAutoConfi
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration
+com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.validation.AzureEndpointValidatorConfig
 

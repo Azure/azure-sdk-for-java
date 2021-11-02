@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  */
-@Configuration
+
 public class AzureEndpointValidatorConfig {
     @Bean
     public static AzureEndpointValidator configurationPropertiesValidator() {
