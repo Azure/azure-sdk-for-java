@@ -43,6 +43,9 @@ stages:
         - name: spring-cloud-azure-test-servicebus-binder
           groupId: com.azure.spring
           safeName: springcloudazuretestservicebusbinder
+        - name: spring-cloud-azure-stream-binder-eventhubs
+          groupId: com.azure.spring
+          safeName: springcloudazurestreambindereventhubs
       TimeoutInMinutes: 240
       ServiceDirectory: spring
       TestName: IntegrationTestInAzureGlobal

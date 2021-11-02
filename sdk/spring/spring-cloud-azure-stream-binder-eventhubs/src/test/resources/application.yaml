@@ -1,7 +1,7 @@
 spring:
   cloud:
     azure:
-      eventhub:
+      eventhubs:
         connection-string: ${EVENTHUB_CONNECTION_STRING_TEST_EVENTHUB}
         processor:
           checkpoint-store:
@@ -21,3 +21,12 @@ spring:
       default:
         producer:
           errorChannelEnabled: true
+logging:
+  level:
+    com.azure:
+      core:
+        amqp: WARN
+      messaging:
+        servicebus: WARN
+        eventhubs: WARN
+      identity: WARN

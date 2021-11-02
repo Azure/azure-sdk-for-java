@@ -30,13 +30,13 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.eventhub.bindings.input.consumer.checkpoint-mode=RECORD",
     "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-record",
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-record",
-    "spring.cloud.azure.eventhub.processor.checkpoint-store.container-name=test-eventhub-record"
+    "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-record"
     })
 public class EventHubBinderRecordModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderRecordModeIT.class);
-    private static String message = UUID.randomUUID().toString();
-    private static CountDownLatch latch = new CountDownLatch(1);
+    private static final String MESSAGE = UUID.randomUUID().toString();
+    private static final CountDownLatch LATCH = new CountDownLatch(1);
 
     @Autowired
     private Sinks.Many<Message<String>> many;
@@ -60,8 +60,8 @@ public class EventHubBinderRecordModeIT {
         public Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("EventHubBinderRecordModeIT: New message received: '{}'", message.getPayload());
-                if (message.getPayload().equals(EventHubBinderRecordModeIT.message)) {
-                    latch.countDown();
+                if (message.getPayload().equals(EventHubBinderRecordModeIT.MESSAGE)) {
+                    LATCH.countDown();
                 }
             };
         }
@@ -70,10 +70,10 @@ public class EventHubBinderRecordModeIT {
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderRecordModeIT begin.");
-        EventHubBinderRecordModeIT.latch.await(15, TimeUnit.SECONDS);
-        LOGGER.info("Send a message:" + message + ".");
-        many.emitNext(new GenericMessage<>(message), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubBinderRecordModeIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        EventHubBinderRecordModeIT.LATCH.await(15, TimeUnit.SECONDS);
+        LOGGER.info("Send a message:" + MESSAGE + ".");
+        many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
+        assertThat(EventHubBinderRecordModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderRecordModeIT end.");
     }
 }
