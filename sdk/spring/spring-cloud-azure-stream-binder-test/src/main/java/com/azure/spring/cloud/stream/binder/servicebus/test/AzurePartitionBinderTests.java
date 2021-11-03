@@ -6,13 +6,13 @@ package com.azure.spring.cloud.stream.binder.servicebus.test;
 import org.assertj.core.api.Assertions;
 import org.junit.BeforeClass;
 import org.springframework.cloud.stream.binder.AbstractBinder;
+import org.springframework.cloud.stream.binder.AbstractTestBinder;
+import org.springframework.cloud.stream.binder.Binder;
+import org.springframework.cloud.stream.binder.Binding;
 import org.springframework.cloud.stream.binder.ConsumerProperties;
 import org.springframework.cloud.stream.binder.PartitionCapableBinderTests;
 import org.springframework.cloud.stream.binder.ProducerProperties;
-import org.springframework.cloud.stream.binder.AbstractTestBinder;
 import org.springframework.cloud.stream.binder.Spy;
-import org.springframework.cloud.stream.binder.Binder;
-import org.springframework.cloud.stream.binder.Binding;
 import org.springframework.cloud.stream.config.BindingProperties;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.support.MessageBuilder;
@@ -79,8 +79,8 @@ public abstract class AzurePartitionBinderTests<B extends AbstractTestBinder<
 
         BindingProperties producerBindingProperties = createProducerBindingProperties(createProducerProperties());
         DirectChannel moduleOutputChannel = createBindableChannel("output", producerBindingProperties);
-        BindingProperties inputBindingProperties = createConsumerBindingProperties(createConsumerProperties());
-        DirectChannel moduleInputChannel = createBindableChannel("input", inputBindingProperties);
+        BindingProperties consumerBindingProperties = createConsumerBindingProperties(createConsumerProperties());
+        DirectChannel moduleInputChannel = createBindableChannel("input", consumerBindingProperties);
         Binding<MessageChannel> producerBinding =
                 binder.bindProducer(String.format("bar%s0", getDestinationNameDelimiter()), moduleOutputChannel,
                         producerBindingProperties.getProducer());

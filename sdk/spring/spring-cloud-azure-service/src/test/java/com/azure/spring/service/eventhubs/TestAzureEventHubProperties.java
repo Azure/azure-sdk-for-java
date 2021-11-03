@@ -3,12 +3,10 @@
 
 package com.azure.spring.service.eventhubs;
 
-import com.azure.messaging.eventhubs.LoadBalancingStrategy;
-import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubProcessorProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubConsumerDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubNamespaceDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubProcessorDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubProducerDescriptor;
 import com.azure.spring.service.storage.blob.TestAzureStorageBlobProperties;
 
 import java.time.Duration;
@@ -18,7 +16,7 @@ import java.util.Map;
 /**
  * Azure Event Hub related properties.
  */
-public class TestAzureEventHubProperties extends TestAzureEventHubCommonProperties implements EventHubProperties {
+public class TestAzureEventHubProperties extends TestAzureEventHubCommonProperties implements EventHubNamespaceDescriptor {
 
     private Boolean isSharedConnection;
     private final Producer producer = new Producer();
@@ -48,24 +46,24 @@ public class TestAzureEventHubProperties extends TestAzureEventHubCommonProperti
     /**
      * Properties of an Event Hub producer.
      */
-    public static class Producer extends TestAzureEventHubCommonProperties implements EventHubProducerProperties {
+    public static class Producer extends TestAzureEventHubCommonProperties implements EventHubProducerDescriptor {
 
     }
 
     /**
      * Properties of an Event Hub consumer.
      */
-    public static class Consumer extends TestAzureEventHubConsumerProperties implements EventHubConsumerProperties {
+    public static class Consumer extends TestAzureEventHubConsumerProperties implements EventHubConsumerDescriptor {
 
     }
 
     /**
      * Properties of an Event Hub processor.
      */
-    public static class Processor extends TestAzureEventHubConsumerProperties implements EventHubProcessorProperties {
+    public static class Processor extends TestAzureEventHubConsumerProperties implements EventHubProcessorDescriptor {
 
         private Boolean trackLastEnqueuedEventProperties;
-        private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
+        private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();
         private Duration partitionOwnershipExpirationInterval;
         private final Batch batch = new Batch();
         private final LoadBalancing loadBalancing = new LoadBalancing();
@@ -79,11 +77,11 @@ public class TestAzureEventHubProperties extends TestAzureEventHubCommonProperti
             this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
         }
 
-        public Map<String, EventPosition> getInitialPartitionEventPosition() {
+        public Map<String, StartPosition> getInitialPartitionEventPosition() {
             return initialPartitionEventPosition;
         }
 
-        public void setInitialPartitionEventPosition(Map<String, EventPosition> initialPartitionEventPosition) {
+        public void setInitialPartitionEventPosition(Map<String, StartPosition> initialPartitionEventPosition) {
             this.initialPartitionEventPosition = initialPartitionEventPosition;
         }
 
@@ -105,54 +103,6 @@ public class TestAzureEventHubProperties extends TestAzureEventHubCommonProperti
 
         public BlobCheckpointStore getCheckpointStore() {
             return checkpointStore;
-        }
-
-        /**
-         * Event processor load balancing properties.
-         */
-        public static class LoadBalancing implements EventHubProcessorProperties.LoadBalancing {
-            private Duration updateInterval;
-            private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
-
-            public Duration getUpdateInterval() {
-                return updateInterval;
-            }
-
-            public void setUpdateInterval(Duration updateInterval) {
-                this.updateInterval = updateInterval;
-            }
-
-            public LoadBalancingStrategy getStrategy() {
-                return strategy;
-            }
-
-            public void setStrategy(LoadBalancingStrategy strategy) {
-                this.strategy = strategy;
-            }
-        }
-
-        /**
-         * Event processor batch properties.
-         */
-        public static class Batch implements EventHubProcessorProperties.Batch {
-            private Duration maxWaitTime;
-            private Integer maxSize;
-
-            public Duration getMaxWaitTime() {
-                return maxWaitTime;
-            }
-
-            public void setMaxWaitTime(Duration maxWaitTime) {
-                this.maxWaitTime = maxWaitTime;
-            }
-
-            public Integer getMaxSize() {
-                return maxSize;
-            }
-
-            public void setMaxSize(Integer maxSize) {
-                this.maxSize = maxSize;
-            }
         }
 
         /**

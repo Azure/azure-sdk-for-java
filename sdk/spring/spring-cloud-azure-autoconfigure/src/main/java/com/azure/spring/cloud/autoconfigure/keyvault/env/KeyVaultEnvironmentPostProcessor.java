@@ -85,8 +85,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     private AzureKeyVaultPropertySourceProperties getMergeProperties(AzureKeyVaultSecretProperties secretProperties,
                                                                      AzureKeyVaultPropertySourceProperties propertySource) {
         AzureKeyVaultPropertySourceProperties mergedResult = new AzureKeyVaultPropertySourceProperties();
-        AzurePropertiesUtils.copyAzureCommonProperties(secretProperties, mergedResult);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(propertySource, mergedResult);
+        AzurePropertiesUtils.mergeAzureCommonProperties(secretProperties, propertySource, mergedResult);
 
         mergedResult.setEndpoint(secretProperties.getEndpoint());
         mergedResult.setServiceVersion(secretProperties.getServiceVersion());

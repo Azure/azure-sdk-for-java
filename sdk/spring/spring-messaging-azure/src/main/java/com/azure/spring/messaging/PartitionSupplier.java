@@ -6,7 +6,6 @@ package com.azure.spring.messaging;
 /**
  * Provide partition id or key
  *
- * @author Warren Zhu
  */
 public class PartitionSupplier {
     private String partitionKey;

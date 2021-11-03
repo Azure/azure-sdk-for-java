@@ -12,6 +12,7 @@ import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
@@ -19,12 +20,16 @@ import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.core.PropertyMapper;
-import com.azure.spring.service.eventhubs.EventProcessorListener;
-import com.azure.spring.service.eventhubs.properties.EventHubProcessorProperties;
+import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener;
+import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
+import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
+import com.azure.spring.service.eventhubs.properties.EventHubProcessorDescriptor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 /**
  * Event Hub client builder factory, it builds the {@link EventHubClientBuilder} according the configuration context and
@@ -32,13 +37,13 @@ import java.util.function.BiConsumer;
  */
 public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventProcessorClientBuilder> {
 
-    private final EventHubProcessorProperties processorProperties;
+    private final EventHubProcessorDescriptor processorProperties;
     private final CheckpointStore checkpointStore;
-    private final EventProcessorListener processorListener;
+    private final EventProcessingListener processorListener;
 
-    public EventProcessorClientBuilderFactory(EventHubProcessorProperties processorProperties,
+    public EventProcessorClientBuilderFactory(EventHubProcessorDescriptor processorProperties,
                                               CheckpointStore checkpointStore,
-                                              EventProcessorListener listener) {
+                                              EventProcessingListener listener) {
         this.processorProperties = processorProperties;
         this.checkpointStore = checkpointStore;
         this.processorListener = listener;
@@ -84,9 +89,16 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
         map.from(processorProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
         map.from(processorProperties.getTrackLastEnqueuedEventProperties()).to(builder::trackLastEnqueuedEventProperties);
         map.from(processorProperties.getPartitionOwnershipExpirationInterval()).to(builder::partitionOwnershipExpirationInterval);
-        map.from(processorProperties.getInitialPartitionEventPosition()).to(builder::initialPartitionEventPosition);
         map.from(processorProperties.getLoadBalancing().getStrategy()).to(builder::loadBalancingStrategy);
         map.from(processorProperties.getLoadBalancing().getUpdateInterval()).to(builder::loadBalancingUpdateInterval);
+
+        map.from(processorProperties.getInitialPartitionEventPosition()).to(p -> {
+            Map<String, EventPosition> positions = p.entrySet()
+                                                    .stream()
+                                                    .collect(Collectors.toMap(Map.Entry::getKey,
+                                                        e -> e.getValue().toEventPosition()));
+            builder.initialPartitionEventPosition(positions);
+        });
 
         configureCheckpointStore(builder);
         configureProcessorListener(builder);
@@ -127,7 +139,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
 
     @Override
     protected BiConsumer<EventProcessorClientBuilder, String> consumeConnectionString() {
-        return EventProcessorClientBuilder::connectionString;
+        return (builder, s) -> builder.connectionString(s, this.processorProperties.getEventHubName());
     }
 
     private void configureCheckpointStore(EventProcessorClientBuilder builder) {
@@ -135,17 +147,32 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     }
 
     private void configureProcessorListener(EventProcessorClientBuilder builder) {
-        final EventHubProcessorProperties.Batch batch = this.processorProperties.getBatch();
-        boolean isBatchEnabled = batch.getMaxWaitTime() != null || batch.getMaxSize() != null;
+        final EventHubProcessorDescriptor.Batch batch = this.processorProperties.getBatch();
 
-        if (isBatchEnabled) {
-            builder.processEventBatch(processorListener::onEventBatch, batch.getMaxSize(), batch.getMaxWaitTime());
+        if (isBatchMode()) {
+            if (processorListener instanceof BatchEventProcessingListener) {
+                builder.processEventBatch(((BatchEventProcessingListener) processorListener)::onEventBatch,
+                    batch.getMaxSize(), batch.getMaxWaitTime());
+            } else {
+                throw new IllegalArgumentException("A " + BatchEventProcessingListener.class.getSimpleName()
+                    + " is required when configure batch processor.");
+            }
         } else {
-            builder.processEvent(processorListener::onEvent);
+            if (processorListener instanceof RecordEventProcessingListener) {
+                builder.processEvent(((RecordEventProcessingListener) processorListener)::onEvent);
+            } else {
+                throw new IllegalArgumentException("A " + RecordEventProcessingListener.class.getSimpleName()
+                    + " is required when configure record processor.");
+            }
         }
-        builder.processError(processorListener::onError);
-        builder.processPartitionClose(processorListener::onPartitionClose);
-        builder.processPartitionInitialization(processorListener::onInitialization);
+        builder.processError(processorListener.getErrorContextConsumer());
+        builder.processPartitionClose(processorListener.getCloseContextConsumer());
+        builder.processPartitionInitialization(processorListener.getInitializationContextConsumer());
+    }
+
+    private boolean isBatchMode() {
+        final EventHubProcessorDescriptor.Batch batch = this.processorProperties.getBatch();
+        return batch.getMaxWaitTime() != null || batch.getMaxSize() != null;
     }
 
 }

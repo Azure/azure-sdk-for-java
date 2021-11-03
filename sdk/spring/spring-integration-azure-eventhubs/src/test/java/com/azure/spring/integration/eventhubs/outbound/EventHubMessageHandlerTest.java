@@ -3,11 +3,11 @@
 
 package com.azure.spring.integration.eventhubs.outbound;
 
+import com.azure.spring.eventhubs.core.EventHubsTemplate;
+import com.azure.spring.integration.handler.DefaultMessageHandler;
+import com.azure.spring.integration.handler.MessageHandlerTest;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.PartitionSupplier;
-import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.eventhubs.core.EventHubOperation;
-import com.azure.spring.integration.handler.MessageHandlerTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOperation> {
+public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubsTemplate> {
 
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
     private static final String TO_PARTITION_SUPPLIER_METHOD_NAME = "toPartitionSupplier";
@@ -50,9 +50,9 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
     @SuppressWarnings("unchecked")
     public void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        this.sendOperation = mock(EventHubOperation.class);
+        this.sendOperation = mock(EventHubsTemplate.class);
         when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class),
-                                          isA(PartitionSupplier.class))).thenReturn(mono);
+            isA(PartitionSupplier.class))).thenReturn(mono);
         when(
             this.sendOperation.sendAsync(eq(this.dynamicDestination), isA(Message.class), isA(PartitionSupplier.class)))
             .thenReturn(mono);
@@ -73,9 +73,9 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
         // set partition id with integer type
         Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
-                                                                               DefaultMessageHandler.class,
-                                                                               TO_PARTITION_SUPPLIER_METHOD_NAME,
-                                                                               message);
+            DefaultMessageHandler.class,
+            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            message);
         assertThat(partitionSupplier.getPartitionId()).isEqualTo("1");
         assertThat(partitionSupplier.getPartitionKey()).isNull();
 
@@ -85,7 +85,7 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
         message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headersv2));
         this.handler.setPartitionIdExpression(partitionIdExpression);
         partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler, DefaultMessageHandler.class,
-                                                             TO_PARTITION_SUPPLIER_METHOD_NAME, message);
+            TO_PARTITION_SUPPLIER_METHOD_NAME, message);
         assertThat(partitionSupplier.getPartitionId()).isEqualTo("2");
         assertThat(partitionSupplier.getPartitionKey()).isNull();
     }
@@ -101,9 +101,9 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
         Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         this.handler.setPartitionIdExpression(partitionIdExpression);
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
-                                                                               DefaultMessageHandler.class,
-                                                                               TO_PARTITION_SUPPLIER_METHOD_NAME,
-                                                                               message);
+            DefaultMessageHandler.class,
+            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            message);
         assertThat(partitionSupplier.getPartitionId()).isEqualTo("2");
         assertThat(partitionSupplier.getPartitionKey()).isNull();
     }
@@ -118,9 +118,9 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
         this.handler.setPartitionIdExpression(partitionIdExpression);
         Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
-                                                                               DefaultMessageHandler.class,
-                                                                               TO_PARTITION_SUPPLIER_METHOD_NAME,
-                                                                               message);
+            DefaultMessageHandler.class,
+            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            message);
         assertThat(partitionSupplier.getPartitionId()).isEqualTo("3");
         assertThat(partitionSupplier.getPartitionKey()).isNull();
     }
@@ -135,9 +135,9 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
         // set header azure_partition_key
         Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
-                                                                               DefaultMessageHandler.class,
-                                                                               TO_PARTITION_SUPPLIER_METHOD_NAME,
-                                                                               message);
+            DefaultMessageHandler.class,
+            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            message);
         assertThat(partitionSupplier.getPartitionId()).isNull();
         assertThat(partitionSupplier.getPartitionKey()).isEqualTo("key1");
     }
@@ -153,9 +153,9 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
         Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         this.handler.setPartitionKeyExpression(partitionKeyExpression);
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
-                                                                               DefaultMessageHandler.class,
-                                                                               TO_PARTITION_SUPPLIER_METHOD_NAME,
-                                                                               message);
+            DefaultMessageHandler.class,
+            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            message);
         assertThat(partitionSupplier.getPartitionId()).isNull();
         assertThat(partitionSupplier.getPartitionKey()).isEqualTo("key2");
     }
@@ -167,9 +167,9 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubOpera
         this.handler.setPartitionKeyExpression(partitionKeyExpression);
         Message<?> message = new GenericMessage<>(payloadBytes);
         PartitionSupplier partitionSupplier = ReflectionTestUtils.invokeMethod(this.handler,
-                                                                               DefaultMessageHandler.class,
-                                                                               TO_PARTITION_SUPPLIER_METHOD_NAME,
-                                                                               message);
+            DefaultMessageHandler.class,
+            TO_PARTITION_SUPPLIER_METHOD_NAME,
+            message);
         assertThat(partitionSupplier.getPartitionId()).isNull();
         assertThat(partitionSupplier.getPartitionKey()).isEqualTo(String.valueOf(payloadBytes.hashCode()));
     }

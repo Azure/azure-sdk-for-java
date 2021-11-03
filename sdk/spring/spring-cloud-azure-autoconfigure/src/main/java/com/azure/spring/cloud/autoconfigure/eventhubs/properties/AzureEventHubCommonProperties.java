@@ -16,7 +16,6 @@ public abstract class AzureEventHubCommonProperties extends AbstractAzureAmqpCon
     protected String eventHubName;
     protected String connectionString;
     protected String customEndpointAddress;
-    protected Integer prefetchCount;
 
     protected String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
@@ -79,14 +78,6 @@ public abstract class AzureEventHubCommonProperties extends AbstractAzureAmqpCon
 
     public void setCustomEndpointAddress(String customEndpointAddress) {
         this.customEndpointAddress = customEndpointAddress;
-    }
-
-    public Integer getPrefetchCount() {
-        return prefetchCount;
-    }
-
-    public void setPrefetchCount(Integer prefetchCount) {
-        this.prefetchCount = prefetchCount;
     }
 
 }

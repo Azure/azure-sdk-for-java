@@ -7,8 +7,6 @@ import com.azure.spring.messaging.ListenerMode;
 
 /**
  * The Checkpoint mode.
- *
- * @author Warren Zhu
  */
 public enum CheckpointMode {
 
@@ -31,13 +29,13 @@ public enum CheckpointMode {
     MANUAL,
 
     /**
-     * Checkpoint once for number of message specified by {@link CheckpointConfig#getCheckpointCount()}
+     * Checkpoint once for number of message specified by {@link CheckpointConfig#getCount()} ()}
      * in each partition
      */
     PARTITION_COUNT,
 
     /**
-     * Checkpoint once for each time interval specified by {@link CheckpointConfig#getCheckpointInterval()}
+     * Checkpoint once for each time interval specified by {@link CheckpointConfig#getInterval()} ()}
      */
     TIME,
 }

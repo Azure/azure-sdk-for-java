@@ -66,6 +66,7 @@ class AzureEventHubConsumerClientConfigurationTest {
                 "spring.cloud.azure.eventhubs.event-hub-name=" + eventHubName,
                 "spring.cloud.azure.eventhubs.consumer.consumer-group=" + consumerGroupName
             )
+            .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
             .withBean(EventHubClientBuilder.class, () -> clientBuilder)
             .run(
                 context -> {
