@@ -1,6 +1,7 @@
 # Release History
 
 ## 3.10.0 (2021-11-03)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 ### Dependency Upgrades
 - Upgrade to [Azure Spring Data Cosmos 3.13.1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-spring-data-cosmos/CHANGELOG.md#3131-2021-10-27).
 
