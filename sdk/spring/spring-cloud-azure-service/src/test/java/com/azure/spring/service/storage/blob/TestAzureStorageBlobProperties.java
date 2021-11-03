@@ -3,12 +3,11 @@
 
 package com.azure.spring.service.storage.blob;
 
+import com.azure.spring.service.core.properties.AbstractHttpProperties;
 import com.azure.spring.service.storage.common.StorageRetryProperties;
-import com.azure.spring.service.core.properties.TestAzureHttpProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 
-public class TestAzureStorageBlobHttpProperties extends TestAzureHttpProperties implements StorageBlobProperties {
-
+public class TestAzureStorageBlobProperties extends AbstractHttpProperties implements StorageBlobProperties {
 
     private String customerProvidedKey;
     private String encryptionScope;

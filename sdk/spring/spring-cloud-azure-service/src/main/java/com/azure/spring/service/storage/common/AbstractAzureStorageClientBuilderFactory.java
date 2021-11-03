@@ -3,11 +3,16 @@
 
 package com.azure.spring.service.storage.common;
 
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.retry.RetryProperties;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.function.BiConsumer;
+
+import static com.azure.spring.service.storage.common.AzureStorageRetryOptionsConverter.STORAGE_RETRY_CONVERTER;
 
 /**
  * Abstract factory for Storage client builder.
@@ -15,17 +20,22 @@ import java.util.function.BiConsumer;
  */
 public abstract class AbstractAzureStorageClientBuilderFactory<T> extends AbstractAzureHttpClientBuilderFactory<T> {
 
-    private final AzureRequestRetryOptionsConverter requestRetryOptionsConverter = new AzureRequestRetryOptionsConverter();
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureStorageClientBuilderFactory.class);
     protected abstract BiConsumer<T, RequestRetryOptions> consumeRequestRetryOptions();
 
     @Override
     protected void configureRetry(T builder) {
         RetryProperties retryProperties = getAzureProperties().getRetry();
         if (retryProperties instanceof StorageRetryProperties) {
-            RequestRetryOptions requestRetryOptions =
-                requestRetryOptionsConverter.convert((StorageRetryProperties) retryProperties);
+            RequestRetryOptions requestRetryOptions = STORAGE_RETRY_CONVERTER.convert((StorageRetryProperties) retryProperties);
             consumeRequestRetryOptions().accept(builder, requestRetryOptions);
+        } else {
+            LOGGER.warn("The retryProperties in a storage client builder is of type {}", retryProperties.getClass().getName());
         }
+    }
+
+    @Override
+    protected BiConsumer<T, RetryPolicy> consumeRetryPolicy() {
+        return (a, b) -> { };
     }
 }

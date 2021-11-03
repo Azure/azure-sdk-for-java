@@ -3,17 +3,14 @@
 
 package com.azure.spring.service.storage.queue;
 
+import com.azure.spring.service.core.properties.AbstractHttpProperties;
 import com.azure.spring.service.storage.common.StorageRetryProperties;
-import com.azure.spring.service.core.properties.TestAzureHttpProperties;
 import com.azure.storage.queue.QueueServiceVersion;
 
 /**
  * Properties for Azure Storage Queue service.
  */
-public class TestAzureStorageQueueHttpProperties extends TestAzureHttpProperties implements StorageQueueProperties {
-
-    public static final String PREFIX = "spring.cloud.azure.storage.queue";
-    public static final String QUEUE_ENDPOINT_PATTERN = "https://%s.queue%s";
+public class TestAzureStorageQueueHttpProperties extends AbstractHttpProperties implements StorageQueueProperties {
 
     private QueueServiceVersion serviceVersion;
     private String messageEncoding;

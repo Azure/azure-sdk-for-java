@@ -11,7 +11,13 @@ import java.time.Duration;
 public class RetryProperties {
 
     private final BackoffProperties backoff = new BackoffProperties();
+    /**
+     * The maximum number of attempts
+     */
     private Integer maxAttempts;
+    /**
+     * How long to wait until a timeout
+     */
     private Duration timeout;
 
     public RetryProperties() {

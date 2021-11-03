@@ -4,12 +4,12 @@
 package com.azure.spring.service.eventhubs;
 
 import com.azure.spring.core.connectionstring.implementation.EventHubConnectionString;
-import com.azure.spring.service.core.properties.TestAbstractAzureAmqpConfigurationProperties;
+import com.azure.spring.service.core.properties.AbstractAmqpProperties;
 
 /**
  * Azure Event Hub related properties.
  */
-public abstract class TestAzureEventHubCommonProperties extends TestAbstractAzureAmqpConfigurationProperties {
+public abstract class TestAzureEventHubCommonProperties extends AbstractAmqpProperties {
 
     protected String domainName = "servicebus.windows.net";
     protected String namespace;

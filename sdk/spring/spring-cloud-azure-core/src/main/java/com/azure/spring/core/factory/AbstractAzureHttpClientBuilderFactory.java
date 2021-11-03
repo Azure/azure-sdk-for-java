@@ -12,9 +12,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.spring.core.converter.AzureHttpLogOptionsConverter;
-import com.azure.spring.core.converter.AzureHttpProxyOptionsConverter;
-import com.azure.spring.core.converter.AzureRetryPolicyConverter;
 import com.azure.spring.core.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.client.HttpClientProperties;
@@ -31,6 +28,10 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.core.converter.AzureHttpLogOptionsConverter.HTTP_LOG_OPTIONS_CONVERTER;
+import static com.azure.spring.core.converter.AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER;
+import static com.azure.spring.core.converter.AzureHttpRetryPolicyConverter.HTTP_RETRY_CONVERTER;
+
 /**
  * Abstract factory of the http client builder.
  *
@@ -39,13 +40,11 @@ import java.util.stream.Collectors;
 public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractAzureServiceClientBuilderFactory<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureHttpClientBuilderFactory.class);
+
     private final HttpClientOptions httpClientOptions = new HttpClientOptions();
     private HttpClientProvider httpClientProvider = new DefaultHttpProvider();
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private HttpPipeline httpPipeline;
-    private final AzureHttpProxyOptionsConverter proxyOptionsConverter = new AzureHttpProxyOptionsConverter();
-    private final AzureHttpLogOptionsConverter logOptionsConverter = new AzureHttpLogOptionsConverter();
-    private final AzureRetryPolicyConverter httpRetryOptionsConverter = new AzureRetryPolicyConverter();
     protected abstract BiConsumer<T, HttpClient> consumeHttpClient();
 
     protected abstract BiConsumer<T, HttpPipelinePolicy> consumeHttpPipelinePolicy();
@@ -54,9 +53,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     protected abstract BiConsumer<T, HttpLogOptions> consumeHttpLogOptions();
 
-    protected BiConsumer<T, RetryPolicy> consumeRetryPolicy() {
-        return (a, b) -> { };
-    }
+    protected abstract BiConsumer<T, RetryPolicy> consumeRetryPolicy();
 
     @Override
     protected void configureCore(T builder) {
@@ -85,14 +82,14 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
         }
 
         if (proxyProperties instanceof HttpProxyProperties) {
-            ProxyOptions proxyOptions = proxyOptionsConverter.convert((HttpProxyProperties) proxyProperties);
+            ProxyOptions proxyOptions = HTTP_PROXY_CONVERTER.convert((HttpProxyProperties) proxyProperties);
             if (proxyOptions != null) {
                 this.httpClientOptions.setProxyOptions(proxyOptions);
             } else {
                 LOGGER.debug("No HTTP proxy properties available.");
             }
         } else {
-            LOGGER.warn("No HTTP proxy configuration will not be applied.");
+            LOGGER.debug("No HTTP proxy configuration will not be applied.");
         }
     }
 
@@ -107,7 +104,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     protected void configureHttpLogOptions(T builder) {
         ClientProperties client = getAzureProperties().getClient();
-        HttpLogOptions logOptions = this.logOptionsConverter.convert(client.getLogging());
+        HttpLogOptions logOptions = HTTP_LOG_OPTIONS_CONVERTER.convert(client.getLogging());
         consumeHttpLogOptions().accept(builder, logOptions);
     }
 
@@ -133,10 +130,11 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
         }
 
         if (retryProperties instanceof HttpRetryProperties) {
-            RetryPolicy retryPolicy = httpRetryOptionsConverter.convert((HttpRetryProperties) retryProperties);
+            RetryPolicy retryPolicy = HTTP_RETRY_CONVERTER.convert((HttpRetryProperties) retryProperties);
             consumeRetryPolicy().accept(builder, retryPolicy);
         } else {
-            LOGGER.warn("No HTTP retry configuration will not be applied.");
+            LOGGER.warn("Retry properties of type {} in an http client builder factory.",
+                retryProperties.getClass().getSimpleName());
         }
     }
 

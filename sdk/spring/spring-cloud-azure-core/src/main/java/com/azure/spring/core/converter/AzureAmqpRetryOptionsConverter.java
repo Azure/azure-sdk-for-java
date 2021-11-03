@@ -13,6 +13,8 @@ import org.springframework.core.convert.converter.Converter;
  */
 public final class AzureAmqpRetryOptionsConverter implements Converter<RetryProperties, AmqpRetryOptions> {
 
+    public static final AzureAmqpRetryOptionsConverter AMQP_RETRY_CONVERTER = new AzureAmqpRetryOptionsConverter();
+
     @Override
     public AmqpRetryOptions convert(RetryProperties retryProperties) {
         AmqpRetryOptions retryOptions = new AmqpRetryOptions();

@@ -9,7 +9,7 @@ import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.service.eventhubs.properties.EventHubProcessorProperties;
 import com.azure.spring.service.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.service.eventhubs.properties.EventHubProperties;
-import com.azure.spring.service.storage.blob.TestAzureStorageBlobHttpProperties;
+import com.azure.spring.service.storage.blob.TestAzureStorageBlobProperties;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -158,7 +158,7 @@ public class TestAzureEventHubProperties extends TestAzureEventHubCommonProperti
         /**
          * Blob checkpoint store.
          */
-        public static class BlobCheckpointStore extends TestAzureStorageBlobHttpProperties {
+        public static class BlobCheckpointStore extends TestAzureStorageBlobProperties {
 
 
         }

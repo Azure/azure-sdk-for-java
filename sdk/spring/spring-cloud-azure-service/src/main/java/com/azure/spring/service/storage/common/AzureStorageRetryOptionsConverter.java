@@ -7,20 +7,19 @@ import com.azure.spring.core.properties.retry.RetryProperties;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.lang.NonNull;
 
 import java.time.Duration;
 
 /**
  * Converts a {@link StorageRetryProperties} to a {@link RequestRetryOptions}.
  */
-public final class AzureRequestRetryOptionsConverter implements Converter<StorageRetryProperties, RequestRetryOptions> {
+public final class AzureStorageRetryOptionsConverter implements Converter<StorageRetryProperties, RequestRetryOptions> {
+
+    public static final AzureStorageRetryOptionsConverter STORAGE_RETRY_CONVERTER = new AzureStorageRetryOptionsConverter();
 
     @Override
-    public RequestRetryOptions convert(StorageRetryProperties retryProperties) {
-        if (retryProperties == null) {
-            return new RequestRetryOptions();
-        }
-
+    public RequestRetryOptions convert(@NonNull StorageRetryProperties retryProperties) {
         RetryPolicyType retryPolicyType = null;
         Duration delay = null;
         Duration maxDelay = null;

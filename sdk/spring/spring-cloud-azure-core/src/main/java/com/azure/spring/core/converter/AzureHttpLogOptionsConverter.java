@@ -12,6 +12,8 @@ import org.springframework.core.convert.converter.Converter;
  */
 public final class AzureHttpLogOptionsConverter implements Converter<ClientProperties.LoggingProperties, HttpLogOptions> {
 
+    public static final AzureHttpLogOptionsConverter HTTP_LOG_OPTIONS_CONVERTER = new AzureHttpLogOptionsConverter();
+
     @Override
     public HttpLogOptions convert(ClientProperties.LoggingProperties logging) {
         HttpLogOptions logOptions = new HttpLogOptions();

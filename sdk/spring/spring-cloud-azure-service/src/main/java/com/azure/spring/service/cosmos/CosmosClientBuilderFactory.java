@@ -7,14 +7,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.KeyAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.retry.RetryProperties;
 import com.azure.spring.service.core.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,15 +65,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
     @Override
     protected void configureRetry(CosmosClientBuilder builder) {
-        ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
-        RetryProperties retryProperties = cosmosProperties.getRetry();
-        if (retryProperties.getMaxAttempts() != null) {
-            retryOptions.setMaxRetryAttemptsOnThrottledRequests(retryProperties.getMaxAttempts());
-        }
-        if (retryProperties.getTimeout() != null) {
-            retryOptions.setMaxRetryWaitTime(retryProperties.getTimeout());
-        }
-        builder.throttlingRetryOptions(retryOptions);
+        LOGGER.debug("No configureRetry for CosmosClientBuilder.");
     }
 
     @Override
@@ -92,6 +82,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         map.from(this.cosmosProperties.getReadRequestsFallbackEnabled()).to(builder::readRequestsFallbackEnabled);
         map.from(this.cosmosProperties.getSessionCapturingOverrideEnabled()).to(builder::sessionCapturingOverrideEnabled);
         map.from(this.cosmosProperties.getPreferredRegions()).whenNot(List::isEmpty).to(builder::preferredRegions);
+        map.from(this.cosmosProperties.getThrottlingRetryOptions()).to(builder::throttlingRetryOptions);
 
         // TODO (xiada): should we count this as authentication
         map.from(this.cosmosProperties.getResourceToken()).to(builder::resourceToken);

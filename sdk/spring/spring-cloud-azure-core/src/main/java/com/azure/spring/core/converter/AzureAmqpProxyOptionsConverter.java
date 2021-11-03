@@ -17,6 +17,8 @@ import java.net.Proxy;
  */
 public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyProperties, ProxyOptions> {
 
+    public static final AzureAmqpProxyOptionsConverter AMQP_PROXY_CONVERTER = new AzureAmqpProxyOptionsConverter();
+
     @Override
     public ProxyOptions convert(ProxyProperties properties) {
         if (!StringUtils.hasText(properties.getHostname())) {

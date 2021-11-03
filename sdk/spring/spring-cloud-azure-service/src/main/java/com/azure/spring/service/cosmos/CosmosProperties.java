@@ -11,6 +11,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.aware.credential.KeyAware;
+import com.azure.spring.core.properties.retry.RetryProperties;
 
 import java.util.List;
 
@@ -52,4 +53,9 @@ public interface CosmosProperties extends AzureProperties, KeyAware {
     ConnectionMode getConnectionMode();
 
     ThrottlingRetryOptions getThrottlingRetryOptions();
+
+    @Override
+    default RetryProperties getRetry() {
+        return new RetryProperties();
+    }
 }

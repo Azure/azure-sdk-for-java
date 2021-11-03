@@ -8,10 +8,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.identity.CredentialBuilderBase;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.properties.AzureProperties;
+import com.azure.spring.core.properties.retry.RetryProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,5 +85,20 @@ public class AzureCredentialBuilderFactory<T extends CredentialBuilderBase<T>> e
     @Override
     protected BiConsumer<T, String> consumeConnectionString() {
         return (a, b) -> { };
+    }
+
+    @Override
+    protected void configureRetry(T builder) {
+        RetryProperties retry = getAzureProperties().getRetry();
+        if (retry != null && retry.getMaxAttempts() != null) {
+            builder.maxRetry(retry.getMaxAttempts());
+            // TODO (xiada): don't know how to specify the retryTimeout
+//            builder.retryTimeout()
+        }
+    }
+
+    @Override
+    protected BiConsumer<T, RetryPolicy> consumeRetryPolicy() {
+        return null;
     }
 }
