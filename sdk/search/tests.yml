@@ -4,7 +4,9 @@ stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: search
-      SupportedClouds: 'Public,UsGov,China'
+      # TODO: change 'Preview' cloud back to public after search RP fixes deletion metadata issue
+      Clouds: 'Preview'
+      SupportedClouds: 'Preview,UsGov,China'
       TimeoutInMinutes: 60
       MaxParallel: 7
       Artifacts:
