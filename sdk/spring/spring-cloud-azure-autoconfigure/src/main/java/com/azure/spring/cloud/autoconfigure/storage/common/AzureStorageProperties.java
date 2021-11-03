@@ -3,15 +3,17 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.common;
 
-import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpConfigurationProperties;
-import com.azure.spring.service.storage.common.StorageRetryProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpClientCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyCP;
 import com.azure.spring.service.storage.common.StorageProperties;
+import com.azure.spring.service.storage.common.StorageRetry;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Common properties for all Azure Storage services.
  */
-public class AzureStorageProperties extends AbstractAzureHttpConfigurationProperties implements StorageProperties {
+public class AzureStorageProperties extends AbstractAzureServiceCP implements StorageProperties {
 
     protected String endpoint;
 
@@ -24,11 +26,27 @@ public class AzureStorageProperties extends AbstractAzureHttpConfigurationProper
     protected String accountName;
 
     @NestedConfigurationProperty
-    protected final StorageRetryProperties retry = new StorageRetryProperties();
+    protected final StorageRetryCP retry = new StorageRetryCP();
+
+    @NestedConfigurationProperty
+    protected final HttpClientCP client = new HttpClientCP();
+
+    @NestedConfigurationProperty
+    protected final HttpProxyCP proxy = new HttpProxyCP();
 
     @Override
-    public StorageRetryProperties getRetry() {
+    public StorageRetry getRetry() {
         return retry;
+    }
+
+    @Override
+    public HttpClientCP getClient() {
+        return client;
+    }
+
+    @Override
+    public HttpProxyCP getProxy() {
+        return proxy;
     }
 
     public String getEndpoint() {
@@ -60,7 +78,6 @@ public class AzureStorageProperties extends AbstractAzureHttpConfigurationProper
         return sasToken;
     }
 
-    @Override
     public void setSasToken(String sasToken) {
         this.sasToken = sasToken;
     }

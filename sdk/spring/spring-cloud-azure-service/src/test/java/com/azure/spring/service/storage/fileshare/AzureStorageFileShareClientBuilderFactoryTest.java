@@ -94,7 +94,8 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBu
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
 
-        final ShareServiceClientBuilderFactoryProxyExt builderFactory = new ShareServiceClientBuilderFactoryProxyExt(properties);
+        final ShareServiceClientBuilderFactoryProxyExt builderFactory =
+            new ShareServiceClientBuilderFactoryProxyExt(properties);
         HttpClientProvider defaultHttpClientProvider = builderFactory.getDefaultHttpClientProvider();
         final ShareServiceClientBuilder builder = builderFactory.build();
         final ShareServiceClient client = builder.buildClient();

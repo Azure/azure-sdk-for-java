@@ -3,12 +3,12 @@
 
 package com.azure.spring.service.storage.common;
 
-import com.azure.spring.core.properties.retry.RetryProperties;
+import com.azure.spring.core.properties.retry.HttpRetryProperties;
 
 /**
- * Unified storage retry properties for all Azure Storage Service
+ *
  */
-public class StorageRetryProperties extends RetryProperties {
+public class StorageRetryProperties extends HttpRetryProperties implements StorageRetry {
 
     private String secondaryHost;
 

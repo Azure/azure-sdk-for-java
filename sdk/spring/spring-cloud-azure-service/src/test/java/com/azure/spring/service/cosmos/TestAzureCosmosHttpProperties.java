@@ -69,7 +69,6 @@ public class TestAzureCosmosHttpProperties extends AbstractHttpProperties implem
         return key;
     }
 
-    @Override
     public void setKey(String key) {
         this.key = key;
     }

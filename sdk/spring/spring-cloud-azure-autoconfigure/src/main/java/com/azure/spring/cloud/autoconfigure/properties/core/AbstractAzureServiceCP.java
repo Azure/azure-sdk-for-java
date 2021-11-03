@@ -1,26 +1,26 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.properties;
+package com.azure.spring.cloud.autoconfigure.properties.core;
 
+import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileCP;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.credential.TokenCredentialProperties;
-import com.azure.spring.core.properties.profile.AzureProfile;
 import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Configuration properties base class for all Azure clients.
  */
-public abstract class AbstractAzureServiceConfigurationProperties implements AzureProperties {
+public abstract class AbstractAzureServiceCP implements AzureProperties {
 
     protected boolean enabled = true;
 
     @NestedConfigurationProperty
-    protected final TokenCredentialProperties credential = new TokenCredentialProperties();
+    protected final TokenCredentialCP credential = new TokenCredentialCP();
 
     @NestedConfigurationProperty
-    protected final AzureProfile profile = new AzureProfile();
+    protected final AzureProfileCP profile = new AzureProfileCP();
 
     @NestedConfigurationProperty
     protected final AzureResourceMetadata resource = new AzureResourceMetadata();
@@ -34,17 +34,16 @@ public abstract class AbstractAzureServiceConfigurationProperties implements Azu
     }
 
     @Override
-    public TokenCredentialProperties getCredential() {
+    public TokenCredentialCP getCredential() {
         return credential;
     }
 
     @Override
-    public AzureProfile getProfile() {
+    public AzureProfileCP getProfile() {
         return profile;
     }
 
     public AzureResourceMetadata getResource() {
         return resource;
     }
-
 }

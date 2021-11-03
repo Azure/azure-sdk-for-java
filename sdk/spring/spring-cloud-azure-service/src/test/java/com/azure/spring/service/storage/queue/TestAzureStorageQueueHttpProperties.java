@@ -3,48 +3,18 @@
 
 package com.azure.spring.service.storage.queue;
 
-import com.azure.spring.service.core.properties.AbstractHttpProperties;
-import com.azure.spring.service.storage.common.StorageRetryProperties;
+import com.azure.spring.service.storage.TestAzureStorageProperties;
 import com.azure.storage.queue.QueueServiceVersion;
 
 /**
  * Properties for Azure Storage Queue service.
  */
-public class TestAzureStorageQueueHttpProperties extends AbstractHttpProperties implements StorageQueueProperties {
+public class TestAzureStorageQueueHttpProperties extends TestAzureStorageProperties implements StorageQueueProperties {
 
     private QueueServiceVersion serviceVersion;
     private String messageEncoding;
-    private String endpoint;
-    private String accountKey;
-    private String sasToken;
-    private String connectionString;
-    private String accountName;
-    private final StorageRetryProperties retry = new StorageRetryProperties();
 
     @Override
-    public StorageRetryProperties getRetry() {
-        return retry;
-    }
-
-    public String getEndpoint() {
-        return endpoint;
-    }
-
-    @Override
-    public String getAccountName() {
-        return accountName;
-    }
-
-    @Override
-    public String getAccountKey() {
-        return accountKey;
-    }
-
-    @Override
-    public String getConnectionString() {
-        return connectionString;
-    }
-
     public QueueServiceVersion getServiceVersion() {
         return serviceVersion;
     }
@@ -53,37 +23,12 @@ public class TestAzureStorageQueueHttpProperties extends AbstractHttpProperties 
         this.serviceVersion = serviceVersion;
     }
 
+    @Override
     public String getMessageEncoding() {
         return messageEncoding;
     }
 
     public void setMessageEncoding(String messageEncoding) {
         this.messageEncoding = messageEncoding;
-    }
-
-    @Override
-    public void setSasToken(String sasToken) {
-        this.sasToken = sasToken;
-    }
-
-    @Override
-    public String getSasToken() {
-        return this.sasToken;
-    }
-
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-    }
-
-    public void setAccountKey(String accountKey) {
-        this.accountKey = accountKey;
-    }
-
-    public void setConnectionString(String connectionString) {
-        this.connectionString = connectionString;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
     }
 }

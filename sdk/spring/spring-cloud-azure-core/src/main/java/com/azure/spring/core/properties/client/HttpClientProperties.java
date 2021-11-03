@@ -3,12 +3,14 @@
 
 package com.azure.spring.core.properties.client;
 
+import com.azure.spring.core.aware.ClientAware;
+
 import java.time.Duration;
 
 /**
  * Properties shared by all http client builders.
  */
-public class HttpClientProperties extends ClientProperties {
+public final class HttpClientProperties extends ClientProperties implements ClientAware.HttpClient {
 
     private Duration writeTimeout;
     private Duration responseTimeout;

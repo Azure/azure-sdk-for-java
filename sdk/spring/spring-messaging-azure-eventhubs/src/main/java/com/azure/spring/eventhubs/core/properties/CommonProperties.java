@@ -3,9 +3,9 @@
 
 package com.azure.spring.eventhubs.core.properties;
 
+import com.azure.spring.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.core.connectionstring.implementation.EventHubConnectionString;
 import com.azure.spring.core.properties.AzureSdkProperties;
-import com.azure.spring.core.properties.aware.credential.ConnectionStringAware;
 import com.azure.spring.service.eventhubs.properties.EventHubCommonDescriptor;
 
 /**
@@ -75,7 +75,6 @@ abstract class CommonProperties extends AzureSdkProperties implements EventHubCo
         return connectionString;
     }
 
-    @Override
     public void setConnectionString(String connectionString) {
         this.connectionString = connectionString;
     }

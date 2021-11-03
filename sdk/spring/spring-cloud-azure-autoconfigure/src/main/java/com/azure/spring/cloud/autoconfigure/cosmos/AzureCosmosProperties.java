@@ -9,7 +9,7 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureServiceConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceCP;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
 import com.azure.spring.service.cosmos.CosmosProperties;
@@ -25,7 +25,7 @@ import java.util.List;
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
 @Validated
-public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties implements CosmosProperties {
+public class AzureCosmosProperties extends AbstractAzureServiceCP implements CosmosProperties {
 
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 
@@ -92,7 +92,6 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
         return key;
     }
 
-    @Override
     public void setKey(String key) {
         this.key = key;
     }

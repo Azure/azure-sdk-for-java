@@ -3,12 +3,14 @@
 
 package com.azure.spring.core.properties.retry;
 
+import com.azure.spring.core.aware.RetryAware;
+
 import java.time.Duration;
 
 /**
  * Common retry properties for all Azure SDKs.
  */
-public class RetryProperties {
+public class RetryProperties implements RetryAware.Retry {
 
     private final BackoffProperties backoff = new BackoffProperties();
     /**
@@ -19,10 +21,6 @@ public class RetryProperties {
      * How long to wait until a timeout
      */
     private Duration timeout;
-
-    public RetryProperties() {
-
-    }
 
     public BackoffProperties getBackoff() {
         return backoff;
@@ -44,47 +42,4 @@ public class RetryProperties {
         this.timeout = timeout;
     }
 
-    /**
-     * Backoff properties when a retry fails.
-     */
-    public static class BackoffProperties {
-
-        private Duration delay;
-        private Duration maxDelay;
-
-        public BackoffProperties() {
-
-        }
-
-        /**
-         * If positive, then used as a multiplier for generating the next delay for backoff.
-         *
-         * @return a multiplier to use to calculate the next backoff delay
-         */
-        private Double multiplier;
-
-        public Duration getDelay() {
-            return delay;
-        }
-
-        public void setDelay(Duration delay) {
-            this.delay = delay;
-        }
-
-        public Duration getMaxDelay() {
-            return maxDelay;
-        }
-
-        public void setMaxDelay(Duration maxDelay) {
-            this.maxDelay = maxDelay;
-        }
-
-        public Double getMultiplier() {
-            return multiplier;
-        }
-
-        public void setMultiplier(Double multiplier) {
-            this.multiplier = multiplier;
-        }
-    }
 }

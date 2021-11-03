@@ -7,26 +7,25 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
-import com.azure.spring.core.properties.retry.HttpRetryProperties;
-import com.azure.spring.core.properties.retry.RetryProperties;
+import com.azure.spring.core.aware.RetryAware;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.NonNull;
 
 /**
- * Converts a {@link HttpRetryProperties} to a {@link RetryPolicy}.
+ * Converts a {@link RetryAware.HttpRetry} to a {@link RetryPolicy}.
  */
-public final class AzureHttpRetryPolicyConverter implements Converter<HttpRetryProperties, RetryPolicy> {
+public final class AzureHttpRetryPolicyConverter implements Converter<RetryAware.HttpRetry, RetryPolicy> {
 
     public static final AzureHttpRetryPolicyConverter HTTP_RETRY_CONVERTER = new AzureHttpRetryPolicyConverter();
 
     @Override
-    public RetryPolicy convert(@NonNull HttpRetryProperties properties) {
-        Integer maxAttempts = properties.getMaxAttempts();
+    public RetryPolicy convert(@NonNull RetryAware.HttpRetry httpRetry) {
+        Integer maxAttempts = httpRetry.getMaxAttempts();
         if (maxAttempts == null) {
             return new RetryPolicy();
         }
 
-        final RetryProperties.BackoffProperties backoff = properties.getBackoff();
+        final RetryAware.Backoff backoff = httpRetry.getBackoff();
         RetryStrategy retryStrategy;
 
         if (backoff.getMultiplier() != null && backoff.getMultiplier() > 0) {
@@ -36,6 +35,6 @@ public final class AzureHttpRetryPolicyConverter implements Converter<HttpRetryP
             retryStrategy = new FixedDelay(maxAttempts, backoff.getDelay());
         }
 
-        return new RetryPolicy(retryStrategy, properties.getRetryAfterHeader(), properties.getRetryAfterTimeUnit());
+        return new RetryPolicy(retryStrategy, httpRetry.getRetryAfterHeader(), httpRetry.getRetryAfterTimeUnit());
     }
 }

@@ -3,10 +3,13 @@
 
 package com.azure.spring.core.properties.proxy;
 
+import com.azure.spring.core.aware.ProxyAware;
+
 /**
  * Extend the proxy properties for HTTP connection
  */
-public class HttpProxyProperties extends ProxyProperties {
+public class HttpProxyProperties extends ProxyProperties implements ProxyAware.HttpProxy {
+
     private String nonProxyHosts;
 
     public String getNonProxyHosts() {
@@ -16,4 +19,5 @@ public class HttpProxyProperties extends ProxyProperties {
     public void setNonProxyHosts(String nonProxyHosts) {
         this.nonProxyHosts = nonProxyHosts;
     }
+
 }

@@ -29,7 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * @author Xiaolu Dai, 2021/8/25.
+ *
  */
 class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactoryTestBase<BlobServiceClientBuilder,
     TestAzureStorageBlobProperties, BlobServiceClientBuilderFactory> {

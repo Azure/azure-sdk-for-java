@@ -12,13 +12,11 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.ProxyAware;
+import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.http.DefaultHttpProvider;
-import com.azure.spring.core.properties.client.ClientProperties;
-import com.azure.spring.core.properties.client.HttpClientProperties;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
-import com.azure.spring.core.properties.retry.HttpRetryProperties;
-import com.azure.spring.core.properties.retry.RetryProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,13 +74,13 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureProxy(T builder) {
-        final ProxyProperties proxyProperties = getAzureProperties().getProxy();
-        if (proxyProperties == null) {
+        final ProxyAware.Proxy proxy = getAzureProperties().getProxy();
+        if (proxy == null) {
             return;
         }
 
-        if (proxyProperties instanceof HttpProxyProperties) {
-            ProxyOptions proxyOptions = HTTP_PROXY_CONVERTER.convert((HttpProxyProperties) proxyProperties);
+        if (proxy instanceof HttpProxyProperties) {
+            ProxyOptions proxyOptions = HTTP_PROXY_CONVERTER.convert((HttpProxyProperties) proxy);
             if (proxyOptions != null) {
                 this.httpClientOptions.setProxyOptions(proxyOptions);
             } else {
@@ -103,19 +101,19 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     }
 
     protected void configureHttpLogOptions(T builder) {
-        ClientProperties client = getAzureProperties().getClient();
+        ClientAware.Client client = getAzureProperties().getClient();
         HttpLogOptions logOptions = HTTP_LOG_OPTIONS_CONVERTER.convert(client.getLogging());
         consumeHttpLogOptions().accept(builder, logOptions);
     }
 
     protected void configureHttpTransportProperties(T builder) {
-        final ClientProperties clientProperties = getAzureProperties().getClient();
-        if (clientProperties == null) {
+        final ClientAware.Client client = getAzureProperties().getClient();
+        if (client == null) {
             return;
         }
-        final HttpClientProperties properties;
-        if (clientProperties instanceof HttpClientProperties) {
-            properties = (HttpClientProperties) clientProperties;
+        final ClientAware.HttpClient properties;
+        if (client instanceof ClientAware.HttpClient) {
+            properties = (ClientAware.HttpClient) client;
             httpClientOptions.setWriteTimeout(properties.getWriteTimeout());
             httpClientOptions.responseTimeout(properties.getResponseTimeout());
             httpClientOptions.readTimeout(properties.getReadTimeout());
@@ -124,17 +122,16 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureRetry(T builder) {
-        RetryProperties retryProperties = getAzureProperties().getRetry();
-        if (retryProperties == null) {
+        RetryAware.Retry retry = getAzureProperties().getRetry();
+        if (retry == null) {
             return;
         }
 
-        if (retryProperties instanceof HttpRetryProperties) {
-            RetryPolicy retryPolicy = HTTP_RETRY_CONVERTER.convert((HttpRetryProperties) retryProperties);
+        if (retry instanceof RetryAware.HttpRetry) {
+            RetryPolicy retryPolicy = HTTP_RETRY_CONVERTER.convert((RetryAware.HttpRetry) retry);
             consumeRetryPolicy().accept(builder, retryPolicy);
         } else {
-            LOGGER.warn("Retry properties of type {} in an http client builder factory.",
-                retryProperties.getClass().getSimpleName());
+            LOGGER.warn("Retry properties of type {} in an http client builder factory.", retry.getClass().getName());
         }
     }
 
@@ -145,7 +142,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     }
 
     protected List<Header> getHeaders() {
-        final ClientProperties client = getAzureProperties().getClient();
+        final ClientAware.Client client = getAzureProperties().getClient();
         if (client == null || client.getHeaders() == null) {
             return null;
         }
