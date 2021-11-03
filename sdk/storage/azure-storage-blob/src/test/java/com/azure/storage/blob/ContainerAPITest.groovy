@@ -1070,7 +1070,7 @@ class ContainerAPITest extends APISpec {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
     def "List blobs flat invalid xml"() {
         setup:
-        def blobName = "dir1/dir2/file\uFFFF.blob";
+        def blobName = "dir1/dir2/file\uFFFE.blob";
         cc.getBlobClient(blobName).getAppendBlobClient().create()
 
         when:
@@ -1564,7 +1564,7 @@ class ContainerAPITest extends APISpec {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
     def "List blobs hier invalid xml"() {
         setup:
-        def blobName = 'dir1/dir2/file\uFFFF.blob';
+        def blobName = 'dir1/dir2/file\uFFFE.blob';
         cc.getBlobClient(blobName).getAppendBlobClient().create()
 
         when:
@@ -1576,7 +1576,7 @@ class ContainerAPITest extends APISpec {
         }
 
         then:
-        blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFF.b" : blobName)
+        blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName)
         blobItem.isPrefix() == (delimiter ? true : null)
 
         where:
