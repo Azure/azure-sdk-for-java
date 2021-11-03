@@ -17,7 +17,9 @@ public class VersionTest {
     }
 
     @Test
-    void testGetQualifiedSDKVersionString() {
-        assertThat(Version.getSdkVersion()).matches("java[1-9.]+:ot.*:ext[1-9.]+.*");
+    void testSdkVersion() {
+        // OpenTelemetry added version.properties files in 1.3.0
+        // but testing against OpenTelemetry 1.0.0, so it's unknown in this test
+        assertThat(Version.getSdkVersion()).matches("java[0-9.]+:ot([0-9.]+|unknown):ext[0-9.]+.*");
     }
 }

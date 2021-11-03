@@ -3,6 +3,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation;
 import com.azure.core.util.CoreUtils;
 import io.opentelemetry.api.OpenTelemetry;
 
+import java.net.URL;
 import java.util.Map;
 
 public final class Version {
@@ -53,11 +54,12 @@ public final class Version {
     }
 
     private static String getOpenTelemetryApiVersion() {
-        Package objPackage = OpenTelemetry.class.getPackage();
-        if (objPackage == null) {
-            return null;
+        Map<String, String> properties =
+            CoreUtils.getProperties("io/opentelemetry/api/version.properties");
+        if (properties == null) {
+            return UNKNOWN_VERSION_VALUE;
         }
-        String version = objPackage.getSpecificationVersion();
+        String version = properties.get("sdk.version");
         return version != null ? version : UNKNOWN_VERSION_VALUE;
     }
 
