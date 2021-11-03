@@ -7,9 +7,10 @@ import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import com.azure.spring.core.properties.AzurePropertiesUtils;
 import com.azure.spring.service.servicebus.properties.ServiceBusConsumerDescriptor;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
+import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceDescriptor;
 import com.azure.spring.service.servicebus.properties.ServiceBusProcessorDescriptor;
 import com.azure.spring.service.servicebus.properties.ServiceBusProducerDescriptor;
-import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceDescriptor;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.time.Duration;
@@ -61,8 +62,8 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
         propertyMapper.from(this.producer.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.producer.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.producer.getConnectionString()).to(properties::setConnectionString);
-        propertyMapper.from(this.producer.getType()).to(properties::setTopicName);
-        propertyMapper.from(this.producer.getName()).to(properties::setQueueName);
+        propertyMapper.from(this.producer.getType()).to(properties::setType);
+        propertyMapper.from(this.producer.getName()).to(properties::setName);
 
         return properties;
     }
@@ -83,8 +84,8 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
         propertyMapper.from(this.consumer.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.consumer.getConnectionString()).to(properties::setConnectionString);
 
-        propertyMapper.from(this.consumer.getType()).to(properties::setTopicName);
-        propertyMapper.from(this.consumer.getName()).to(properties::setQueueName);
+        propertyMapper.from(this.consumer.getType()).to(properties::setType);
+        propertyMapper.from(this.consumer.getName()).to(properties::setName);
         propertyMapper.from(this.consumer.getSessionAware()).to(properties::setSessionAware);
         propertyMapper.from(this.consumer.getAutoComplete()).to(properties::setAutoComplete);
         propertyMapper.from(this.consumer.getPrefetchCount()).to(properties::setPrefetchCount);
@@ -112,8 +113,8 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
         propertyMapper.from(this.processor.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.processor.getConnectionString()).to(properties::setConnectionString);
 
-        propertyMapper.from(this.processor.getType()).to(properties::setTopicName);
-        propertyMapper.from(this.processor.getName()).to(properties::setQueueName);
+        propertyMapper.from(this.processor.getType()).to(properties::setType);
+        propertyMapper.from(this.processor.getName()).to(properties::setName);
         propertyMapper.from(this.processor.getSessionAware()).to(properties::setSessionAware);
         propertyMapper.from(this.processor.getAutoComplete()).to(properties::setAutoComplete);
         propertyMapper.from(this.processor.getPrefetchCount()).to(properties::setPrefetchCount);
@@ -133,22 +134,24 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
     public static class Producer extends AzureServiceBusCommonProperties implements ServiceBusProducerDescriptor {
 
         private String name;
-        private String type;
+        private ServiceBusEntityType type;
 
+        @Override
         public String getName() {
-            return queueName;
+            return name;
         }
 
-        public void setQueueName(String queueName) {
-            this.queueName = queueName;
+        public void setName(String name) {
+            this.name = name;
         }
 
-        public String getType() {
-            return topicName;
+        @Override
+        public ServiceBusEntityType getType() {
+            return type;
         }
 
-        public void setTopicName(String topicName) {
-            this.topicName = topicName;
+        public void setType(ServiceBusEntityType type) {
+            this.type = type;
         }
     }
 
@@ -158,16 +161,35 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
     public static class Consumer extends AzureServiceBusCommonProperties implements ServiceBusConsumerDescriptor {
 
         // TODO (xiada): name for session
+        private String name;
+        private ServiceBusEntityType type;
         private Boolean sessionAware;
         private Boolean autoComplete;
         private Integer prefetchCount;
-        private String name;
         private SubQueue subQueue;
         private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
         private String subscriptionName;
-        private  type;
         private Duration maxAutoLockRenewDuration;
 
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public ServiceBusEntityType getType() {
+            return type;
+        }
+
+        public void setType(ServiceBusEntityType type) {
+            this.type = type;
+        }
+
+        @Override
         public Boolean getSessionAware() {
             return sessionAware;
         }
@@ -176,6 +198,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
             this.sessionAware = sessionAware;
         }
 
+        @Override
         public Boolean getAutoComplete() {
             return autoComplete;
         }
@@ -184,6 +207,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
             this.autoComplete = autoComplete;
         }
 
+        @Override
         public Integer getPrefetchCount() {
             return prefetchCount;
         }
@@ -192,14 +216,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
             this.prefetchCount = prefetchCount;
         }
 
-        public String getName() {
-            return queueName;
-        }
-
-        public void setQueueName(String queueName) {
-            this.queueName = queueName;
-        }
-
+        @Override
         public SubQueue getSubQueue() {
             return subQueue;
         }
@@ -208,6 +225,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
             this.subQueue = subQueue;
         }
 
+        @Override
         public ServiceBusReceiveMode getReceiveMode() {
             return receiveMode;
         }
@@ -216,6 +234,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
             this.receiveMode = receiveMode;
         }
 
+        @Override
         public String getSubscriptionName() {
             return subscriptionName;
         }
@@ -224,14 +243,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
             this.subscriptionName = subscriptionName;
         }
 
-        public String getType() {
-            return topicName;
-        }
-
-        public void setTopicName(String topicName) {
-            this.topicName = topicName;
-        }
-
+        @Override
         public Duration getMaxAutoLockRenewDuration() {
             return maxAutoLockRenewDuration;
         }

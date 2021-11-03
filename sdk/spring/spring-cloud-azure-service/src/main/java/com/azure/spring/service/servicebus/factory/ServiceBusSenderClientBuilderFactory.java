@@ -3,32 +3,18 @@
 
 package com.azure.spring.service.servicebus.factory;
 
-import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.ClientOptions;
-import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.NamedKeyAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
-import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
-import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.core.PropertyMapper;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.service.servicebus.properties.ServiceBusProducerDescriptor;
 import org.springframework.util.Assert;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.BiConsumer;
-
 /**
  * Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder.ServiceBusSenderClientBuilder}.
  */
-public class ServiceBusSenderClientBuilderFactory extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusSenderClientBuilder, ServiceBusProducerDescriptor> {
+public class ServiceBusSenderClientBuilderFactory
+    extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusSenderClientBuilder,
+    ServiceBusProducerDescriptor> {
 
     private final ServiceBusProducerDescriptor producerProperties;
 
