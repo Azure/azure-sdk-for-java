@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicInner;
+import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
@@ -53,6 +54,10 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public IdentityInfo identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -243,6 +248,16 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
             return this;
         } else {
             this.updateTopicUpdateParameters.withTags(tags);
+            return this;
+        }
+    }
+
+    public TopicImpl withIdentity(IdentityInfo identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateTopicUpdateParameters.withIdentity(identity);
             return this;
         }
     }

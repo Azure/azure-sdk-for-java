@@ -111,12 +111,17 @@ function Get-MavenPackageDetails([string]$ArtifactDirectory) {
     [xml]$pomDocument = Get-Content $pomFile
 
     $packageDetail.GroupID = $pomDocument.project.groupId
+    if (!$packageDetail.GroupID) { $packageDetail.GroupID = $pomDocument.project.parent.groupId }
+    if (!$packageDetail.GroupID) { throw "No GroupID found for $pomFile" }
     Write-Information "Group ID is: $($packageDetail.GroupID)"
 
     $packageDetail.ArtifactID = $pomDocument.project.artifactId
+    if (!$packageDetail.ArtifactID) { throw "No ArtifactID found for $pomFile" }
     Write-Information "Artifact ID is: $($packageDetail.ArtifactID)"
 
     $packageDetail.Version = $pomDocument.project.version
+    if (!$packageDetail.Version) { $packageDetail.Version = $pomDocument.project.parent.version }
+    if (!$packageDetail.Version) { throw "No Version found for $pomFile" }
     Write-Information "Version is: $($packageDetail.Version)"
 
     $packageDetail.IsSnapshot = $packageDetail.Version.EndsWith("-SNAPSHOT")

@@ -53,14 +53,16 @@ public final class BlobServiceSasSignatureValues {
     /**
      * Pin down to highest version that worked with string to sign defined here.
      */
-    private static final String VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN = Configuration.getGlobalConfiguration()
-        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.V2020_10_02.getVersion());
+    private static final String VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN =
+        Configuration.getGlobalConfiguration()
+            .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.V2020_10_02.getVersion());
 
     /**
      * Pin down to highest version that worked with string to sign defined here.
      */
-    private static final String VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN = Configuration.getGlobalConfiguration()
-        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.V2019_12_12.getVersion());
+    private static final String VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN =
+        Configuration.getGlobalConfiguration()
+            .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, BlobServiceVersion.V2019_12_12.getVersion());
 
     private SasProtocol protocol;
 
@@ -597,9 +599,10 @@ public final class BlobServiceSasSignatureValues {
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
         final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(canonicalName));
 
-        return new BlobServiceSasQueryParameters(VERSION, this.protocol, this.startTime, this.expiryTime,
-            this.sasIpRange, this.identifier, this.resource, this.permissions, signature, this.cacheControl,
-            this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType, null /* delegate */);
+        return new BlobServiceSasQueryParameters(VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN, this.protocol,
+            this.startTime, this.expiryTime, this.sasIpRange, this.identifier, this.resource, this.permissions,
+            signature, this.cacheControl, this.contentDisposition, this.contentEncoding, this.contentLanguage,
+            this.contentType, null /* delegate */);
     }
 
     /**
@@ -649,10 +652,10 @@ public final class BlobServiceSasSignatureValues {
         String signature = StorageImplUtils.computeHMac256(
             delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
 
-        return new BlobServiceSasQueryParameters(VERSION, this.protocol, this.startTime, this.expiryTime,
-            this.sasIpRange, null /* identifier */, this.resource, this.permissions, signature,
-            this.cacheControl, this.contentDisposition, this.contentEncoding, this.contentLanguage, this.contentType,
-            delegationKey);
+        return new BlobServiceSasQueryParameters(VERSION_DEPRECATED_USER_DELEGATION_SAS_STRING_TO_SIGN, this.protocol,
+            this.startTime, this.expiryTime, this.sasIpRange, null /* identifier */, this.resource, this.permissions,
+            signature, this.cacheControl, this.contentDisposition, this.contentEncoding, this.contentLanguage,
+            this.contentType, delegationKey);
     }
 
     /**

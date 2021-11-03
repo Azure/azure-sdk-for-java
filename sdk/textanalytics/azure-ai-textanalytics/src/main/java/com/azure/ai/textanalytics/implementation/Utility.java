@@ -5,7 +5,12 @@ package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.implementation.models.Association;
 import com.azure.ai.textanalytics.implementation.models.Certainty;
+import com.azure.ai.textanalytics.implementation.models.ClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.Conditionality;
+import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.CustomMultiClassificationResult;
+import com.azure.ai.textanalytics.implementation.models.CustomSingleClassificationResult;
+import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
@@ -25,6 +30,7 @@ import com.azure.ai.textanalytics.implementation.models.InnerError;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorCodeValue;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
+import com.azure.ai.textanalytics.implementation.models.MultiClassificationDocument;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.PiiCategory;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
@@ -35,6 +41,7 @@ import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.SentenceTarget;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
+import com.azure.ai.textanalytics.implementation.models.SingleClassificationDocument;
 import com.azure.ai.textanalytics.implementation.models.TargetConfidenceScoreLabel;
 import com.azure.ai.textanalytics.implementation.models.TargetRelationType;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
@@ -44,7 +51,11 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyResult;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
+import com.azure.ai.textanalytics.models.ClassificationCategoryCollection;
 import com.azure.ai.textanalytics.models.EntityAssociation;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.EntityCertainty;
@@ -83,6 +94,9 @@ import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
+import com.azure.ai.textanalytics.util.MultiCategoryClassifyResultCollection;
+import com.azure.ai.textanalytics.util.SingleCategoryClassifyResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -116,7 +130,7 @@ import java.util.stream.Collectors;
  */
 public final class Utility {
     // default time interval for polling
-    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+    public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
 
@@ -341,22 +355,7 @@ public final class Utility {
         // List of documents results
         List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
         entitiesResult.getDocuments().forEach(documentEntities ->
-            recognizeEntitiesResults.add(new RecognizeEntitiesResult(
-                documentEntities.getId(),
-                documentEntities.getStatistics() == null ? null
-                    : toTextDocumentStatistics(documentEntities.getStatistics()),
-                null,
-                new CategorizedEntityCollection(
-                    new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
-                        final CategorizedEntity categorizedEntity = new CategorizedEntity(entity.getText(),
-                            EntityCategory.fromString(entity.getCategory()), entity.getSubcategory(),
-                            entity.getConfidenceScore());
-                        CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
-                        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
-                        return categorizedEntity;
-                    }).collect(Collectors.toList())),
-                    new IterableStream<>(documentEntities.getWarnings().stream().map(
-                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))))));
+            recognizeEntitiesResults.add(toRecognizeEntitiesResult(documentEntities)));
         // Document errors
         for (DocumentError documentError : entitiesResult.getErrors()) {
             recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
@@ -365,6 +364,25 @@ public final class Utility {
 
         return new RecognizeEntitiesResultCollection(recognizeEntitiesResults, entitiesResult.getModelVersion(),
             entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics()));
+    }
+
+    public static RecognizeEntitiesResult toRecognizeEntitiesResult(DocumentEntities documentEntities) {
+        return new RecognizeEntitiesResult(
+            documentEntities.getId(),
+            documentEntities.getStatistics() == null ? null
+                : toTextDocumentStatistics(documentEntities.getStatistics()),
+            null,
+            new CategorizedEntityCollection(
+                new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
+                    final CategorizedEntity categorizedEntity = new CategorizedEntity(entity.getText(),
+                        EntityCategory.fromString(entity.getCategory()), entity.getSubcategory(),
+                        entity.getConfidenceScore());
+                    CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
+                    CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
+                    return categorizedEntity;
+                }).collect(Collectors.toList())),
+                new IterableStream<>(documentEntities.getWarnings().stream().map(
+                    warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
     }
 
     public static RecognizePiiEntitiesResultCollection toRecognizePiiEntitiesResultCollection(
@@ -911,6 +929,165 @@ public final class Utility {
         );
         ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, summarySentenceCollection);
         return extractSummaryResult;
+    }
+
+    /**
+     * Helper method to convert {@link CustomEntitiesResult} to {@link RecognizeCustomEntitiesResultCollection}.
+     *
+     * @param customEntitiesResult The {@link CustomEntitiesResult}.
+     *
+     * @return A {@link RecognizeCustomEntitiesResultCollection}.
+     */
+    public static RecognizeCustomEntitiesResultCollection toRecognizeCustomEntitiesResultCollection(
+        CustomEntitiesResult customEntitiesResult) {
+        final List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
+        final List<DocumentEntities> customEntitiesResultDocuments = customEntitiesResult.getDocuments();
+
+        for (DocumentEntities documentSummary : customEntitiesResultDocuments) {
+            recognizeEntitiesResults.add(toRecognizeEntitiesResult(documentSummary));
+        }
+
+        for (DocumentError documentError : customEntitiesResult.getErrors()) {
+            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError()), null));
+        }
+
+        final RecognizeCustomEntitiesResultCollection resultCollection =
+            new RecognizeCustomEntitiesResultCollection(recognizeEntitiesResults);
+        RecognizeCustomEntitiesResultCollectionPropertiesHelper.setProjectName(resultCollection,
+            customEntitiesResult.getProjectName());
+        RecognizeCustomEntitiesResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
+            customEntitiesResult.getDeploymentName());
+        if (customEntitiesResult.getStatistics() != null) {
+            RecognizeCustomEntitiesResultCollectionPropertiesHelper.setStatistics(resultCollection,
+                toBatchStatistics(customEntitiesResult.getStatistics()));
+        }
+        return resultCollection;
+    }
+
+    /**
+     * Helper method to convert {@link CustomSingleClassificationResult} to
+     * {@link SingleCategoryClassifyResultCollection}.
+     *
+     * @param customSingleClassificationResult The {@link CustomSingleClassificationResult}.
+     *
+     * @return A {@link SingleCategoryClassifyResultCollection}.
+     */
+    public static SingleCategoryClassifyResultCollection toSingleCategoryClassifyResultCollection(
+        CustomSingleClassificationResult customSingleClassificationResult) {
+        final List<SingleCategoryClassifyResult> singleCategoryClassifyResults = new ArrayList<>();
+        final List<SingleClassificationDocument> singleClassificationDocuments =
+            customSingleClassificationResult.getDocuments();
+
+        for (SingleClassificationDocument documentSummary : singleClassificationDocuments) {
+            singleCategoryClassifyResults.add(toSingleCategoryClassifyResult(documentSummary));
+        }
+
+        for (DocumentError documentError : customSingleClassificationResult.getErrors()) {
+            singleCategoryClassifyResults.add(new SingleCategoryClassifyResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError())));
+        }
+
+        final SingleCategoryClassifyResultCollection resultCollection =
+            new SingleCategoryClassifyResultCollection(singleCategoryClassifyResults);
+        SingleCategoryClassifyResultCollectionPropertiesHelper.setProjectName(resultCollection,
+            customSingleClassificationResult.getProjectName());
+        SingleCategoryClassifyResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
+            customSingleClassificationResult.getDeploymentName());
+        if (customSingleClassificationResult.getStatistics() != null) {
+            SingleCategoryClassifyResultCollectionPropertiesHelper.setStatistics(resultCollection,
+                toBatchStatistics(customSingleClassificationResult.getStatistics()));
+        }
+        return resultCollection;
+    }
+
+    private static SingleCategoryClassifyResult toSingleCategoryClassifyResult(
+        SingleClassificationDocument singleClassificationDocument) {
+        final ClassificationResult classificationResult = singleClassificationDocument.getClassification();
+        // Warnings
+        final List<TextAnalyticsWarning> warnings = singleClassificationDocument.getWarnings().stream().map(
+            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+
+        final SingleCategoryClassifyResult singleCategoryClassifyResult = new SingleCategoryClassifyResult(
+            singleClassificationDocument.getId(),
+            singleClassificationDocument.getStatistics() == null
+                ? null : toTextDocumentStatistics(singleClassificationDocument.getStatistics()),
+            null);
+        SingleCategoryClassifyResultPropertiesHelper.setClassification(singleCategoryClassifyResult,
+            toDocumentClassification(classificationResult));
+        SingleCategoryClassifyResultPropertiesHelper.setWarnings(singleCategoryClassifyResult,
+            new IterableStream<>(warnings));
+        return singleCategoryClassifyResult;
+    }
+
+    private static ClassificationCategory toDocumentClassification(ClassificationResult classificationResult) {
+        final ClassificationCategory classificationCategory = new ClassificationCategory();
+        ClassificationCategoryPropertiesHelper.setCategory(classificationCategory, classificationResult.getCategory());
+        ClassificationCategoryPropertiesHelper.setConfidenceScore(classificationCategory,
+            classificationResult.getConfidenceScore());
+        return classificationCategory;
+    }
+
+    /**
+     * Helper method to convert {@link CustomMultiClassificationResult} to
+     * {@link MultiCategoryClassifyResultCollection}.
+     *
+     * @param customMultiClassificationResult The {@link CustomMultiClassificationResult}.
+     *
+     * @return A {@link SingleCategoryClassifyResultCollection}.
+     */
+    public static MultiCategoryClassifyResultCollection toMultiCategoryClassifyResultCollection(
+        CustomMultiClassificationResult customMultiClassificationResult) {
+        final List<MultiCategoryClassifyResult> multiCategoryClassifyResults = new ArrayList<>();
+        final List<MultiClassificationDocument> multiClassificationDocuments =
+            customMultiClassificationResult.getDocuments();
+
+        for (MultiClassificationDocument multiClassificationDocument : multiClassificationDocuments) {
+            multiCategoryClassifyResults.add(toMultiCategoryClassifyResult(multiClassificationDocument));
+        }
+
+        for (DocumentError documentError : customMultiClassificationResult.getErrors()) {
+            multiCategoryClassifyResults.add(new MultiCategoryClassifyResult(documentError.getId(), null,
+                toTextAnalyticsError(documentError.getError())));
+        }
+
+        final MultiCategoryClassifyResultCollection resultCollection =
+            new MultiCategoryClassifyResultCollection(multiCategoryClassifyResults);
+        MultiCategoryClassifyResultCollectionPropertiesHelper.setProjectName(resultCollection,
+            customMultiClassificationResult.getProjectName());
+        MultiCategoryClassifyResultCollectionPropertiesHelper.setDeploymentName(resultCollection,
+            customMultiClassificationResult.getDeploymentName());
+        if (customMultiClassificationResult.getStatistics() != null) {
+            MultiCategoryClassifyResultCollectionPropertiesHelper.setStatistics(resultCollection,
+                toBatchStatistics(customMultiClassificationResult.getStatistics()));
+        }
+        return resultCollection;
+    }
+
+    private static MultiCategoryClassifyResult toMultiCategoryClassifyResult(
+        MultiClassificationDocument multiClassificationDocument) {
+        final List<ClassificationCategory> classificationCategories =
+            multiClassificationDocument
+                .getClassifications()
+                .stream()
+                .map(classificationResult -> toDocumentClassification(classificationResult))
+                .collect(Collectors.toList());
+
+        // Warnings
+        final List<TextAnalyticsWarning> warnings = multiClassificationDocument.getWarnings().stream().map(
+            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+
+        final MultiCategoryClassifyResult classifySingleCategoryResult = new MultiCategoryClassifyResult(
+            multiClassificationDocument.getId(),
+            multiClassificationDocument.getStatistics() == null
+                ? null : toTextDocumentStatistics(multiClassificationDocument.getStatistics()),
+            null);
+
+        final ClassificationCategoryCollection classifications = new ClassificationCategoryCollection(
+            new IterableStream<>(classificationCategories));
+        ClassificationCategoryCollectionPropertiesHelper.setWarnings(classifications, new IterableStream<>(warnings));
+        MultiCategoryClassifyResultPropertiesHelper.setClassifications(classifySingleCategoryResult, classifications);
+        return classifySingleCategoryResult;
     }
 
     /*

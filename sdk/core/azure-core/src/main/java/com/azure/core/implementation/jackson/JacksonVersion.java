@@ -78,7 +78,8 @@ final class JacksonVersion {
      */
     private void checkVersion(SemanticVersion version, String packageName) {
         if (!version.isValid()) {
-            logger.warning("Could not find version of '{}'.", packageName);
+            logger.verbose("Could not find version of '{}'.", packageName);
+            return;
         }
 
         if (version.compareTo(MIN_SUPPORTED_VERSION) < 0) {

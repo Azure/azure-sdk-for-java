@@ -8,12 +8,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
-import com.azure.communication.identity.implementation.CommunicationIdentityImpl;
-import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
+import com.azure.communication.identity.implementation.models.TeamsUserAccessTokenRequest;
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -32,11 +33,11 @@ import com.azure.core.util.logging.ClientLogger;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = false)
 public final class CommunicationIdentityClient {
 
-    private final CommunicationIdentityImpl client;
+    private final CommunicationIdentitiesImpl client;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClient.class);
 
     CommunicationIdentityClient(CommunicationIdentityClientImpl communicationIdentityClient) {
-        client = communicationIdentityClient.getCommunicationIdentity();
+        client = communicationIdentityClient.getCommunicationIdentities();
     }
 
     /**
@@ -225,4 +226,45 @@ public final class CommunicationIdentityClient {
         return new CommunicationUserIdentifierAndToken(user, token);
 
     }
+
+    /**
+     * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+     *
+     * @param teamsUserAadToken AAD access token of a Teams User to acquire Communication Identity access token.
+     * @return Communication Identity access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessToken getTokenForTeamsUser(String teamsUserAadToken) {
+        TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
+        requestBody.setToken(teamsUserAadToken);
+        CommunicationIdentityAccessToken rawToken = client.exchangeTeamsUserAccessToken(requestBody);
+        return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
+    }
+
+    /**
+     * Exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+     *
+     * @param teamsUserAadToken AAD access token of a Teams User to acquire Communication Identity access token.
+     * @param context the context of the request. Can also be null or
+     *                          Context.NONE.
+     * @return Communication Identity access token with response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessToken> getTokenForTeamsUserWithResponse(String teamsUserAadToken, Context context) {
+        context = context == null ? Context.NONE : context;
+        TeamsUserAccessTokenRequest requestBody = new TeamsUserAccessTokenRequest();
+        requestBody.setToken(teamsUserAadToken);
+        Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponseAsync(requestBody, context)
+            .block();
+        if (response == null || response.getValue() == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
+        }
+
+        return new SimpleResponse<AccessToken>(
+            response,
+            new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
+    }
+
+
+
 }
