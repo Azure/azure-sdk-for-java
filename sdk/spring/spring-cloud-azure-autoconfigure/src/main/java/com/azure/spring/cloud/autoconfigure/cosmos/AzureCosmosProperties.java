@@ -32,6 +32,9 @@ public class AzureCosmosProperties extends AbstractAzureServiceCP implements Cos
     @NestedConfigurationProperty
     private final HttpProxyProperties proxy = new HttpProxyProperties();
 
+    @NestedConfigurationProperty
+    private final ClientProperties client = new ClientProperties();
+
     @NotEmpty
     @Pattern(regexp = "http[s]{0,1}://.*.documents.azure.com.*")
     private String endpoint;
@@ -76,7 +79,7 @@ public class AzureCosmosProperties extends AbstractAzureServiceCP implements Cos
 
     @Override
     public ClientProperties getClient() {
-        return new ClientProperties();
+        return client;
     }
 
     public String getEndpoint() {

@@ -7,7 +7,6 @@ import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureService
 import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpClientCP;
 import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyCP;
 import com.azure.spring.service.storage.common.StorageProperties;
-import com.azure.spring.service.storage.common.StorageRetry;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
@@ -35,7 +34,7 @@ public class AzureStorageProperties extends AbstractAzureServiceCP implements St
     protected final HttpProxyCP proxy = new HttpProxyCP();
 
     @Override
-    public StorageRetry getRetry() {
+    public StorageRetryCP getRetry() {
         return retry;
     }
 

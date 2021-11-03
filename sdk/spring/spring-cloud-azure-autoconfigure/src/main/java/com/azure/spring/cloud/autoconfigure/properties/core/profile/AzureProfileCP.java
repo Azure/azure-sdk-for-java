@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.properties.core.profile;
 
 import com.azure.spring.core.aware.AzureProfileAware;
 import com.azure.spring.core.properties.profile.AzureEnvironment;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * The AzureProfile defines the properties related to an Azure subscription.
@@ -14,6 +15,7 @@ public class AzureProfileCP implements AzureProfileAware.Profile {
     private String tenantId;
     private String subscriptionId;
     private String cloud = "Azure"; // TODO (xiada) this name
+    @NestedConfigurationProperty
     private AzureEnvironment environment = AzureEnvironment.AZURE;
 
     public String getTenantId() {

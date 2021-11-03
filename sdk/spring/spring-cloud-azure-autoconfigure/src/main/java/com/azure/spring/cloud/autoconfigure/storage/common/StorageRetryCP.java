@@ -26,6 +26,7 @@ public class StorageRetryCP implements StorageRetry {
     private String retryAfterHeader;
     private ChronoUnit retryAfterTimeUnit;
     private String secondaryHost;
+
     @NestedConfigurationProperty
     private final BackoffProperties backoff = new BackoffProperties();
 
