@@ -11,17 +11,6 @@ import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
-import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * Utility class to set Managed Service Identity (MSI) property on a web app, install or update MSI extension and create
@@ -34,8 +23,6 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
 
     private WebAppBaseImpl<FluentT, FluentImplT> webAppBase;
 
-    private List<String> creatableIdentityKeys;
-
     /**
      * Creates VirtualMachineMsiHandler.
      *
@@ -46,7 +33,6 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
     WebAppMsiHandler(final AuthorizationManager authorizationManager, WebAppBaseImpl<FluentT, FluentImplT> webAppBase) {
         super(authorizationManager, webAppBase.taskGroup(), webAppBase.idProvider());
         this.webAppBase = webAppBase;
-        this.creatableIdentityKeys = new ArrayList<>();
     }
 
     /**
@@ -81,106 +67,30 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
         return this;
     }
 
-    /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity of the web app.
-     *
-     * @param creatableIdentity yet-to-be-created identity to be associated with the virtual machine
-     * @return WebAppMsiHandler
-     */
-    WebAppMsiHandler<FluentT, FluentImplT> withNewExternalManagedServiceIdentity(
-        Creatable<Identity> creatableIdentity) {
-        this.initSiteIdentity(ManagedServiceIdentityType.USER_ASSIGNED);
-
-        TaskGroup.HasTaskGroup dependency = (TaskGroup.HasTaskGroup) creatableIdentity;
-        Objects.requireNonNull(dependency);
-
-        this.webAppBase.taskGroup().addDependency(dependency);
-        this.creatableIdentityKeys.add(creatableIdentity.key());
-
-        return this;
-    }
-
-    /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity of the web app.
-     *
-     * @param identity an identity to associate
-     * @return WebAppMsiHandler
-     */
-    WebAppMsiHandler<FluentT, FluentImplT> withExistingExternalManagedServiceIdentity(Identity identity) {
-        this.initSiteIdentity(ManagedServiceIdentityType.USER_ASSIGNED);
-        return this;
-    }
-
-    /**
-     * Specifies that given identity should be removed from the list of External Managed Service Identity associated
-     * with the web app.
-     *
-     * @param identityId resource id of the identity
-     * @return WebAppMsiHandler
-     */
-    WebAppMsiHandler<FluentT, FluentImplT> withoutExternalManagedServiceIdentity(String identityId) {
-        return this;
-    }
-
-    void processCreatedExternalIdentities() {
-        for (String key : this.creatableIdentityKeys) {
-            Identity identity = (Identity) this.webAppBase.taskGroup().taskResult(key);
-            Objects.requireNonNull(identity);
-        }
-        this.creatableIdentityKeys.clear();
-    }
-
-    void handleExternalIdentities() {
-        SiteInner siteInner = this.webAppBase.innerModel();
-    }
-
     void handleExternalIdentities(SitePatchResourceInner siteUpdate) {
-        if (this.handleRemoveAllExternalIdentitiesCase(siteUpdate)) {
-            return;
-        } else {
-            // At this point one of the following condition is met:
-            //
-            // 1. User don't want touch the 'Site.Identity.userAssignedIdentities' property
-            //      [this.userAssignedIdentities.empty() == true]
-            // 2. User want to add some identities to 'Site.Identity.userAssignedIdentities'
-            //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
-            // 3. User want to remove some (not all) identities in 'Site.Identity.userAssignedIdentities'
-            //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
-            //      Note: The scenario where this.webAppBase.inner().identity() is null in #3 is already handled in
-            //      handleRemoveAllExternalIdentitiesCase method
-            // 4. User want to add and remove (all or subset) some identities in 'Site.Identity.userAssignedIdentities'
-            //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
-            //
-            SiteInner siteInner = this.webAppBase.innerModel();
-            ManagedServiceIdentity currentIdentity = siteInner.identity();
-            siteUpdate.withIdentity(currentIdentity);
-
-            // User don't want to touch 'VM.Identity.userAssignedIdentities' property
-            if (currentIdentity != null) {
-                // and currently there is identity exists or user want to manipulate some other properties of
-                // identity, set identities to null so that it won't send over wire.
-                currentIdentity.withUserAssignedIdentities(null);
-            }
-
-        }
-    }
-
-    /** Clear VirtualMachineMsiHandler post-run specific internal state. */
-    void clear() {
-
-    }
-
-    /**
-     * Method that handle the case where user request indicates all it want to do is remove all identities associated
-     * with the virtual machine.
-     *
-     * @param siteUpdate the vm update payload model
-     * @return true if user indented to remove all the identities.
-     */
-    private boolean handleRemoveAllExternalIdentitiesCase(SitePatchResourceInner siteUpdate) {
+        // At this point one of the following condition is met:
+        //
+        // 1. User don't want touch the 'Site.Identity.userAssignedIdentities' property
+        //      [this.userAssignedIdentities.empty() == true]
+        // 2. User want to add some identities to 'Site.Identity.userAssignedIdentities'
+        //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
+        // 3. User want to remove some (not all) identities in 'Site.Identity.userAssignedIdentities'
+        //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
+        //      Note: The scenario where this.webAppBase.inner().identity() is null in #3 is already handled in
+        //      handleRemoveAllExternalIdentitiesCase method
+        // 4. User want to add and remove (all or subset) some identities in 'Site.Identity.userAssignedIdentities'
+        //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
+        //
         SiteInner siteInner = this.webAppBase.innerModel();
+        ManagedServiceIdentity currentIdentity = siteInner.identity();
+        siteUpdate.withIdentity(currentIdentity);
 
-        return false;
+        // User don't want to touch 'VM.Identity.userAssignedIdentities' property
+        if (currentIdentity != null) {
+            // and currently there is identity exists or user want to manipulate some other properties of
+            // identity, set identities to null so that it won't send over wire.
+            currentIdentity.withUserAssignedIdentities(null);
+        }
     }
 
     /**

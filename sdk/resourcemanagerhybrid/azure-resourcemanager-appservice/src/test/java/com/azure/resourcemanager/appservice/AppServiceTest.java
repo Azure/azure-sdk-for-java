@@ -23,7 +23,6 @@ import com.azure.resourcemanager.appservice.models.AppServiceCertificateOrder;
 import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.keyvault.KeyVaultManager;
-import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.resourcemanager.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.core.management.Region;
@@ -54,7 +53,6 @@ public class AppServiceTest extends ResourceManagerTestBase {
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
     protected AppServiceManager appServiceManager;
-    protected MsiManager msiManager;
 
     protected AppServiceDomain domain;
     protected AppServiceCertificateOrder certificateOrder;
@@ -87,9 +85,8 @@ public class AppServiceTest extends ResourceManagerTestBase {
 
         keyVaultManager = buildManager(KeyVaultManager.class, httpPipeline, profile);
         appServiceManager = buildManager(AppServiceManager.class, httpPipeline, profile);
-        msiManager = buildManager(MsiManager.class, httpPipeline, profile);
         resourceManager = appServiceManager.resourceManager();
-        setInternalContext(internalContext, appServiceManager, msiManager);
+        setInternalContext(internalContext, appServiceManager);
 
         // useExistingDomainAndCertificate();
         // createNewDomainAndCertificate();

@@ -59,7 +59,6 @@ import com.azure.resourcemanager.appservice.models.WebContainer;
 import com.azure.resourcemanager.appservice.models.WebSiteBase;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
-import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
@@ -67,7 +66,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkReso
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.IndexableTaskItem;
-import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.Disposable;
@@ -235,7 +233,6 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         this.msiHandler = null;
         this.webSiteBase = new WebSiteBaseImpl(innerModel());
         this.hostNameSslStateMap = new HashMap<>(this.webSiteBase.hostnameSslStates());
-        this.webAppMsiHandler.clear();
     }
 
     @Override
@@ -840,8 +837,6 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @Override
     @SuppressWarnings("unchecked")
     public Mono<FluentT> createResourceAsync() {
-        this.webAppMsiHandler.processCreatedExternalIdentities();
-        this.webAppMsiHandler.handleExternalIdentities();
         return submitSite(innerModel())
             .map(
                 siteInner -> {
@@ -879,7 +874,6 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             .map(
                 siteInner1 -> {
                     setInner(siteInner1);
-                    webAppMsiHandler.clear();
                     return (FluentT) WebAppBaseImpl.this;
                 });
     }
@@ -1634,27 +1628,6 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @SuppressWarnings("unchecked")
     public FluentImplT withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(final String roleDefinitionId) {
         this.webAppMsiHandler.withAccessToCurrentResourceGroup(roleDefinitionId);
-        return (FluentImplT) this;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public FluentImplT withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity) {
-        this.webAppMsiHandler.withNewExternalManagedServiceIdentity(creatableIdentity);
-        return (FluentImplT) this;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public FluentImplT withExistingUserAssignedManagedServiceIdentity(Identity identity) {
-        this.webAppMsiHandler.withExistingExternalManagedServiceIdentity(identity);
-        return (FluentImplT) this;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public FluentImplT withoutUserAssignedManagedServiceIdentity(String identityId) {
-        this.webAppMsiHandler.withoutExternalManagedServiceIdentity(identityId);
         return (FluentImplT) this;
     }
 
