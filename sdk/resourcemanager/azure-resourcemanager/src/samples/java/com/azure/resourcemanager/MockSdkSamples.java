@@ -40,6 +40,12 @@ public class MockSdkSamples {
 
         PowerState stubPowerState = new PowerState().withCode(Code.RUNNING);
 
+        /*
+        The most desirable approach for mocking Fluent API would be the “Mockito.RETURNS_DEEP_STUBS” provided by Mockito.
+
+        However, some of the interfaces involved in our API uses generic, and due to type erasure Mockito will not able to handle them.
+        Hence, we still need to use the full declaration on every step of the Fluent API.
+         */
         KubernetesCluster.DefinitionStages.Blank mockStage1 = Mockito.mock(KubernetesCluster.DefinitionStages.Blank.class);
         KubernetesCluster.DefinitionStages.WithGroup mockStage2 = Mockito.mock(KubernetesCluster.DefinitionStages.WithGroup.class);
         KubernetesCluster.DefinitionStages.WithVersion mockStage3 = Mockito.mock(KubernetesCluster.DefinitionStages.WithVersion.class);
