@@ -131,12 +131,14 @@ public final class RestProxy implements InvocationHandler {
                 .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
             context = startTracingSpan(method, context);
 
-            if (request.getBody() != null) {
-                request.setBody(validateLength(request));
-            }
-
+            // If there is 'RequestOptions' apply its request callback operations before validating the body.
+            // This is because the callbacks may mutate the request body.
             if (options != null) {
                 options.getRequestCallback().accept(request);
+            }
+
+            if (request.getBody() != null) {
+                request.setBody(validateLength(request));
             }
 
             final Mono<HttpResponse> asyncResponse = send(request, context);
