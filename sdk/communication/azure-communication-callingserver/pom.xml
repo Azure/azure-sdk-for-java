@@ -47,6 +47,9 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.callingserver/com.azure.communication.callingserver.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

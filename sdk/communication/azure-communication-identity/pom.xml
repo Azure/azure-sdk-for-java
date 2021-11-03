@@ -56,6 +56,9 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.identity/com.azure.communication.identity=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>

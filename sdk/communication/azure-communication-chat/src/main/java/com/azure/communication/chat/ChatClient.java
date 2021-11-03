@@ -22,7 +22,19 @@ import com.azure.core.util.logging.ClientLogger;
  *
  * <p><strong>Instantiating a synchronous Chat Client</strong></p>
  *
- * {@codesnippet com.azure.communication.chat.chatclient.instantiation}
+ * <!-- src_embed com.azure.communication.chat.chatclient.instantiation -->
+ * <pre>
+ *
+ * &#47;&#47; Initialize the chat client builder
+ * final ChatClientBuilder builder = new ChatClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;credential&#41;;
+ *
+ * &#47;&#47; Build the chat client
+ * ChatClient chatClient = builder.buildClient&#40;&#41;;
+ *
+ * </pre>
+ * <!-- end com.azure.communication.chat.chatclient.instantiation -->
  *
  * <p>View {@link ChatClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -64,7 +76,34 @@ public final class ChatClient {
      *
      * <p>Create a chat thread based on "options".</p>
      *
-     * {@codesnippet com.azure.communication.chat.chatclient.createchatthread#createchatthreadoptions}
+     * <!-- src_embed com.azure.communication.chat.chatclient.createchatthread#createchatthreadoptions -->
+     * <pre>
+     *
+     * &#47;&#47; Initialize the list of chat thread participants
+     * List&lt;ChatParticipant&gt; participants = new ArrayList&lt;ChatParticipant&gt;&#40;&#41;;
+     *
+     * ChatParticipant firstParticipant = new ChatParticipant&#40;&#41;
+     *     .setCommunicationIdentifier&#40;user1&#41;
+     *     .setDisplayName&#40;&quot;Participant Display Name 1&quot;&#41;;
+     *
+     * ChatParticipant secondParticipant = new ChatParticipant&#40;&#41;
+     *     .setCommunicationIdentifier&#40;user2&#41;
+     *     .setDisplayName&#40;&quot;Participant Display Name 2&quot;&#41;;
+     *
+     * participants.add&#40;firstParticipant&#41;;
+     * participants.add&#40;secondParticipant&#41;;
+     *
+     * &#47;&#47; Create the chat thread
+     * CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions&#40;&quot;Topic&quot;&#41;
+     *     .setParticipants&#40;participants&#41;;
+     * CreateChatThreadResult result = chatClient.createChatThread&#40;createChatThreadOptions&#41;;
+     *
+     * &#47;&#47; Retrieve the chat thread and the id
+     * ChatThreadProperties chatThread = result.getChatThread&#40;&#41;;
+     * String chatThreadId = chatThread.getId&#40;&#41;;
+     *
+     * </pre>
+     * <!-- end com.azure.communication.chat.chatclient.createchatthread#createchatthreadoptions -->
      *
      * @param options Options for creating a chat thread.
      * @throws ChatErrorResponseException thrown if the request is rejected by server.
