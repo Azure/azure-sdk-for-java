@@ -306,7 +306,7 @@ cosmos_org.apache.spark:spark-hive_2.12;3.1.1
 cosmos_org.scala-lang:scala-library;2.12.10
 cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.8.0
 cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
-cosmos_commons-io:commons-io;2.7
+cosmos_commons-io:commons-io;2.4
 
 # Cosmos Spark connector tests only
 cosmos_org.scalatest:scalatest_2.12;3.2.2
