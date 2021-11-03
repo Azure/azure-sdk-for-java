@@ -17,6 +17,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
+import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -98,11 +99,25 @@ public class WebPubSubServiceClientTests extends TestBase {
 
     @Test
     public void testSendToUserString() {
+        BinaryData message = BinaryData.fromString("Hello World!");
+
         assertResponse(client.sendToUserWithResponse("test_user",
-                BinaryData.fromString("Hello World!"),
+            message,
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
                         .set("Content-Type", "text/plain")),
                 Context.NONE), 202);
+
+        assertResponse(client.sendToUserWithResponse("test_user",
+                message, WebPubSubContentType.TEXT_PLAIN, message.getLength(),
+                null, Context.NONE),
+            202);
+
+//        ByteArrayInputStream messageStream = new ByteArrayInputStream(message.toBytes());
+//        assertResponse(client.sendToUserWithResponse("test_user",
+//                BinaryData.fromStream(messageStream),
+//                WebPubSubContentType.APPLICATION_OCTET_STREAM, message.getLength(),
+//                null, Context.NONE),
+//            202);
     }
 
     @Test
