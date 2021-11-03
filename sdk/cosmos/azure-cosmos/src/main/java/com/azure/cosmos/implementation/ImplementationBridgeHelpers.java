@@ -684,29 +684,6 @@ public class ImplementationBridgeHelpers {
         }
     }
 
-    public static final class DeprecatedCosmosBulkItemResponseHelper {
-        private static DeprecatedCosmosBulkItemResponseAccessor accessor;
-
-        private DeprecatedCosmosBulkItemResponseHelper() {
-        }
-
-        static {
-            ensureClassLoaded(com.azure.cosmos.CosmosBulkItemResponse.class);
-        }
-
-        public static DeprecatedCosmosBulkItemResponseAccessor getCosmosBulkItemResponseAccessor() {
-            return accessor;
-        }
-
-        public static void setCosmosBulkItemResponseAccessor(DeprecatedCosmosBulkItemResponseAccessor accessor) {
-            DeprecatedCosmosBulkItemResponseHelper.accessor = accessor;
-        }
-
-        public interface DeprecatedCosmosBulkItemResponseAccessor {
-            ObjectNode getResourceObject(com.azure.cosmos.CosmosBulkItemResponse cosmosBulkItemResponse);
-        }
-    }
-
     public static final class CosmosBatchResponseHelper {
         private static CosmosBatchResponseAccessor accessor;
 
