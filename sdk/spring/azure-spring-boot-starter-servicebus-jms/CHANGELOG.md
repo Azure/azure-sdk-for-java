@@ -1,6 +1,16 @@
 # Release History
 
-## 3.10.0 (2021-10-29)
+## 3.11.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 3.10.0 (2021-11-02)
 
 ### Features Added
 Add property for JmsDefaultPrefetchPolicy.([#24304](https://github.com/Azure/azure-sdk-for-java/issues/24304))
@@ -13,9 +23,6 @@ Add property for JmsDefaultPrefetchPolicy.([#24304](https://github.com/Azure/azu
 ### Breaking Changes
 For standard tier in ServiceBus, the default value of prefetch number has been changed from 1000 to 0.
 
-### Bugs Fixed
-
-### Other Changes
 
 ## 3.9.0 (2021-09-27)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.

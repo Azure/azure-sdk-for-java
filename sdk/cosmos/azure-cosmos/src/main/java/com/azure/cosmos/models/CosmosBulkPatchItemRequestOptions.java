@@ -5,13 +5,11 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.util.Beta;
 
 /**
  * Encapsulates options that can be specified for an patch operation used in Bulk execution. It can be passed while
  * creating bulk patch request using {@link CosmosBulkOperations}.
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosBulkPatchItemRequestOptions {
 
     private String ifMatchETag;
@@ -19,7 +17,9 @@ public final class CosmosBulkPatchItemRequestOptions {
     private Boolean contentResponseOnWriteEnabled;
     private String filterPredicate;
 
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    /**
+     * Constructor
+     */
     public CosmosBulkPatchItemRequestOptions() {
     }
     /**
@@ -27,7 +27,6 @@ public final class CosmosBulkPatchItemRequestOptions {
      *
      * @return the FilterPredicate associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getFilterPredicate() {
         return this.filterPredicate;
     }
@@ -38,7 +37,6 @@ public final class CosmosBulkPatchItemRequestOptions {
      * @param filterPredicate the filterPredicate associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkPatchItemRequestOptions setFilterPredicate(String filterPredicate) {
         this.filterPredicate = filterPredicate;
         return this;
@@ -57,7 +55,6 @@ public final class CosmosBulkPatchItemRequestOptions {
      *
      * @return a boolean indicating whether payload will be included in the response or not for this operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Boolean isContentResponseOnWriteEnabled() {
         return this.contentResponseOnWriteEnabled;
     }
@@ -81,7 +78,6 @@ public final class CosmosBulkPatchItemRequestOptions {
      *
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkPatchItemRequestOptions setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
         return this;
@@ -92,7 +88,6 @@ public final class CosmosBulkPatchItemRequestOptions {
      *
      * @return the ifNoneMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfNoneMatchETag() {
         return this.ifNoneMatchETag;
     }
@@ -103,7 +98,6 @@ public final class CosmosBulkPatchItemRequestOptions {
      * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkPatchItemRequestOptions setIfNoneMatchETag(final String ifNoneMatchEtag) {
         this.ifNoneMatchETag = ifNoneMatchEtag;
         return this;
@@ -114,7 +108,6 @@ public final class CosmosBulkPatchItemRequestOptions {
      *
      * @return ifMatchETag the ifMatchETag associated with the request.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getIfMatchETag() {
         return this.ifMatchETag;
     }
@@ -125,7 +118,6 @@ public final class CosmosBulkPatchItemRequestOptions {
      * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBulkPatchItemRequestOptions setIfMatchETag(final String ifMatchETag) {
         this.ifMatchETag = ifMatchETag;
         return this;
