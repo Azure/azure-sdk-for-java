@@ -5,7 +5,6 @@ package com.azure.messaging.webpubsub;
 
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 
 public class ManagingGroupsSample {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get("WEB_PUB_SUB_CS");
