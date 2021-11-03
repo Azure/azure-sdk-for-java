@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.models.Permission;
@@ -15,40 +14,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An Azure Cosmos DB SQL Role Definition. */
-@JsonFlatten
 @Fluent
-public class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
+public final class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRoleDefinitionGetResultsInner.class);
 
     /*
-     * A user-friendly name for the Role Definition. Must be unique for the
-     * database account.
+     * Properties related to the Role Definition.
      */
-    @JsonProperty(value = "properties.roleName")
-    private String roleName;
+    @JsonProperty(value = "properties")
+    private SqlRoleDefinitionResource innerProperties;
 
-    /*
-     * Indicates whether the Role Definition was built-in or user created.
+    /**
+     * Get the innerProperties property: Properties related to the Role Definition.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.type")
-    private RoleDefinitionType typePropertiesType;
-
-    /*
-     * A set of fully qualified Scopes at or below which Role Assignments may
-     * be created using this Role Definition. This will allow application of
-     * this Role Definition on the entire database account or any underlying
-     * Database / Collection. Must have at least one element. Scopes higher
-     * than Database account are not enforceable as assignable Scopes. Note
-     * that resources referenced in assignable Scopes need not exist.
-     */
-    @JsonProperty(value = "properties.assignableScopes")
-    private List<String> assignableScopes;
-
-    /*
-     * The set of operations allowed through this Role Definition.
-     */
-    @JsonProperty(value = "properties.permissions")
-    private List<Permission> permissions;
+    private SqlRoleDefinitionResource innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
@@ -56,7 +39,7 @@ public class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
      * @return the roleName value.
      */
     public String roleName() {
-        return this.roleName;
+        return this.innerProperties() == null ? null : this.innerProperties().roleName();
     }
 
     /**
@@ -66,27 +49,33 @@ public class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
      * @return the SqlRoleDefinitionGetResultsInner object itself.
      */
     public SqlRoleDefinitionGetResultsInner withRoleName(String roleName) {
-        this.roleName = roleName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlRoleDefinitionResource();
+        }
+        this.innerProperties().withRoleName(roleName);
         return this;
     }
 
     /**
-     * Get the typePropertiesType property: Indicates whether the Role Definition was built-in or user created.
+     * Get the type property: Indicates whether the Role Definition was built-in or user created.
      *
-     * @return the typePropertiesType value.
+     * @return the type value.
      */
     public RoleDefinitionType typePropertiesType() {
-        return this.typePropertiesType;
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
-     * Set the typePropertiesType property: Indicates whether the Role Definition was built-in or user created.
+     * Set the type property: Indicates whether the Role Definition was built-in or user created.
      *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * @param type the type value to set.
      * @return the SqlRoleDefinitionGetResultsInner object itself.
      */
-    public SqlRoleDefinitionGetResultsInner withTypePropertiesType(RoleDefinitionType typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
+    public SqlRoleDefinitionGetResultsInner withTypePropertiesType(RoleDefinitionType type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlRoleDefinitionResource();
+        }
+        this.innerProperties().withType(type);
         return this;
     }
 
@@ -100,7 +89,7 @@ public class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
      * @return the assignableScopes value.
      */
     public List<String> assignableScopes() {
-        return this.assignableScopes;
+        return this.innerProperties() == null ? null : this.innerProperties().assignableScopes();
     }
 
     /**
@@ -114,7 +103,10 @@ public class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
      * @return the SqlRoleDefinitionGetResultsInner object itself.
      */
     public SqlRoleDefinitionGetResultsInner withAssignableScopes(List<String> assignableScopes) {
-        this.assignableScopes = assignableScopes;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlRoleDefinitionResource();
+        }
+        this.innerProperties().withAssignableScopes(assignableScopes);
         return this;
     }
 
@@ -124,7 +116,7 @@ public class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
      * @return the permissions value.
      */
     public List<Permission> permissions() {
-        return this.permissions;
+        return this.innerProperties() == null ? null : this.innerProperties().permissions();
     }
 
     /**
@@ -134,7 +126,10 @@ public class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
      * @return the SqlRoleDefinitionGetResultsInner object itself.
      */
     public SqlRoleDefinitionGetResultsInner withPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlRoleDefinitionResource();
+        }
+        this.innerProperties().withPermissions(permissions);
         return this;
     }
 
@@ -146,8 +141,8 @@ public class SqlRoleDefinitionGetResultsInner extends ArmProxyResource {
     @Override
     public void validate() {
         super.validate();
-        if (permissions() != null) {
-            permissions().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
