@@ -29,14 +29,13 @@ import java.nio.channels.CompletionHandler;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Stack;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Utility type exposing methods to deal with {@link Flux}.
@@ -394,14 +393,21 @@ public final class FluxUtil {
             return reactor.util.context.Context.empty();
         }
 
-        // Filter out null value entries as Reactor's context doesn't allow null values.
-        Map<Object, Object> contextValues = context.getValues().entrySet().stream()
-            .filter(kvp -> kvp.getValue() != null)
-            .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+        reactor.util.context.Context returnContext = reactor.util.context.Context.empty();
 
-        return CoreUtils.isNullOrEmpty(contextValues)
-            ? reactor.util.context.Context.empty()
-            : reactor.util.context.Context.of(contextValues);
+        Stack<Context> contextStack = context.getValueStack();
+        while (!contextStack.empty()) {
+            Context toAdd = contextStack.pop();
+
+            // Filter out null value entries as Reactor's context doesn't allow null values.
+            if (toAdd.getValue() == null) {
+                continue;
+            }
+
+            returnContext = returnContext.put(toAdd.getKey(), toAdd.getValue());
+        }
+
+        return returnContext;
     }
 
     /**

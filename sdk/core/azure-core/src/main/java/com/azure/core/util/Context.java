@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Stack;
 
 /**
  * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
@@ -85,6 +86,14 @@ public class Context {
         this.parent = parent;
         this.key = key;
         this.value = value;
+    }
+
+    Object getKey() {
+        return key;
+    }
+
+    Object getValue() {
+        return value;
     }
 
     /**
@@ -247,5 +256,26 @@ public class Context {
         }
 
         return (parent == null) ? values : parent.getValuesHelper(values);
+    }
+
+    /**
+     * Gets the {@link Context Contexts} in the chain of Contexts that this Context is the tail.
+     *
+     * @return The Contexts, in oldest to newest order, in the chain of Contexts that this Context is the tail.
+     */
+    Stack<Context> getValueStack() {
+        Stack<Context> valueStack = new Stack<>();
+
+        if (this == Context.NONE) {
+            return valueStack;
+        }
+
+        Context pointer = this;
+        while (pointer != null) {
+            valueStack.push(pointer);
+            pointer = pointer.parent;
+        }
+
+        return valueStack;
     }
 }
