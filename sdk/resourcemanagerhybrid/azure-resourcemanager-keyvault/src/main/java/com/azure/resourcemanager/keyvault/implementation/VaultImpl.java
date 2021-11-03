@@ -39,8 +39,10 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -88,11 +90,13 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
             this.secretClient =
                 new SecretClientBuilder()
                     .vaultUrl(vaultUrl)
+                    .serviceVersion(SecretServiceVersion.V7_1)
                     .pipeline(vaultHttpPipeline)
                     .buildAsyncClient();
             this.keyClient =
                 new KeyClientBuilder()
                     .vaultUrl(vaultUrl)
+                    .serviceVersion(KeyServiceVersion.V7_1)
                     .pipeline(vaultHttpPipeline)
                     .buildAsyncClient();
         }
