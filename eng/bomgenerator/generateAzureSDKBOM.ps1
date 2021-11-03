@@ -21,4 +21,4 @@ if(! (Test-Path $defaultPomFilePath)) {
 }
 
 $mvnResults = mvn install
-$mvnResults = "mvn exec:java -Dexec.args=`"-inputDir=$inputDir -outputDir=$outputDir -mode=analyze`""
+$mvnResults = "mvn exec:java -Dexec.args=`"-inputDir=$inputDir -outputDir=$outputDir -mode=generate`""
