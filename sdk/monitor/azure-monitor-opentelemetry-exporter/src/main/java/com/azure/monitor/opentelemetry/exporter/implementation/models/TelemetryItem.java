@@ -13,7 +13,7 @@ import java.util.Map;
 @Fluent
 public final class TelemetryItem {
     /*
-     * Envelope version. For implementation use only. By assigning this the default,
+     * Envelope version. For internal use only. By assigning this the default,
      * it will not be serialized within the payload unless changed to a value
      * other than #1.
      */
@@ -73,7 +73,7 @@ public final class TelemetryItem {
     private MonitorBase data;
 
     /**
-     * Get the version property: Envelope version. For implementation use only. By assigning this the default, it will not be
+     * Get the version property: Envelope version. For internal use only. By assigning this the default, it will not be
      * serialized within the payload unless changed to a value other than #1.
      *
      * @return the version value.
@@ -83,7 +83,7 @@ public final class TelemetryItem {
     }
 
     /**
-     * Set the version property: Envelope version. For implementation use only. By assigning this the default, it will not be
+     * Set the version property: Envelope version. For internal use only. By assigning this the default, it will not be
      * serialized within the payload unless changed to a value other than #1.
      *
      * @param version the version value to set.
