@@ -8,6 +8,9 @@ import com.azure.core.annotation.Fluent;
 /**
  * Configurations that allow callers to specify details about how to execute a multi-label classification action
  * in a set of documents.
+ *
+ * See the service documentation for regional support of custom multi classification:
+ * https://aka.ms/azsdk/textanalytics/customfunctionalities
  */
 @Fluent
 public final class MultiCategoryClassifyAction {

@@ -73,8 +73,8 @@ public final class DocumentAnalysisAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param documentUrl The URL of the document to analyze.
      *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed, has failed,
@@ -98,8 +98,8 @@ public final class DocumentAnalysisAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param documentUrl The source URL to the input form.
      * @param analyzeDocumentOptions The additional configurable {@link AnalyzeDocumentOptions options}
      * that may be passed when analyzing documents.
@@ -176,8 +176,8 @@ public final class DocumentAnalysisAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-Flux-long}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param document The data of the document to analyze information from.
      * @param length The exact length of the data.
      *
@@ -205,8 +205,8 @@ public final class DocumentAnalysisAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-Flux-long-AnalyzeDocumentOptions}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param document The data of the document to analyze information from.
      * @param length The exact length of the data.
      * @param analyzeDocumentOptions The additional configurable {@link AnalyzeDocumentOptions options} that may be

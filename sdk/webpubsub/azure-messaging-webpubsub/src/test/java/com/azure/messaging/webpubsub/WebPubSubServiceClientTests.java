@@ -6,6 +6,7 @@ package com.azure.messaging.webpubsub;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.ErrorOptions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -13,10 +14,10 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
+import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -27,6 +28,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.EnumSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -82,8 +84,7 @@ public class WebPubSubServiceClientTests extends TestBase {
         assertResponse(client.sendToAllWithResponse(
                 BinaryData.fromString("Hello World - Broadcast test!"),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "text/plain")),
-                Context.NONE), 202);
+                        .set("Content-Type", "text/plain"))), 202);
     }
 
     @Test
@@ -92,17 +93,29 @@ public class WebPubSubServiceClientTests extends TestBase {
         assertResponse(client.sendToAllWithResponse(
                 BinaryData.fromBytes(bytes),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "application/octet-stream")),
-                Context.NONE), 202);
+                        .set("Content-Type", "application/octet-stream"))), 202);
     }
 
     @Test
     public void testSendToUserString() {
+        BinaryData message = BinaryData.fromString("Hello World!");
+
         assertResponse(client.sendToUserWithResponse("test_user",
-                BinaryData.fromString("Hello World!"),
+            message,
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "text/plain")),
-                Context.NONE), 202);
+                        .set("Content-Type", "text/plain"))), 202);
+
+        assertResponse(client.sendToUserWithResponse("test_user",
+                message, WebPubSubContentType.TEXT_PLAIN, message.getLength(),
+                null),
+            202);
+
+//        ByteArrayInputStream messageStream = new ByteArrayInputStream(message.toBytes());
+//        assertResponse(client.sendToUserWithResponse("test_user",
+//                BinaryData.fromStream(messageStream),
+//                WebPubSubContentType.APPLICATION_OCTET_STREAM, message.getLength(),
+//                null),
+//            202);
     }
 
     @Test
@@ -110,8 +123,7 @@ public class WebPubSubServiceClientTests extends TestBase {
         assertResponse(client.sendToUserWithResponse("test_user",
                 BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "application/octet-stream")),
-                Context.NONE), 202);
+                        .set("Content-Type", "application/octet-stream"))), 202);
     }
 
     @Test
@@ -119,8 +131,7 @@ public class WebPubSubServiceClientTests extends TestBase {
         assertResponse(client.sendToConnectionWithResponse("test_connection",
                 BinaryData.fromString("Hello World!"),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "text/plain")),
-                Context.NONE), 202);
+                        .set("Content-Type", "text/plain"))), 202);
     }
 
     @Test
@@ -128,8 +139,7 @@ public class WebPubSubServiceClientTests extends TestBase {
         assertResponse(client.sendToConnectionWithResponse("test_connection",
                 BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "application/octet-stream")),
-                Context.NONE), 202);
+                        .set("Content-Type", "application/octet-stream"))), 202);
     }
 
     @Test
@@ -137,8 +147,7 @@ public class WebPubSubServiceClientTests extends TestBase {
         assertResponse(client.sendToConnectionWithResponse("test_connection",
                 BinaryData.fromString("{\"data\": true}"),
                 new RequestOptions()
-                        .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/json")),
-                Context.NONE), 202);
+                        .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/json"))), 202);
     }
 
     @Test
@@ -147,27 +156,22 @@ public class WebPubSubServiceClientTests extends TestBase {
                 "Content-Type", "application/json"));
 
         assertResponse(client.sendToAllWithResponse(BinaryData.fromString("{\"boolvalue\": true}"),
-                requestOptions,
-                Context.NONE), 202);
+                requestOptions), 202);
         assertResponse(client.sendToAllWithResponse(BinaryData.fromString("{\"stringvalue\": \"testingwebpubsub\"}"),
-                requestOptions,
-                Context.NONE), 202);
+                requestOptions), 202);
 
         assertResponse(client.sendToAllWithResponse(BinaryData.fromString("{\"intvalue\": 25}"),
-                requestOptions,
-                Context.NONE), 202);
+                requestOptions), 202);
 
         assertResponse(client.sendToAllWithResponse(BinaryData.fromString("{\"floatvalue\": 55.4}"),
-                requestOptions,
-                Context.NONE), 202);
+                requestOptions), 202);
     }
 
     @Test
     public void testRemoveNonExistentUserFromHub() {
         // TODO (jogiles) can we determine if this user exists anywhere in the current hub?
         Response<Void> removeUserResponse =
-            client.removeUserFromAllGroupsWithResponse("testRemoveNonExistentUserFromHub", new RequestOptions(),
-                    Context.NONE);
+            client.removeUserFromAllGroupsWithResponse("testRemoveNonExistentUserFromHub", new RequestOptions());
         assertEquals(200, removeUserResponse.getStatusCode());
     }
 
@@ -200,7 +204,7 @@ public class WebPubSubServiceClientTests extends TestBase {
     @Test
     public void testRemoveNonExistentUserFromGroup() {
         assertResponse(client.removeUserFromGroupWithResponse("java",
-                "testRemoveNonExistentUserFromGroup", new RequestOptions(), Context.NONE), 200);
+                "testRemoveNonExistentUserFromGroup", new RequestOptions()), 200);
     }
 
     @Test
@@ -208,7 +212,7 @@ public class WebPubSubServiceClientTests extends TestBase {
         assertResponse(client.sendToGroupWithResponse("java",
                 BinaryData.fromString("Hello World!"),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "text/plain")), Context.NONE), 202);
+                        .set("Content-Type", "text/plain"))), 202);
     }
 
     @Test
@@ -234,17 +238,16 @@ public class WebPubSubServiceClientTests extends TestBase {
         assertResponse(client.sendToUserWithResponse("test_user",
                 BinaryData.fromString("Hello World!"),
                 new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", "text/plain")),
-                Context.NONE), 202);
+                        .set("Content-Type", "text/plain"))), 202);
     }
 
     @Test
     public void testCheckPermission() {
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "group_name")
-            .setThrowOnError(false);
+            .setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
         boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.JOIN_LEAVE_GROUP, "connection_id",
-            requestOptions, Context.NONE).getValue();
+            requestOptions).getValue();
         Assertions.assertFalse(permission);
     }
 }

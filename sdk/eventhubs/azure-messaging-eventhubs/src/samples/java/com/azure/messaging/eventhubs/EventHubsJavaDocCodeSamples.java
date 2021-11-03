@@ -644,6 +644,7 @@ public class EventHubsJavaDocCodeSamples {
                     errorContext.getThrowable());
             })
             .consumerGroup("consumer-group")
+            .checkpointStore(new SampleCheckpointStore())
             .buildEventProcessorClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventprocessorclient.startstop
