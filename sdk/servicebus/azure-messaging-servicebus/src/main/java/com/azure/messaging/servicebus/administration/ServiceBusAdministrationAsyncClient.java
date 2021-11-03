@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.administration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.AzureException;
@@ -2620,7 +2619,7 @@ public final class ServiceBusAdministrationAsyncClient {
         return context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).map(headers -> {
             if (headers instanceof HttpHeaders) {
                 HttpHeaders customHttpHeaders = (HttpHeaders) headers;
-                customHttpHeaders.add(headerName, getSupplementaryAuthToken());
+                addSupplementaryAuthToken(headerName, customHttpHeaders);
                 return true;
             }
             // context does not have http headers key
@@ -2663,9 +2662,12 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Get the additional authentication token needed for various types of forwarding options.
+     * Add the additional authentication token needed for various types of forwarding options.
+     *
+     * @param headerName name of the header to be added
+     * @param headers HttpHeaders object to which the supplementary auth header should be added
      */
-    private String getSupplementaryAuthToken() {
+    private void addSupplementaryAuthToken(String headerName, HttpHeaders headers) {
         final String scope;
 
         if (tokenCredential instanceof ServiceBusSharedKeyCredential) {
@@ -2673,10 +2675,8 @@ public final class ServiceBusAdministrationAsyncClient {
         } else {
             scope = ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE;
         }
-        final Mono<AccessToken> tokenMono = tokenCredential.getToken(new TokenRequestContext().addScopes(scope));
-        final AccessToken token = tokenMono.block(ServiceBusConstants.OPERATION_TIMEOUT);
-
-        return token != null ? token.getToken() : null;
+        tokenCredential.getToken(new TokenRequestContext().addScopes(scope)).subscribe(
+            accessToken -> {headers.add(headerName, accessToken.getToken());});
     }
 
     /**
