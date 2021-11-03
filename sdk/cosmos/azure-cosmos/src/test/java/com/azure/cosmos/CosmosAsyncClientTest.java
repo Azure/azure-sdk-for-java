@@ -27,10 +27,6 @@ public abstract class CosmosAsyncClientTest implements ITest {
     }
 
     public final CosmosClientBuilder getClientBuilder() {
-        ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor accessor =
-            ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
-        accessor.setCosmosClientApiType(this.clientBuilder, ApiType.TABLE);
-
         return this.clientBuilder;
     }
 

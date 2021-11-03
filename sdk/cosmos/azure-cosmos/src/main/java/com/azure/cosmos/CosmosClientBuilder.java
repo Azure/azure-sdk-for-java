@@ -5,7 +5,11 @@ package com.azure.cosmos;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
@@ -869,7 +873,6 @@ public class CosmosClientBuilder {
 
                 @Override
                 public ApiType getCosmosClientApiType(CosmosClientBuilder builder) {
-
                     return builder.apiType();
                 }
             });

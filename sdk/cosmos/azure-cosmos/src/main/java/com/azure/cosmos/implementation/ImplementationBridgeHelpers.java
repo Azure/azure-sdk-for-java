@@ -64,7 +64,7 @@ public class ImplementationBridgeHelpers {
 
         public static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
             if (accessor == null) {
-                throw new IllegalStateException("CosmosClientBuilder apiType is not initialized yet!");
+                throw new IllegalStateException("CosmosClientBuilder accessor is not initialized yet!");
             }
 
             return accessor;

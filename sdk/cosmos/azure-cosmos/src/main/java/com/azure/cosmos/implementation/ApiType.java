@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 /**
- * Data types in the Azure Cosmos DB database service.
+ * ApiTypes in the Azure Cosmos DB database service.
  */
 public enum ApiType {
     NONE("None"),
