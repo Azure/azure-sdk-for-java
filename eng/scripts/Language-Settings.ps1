@@ -540,7 +540,7 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
   return $packages
 }
 
-function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $BuildType = "client", $GroupId = "com.azure", $PackageProperties)
+function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $ReplaceLatestEntryTitle=$true, $BuildType = "client", $GroupId = "com.azure", $PackageProperties)
 {
   if ($PackageProperties)
   {
@@ -563,7 +563,7 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
   python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupId
   python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
   & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
-  -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
+  -Unreleased $False -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle -ReleaseDate $ReleaseDate
 }
 
 function GetExistingPackageVersions ($PackageName, $GroupId=$null)

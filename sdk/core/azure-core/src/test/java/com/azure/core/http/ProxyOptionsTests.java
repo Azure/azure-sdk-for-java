@@ -254,7 +254,8 @@ public class ProxyOptionsTests {
     @MethodSource("nonProxyHostsSupplier")
     @Execution(ExecutionMode.SAME_THREAD)
     public void nonProxyHosts(Pattern pattern, String host, boolean expected) {
-        assertEquals(expected, pattern.matcher(host).find());
+        assertEquals(expected, pattern.matcher(host).find(), () -> String.format(
+            "Expected Pattern '%s' to match '%s'.", pattern.pattern(), host));
     }
 
     private static Stream<Arguments> nonProxyHostsSupplier() {

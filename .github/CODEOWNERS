@@ -56,7 +56,7 @@
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @mbhaskar @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @zhichengliu12581 @moarychan
 
 # PRLabel: %Digital Twins
-/sdk/digitaltwins/                                  @drwill-ms @azabbasi @johngallardo
+/sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai
 
 # PRLabel: %Models Repository
 /sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andykwong-ms
@@ -137,8 +137,8 @@
 /common/smoke-tests/                                @joshfree @jonathangiles @alzimmermsft @g2vinay @conniey @srnagar
 
 # Management Plane
-/sdk/resourcemanager/                               @weidongxu-microsoft @haolingdong-msft @arthurma1978
-/sdk/**/azure-resourcemanager-*                     @weidongxu-microsoft @haolingdong-msft @arthurma1978
+/sdk/resourcemanager/                               @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978
+/sdk/**/azure-resourcemanager-*                     @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978
 
 # Quantum
 # PRLabel: %Azure Quantum
@@ -151,7 +151,7 @@
 /eng/code-quality-reports/                          @mssfang @JonathanGiles
 /eng/jacoco-test-coverage/                          @srnagar @JonathanGiles
 /eng/spotbugs-aggregate-report/                     @srnagar @JonathanGiles
-/eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @arthurma1978 @hallipr @weshaggard
+/eng/mgmt/                                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard
 /eng/versioning/                                    @alzimmermsft @samvaity @g2vinay
 /eng/versioning/external_dependencies.txt           @alzimmermsft @samvaity @g2vinay @saragluna @yiliuTo @chenrujun @backwind1233 @stliu @zhichengliu12581 @moarychan @jonathangiles
 /eng/bomgenerator                                   @pallavit @alzimmermsft @srnagar @jonathangiles
