@@ -3,10 +3,8 @@
 
 package com.azure.spring.service.storage.common;
 
-import com.azure.spring.core.converter.AzureRequestRetryOptionsConverter;
 import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.retry.RetryProperties;
-import com.azure.spring.core.properties.retry.StorageRetryProperties;
 import com.azure.storage.common.policy.RequestRetryOptions;
 
 import java.util.function.BiConsumer;
@@ -19,9 +17,7 @@ public abstract class AbstractAzureStorageClientBuilderFactory<T> extends Abstra
 
     private final AzureRequestRetryOptionsConverter requestRetryOptionsConverter = new AzureRequestRetryOptionsConverter();
 
-    protected BiConsumer<T, RequestRetryOptions> consumeRequestRetryOptions() {
-        return (a, b) -> { };
-    }
+    protected abstract BiConsumer<T, RequestRetryOptions> consumeRequestRetryOptions();
 
     @Override
     protected void configureRetry(T builder) {

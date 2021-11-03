@@ -39,7 +39,6 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientB
         this.blobProperties = blobProperties;
     }
 
-
     @Override
     public BlobServiceClientBuilder createBuilderInstance() {
         return new BlobServiceClientBuilder();

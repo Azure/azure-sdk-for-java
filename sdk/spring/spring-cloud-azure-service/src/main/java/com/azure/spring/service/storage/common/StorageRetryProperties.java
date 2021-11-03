@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.properties.retry;
+package com.azure.spring.service.storage.common;
+
+import com.azure.spring.core.properties.retry.RetryProperties;
 
 /**
  * Unified storage retry properties for all Azure Storage Service

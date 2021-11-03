@@ -92,7 +92,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
                 LOGGER.debug("No HTTP proxy properties available.");
             }
         } else {
-            LOGGER.warn("Non-http proxy configuration will not be applied.");
+            LOGGER.warn("No HTTP proxy configuration will not be applied.");
         }
     }
 
@@ -135,6 +135,8 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
         if (retryProperties instanceof HttpRetryProperties) {
             RetryPolicy retryPolicy = httpRetryOptionsConverter.convert((HttpRetryProperties) retryProperties);
             consumeRetryPolicy().accept(builder, retryPolicy);
+        } else {
+            LOGGER.warn("No HTTP retry configuration will not be applied.");
         }
     }
 

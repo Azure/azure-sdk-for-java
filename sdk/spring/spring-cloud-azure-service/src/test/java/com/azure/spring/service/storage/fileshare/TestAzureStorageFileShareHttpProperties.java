@@ -3,7 +3,7 @@
 
 package com.azure.spring.service.storage.fileshare;
 
-import com.azure.spring.core.properties.retry.StorageRetryProperties;
+import com.azure.spring.service.storage.common.StorageRetryProperties;
 import com.azure.spring.service.core.properties.TestAzureHttpProperties;
 import com.azure.storage.file.share.ShareServiceVersion;
 
