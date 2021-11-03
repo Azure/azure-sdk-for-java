@@ -6,6 +6,7 @@ package com.azure.messaging.webpubsub;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.ErrorOptions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -27,6 +28,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
+import java.util.EnumSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -243,7 +245,7 @@ public class WebPubSubServiceClientTests extends TestBase {
     public void testCheckPermission() {
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "group_name")
-            .setThrowOnError(false);
+            .setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
         boolean permission = client.checkPermissionWithResponse(WebPubSubPermission.JOIN_LEAVE_GROUP, "connection_id",
             requestOptions).getValue();
         Assertions.assertFalse(permission);
