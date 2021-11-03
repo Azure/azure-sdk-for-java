@@ -16,7 +16,6 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -39,8 +38,6 @@ import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.SkuName;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
@@ -602,26 +599,6 @@ class FunctionAppImpl
             initializeFunctionService();
         }
         return super.afterPostRunAsync(isGroupFaulted);
-    }
-
-    @Override
-    public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
-        return null;
-    }
-
-    @Override
-    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
-        return null;
-    }
-
-    @Override
-    public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return null;
-    }
-
-    @Override
-    public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return null;
     }
 
     @Host("{$host}")

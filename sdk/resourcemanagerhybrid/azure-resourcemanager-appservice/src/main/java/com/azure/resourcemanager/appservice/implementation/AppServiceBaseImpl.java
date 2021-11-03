@@ -3,10 +3,6 @@
 
 package com.azure.resourcemanager.appservice.implementation;
 
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.AppServiceManager;
@@ -32,16 +28,9 @@ import com.azure.resourcemanager.appservice.fluent.models.SiteSourceControlInner
 import com.azure.resourcemanager.appservice.fluent.models.SlotConfigNamesResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
-import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
-import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
-import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -62,11 +51,7 @@ abstract class AppServiceBaseImpl<
         FluentImplT extends AppServiceBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT>,
         FluentWithCreateT,
         FluentUpdateT>
-    extends WebAppBaseImpl<FluentT, FluentImplT>
-    implements
-    SupportsListingPrivateLinkResource,
-    SupportsListingPrivateEndpointConnection,
-    SupportsUpdatingPrivateEndpointConnection {
+    extends WebAppBaseImpl<FluentT, FluentImplT> {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
@@ -503,26 +488,4 @@ abstract class AppServiceBaseImpl<
     protected OperatingSystem appServicePlanOperatingSystem(AppServicePlan appServicePlan) {
         return appServicePlan.operatingSystem();
     }
-
-    @Override
-    public PagedIterable<PrivateLinkResource> listPrivateLinkResources() {
-        return new PagedIterable<>(listPrivateLinkResourcesAsync());
-    }
-
-    @Override
-    public PagedIterable<PrivateEndpointConnection> listPrivateEndpointConnections() {
-        return new PagedIterable<>(listPrivateEndpointConnectionsAsync());
-    }
-
-    @Override
-    public void approvePrivateEndpointConnection(String privateEndpointConnectionName) {
-        approvePrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
-    }
-
-    @Override
-    public void rejectPrivateEndpointConnection(String privateEndpointConnectionName) {
-        rejectPrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
-    }
-
-   
 }

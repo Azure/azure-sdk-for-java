@@ -86,7 +86,7 @@ class RouteFilterRuleImpl extends ChildResourceImpl<RouteFilterRuleInner, RouteF
 
     @Override
     public String provisioningState() {
-        return innerModel().provisioningState().toString();
+        return innerModel().provisioningState();
     }
 
     @Override

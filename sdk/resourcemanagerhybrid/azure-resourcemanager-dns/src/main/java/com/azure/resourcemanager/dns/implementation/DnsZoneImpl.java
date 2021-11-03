@@ -4,7 +4,6 @@ package com.azure.resourcemanager.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.dns.DnsZoneManager;
 import com.azure.resourcemanager.dns.models.ARecordSets;
 import com.azure.resourcemanager.dns.models.AaaaRecordSets;

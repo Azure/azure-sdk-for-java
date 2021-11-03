@@ -17,9 +17,6 @@ import java.util.UUID;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-
 /** The implementation of Applications and its parent interfaces. */
 public class ActiveDirectoryApplicationsImpl
     extends CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, ApplicationInner>

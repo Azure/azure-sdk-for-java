@@ -12,9 +12,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * An immutable client-side representation of an Azure policy assignment.
  */

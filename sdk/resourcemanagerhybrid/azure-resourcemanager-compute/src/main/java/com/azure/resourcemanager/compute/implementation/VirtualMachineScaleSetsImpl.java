@@ -20,7 +20,6 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInn
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetsClient;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import java.util.ArrayList;

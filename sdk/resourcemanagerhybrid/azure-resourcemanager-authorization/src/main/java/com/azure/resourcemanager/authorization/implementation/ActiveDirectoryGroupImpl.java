@@ -5,11 +5,16 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.models.*;
 import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
 import com.azure.resourcemanager.authorization.fluent.models.UserInner;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
+import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
+import com.azure.resourcemanager.authorization.models.GroupAddMemberParameters;
+import com.azure.resourcemanager.authorization.models.GroupCreateParameters;
+import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;

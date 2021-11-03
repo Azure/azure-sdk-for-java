@@ -12,12 +12,6 @@ import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * Implementation for {@link PolicyAssignment}.
  */

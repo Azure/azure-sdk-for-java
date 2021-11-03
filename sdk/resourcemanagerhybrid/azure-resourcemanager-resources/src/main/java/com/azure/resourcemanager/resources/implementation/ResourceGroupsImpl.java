@@ -11,7 +11,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.resources.models.ForceDeletionResourceType;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -19,9 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /**
@@ -130,15 +127,5 @@ public final class ResourceGroupsImpl
     @Override
     public ResourceManager manager() {
         return resourceManager;
-    }
-
-    private static String forceDeletionTypes(Collection<ForceDeletionResourceType> forceDeletionResourceTypes) {
-        String typesInStr = null;
-        if (forceDeletionResourceTypes != null && !forceDeletionResourceTypes.isEmpty()) {
-            typesInStr = forceDeletionResourceTypes.stream()
-                .map(ForceDeletionResourceType::toString)
-                .collect(Collectors.joining(","));
-        }
-        return typesInStr;
     }
 }

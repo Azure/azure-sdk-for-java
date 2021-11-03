@@ -13,9 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingByTag;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
-import reactor.core.publisher.Mono;
-
-import java.util.Collection;
 
 /**
  * Entry point to resource group management API.

@@ -12,7 +12,6 @@ import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
 import com.azure.resourcemanager.authorization.fluent.GroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import reactor.core.publisher.Mono;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation of Users and its parent interfaces. */
 public class ActiveDirectoryGroupsImpl
