@@ -7,11 +7,15 @@ import com.azure.core.http.ProxyOptions;
 
 import java.time.Duration;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Represents the connection config with {@link ConnectionMode#GATEWAY} associated with Cosmos Client in the Azure Cosmos DB database service.
  */
 public final class GatewayConnectionConfig {
     //  Constants
+    private static final Duration MIN_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_NETWORK_REQUEST_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
@@ -40,7 +44,8 @@ public final class GatewayConnectionConfig {
     }
 
     /**
-     * Gets the network request timeout (time to wait for response from network peer).
+     * Gets the network request timeout interval (time to wait for response from network peer).
+     * The default is 60 seconds.
      *
      * @return the network request timeout duration.
      */
@@ -49,13 +54,16 @@ public final class GatewayConnectionConfig {
     }
 
     /**
-     * Sets the network request timeout (time to wait for response from network peer).
+     * Sets the network request timeout interval (time to wait for response from network peer).
      * The default is 60 seconds.
      *
      * @param networkRequestTimeout the network request timeout duration.
      * @return the {@link GatewayConnectionConfig}.
      */
     GatewayConnectionConfig setNetworkRequestTimeout(Duration networkRequestTimeout) {
+        checkNotNull(networkRequestTimeout, "NetworkRequestTimeout can not be null");
+        checkArgument(networkRequestTimeout.toMillis() >= MIN_NETWORK_REQUEST_TIMEOUT.toMillis(),
+            "NetworkRequestTimeout can not be less than %s millis", MIN_NETWORK_REQUEST_TIMEOUT.toMillis());
         this.networkRequestTimeout = networkRequestTimeout;
         return this;
     }

@@ -112,7 +112,8 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the http network request timeout (time to wait for response from network peer).
+     * Gets the http network request timeout interval (time to wait for response from network peer).
+     * The default is 60 seconds.
      *
      * @return the http request timeout duration.
      */
@@ -121,8 +122,8 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Sets the http network request timeout (time to wait for response from network peer).
-     * The default is 5 seconds.
+     * Sets the http network request timeout interval (time to wait for response from network peer).
+     * The default is 60 seconds.
      *
      * @param httpNetworkRequestTimeout the http request timeout duration.
      * @return the ConnectionPolicy.
@@ -133,20 +134,30 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the tcp network request timeout (time to wait for response from network peer).
+     * Gets the tcp network request timeout interval (time to wait for response from network peer).
      *
-     * @return the request timeout duration.
+     * Default value is 5 seconds
+     *
+     * @return the network request timeout interval
      */
     public Duration getTcpNetworkRequestTimeout() {
         return this.tcpNetworkRequestTimeout;
     }
 
     /**
-     * Sets the tcp network request timeout (time to wait for response from network peer).
-     * The default is 5 seconds.
+     * Sets the tcp network request timeout interval (time to wait for response from network peer).
      *
-     * @param tcpNetworkRequestTimeout the request timeout duration.
-     * @return the ConnectionPolicy.
+     * Default value is 5 seconds.
+     * It only allows values >=5s and <=10s. (backend allows requests to take up-to 5 seconds processing time - 5 seconds
+     * buffer so 10 seconds in total for transport is more than sufficient).
+     *
+     * Attention! Please adjust this value with caution.
+     * This config represents the max time allowed to wait for and consume a service response after the request has been written to the network connection.
+     * Setting a value too low can result in having not enough time to wait for the service response - which could cause too aggressive retries and degrade performance.
+     * Setting a value too high can result in fewer retries and reduce chances of success by retries.
+     *
+     * @param tcpNetworkRequestTimeout the network request timeout interval.
+     * @return the {@link ConnectionPolicy}
      */
     public ConnectionPolicy setTcpNetworkRequestTimeout(Duration tcpNetworkRequestTimeout) {
         this.tcpNetworkRequestTimeout = tcpNetworkRequestTimeout;
