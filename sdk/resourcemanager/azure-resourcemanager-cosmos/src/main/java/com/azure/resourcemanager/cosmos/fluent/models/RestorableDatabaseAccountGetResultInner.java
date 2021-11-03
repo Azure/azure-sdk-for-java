@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ApiType;
 import com.azure.resourcemanager.cosmos.models.RestorableLocationResource;
@@ -15,10 +14,15 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** A Azure Cosmos DB restorable database account. */
-@JsonFlatten
 @Fluent
-public class RestorableDatabaseAccountGetResultInner {
+public final class RestorableDatabaseAccountGetResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDatabaseAccountGetResultInner.class);
+
+    /*
+     * The properties of a restorable database account.
+     */
+    @JsonProperty(value = "properties")
+    private RestorableDatabaseAccountProperties innerProperties;
 
     /*
      * The unique resource identifier of the ARM resource.
@@ -44,36 +48,14 @@ public class RestorableDatabaseAccountGetResultInner {
     @JsonProperty(value = "location")
     private String location;
 
-    /*
-     * The name of the global database account
+    /**
+     * Get the innerProperties property: The properties of a restorable database account.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.accountName")
-    private String accountName;
-
-    /*
-     * The creation time of the restorable database account (ISO-8601 format).
-     */
-    @JsonProperty(value = "properties.creationTime")
-    private OffsetDateTime creationTime;
-
-    /*
-     * The time at which the restorable database account has been deleted
-     * (ISO-8601 format).
-     */
-    @JsonProperty(value = "properties.deletionTime")
-    private OffsetDateTime deletionTime;
-
-    /*
-     * The API type of the restorable database account.
-     */
-    @JsonProperty(value = "properties.apiType", access = JsonProperty.Access.WRITE_ONLY)
-    private ApiType apiType;
-
-    /*
-     * List of regions where the of the database account can be restored from.
-     */
-    @JsonProperty(value = "properties.restorableLocations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RestorableLocationResource> restorableLocations;
+    private RestorableDatabaseAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the id property: The unique resource identifier of the ARM resource.
@@ -128,7 +110,7 @@ public class RestorableDatabaseAccountGetResultInner {
      * @return the accountName value.
      */
     public String accountName() {
-        return this.accountName;
+        return this.innerProperties() == null ? null : this.innerProperties().accountName();
     }
 
     /**
@@ -138,7 +120,10 @@ public class RestorableDatabaseAccountGetResultInner {
      * @return the RestorableDatabaseAccountGetResultInner object itself.
      */
     public RestorableDatabaseAccountGetResultInner withAccountName(String accountName) {
-        this.accountName = accountName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableDatabaseAccountProperties();
+        }
+        this.innerProperties().withAccountName(accountName);
         return this;
     }
 
@@ -148,7 +133,7 @@ public class RestorableDatabaseAccountGetResultInner {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -158,7 +143,10 @@ public class RestorableDatabaseAccountGetResultInner {
      * @return the RestorableDatabaseAccountGetResultInner object itself.
      */
     public RestorableDatabaseAccountGetResultInner withCreationTime(OffsetDateTime creationTime) {
-        this.creationTime = creationTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableDatabaseAccountProperties();
+        }
+        this.innerProperties().withCreationTime(creationTime);
         return this;
     }
 
@@ -169,7 +157,7 @@ public class RestorableDatabaseAccountGetResultInner {
      * @return the deletionTime value.
      */
     public OffsetDateTime deletionTime() {
-        return this.deletionTime;
+        return this.innerProperties() == null ? null : this.innerProperties().deletionTime();
     }
 
     /**
@@ -180,7 +168,10 @@ public class RestorableDatabaseAccountGetResultInner {
      * @return the RestorableDatabaseAccountGetResultInner object itself.
      */
     public RestorableDatabaseAccountGetResultInner withDeletionTime(OffsetDateTime deletionTime) {
-        this.deletionTime = deletionTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableDatabaseAccountProperties();
+        }
+        this.innerProperties().withDeletionTime(deletionTime);
         return this;
     }
 
@@ -190,7 +181,7 @@ public class RestorableDatabaseAccountGetResultInner {
      * @return the apiType value.
      */
     public ApiType apiType() {
-        return this.apiType;
+        return this.innerProperties() == null ? null : this.innerProperties().apiType();
     }
 
     /**
@@ -199,7 +190,7 @@ public class RestorableDatabaseAccountGetResultInner {
      * @return the restorableLocations value.
      */
     public List<RestorableLocationResource> restorableLocations() {
-        return this.restorableLocations;
+        return this.innerProperties() == null ? null : this.innerProperties().restorableLocations();
     }
 
     /**
@@ -208,8 +199,8 @@ public class RestorableDatabaseAccountGetResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (restorableLocations() != null) {
-            restorableLocations().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

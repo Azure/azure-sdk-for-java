@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.RestorableMongodbDatabasePropertiesResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Azure Cosmos DB MongoDB database event. */
-@JsonFlatten
 @Fluent
-public class RestorableMongodbDatabaseGetResultInner {
+public final class RestorableMongodbDatabaseGetResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableMongodbDatabaseGetResultInner.class);
+
+    /*
+     * The properties of a MongoDB database event.
+     */
+    @JsonProperty(value = "properties")
+    private RestorableMongodbDatabaseProperties innerProperties;
 
     /*
      * The unique resource Identifier of the ARM resource.
@@ -35,11 +39,14 @@ public class RestorableMongodbDatabaseGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The resource of an Azure Cosmos DB MongoDB database event
+    /**
+     * Get the innerProperties property: The properties of a MongoDB database event.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.resource")
-    private RestorableMongodbDatabasePropertiesResource resource;
+    private RestorableMongodbDatabaseProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the id property: The unique resource Identifier of the ARM resource.
@@ -74,7 +81,7 @@ public class RestorableMongodbDatabaseGetResultInner {
      * @return the resource value.
      */
     public RestorableMongodbDatabasePropertiesResource resource() {
-        return this.resource;
+        return this.innerProperties() == null ? null : this.innerProperties().resource();
     }
 
     /**
@@ -84,7 +91,10 @@ public class RestorableMongodbDatabaseGetResultInner {
      * @return the RestorableMongodbDatabaseGetResultInner object itself.
      */
     public RestorableMongodbDatabaseGetResultInner withResource(RestorableMongodbDatabasePropertiesResource resource) {
-        this.resource = resource;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableMongodbDatabaseProperties();
+        }
+        this.innerProperties().withResource(resource);
         return this;
     }
 
@@ -94,8 +104,8 @@ public class RestorableMongodbDatabaseGetResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (resource() != null) {
-            resource().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
