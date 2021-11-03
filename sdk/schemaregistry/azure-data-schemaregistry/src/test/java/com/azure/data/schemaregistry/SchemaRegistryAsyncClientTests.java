@@ -42,6 +42,9 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+", Pattern.MULTILINE);
     static final String SCHEMA_CONTENT_NO_WHITESPACE = WHITESPACE_PATTERN.matcher(SCHEMA_CONTENT).replaceAll("");
 
+    // When we regenerate recordings, make sure that the schema group matches what we are persisting.
+    static final String PLAYBACK_TEST_GROUP = "testgroup001";
+
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
 
@@ -52,7 +55,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
-            schemaGroup = "at";
+            schemaGroup = PLAYBACK_TEST_GROUP;
 
             // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
             when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
@@ -245,7 +248,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client1.getSchemaProperties("at", "bar", SCHEMA_CONTENT, SchemaFormat.AVRO))
+        StepVerifier.create(client1.getSchemaProperties(PLAYBACK_TEST_GROUP, "bar", SCHEMA_CONTENT, SchemaFormat.AVRO))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof ResourceNotFoundException);
                 assertEquals(404, ((ResourceNotFoundException) error).getResponse().getStatusCode());

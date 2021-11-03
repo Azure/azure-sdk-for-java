@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
+import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.PLAYBACK_TEST_GROUP;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.RESOURCE_LENGTH;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_CONTENT;
 import static com.azure.data.schemaregistry.SchemaRegistryAsyncClientTests.SCHEMA_REGISTRY_ENDPOINT;
@@ -48,7 +49,7 @@ public class SchemaRegistryClientTests extends TestBase {
         TokenCredential tokenCredential;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
-            schemaGroup = "at";
+            schemaGroup = PLAYBACK_TEST_GROUP;
 
             // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
             when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
@@ -218,7 +219,7 @@ public class SchemaRegistryClientTests extends TestBase {
 
         // Act & Assert
         final ResourceNotFoundException error = assertThrows(ResourceNotFoundException.class,
-            () -> client1.getSchemaProperties("at", "bar", SCHEMA_CONTENT, SchemaFormat.AVRO));
+            () -> client1.getSchemaProperties(PLAYBACK_TEST_GROUP, "bar", SCHEMA_CONTENT, SchemaFormat.AVRO));
 
         assertEquals(404, error.getResponse().getStatusCode());
     }
