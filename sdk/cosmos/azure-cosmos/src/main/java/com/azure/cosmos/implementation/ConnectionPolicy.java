@@ -148,7 +148,7 @@ public final class ConnectionPolicy {
      * Sets the tcp network request timeout interval (time to wait for response from network peer).
      *
      * Default value is 5 seconds.
-     * It only allows values >=5s and <=10s. (backend allows requests to take up-to 5 seconds processing time - 5 seconds
+     * It only allows values &ge;5s and &le;10s. (backend allows requests to take up-to 5 seconds processing time - 5 seconds
      * buffer so 10 seconds in total for transport is more than sufficient).
      *
      * Attention! Please adjust this value with caution.
